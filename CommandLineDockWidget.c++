@@ -26,6 +26,6 @@ void CommandLineDockWidget::standard_error(const QString &text)
 
 void CommandLineDockWidget::commandEntered(void)
 {
-	emit executeCommand(ui.commandLineInput->text() );
+	Q_EMIT executeCommand(ui.commandLineInput->text() );
 	ui.commandLineInput->clear();
 }

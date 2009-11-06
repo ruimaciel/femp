@@ -1,8 +1,10 @@
+#ifndef MAINWINDOW_HPP
+#define MAINWINDOW_HPP
+
 #include <QMainWindow>
-
 #include "ui/ui_MainWindow.h"
-
 #include "CommandLineDockWidget.h++"
+
 
 
 class MainWindow : public QMainWindow
@@ -18,3 +20,5 @@ private:
 	CommandLineDockWidget *commandLineDockWidget;
 };
 
+
+#endif

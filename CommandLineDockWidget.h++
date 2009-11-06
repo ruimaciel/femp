@@ -13,13 +13,13 @@ public:
 	private:
 	Ui::CommandLineDockWidget ui;
 
-	public slots:
+	public Q_SLOTS:
 		void standard_output(const QString &);
 		void standard_error(const QString &);
 
 		void commandEntered(void);	/* preparation work before emiting executeCommand() */
 
-	signals:
+	Q_SIGNALS:
 		void executeCommand(QString command);
 };
 

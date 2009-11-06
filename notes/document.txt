@@ -1,0 +1,2 @@
+necessita de correr guiões Lisp ao abrir
+definições de materiais, geometria e condições de fronteira usadas no modelo definidas num único ficheiro, carregamentos em ficheiros separados

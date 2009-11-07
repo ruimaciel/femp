@@ -204,53 +204,7 @@ std:
 int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, ProgramOptions::Option::OPTIONS_LEVEL level, std::string prefix )
 {
 	using namespace std;
-	/*
-	enum LEXER_TOKENS token;
-	using namespace std;
-	do {
-		token = lexer(is);
-		switch(token)
-		{
-			case Parser::LEX_OPTION_NAME:
-				cout << "<o>"<< value.text;
-				delete [] value.text;
-				break;
 
-			case Parser::LEX_OPTION_SEPARATOR:
-				cout << ".";
-				break;
-
-			case Parser::LEX_OPTION_ASSIGN:
-				cout << "=";
-				break;
-
-			case Parser::LEX_INTEGER:
-				cout << "<i>" << value.integer ;
-				break;
-
-			case Parser::LEX_FLOAT:
-				cout << "<fp>" << value.fp;
-				break;
-
-			case Parser::LEX_STRING:
-				cout << "<s>\"" << value.text << "\"";
-				delete [] value.text;
-				break;
-
-			case Parser::LEX_EOL:
-				cout << "EOL\n";
-				break;
-
-			case Parser::LEX_EOF:
-				cout << "EOF\n";
-				break;
-
-			default:
-				cout << "defaulted ";
-				break;
-		}
-	} while ( (token != Parser::LEX_EOF) && (token != Parser::LEX_STREAM_ERROR));
-	*/
 	int state = 0;
 	enum LEXER_TOKENS token = LEX_UNKNOWN_TOKEN;
 	vector<string> opname;
@@ -369,6 +323,11 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, ProgramO
 						state = 0;
 						break;
 
+					case LEX_EOF:
+						op.setOption(temp, value.integer, level);
+						return 0;	//TODO implement support the compact format
+						break;
+
 					default:
 						cerr << "state " << state << " defaulted\n";
 						state = 20;	// wait until EOL
@@ -385,6 +344,11 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, ProgramO
 						temp.clear();
 						opname.clear();	//TODO implement support the compact format
 						state = 0;
+						break;
+
+					case LEX_EOF:
+						op.setOption(temp, value.fp, level);
+						return 0;	//TODO implement support the compact format
 						break;
 
 					default:
@@ -404,6 +368,9 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, ProgramO
 						state = 0;
 						break;
 
+					case LEX_EOF:
+						op.setOption(temp, text, level);
+						return 0;	//TODO implement support the compact format
 					default:
 						cerr << "state " << state << " defaulted\n";
 						break;

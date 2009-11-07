@@ -169,7 +169,7 @@ enum ProgramOptions::Parser::LEXER_TOKENS ProgramOptions::Parser::lexer(std::ist
 
 std:
 	tok = pos;
-	#define YYFILL(n) { std::cout << "\nfill\n"; if(is.eof()) return LEX_EOF; else fill(is); }
+	#define YYFILL(n) { if(is.eof()){ if(tok == lim) return LEX_EOF; }else fill(is); }
 	#define CP { tmp.clear(); tmp.append(tok,pos-tok); }
 	#define CPo { text.clear(); text.append(tok,pos-tok); }
 	#define CPs { text.clear(); text.append(tok+1,pos-tok-2); }

@@ -56,20 +56,6 @@ ProgramOptions::~ProgramOptions()
 }
 
 
-void ProgramOptions::loadOptionsFromFile(std::string file, Option::OPTIONS_LEVEL level, std::string prefix)
-{
-	struct stat buffer;
-
-	if(file.empty())
-		return;
-	/* check if system directory exists */
-	if(stat(file.c_str(), &buffer) != 0)
-		std::cerr << file << " doesn't exist" << std::endl;
-
-	/*TODO load options from file */
-}
-
-
 void ProgramOptions::setOption(std::string option, long int value, Option::OPTIONS_LEVEL level)
 {
 	Option op;
@@ -121,6 +107,24 @@ std::ostream& operator << (std::ostream& os, ProgramOptions &prog)
 		}
 	}
 	return os;
+}
+
+int ProgramOptions::importFile(std::istream &is, std::string prefix)
+{
+	Parser *p = new Parser();
+
+	switch(p->parse(*this, is, option_level, prefix))
+	{
+		case 0:
+			break;
+
+		default:
+			/*TODO implement error handling */
+			break;
+	}
+
+	delete p;
+	return 0;
 }
 
 
@@ -193,7 +197,7 @@ std:
 	' '+	{ goto std;}
 	.	{ return LEX_UNKNOWN_TOKEN; }
 	*/
-	#undef YYFILL(n)
+	#undef YYFILL
 	#undef CP
 	#undef CPo
 	#undef CPs

@@ -52,10 +52,10 @@ class ProgramOptions
 				double getFloat()	{ return value.fp; }
 				std::string getString()	{ return text; }
 		};
-	private:
 
+	private:
 		std::map<std::string, Option> options_list;
-		enum Option::OPTIONS_LEVEL option_level;
+		enum Option::OPTIONS_LEVEL option_level;	// default options level
 
 	public:
 		/*
@@ -71,7 +71,7 @@ class ProgramOptions
 		@param level the defaulf options level
 		@param prefix a pre-defined level
 		*/
-		void loadOptionsFromFile(std::string file, Option::OPTIONS_LEVEL level, std::string prefix = std::string());
+		void loadOptionsFromFile(std::istream& is, Option::OPTIONS_LEVEL level, std::string prefix = std::string());
 
 		// set the current options level
 		void setDefault()	{ option_level = Option::OPT_DEFAULT; }
@@ -88,7 +88,10 @@ class ProgramOptions
 		//TODO implement an export mechanism that enables exporting in the full and compacted formats
 		friend std::ostream& operator << (std::ostream& os, ProgramOptions &prog);
 
+		// import file
+		int importFile(std::istream &is, std::string prefix = std::string());
 
+	private:
 		class Parser
 		{
 			enum LEXER_TOKENS { LEX_UNKNOWN_TOKEN = 0,
@@ -116,7 +119,6 @@ class ProgramOptions
 			char *marker;	
 			char *lim;	// marks the string limit
 
-
 			public:
 				Parser();
 				~Parser();
@@ -127,6 +129,8 @@ class ProgramOptions
 
 			public:
 				int parse(ProgramOptions &op, std::istream &is, ProgramOptions::Option::OPTIONS_LEVEL level, std::string prefix = std::string() );
+
+				friend class ProgramOptions;
 		};
 };
 

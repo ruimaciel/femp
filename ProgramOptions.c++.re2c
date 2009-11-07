@@ -44,6 +44,7 @@ void ProgramOptions::Option::setOption(std::string value, OPTIONS_LEVEL level)
 
 ProgramOptions::ProgramOptions()
 {
+	option_level = Option::OPT_DEFAULT;
 }
 
 
@@ -66,11 +67,56 @@ void ProgramOptions::loadOptionsFromFile(std::string file, Option::OPTIONS_LEVEL
 }
 
 
+void ProgramOptions::setOption(std::string option, long int value, Option::OPTIONS_LEVEL level)
+{
+	Option op;
+	op.setOption(value, level);
+	options_list[option] = op;
+}
+
+
+void ProgramOptions::setOption(std::string option, double value, Option::OPTIONS_LEVEL level)
+{
+	Option op;
+	op.setOption(value, level);
+	options_list[option] = op;
+}
+
+
+void ProgramOptions::setOption(std::string option, std::string value, Option::OPTIONS_LEVEL level)
+{
+	Option op;
+	op.setOption(value, level);
+	options_list[option] = op;
+}
 
 
 std::ostream& operator << (std::ostream& os, ProgramOptions &prog)
 {
 	/*TODO implement this */
+	std::map<std::string, ProgramOptions::Option>::iterator it;
+	for(it = prog.options_list.begin(); it != prog.options_list.end(); it++)
+	{
+		os << (*it).first << " = ";
+		switch( (*it).second.type)
+		{	
+			case ProgramOptions::Option::VAL_INTEGER:
+				os << (*it).second.value.integer << std::endl;
+				break;
+
+			case ProgramOptions::Option::VAL_FLOAT:
+				os << (*it).second.value.fp << std::endl;
+				break;
+
+			case ProgramOptions::Option::VAL_STRING:
+				os << "\"" << (*it).second.value.text << "\"" << std::endl;
+				break;
+
+			default:
+				/* this section is never reached */
+				break;
+		}
+	}
 	return os;
 }
 
@@ -152,6 +198,7 @@ std:
 
 int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is)
 {
+	/*
 	enum LEXER_TOKENS token;
 	using namespace std;
 	do {
@@ -197,4 +244,5 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is)
 				break;
 		}
 	} while ( (token != Parser::LEX_EOF) && (token != Parser::LEX_STREAM_ERROR));
+	*/
 }

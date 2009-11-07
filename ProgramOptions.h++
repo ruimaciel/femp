@@ -18,7 +18,7 @@ Each option has 4 levels
 
 class ProgramOptions
 {
-	private:
+	public:
 		class Option
 		{
 			private:
@@ -32,6 +32,7 @@ class ProgramOptions
 
 			public:
 				friend class ProgramOptions;	// to grant access to the union
+				friend std::ostream& operator << (std::ostream& os, ProgramOptions &prog);
 
 				Option();
 				~Option();
@@ -51,8 +52,10 @@ class ProgramOptions
 				double getFloat()	{ return value.fp; }
 				std::string getString()	{ return std::string(value.text); }
 		};
+	private:
 
 		std::map<std::string, Option> options_list;
+		enum Option::OPTIONS_LEVEL option_level;
 
 	public:
 		/*
@@ -70,17 +73,21 @@ class ProgramOptions
 		*/
 		void loadOptionsFromFile(std::string file, Option::OPTIONS_LEVEL level, std::string prefix = std::string());
 
+		// set the current options level
+		void setDefault()	{ option_level = Option::OPT_DEFAULT; }
+		void setSystem()	{ option_level = Option::OPT_SYSTEM; }
+		void setLocal()		{ option_level = Option::OPT_LOCAL; }
+		void setTemporary()	{ option_level = Option::OPT_TEMPORARY; }
+
 		// set the options
 		void setOption(std::string, long int, Option::OPTIONS_LEVEL);
-		void setOption(std::string, double, Option::OPTIONS_LEVEL);
-		void setOption(std::string, std::string, Option::OPTIONS_LEVEL);
+		void setOption(std::string, double, Option::OPTIONS_LEVEL level);
+		void setOption(std::string, std::string, Option::OPTIONS_LEVEL level);
 
 		// generates an options file 
 		friend std::ostream& operator << (std::ostream& os, ProgramOptions &prog);
 
 
-
-//	private:	// just to be tested in main()
 		class Parser
 		{
 			enum LEXER_TOKENS {LEX_UNKNOWN_TOKEN = 0, LEX_OPTION_NAME, LEX_OPTION_SEPARATOR, 

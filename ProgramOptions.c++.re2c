@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <vector>
+#include <string>
+
 
 
 ProgramOptions::Option::Option()
@@ -15,6 +18,12 @@ ProgramOptions::Option::Option()
 
 ProgramOptions::Option::~Option()
 {
+	// clears the value.text, which is allocated through strdup()
+	if(type == VAL_STRING)
+	{
+		if(value.text != NULL)
+			free (value.text);
+	}
 }
 
 
@@ -38,7 +47,7 @@ void ProgramOptions::Option::setOption(std::string value, OPTIONS_LEVEL level)
 {
 	this->option_level = level;
 	this->type = VAL_STRING;
-	this->value.text = value.c_str();
+	this->value.text = strdup(value.c_str());
 }
 
 
@@ -177,9 +186,11 @@ std:
 	option	= [a-zA-Z]+;
 	float	= integer "." [0-9]+([eE][+-]?[0-9]+)?;
 	string	= '"' [a-zA-Z0-9]* '"';
+	indent	= [\t];
 
 	'.'	{ return LEX_OPTION_SEPARATOR; }
 	'='	{ return LEX_OPTION_ASSIGN; }
+	indent	{ return LEX_INDENT; }
 	option	{ CPo; return LEX_OPTION_NAME; }
 	integer	{ CP; value.integer = atoi(tmp); delete [] tmp; return LEX_INTEGER; }
 	float	{ CP; value.fp = atof(tmp); delete [] tmp; return LEX_FLOAT; }
@@ -196,8 +207,9 @@ std:
 }
 
 
-int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is)
+int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, ProgramOptions::Option::OPTIONS_LEVEL level, std::string prefix )
 {
+	using namespace std;
 	/*
 	enum LEXER_TOKENS token;
 	using namespace std;
@@ -245,4 +257,186 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is)
 		}
 	} while ( (token != Parser::LEX_EOF) && (token != Parser::LEX_STREAM_ERROR));
 	*/
+	int state = 0;
+	enum LEXER_TOKENS token = LEX_UNKNOWN_TOKEN;
+	vector<string> opname;
+	string temp;
+	vector<string>::iterator it;
+	size_t line = 0;
+	
+	do {
+		token = lexer(is);
+		switch(state)
+		{
+			case 0:	// starting point
+				switch(token)
+				{
+					case LEX_EOL:
+						line++;
+						break;
+
+					case LEX_OPTION_NAME:
+						opname.push_back(value.text);
+						state = 1;	// object pushed
+						break;
+
+					case LEX_EOF:
+						/*TODO implement decent return codes */
+						return 0;
+						break;
+
+					default:
+						cerr << "state " << state << " defaulted\n";
+						break;
+				}
+				break;
+
+			case 1:	// object pushed
+				switch(token)
+				{
+					case LEX_OPTION_SEPARATOR:
+						state = 2;	// waiting for object name
+						break;
+
+					case LEX_OPTION_ASSIGN:
+						state = 3;	// waiting for option's value
+						break;
+
+					default:
+						cerr << "state " << state << " defaulted\n";
+						break;
+				}
+				break;
+
+			case 2:	// waiting for object name
+				switch(token)
+				{
+					case LEX_OPTION_NAME:
+						opname.push_back(value.text);
+						state = 1;	// object pushed
+						break;
+
+					default:
+						cerr << "state " << state << " defaulted\n";
+						break;
+				}
+				break;
+
+			case 3:	// waiting for option's value
+				switch(token)
+				{
+					case LEX_INTEGER:
+						it = opname.begin();
+						temp = prefix + *it;
+						// generate string with full option name
+						for(it++; it != opname.end(); it++)
+						{
+							temp += "." + *it;
+						}
+						state = 4;	// wait for EOL before committing integer
+						break;
+
+					case LEX_FLOAT:
+						it = opname.begin();
+						temp = prefix + *it;
+						// generate string with full option name
+						for(it++; it != opname.end(); it++)
+						{
+							temp += "." + *it;
+						}
+						state = 5;	// wait for EOL before committing float
+						break;
+
+					case LEX_STRING:
+						it = opname.begin();
+						temp = prefix + *it;
+						// generate string with full option name
+						for(it++; it != opname.end(); it++)
+						{
+							temp += "." + *it;
+						}
+						state = 6;	// wait for EOL before committing string
+						break;
+
+					default:
+						cerr << "state " << state << " defaulted\n";
+						break;
+				}
+				break;
+
+			case 4:	// wait for EOL before committing integer
+				switch(token)
+				{
+					case LEX_EOL:
+						line++;
+						op.setOption(temp, value.integer, level);
+						temp.clear();
+						opname.clear();	//TODO implement support the compact format
+						state = 0;
+						break;
+
+					default:
+						cerr << "state " << state << " defaulted\n";
+						state = 20;	// wait until EOL
+						break;
+				}
+				break;
+
+			case 5:	// wait for EOL before committing float
+				switch(token)
+				{
+					case LEX_EOL:
+						line++;
+						op.setOption(temp, value.fp, level);
+						temp.clear();
+						opname.clear();	//TODO implement support the compact format
+						state = 0;
+						break;
+
+					default:
+						cerr << "state " << state << " defaulted\n";
+						break;
+				}
+				break;
+
+			case 6:	// wait for EOL before committing string
+				switch(token)
+				{
+					case LEX_EOL:
+						line++;
+						op.setOption(temp, value.text, level);
+						temp.clear();
+						opname.clear();	//TODO implement support the compact format
+						state = 0;
+						break;
+
+					default:
+						cerr << "state " << state << " defaulted\n";
+						break;
+				}
+				break;
+
+			case 20:	// wait until EOL
+				switch(token)
+				{
+					case LEX_EOL:
+						state = 0;
+						line++;
+						break;
+
+					default:
+						cerr << "state " << state << " defaulted\n";
+						break;
+				}
+				break;
+
+			default:
+				cerr << "reached invalid state\n";
+				break;
+		}
+	} while ((token != LEX_EOF) && (token != LEX_STREAM_ERROR));
+
+	/*TODO set a decent return code */
+	return 0;
+
 }

@@ -27,7 +27,7 @@ class ProgramOptions
 				union u_value {
 					long int integer;
 					double fp;
-					const char *text;
+					char *text;
 				} value;
 
 			public:
@@ -38,7 +38,7 @@ class ProgramOptions
 				~Option();
 
 				enum OPTIONS_LEVEL {OPT_DEFAULT = 0, OPT_SYSTEM, OPT_LOCAL, OPT_TEMPORARY};
-				enum VALUE_TYPE {VAL_INTEGER = 0, VAL_FLOAT, VAL_STRING};
+				enum VALUE_TYPE {VAL_INTEGER = 0, VAL_FLOAT = 1, VAL_STRING = 2};
 
 				void setOption(long int, OPTIONS_LEVEL);
 				void setOption(double, OPTIONS_LEVEL);
@@ -85,13 +85,25 @@ class ProgramOptions
 		void setOption(std::string, std::string, Option::OPTIONS_LEVEL level);
 
 		// generates an options file 
+		//TODO implement an export mechanism that enables exporting in the full and compacted formats
 		friend std::ostream& operator << (std::ostream& os, ProgramOptions &prog);
 
 
 		class Parser
 		{
-			enum LEXER_TOKENS {LEX_UNKNOWN_TOKEN = 0, LEX_OPTION_NAME, LEX_OPTION_SEPARATOR, 
-		LEX_OPTION_ASSIGN, LEX_STRING, LEX_INTEGER, LEX_FLOAT, LEX_EOL, LEX_EOF, LEX_STREAM_ERROR, LEX_ERROR};
+			enum LEXER_TOKENS { LEX_UNKNOWN_TOKEN = 0,
+				LEX_OPTION_NAME, 
+				LEX_OPTION_SEPARATOR, 
+				LEX_OPTION_ASSIGN,
+				LEX_INDENT,
+				LEX_STRING, 
+				LEX_INTEGER,
+				LEX_FLOAT,
+				LEX_EOL,
+				LEX_EOF,
+				LEX_STREAM_ERROR,
+				LEX_ERROR };
+
 			char buffer[1024];
 			union u_value {
 				long int integer;
@@ -113,7 +125,7 @@ class ProgramOptions
 				enum LEXER_TOKENS lexer(std::istream &is);
 
 			public:
-				int parse(ProgramOptions &op, std::istream &is);
+				int parse(ProgramOptions &op, std::istream &is, ProgramOptions::Option::OPTIONS_LEVEL level, std::string prefix = std::string() );
 		};
 };
 

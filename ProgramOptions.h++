@@ -79,12 +79,12 @@ class ProgramOptions
 		friend std::ostream& operator << (std::ostream& os, ProgramOptions &prog);
 
 
-		enum LEXER_TOKENS {LEX_UNKNOWN_TOKEN = 0, LEX_OPTION_NAME, LEX_OPTION_SEPARATOR, 
-		LEX_OPTION_ASSIGN, LEX_STRING, LEX_INTEGER, LEX_FLOAT, LEX_EOL, LEX_EOF, LEX_STREAM_ERROR, LEX_ERROR};
 
 //	private:	// just to be tested in main()
-		struct lexer_values
+		class Parser
 		{
+			enum LEXER_TOKENS {LEX_UNKNOWN_TOKEN = 0, LEX_OPTION_NAME, LEX_OPTION_SEPARATOR, 
+		LEX_OPTION_ASSIGN, LEX_STRING, LEX_INTEGER, LEX_FLOAT, LEX_EOL, LEX_EOF, LEX_STREAM_ERROR, LEX_ERROR};
 			char buffer[1024];
 			union u_value {
 				long int integer;
@@ -96,11 +96,18 @@ class ProgramOptions
 			char *marker;	
 			char *lim;	// marks the string limit
 
-			lexer_values();
-			~lexer_values();
-			void fill(std::istream &is);
+
+			public:
+				Parser();
+				~Parser();
+
+			private:
+				void fill(std::istream &is);
+				enum LEXER_TOKENS lexer(std::istream &is);
+
+			public:
+				int parse(ProgramOptions &op, std::istream &is);
 		};
-		enum LEXER_TOKENS lexer(struct lexer_values &v, std::istream &is);
 };
 
 

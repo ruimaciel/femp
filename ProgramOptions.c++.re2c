@@ -75,49 +75,7 @@ std::ostream& operator << (std::ostream& os, ProgramOptions &prog)
 }
 
 
-enum ProgramOptions::LEXER_TOKENS ProgramOptions::lexer(struct ProgramOptions::lexer_values &v, std::istream &is)
-{
-	char *tmp;
-	if(is.bad())
-		return ProgramOptions::LEX_STREAM_ERROR;
-
-std:
-	v.tok = v.pos;
-	#define YYFILL(n) { std::cout << "\nfill\n"; if(is.eof()) return ProgramOptions::LEX_EOF; else v.fill(is); }
-	#define CP { tmp = new char [v.pos-v.tok+1] ; strncpy(tmp,v.tok,v.pos-v.tok); }
-	#define CPo { v.value.text = new char [v.pos-v.tok+1] ; strncpy(v.value.text,v.tok,v.pos-v.tok); }
-	#define CPs { v.value.text = new char [v.pos-v.tok+1] ; strncpy(v.value.text,v.tok+1,v.pos-v.tok-2); }
-	/*!re2c
-	re2c:yyfill:enable   	= 1;
-	re2c:define:YYCTYPE  	= "char";
-	re2c:define:YYCURSOR 	= v.pos;
-	re2c:define:YYMARKER 	= v.marker;
-	re2c:define:YYLIMIT	= v.lim;
-
-	integer = "-"? ("0"|[1-9][0-9]*);
-	option	= [a-zA-Z]+;
-	float	= integer "." [0-9]+([eE][+-]?[0-9]+)?;
-	string	= '"' [a-zA-Z0-9]* '"';
-
-	'.'	{ return ProgramOptions::LEX_OPTION_SEPARATOR; }
-	'='	{ return ProgramOptions::LEX_OPTION_ASSIGN; }
-	option	{ CPo; return ProgramOptions::LEX_OPTION_NAME; }
-	integer	{ CP; v.value.integer = atoi(tmp); delete [] tmp; return ProgramOptions::LEX_INTEGER; }
-	float	{ CP; v.value.fp = atof(tmp); delete [] tmp; return ProgramOptions::LEX_FLOAT; }
-	string	{ CPs; return ProgramOptions::LEX_STRING; }
-	'\n'	{ return ProgramOptions::LEX_EOL; }
-	' '+	{ goto std;}
-	.	{ return ProgramOptions::LEX_UNKNOWN_TOKEN; }
-	*/
-	#undef YYFILL(n)
-	#undef CP
-	#undef CPo
-	#undef CPs
-	return ProgramOptions::LEX_ERROR;
-}
-
-
-ProgramOptions::lexer_values::lexer_values()
+ProgramOptions::Parser::Parser()
 {
 	buffer[0] = '\0';
 	pos = tok = lim = buffer;
@@ -125,12 +83,12 @@ ProgramOptions::lexer_values::lexer_values()
 }
 
 
-ProgramOptions::lexer_values::~lexer_values()
+ProgramOptions::Parser::~Parser()
 {
 }
 
 
-void ProgramOptions::lexer_values::fill(std::istream &is)
+void ProgramOptions::Parser::fill(std::istream &is)
 {
 	// move the remaining unprocessed buffer to the start
 	if(lim-tok > 0 )
@@ -150,3 +108,93 @@ void ProgramOptions::lexer_values::fill(std::istream &is)
 }
 
 
+enum ProgramOptions::Parser::LEXER_TOKENS ProgramOptions::Parser::lexer(std::istream &is)
+{
+	char *tmp;
+	if(is.bad())
+		return LEX_STREAM_ERROR;
+
+std:
+	tok = pos;
+	#define YYFILL(n) { std::cout << "\nfill\n"; if(is.eof()) return LEX_EOF; else fill(is); }
+	#define CP { tmp = new char [pos-tok+1] ; strncpy(tmp,tok,pos-tok); }
+	#define CPo { value.text = new char [pos-tok+1] ; strncpy(value.text,tok,pos-tok); }
+	#define CPs { value.text = new char [pos-tok+1] ; strncpy(value.text,tok+1,pos-tok-2); }
+	/*!re2c
+	re2c:yyfill:enable   	= 1;
+	re2c:define:YYCTYPE  	= "char";
+	re2c:define:YYCURSOR 	= pos;
+	re2c:define:YYMARKER 	= marker;
+	re2c:define:YYLIMIT	= lim;
+
+	integer = "-"? ("0"|[1-9][0-9]*);
+	option	= [a-zA-Z]+;
+	float	= integer "." [0-9]+([eE][+-]?[0-9]+)?;
+	string	= '"' [a-zA-Z0-9]* '"';
+
+	'.'	{ return LEX_OPTION_SEPARATOR; }
+	'='	{ return LEX_OPTION_ASSIGN; }
+	option	{ CPo; return LEX_OPTION_NAME; }
+	integer	{ CP; value.integer = atoi(tmp); delete [] tmp; return LEX_INTEGER; }
+	float	{ CP; value.fp = atof(tmp); delete [] tmp; return LEX_FLOAT; }
+	string	{ CPs; return LEX_STRING; }
+	'\n'	{ return LEX_EOL; }
+	' '+	{ goto std;}
+	.	{ return LEX_UNKNOWN_TOKEN; }
+	*/
+	#undef YYFILL(n)
+	#undef CP
+	#undef CPo
+	#undef CPs
+	return LEX_ERROR;
+}
+
+
+int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is)
+{
+	enum LEXER_TOKENS token;
+	using namespace std;
+	do {
+		token = lexer(is);
+		switch(token)
+		{
+			case Parser::LEX_OPTION_NAME:
+				cout << "<o>"<< value.text;
+				delete [] value.text;
+				break;
+
+			case Parser::LEX_OPTION_SEPARATOR:
+				cout << ".";
+				break;
+
+			case Parser::LEX_OPTION_ASSIGN:
+				cout << "=";
+				break;
+
+			case Parser::LEX_INTEGER:
+				cout << "<i>" << value.integer ;
+				break;
+
+			case Parser::LEX_FLOAT:
+				cout << "<fp>" << value.fp;
+				break;
+
+			case Parser::LEX_STRING:
+				cout << "<s>\"" << value.text << "\"";
+				delete [] value.text;
+				break;
+
+			case Parser::LEX_EOL:
+				cout << "EOL\n";
+				break;
+
+			case Parser::LEX_EOF:
+				cout << "EOF\n";
+				break;
+
+			default:
+				cout << "defaulted ";
+				break;
+		}
+	} while ( (token != Parser::LEX_EOF) && (token != Parser::LEX_STREAM_ERROR));
+}

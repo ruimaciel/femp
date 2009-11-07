@@ -18,12 +18,6 @@ ProgramOptions::Option::Option()
 
 ProgramOptions::Option::~Option()
 {
-	// clears the value.text, which is allocated through strdup()
-	if(type == VAL_STRING)
-	{
-		if(value.text != NULL)
-			free (value.text);
-	}
 }
 
 
@@ -47,7 +41,7 @@ void ProgramOptions::Option::setOption(std::string value, OPTIONS_LEVEL level)
 {
 	this->option_level = level;
 	this->type = VAL_STRING;
-	this->value.text = strdup(value.c_str());
+	this->text = value;
 }
 
 
@@ -118,7 +112,7 @@ std::ostream& operator << (std::ostream& os, ProgramOptions &prog)
 				break;
 
 			case ProgramOptions::Option::VAL_STRING:
-				os << "\"" << (*it).second.value.text << "\"" << std::endl;
+				os << "\"" << (*it).second.text << "\"" << std::endl;
 				break;
 
 			default:
@@ -165,16 +159,16 @@ void ProgramOptions::Parser::fill(std::istream &is)
 
 enum ProgramOptions::Parser::LEXER_TOKENS ProgramOptions::Parser::lexer(std::istream &is)
 {
-	char *tmp;
+	std::string tmp;
 	if(is.bad())
 		return LEX_STREAM_ERROR;
 
 std:
 	tok = pos;
 	#define YYFILL(n) { std::cout << "\nfill\n"; if(is.eof()) return LEX_EOF; else fill(is); }
-	#define CP { tmp = new char [pos-tok+1] ; strncpy(tmp,tok,pos-tok); }
-	#define CPo { value.text = new char [pos-tok+1] ; strncpy(value.text,tok,pos-tok); }
-	#define CPs { value.text = new char [pos-tok+1] ; strncpy(value.text,tok+1,pos-tok-2); }
+	#define CP { tmp.clear(); tmp.append(tok,pos-tok); }
+	#define CPo { text.clear(); text.append(tok,pos-tok); }
+	#define CPs { text.clear(); text.append(tok+1,pos-tok-2); }
 	/*!re2c
 	re2c:yyfill:enable   	= 1;
 	re2c:define:YYCTYPE  	= "char";
@@ -192,8 +186,8 @@ std:
 	'='	{ return LEX_OPTION_ASSIGN; }
 	indent	{ return LEX_INDENT; }
 	option	{ CPo; return LEX_OPTION_NAME; }
-	integer	{ CP; value.integer = atoi(tmp); delete [] tmp; return LEX_INTEGER; }
-	float	{ CP; value.fp = atof(tmp); delete [] tmp; return LEX_FLOAT; }
+	integer	{ CP; value.integer = atoi(tmp.c_str()); return LEX_INTEGER; }
+	float	{ CP; value.fp = atof(tmp.c_str()); return LEX_FLOAT; }
 	string	{ CPs; return LEX_STRING; }
 	'\n'	{ return LEX_EOL; }
 	' '+	{ goto std;}
@@ -276,7 +270,7 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, ProgramO
 						break;
 
 					case LEX_OPTION_NAME:
-						opname.push_back(value.text);
+						opname.push_back(text);
 						state = 1;	// object pushed
 						break;
 
@@ -312,7 +306,7 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, ProgramO
 				switch(token)
 				{
 					case LEX_OPTION_NAME:
-						opname.push_back(value.text);
+						opname.push_back(text);
 						state = 1;	// object pushed
 						break;
 
@@ -404,7 +398,7 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, ProgramO
 				{
 					case LEX_EOL:
 						line++;
-						op.setOption(temp, value.text, level);
+						op.setOption(temp, text, level);
 						temp.clear();
 						opname.clear();	//TODO implement support the compact format
 						state = 0;

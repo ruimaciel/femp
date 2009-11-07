@@ -27,8 +27,8 @@ class ProgramOptions
 				union u_value {
 					long int integer;
 					double fp;
-					char *text;
 				} value;
+				std::string text;
 
 			public:
 				friend class ProgramOptions;	// to grant access to the union
@@ -50,7 +50,7 @@ class ProgramOptions
 
 				long int getInteger()	{ return value.integer; }
 				double getFloat()	{ return value.fp; }
-				std::string getString()	{ return std::string(value.text); }
+				std::string getString()	{ return text; }
 		};
 	private:
 
@@ -108,8 +108,9 @@ class ProgramOptions
 			union u_value {
 				long int integer;
 				double fp;
-				char *text;
 			} value;
+			std::string text;
+
 			char *tok;	// marks the start of the current token
 			char *pos; 	// marks the current position
 			char *marker;	

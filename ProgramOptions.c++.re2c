@@ -11,17 +11,17 @@
 
 
 
-ProgramOptions::Option::Option()
+Option::Option()
 {
 }
 
 
-ProgramOptions::Option::~Option()
+Option::~Option()
 {
 }
 
 
-void ProgramOptions::Option::setOption(long int value, OPTIONS_LEVEL level)
+void Option::setOption(long int value, OPTIONS_LEVEL level)
 {
 	this->option_level = level;
 	this->type = VAL_INTEGER;
@@ -29,7 +29,7 @@ void ProgramOptions::Option::setOption(long int value, OPTIONS_LEVEL level)
 }
 
 
-void ProgramOptions::Option::setOption(double value, OPTIONS_LEVEL level)
+void Option::setOption(double value, OPTIONS_LEVEL level)
 {
 	this->option_level = level;
 	this->type = VAL_FLOAT;
@@ -37,7 +37,7 @@ void ProgramOptions::Option::setOption(double value, OPTIONS_LEVEL level)
 }
 
 
-void ProgramOptions::Option::setOption(std::string value, OPTIONS_LEVEL level)
+void Option::setOption(std::string value, OPTIONS_LEVEL level)
 {
 	this->option_level = level;
 	this->type = VAL_STRING;
@@ -60,7 +60,7 @@ void ProgramOptions::setOption(std::string option, long int value, Option::OPTIO
 {
 	Option op;
 	op.setOption(value, level);
-	options_list[option] = op;
+	(*this)[option] = op;
 }
 
 
@@ -68,7 +68,7 @@ void ProgramOptions::setOption(std::string option, double value, Option::OPTIONS
 {
 	Option op;
 	op.setOption(value, level);
-	options_list[option] = op;
+	(*this)[option] = op;
 }
 
 
@@ -76,28 +76,34 @@ void ProgramOptions::setOption(std::string option, std::string value, Option::OP
 {
 	Option op;
 	op.setOption(value, level);
-	options_list[option] = op;
+	(*this)[option] = op;
+}
+
+
+bool ProgramOptions::wasSet(const std::string text) const
+{
+	return (this->find(text) != this->end());
 }
 
 
 std::ostream& operator << (std::ostream& os, ProgramOptions &prog)
 {
 	/*TODO implement this */
-	std::map<std::string, ProgramOptions::Option>::iterator it;
-	for(it = prog.options_list.begin(); it != prog.options_list.end(); it++)
+	std::map<std::string, Option>::iterator it;
+	for(it = prog.begin(); it != prog.end(); it++)
 	{
 		os << (*it).first << " = ";
 		switch( (*it).second.type)
 		{	
-			case ProgramOptions::Option::VAL_INTEGER:
+			case Option::VAL_INTEGER:
 				os << (*it).second.value.integer << std::endl;
 				break;
 
-			case ProgramOptions::Option::VAL_FLOAT:
+			case Option::VAL_FLOAT:
 				os << (*it).second.value.fp << std::endl;
 				break;
 
-			case ProgramOptions::Option::VAL_STRING:
+			case Option::VAL_STRING:
 				os << "\"" << (*it).second.text << "\"" << std::endl;
 				break;
 
@@ -205,7 +211,7 @@ std:
 }
 
 
-int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, ProgramOptions::Option::OPTIONS_LEVEL level, std::string prefix )
+int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, Option::OPTIONS_LEVEL level, std::string prefix )
 {
 	using namespace std;
 

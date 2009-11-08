@@ -16,45 +16,46 @@ Each option has 4 levels
 #include <iostream>	// for ostream
 
 
-class ProgramOptions
+class ProgramOptions;
+
+class Option
 {
-	public:
-		class Option
-		{
-			private:
-				unsigned int option_level:	2;
-				unsigned int type:	2;
-				union u_value {
-					long int integer;
-					double fp;
-				} value;
-				std::string text;
-
-			public:
-				friend class ProgramOptions;	// to grant access to the union
-				friend std::ostream& operator << (std::ostream& os, ProgramOptions &prog);
-
-				Option();
-				~Option();
-
-				enum OPTIONS_LEVEL {OPT_DEFAULT = 0, OPT_SYSTEM, OPT_LOCAL, OPT_TEMPORARY};
-				enum VALUE_TYPE {VAL_INTEGER = 0, VAL_FLOAT = 1, VAL_STRING = 2};
-
-				void setOption(long int, OPTIONS_LEVEL);
-				void setOption(double, OPTIONS_LEVEL);
-				void setOption(std::string, OPTIONS_LEVEL);
-
-				bool isInteger()	{ return type == VAL_INTEGER; }
-				bool isFloat()	{ return type == VAL_FLOAT; }
-				bool isString()	{ return type == VAL_STRING; }
-
-				long int getInteger()	{ return value.integer; }
-				double getFloat()	{ return value.fp; }
-				std::string getString()	{ return text; }
-		};
-
 	private:
-		std::map<std::string, Option> options_list;
+		unsigned int option_level:	2;
+		unsigned int type:	2;
+		union u_value {
+			long int integer;
+			double fp;
+		} value;
+		std::string text;
+
+	public:
+		friend class ProgramOptions;	// to grant access to the union
+		friend std::ostream& operator << (std::ostream& os, ProgramOptions &prog);
+
+		Option();
+		~Option();
+
+		enum OPTIONS_LEVEL {OPT_DEFAULT = 0, OPT_SYSTEM, OPT_LOCAL, OPT_TEMPORARY};
+		enum VALUE_TYPE {VAL_INTEGER = 0, VAL_FLOAT = 1, VAL_STRING = 2};
+
+		void setOption(long int, OPTIONS_LEVEL);
+		void setOption(double, OPTIONS_LEVEL);
+		void setOption(std::string, OPTIONS_LEVEL);
+
+		bool isInteger()	{ return type == VAL_INTEGER; }
+		bool isFloat()	{ return type == VAL_FLOAT; }
+		bool isString()	{ return type == VAL_STRING; }
+
+		long int getInteger()	{ return value.integer; }
+		double getFloat()	{ return value.fp; }
+		std::string getString()	{ return text; }
+};
+
+
+class ProgramOptions: public std::map<std::string, class Option>
+{
+	private:
 		enum Option::OPTIONS_LEVEL option_level;	// default options level
 
 	public:
@@ -83,6 +84,9 @@ class ProgramOptions
 		void setOption(std::string, long int, Option::OPTIONS_LEVEL);
 		void setOption(std::string, double, Option::OPTIONS_LEVEL level);
 		void setOption(std::string, std::string, Option::OPTIONS_LEVEL level);
+
+		// checks if a given option was set
+		bool wasSet(const std::string) const;
 
 		// generates an options file 
 		//TODO implement an export mechanism that enables exporting in the full and compacted formats
@@ -128,7 +132,7 @@ class ProgramOptions
 				enum LEXER_TOKENS lexer(std::istream &is);
 
 			public:
-				int parse(ProgramOptions &op, std::istream &is, ProgramOptions::Option::OPTIONS_LEVEL level, std::string prefix = std::string() );
+				int parse(ProgramOptions &op, std::istream &is, Option::OPTIONS_LEVEL level, std::string prefix = std::string() );
 
 				friend class ProgramOptions;
 		};

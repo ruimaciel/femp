@@ -56,7 +56,7 @@ ProgramOptions::~ProgramOptions()
 }
 
 
-void ProgramOptions::setOption(std::string option, long int value, Option::OPTIONS_LEVEL level)
+void ProgramOptions::setOption(const std::string option, long int value, Option::OPTIONS_LEVEL level)
 {
 	Option op;
 	op.setOption(value, level);
@@ -64,7 +64,7 @@ void ProgramOptions::setOption(std::string option, long int value, Option::OPTIO
 }
 
 
-void ProgramOptions::setOption(std::string option, double value, Option::OPTIONS_LEVEL level)
+void ProgramOptions::setOption(const std::string option, double value, Option::OPTIONS_LEVEL level)
 {
 	Option op;
 	op.setOption(value, level);
@@ -72,7 +72,7 @@ void ProgramOptions::setOption(std::string option, double value, Option::OPTIONS
 }
 
 
-void ProgramOptions::setOption(std::string option, std::string value, Option::OPTIONS_LEVEL level)
+void ProgramOptions::setOption(const std::string option, std::string value, Option::OPTIONS_LEVEL level)
 {
 	Option op;
 	op.setOption(value, level);
@@ -83,6 +83,81 @@ void ProgramOptions::setOption(std::string option, std::string value, Option::OP
 bool ProgramOptions::wasSet(const std::string text) const
 {
 	return (this->find(text) != this->end());
+}
+
+
+bool ProgramOptions::getOption(const std::string op, long int &val)
+{
+	ProgramOptions::iterator it;
+	it = this->find(op);
+	if(it != this->end())
+	{
+		if( it->second.isInteger())
+		{
+			val = it->second.getInteger();
+			return true;
+		}
+		else
+		{
+			std::cerr << "option " << op << " isn't an integer" << std::endl;
+			return false;
+		}
+	}
+	else
+	{
+		std::cerr << "option " << op << " wasn't set" << std::endl;
+		return false;
+	}
+}
+
+
+bool ProgramOptions::getOption(const std::string op, double &val)
+{
+	ProgramOptions::iterator it;
+	it = this->find(op);
+	if(it != this->end())
+	{
+		if( it->second.isFloat())
+		{
+			val = it->second.getFloat();
+			return true;
+		}
+		else
+		{
+			std::cerr << "option " << op << " isn't a float" << std::endl;
+			return false;
+		}
+	}
+	else
+	{
+		std::cerr << "option " << op << " wasn't set" << std::endl;
+		return false;
+	}
+}
+
+
+bool ProgramOptions::getOption(const std::string op, std::string &val)
+{
+	ProgramOptions::iterator it;
+	it = (*this).find(op);
+	if(it != this->end())
+	{
+		if( it->second.isString())
+		{
+			val = it->second.getString();
+			return true;
+		}
+		else
+		{
+			std::cerr << "option " << op << " isn't a text" << std::endl;
+			return false;
+		}
+	}
+	else
+	{
+		std::cerr << "option " << op << " wasn't set" << std::endl;
+		return false;
+	}
 }
 
 
@@ -187,7 +262,7 @@ std:
 	re2c:define:YYLIMIT	= lim;
 
 	integer = "-"? ("0"|[1-9][0-9]*);
-	option	= [a-zA-Z]+;
+	option	= [a-zA-Z][a-zA-Z0-9_]*;
 	float	= integer "." [0-9]+([eE][+-]?[0-9]+)?;
 	string	= '"' [a-zA-Z0-9]* '"';
 	indent	= [\t];

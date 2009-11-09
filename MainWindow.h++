@@ -19,14 +19,22 @@ public:
 private:
 	Ui::MainWindow ui;
 	CommandLineDockWidget *commandLineDockWidget;
-	ProgramOptions options;	// the program options
+	ProgramOptions options;	// the global program options
+	bool hasUnsavedChanges;	// true if the document has unsaved changes
 
-private:
-	void loadOptions();
-
-public Q_SLOTS:
+private Q_SLOTS:
 	/* starts off a brand new FEM project */
 	void newProject();
+	void openProject();
+	void saveProject();
+	void saveProjectAs();
+	void closeProject();
+	void quit();
+
+private:
+	void createActions();	// creates the actions and connects them
+	void loadOptions();	// loads global options from the options files
+
 };
 
 

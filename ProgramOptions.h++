@@ -81,12 +81,17 @@ class ProgramOptions: public std::map<std::string, class Option>
 		void setTemporary()	{ option_level = Option::OPT_TEMPORARY; }
 
 		// set the options
-		void setOption(std::string, long int, Option::OPTIONS_LEVEL);
-		void setOption(std::string, double, Option::OPTIONS_LEVEL level);
-		void setOption(std::string, std::string, Option::OPTIONS_LEVEL level);
+		void setOption(const std::string, long int, Option::OPTIONS_LEVEL);
+		void setOption(const std::string, double, Option::OPTIONS_LEVEL level);
+		void setOption(const std::string, std::string, Option::OPTIONS_LEVEL level);
 
 		// checks if a given option was set
 		bool wasSet(const std::string) const;
+
+		// automatically gets the option or, if it isn't set or if it's the wrong type, writes to stdout
+		bool getOption(const std::string, long int &);
+		bool getOption(const std::string, double &);
+		bool getOption(const std::string, std::string &);
 
 		// generates an options file 
 		//TODO implement an export mechanism that enables exporting in the full and compacted formats

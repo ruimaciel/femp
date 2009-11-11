@@ -3,9 +3,22 @@
 NewProjectWizardPage2::NewProjectWizardPage2()
 {
 	setupUi(this);
+
+	// Register fields
+	registerField("Project3DSolids",commandLink3DSolids);
 }
 
 NewProjectWizardPage2::~NewProjectWizardPage2()
 {
+}
+
+
+bool NewProjectWizardPage2::validatePage()
+{
+	bool result = false;
+	result |=  commandLink3DSolids->isChecked();
+	//TODO add more buttons when more project types are added
+
+	return result;
 }
 

@@ -50,7 +50,7 @@
        <item>
         <widget class="QPushButton" name="pushButtonFileDialog">
          <property name="text">
-          <string>PushButton</string>
+          <string>choose</string>
          </property>
         </widget>
        </item>

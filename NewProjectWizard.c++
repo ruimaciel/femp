@@ -9,8 +9,10 @@ NewProjectWizard::NewProjectWizard(QWidget *parent, QString basedir)
 {
 	page1 = new NewProjectWizardPage1(this,basedir);
 	addPage(page1);
-	addPage(new NewProjectWizardPage2);
-	addPage(new NewProjectWizardPageLast);
+	page2 = new NewProjectWizardPage2;
+	addPage(page2);
+	pageLast = new NewProjectWizardPageLast;
+	addPage(pageLast);
 }
 
 

@@ -25,6 +25,12 @@
      <property name="text">
       <string>3D solids</string>
      </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -34,6 +40,12 @@
      </property>
      <property name="text">
       <string>to be implemented</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

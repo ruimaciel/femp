@@ -1,0 +1,5 @@
+projects consist of a directory with the following files:
+	index.json	an index of all project's properties, required
+	materials.json	a list of all materials used, required
+	model.json	a model file, containing geometric information, boundary conditions and references materials, required
+	load.json	a loads file, referencing model.json

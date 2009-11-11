@@ -1,0 +1,1 @@
+add support for visual options editor, similar to Psi's

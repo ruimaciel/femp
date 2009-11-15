@@ -42,16 +42,14 @@ namespace fem
 				FE_TETRAHEDRON56        = 31    /* 56-node fifth order tetrahedron */
 			};
 
-		private:
-			short material;		// reference to a material in Model's material map
+		public:
+			int material;		// reference to a material in Model's material map
 			std::vector<size_t> nodes;	// nodes that define this element
 			Type type;
 
-		public:
 			Element();
+			Element(const Element &);
 			~Element();
-
-
 	};
 
 }

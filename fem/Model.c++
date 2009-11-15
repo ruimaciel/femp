@@ -14,6 +14,14 @@ Model::~Model()
 }
 
 
+void Model::clear()
+{
+	node_list.clear();
+	element_list.clear();
+	material_list.clear();
+}
+
+
 void Model::setNode(size_t pos, double x, double y, double z)
 {
 	Node n;

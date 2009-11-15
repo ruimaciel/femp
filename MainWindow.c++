@@ -23,8 +23,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	this->hasUnsavedChanges = false;
 
 	// set up the dock widgets
-	commandLineDockWidget = new CommandLineDockWidget(this);
-	this->addDockWidget(static_cast<Qt::DockWidgetArea>(8), commandLineDockWidget);
+	// commandLineDockWidget = new CommandLineDockWidget(this);
+	// this->addDockWidget(static_cast<Qt::DockWidgetArea>(8), commandLineDockWidget);
 
 	// create actions and connect signals to slots
 	this->createActions();
@@ -152,10 +152,10 @@ void MainWindow::quit()
 
 void MainWindow::startProject(QString path, Document::Type type)
 {
-	document.location = path;
-	document.type = type;
+	document.initialize(type, path.toStdString());
 
 	// set UI
+	//TODO finish this
 }
 
 

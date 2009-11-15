@@ -3,3 +3,7 @@ projects consist of a directory with the following files:
 	materials.json	a list of all materials used, required
 	model.json	a model file, containing geometric information, boundary conditions and references materials, required
 	load.json	a loads file, referencing model.json
+
+
+index.json
+	needs to specify what lisp scripts, which must be present in the project's directory, are executed when loading the project

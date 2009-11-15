@@ -5,6 +5,8 @@
 NewProjectWizardPageLast::NewProjectWizardPageLast()
 {
 	setupUi(this);
+	registerField("completelocation",labelPath,"text");
+	//TODO find a way to pass the project type
 }
 
 NewProjectWizardPageLast::~NewProjectWizardPageLast()

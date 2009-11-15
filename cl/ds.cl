@@ -7,12 +7,16 @@
 	(z :accessor point-z :initform 0 :initarg :z :type float))
 )
 
-(defclass node (point) ())
+
+(defclass node (point) 
+	()
+)
 
 (defclass element () ;	base class for all element classes
 	(
 	(node-list ; a list of all nodes which form the element
 		:type 'array 
+		:initarg :nodes
 		:initform (make-array 0 :element-type 'fixnum :fill-pointer 0)
 	)
 	(material	; an index for a material contained in the materials array
@@ -24,7 +28,9 @@
 
 
 (defclass element1D (element)	; base class for all 1D elements
-	()
+	((nodes
+		:type 'array)
+	)
 )
 
 (defclass line2 (element1D)
@@ -56,6 +62,7 @@
 	()
 )
 
+
 (defclass hexahedron8	(element3D)
 	()
 )
@@ -76,6 +83,19 @@
 	()
 )
 
+(defun make-element (element nodes) 
+	(declare (type symbol element))
+	(declare (type vector fixnum nodes))
+	; check if symbol points to a valid class
+	(cond	((eq (find-class element) (find-class 'tetrahedron4)) (if (not (eql (length nodes) 4)) (error "~S needs 4 nodes" element)))
+		((eq (find-class element) (find-class 'hexahedron8)) (if (not (eql (length nodes) 8)) (error "~S needs 8 nodes" element)))
+		((eq (find-class element) (find-class 'prism6)) (if (not (eql (length nodes) 6)) (error "~S needs 6 nodes" element)))
+		((eq (find-class element) (find-class 'pyramid5)) (if (not (eql (length nodes) 5)) (error "~S needs 5 nodes" element)))
+		((eq (find-class element) (find-class 'tetrahedron10)) (if (not (eql (length nodes) 10)) (error "~S needs 10 nodes" element)))
+		((eq (find-class element) (find-class 'hexahedron27)) (if (not (eql (length nodes) 27)) (error "~S needs 27 nodes" element)))
+		(t) (error "invalid type"))
+	(make-instance element :nodes nodes)
+)
 
 (defclass material () ; class that describes each material entry
 	()

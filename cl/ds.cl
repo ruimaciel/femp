@@ -28,9 +28,7 @@
 
 
 (defclass element1D (element)	; base class for all 1D elements
-	((nodes
-		:type 'array)
-	)
+	()
 )
 
 (defclass line2 (element1D)
@@ -108,9 +106,9 @@
 
 ; the data structures
 
-(defvar nodes 	(make-array 0 :element-type 'node :adjustable t :fill-pointer 0))
-(defvar elements	(make-array 0 :element-type 'element :adjustable t :fill-pointer 0))
-(defvar materials	(make-array 0 :element-type 'material :adjustable t :fill-pointer 0))
+(defvar nodes 	(make-array 10 :element-type 'node :adjustable t :fill-pointer 0))
+(defvar elements	(make-array 10 :element-type 'element :adjustable t :fill-pointer 0))
+(defvar materials	(make-array 2 :element-type 'material :adjustable t :fill-pointer 0))
 
 
 (defun push-node (x y &optional z) 

@@ -9,6 +9,8 @@
 #include "ui/NewProjectWizardPage2.h++"
 #include "ui/NewProjectWizardPageLast.h++"
 
+#include "Document.h++"
+
 class NewProjectWizard: public QWizard
 {
 	Q_OBJECT
@@ -21,6 +23,12 @@ class NewProjectWizard: public QWizard
 		NewProjectWizardPage1 *page1;
 		NewProjectWizardPage2 *page2;
 		NewProjectWizardPageLast *pageLast;
+
+	Q_SIGNALS:
+		void newProject(QString path, Document::Type type);
+
+	public Q_SLOTS:
+		void accept();
 };
 
 #endif

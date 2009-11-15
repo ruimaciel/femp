@@ -45,8 +45,12 @@ void MainWindow::newProject()
 		default_path += "/" + tmp;
 	}
 	NewProjectWizard np(this,default_path.c_str());
+	connect(&np, SIGNAL(newProject(QString, Document::Type)), this, SLOT(startProject(QString, Document::Type)));
 	np.exec();
+	disconnect(&np,0,0,0);	// this signal is no more
 	
+	// Setup the document
+
 	// tweak the UI
 	ui.actionClose->setEnabled(true);
 }
@@ -146,6 +150,15 @@ void MainWindow::quit()
 }
 
 
+void MainWindow::startProject(QString path, Document::Type type)
+{
+	document.location = path;
+	document.type = type;
+
+	// set UI
+}
+
+
 void MainWindow::createActions()
 {
 	 connect(ui.actionNew, SIGNAL(triggered()), this, SLOT(newProject()));
@@ -161,6 +174,7 @@ void MainWindow::loadOptions()
 {
 	std::ifstream is;
 	std::string path;
+
 	// Set default options
 	options.setDefault();
 	/*TODO Set default options */

@@ -19,3 +19,18 @@ NewProjectWizard::NewProjectWizard(QWidget *parent, QString basedir)
 NewProjectWizard::~NewProjectWizard()
 {
 }
+
+
+void NewProjectWizard::accept()
+{
+	QString location;
+	// location = field("completelocation").toString();
+
+	Document::Type type;
+	//TODO find a way to pass the project type
+	type = Document::TYPE_SOLID3D;
+
+	Q_EMIT newProject(location, type);
+	QDialog::accept();
+}
+

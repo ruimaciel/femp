@@ -7,6 +7,8 @@
 #include "CommandLineDockWidget.h++"
 #include "ProgramOptions.h++"
 
+#include "Document.h++"
+
 
 
 class MainWindow : public QMainWindow
@@ -22,14 +24,19 @@ private:
 	ProgramOptions options;	// the global program options
 	bool hasUnsavedChanges;	// true if the document has unsaved changes
 
-private Q_SLOTS:
+	Document document;	// the FEM document
+
+public Q_SLOTS:
 	/* starts off a brand new FEM project */
-	void newProject();
+	void newProject();	// launches the New Project wizard 
 	void openProject();
 	void saveProject();
 	void saveProjectAs();
 	void closeProject();
 	void quit();
+
+private Q_SLOTS:
+	void startProject(QString, Document::Type);	// called by the New Project wizard dialog to finish
 
 private:
 	void createActions();	// creates the actions and connects them

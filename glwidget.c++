@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <map>
 
+#include "fem/point.h++"
 #include "glwidget.h++"
 
 GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
@@ -91,6 +92,7 @@ void GLWidget::setPosition(int amount)
 
 void GLWidget::initializeGL()
 {
+	this->makeCurrent();
 	GLfloat LightAmbient[]= { 0.2f, 0.2f, 0.2f, 1.0f };
 	GLfloat LightDiffuse[]= { 0.7f, 0.7f, 0.7f, 1.0f };
 	GLfloat LightSpecular[]= { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -151,6 +153,13 @@ void GLWidget::paintGL()
 			paintElement(*ei);
 		}
 	}
+
+	glBegin(GL_TRIANGLES);
+	glNormal3f(0,0,1);
+	glVertex2f(1,0);
+	glVertex2f(0,1);
+	glVertex2f(-1,0);
+	glEnd();
 
 }
 
@@ -269,18 +278,22 @@ void GLWidget::paintElement(const fem::Element element)
 				nl.push_back(model->node_list.find(element.nodes[2])->second);
 				nl.push_back(model->node_list.find(element.nodes[3])->second);
 				glBegin(GL_TRIANGLES);
+					glNormal3dv(fem::getNormalVector(nl[0], nl[2], nl[1]).data);
 					glVertex3dv(nl[0].data);
 					glVertex3dv(nl[2].data);
 					glVertex3dv(nl[1].data);
 
+					glNormal3dv(fem::getNormalVector(nl[0], nl[1], nl[3]).data);
 					glVertex3dv(nl[0].data);
 					glVertex3dv(nl[1].data);
 					glVertex3dv(nl[3].data);
 
+					glNormal3dv(fem::getNormalVector(nl[1], nl[2], nl[3]).data);
 					glVertex3dv(nl[1].data);
 					glVertex3dv(nl[2].data);
 					glVertex3dv(nl[3].data);
 
+					glNormal3dv(fem::getNormalVector(nl[2], nl[0], nl[3]).data);
 					glVertex3dv(nl[2].data);
 					glVertex3dv(nl[0].data);
 					glVertex3dv(nl[3].data);

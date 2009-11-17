@@ -5,7 +5,7 @@ CONFIG += qt debug no_keywords
 QT += opengl
 QMAKE_EXT_CPP += c++
 
-LIBS += -lecl
+# LIBS += -lecl
 
 HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.h++ NewProjectWizard.h++ \
 	ui/NewProjectWizardPage1.h++ ui/NewProjectWizardPage2.h++ ui/NewProjectWizardPageLast.h++ \

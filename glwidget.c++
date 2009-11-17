@@ -14,7 +14,7 @@ GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 	yRot = 0;
 	zRot = 0;
 
-	//camera.pos.z(10);
+	camera.pos.z(10);
 	node_scale = 0.05f;
 	model = NULL;
 
@@ -199,6 +199,14 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 		setZRotation(zRot + 8 * dx);
 	}
 	lastPos = event->pos();
+}
+
+
+void GLWidget::wheelEvent(QWheelEvent *event)
+{
+	camera.pos.inc_z(event->delta()/80.0f);
+	updateGL();
+	event->accept();
 }
 
 

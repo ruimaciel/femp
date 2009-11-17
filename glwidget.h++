@@ -2,6 +2,8 @@
 #define GLWIDGET_HPP
 
 #include <QGLWidget>
+#include <QWheelEvent>
+
 #include "fem/Model.h++"
 #include "Camera.h++"
 
@@ -35,6 +37,7 @@ class GLWidget : public QGLWidget
 		void resizeGL(int width, int height);
 		void mousePressEvent(QMouseEvent *event);
 		void mouseMoveEvent(QMouseEvent *event);
+		void wheelEvent(QWheelEvent *event);
 
 	private:
 		void normalizeAngle(int *angle);

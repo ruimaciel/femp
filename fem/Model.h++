@@ -28,7 +28,7 @@ class Model {
 
 		// sets a node
 		void setNode(size_t pos, double x, double y, double z);
-
+		void pushElement(fem::Element);
 };
 
 

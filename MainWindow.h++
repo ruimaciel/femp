@@ -6,6 +6,7 @@
 
 #include "CommandLineDockWidget.h++"
 #include "ProgramOptions.h++"
+#include "glwidget.h++"
 
 #include "Document.h++"
 
@@ -21,6 +22,7 @@ public:
 private:
 	Ui::MainWindow ui;
 	CommandLineDockWidget *commandLineDockWidget;
+	GLWidget *glWidget;
 	ProgramOptions options;	// the global program options
 	bool hasUnsavedChanges;	// true if the document has unsaved changes
 

@@ -50,6 +50,8 @@ namespace fem
 			Element();
 			Element(const Element &);
 			~Element();
+
+			void set(Type type, std::vector<size_t> node);
 	};
 
 }

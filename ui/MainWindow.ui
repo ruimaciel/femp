@@ -70,7 +70,7 @@
     <property name="title">
      <string>Project</string>
     </property>
-    <addaction name="actionImport_mesh"/>
+    <addaction name="actionImportMesh"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -149,7 +149,7 @@
     <string>Options</string>
    </property>
   </action>
-  <action name="actionImport_mesh">
+  <action name="actionImportMesh">
    <property name="text">
     <string>Import mesh</string>
    </property>

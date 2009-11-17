@@ -16,9 +16,10 @@ class Document
 	private:
 		bool edited;	// true if this document suffered changes that are saveable
 		std::string location;	// path for the project's directory
-		fem::Model model;	// the FEM model
 		Type document_type;
 
+	public:
+		fem::Model model;	// the FEM model
 
 	public:
 		Document();

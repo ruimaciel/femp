@@ -46,8 +46,7 @@ namespace fem
         	void dec_x(const double &ratio)	{data[0] -= ratio;}
         	void dec_y(const double &ratio)	{data[1] -= ratio;}
         	void dec_z(const double &ratio)	{data[2] -= ratio;}
-    		
-    
+
       		point operator = (const point &other);
       		point operator + (const point &other);
       		point operator - (const point &other);
@@ -65,7 +64,12 @@ namespace fem
     
     		friend point cross_product(const point &LHV, const point &RHV);      //assuming vector is 3D
     		friend double dot_product(const point &LHV, const point &RHV);
+		friend point getNormalVector(point &a, point &b, point &c);
     };
+
+    point cross_product(const point &LHV, const point &RHV);      //assuming vector is 3D
+    double dot_product(const point &LHV, const point &RHV);
+    point getNormalVector(point &a, point &b, point &c);
 }
 #endif 
 

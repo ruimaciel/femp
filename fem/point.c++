@@ -217,15 +217,21 @@ point operator *(const point &v, const double &s)
 point cross_product(const point &LHV, const point &RHV)
 {
 	point temp;
-	temp.data[0] = LHV.data[1]*RHV.data[2] - LHV.data[2]*RHV.data[1];
-	temp.data[1] = LHV.data[0]*RHV.data[2] - LHV.data[2]*RHV.data[0];
-	temp.data[2] = LHV.data[0]*RHV.data[1] - LHV.data[1]*RHV.data[0];
+	temp.data[0] =  LHV.data[1]*RHV.data[2] - LHV.data[2]*RHV.data[1];
+	temp.data[1] = -LHV.data[0]*RHV.data[2] + LHV.data[2]*RHV.data[0];
+	temp.data[2] =  LHV.data[0]*RHV.data[1] - LHV.data[1]*RHV.data[0];
 	return temp;
 }
 
 double dot_product(const point &LHV, const point &RHV)
 {
 	return LHV.data[0]*RHV.data[0] + LHV.data[1]*RHV.data[1] + LHV.data[2]*RHV.data[2];
+}
+
+
+point getNormalVector( point &a, point &b, point &c)
+{
+	return cross_product(b-a, c-b);
 }
 
 }

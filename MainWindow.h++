@@ -20,11 +20,12 @@ public:
 	MainWindow (QWidget *parent = 0);
 
 private:
-	Ui::MainWindow ui;
+	Ui::MainWindow 	ui;
 	CommandLineDockWidget *commandLineDockWidget;
-	GLWidget *glWidget;
-	ProgramOptions options;	// the global program options
-	bool hasUnsavedChanges;	// true if the document has unsaved changes
+	QMdiArea	* mdiArea;
+	GLWidget 	* glWidget;
+	ProgramOptions 	options;	// the global program options
+	bool 	hasUnsavedChanges;	// true if the document has unsaved changes
 
 	Document document;	// the FEM document
 
@@ -36,6 +37,7 @@ public Q_SLOTS:
 	void saveProjectAs();
 	void closeProject();
 	void quit();
+	void importMesh();
 
 private Q_SLOTS:
 	void startProject(QString, Document::Type);	// called by the New Project wizard dialog to finish

@@ -46,9 +46,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	// commandLineDockWidget = new CommandLineDockWidget(this);
 	// this->addDockWidget(static_cast<Qt::DockWidgetArea>(8), commandLineDockWidget);
 
-	glWidget = new GLWidget;
-	//setCentralWidget(glWidget);
-
 	// create actions and connect signals to slots
 	this->createActions();
 }

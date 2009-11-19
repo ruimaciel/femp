@@ -231,15 +231,32 @@ Imports a mesh from a mesh document
 */
 void MainWindow::importMesh()
 {
+	FILE *file;
 	QStringList files;
+	std::string fn;
 	QFileDialog dialog(this);
+	
+	// setup the file dialog
 	dialog.setFileMode(QFileDialog::ExistingFile);
 	dialog.setNameFilter(tr("Mesh files (*.msh)"));
 	//TODO import options from ProgramOptions
+
 	if(dialog.exec())
 	{
 		// import file
 		files = dialog.selectedFiles();
+		fn = files[0].toStdString();
+		file = fopen(fn.c_str(),"r");
+		if(file == NULL)
+		{
+			qWarning("unable to open file %s",fn.c_str());
+			QMessageBox msgBox(this);
+			msgBox.setIcon(QMessageBox::Warning);
+			msgBox.setWindowTitle("Error");
+			msgBox.setText("Unable to open file");
+			msgBox.setDefaultButton(QMessageBox::Ok);
+			msgBox.exec();
+		}
 	}
 }
 

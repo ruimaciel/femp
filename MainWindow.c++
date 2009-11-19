@@ -16,13 +16,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
 	ui.setupUi(this);
 
-	// mdiArea = new QMdiArea;
-	// setCentralWidget(mdiArea);	// this main window has a Multiple Document Interface
+	mdiArea = new QMdiArea;
+	setCentralWidget(mdiArea);	// this main window has a Multiple Document Interface
 
 	glWidget = new GLWidget(this);
 	glWidget->setModel(&document.model);
-	setCentralWidget(glWidget);	// this main window has a Multiple Document Interface
-	// mdiArea->addSubWindow(glWidget);
+	
+	mdiArea->addSubWindow(glWidget);
 
 // temp 
         document.model.setNode(0, 0.0f, 0.0f, 0.0f);

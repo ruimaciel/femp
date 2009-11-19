@@ -5,12 +5,11 @@
 
 #include "lex.msh_yy.h"
 
+int msh_yyparse (fem::Model &model);
 
 enum FEM_PARSER_RETURN fem_model_import_msh(FILE *file, fem::Model &model)
 {
-	assert(model != NULL);
 	assert(file != NULL);
-	assert(model != NULL);
 	msh_yyin = file;
 
 	return msh_yyparse(model)? FP_OK: FP_UNKNOWN_ERROR;

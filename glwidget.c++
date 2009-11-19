@@ -10,11 +10,12 @@
 
 GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 {
-	xRot = 0;
-	yRot = 0;
-	zRot = 0;
+	makeCurrent();
+	camera.rotation.data[0] = 0;
+	camera.rotation.data[1] = 0;
+	camera.rotation.data[2] = 0;
 
-	camera.pos.z(10);
+	camera.pos.z(-10);
 	node_scale = 0.05f;
 	model = NULL;
 
@@ -24,7 +25,6 @@ GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 
 GLWidget::~GLWidget()
 {
-	makeCurrent();
 }
 
 
@@ -53,39 +53,33 @@ void GLWidget::setModel(fem::Model *model)
 void GLWidget::setXRotation(int angle)
 {
 	normalizeAngle(&angle);
-	if (angle != xRot) {
-		xRot = angle;
-		Q_EMIT xRotationChanged(angle);
-		updateGL();
-	}
+	camera.rotation.data[0] = angle;
+	Q_EMIT xRotationChanged(angle);
+	updateGL();
 }
 
 
 void GLWidget::setYRotation(int angle)
 {
 	normalizeAngle(&angle);
-	if (angle != yRot) {
-		yRot = angle;
-		Q_EMIT yRotationChanged(angle);
-		updateGL();
-	}
+	camera.rotation.data[1] = angle;
+	Q_EMIT yRotationChanged(angle);
+	updateGL();
 }
 
 
 void GLWidget::setZRotation(int angle)
 {
 	normalizeAngle(&angle);
-	if (angle != zRot) {
-		zRot = angle;
-		Q_EMIT zRotationChanged(angle);
-		updateGL();
-	}
+	camera.rotation.data[2] = angle;
+	Q_EMIT zRotationChanged(angle);
+	updateGL();
 }
 
 
 void GLWidget::setPosition(int amount)
 {
-	camera.pos.z(amount/100.0f-10);
+	camera.pos.z(amount/100.0f);
 	qWarning("pos: %f",camera.pos.z());
 	updateGL();
 }
@@ -133,9 +127,9 @@ void GLWidget::paintGL()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glTranslated(camera.pos.x(),camera.pos.y(),camera.pos.z());
-	glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
-	glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
-	glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
+	glRotated(camera.rotation.data[0], 1.0, 0.0, 0.0);
+	glRotated(camera.rotation.data[1], 0.0, 1.0, 0.0);
+	glRotated(camera.rotation.data[2], 0.0, 0.0, 1.0);
 
 	// render all nodes
 	if(model)
@@ -160,16 +154,13 @@ void GLWidget::paintGL()
 	glVertex2f(0,1);
 	glVertex2f(-1,0);
 	glEnd();
-
 }
 
 
 void GLWidget::resizeGL(int width, int height)
 {
 	float side = qMin(width, height);
-	// glViewport((width - side) / 2, (height - side) / 2, side, side);
 	glViewport(0, 0, width, height);
-
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
@@ -192,11 +183,11 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 	int dy = event->y() - lastPos.y();
 
 	if (event->buttons() & Qt::LeftButton) {
-		setXRotation(xRot + 8 * dy);
-		setYRotation(yRot + 8 * dx);
+		setXRotation(camera.rotation.data[0] + dy);
+		setYRotation(camera.rotation.data[1] + dx);
 	} else if (event->buttons() & Qt::RightButton) {
-		setXRotation(xRot + 8 * dy);
-		setZRotation(zRot + 8 * dx);
+		setXRotation(camera.rotation.data[0] + dy);
+		setZRotation(camera.rotation.data[2] + dx);
 	}
 	lastPos = event->pos();
 }

@@ -46,10 +46,6 @@ class GLWidget : public QGLWidget
 		void paintNode(size_t label, const fem::Node);
 		void paintElement(const fem::Element element);
 
-		int xRot;
-		int yRot;
-		int zRot;
-
 		Camera camera;	// transition to a camera class
 
 		QPoint lastPos;

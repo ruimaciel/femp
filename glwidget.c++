@@ -267,6 +267,11 @@ void GLWidget::paintElement(const fem::Element element)
 	glPushMatrix();
 	switch(element.type)
 	{
+		case fem::Element::FE_LINE2:
+			{
+			}
+			break;
+
 		case fem::Element::FE_TETRAHEDRON4:
 			{
 				if(element.nodes.size() != 4)
@@ -343,46 +348,11 @@ void GLWidget::paintElement(const fem::Element element)
 				glMapGrid2f(5,0.0, 1.0, 6, 0.0, 1.0);
 				glEvalMesh2(GL_LINE, 0, 5, 0, 6);
 				*/
-
-				// render the 8-node hexahedron
-				/*
-				//TODO use glMap2 to build the faces
-				glBegin(GL_QUADS);
-					// front face
-					glColor4f(1,0,0,0.5f);
-					glVertex3dv(nl[0].data);
-					glVertex3dv(nl[1].data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[3].data);
-
-					// back face
-					glColor4f(0,1,0,0.5f);
-					glVertex3dv(nl[7].data);
-					glVertex3dv(nl[6].data);
-					glVertex3dv(nl[5].data);
-					glVertex3dv(nl[4].data);
-
-					// top face
-					glColor4f(0,0,1,0.5f);
-					glVertex3dv(nl[3].data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[6].data);
-					glVertex3dv(nl[7].data);
-
-					// bottom face
-					glColor4f(0,0,1,0.5f);
-					glVertex3dv(nl[3].data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[6].data);
-					glVertex3dv(nl[7].data);
-				glEnd();
-				*/
 			}
 			break;
 
 		default:
 			qWarning("error: unknown element type");
-			return;
 	}
 	glPopMatrix();
 }

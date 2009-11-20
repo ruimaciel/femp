@@ -29,6 +29,7 @@ class Model {
 		// sets a node
 		void setNode(size_t pos, double x, double y, double z);
 		void pushElement(fem::Element);
+		void pushElement(fem::Element::Type type, std::vector<size_t> nodes);
 };
 
 

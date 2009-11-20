@@ -36,7 +36,7 @@ void Element::set(Type type, std::vector<size_t> nodes)
 		case FE_TETRAHEDRON4:
 			if(nodes.size() != 4)
 			{
-				std::cerr << "error: FE_TETRAHEDRON4 needs 4 nodes" << std::endl;
+				std::cerr << "error: FE_TETRAHEDRON4 needs 4 nodes, has " << nodes.size() << std::endl;
 				return;
 			}
 			break;

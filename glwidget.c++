@@ -269,6 +269,38 @@ void GLWidget::paintElement(const fem::Element element)
 	{
 		case fem::Element::FE_LINE2:
 			{
+				if(element.nodes.size() != 2)
+				{
+					qWarning("error: invalid number of nodes for a FE_LINE2");
+					//TODO remove element
+					return;
+				}
+				nl.push_back(model->node_list.find(element.nodes[0])->second);
+				nl.push_back(model->node_list.find(element.nodes[1])->second);
+				glBegin(GL_LINES);
+				glVertex3dv(nl[0].data);
+				glVertex3dv(nl[1].data);
+				glEnd();
+			}
+			break;
+
+		case fem::Element::FE_TRIANGLE3:
+			{
+				if(element.nodes.size() != 3)
+				{
+					qWarning("error: invalid number of nodes for a FE_TRIANGLE3");
+					//TODO remove element
+					return;
+				}
+				nl.push_back(model->node_list.find(element.nodes[0])->second);
+				nl.push_back(model->node_list.find(element.nodes[1])->second);
+				nl.push_back(model->node_list.find(element.nodes[2])->second);
+				glBegin(GL_LINE_STRIP);
+				glVertex3dv(nl[0].data);
+				glVertex3dv(nl[1].data);
+				glVertex3dv(nl[2].data);
+				glVertex3dv(nl[0].data);
+				glEnd();
 			}
 			break;
 
@@ -276,7 +308,7 @@ void GLWidget::paintElement(const fem::Element element)
 			{
 				if(element.nodes.size() != 4)
 				{
-					qWarning("error: invalid number of nodes for a FE_TETRAHEDRON4");
+					qWarning("error: invalid number of nodes for a FE_TETRAHEDRON4. it's %zd", element.nodes.size());
 					//TODO remove element
 					return;
 				}
@@ -352,7 +384,8 @@ void GLWidget::paintElement(const fem::Element element)
 			break;
 
 		default:
-			qWarning("error: unknown element type");
+			//qWarning("error: unknown element type: %d", element.type);
+			break;
 	}
 	glPopMatrix();
 }

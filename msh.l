@@ -1,6 +1,5 @@
 %{
 #include "msh.tab.h"
-#include "lex.msh_yy.h"
 
 struct workaround { /* ambiguous grammar workaround */
 	int in;	/* states if the ambiguous grammar workaround is in */

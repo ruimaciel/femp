@@ -10,6 +10,7 @@
 #include <stdlib.h>	// getenv()
 
 #include "NewProjectWizard.h++"
+#include "fem_msh.h++"
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
@@ -25,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	mdiArea->addSubWindow(glWidget);
 
 // temp 
+/*
         document.model.setNode(0, 0.0f, 0.0f, 0.0f);
         document.model.setNode(1,-0.5f,-0.5f,-1.0f);
         document.model.setNode(2, 0.5f,-0.5f,-1.0f);
@@ -34,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
         document.model.setNode(6, 0.5f,-0.5f, 1.0f);
         document.model.setNode(7, 0.5f, 0.5f, 1.0f);
         document.model.setNode(8,-0.5f, 0.5f, 1.0f);
+*/
 // temp ^
 
 	// Load global options from the options files
@@ -253,6 +256,11 @@ void MainWindow::importMesh()
 			msgBox.setText("Unable to open file");
 			msgBox.setDefaultButton(QMessageBox::Ok);
 			msgBox.exec();
+		}
+		else
+		{
+			// TODO import file
+			fem_model_import_msh(file,document.model);
 		}
 	}
 }

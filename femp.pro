@@ -18,15 +18,9 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	ui/NewProjectWizardPage1.c++ ui/NewProjectWizardPage2.c++ ui/NewProjectWizardPageLast.c++  \
 	fem/Model.c++ fem/Node.c++ fem/Element.c++ fem/Material.c++ fem/LoadPattern.c++ fem/NodalLoad.c++ fem/point.c++ \
 	Camera.c++ glwidget.c++ \
-	fem_msh.c++ lex.msh_yy.c++ msh.tab.c++
+	fem_msh.c++ lex.msh_yy.c msh.tab.c++
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPageLast.ui 
-
-# QMAKE_LEX = flex --header-file=lex.msh_yy.h
-# QMAKE_YACC = bison
-# QMAKE_YACCFLAGS = -d
-# LEXSOURCES = msh.l
-# YACCSOURCES = msh.y
 
 UI_DIR += ./ui
 OBJECTS_DIR += ./build
@@ -36,4 +30,14 @@ ProgramOptionRe2c.commands = re2c -o ProgramOptions.c++ ProgramOptions.c++.re2c
 ProgramOptionRe2c.depends = ProgramOptions.c++.re2c
 ProgramOptionRe2c.output = ProgramOptions.c++
 
-QMAKE_EXTRA_TARGETS += ProgramOptionRe2c 
+FlexOutput.target = lex.msh_yy.h 
+FlexOutput.commands = flex --header-file=lex.msh_yy.h msh.l
+FlexOutput.depends = msh.l
+FlexOutput.output = lex.msh_yy.c lex.msh_yy.h
+
+BisonOutput.target = msh.tab.h
+BisonOutput.commands = bison -d --debug msh.y ; mv msh.tab.c msh.tab.c++
+BisonOutput.depends = msh.y
+BisonOutput.output = msh.tab.c++ msh.tab.h
+
+QMAKE_EXTRA_TARGETS += ProgramOptionRe2c  FlexOutput BisonOutput

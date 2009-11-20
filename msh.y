@@ -93,7 +93,7 @@ HeaderField:	StartHeader HeaderValues EndHeader
 StartHeader:	LABEL_OPEN MESH_FORMAT '\n'
 		;
 
-HeaderValues:	FLOAT  INTEGER  INTEGER '\n'
+HeaderValues:	INTEGER INTEGER  INTEGER '\n'
 		{ /*TODO check version */ }
 		;
 
@@ -117,6 +117,7 @@ NodesLines:
 
 NodesLine:	INTEGER  NUMBER  NUMBER  NUMBER '\n'
 	{ //fem_model_add_node(model, $1, $2, $3, $4);
+		model.setNode($1, $2, $3, $4);
 	}
 	;
 

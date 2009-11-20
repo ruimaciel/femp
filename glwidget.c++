@@ -148,12 +148,15 @@ void GLWidget::paintGL()
 		}
 	}
 
+	/*
+	// test triangle. remove after debug
 	glBegin(GL_TRIANGLES);
 	glNormal3f(0,0,1);
 	glVertex2f(1,0);
 	glVertex2f(0,1);
 	glVertex2f(-1,0);
 	glEnd();
+	*/
 }
 
 

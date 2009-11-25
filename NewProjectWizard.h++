@@ -16,7 +16,7 @@ class NewProjectWizard: public QWizard
 	Q_OBJECT
 
 	public:
-		NewProjectWizard(QWidget *parent = 0, QString basedir = QString());
+		NewProjectWizard(QWidget *parent = 0);
 		~NewProjectWizard();
 
 	private:
@@ -25,7 +25,7 @@ class NewProjectWizard: public QWizard
 		NewProjectWizardPageLast *pageLast;
 
 	Q_SIGNALS:
-		void newProject(QString path, Document::Type type);
+		void newProject(Document::Type type);
 
 	public Q_SLOTS:
 		void accept();

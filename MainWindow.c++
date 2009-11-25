@@ -69,12 +69,9 @@ void MainWindow::newProject()
 	Now the "new project" wizard will create a new project directory.
 	Then it will call loadProject() to load the newly created project.
 	*/
-	NewProjectWizard np(this,default_path.c_str());
-	if(np.exec() == 1)
-	{
-		// the new dialog wizard ended with a successfull project
-		setUserInterfaceAsOpened();
-	}
+	NewProjectWizard np(this);
+	connect(&np,SIGNAL(newProject(Document::Type)), this, SLOT(startNewProject(Document::Type)));
+	np.exec();
 }
 
 
@@ -286,7 +283,18 @@ void MainWindow::importMesh()
 		mesh_file.close();
 	}
 }
+
 	
+void MainWindow::startNewProject(Document::Type type)
+{
+	// set the document settings 
+	document.clear();
+	document.setProjectType(type);
+
+	// set the UI
+	setUserInterfaceAsOpened();
+}
+
 
 void MainWindow::setUserInterfaceAsOpened()	
 {

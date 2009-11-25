@@ -39,6 +39,8 @@ public Q_SLOTS:
 	void quit();
 	void importMesh();
 
+	void startNewProject(Document::Type type);	// starts a brand new project
+
 private:
 	void createActions();	// creates the actions and connects them
 	void loadOptions();	// loads global options from the options files

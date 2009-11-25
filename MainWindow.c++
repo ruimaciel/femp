@@ -19,11 +19,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 	mdiArea = new QMdiArea;
 	setCentralWidget(mdiArea);	// this main window has a Multiple Document Interface
-
-	glWidget = new GLWidget(this);
-	glWidget->setModel(&document.model);
-	
-	mdiArea->addSubWindow(glWidget);
+	//mdiArea->setViewMode(QMdiArea::TabbedView);
 
 	// Load global options from the options files
 	this->loadOptions();
@@ -32,8 +28,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	this->hasUnsavedChanges = false;
 
 	// set up the dock widgets
-	// commandLineDockWidget = new CommandLineDockWidget(this);
-	// this->addDockWidget(static_cast<Qt::DockWidgetArea>(8), commandLineDockWidget);
+	/*
+	commandLineDockWidget = new CommandLineDockWidget(this);
+	this->addDockWidget(static_cast<Qt::DockWidgetArea>(8), commandLineDockWidget);
+	*/
 
 	// create actions and connect signals to slots
 	this->createActions();
@@ -93,7 +91,28 @@ void MainWindow::openProject()
 void MainWindow::saveProject()
 {
 	//TODO finish this
+	if(document.file_name == NULL)
+	{
+		QFileDialog dialog(this);
+		QStringList sl;
+
+		// setup the file dialog
+		dialog.setFileMode(QFileDialog::AnyFile);
+		dialog.setNameFilter(tr("FEM project (*.fem.json)"));
+		dialog.setDefaultSuffix("fem.json");
+		if(dialog.exec() == QDialog::Rejected)
+		{
+			// user cancelled 
+			return;
+		}
+		sl = dialog.selectedFiles();
+		document.file_name = new QString;
+		*document.file_name = sl.at(0);
+		// set a new file name for this file
+		
+	}
 	document.save();
+	hasUnsavedChanges = false;
 }
 
 
@@ -101,7 +120,26 @@ void MainWindow::saveProjectAs()
 {
 	qWarning("MainWindow::saveProjectAs() not yet implemented");
 	//TODO finish this
+
+	QFileDialog dialog(this);
+	QStringList sl;
+
+	// setup the file dialog
+	dialog.setFileMode(QFileDialog::AnyFile);
+	dialog.setNameFilter(tr("FEM project (*.fem.json)"));
+	dialog.setDefaultSuffix("fem.json");
+	if(dialog.exec() == QDialog::Rejected)
+	{
+		// user cancelled 
+		return;
+	}
+	sl = dialog.selectedFiles();
+	document.file_name = new QString;
+	*document.file_name = sl.at(0);
+
 	// tweak the UI
+	document.save();
+	hasUnsavedChanges = false;
 }
 
 
@@ -135,9 +173,13 @@ void MainWindow::closeProject()
 		}
 	}
 
-	//TODO finish this
 	// tweak the UI
-	ui.actionClose->setEnabled(false);
+	setUserInterfaceAsClosed();
+
+	// free everything
+	document.clear();
+
+	//TODO finish this
 }
 
 
@@ -252,12 +294,13 @@ void MainWindow::importMesh()
 			return;
 		}
 
-
 		// TODO import mesh from a Gmsh file
 		FILE *f = fdopen(mesh_file.handle(), "r");
 		fem_model_import_msh(f,document.model);
 		mesh_file.close();
 	}
+	// now this document has unsaved changes
+	hasUnsavedChanges = true;
 }
 
 	
@@ -269,6 +312,7 @@ void MainWindow::startNewProject(Document::Type type)
 
 	// set the UI
 	setUserInterfaceAsOpened();
+	hasUnsavedChanges = false;
 }
 
 
@@ -284,6 +328,10 @@ void MainWindow::setUserInterfaceAsOpened()
 	ui.actionClose->setEnabled(true);
 
 	// open all relevant MDI windows
+	glWidget = new GLWidget(this);
+	glWidget->setModel(&document.model);
+	mdiArea->addSubWindow(glWidget);
+	glWidget->show();
 	// enable the "close"
 }
 
@@ -300,6 +348,10 @@ void MainWindow::setUserInterfaceAsClosed()
 	ui.actionClose->setDisabled(true);
 
 	// close all MDI windows
+	//TODO define a better way to close the MDI window
+	glWidget->hide();
+	delete glWidget, glWidget = NULL;
+	
 }
 
 

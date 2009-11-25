@@ -7,18 +7,18 @@
 
 Document::Document()
 {
-	edited = false;
-	document_file = NULL;
+	unsaved = false;
+	file_name = NULL;
 }
 
 
 Document::Document(const Document &copied)
 {
-	this->edited = copied.edited;
-	if(copied.document_file != NULL)
+	this->unsaved = copied.unsaved;
+	if(copied.file_name != NULL)
 	{
-		this->document_file = new QString;
-		*this->document_file = *copied.document_file;
+		this->file_name = new QString;
+		*this->file_name = *copied.file_name;
 	}
 	this->model = copied.model;
 	this->document_type = copied.document_type;
@@ -27,27 +27,27 @@ Document::Document(const Document &copied)
 
 Document::~Document()
 {
-	if(document_file != NULL)
-		delete document_file;
+	if(file_name != NULL)
+		delete file_name;
 }
 
 
 void Document::clear()
 {
-	edited = false;
-	delete document_file;
+	unsaved = false;
+	delete file_name;
 	document_type = TYPE_NONE;
 	model.clear();
 }
 
 
-enum Document::Error Document::setFileName(QString file)
+enum Document::Error Document::setFileName(QString new_file)
 {
-	if(this->document_file == NULL)
-		this->document_file = new QString;
-	*this->document_file = file;
+	if(this->file_name == NULL)
+		this->file_name = new QString;
+	*this->file_name = new_file;
 
-	//TODO perform checks on the document_file
+	//TODO perform checks on the file_name
 
 	return ERR_NONE;
 }
@@ -57,10 +57,10 @@ enum Document::Error Document::load()
 {
 	QFile file;
 	//TODO check if path exists
-	if(document_file == NULL)
+	if(file_name == NULL)
 		return ERR_NONEXISTENT_FILE;
 
-	file.setFileName(*document_file);
+	file.setFileName(*file_name);
 	if(!file.exists())
 		return ERR_NONEXISTENT_FILE;
 
@@ -69,6 +69,7 @@ enum Document::Error Document::load()
 
 	//load the project files
 	//TODO finish this 
+	unsaved = false;
 	return ERR_NONE;
 }
 
@@ -78,12 +79,12 @@ enum Document::Error Document::save()
 	QFile file;
 	//TODO check version
 
-	// check if if the given document_file exists
-	if(document_file == NULL)
+	// check if if the given file_name exists
+	if(file_name == NULL)
 		return ERR_NONEXISTENT_FILE;
-	qWarning("Document:save(): %s", qPrintable(*document_file));
+	qWarning("Document:save(): %s", qPrintable(*file_name));
 
-	file.setFileName(*document_file);
+	file.setFileName(*file_name);
 
 	if( !file.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
@@ -129,10 +130,11 @@ enum Document::Error Document::save()
 	out << "}\n";
 
 	// cleanup and exit
-	//TODO see KDE/ext4 row on proper unix document_file writing
+	//TODO see KDE/ext4 row on proper unix file_name writing
 	file.flush();
 	file.close();
 
+	unsaved = false;
 	return ERR_NONE;
 }
 

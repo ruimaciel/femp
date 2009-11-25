@@ -24,6 +24,7 @@ private:
 	CommandLineDockWidget *commandLineDockWidget;
 	QMdiArea	* mdiArea;
 	GLWidget 	* glWidget;
+
 	ProgramOptions 	options;	// the global program options
 	bool 	hasUnsavedChanges;	// true if the document has unsaved changes
 

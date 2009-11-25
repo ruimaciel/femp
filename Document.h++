@@ -19,11 +19,11 @@ class Document
 			};
 
 	private:
-		bool edited;	// true if this document suffered changes that are saveable
-		QString *document_file;	// path for the project's directory
+		bool unsaved;	// true if this document suffered changes that are saveable
 		Type document_type;
 
 	public:
+		QString *file_name;	// path for the project's directory
 		fem::Model model;	// the FEM model
 
 	public:

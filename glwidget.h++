@@ -24,7 +24,7 @@ class GLWidget : public QGLWidget
 		void setXRotation(int angle);
 		void setYRotation(int angle);
 		void setZRotation(int angle);
-		void setPosition(int amount);
+		void setPosition(int x, int y);
 
 	Q_SIGNALS:
 		void xRotationChanged(int angle);
@@ -54,6 +54,7 @@ class GLWidget : public QGLWidget
 		fem::Model *model;
 
 		float node_scale;	// the scale used by the nodes, reset when a window resizes
+		float scale;
 };
 
 #endif

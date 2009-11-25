@@ -1,6 +1,8 @@
 #ifndef FEM_HPP
 #define FEM_HPP
 
+#include <QString>
+
 #include <map>
 #include <vector>
 
@@ -16,7 +18,7 @@ class Model {
 	public:
 		std::map<size_t, Node> 	node_list;
 		std::vector<Element> 	element_list;
-		std::map<short, Material> 	material_list;
+		std::vector<Material> 	material_list;
 		std::vector<LoadPattern>	load_pattern_list;
 
 	public:

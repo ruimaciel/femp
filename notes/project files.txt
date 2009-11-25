@@ -1,9 +1,30 @@
-projects consist of a directory with the following files:
-	index.json	an index of all project's properties, required
-	materials.json	a list of all materials used, required
-	model.json	a model file, containing geometric information, boundary conditions and references materials, required
-	load.json	a loads file, referencing model.json
+projects consist of a file with the following entries:
+	fem		the header field. an index of all project's properties, required
+	model		a model file, containing geometric information, boundary conditions and references materials, required
+	materials	a list of all materials used, required
+	loads		a list of all loads, referencing model
+	load combinations
+
+fem
+	format version
+	Project type
+
+materials
+	linear elastic: 
+		label
+		E, ν
+
+nodes
+	3D points
+elements
+	list of nodes, reference to materials list
+restrictions
+element groups
+
+loads
+	domain
+	face
+	nodal loads/displacements
 
 
-index.json
-	needs to specify what lisp scripts, which must be present in the project's directory, are executed when loading the project
+load combinations

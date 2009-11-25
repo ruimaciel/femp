@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QDir>
 
 NewProjectWizardPage1::NewProjectWizardPage1(QWidget *parent, QString basedir)
 	: QWizardPage(parent)
@@ -21,6 +22,7 @@ NewProjectWizardPage1::NewProjectWizardPage1(QWidget *parent, QString basedir)
 	registerField("projectName*",lineEditProjectName);
 }
 
+
 NewProjectWizardPage1::~NewProjectWizardPage1()
 {
 }
@@ -28,14 +30,14 @@ NewProjectWizardPage1::~NewProjectWizardPage1()
 
 bool NewProjectWizardPage1::validatePage()
 {
-	struct stat buffer;	// buffer for stat()
+	QDir path;
+	QFile file;
 
-	QString path;
 	//TODO finish this 
-	path = lineEditLocation->text();
-	if(path.isEmpty() )
+	if(lineEditLocation->text().isEmpty())
 		return false;
-	if(stat(path.toAscii(), &buffer) != 0)
+	path = lineEditLocation->text();
+	if(!path.exists())
 	{
 		QMessageBox msgBox;
 		msgBox.setText("Error accessing location");
@@ -44,25 +46,37 @@ bool NewProjectWizardPage1::validatePage()
 		msgBox.exec();
 		return false;
 	}
+
+	// test the new project name
 	if(lineEditProjectName->text().isEmpty())
 	{
-		//TODO "next" button needs to be disabled
 		return false;
 	}
-	path = lineEditLocation->text();
-	if(path.isEmpty() )
-		return false;
-	if(stat(path.toAscii(), &buffer) != 0)
+	file.setFileName(path.filePath(lineEditProjectName->text()));
+	if( file.exists() )	// tests the intended new project directory
 	{
+		// project name directory already exists
 		QMessageBox msgBox;
-		msgBox.setText("Error accessing location");
-		msgBox.setInformativeText("Please select a new location for your project");
+		msgBox.setText(tr("File already exists"));
+		msgBox.setInformativeText(tr("Do you want to use it anyway?"));
+		msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+		msgBox.setDefaultButton(QMessageBox::No);
 		msgBox.setIcon(QMessageBox::Information);
-		msgBox.exec();
-		return false;
-	}
+		switch(msgBox.exec())
+		{
+			case QMessageBox::Yes:
+				return true;
+				break;
 
-	path += lineEditProjectName->text();
+			case QMessageBox::No:
+				return false;
+				break;
+		}
+	}
+	else
+	{
+		// intended project file doesn't exist
+	}
 	
 	return true;
 }
@@ -70,12 +84,22 @@ bool NewProjectWizardPage1::validatePage()
 
 void NewProjectWizardPage1::setNewLocation()
 {
-	QString newLocation;
+	QDir newLocation;
 	newLocation = QFileDialog::getExistingDirectory(this, tr("Open Directory"), base_dir, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-	if(newLocation.isEmpty())
-		this->lineEditLocation->setText(base_dir);
+	/*
+	// This apparently doesn't work
+	QDir newLocation;
+	QFileDialog fd(this, tr("Select base directory"), base_dir);
+	// fd.setFileMode(QFileDialog::Directory);
+	fd.setOptions(QFileDialog::ShowDirsOnly);
+	fd.setViewMode(QFileDialog::List);
+	fd.exec();
+	*/
+
+	if(newLocation.exists())
+		this->lineEditLocation->setText(newLocation.path());
 	else
-		this->lineEditLocation->setText(newLocation);
+		this->lineEditLocation->setText(base_dir);
 }
 

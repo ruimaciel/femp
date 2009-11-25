@@ -138,7 +138,7 @@ The structure holding the information needed for json_saxy_parse to resume parsi
 
 
 /** 
-Buils a json_t document by parsing an open file
+Buils a json_t document by parsing an open file stream
 @param file a pointer to an object controlling a stream, returned by fopen()
 @param document a reference to a json_t pointer, set to NULL, which will store the parsed document
 @return a json_error error code according to how the parsing operation went.

@@ -39,12 +39,11 @@ public Q_SLOTS:
 	void quit();
 	void importMesh();
 
-private Q_SLOTS:
-	void startProject(QString, Document::Type);	// called by the New Project wizard dialog to finish
-
 private:
 	void createActions();	// creates the actions and connects them
 	void loadOptions();	// loads global options from the options files
+	void setUserInterfaceAsOpened();	// sets the user interface in it's "opened document" state
+	void setUserInterfaceAsClosed();	// sets the user interface in it's "closed document" state
 
 };
 

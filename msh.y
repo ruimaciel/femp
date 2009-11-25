@@ -5,6 +5,7 @@
 #include "lex.msh_yy.h" /* for the lexer's start states */
 
 #include <vector>
+#include <QString>
 
 #include "fem_msh.h++"
 

@@ -77,10 +77,13 @@ void GLWidget::setZRotation(int angle)
 }
 
 
-void GLWidget::setPosition(int amount)
+void GLWidget::setPosition(int x, int y)
 {
-	camera.pos.z(amount/100.0f);
-	qWarning("pos: %f",camera.pos.z());
+	//TODO implement this
+	camera.pos.x(-x);
+	camera.pos.y(-y);
+	//camera.pos.z(amount/100.0f);
+	qWarning("pos: %f, %f, %f",camera.pos.x(), camera.pos.y(), camera.pos.z());
 	updateGL();
 }
 
@@ -162,12 +165,12 @@ void GLWidget::paintGL()
 
 void GLWidget::resizeGL(int width, int height)
 {
-	float side = qMin(width, height);
+	scale = qMin(width, height);
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
-	glOrtho(-(width*2)/(side), (width*2)/(side), -height*2/(side), +height*2/(side), 2.0, 100.0);
+	glOrtho(-(width*2)/(scale), (width*2)/(scale), -height*2/(scale), +height*2/(scale), 2.0, 100.0);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -191,6 +194,9 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 	} else if (event->buttons() & Qt::RightButton) {
 		setXRotation(camera.rotation.data[0] + dy);
 		setZRotation(camera.rotation.data[2] + dx);
+	}
+	else if (event->buttons() & Qt::MidButton) {
+		setPosition(camera.pos.data[0] + dx, camera.pos.data[1] + dy);
 	}
 	lastPos = event->pos();
 }

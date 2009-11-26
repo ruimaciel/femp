@@ -19,6 +19,8 @@ void Model::clear()
 	node_list.clear();
 	element_list.clear();
 	material_list.clear();
+	node_restrictions_list.clear();
+	load_pattern_list.clear();
 }
 
 

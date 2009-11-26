@@ -9,6 +9,7 @@
 #include "Node.h++"
 #include "Element.h++"
 #include "Material.h++"
+#include "NodeRestrictions.h++"
 #include "LoadPattern.h++"
 
 namespace fem
@@ -19,6 +20,7 @@ class Model {
 		std::map<size_t, Node> 	node_list;
 		std::vector<Element> 	element_list;
 		std::vector<Material> 	material_list;
+		std::map<size_t, NodeRestrictions>	node_restrictions_list;
 		std::vector<LoadPattern>	load_pattern_list;
 
 	public:

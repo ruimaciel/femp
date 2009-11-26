@@ -16,6 +16,9 @@ namespace fem
 {
 
 class Model {
+	private:
+		int default_material;	// used when adding elements
+
 	public:
 		std::map<size_t, Node> 	node_list;
 		std::vector<Element> 	element_list;
@@ -32,6 +35,7 @@ class Model {
 
 		// sets a node
 		void setNode(size_t pos, double x, double y, double z);
+		void setDefaultMaterial(int material)	{ default_material = material; }
 		void pushElement(fem::Element);
 		void pushElement(fem::Element::Type type, std::vector<size_t> nodes);
 };

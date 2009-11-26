@@ -196,6 +196,7 @@ enum Document::Error Document::save()
 			out << *n;
 		}
 		out << "]";
+		// output the element's material
 		if( (it->material != material) || (it == model.element_list.begin()) )
 		{
 			material = it->material;

@@ -145,11 +145,11 @@ void MainWindow::openProject()
 		QString temp;
 		size_t n = 0;
 		double p[3] = {0,0,0};
-		json_t *ac;
+		json_t *ac = NULL;
 		// iterate through the child nodes of "nodes":[]
-		for(cursor = cursor->child; cursor->next != NULL; cursor = cursor->next)
+		for(json_t *c = cursor->child; c != NULL; c = c->next)
 		{
-			ac = cursor;
+			ac = c;
 			PTEST(ac->type == JSON_ARRAY);
 			PTEST(ac->child != NULL);
 			ac = ac->child;
@@ -158,7 +158,7 @@ void MainWindow::openProject()
 			n = temp.toLongLong();	// get the node index
 
 			PTEST(ac->next != NULL);
-			ac = ac->next;	// move cursor to the coordinates array
+			ac = ac->next;	// move c to the coordinates array
 			PTEST(ac->type == JSON_ARRAY);
 			PTEST(ac->child != NULL);
 			ac = ac->child;
@@ -189,7 +189,6 @@ void MainWindow::openProject()
 	}
 
 	//TODO finish this
-	cursor = cursor->parent;	// move to root->"nodes"->array
 	cursor = cursor->parent;	// move to root->"nodes"
 
 	// move to the elements field

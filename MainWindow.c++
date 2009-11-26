@@ -195,7 +195,194 @@ void MainWindow::openProject()
 	// move to the elements field
 	PMOVE(cursor->next);	// pointing to root->"elements"
 	PTEST( QString::compare(cursor->text,"elements") == 0);
-	//TODO finish this
+	PMOVE( cursor->child );	// pointing to root->"elements"->array
+	PTEST( cursor->type == JSON_ARRAY);
+	if(cursor->child != NULL)
+	{	// elements present in this document
+		size_t nn;	// number of nodes which will be expected for each type
+		json_t *ec = NULL;
+		fem::Element::Type type = fem::Element::FE_INVALID;
+
+		for(json_t *c = cursor->child; c != NULL; c = c->next)
+		{
+			PTEST(c->type == JSON_OBJECT);
+			PTEST(c->child != NULL);
+			ec = c->child;	// pointing to root->"elements"->array->object->"type"
+			PTEST(ec->type == JSON_STRING);
+			PTEST(QString::compare(ec->text,"type") == 0);
+			PTEST(ec->child->type == JSON_STRING);	// value of label "type" must be a string
+			
+			// identify this type and act accordingly
+			switch(type = fem::Element::extractType(ec->child->text) )
+			{
+				case fem::Element::FE_LINE2:
+					nn = 2;
+					break;
+
+				case fem::Element::FE_TRIANGLE3:
+					nn = 3;
+					break;
+
+				case fem::Element::FE_QUADRANGLE4:
+					nn = 4;
+					break;
+
+				case fem::Element::FE_TETRAHEDRON4:
+					nn = 4;	// expect 4 nodes in the "nodes" array
+					break;
+
+				case fem::Element::FE_HEXAHEDRON8:
+					nn = 8;
+					break;
+
+				case fem::Element::FE_PRISM6:
+					nn = 6;
+					break;
+
+				case fem::Element::FE_PYRAMID5:
+					nn = 5;
+					break;
+
+				case fem::Element::FE_LINE3:
+					nn = 3;
+					break;
+
+				case fem::Element::FE_TRIANGLE6:
+					nn = 6;
+					break;
+
+				case fem::Element::FE_QUADRANGLE9:
+					nn = 9;
+					break;
+
+				case fem::Element::FE_TETRAHEDRON10:
+					nn = 10;
+					break;
+
+				case fem::Element::FE_HEXAHEDRON27:
+					nn = 27;
+					break;
+
+				case fem::Element::FE_PRISM18:
+					nn = 18;
+					break;
+
+				case fem::Element::FE_PYRAMID14:
+					nn = 14;
+					break;
+
+				case fem::Element::FE_QUADRANGLE8:
+					nn = 8;
+					break;
+
+				case fem::Element::FE_HEXAHEDRON20:
+					nn = 20;
+					break;
+
+				case fem::Element::FE_PRISM15:
+					nn = 15;
+					break;
+
+				case fem::Element::FE_PYRAMID13:
+					nn = 13;
+					break;
+
+				case fem::Element::FE_ITRIANGLE9:
+					nn = 9;
+					break;
+
+				case fem::Element::FE_TRIANGLE10:
+					nn = 10;
+					break;
+
+				case fem::Element::FE_ITRIANGLE12:
+					nn = 12;
+					break;
+
+				case fem::Element::FE_TRIANGLE15:
+					nn = 15;
+					break;
+
+				case fem::Element::FE_ITRIANGLE15:
+					nn = 15;
+					break;
+
+				case fem::Element::FE_TRIANGLE21:
+					nn = 21;
+					break;
+
+				case fem::Element::FE_EDGE4:
+					nn = 4;
+					break;
+
+				case fem::Element::FE_EDGE5:
+					nn = 5;
+					break;
+
+				case fem::Element::FE_EDGE6:
+					nn = 6;
+					break;
+
+				case fem::Element::FE_TETRAHEDRON20:
+					nn = 20;
+					break;
+
+				case fem::Element::FE_TETRAHEDRON35:
+					nn = 35;
+					break;
+
+				case fem::Element::FE_TETRAHEDRON56:
+					nn = 56;
+					break;
+
+				case fem::Element::FE_INVALID:
+				default:
+					qWarning("invalid element");
+					continue;
+					break;
+
+			}
+			// extract nodes
+			PTEST(ec->next != NULL);
+			ec = ec->next;
+			PTEST(ec->type == JSON_STRING);
+			PTEST(QString::compare(ec->text,"nodes") == 0);
+			PTEST(ec->child != NULL);
+			ec = ec->child;	// pointing to root->"elements"->array->object->"nodes"->array
+			PTEST(ec->type == JSON_ARRAY);
+			PTEST(ec->child != NULL);	// node array must be populated
+
+			std::vector<size_t> tn;	// the temporary node vector
+			QString temp;	// the temporary string, to convert numbers
+			unsigned int i;
+			for(ec = ec->child, i = 0; ec != NULL; ec = ec->next, i++)	// pointing to root->"elements"->array->objects->"nodes"->array->number
+			{
+				PTEST(ec->type == JSON_NUMBER);
+				temp = ec->text;
+				tn.push_back(temp.toLongLong());
+			}
+			PTEST(tn.size() == nn);	// evaluate if the document had as many nodes as those which were expected
+
+			// get this element's material
+			if(ec->next != NULL)
+			{	
+				/*
+				// there is still another field
+				ec = ec->next;	// pointing to root->"elements"->array->object->"material"
+				PTEST(ec->type == JSON_STRING);	// which must be a label
+				PTEST(QString::compare(ec->text,"material") == 0);
+				PTEST(ec->child != NULL);
+				PTEST(ec->child->type == JSON_NUMBER);	// material must be a number
+				temp = ec->child->text;
+				document.model.setDefaultMaterial(temp.toLongLong());	// sets the material
+				*/
+			}
+			// now let's add the element
+			document.model.pushElement(type,tn); 
+		}
+		//TODO finish this
+	}
+	cursor = cursor->parent;	// move to root->"elements"
 
 	// move to the node restrictions field
 	PMOVE(cursor->next);	// pointing to root->node restrictions

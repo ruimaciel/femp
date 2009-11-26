@@ -44,9 +44,10 @@ BisonOutput.output = msh.tab.c msh.tab.h
 
 BisonCompile.target = msh.tab.o
 BisonCompile.commands = g++ -c msh.tab.c $(INCPATH)
-BisonCompile.depends = msh.tab.c msh.tab.h
+BisonCompile.depends = msh.tab.h
 BisonCompile.output = msh.tab.o
 
 OBJECTS += msh.tab.o
+QMAKE_CLEAN += lex.msh_yy.h lex.msh_yy.c++ msh.tab.c msh.tab.h msh.tab.o
 
 QMAKE_EXTRA_TARGETS += ProgramOptionRe2c  FlexOutput BisonOutput BisonCompile

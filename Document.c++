@@ -121,7 +121,7 @@ enum Document::Error Document::save()
 		switch(it->type)
 		{
 			case fem::Material::MAT_LINEAR_ELASTIC:
-				out << "{\"type\":" << "\"linear elastic\", \"E\":" << it->E << ",\"nu\":" << it->nu << ", \"fy\": " << it->fy << "}";
+				out << "{\"type\":" << "\"linear elastic\", \"label\": \"" << it->label << "\", \"E\":" << it->E << ",\"nu\":" << it->nu << ", \"fy\": " << it->fy << "}";
 				break;
 
 			default:

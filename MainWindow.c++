@@ -133,7 +133,69 @@ void MainWindow::openProject()
 	// move to the materials field
 	PMOVE(cursor->next);	// pointing to root->materials
 	PTEST( QString::compare(cursor->text,"materials") == 0);
+	PMOVE(cursor->child);	// pointing to root->materials->array
+	PTEST(cursor->type == JSON_ARRAY);
+	if(cursor->child != NULL)	// root-"materials"->array should have items
+	{
+		// there are defined elements
+		for(json_t *mc = cursor->child; mc != NULL; mc = mc->next)
+		{
+			fem::Material mat;
+			QString temp;
+			PTEST(mc->type == JSON_OBJECT);
+			PTEST(mc->child != NULL);
+			json_t *c = mc->child;
+			PTEST(c->type == JSON_STRING);
+			PTEST( QString::compare(c->text,"type") == 0);
+
+			//set the material type
+			PTEST( QString::compare(c->child->text,"linear elastic") == 0);
+			mat.type = fem::Material::MAT_LINEAR_ELASTIC;
+
+			// move to the label field
+			PTEST(c->next != NULL);
+			c = c->next;
+			PTEST(c->type == JSON_STRING);
+			PTEST( QString::compare(c->text,"label") == 0);
+			mat.label = c->child->text;
+
+			// move to the Young modulus field
+			PTEST(c->next != NULL);
+			c = c->next;
+			PTEST(c->type == JSON_STRING);
+			PTEST( QString::compare(c->text,"E") == 0);
+			PTEST(c->child != NULL);
+			PTEST(c->child->type == JSON_NUMBER);
+			temp = c->child->text;
+			mat.E = temp.toDouble();
+
+			// move to the Poisson coefficient field
+			PTEST(c->next != NULL);
+			c = c->next;
+			PTEST(c->type == JSON_STRING);
+			PTEST( QString::compare(c->text,"nu") == 0);
+			PTEST(c->child != NULL);
+			PTEST(c->child->type == JSON_NUMBER);
+			temp = c->child->text;
+			mat.nu = temp.toDouble();
+
+			// move to the elastic limit field
+			PTEST(c->next != NULL);
+			c = c->next;
+			PTEST(c->type == JSON_STRING);
+			PTEST( QString::compare(c->text,"fy") == 0);
+			PTEST(c->child != NULL);
+			PTEST(c->child->type == JSON_NUMBER);
+			temp = c->child->text;
+			mat.fy = temp.toDouble();
+			// end of field
+			PTEST(c->next == NULL);
+
+			document.model.material_list.push_back(mat);
+		}
+	}
 	//TODO finish this
+	cursor = cursor->parent;	// point to root->"materials"
 
 	// move to the nodes field
 	PMOVE(cursor->next);	// pointing to root->nodes
@@ -353,11 +415,11 @@ void MainWindow::openProject()
 
 			std::vector<size_t> tn;	// the temporary node vector
 			QString temp;	// the temporary string, to convert numbers
-			unsigned int i;
-			for(ec = ec->child, i = 0; ec != NULL; ec = ec->next, i++)	// pointing to root->"elements"->array->objects->"nodes"->array->number
+			unsigned int i=0;
+			for(json_t *eec = ec->child; eec != NULL; eec = eec->next, i++)	// pointing to root->"elements"->array->objects->"nodes"->array->number
 			{
-				PTEST(ec->type == JSON_NUMBER);
-				temp = ec->text;
+				PTEST(eec->type == JSON_NUMBER);
+				temp = eec->text;
 				tn.push_back(temp.toLongLong());
 			}
 			PTEST(tn.size() == nn);	// evaluate if the document had as many nodes as those which were expected
@@ -365,7 +427,6 @@ void MainWindow::openProject()
 			// get this element's material
 			if(ec->next != NULL)
 			{	
-				/*
 				// there is still another field
 				ec = ec->next;	// pointing to root->"elements"->array->object->"material"
 				PTEST(ec->type == JSON_STRING);	// which must be a label
@@ -374,7 +435,6 @@ void MainWindow::openProject()
 				PTEST(ec->child->type == JSON_NUMBER);	// material must be a number
 				temp = ec->child->text;
 				document.model.setDefaultMaterial(temp.toLongLong());	// sets the material
-				*/
 			}
 			// now let's add the element
 			document.model.pushElement(type,tn); 

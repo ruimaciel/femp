@@ -7,11 +7,13 @@ namespace fem
 {
 	class NodalLoad {
 		public:
+			point force;	// the force being applied in this node
+
+		public:
 			NodalLoad ();
 			NodalLoad (const NodalLoad &);
 			~NodalLoad ();
 
-			point force;	// the force being applied in this node
 	};
 }
 

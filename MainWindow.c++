@@ -81,7 +81,8 @@ void MainWindow::openProject()
 	fd.setFileMode(QFileDialog::Directory);
 	fd.setOption(QFileDialog::ShowDirsOnly, true);
 	fd.setViewMode(QFileDialog::List);
-	fd.exec();
+	if(fd.exec() == QDialog::Rejected)
+		return;
 
 	// tweak the UI
 	setUserInterfaceAsOpened();

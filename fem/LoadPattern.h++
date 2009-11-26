@@ -5,6 +5,9 @@
 #include <map>
 
 #include "NodalLoad.h++"
+#include "DomainLoad.h++"
+#include "SurfaceLoad.h++"
+
 
 namespace fem
 {
@@ -14,14 +17,15 @@ namespace fem
 	class LoadPattern
 	{
 		public:
+			std::string label;	// this load pattern's label
+			std::map<size_t,NodalLoad> 	nodal_loads;	// maps nodal loads to node references
+			std::map<size_t,DomainLoad>	domain_loads;	// maps to element nodes
+			//TODO surface loads
+
+		public:
 			LoadPattern();
 			LoadPattern(const LoadPattern &);
 			~LoadPattern();
-
-			std::string label;	// this load pattern's label
-
-			std::map<size_t,NodalLoad> nodal_loads;	// maps nodal loads to node references
-
 
 			void addNodalLoad(size_t, point);
 	};

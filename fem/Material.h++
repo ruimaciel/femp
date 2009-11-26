@@ -18,8 +18,11 @@ class Material {
 
 		double E, nu;	// linear elastic material
 
+		double fy;	// elastic limit
+
 	public:
 		Material();
+		Material(const Material &);
 		~Material();
 };
 

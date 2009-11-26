@@ -7,14 +7,17 @@ namespace fem
 	{
 	}
 
+
 	LoadPattern::LoadPattern(const LoadPattern &copied)
 	{
 		this->label = copied.label;
 	}
 
+
 	LoadPattern::~LoadPattern()
 	{
 	}
+
 
 	void LoadPattern::addNodalLoad(size_t node, point force)
 	{

@@ -107,27 +107,180 @@ enum Document::Error Document::save()
 			out << "\"unknown\"\n";	// this should be seen as an error
 			break;
 	}
-
-	//TODO complete rest of field
 	out << "\t},\n";
 
 	// dump the materials list
-	out << "\"materials\":\n";
-	out << "\t},\n";
+	out << "\"materials\": [";
+	for(std::vector<fem::Material>::iterator it = model.material_list.begin(); it != model.material_list.end(); it++)
+	{
+		// to print the comman between entries and avoiding printing it after the last
+		if(it != model.material_list.begin())
+			out << ",\n\t";
+		else
+			out << "\n\t";
+		switch(it->type)
+		{
+			case fem::Material::MAT_LINEAR_ELASTIC:
+				out << "{\"type\":" << "\"linear elastic\", \"E\":" << it->E << ",\"nu\":" << it->nu << ", \"fy\": " << it->fy << "}";
+				break;
+
+			default:
+				qWarning("defaulted while outputting");
+				break;
+		}
+	}
+	out << "\t],\n";
 
 	// dump the nodes list
-	out << "\"nodes\":\n";
-	out << "\t},\n";
+	out << "\"nodes\":[";
+	for(std::map<size_t,fem::Node>::iterator it = model.node_list.begin(); it != model.node_list.end(); it++)
+	{
+		if(it != model.node_list.begin())
+			out << ",\n\t";
+		else
+			out << "\n\t";
+		out << "[" << it->first << ",[" << it->second.data[0] << "," << it->second.data[1] << "," << it->second.data[2] << "]]";
+
+	}
+	out << "\n\t],\n";
 
 	// dump the elements list
-	out << "\"elements\":\n";
-	out << "\t},\n";
+	out << "\"elements\":[";
+	int material = 0;
+	for(std::vector<fem::Element>::iterator it = model.element_list.begin(); it != model.element_list.end(); it++)
+	{
+		if(it != model.element_list.begin())
+			out << ",\n\t";
+		else
+			out << "\n\t";
+		out << "{\"type\":";
+		// get the name of the element
+		switch(it->type)
+		{
+			case fem::Element::FE_LINE2:
+				out << "\"line2\", ";
+				break;
 
-	// dump the loads list
-	out << "\"loads\":\n";
-	out << "\t},\n";
+			case fem::Element::FE_TRIANGLE3:
+				out << "\"triangle3\", ";
+				break;
 
-	out << "}\n";
+			case fem::Element::FE_TETRAHEDRON4:
+				out << "\"tetrahedron4\", ";
+				break;
+
+			case fem::Element::FE_HEXAHEDRON8:
+				out << "\"hexahedron8\", ";
+				break;
+
+			case fem::Element::FE_TETRAHEDRON10:
+				out << "\"tetrahedron10\", ";
+				break;
+
+			case fem::Element::FE_HEXAHEDRON20:
+				out << "\"hexahedron20\", ";
+				break;
+
+			default:
+				//TODO finish this
+				out << "\"default\", ";
+				qWarning("element defaulted");
+				break;
+		}
+		// output the element's nodes
+		out << "\"nodes\":[";
+		for(std::vector<size_t>::iterator n = it->nodes.begin(); n != it->nodes.end(); n++)
+		{
+			if(n != it->nodes.begin())
+				out << ",";
+			out << *n;
+		}
+		out << "]";
+		if( (it->material != material) || (it == model.element_list.begin()) )
+		{
+			material = it->material;
+			out << ", \"material\": " << material;
+		}
+		out << "}";
+	}
+	out << "\n\t],\n";
+
+	// dump the load restrictions list
+	out << "\"node restrictions\": [";
+	for(std::map<size_t,fem::NodeRestrictions>::iterator it = model.node_restrictions_list.begin(); it != model.node_restrictions_list.end(); it++)
+	{
+		//TODO test this
+		if(it != model.node_restrictions_list.begin())
+			out << ",";
+		out << "\n\t";
+		out << "{ \"node\":" << it->first;
+		if(it->second.dx == true)
+			out << ", \"dx\":true";
+		if(it->second.dy == true)
+			out << ", \"dy\":true";
+		if(it->second.dz == true)
+			out << ", \"dz\":true";
+		if(it->second.rx == true)
+			out << ", \"rx\":true";
+		if(it->second.ry == true)
+			out << ", \"ry\":true";
+		if(it->second.rz == true)
+			out << ", \"rz\":true";
+	}
+
+	out << "\t],\n";
+
+	// dump the load pattern list
+	out << "\"load pattern\":[";
+	for(std::vector<fem::LoadPattern>::iterator it = model.load_pattern_list.begin(); it != model.load_pattern_list.end(); it++)
+	{
+		if(it != model.load_pattern_list.begin())
+			out << ",";
+		out << "\n\t{";
+		// take care of the nodal loads
+		if( !it->nodal_loads.empty() )
+		{
+			out << "\"nodes\":[";
+			for(std::map<size_t,fem::NodalLoad>::iterator n = it->nodal_loads.begin(); n != it->nodal_loads.end(); n++)
+			{
+				if(n != it->nodal_loads.begin())
+					out << ",";
+				out << "\n\t\t[";
+				out << n->first << ", [" << n->second.force.data[0] << ", " << n->second.force.data[1] << ", " << n->second.force.data[2] << "]]";
+			}
+			out << "\t\n]";
+		}
+
+
+		// take care of the domain loads
+
+		if( !it->domain_loads.empty() )
+		{
+			out << ",\n\t\"domain\":[";
+			for(std::map<size_t,fem::DomainLoad>::iterator n = it->domain_loads.begin(); n != it->domain_loads.end(); n++)
+			{
+				if(n != it->domain_loads.begin())
+					out << ",";
+				out << "\n\t\t[";
+				out << n->first << ", [" << n->second.force.data[0] << ", " << n->second.force.data[1] << ", " << n->second.force.data[2] << "]]";
+			}
+			out << "\t\n]";
+		}
+
+		// take care of the surface loads
+		//TODO finish surface loads
+
+		out << "}\n";
+	}
+	out << "\t],\n";
+
+
+	// dump the load combinations list
+	out << "\"combinations\":[";
+	//TODO finish combinations
+	out << "\t]\n";
+
+	out << "}\n";	// final, closing bracket
 
 	// cleanup and exit
 	//TODO see KDE/ext4 row on proper unix file_name writing

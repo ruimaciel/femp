@@ -2,7 +2,9 @@ projects consist of a file with the following entries:
 	fem		the header field. an index of all project's properties, required
 	model		a model file, containing geometric information, boundary conditions and references materials, required
 	materials	a list of all materials used, required
-	loads		a list of all loads, referencing model
+	elements	a list of all elements, referencing the material
+	restrictions
+	load pattern	a list of all load patterns, which consist of combinations of load
 	load combinations
 
 fem
@@ -23,8 +25,7 @@ element groups
 
 loads
 	domain
-	face
+	surface
 	nodal loads/displacements
-
 
 load combinations

@@ -1,0 +1,107 @@
+#include "Element.h++"
+
+#include <iostream>
+
+namespace fem
+{
+
+Element::Element()
+{
+}
+
+
+Element::Element(const Element &copied)
+{
+	this->material = copied.material;
+	this->nodes = copied.nodes;
+	this->type = copied.type;
+}
+
+Element::~Element()
+{
+}
+
+void Element::set(Type type, std::vector<size_t> nodes)
+{
+	switch(type)
+	{
+		case FE_LINE2:
+			if(nodes.size() != 2)
+			{
+				std::cerr << "error: FE_LINE2 needs 2 nodes" << std::endl;
+				return;
+			}
+			break;
+
+		case FE_TETRAHEDRON4:
+			if(nodes.size() != 4)
+			{
+				std::cerr << "error: FE_TETRAHEDRON4 needs 4 nodes, has " << nodes.size() << std::endl;
+				return;
+			}
+			break;
+
+		case FE_HEXAHEDRON8:
+			if(nodes.size() != 8)
+			{
+				std::cerr << "error: FE_HEXAHEDRON8 needs 8 nodes" << std::endl;
+				return;
+			}
+			break;
+
+		default:
+			std::cerr << "error: unsupported type" << std::endl;
+			return;
+			break;
+	}
+	this->type = type;
+	this->nodes = nodes;
+}
+
+
+enum Element::Type Element::extractType(char *buffer)
+{
+	char *p = buffer;
+	char *q;
+/*!re2c
+	re2c:define:YYCTYPE 	= "char";
+	re2c:define:YYCURSOR 	= p;
+	re2c:define:YYMARKER 	= q;
+	re2c:yyfill:enable	= 0;
+	re2c:yych:conversion	= 1;
+
+	"line2"			{return FE_LINE2;}
+	"triangle3"		{return FE_TRIANGLE3;}
+	"quadrangle4"		{return FE_QUADRANGLE4;}
+	"tetrahedron4"		{return FE_TETRAHEDRON4;}
+	"hexahedron8"		{return FE_HEXAHEDRON8;}
+	"prism6"		{return FE_PRISM6;}
+	"pyramid5"		{return FE_PYRAMID5;}
+	"line3"			{return FE_LINE3;}
+	"triangle6"		{return FE_TRIANGLE6;}
+	"quadrangle9"		{return FE_QUADRANGLE9;}
+	"tetrahedron10"		{return FE_TETRAHEDRON10;}
+	"hexahedron27"		{return FE_HEXAHEDRON27;}
+	"prism18"		{return FE_PRISM18;}
+	"pyramid14"		{return FE_PYRAMID14;}
+	"quadrangle8"		{return FE_QUADRANGLE8;}
+	"hexahedron20"		{return FE_HEXAHEDRON20;}
+	"prism15"		{return FE_PRISM15;}
+	"pyramid13"		{return FE_PYRAMID13;}
+	"itriangle9"		{return FE_ITRIANGLE9;}
+	"triangle10"		{return FE_TRIANGLE10;}
+	"itriangle12"		{return FE_ITRIANGLE12;}
+	"triangle15"		{return FE_TRIANGLE15;}
+	"itriangle15"		{return FE_ITRIANGLE15;}
+	"triangle21"		{return FE_TRIANGLE21;}
+	"edge4"			{return FE_EDGE4;}
+	"edge5"			{return FE_EDGE5;}
+	"edge6"			{return FE_EDGE6;}
+	"tetrahedron20"		{return FE_TETRAHEDRON20;}
+	"tetrahedron35"		{return FE_TETRAHEDRON35;}
+	"tetrahedron56"		{return FE_TETRAHEDRON56;}    
+	[^]			{return FE_INVALID; }
+ */
+}
+
+}

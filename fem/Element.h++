@@ -9,6 +9,7 @@ namespace fem
 	class Element {
 		public:
 			enum Type {
+				FE_INVALID	= 0,	/* test entry */
 				FE_LINE2         = 1,    /* 2-node line */
 				FE_TRIANGLE3    = 2,    /* 3-node triangle */
 				FE_QUADRANGLE4  = 3,    /* 4-node quadrangle */
@@ -52,6 +53,8 @@ namespace fem
 			~Element();
 
 			void set(Type type, std::vector<size_t> nodes);
+
+			static enum Type extractType(char *);
 	};
 
 }

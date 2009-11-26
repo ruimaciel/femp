@@ -33,13 +33,13 @@ ProgramOptionRe2c.depends = ProgramOptions.c++.re2c
 ProgramOptionRe2c.output = ProgramOptions.c++
 
 FlexOutput.target = lex.msh_yy.h 
-FlexOutput.commands = flex --header-file=lex.msh_yy.h msh.l; mv lex.msh_yy.c lex.msh_yy.c++
+FlexOutput.commands = flex --header-file=lex.msh_yy.h -o lex.msh_yy.c++ msh.l
 FlexOutput.depends = msh.l
 FlexOutput.output = lex.msh_yy.c++ lex.msh_yy.h
 
 BisonOutput.target = msh.tab.h
 BisonOutput.commands = bison -d --debug msh.y
-BisonOutput.depends = msh.y
+BisonOutput.depends = msh.y lex.msh_yy.h
 BisonOutput.output = msh.tab.c msh.tab.h
 
 BisonCompile.target = msh.tab.o

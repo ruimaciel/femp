@@ -11,6 +11,7 @@
 
 #include "NewProjectWizard.h++"
 #include "fem_msh.h++"
+#include "parsers/json.h"
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
@@ -72,18 +73,148 @@ void MainWindow::openProject()
 	{
 		last_path = getenv("HOME");
 	}
+	QFileDialog dialog(this);
+	QStringList sl;
 
-        QDir location;
-	// location = QFileDialog::getExistingDirectory(this, tr("Open project directory"), last_path.c_str(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-
-	QDir newLocation;
-	QFileDialog fd(this, tr("Open project directory"), last_path.c_str());
-	fd.setFileMode(QFileDialog::Directory);
-	fd.setOption(QFileDialog::ShowDirsOnly, true);
-	fd.setViewMode(QFileDialog::List);
-	if(fd.exec() == QDialog::Rejected)
+	// setup the file dialog
+	dialog.setFileMode(QFileDialog::ExistingFile);
+	dialog.setNameFilter(tr("FEM project (*.fem.json)"));
+	if(dialog.exec() == QDialog::Rejected)
+	{
+		// user cancelled, no file was loaded
 		return;
+	}
+	sl = dialog.selectedFiles();
+	document.file_name = new QString;
+	*document.file_name = sl.at(0);
 
+	// check if file exists
+	QFile file;
+	file.setFileName(*document.file_name);
+	if(!file.exists())
+	{
+		QMessageBox::critical(this, tr("File not found"), tr("File was not found"));
+		return;
+	}
+
+	//file exists, now open it and parse it
+	if(file.open(QIODevice::ReadOnly|QIODevice::Text) == false)
+	{
+		QMessageBox::critical(this, tr("Error"), tr("There was an error opening the file"));
+		return;
+	}
+
+	json_t *root = NULL;
+	FILE *f = fdopen(file.handle(), "r");
+	switch(json_stream_parse(f,&root) )
+	{
+		case JSON_OK:
+			// all went well
+			break;
+
+		default:
+			//TODO implement better error handling
+			QMessageBox::critical(this, tr("Error"), tr("There was an error parsing the project file"));
+			return;
+			break;
+	}
+	#define PTEST(TEST) {if(!(TEST)){QMessageBox::critical(this, tr("Error"), tr("There was an error parsing the project file")); qWarning("PERROR line %d: " #TEST, __LINE__); return;} }
+	#define PMOVE(TO)	{ PTEST(TO != NULL); cursor = TO; }
+
+	// document in memory, now let the importing begin
+	json_t *cursor = root;
+	PTEST(cursor->child != NULL);
+
+	cursor = cursor->child;
+	PTEST(cursor->type == JSON_STRING);
+	PTEST( QString::compare(cursor->text,"fem") == 0);
+	//TODO finish this
+
+	// move to the materials field
+	PMOVE(cursor->next);	// pointing to root->materials
+	PTEST( QString::compare(cursor->text,"materials") == 0);
+	//TODO finish this
+
+	// move to the nodes field
+	PMOVE(cursor->next);	// pointing to root->nodes
+	PTEST( QString::compare(cursor->text,"nodes") == 0);
+	PMOVE(cursor->child);
+	PTEST(cursor->type == JSON_ARRAY);
+	if(cursor->child != NULL) // testing root->"nodes"->array for children
+	{	// has child nodes
+		QString temp;
+		size_t n = 0;
+		double p[3] = {0,0,0};
+		json_t *ac;
+		// iterate through the child nodes of "nodes":[]
+		for(cursor = cursor->child; cursor->next != NULL; cursor = cursor->next)
+		{
+			ac = cursor;
+			PTEST(ac->type == JSON_ARRAY);
+			PTEST(ac->child != NULL);
+			ac = ac->child;
+			PTEST(ac->type == JSON_NUMBER);
+			temp = ac->text;
+			n = temp.toLongLong();	// get the node index
+
+			PTEST(ac->next != NULL);
+			ac = ac->next;	// move cursor to the coordinates array
+			PTEST(ac->type == JSON_ARRAY);
+			PTEST(ac->child != NULL);
+			ac = ac->child;
+			PTEST(ac->type == JSON_NUMBER);	// point to the first coordinate
+			temp = ac->text;
+			p[0] = temp.toDouble();	// get point.x()
+			
+			PTEST(ac->next != NULL);	// there must be a 2nd array element
+			ac = ac->next;
+			PTEST(ac->type == JSON_NUMBER);	// point to the first coordinate
+			temp = ac->text;
+			p[1] = temp.toDouble();	// get point.x()
+			
+			PTEST(ac->next != NULL);	// there must be a 2nd array element
+			ac = ac->next;
+			PTEST(ac->type == JSON_NUMBER);	// point to the first coordinate
+			temp = ac->text;
+			p[2] = temp.toDouble();	// get point.x()
+			PTEST(ac->next == NULL);
+			
+			// having the values, let's add the node to the node list
+			document.model.setNode(n, p[0], p[1], p[2]);
+		}
+	}
+	else
+	{
+		// root->nodes doesn't have child nodes: empty array
+	}
+
+	//TODO finish this
+	cursor = cursor->parent;	// move to root->"nodes"->array
+	cursor = cursor->parent;	// move to root->"nodes"
+
+	// move to the elements field
+	PMOVE(cursor->next);	// pointing to root->"elements"
+	PTEST( QString::compare(cursor->text,"elements") == 0);
+	//TODO finish this
+
+	// move to the node restrictions field
+	PMOVE(cursor->next);	// pointing to root->node restrictions
+	PTEST( QString::compare(cursor->text,"node restrictions") == 0);
+	//TODO finish this
+
+	// move to the load patterns field
+	PMOVE(cursor->next);	// pointing to root->load patterns
+	PTEST( QString::compare(cursor->text,"load patterns") == 0);
+	//TODO finish this
+
+	// move to the combinations field
+	PMOVE(cursor->next);	// pointing to root->combinations
+	PTEST( QString::compare(cursor->text,"combinations") == 0);
+	//TODO finish this
+
+	
+
+	#undef PTEST
 	// tweak the UI
 	setUserInterfaceAsOpened();
 }

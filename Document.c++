@@ -231,8 +231,8 @@ enum Document::Error Document::save()
 
 	out << "\t],\n";
 
-	// dump the load pattern list
-	out << "\"load pattern\":[";
+	// dump the load patterns list
+	out << "\"load patterns\":[";
 	for(std::vector<fem::LoadPattern>::iterator it = model.load_pattern_list.begin(); it != model.load_pattern_list.end(); it++)
 	{
 		if(it != model.load_pattern_list.begin())

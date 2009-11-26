@@ -44,7 +44,14 @@ extern "C"
 The descriptions of the json_value node type
 **/
 	enum json_value_type
-	{ JSON_STRING = 0, JSON_NUMBER, JSON_OBJECT, JSON_ARRAY, JSON_TRUE, JSON_FALSE, JSON_NULL };
+	{ JSON_STRING = 0, 
+	JSON_NUMBER, 
+	JSON_OBJECT, 
+	JSON_ARRAY, 
+	JSON_TRUE, 
+	JSON_FALSE, 
+	JSON_NULL 
+	};
 
 /**
 String implementation

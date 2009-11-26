@@ -109,6 +109,26 @@ void MainWindow::saveProject()
 		sl = dialog.selectedFiles();
 		document.file_name = new QString;
 		*document.file_name = sl.at(0);
+		// check if file already exists
+		QFile file;
+		file.setFileName(*document.file_name);
+		if(file.exists())
+		{
+			QMessageBox msgBox;
+			msgBox.setText(tr("File already exists") );
+			msgBox.setInformativeText(tr("Do you want to overwrite it?") );
+			msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+			msgBox.setDefaultButton(QMessageBox::No);
+			if(msgBox.exec() == QMessageBox::No)
+			{
+				qWarning("rejected");
+				delete document.file_name;
+				document.file_name = NULL;
+				return;
+			}
+				qWarning("accepted");
+		}
+
 		// set a new file name for this file
 		
 	}

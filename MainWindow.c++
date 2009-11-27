@@ -67,14 +67,6 @@ void MainWindow::openProject()
 	std::string last_path, tmp;
 
 	// get the last dir where a project was opened 
-	if(options.getOption("project.open.last",tmp))
-	{
-		last_path = tmp;
-	}
-	else
-	{
-		last_path = getenv("HOME");
-	}
 	QFileDialog dialog(this);
 	QStringList sl;
 

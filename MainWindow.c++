@@ -2,6 +2,7 @@
 #include <QAction>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QMdiSubWindow>
 
 #include <string>
 #include <fstream>
@@ -21,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	mdiArea = new QMdiArea;
 	setCentralWidget(mdiArea);	// this main window has a Multiple Document Interface
 	//mdiArea->setViewMode(QMdiArea::TabbedView);
+	window_gl_viewport = NULL;	// no windows on startup
 
 	// Load global options from the options files
 	this->loadOptions();
@@ -84,6 +86,11 @@ void MainWindow::openProject()
 		// user cancelled, no file was loaded
 		return;
 	}
+	// clear the document
+	this->setUserInterfaceAsClosed();
+	this->document.clear();
+
+	// prepare the file
 	sl = dialog.selectedFiles();
 	document.file_name = new QString;
 	*document.file_name = sl.at(0);
@@ -104,6 +111,8 @@ void MainWindow::openProject()
 		return;
 	}
 
+
+	// read the file
 	json_t *root = NULL;
 	FILE *f = fdopen(file.handle(), "r");
 	switch(json_stream_parse(f,&root) )
@@ -1014,8 +1023,16 @@ void MainWindow::setUserInterfaceAsOpened()
 	// open all relevant MDI windows
 	glWidget = new GLWidget(this);
 	glWidget->setModel(&document.model);
+	/*
 	mdiArea->addSubWindow(glWidget);
-	glWidget->show();
+	glWidget->showMaximized();
+	*/
+	window_gl_viewport = new QMdiSubWindow(mdiArea);
+	window_gl_viewport->setWidget(glWidget);
+	window_gl_viewport->setAttribute(Qt::WA_DeleteOnClose);
+	window_gl_viewport->setWindowTitle(tr("model viewport"));
+	window_gl_viewport->showMaximized();
+	//mdiArea->addSubWindow(window_gl_viewport);
 	// enable the "close"
 }
 
@@ -1032,13 +1049,13 @@ void MainWindow::setUserInterfaceAsClosed()
 	ui.actionClose->setDisabled(true);
 
 	// close all MDI windows
-	//TODO define a better way to close the MDI window
+	if(window_gl_viewport != NULL)
+	{
+		mdiArea->removeSubWindow(window_gl_viewport);
+		delete window_gl_viewport; 
+		window_gl_viewport = NULL;
+	}
 	mdiArea->closeAllSubWindows();
-	/*
-	glWidget->hide();
-	delete glWidget, glWidget = NULL;
-	*/
-	
 }
 
 

@@ -22,7 +22,9 @@ public:
 private:
 	Ui::MainWindow 	ui;
 	CommandLineDockWidget *commandLineDockWidget;
+
 	QMdiArea	* mdiArea;
+	QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport
 	GLWidget 	* glWidget;
 
 	ProgramOptions 	options;	// the global program options

@@ -64,4 +64,14 @@ enum Model::Error Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions 
 	return ERR_NONE;
 }
 
+
+enum Model::Error Model::pushLoadPattern(fem::LoadPattern lp)
+{
+	//TODO perform error checks
+
+	load_pattern_list.push_back(lp);
+
+	return ERR_NONE;
+}
+
 }

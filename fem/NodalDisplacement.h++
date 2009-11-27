@@ -11,7 +11,7 @@ namespace fem
 
 		public:
 			NodalDisplacement ();
-			NodalDisplacement (const NodalDisplacement &);
+			NodalDisplacement (const NodalDisplacement &copied);
 			~NodalDisplacement ();
 
 	};

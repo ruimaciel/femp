@@ -220,10 +220,6 @@ enum Document::Error Document::save()
 		out << (it->second.dx? "true,": "false,");
 		out << (it->second.dy? "true,": "false,");
 		out << (it->second.dz? "true]": "false]");
-		out << ", rotation:[";
-		out << (it->second.dx? "true,": "false,");
-		out << (it->second.dy? "true,": "false,");
-		out << (it->second.dz? "true]": "false]");
 		*/
 		if(it->second.dx() == true)
 			out << ", \"dx\":true";
@@ -231,12 +227,6 @@ enum Document::Error Document::save()
 			out << ", \"dy\":true";
 		if(it->second.dz() == true)
 			out << ", \"dz\":true";
-		if(it->second.rx() == true)
-			out << ", \"rx\":true";
-		if(it->second.ry() == true)
-			out << ", \"ry\":true";
-		if(it->second.rz() == true)
-			out << ", \"rz\":true";
 		out << "}";
 	}
 
@@ -249,42 +239,62 @@ enum Document::Error Document::save()
 		if(it != model.load_pattern_list.begin())
 			out << ",";
 		out << "\n\t{";
+		out << "\t\"label\": \"" << it->label; 
 		// take care of the nodal loads
 		if( !it->nodal_loads.empty() )
 		{
-			out << "\"nodes\":[";
+			out << "\",\n\t";
+			out << "\"node loads\":[";
 			for(std::map<size_t,fem::NodalLoad>::iterator n = it->nodal_loads.begin(); n != it->nodal_loads.end(); n++)
 			{
 				if(n != it->nodal_loads.begin())
 					out << ",";
-				out << "\n\t\t[";
-				out << n->first << ", [" << n->second.force.data[0] << ", " << n->second.force.data[1] << ", " << n->second.force.data[2] << "]]";
+				out << "\n\t\t{";
+				out << "\"node\":" << n->first;
+				out << ", \"force\":" << "[" << n->second.force.x() << ", " << n->second.force.y() << ", " << n->second.force.z() << "]}";
 			}
-			out << "\t\n]";
+			out << "\n\t]";
+		}
+
+		// take care of the nodal displacements
+		if( !it->nodal_displacements.empty() )
+		{
+			out << "\",\n\t";
+			out << "\"node displacements\":[";
+			for(std::map<size_t,fem::NodalDisplacement>::iterator n = it->nodal_displacements.begin(); n != it->nodal_displacements.end(); n++)
+			{
+				if(n != it->nodal_displacements.begin())
+					out << ",";
+				out << "\n\t\t{";
+				out << "\"node\":" << n->first;
+				out << ", \"displacement\":" << "[" << n->second.displacement.data[0] << ", " << n->second.displacement.data[1] << ", " << n->second.displacement.data[2] << "]}";
+			}
+			out << "\n\t]";
 		}
 
 
-		// take care of the domain loads
-
+		// take care of the domain displacements
 		if( !it->domain_loads.empty() )
 		{
-			out << ",\n\t\"domain\":[";
+			out << ",\n\t";
+			out << "\"domain loads\":[";
 			for(std::map<size_t,fem::DomainLoad>::iterator n = it->domain_loads.begin(); n != it->domain_loads.end(); n++)
 			{
 				if(n != it->domain_loads.begin())
 					out << ",";
-				out << "\n\t\t[";
-				out << n->first << ", [" << n->second.force.data[0] << ", " << n->second.force.data[1] << ", " << n->second.force.data[2] << "]]";
+				out << "\n\t\t{";
+				out << "\"node\":" << n->first;
+				out << ", \"force\":" << "[" << n->second.force.data[0] << ", " << n->second.force.data[1] << ", " << n->second.force.data[2] << "]}";
 			}
-			out << "\t\n]";
+			out << "\n\t]";
 		}
 
 		// take care of the surface loads
 		//TODO finish surface loads
 
-		out << "}\n";
+		out << "}";
 	}
-	out << "\t],\n";
+	out << "\n\t],\n";
 
 
 	// dump the load combinations list

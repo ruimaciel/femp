@@ -9,6 +9,7 @@ namespace fem
 
 	NodalDisplacement::NodalDisplacement (const NodalDisplacement &copied)
 	{
+		this->displacement = copied.displacement;
 	}
 
 	NodalDisplacement::~NodalDisplacement ()

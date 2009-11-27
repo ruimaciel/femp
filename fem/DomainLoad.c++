@@ -11,6 +11,7 @@ DomainLoad::DomainLoad()
 
 DomainLoad::DomainLoad(const DomainLoad &copied)
 {
+	this->force = copied.force;
 }
 
 

@@ -463,7 +463,7 @@ void MainWindow::openProject()
 				temp = c->child->text;
 				node = temp.toLongLong();	// get the target node number
 
-				// get restrictions
+				// get restrictions, one at a time until no other restriction is available
 				if(c->next == NULL)	// no restrictions set. move on
 					continue;	
 				while( (c = c->next) != NULL)
@@ -483,18 +483,6 @@ void MainWindow::openProject()
 							nr.setdz();
 							break;
 
-						case fem::NodeRestrictions::NR_RX:
-							nr.setrx();
-							break;
-
-						case fem::NodeRestrictions::NR_RY:
-							nr.setry();
-							break;
-
-						case fem::NodeRestrictions::NR_RZ:
-							nr.setrz();
-							break;
-
 						default:
 							PTEST(false);
 							break;
@@ -504,15 +492,252 @@ void MainWindow::openProject()
 				document.model.pushNodeRestrictions(node, nr);
 			}
 		}
-
-		//TODO finish this
 		cursor = cursor->parent;
 	}
 
 	// move to the load patterns field
-	PMOVE(cursor->next);	// pointing to root->load patterns
-	PTEST( QString::compare(cursor->text,"load patterns") == 0);
-	//TODO finish this
+	{
+		PMOVE(cursor->next);	// pointing to root->load patterns
+		PTEST( QString::compare(cursor->text,"load patterns") == 0);
+		PMOVE(cursor->child);
+		PTEST(cursor->type == JSON_ARRAY);
+		if(cursor->child != NULL)	// load patterns ahoy
+		{
+			json_t *c;
+			fem::LoadPattern lp;	// temporary load pattern
+
+			// cycle through the available load patterns
+			for(json_t *lpc = cursor->child; lpc != NULL; lpc = lpc->next)
+			{
+				lp.clear();	// cleans the temporary load pattern object
+
+				PTEST(lpc->type == JSON_OBJECT);
+				PTEST(lpc->child != NULL);
+				c = lpc->child;	// point to the first "node loads" entry, which must be "label"
+
+				// get this load pattern's label
+				PTEST(c->type == JSON_STRING);
+				PTEST(QString::compare(c->text,"label") == 0);
+				PTEST(c->child->type == JSON_STRING);
+				lp.label = c->child->text;	// set the label
+				PTEST(c->next != NULL);	// move to the following entry
+				c = c->next;
+
+				// get the "node loads"
+				PTEST(c->type == JSON_STRING);
+				if(QString::compare(c->text,"node loads") == 0)
+				{
+					qWarning("node loads");
+					// next item is a node load
+					PTEST(c->child != NULL);
+					PTEST(c->child->type == JSON_ARRAY);	// the "node loads" value must be a JSON_ARRAY
+					if(c->child->child != NULL)	// node loads array is populated
+					{
+						json_t *nltc;	// node loads temporary cursor
+						size_t n = 0;	// temporary node reference
+						QString temp;	// temporary string for the number conversion
+						fem::point force;	// temporary nodal load
+
+						// extract all nodal loads
+						for(json_t *nlc = c->child->child; nlc != NULL; nlc = nlc->next)
+						{
+							PTEST(nlc->type == JSON_OBJECT);
+							PTEST(nlc->child != NULL);
+							nltc = nlc->child;
+
+							// extract the node reference
+							PTEST(QString::compare(nltc->text,"node") == 0);
+							PTEST(nltc->child != NULL);
+							PTEST(nltc->child->type == JSON_NUMBER);
+							temp = nltc->child->text;
+							n = temp.toLongLong();	// and we have the node reference
+
+							PTEST(nltc->next != NULL);
+							nltc = nltc->next;
+							PTEST(QString::compare(nltc->text,"force") == 0);
+							PTEST(nltc->child != NULL);
+							PTEST(nltc->child->type == JSON_ARRAY);
+							PTEST(nltc->child->child != NULL);
+							nltc = nltc->child->child;	// point node load temp cursor to the first item in the "force array"
+
+							// extract the force components
+							PTEST(nltc->type == JSON_NUMBER);
+							temp = nltc->text;
+							force.x(temp.toDouble());	// force XX componet was obtained
+							PTEST(nltc->next != NULL);
+							nltc = nltc->next;
+							PTEST(nltc->type == JSON_NUMBER);
+							temp = nltc->text;
+							force.y(temp.toDouble());	// force YY componet was obtained
+							PTEST(nltc->next != NULL);
+							nltc = nltc->next;
+							PTEST(nltc->type == JSON_NUMBER);
+							temp = nltc->text;
+							force.z(temp.toDouble());	// force ZZ componet was obtained
+
+							PTEST(nltc->next == NULL);
+							// all info extracted
+							lp.addNodalLoad(n, force);
+						}
+					}
+					if(c->next == NULL)	// no more entries
+						goto load_pattern_push;
+					c = c->next;
+					PTEST(c->type == JSON_STRING);
+				}
+
+				// get the "node displacements"
+				if(QString::compare(c->text,"node displacements") == 0)
+				{
+					qWarning("node displacements");
+					//TODO finish this
+					PTEST(c->child != NULL);
+					PTEST(c->child->type == JSON_ARRAY);	// the "node loads" value must be a JSON_ARRAY
+					if(c->child->child != NULL)	// array is populated
+					{
+						//TODO this 
+						json_t *nltc;	// node displacements temporary cursor
+						size_t n = 0;	// temporary node reference
+						QString temp;	// temporary string for the number conversion
+						fem::point displacement;	// temporary nodal displacement
+
+						// extract all nodal displacements
+						for(json_t *nlc = c->child->child; nlc != NULL; nlc = nlc->next)
+						{
+							PTEST(nlc->type == JSON_OBJECT);
+							PTEST(nlc->child != NULL);
+							nltc = nlc->child;
+
+							// extract the node reference
+							PTEST(QString::compare(nltc->text,"node") == 0);
+							PTEST(nltc->child != NULL);
+							PTEST(nltc->child->type == JSON_NUMBER);
+							temp = nltc->child->text;
+							n = temp.toLongLong();	// and we have the node reference
+
+							PTEST(nltc->next != NULL);
+							nltc = nltc->next;
+							PTEST(QString::compare(nltc->text,"displacement") == 0);
+							PTEST(nltc->child != NULL);
+							PTEST(nltc->child->type == JSON_ARRAY);
+							PTEST(nltc->child->child != NULL);
+							nltc = nltc->child->child;	// point node displacement temp cursor to the first item in the "displacement array"
+
+							// extract the displacement components
+							PTEST(nltc->type == JSON_NUMBER);
+							temp = nltc->text;
+							displacement.x(temp.toDouble());	// displacement XX componet was obtained
+							PTEST(nltc->next != NULL);
+							nltc = nltc->next;
+							PTEST(nltc->type == JSON_NUMBER);
+							temp = nltc->text;
+							displacement.y(temp.toDouble());	// displacement YY componet was obtained
+							PTEST(nltc->next != NULL);
+							nltc = nltc->next;
+							PTEST(nltc->type == JSON_NUMBER);
+							temp = nltc->text;
+							displacement.z(temp.toDouble());	// displacement ZZ componet was obtained
+
+							PTEST(nltc->next == NULL);
+							// all info extracted
+							lp.addNodalDisplacement(n, displacement);
+						}
+					}
+					if(c->next == NULL)	// no more entries
+						goto load_pattern_push;
+					c = c->next;
+					PTEST(c->type == JSON_STRING);
+				}
+
+				// get the "domain loads"
+				if(QString::compare(c->text,"domain loads") == 0)
+				{
+					qWarning("domain loads");
+					//TODO finish this
+					PTEST(c->child != NULL);
+					PTEST(c->child->type == JSON_ARRAY);	// the "node loads" value must be a JSON_ARRAY
+					if(c->child->child != NULL)	// array is populated
+					{
+						//TODO this 
+						json_t *nltc;	// domain forces temporary cursor
+						size_t n = 0;	// temporary domain reference
+						QString temp;	// temporary string for the number conversion
+						fem::point force;	// temporary nodal force
+
+						// extract all nodal forces
+						for(json_t *nlc = c->child->child; nlc != NULL; nlc = nlc->next)
+						{
+							PTEST(nlc->type == JSON_OBJECT);
+							PTEST(nlc->child != NULL);
+							nltc = nlc->child;
+
+							// extract the domain reference
+							PTEST(QString::compare(nltc->text,"node") == 0);
+							PTEST(nltc->child != NULL);
+							PTEST(nltc->child->type == JSON_NUMBER);
+							temp = nltc->child->text;
+							n = temp.toLongLong();	// and we have the domain reference
+
+							PTEST(nltc->next != NULL);
+							nltc = nltc->next;
+							PTEST(QString::compare(nltc->text,"force") == 0);
+							PTEST(nltc->child != NULL);
+							PTEST(nltc->child->type == JSON_ARRAY);
+							PTEST(nltc->child->child != NULL);
+							nltc = nltc->child->child;	// point domain force temp cursor to the first item in the "force array"
+
+							// extract the force components
+							PTEST(nltc->type == JSON_NUMBER);
+							temp = nltc->text;
+							force.x(temp.toDouble());	// force XX componet was obtained
+							PTEST(nltc->next != NULL);
+							nltc = nltc->next;
+							PTEST(nltc->type == JSON_NUMBER);
+							temp = nltc->text;
+							force.y(temp.toDouble());	// force YY componet was obtained
+							PTEST(nltc->next != NULL);
+							nltc = nltc->next;
+							PTEST(nltc->type == JSON_NUMBER);
+							temp = nltc->text;
+							force.z(temp.toDouble());	// force ZZ componet was obtained
+
+							PTEST(nltc->next == NULL);
+							// all info extracted
+							lp.addDomainLoad(n, force);
+						}
+					}
+					if(c->next == NULL)	// no more entries
+						goto load_pattern_push;
+					c = c->next;
+					PTEST(c->type == JSON_STRING);
+				}
+
+				// get the "surface loads"
+				if(QString::compare(c->text,"surface loads") == 0)
+				{
+					qWarning("surface loads");
+					//TODO finish this
+					PTEST(c->child != NULL);
+					PTEST(c->child->type == JSON_ARRAY);	// the "node loads" value must be a JSON_ARRAY
+					if(c->child->child != NULL)	// array is populated
+					{
+					}
+					if(c->next == NULL)	// no more entries
+						goto load_pattern_push;
+					c = c->next;
+					PTEST(c->type == JSON_STRING);
+				}
+
+			load_pattern_push:	// nasty hack
+				// push the newly prepared load pattern into the model stack
+				document.model.pushLoadPattern(lp);
+			}
+
+		}
+
+		//TODO finish this
+		cursor = cursor->parent;
+	}
 
 	// move to the combinations field
 	PMOVE(cursor->next);	// pointing to root->combinations

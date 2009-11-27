@@ -9,6 +9,7 @@ namespace fem
 
 	NodalLoad::NodalLoad (const NodalLoad &copied)
 	{
+		this->force = copied.force;
 	}
 
 	NodalLoad::~NodalLoad ()

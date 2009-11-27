@@ -49,6 +49,13 @@ class Model {
 		@return	ERR_NONE if all went well, some other error if something went bad
 		**/
 		enum Error pushNodeRestrictions(size_t node, fem::NodeRestrictions nr);
+
+		/** push a new load pattern into the load pattern stack
+		@param lp	the newly added load pattern
+		@return	ERR_NONE if all went well, some other error if something went bad
+		**/
+		enum Error pushLoadPattern(fem::LoadPattern lp);
+
 };
 
 

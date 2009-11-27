@@ -215,21 +215,32 @@ enum Document::Error Document::save()
 			out << ",";
 		out << "\n\t";
 		out << "{ \"node\":" << it->first;
-		if(it->second.dx == true)
+		/*
+		out << ", displacement:[" ;
+		out << (it->second.dx? "true,": "false,");
+		out << (it->second.dy? "true,": "false,");
+		out << (it->second.dz? "true]": "false]");
+		out << ", rotation:[";
+		out << (it->second.dx? "true,": "false,");
+		out << (it->second.dy? "true,": "false,");
+		out << (it->second.dz? "true]": "false]");
+		*/
+		if(it->second.dx() == true)
 			out << ", \"dx\":true";
-		if(it->second.dy == true)
+		if(it->second.dy() == true)
 			out << ", \"dy\":true";
-		if(it->second.dz == true)
+		if(it->second.dz() == true)
 			out << ", \"dz\":true";
-		if(it->second.rx == true)
+		if(it->second.rx() == true)
 			out << ", \"rx\":true";
-		if(it->second.ry == true)
+		if(it->second.ry() == true)
 			out << ", \"ry\":true";
-		if(it->second.rz == true)
+		if(it->second.rz() == true)
 			out << ", \"rz\":true";
+		out << "}";
 	}
 
-	out << "\t],\n";
+	out << "\n\t],\n";
 
 	// dump the load patterns list
 	out << "\"load patterns\":[";

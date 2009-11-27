@@ -48,4 +48,20 @@ void Model::pushElement(fem::Element::Type type, std::vector<size_t> nodes)
 	this->pushElement(e);
 }
 
+
+enum Model::Error Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions nr)
+{
+	// check if node is set
+	if(node_list.find(pos) == node_list.end())
+		return ERR_INVALID_NODE_REFERENCE;
+
+	//TODO perform aditional error checking
+
+	// push node restrictions object
+	node_restrictions_list[pos] = nr;
+
+	// everything went smoothly
+	return ERR_NONE;
+}
+
 }

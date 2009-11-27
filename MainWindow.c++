@@ -194,7 +194,6 @@ void MainWindow::openProject()
 			document.model.material_list.push_back(mat);
 		}
 	}
-	//TODO finish this
 	cursor = cursor->parent;	// point to root->"materials"
 
 	// move to the nodes field
@@ -245,12 +244,6 @@ void MainWindow::openProject()
 			document.model.setNode(n, p[0], p[1], p[2]);
 		}
 	}
-	else
-	{
-		// root->nodes doesn't have child nodes: empty array
-	}
-
-	//TODO finish this
 	cursor = cursor->parent;	// move to root->"nodes"
 
 	// move to the elements field
@@ -439,14 +432,82 @@ void MainWindow::openProject()
 			// now let's add the element
 			document.model.pushElement(type,tn); 
 		}
-		//TODO finish this
 	}
 	cursor = cursor->parent;	// move to root->"elements"
 
 	// move to the node restrictions field
-	PMOVE(cursor->next);	// pointing to root->node restrictions
-	PTEST( QString::compare(cursor->text,"node restrictions") == 0);
-	//TODO finish this
+	{
+		// work the tree
+		PMOVE(cursor->next);	// pointing to root->node restrictions
+		PTEST( QString::compare(cursor->text,"node restrictions") == 0);
+		PMOVE(cursor->child);	// pointing to root->node restrictions
+		PTEST(cursor->type == JSON_ARRAY);
+
+		if(cursor->child != NULL)	// node restrictions ahoy
+		{
+			// set the temporary variables
+			fem::NodeRestrictions nr;
+			QString temp;
+			size_t node;
+			json_t *c = NULL;	// temporary cursor
+
+			// now let's cycle through all child objects associated with "node restrictions"
+			for(json_t *nrc = cursor->child; nrc != NULL; nrc = nrc->next)
+			{
+				nr.reset();
+				PTEST(nrc->type == JSON_OBJECT);
+				PTEST(nrc->child != NULL);
+				c = nrc->child;
+				PTEST( QString::compare(c->text,"node") == 0);
+				PTEST(c->child->type == JSON_NUMBER);
+				temp = c->child->text;
+				node = temp.toLongLong();	// get the target node number
+
+				// get restrictions
+				if(c->next == NULL)	// no restrictions set. move on
+					continue;	
+				while( (c = c->next) != NULL)
+				{
+					PTEST(c->type == JSON_STRING);
+					switch(fem::NodeRestrictions::extractType(c->text))
+					{
+						case fem::NodeRestrictions::NR_DX:
+							nr.setdx();
+							break;
+
+						case fem::NodeRestrictions::NR_DY:
+							nr.setdy();
+							break;
+
+						case fem::NodeRestrictions::NR_DZ:
+							nr.setdz();
+							break;
+
+						case fem::NodeRestrictions::NR_RX:
+							nr.setrx();
+							break;
+
+						case fem::NodeRestrictions::NR_RY:
+							nr.setry();
+							break;
+
+						case fem::NodeRestrictions::NR_RZ:
+							nr.setrz();
+							break;
+
+						default:
+							PTEST(false);
+							break;
+					}
+				}
+				// now push the new Node REstrictions
+				document.model.pushNodeRestrictions(node, nr);
+			}
+		}
+
+		//TODO finish this
+		cursor = cursor->parent;
+	}
 
 	// move to the load patterns field
 	PMOVE(cursor->next);	// pointing to root->load patterns

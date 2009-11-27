@@ -1033,8 +1033,11 @@ void MainWindow::setUserInterfaceAsClosed()
 
 	// close all MDI windows
 	//TODO define a better way to close the MDI window
+	mdiArea->closeAllSubWindows();
+	/*
 	glWidget->hide();
 	delete glWidget, glWidget = NULL;
+	*/
 	
 }
 

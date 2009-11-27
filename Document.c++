@@ -35,7 +35,11 @@ Document::~Document()
 void Document::clear()
 {
 	unsaved = false;
-	delete file_name;
+	if (file_name != NULL)
+	{
+		delete file_name;
+		file_name = NULL;
+	}
 	document_type = TYPE_NONE;
 	model.clear();
 }

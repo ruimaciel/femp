@@ -1,0 +1,7 @@
+Makefile
+femp
+build/*
+moc_*
+ui/ui_*
+lex.msh_yy.*
+msh.tab.*

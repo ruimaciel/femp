@@ -150,16 +150,6 @@ void GLWidget::paintGL()
 			paintElement(*ei);
 		}
 	}
-
-	/*
-	// test triangle. remove after debug
-	glBegin(GL_TRIANGLES);
-	glNormal3f(0,0,1);
-	glVertex2f(1,0);
-	glVertex2f(0,1);
-	glVertex2f(-1,0);
-	glEnd();
-	*/
 }
 
 
@@ -243,24 +233,7 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 	GLUquadric *p;
 	p = gluNewQuadric();
 	gluSphere(p,1,8,8);
-	/*
-	glBegin(GL_TRIANGLE_FAN);		// Drawing Using Triangles
-		glVertex3f( 0.0f, 0.5f, 0.0f);				// Top
-		glVertex3f(-0.5f, 0.0f, 0.0f);				// Bottom Left
-		glVertex3f( 0.0f, 0.0f, 0.5f);				// Bottom Middle
-		glVertex3f( 0.5f, 0.0f, 0.0f);				// Bottom Left
-		glVertex3f( 0.0f, 0.0f,-0.5f);				// Bottom Middle
-		glVertex3f(-0.5f, 0.0f, 0.0f);				// Bottom Left
-	glEnd();							// Finished Drawing The Triangle
-	glBegin(GL_TRIANGLE_FAN);
-		glVertex3f( 0.0f,-0.5f, 0.0f);				// Top
-		glVertex3f( 0.0f, 0.0f, 0.5f);				// Bottom Middle
-		glVertex3f(-0.5f, 0.0f, 0.0f);				// Bottom Left
-		glVertex3f( 0.0f, 0.0f,-0.5f);				// Bottom Middle
-		glVertex3f( 0.5f, 0.0f, 0.0f);				// Bottom Left
-		glVertex3f( 0.0f, 0.0f, 0.5f);				// Bottom Middle
-	glEnd();
-	*/
+
 	glPopMatrix();
 }
 
@@ -363,29 +336,6 @@ void GLWidget::paintElement(const fem::Element element)
 				nl.push_back(model->node_list.find(element.nodes[5])->second);
 				nl.push_back(model->node_list.find(element.nodes[6])->second);
 				nl.push_back(model->node_list.find(element.nodes[7])->second);
-
-				/*
-				mapsurface[0] = nl[0].data[0];
-				mapsurface[1] = nl[0].data[1];
-				mapsurface[2] = nl[0].data[2];
-
-				mapsurface[3] = nl[1].data[0];
-				mapsurface[4] = nl[1].data[1];
-				mapsurface[5] = nl[1].data[2];
-
-				mapsurface[6] = nl[2].data[0];
-				mapsurface[7] = nl[2].data[1];
-				mapsurface[8] = nl[2].data[2];
-
-				mapsurface[9] = nl[3].data[0];
-				mapsurface[10] = nl[3].data[1];
-				mapsurface[11] = nl[3].data[2];
-
-				glEnable(GL_MAP2_VERTEX_3);
-				glMap2f(GL_MAP2_VERTEX_3,0.0,1.0,3,2,0.0,1.0, 2*3, 1, mapsurface);
-				glMapGrid2f(5,0.0, 1.0, 6, 0.0, 1.0);
-				glEvalMesh2(GL_LINE, 0, 5, 0, 6);
-				*/
 			}
 			break;
 

@@ -922,7 +922,7 @@ void MainWindow::loadOptions()
 
 	// Set default options
 	options.setDefault();
-	/*TODO Set default options */
+	//TODO Set default options
 
 	// Set system options
 	options.setSystem();
@@ -1015,10 +1015,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	// open all relevant MDI windows
 	glWidget = new GLWidget(this);
 	glWidget->setModel(&document.model);
-	/*
-	mdiArea->addSubWindow(glWidget);
-	glWidget->showMaximized();
-	*/
+	
 	window_gl_viewport = new QMdiSubWindow(mdiArea);
 	window_gl_viewport->setWidget(glWidget);
 	window_gl_viewport->setAttribute(Qt::WA_DeleteOnClose);

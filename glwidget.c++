@@ -244,6 +244,113 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 	p = gluNewQuadric();
 	gluSphere(p,1,8,8);
 
+	// paint restrictions, if there are any
+	if(model->node_restrictions_list.find(label) != model->node_restrictions_list.end())
+	{
+		if(model->node_restrictions_list[label].dx())
+		{
+			glBegin(GL_TRIANGLES);
+			glNormal3f(1.4142f, 0, 1.4142f);
+			glVertex3i(0,0,0);
+			glVertex3i(-2,2,2);
+			glVertex3i(-2,-2,2);
+
+			glNormal3f(1.4142f,-1.4142f, 0);
+			glVertex3i(0,0,0);
+			glVertex3i(-2,-2, 2);
+			glVertex3i(-2,-2,-2);
+
+			glNormal3f(1.4142f, 0, -1.4142f);
+			glVertex3i(0,0,0);
+			glVertex3i(-2,-2,-2);
+			glVertex3i(-2, 2,-2);
+
+			glNormal3f(1.4142f, 1.4142f, 0);
+			glVertex3i(0,0,0);
+			glVertex3i(-2, 2,-2);
+			glVertex3i(-2, 2, 2);
+
+			// backface
+			glNormal3f(-1,0,0);
+			glVertex3i(-2, 2, 2);
+			glVertex3i(-2, 2,-2);
+			glVertex3i(-2,-2,-2);
+			glVertex3i(-2,-2,-2);
+			glVertex3i(-2,-2, 2);
+			glVertex3i(-2, 2, 2);
+			glEnd();
+		}
+		if(model->node_restrictions_list[label].dy())
+		{
+			// render the pyramid
+			glBegin(GL_TRIANGLES);
+			glNormal3i( 2, 0, 2);
+			glVertex3i( 0, 0, 0);
+			glVertex3i( 2,-2,-2);
+			glVertex3i( 2, 2,-2);
+
+			glNormal3i( 0,-2, 2);
+			glVertex3i(0,0,0);
+			glVertex3i(-2,-2,-2);
+			glVertex3i( 2,-2,-2);
+
+			glNormal3i(-2, 0, 2);
+			glVertex3i(0,0,0);
+			glVertex3i(-2, 2,-2);
+			glVertex3i(-2,-2,-2);
+
+			glNormal3i( 0, 2, 2);
+			glVertex3i(0,0,0);
+			glVertex3i( 2, 2,-2);
+			glVertex3i(-2, 2,-2);
+
+			// backface
+			glNormal3f( 0,0,-1);
+			glVertex3i( 2, 2,-2);
+			glVertex3i(-2,-2,-2);
+			glVertex3i(-2, 2,-2);
+			glVertex3i(-2,-2,-2);
+			glVertex3i( 2, 2,-2);
+			glVertex3i( 2,-2,-2);
+			glEnd();
+		}
+		if(model->node_restrictions_list[label].dy())
+		{
+			glRotatef(-90,1,0,0);
+			// render the pyramid
+			glBegin(GL_TRIANGLES);
+			glNormal3i( 2, 0, 2);
+			glVertex3i( 0, 0, 0);
+			glVertex3i( 2,-2,-2);
+			glVertex3i( 2, 2,-2);
+
+			glNormal3i( 0,-2, 2);
+			glVertex3i(0,0,0);
+			glVertex3i(-2,-2,-2);
+			glVertex3i( 2,-2,-2);
+
+			glNormal3i(-2, 0, 2);
+			glVertex3i(0,0,0);
+			glVertex3i(-2, 2,-2);
+			glVertex3i(-2,-2,-2);
+
+			glNormal3i( 0, 2, 2);
+			glVertex3i(0,0,0);
+			glVertex3i( 2, 2,-2);
+			glVertex3i(-2, 2,-2);
+
+			// backface
+			glNormal3f( 0,0,-1);
+			glVertex3i( 2, 2,-2);
+			glVertex3i(-2,-2,-2);
+			glVertex3i(-2, 2,-2);
+			glVertex3i(-2,-2,-2);
+			glVertex3i( 2, 2,-2);
+			glVertex3i( 2,-2,-2);
+			glEnd();
+		}
+	}
+
 	// end 
 	glPopMatrix();
 }

@@ -1,3 +1,4 @@
 option	type	description
 project.new.default_directory	string	home folder subdirectory which acts as the pre-defined directory where the "new project" file dialog starts. If it doesn't exist or the given path is invalid then the "new project" dialog defaults to the ~/ folder.
+viewport.node.radius	float	sets the default scale for the sphere depicting the nodes
 

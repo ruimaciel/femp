@@ -86,7 +86,7 @@ bool ProgramOptions::wasSet(const std::string text) const
 }
 
 
-bool ProgramOptions::getOption(const std::string op, long int &val)
+bool ProgramOptions::getOption(const std::string op, long int &val, long int default_value)
 {
 	ProgramOptions::iterator it;
 	it = this->find(op);
@@ -100,18 +100,20 @@ bool ProgramOptions::getOption(const std::string op, long int &val)
 		else
 		{
 			std::cerr << "option " << op << " isn't an integer" << std::endl;
+			val = default_value;
 			return false;
 		}
 	}
 	else
 	{
 		std::cerr << "option " << op << " wasn't set" << std::endl;
+		val = default_value;
 		return false;
 	}
 }
 
 
-bool ProgramOptions::getOption(const std::string op, double &val)
+bool ProgramOptions::getOption(const std::string op, double &val, double default_value)
 {
 	ProgramOptions::iterator it;
 	it = this->find(op);
@@ -125,18 +127,20 @@ bool ProgramOptions::getOption(const std::string op, double &val)
 		else
 		{
 			std::cerr << "option " << op << " isn't a float" << std::endl;
+			val = default_value;
 			return false;
 		}
 	}
 	else
 	{
 		std::cerr << "option " << op << " wasn't set" << std::endl;
+		val = default_value;
 		return false;
 	}
 }
 
 
-bool ProgramOptions::getOption(const std::string op, std::string &val)
+bool ProgramOptions::getOption(const std::string op, std::string &val, std::string default_value)
 {
 	ProgramOptions::iterator it;
 	it = (*this).find(op);
@@ -150,12 +154,14 @@ bool ProgramOptions::getOption(const std::string op, std::string &val)
 		else
 		{
 			std::cerr << "option " << op << " isn't a text" << std::endl;
+			val = default_value;
 			return false;
 		}
 	}
 	else
 	{
 		std::cerr << "option " << op << " wasn't set" << std::endl;
+		val = default_value;
 		return false;
 	}
 }

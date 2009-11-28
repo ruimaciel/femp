@@ -75,11 +75,10 @@ class ProgramOptions: public std::map<std::string, class Option>
 		void loadOptionsFromFile(std::istream& is, Option::OPTIONS_LEVEL level, std::string prefix = std::string());
 
 		// set the current options level
-		void setLevel(enum Option::OPTIONS_LEVEL level)	{ option_level = level; }
-		void setDefaultLevel()	{ option_level = Option::OPT_DEFAULT; }
-		void setSystemLevel()	{ option_level = Option::OPT_SYSTEM; }
-		void setLocalLevel()	{ option_level = Option::OPT_LOCAL; }
-		void setTemporaryLevel()	{ option_level = Option::OPT_TEMPORARY; }
+		void setDefault()	{ option_level = Option::OPT_DEFAULT; }
+		void setSystem()	{ option_level = Option::OPT_SYSTEM; }
+		void setLocal()		{ option_level = Option::OPT_LOCAL; }
+		void setTemporary()	{ option_level = Option::OPT_TEMPORARY; }
 
 		// set the options
 		void setOption(const std::string, long int, Option::OPTIONS_LEVEL);
@@ -90,9 +89,9 @@ class ProgramOptions: public std::map<std::string, class Option>
 		bool wasSet(const std::string) const;
 
 		// automatically gets the option or, if it isn't set or if it's the wrong type, writes to stdout
-		bool getOption(const std::string, long int &);
-		bool getOption(const std::string, double &);
-		bool getOption(const std::string, std::string &);
+		bool getOption(const std::string, long int &, long int);
+		bool getOption(const std::string, double &, double);
+		bool getOption(const std::string, std::string &, std::string);
 
 		// generates an options file 
 		//TODO implement an export mechanism that enables exporting in the full and compacted formats

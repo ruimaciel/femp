@@ -921,11 +921,11 @@ void MainWindow::loadOptions()
 	std::string path;
 
 	// Set default options
-	options.setDefault();
+	options.setDefaultLevel();
 	//TODO Set default options
 
 	// Set system options
-	options.setSystem();
+	options.setSystemLevel();
 	path = "/etc/femp/options.opt";
 	is.open(path.c_str(), std::ifstream::in);
 	if(is.is_open())
@@ -935,7 +935,7 @@ void MainWindow::loadOptions()
 	}
 
 	// Set local options
-	options.setLocal();
+	options.setLocalLevel();
 	path = getenv("HOME");
 	path += "/.femp/options.opt";
 	is.open(path.c_str(), std::ifstream::in);

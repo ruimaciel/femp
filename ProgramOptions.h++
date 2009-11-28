@@ -75,10 +75,11 @@ class ProgramOptions: public std::map<std::string, class Option>
 		void loadOptionsFromFile(std::istream& is, Option::OPTIONS_LEVEL level, std::string prefix = std::string());
 
 		// set the current options level
-		void setDefault()	{ option_level = Option::OPT_DEFAULT; }
-		void setSystem()	{ option_level = Option::OPT_SYSTEM; }
-		void setLocal()		{ option_level = Option::OPT_LOCAL; }
-		void setTemporary()	{ option_level = Option::OPT_TEMPORARY; }
+		void setLevel(enum Option::OPTIONS_LEVEL level)	{ option_level = level; }
+		void setDefaultLevel()	{ option_level = Option::OPT_DEFAULT; }
+		void setSystemLevel()	{ option_level = Option::OPT_SYSTEM; }
+		void setLocalLevel()	{ option_level = Option::OPT_LOCAL; }
+		void setTemporaryLevel()	{ option_level = Option::OPT_TEMPORARY; }
 
 		// set the options
 		void setOption(const std::string, long int, Option::OPTIONS_LEVEL);

@@ -528,7 +528,6 @@ void MainWindow::openProject()
 				PTEST(c->type == JSON_STRING);
 				if(QString::compare(c->text,"node loads") == 0)
 				{
-					qWarning("node loads");
 					// next item is a node load
 					PTEST(c->child != NULL);
 					PTEST(c->child->type == JSON_ARRAY);	// the "node loads" value must be a JSON_ARRAY
@@ -590,7 +589,6 @@ void MainWindow::openProject()
 				// get the "node displacements"
 				if(QString::compare(c->text,"node displacements") == 0)
 				{
-					qWarning("node displacements");
 					//TODO finish this
 					PTEST(c->child != NULL);
 					PTEST(c->child->type == JSON_ARRAY);	// the "node loads" value must be a JSON_ARRAY
@@ -653,7 +651,6 @@ void MainWindow::openProject()
 				// get the "domain loads"
 				if(QString::compare(c->text,"domain loads") == 0)
 				{
-					qWarning("domain loads");
 					//TODO finish this
 					PTEST(c->child != NULL);
 					PTEST(c->child->type == JSON_ARRAY);	// the "node loads" value must be a JSON_ARRAY
@@ -716,7 +713,6 @@ void MainWindow::openProject()
 				// get the "surface loads"
 				if(QString::compare(c->text,"surface loads") == 0)
 				{
-					qWarning("surface loads");
 					//TODO finish this
 					PTEST(c->child != NULL);
 					PTEST(c->child->type == JSON_ARRAY);	// the "node loads" value must be a JSON_ARRAY

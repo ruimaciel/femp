@@ -347,6 +347,44 @@ void GLWidget::paintElement(const fem::Element element)
 				nl.push_back(model->node_list.find(element.nodes[5])->second);
 				nl.push_back(model->node_list.find(element.nodes[6])->second);
 				nl.push_back(model->node_list.find(element.nodes[7])->second);
+				glBegin(GL_QUADS);
+				// first surface
+				glNormal3dv(fem::getNormalVector(nl[0], nl[3], nl[2]).data);
+				glVertex3dv(nl[0].data);
+				glVertex3dv(nl[3].data);
+				glVertex3dv(nl[2].data);
+				glVertex3dv(nl[1].data);
+				// second surface
+				glNormal3dv(fem::getNormalVector(nl[1], nl[2], nl[6]).data);
+				glVertex3dv(nl[1].data);
+				glVertex3dv(nl[2].data);
+				glVertex3dv(nl[6].data);
+				glVertex3dv(nl[5].data);
+				// third surface
+				glNormal3dv(fem::getNormalVector(nl[5], nl[6], nl[7]).data);
+				glVertex3dv(nl[6].data);
+				glVertex3dv(nl[7].data);
+				glVertex3dv(nl[4].data);
+				glVertex3dv(nl[5].data);
+				// fourth surface
+				glNormal3dv(fem::getNormalVector(nl[4], nl[7], nl[3]).data);
+				glVertex3dv(nl[4].data);
+				glVertex3dv(nl[7].data);
+				glVertex3dv(nl[3].data);
+				glVertex3dv(nl[0].data);
+				// fifth surface, top
+				glNormal3dv(fem::getNormalVector(nl[2], nl[3], nl[7]).data);
+				glVertex3dv(nl[2].data);
+				glVertex3dv(nl[3].data);
+				glVertex3dv(nl[7].data);
+				glVertex3dv(nl[6].data);
+				// sixth surface, bottom
+				glNormal3dv(fem::getNormalVector(nl[0], nl[1], nl[5]).data);
+				glVertex3dv(nl[0].data);
+				glVertex3dv(nl[1].data);
+				glVertex3dv(nl[5].data);
+				glVertex3dv(nl[4].data);
+				glEnd();
 			}
 			break;
 

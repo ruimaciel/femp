@@ -11,11 +11,11 @@
 GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 {
 	makeCurrent();
-	camera.rotation.data[0] = 0;
-	camera.rotation.data[1] = 0;
-	camera.rotation.data[2] = 0;
 
-	camera.pos.z(-10);
+	// initialize the camera
+	camera.reset();
+	camera.setCenter(0,0,-10);
+
 	node_scale = 0.05f;
 	model = NULL;
 
@@ -89,6 +89,17 @@ void GLWidget::setPosition(int x, int y)
 
 void GLWidget::initializeGL()
 {
+	// set the camera position according to the nodal center
+	double pos[3] = {0};
+	for(std::map<size_t, fem::Node>::iterator it = model->node_list.begin(); it != model->node_list.end(); it++)
+	{
+		pos[0] -= it->second.x();
+		pos[1] -= it->second.y();
+		pos[2] -= it->second.z();
+		camera.setPosition(pos[0]/model->node_list.size(),pos[1]/model->node_list.size(),pos[2]/model->node_list.size());
+	}
+
+	// handle opengl
 	this->makeCurrent();
 	GLfloat LightAmbient[]= { 0.2f, 0.2f, 0.2f, 1.0f };
 	GLfloat LightDiffuse[]= { 0.7f, 0.7f, 0.7f, 1.0f };
@@ -126,13 +137,10 @@ void GLWidget::paintGL()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glTranslated(camera.pos.x(),camera.pos.y(),camera.pos.z());
-	glRotated(camera.rotation.data[0], 1.0, 0.0, 0.0);
-	glRotated(camera.rotation.data[1], 0.0, 1.0, 0.0);
-	glRotated(camera.rotation.data[2], 0.0, 0.0, 1.0);
+	// sets the camera position
+	camera.reposition();	
 
 	// render all nodes
 	if(model)
@@ -194,7 +202,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 
 void GLWidget::wheelEvent(QWheelEvent *event)
 {
-	camera.pos.inc_z(event->delta()/80.0f);
+	camera.pos.inc_x(event->delta()/800.0f);
 	updateGL();
 	event->accept();
 }

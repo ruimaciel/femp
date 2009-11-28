@@ -16,7 +16,8 @@ GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 	camera.reset();
 	camera.setCenter(0,0,-10);
 
-	node_scale = 0.05f;
+	setNodeRadiusScale(20);	// default node radius, scaled
+	
 	model = NULL;
 
 	qtPurple = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0);
@@ -222,7 +223,7 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 	glPushMatrix();
 	glTranslated(node.data[0],node.data[1],node.data[2]);
 	
-	glScalef(node_scale, node_scale, node_scale);
+	glScalef(node_scale*10/scale, node_scale*10/scale, node_scale*10/scale);
 
 	//TODO find a better rendering for the nodes
 	glBegin(GL_LINES);
@@ -237,11 +238,13 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 		glVertex3i(0,0,2);
 	glEnd();
 
+	// paint the nodal sphere
 	glColor3f(0.0f,0.8f,0.8f);
 	GLUquadric *p;
 	p = gluNewQuadric();
 	gluSphere(p,1,8,8);
 
+	// end 
 	glPopMatrix();
 }
 

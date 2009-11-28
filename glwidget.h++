@@ -19,6 +19,7 @@ class GLWidget : public QGLWidget
 		QSize minimumSizeHint() const;
 		QSize sizeHint() const;
 		void setModel(fem::Model *model);	// passes a reference to a fem::Model data structure
+		void setNodeRadiusScale(float r)	{ node_scale = r; }
 
 	public Q_SLOTS:
 		void setXRotation(int angle);

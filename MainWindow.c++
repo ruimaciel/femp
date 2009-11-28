@@ -47,7 +47,7 @@ void MainWindow::newProject()
 	std::string default_path, tmp;
 
 	default_path = getenv("HOME");
-	if(options.getOption("project.new.default_directory",tmp))
+	if(options.getOption("project.new.default_directory",tmp, ""))
 	{
 		default_path += "/" + tmp;
 	}
@@ -921,11 +921,12 @@ void MainWindow::loadOptions()
 	std::string path;
 
 	// Set default options
-	options.setDefaultLevel();
+	options.setDefault();
+	options.setOption("viewport.node.radius",10.0f, Option::OPT_DEFAULT);	// sets the default node radius
 	//TODO Set default options
 
 	// Set system options
-	options.setSystemLevel();
+	options.setSystem();
 	path = "/etc/femp/options.opt";
 	is.open(path.c_str(), std::ifstream::in);
 	if(is.is_open())
@@ -935,7 +936,7 @@ void MainWindow::loadOptions()
 	}
 
 	// Set local options
-	options.setLocalLevel();
+	options.setLocal();
 	path = getenv("HOME");
 	path += "/.femp/options.opt";
 	is.open(path.c_str(), std::ifstream::in);
@@ -1015,6 +1016,9 @@ void MainWindow::setUserInterfaceAsOpened()
 	// open all relevant MDI windows
 	glWidget = new GLWidget(this);
 	glWidget->setModel(&document.model);
+	double radius;
+	options.getOption("viewport.node.radius",radius,20);
+	glWidget->setNodeRadiusScale(radius);
 	
 	window_gl_viewport = new QMdiSubWindow(mdiArea);
 	window_gl_viewport->setWidget(glWidget);

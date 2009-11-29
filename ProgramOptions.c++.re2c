@@ -364,38 +364,31 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, Option::
 				break;
 
 			case 3:	// waiting for option's value
+				temp.clear();
+				if(!prefix.empty())
+				{
+					temp = prefix;
+					if(!opname.empty()) 
+						temp += ".";
+				}
+				// generate string with full option name
+				it = opname.begin();
+				temp += *it;
+				for(it++; it != opname.end(); it++)
+				{
+					temp += "." + *it;
+				}
 				switch(token)
 				{
 					case LEX_INTEGER:
-						it = opname.begin();
-						temp = prefix + *it;
-						// generate string with full option name
-						for(it++; it != opname.end(); it++)
-						{
-							temp += "." + *it;
-						}
 						state = 4;	// wait for EOL before committing integer
 						break;
 
 					case LEX_FLOAT:
-						it = opname.begin();
-						temp = prefix + *it;
-						// generate string with full option name
-						for(it++; it != opname.end(); it++)
-						{
-							temp += "." + *it;
-						}
 						state = 5;	// wait for EOL before committing float
 						break;
 
 					case LEX_STRING:
-						it = opname.begin();
-						temp = prefix + *it;
-						// generate string with full option name
-						for(it++; it != opname.end(); it++)
-						{
-							temp += "." + *it;
-						}
 						state = 6;	// wait for EOL before committing string
 						break;
 

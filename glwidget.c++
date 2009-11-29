@@ -18,7 +18,7 @@ GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 
 	setNodeRadiusScale(20);	// default node radius, scaled
 	
-	model = NULL;
+	document = NULL;
 
 	qtPurple = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0);
 }
@@ -44,10 +44,10 @@ QSize GLWidget::sizeHint() const
 /*
 Sets which fem::Model object this widget will render
 */
-void GLWidget::setModel(fem::Model *model)
+void GLWidget::setDocument(Document *document)
 {
-	assert(model != NULL);
-	this->model = model;
+	assert(document != NULL);
+	this->document = document;
 }
 
 
@@ -92,12 +92,12 @@ void GLWidget::initializeGL()
 {
 	// set the camera position according to the nodal center
 	double pos[3] = {0};
-	for(std::map<size_t, fem::Node>::iterator it = model->node_list.begin(); it != model->node_list.end(); it++)
+	for(std::map<size_t, fem::Node>::iterator it = document->model.node_list.begin(); it != document->model.node_list.end(); it++)
 	{
 		pos[0] -= it->second.x();
 		pos[1] -= it->second.y();
 		pos[2] -= it->second.z();
-		camera.setPosition(pos[0]/model->node_list.size(),pos[1]/model->node_list.size(),pos[2]/model->node_list.size());
+		camera.setPosition(pos[0]/document->model.node_list.size(),pos[1]/document->model.node_list.size(),pos[2]/document->model.node_list.size());
 	}
 
 	// handle opengl
@@ -144,17 +144,17 @@ void GLWidget::paintGL()
 	camera.reposition();	
 
 	// render all nodes
-	if(model)
+	if(document)
 	{
 		std::map<size_t,fem::Node>::iterator ni;	// node iterator
-		for(ni = model->node_list.begin(); ni != model->node_list.end(); ni++)
+		for(ni = document->model.node_list.begin(); ni != document->model.node_list.end(); ni++)
 		{
 			paintNode(ni->first, ni->second);
 		}
 
 		// render all elements
 		std::vector<fem::Element>::iterator ei;	// element iterator
-		for(ei = model->element_list.begin(); ei != model->element_list.end(); ei++)
+		for(ei = document->model.element_list.begin(); ei != document->model.element_list.end(); ei++)
 		{
 			paintElement(*ei);
 		}
@@ -244,9 +244,9 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 	gluSphere(p,1,8,8);
 
 	// paint restrictions, if there are any
-	if(model->node_restrictions_list.find(label) != model->node_restrictions_list.end())
+	if(document->model.node_restrictions_list.find(label) != document->model.node_restrictions_list.end())
 	{
-		if(model->node_restrictions_list[label].dx())
+		if(document->model.node_restrictions_list[label].dx())
 		{
 			glBegin(GL_TRIANGLES);
 			glNormal3f(1.4142f, 0, 1.4142f);
@@ -279,7 +279,7 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 			glVertex3i(-2, 2, 2);
 			glEnd();
 		}
-		if(model->node_restrictions_list[label].dy())
+		if(document->model.node_restrictions_list[label].dy())
 		{
 			// render the pyramid
 			glBegin(GL_TRIANGLES);
@@ -313,7 +313,7 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 			glVertex3i( 2,-2,-2);
 			glEnd();
 		}
-		if(model->node_restrictions_list[label].dy())
+		if(document->model.node_restrictions_list[label].dy())
 		{
 			glRotatef(-90,1,0,0);
 			// render the pyramid
@@ -371,8 +371,8 @@ void GLWidget::paintElement(const fem::Element element)
 					//TODO remove element
 					return;
 				}
-				nl.push_back(model->node_list.find(element.nodes[0])->second);
-				nl.push_back(model->node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
 				glBegin(GL_LINES);
 				glVertex3dv(nl[0].data);
 				glVertex3dv(nl[1].data);
@@ -388,9 +388,9 @@ void GLWidget::paintElement(const fem::Element element)
 					//TODO remove element
 					return;
 				}
-				nl.push_back(model->node_list.find(element.nodes[0])->second);
-				nl.push_back(model->node_list.find(element.nodes[1])->second);
-				nl.push_back(model->node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
 				glBegin(GL_LINE_STRIP);
 				glVertex3dv(nl[0].data);
 				glVertex3dv(nl[1].data);
@@ -408,10 +408,10 @@ void GLWidget::paintElement(const fem::Element element)
 					//TODO remove element
 					return;
 				}
-				nl.push_back(model->node_list.find(element.nodes[0])->second);
-				nl.push_back(model->node_list.find(element.nodes[1])->second);
-				nl.push_back(model->node_list.find(element.nodes[2])->second);
-				nl.push_back(model->node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
 				glBegin(GL_TRIANGLES);
 					glNormal3dv(fem::getNormalVector(nl[0], nl[2], nl[1]).data);
 					glVertex3dv(nl[0].data);
@@ -445,14 +445,14 @@ void GLWidget::paintElement(const fem::Element element)
 					//TODO remove element
 					return;
 				}
-				nl.push_back(model->node_list.find(element.nodes[0])->second);
-				nl.push_back(model->node_list.find(element.nodes[1])->second);
-				nl.push_back(model->node_list.find(element.nodes[2])->second);
-				nl.push_back(model->node_list.find(element.nodes[3])->second);
-				nl.push_back(model->node_list.find(element.nodes[4])->second);
-				nl.push_back(model->node_list.find(element.nodes[5])->second);
-				nl.push_back(model->node_list.find(element.nodes[6])->second);
-				nl.push_back(model->node_list.find(element.nodes[7])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[6])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[7])->second);
 				glBegin(GL_QUADS);
 				// first surface
 				glNormal3dv(fem::getNormalVector(nl[0], nl[3], nl[2]).data);

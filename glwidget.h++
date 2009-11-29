@@ -4,7 +4,7 @@
 #include <QGLWidget>
 #include <QWheelEvent>
 
-#include "fem/Model.h++"
+#include "Document.h++"
 #include "Camera.h++"
 
 
@@ -18,7 +18,7 @@ class GLWidget : public QGLWidget
 
 		QSize minimumSizeHint() const;
 		QSize sizeHint() const;
-		void setModel(fem::Model *model);	// passes a reference to a fem::Model data structure
+		void setDocument(Document *);	// sets a reference to a document object
 		void setNodeRadiusScale(float r)	{ node_scale = r; }
 
 	public Q_SLOTS:
@@ -52,7 +52,7 @@ class GLWidget : public QGLWidget
 		QPoint lastPos;
 		QColor qtPurple;
 
-		fem::Model *model;
+		Document *document;
 
 		float node_scale;	// the scale used by the nodes, reset when a window resizes
 		float scale;

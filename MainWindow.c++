@@ -1011,7 +1011,7 @@ void MainWindow::setUserInterfaceAsOpened()
 
 	// open all relevant MDI windows
 	glWidget = new GLWidget(this);
-	glWidget->setModel(&document.model);
+	glWidget->setDocument(&document);
 	double radius;
 	options.getOption("viewport.node.radius",radius,20);
 	glWidget->setNodeRadiusScale(radius);

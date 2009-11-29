@@ -918,7 +918,7 @@ void MainWindow::loadOptions()
 
 	// Set default options
 	options.setDefault();
-	options.setOption("viewport.node.radius",10.0f, Option::OPT_DEFAULT);	// sets the default node radius
+	options.setOption("viewport.node.radius",10.0f);	// sets the default node radius
 	//TODO Set default options
 
 	// Set system options

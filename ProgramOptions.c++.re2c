@@ -64,34 +64,34 @@ ProgramOptions::~ProgramOptions()
 }
 
 
-void ProgramOptions::setOption(const std::string option, long int value, Option::OPTIONS_LEVEL level)
+void ProgramOptions::setOption(const std::string option, long int value)
 {
 	Option op;
-	op.setOption(value, level);
+	op.setOption(value, option_level);
 	(*this)[option] = op;
 }
 
 
-void ProgramOptions::setOption(const std::string option, double value, Option::OPTIONS_LEVEL level)
+void ProgramOptions::setOption(const std::string option, double value)
 {
 	Option op;
-	op.setOption(value, level);
+	op.setOption(value, option_level);
 	(*this)[option] = op;
 }
 
 
-void ProgramOptions::setOption(const std::string option, std::string value, Option::OPTIONS_LEVEL level)
+void ProgramOptions::setOption(const std::string option, std::string value)
 {
 	Option op;
-	op.setOption(value, level);
+	op.setOption(value, option_level);
 	(*this)[option] = op;
 }
 
 
-void ProgramOptions::setOption(const std::string option, bool value, Option::OPTIONS_LEVEL level)
+void ProgramOptions::setOption(const std::string option, bool value)
 {
 	Option op;
-	op.setOption(value, level);
+	op.setOption(value, option_level);
 	(*this)[option] = op;
 }
 
@@ -248,7 +248,7 @@ int ProgramOptions::importFile(std::istream &is, std::string prefix)
 {
 	Parser *p = new Parser();
 
-	switch(p->parse(*this, is, option_level, prefix))
+	switch(p->parse(*this, is, prefix))
 	{
 		case 0:
 			break;
@@ -361,7 +361,7 @@ std:
 }
 
 
-int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, Option::OPTIONS_LEVEL level, std::string prefix )
+int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, std::string prefix )
 {
 	using namespace std;
 
@@ -476,14 +476,14 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, Option::
 				{
 					case LEX_EOL:
 						line++;
-						op.setOption(temp, value.integer, level);
+						op.setOption(temp, value.integer);
 						temp.clear();
 						opname.clear();	//TODO implement support the compact format
 						state = 0;
 						break;
 
 					case LEX_EOF:
-						op.setOption(temp, value.integer, level);
+						op.setOption(temp, value.integer);
 						return 0;	//TODO implement support the compact format
 						break;
 
@@ -498,14 +498,14 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, Option::
 				{
 					case LEX_EOL:
 						line++;
-						op.setOption(temp, value.fp, level);
+						op.setOption(temp, value.fp);
 						temp.clear();
 						opname.clear();	//TODO implement support the compact format
 						state = 0;
 						break;
 
 					case LEX_EOF:
-						op.setOption(temp, value.fp, level);
+						op.setOption(temp, value.fp);
 						return 0;	//TODO implement support the compact format
 						break;
 
@@ -520,14 +520,14 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, Option::
 				{
 					case LEX_EOL:
 						line++;
-						op.setOption(temp, text, level);
+						op.setOption(temp, text);
 						temp.clear();
 						opname.clear();	//TODO implement support the compact format
 						state = 0;
 						break;
 
 					case LEX_EOF:
-						op.setOption(temp, text, level);
+						op.setOption(temp, text);
 						return 0;	//TODO implement support the compact format
 					default:
 						WARN();
@@ -540,14 +540,14 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, Option::
 				{
 					case LEX_EOL:
 						line++;
-						op.setOption(temp, value.b, level);
+						op.setOption(temp, value.b);
 						temp.clear();
 						opname.clear();	//TODO implement support the compact format
 						state = 0;
 						break;
 
 					case LEX_EOF:
-						op.setOption(temp, value.b, level);
+						op.setOption(temp, value.b);
 						return 0;	//TODO implement support the compact format
 					default:
 						WARN();

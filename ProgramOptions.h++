@@ -85,10 +85,10 @@ class ProgramOptions: public std::map<std::string, class Option>
 		void setTemporary()	{ option_level = Option::OPT_TEMPORARY; }
 
 		// set the options
-		void setOption(const std::string, long int, Option::OPTIONS_LEVEL);
-		void setOption(const std::string, double, Option::OPTIONS_LEVEL level);
-		void setOption(const std::string, std::string, Option::OPTIONS_LEVEL level);
-		void setOption(const std::string, bool, Option::OPTIONS_LEVEL level);
+		void setOption(const std::string, long int);
+		void setOption(const std::string, double);
+		void setOption(const std::string, std::string);
+		void setOption(const std::string, bool);
 
 		// checks if a given option was set
 		bool wasSet(const std::string) const;
@@ -135,7 +135,7 @@ class ProgramOptions: public std::map<std::string, class Option>
 			char *pos; 	// marks the current position
 			char *marker;	
 			char *lim;	// marks the string limit
-			int lex_state;	// lexer state, to avoid ambiguities
+			int lex_state;	// lexer state, to avoid grammar ambiguities
 
 			public:
 				Parser();
@@ -146,7 +146,7 @@ class ProgramOptions: public std::map<std::string, class Option>
 				enum LEXER_TOKENS lexer(std::istream &is);
 
 			public:
-				int parse(ProgramOptions &op, std::istream &is, Option::OPTIONS_LEVEL level, std::string prefix = std::string() );
+				int parse(ProgramOptions &op, std::istream &is, std::string prefix = std::string() );
 
 				friend class ProgramOptions;
 		};

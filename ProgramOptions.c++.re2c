@@ -45,6 +45,14 @@ void Option::setOption(std::string value, OPTIONS_LEVEL level)
 }
 
 
+void Option::setOption(bool value, OPTIONS_LEVEL level)
+{
+	this->option_level = level;
+	this->type = VAL_BOOL;
+	this->value.b = value;
+}
+
+
 ProgramOptions::ProgramOptions()
 {
 	option_level = Option::OPT_DEFAULT;
@@ -73,6 +81,14 @@ void ProgramOptions::setOption(const std::string option, double value, Option::O
 
 
 void ProgramOptions::setOption(const std::string option, std::string value, Option::OPTIONS_LEVEL level)
+{
+	Option op;
+	op.setOption(value, level);
+	(*this)[option] = op;
+}
+
+
+void ProgramOptions::setOption(const std::string option, bool value, Option::OPTIONS_LEVEL level)
 {
 	Option op;
 	op.setOption(value, level);
@@ -167,6 +183,33 @@ bool ProgramOptions::getOption(const std::string op, std::string &val, std::stri
 }
 
 
+bool ProgramOptions::getOption(const std::string op, bool &val, bool default_value)
+{
+	ProgramOptions::iterator it;
+	it = (*this).find(op);
+	if(it != this->end())
+	{
+		if( it->second.isBool())
+		{
+			val = it->second.getBool();
+			return true;
+		}
+		else
+		{
+			std::cerr << "option " << op << " isn't a bool" << std::endl;
+			val = default_value;
+			return false;
+		}
+	}
+	else
+	{
+		std::cerr << "option " << op << " wasn't set" << std::endl;
+		val = default_value;
+		return false;
+	}
+}
+
+
 std::ostream& operator << (std::ostream& os, ProgramOptions &prog)
 {
 	/*TODO implement this */
@@ -187,6 +230,11 @@ std::ostream& operator << (std::ostream& os, ProgramOptions &prog)
 			case Option::VAL_STRING:
 				os << "\"" << (*it).second.text << "\"" << std::endl;
 				break;
+
+			case Option::VAL_BOOL:
+				os << ( (*it).second.value.b ? "true": "false") << std::endl;
+				break;
+
 
 			default:
 				/* this section is never reached */
@@ -219,6 +267,7 @@ ProgramOptions::Parser::Parser()
 {
 	buffer[0] = '\0';
 	pos = tok = lim = buffer;
+	lex_state = 0;
 	value.integer = 0;
 }
 
@@ -260,6 +309,11 @@ std:
 	#define CP { tmp.clear(); tmp.append(tok,pos-tok); }
 	#define CPo { text.clear(); text.append(tok,pos-tok); }
 	#define CPs { text.clear(); text.append(tok+1,pos-tok-2); }
+
+	switch(lex_state)
+	{
+		case 0:	// starting
+		{
 	/*!re2c
 	re2c:yyfill:enable   	= 1;
 	re2c:define:YYCTYPE  	= "char";
@@ -274,16 +328,31 @@ std:
 	indent	= [\t];
 
 	'.'	{ return LEX_OPTION_SEPARATOR; }
-	'='	{ return LEX_OPTION_ASSIGN; }
+	'='	{ lex_state = 1; return LEX_OPTION_ASSIGN; }
 	indent	{ return LEX_INDENT; }
 	option	{ CPo; return LEX_OPTION_NAME; }
-	integer	{ CP; value.integer = atoi(tmp.c_str()); return LEX_INTEGER; }
-	float	{ CP; value.fp = atof(tmp.c_str()); return LEX_FLOAT; }
-	string	{ CPs; return LEX_STRING; }
 	'\n'	{ return LEX_EOL; }
 	' '+	{ goto std;}
 	.	{ return LEX_UNKNOWN_TOKEN; }
 	*/
+	}
+	break;
+
+	case 1:	// only parses values
+	{
+	/*!re2c
+	integer	{ CP; value.integer = atoi(tmp.c_str()); return LEX_INTEGER; }
+	float	{ CP; value.fp = atof(tmp.c_str()); return LEX_FLOAT; }
+	string	{ CPs; return LEX_STRING; }
+	"true"	{ value.b = true; return LEX_BOOL; }
+	"false"	{ value.b = false; return LEX_BOOL; }
+	'\n'	{ lex_state = 0; return LEX_EOL; }
+	' '+	{ goto std;}
+	.	{ return LEX_UNKNOWN_TOKEN; }
+	*/
+	}
+	break;
+	}
 	#undef YYFILL
 	#undef CP
 	#undef CPo
@@ -296,14 +365,14 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, Option::
 {
 	using namespace std;
 
-	#define WARN() {cerr << "ProgramOptions::Parser error at line "<< line << ", state " << state << " defaulted\n" << std::endl;}
+	#define WARN() {cerr << "ProgramOptions::Parser error at line "<< line << ", state " << state << " defaulted" << std::endl; state = 20;}
 
 	int state = 0;
 	enum LEXER_TOKENS token = LEX_UNKNOWN_TOKEN;
 	vector<string> opname;
 	string temp;
 	vector<string>::iterator it;
-	size_t line = 0;
+	size_t line = 1;
 	
 	do {
 		token = lexer(is);
@@ -392,6 +461,10 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, Option::
 						state = 6;	// wait for EOL before committing string
 						break;
 
+					case LEX_BOOL:
+						state = 7;	// wait for EOL before committing bool
+						break;
+
 					default:
 						WARN();
 						break;
@@ -416,7 +489,6 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, Option::
 
 					default:
 						WARN();
-						state = 20;	// wait until EOL
 						break;
 				}
 				break;
@@ -463,16 +535,36 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, Option::
 				}
 				break;
 
+			case 7:	// wait for EOL before committing bool
+				switch(token)
+				{
+					case LEX_EOL:
+						line++;
+						op.setOption(temp, value.b, level);
+						temp.clear();
+						opname.clear();	//TODO implement support the compact format
+						state = 0;
+						break;
+
+					case LEX_EOF:
+						op.setOption(temp, value.b, level);
+						return 0;	//TODO implement support the compact format
+					default:
+						WARN();
+						break;
+				}
+				break;
+
 			case 20:	// wait until EOL
 				switch(token)
 				{
 					case LEX_EOL:
-						state = 0;
 						line++;
+					case LEX_EOF:
+						state = 0;
 						break;
 
 					default:
-						WARN();
 						break;
 				}
 				break;

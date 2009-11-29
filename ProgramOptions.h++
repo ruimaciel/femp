@@ -22,10 +22,11 @@ class Option
 {
 	private:
 		unsigned int option_level:	2;
-		unsigned int type:	2;
+		unsigned int type:	3;
 		union u_value {
 			long int integer;
 			double fp;
+			bool b;
 		} value;
 		std::string text;
 
@@ -37,19 +38,22 @@ class Option
 		~Option();
 
 		enum OPTIONS_LEVEL {OPT_DEFAULT = 0, OPT_SYSTEM, OPT_LOCAL, OPT_TEMPORARY};
-		enum VALUE_TYPE {VAL_INTEGER = 0, VAL_FLOAT = 1, VAL_STRING = 2};
+		enum VALUE_TYPE {VAL_INTEGER = 0, VAL_FLOAT = 1, VAL_STRING = 2, VAL_BOOL = 3};
 
 		void setOption(long int, OPTIONS_LEVEL);
 		void setOption(double, OPTIONS_LEVEL);
 		void setOption(std::string, OPTIONS_LEVEL);
+		void setOption(bool, OPTIONS_LEVEL);
 
 		bool isInteger()	{ return type == VAL_INTEGER; }
 		bool isFloat()	{ return type == VAL_FLOAT; }
 		bool isString()	{ return type == VAL_STRING; }
+		bool isBool()	{ return type == VAL_BOOL; }
 
 		long int getInteger()	{ return value.integer; }
 		double getFloat()	{ return value.fp; }
 		std::string getString()	{ return text; }
+		bool getBool()		{ return value.b; }
 };
 
 
@@ -84,6 +88,7 @@ class ProgramOptions: public std::map<std::string, class Option>
 		void setOption(const std::string, long int, Option::OPTIONS_LEVEL);
 		void setOption(const std::string, double, Option::OPTIONS_LEVEL level);
 		void setOption(const std::string, std::string, Option::OPTIONS_LEVEL level);
+		void setOption(const std::string, bool, Option::OPTIONS_LEVEL level);
 
 		// checks if a given option was set
 		bool wasSet(const std::string) const;
@@ -92,6 +97,7 @@ class ProgramOptions: public std::map<std::string, class Option>
 		bool getOption(const std::string, long int &, long int);
 		bool getOption(const std::string, double &, double);
 		bool getOption(const std::string, std::string &, std::string);
+		bool getOption(const std::string, bool &, bool);
 
 		// generates an options file 
 		//TODO implement an export mechanism that enables exporting in the full and compacted formats
@@ -111,6 +117,7 @@ class ProgramOptions: public std::map<std::string, class Option>
 				LEX_STRING, 
 				LEX_INTEGER,
 				LEX_FLOAT,
+				LEX_BOOL,
 				LEX_EOL,
 				LEX_EOF,
 				LEX_STREAM_ERROR,
@@ -120,6 +127,7 @@ class ProgramOptions: public std::map<std::string, class Option>
 			union u_value {
 				long int integer;
 				double fp;
+				bool b;
 			} value;
 			std::string text;
 
@@ -127,6 +135,7 @@ class ProgramOptions: public std::map<std::string, class Option>
 			char *pos; 	// marks the current position
 			char *marker;	
 			char *lim;	// marks the string limit
+			int lex_state;	// lexer state, to avoid ambiguities
 
 			public:
 				Parser();

@@ -20,9 +20,13 @@ class ProgramOptions;
 
 class Option
 {
+	public:
+		enum Level {OPT_DEFAULT = 0, OPT_SYSTEM, OPT_LOCAL, OPT_TEMPORARY};
+		enum Type {VAL_INTEGER = 0, VAL_FLOAT = 1, VAL_STRING = 2, VAL_BOOL = 3};
+
 	private:
-		unsigned int option_level:	2;
-		unsigned int type:	3;
+		enum Level option_level:	2;
+		enum Type type:	3;
 		union u_value {
 			long int integer;
 			double fp;
@@ -37,13 +41,11 @@ class Option
 		Option();
 		~Option();
 
-		enum OPTIONS_LEVEL {OPT_DEFAULT = 0, OPT_SYSTEM, OPT_LOCAL, OPT_TEMPORARY};
-		enum VALUE_TYPE {VAL_INTEGER = 0, VAL_FLOAT = 1, VAL_STRING = 2, VAL_BOOL = 3};
 
-		void setOption(long int, OPTIONS_LEVEL);
-		void setOption(double, OPTIONS_LEVEL);
-		void setOption(std::string, OPTIONS_LEVEL);
-		void setOption(bool, OPTIONS_LEVEL);
+		void setOption(long int, Level);
+		void setOption(double, Level);
+		void setOption(std::string, Level);
+		void setOption(bool, Level);
 
 		bool isInteger()	{ return type == VAL_INTEGER; }
 		bool isFloat()	{ return type == VAL_FLOAT; }
@@ -57,10 +59,11 @@ class Option
 };
 
 
-class ProgramOptions: public std::map<std::string, class Option>
+class ProgramOptions
 {
 	private:
-		enum Option::OPTIONS_LEVEL option_level;	// default options level
+		std::map<std::string, class Option>	options_list;
+		enum Option::Level option_level;	// default options level
 
 	public:
 		/*
@@ -76,7 +79,7 @@ class ProgramOptions: public std::map<std::string, class Option>
 		@param level the defaulf options level
 		@param prefix a pre-defined level
 		*/
-		void loadOptionsFromFile(std::istream& is, Option::OPTIONS_LEVEL level, std::string prefix = std::string());
+		void loadOptionsFromFile(std::istream& is, Option::Level level, std::string prefix = std::string());
 
 		// set the current options level
 		void setDefault()	{ option_level = Option::OPT_DEFAULT; }
@@ -118,6 +121,8 @@ class ProgramOptions: public std::map<std::string, class Option>
 				LEX_INTEGER,
 				LEX_FLOAT,
 				LEX_BOOL,
+				LEX_OPEN_VECTOR,
+				LEX_CLOSE_VECTOR,
 				LEX_EOL,
 				LEX_EOF,
 				LEX_STREAM_ERROR,

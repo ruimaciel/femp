@@ -915,10 +915,17 @@ void MainWindow::loadOptions()
 {
 	std::ifstream is;
 	std::string path;
+	std::vector<double> default_color;
 
 	// Set default options
 	options.setDefault();
-	options.setOption("viewport.node.radius",10.0f);	// sets the default node radius
+	options.setOption("viewport.nodes.radius",10.0f);	// sets the default node radius
+	default_color.reserve(3);
+	default_color[0] = 0, default_color[1] = 0.8f, default_color[2] = 0.8f;
+	options.setOption("viewport.nodes.color",default_color);
+	options.setOption("viewport.elements.tetrahedron4.color",default_color);
+	options.setOption("viewport.elements.hexahedron4.color",default_color);
+
 	//TODO Set default options
 
 	// Set system options
@@ -940,6 +947,39 @@ void MainWindow::loadOptions()
 	{
 		options.importFile(is);
 		is.close();
+	}
+	
+	// set color options
+	{
+	std::vector<double> temp;
+	if(options.getOption("viewport.nodes.color",temp, std::vector<double>())) 
+	{ 
+		if(temp.size() == 3) 
+		{ 
+			colors.node[0] = temp[0]; 
+			colors.node[1] = temp[1]; 
+			colors.node[2] = temp[2]; 
+		} 
+	} 
+
+	// set up a helper function
+	#define SET_ELEMENT_COLOR(ELEMENT) { \
+	if(options.getOption("viewport.elements."#ELEMENT".color",temp, std::vector<double>())) \
+	{ \
+		if(temp.size() == 3) \
+		{ \
+			colors.ELEMENT[0] = temp[0]; \
+			colors.ELEMENT[1] = temp[1]; \
+			colors.ELEMENT[2] = temp[2]; \
+		} \
+	} }
+
+	// let's set the element colors
+	SET_ELEMENT_COLOR(tetrahedron4);
+	SET_ELEMENT_COLOR(hexahedron8);
+
+
+	#undef SET_ELEMENT_COLOR
 	}
 }
 
@@ -1012,8 +1052,9 @@ void MainWindow::setUserInterfaceAsOpened()
 	// open all relevant MDI windows
 	glWidget = new GLWidget(this);
 	glWidget->setDocument(&document);
+	glWidget->setColors(&colors);
 	double radius;
-	options.getOption("viewport.node.radius",radius,20);
+	options.getOption("viewport.nodes.radius",radius,20);
 	glWidget->setNodeRadiusScale(radius);
 	
 	window_gl_viewport = new QMdiSubWindow(mdiArea);
@@ -1046,5 +1087,4 @@ void MainWindow::setUserInterfaceAsClosed()
 	}
 	mdiArea->closeAllSubWindows();
 }
-
 

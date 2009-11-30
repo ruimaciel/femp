@@ -18,7 +18,9 @@ GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 
 	setNodeRadiusScale(20);	// default node radius, scaled
 	
+	// initialize the dangling pointers
 	document = NULL;
+	colors = NULL;
 
 	qtPurple = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0);
 }
@@ -48,6 +50,13 @@ void GLWidget::setDocument(Document *document)
 {
 	assert(document != NULL);
 	this->document = document;
+}
+
+
+void GLWidget::setColors(ViewportColors *colors)
+{
+	assert(colors != NULL);
+	this->colors = colors;
 }
 
 
@@ -238,7 +247,7 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 	glEnd();
 
 	// paint the nodal sphere
-	glColor3f(0.0f,0.8f,0.8f);
+	glColor3fv(colors->node);
 	GLUquadric *p;
 	p = gluNewQuadric();
 	gluSphere(p,1,8,8);
@@ -402,6 +411,9 @@ void GLWidget::paintElement(const fem::Element element)
 
 		case fem::Element::FE_TETRAHEDRON4:
 			{
+				// set the color
+				glColor3fv(colors->tetrahedron4);
+
 				if(element.nodes.size() != 4)
 				{
 					qWarning("error: invalid number of nodes for a FE_TETRAHEDRON4. it's %zd", element.nodes.size());
@@ -438,6 +450,9 @@ void GLWidget::paintElement(const fem::Element element)
 
 		case fem::Element::FE_HEXAHEDRON8:
 			{
+				// set the color
+				glColor3fv(colors->hexahedron8);
+
 				//GLfloat mapsurface[12];	// for the mapsurface
 				if(element.nodes.size() != 8)
 				{

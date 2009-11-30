@@ -31,6 +31,8 @@ private:
 	bool 	hasUnsavedChanges;	// true if the document has unsaved changes
 
 	Document document;	// the FEM document
+	ViewportColors colors;	// the elements' viewport colors
+
 
 public Q_SLOTS:
 	/* starts off a brand new FEM project */
@@ -49,7 +51,6 @@ private:
 	void loadOptions();	// loads global options from the options files
 	void setUserInterfaceAsOpened();	// sets the user interface in it's "opened document" state
 	void setUserInterfaceAsClosed();	// sets the user interface in it's "closed document" state
-
 };
 
 

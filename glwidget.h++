@@ -5,6 +5,7 @@
 #include <QWheelEvent>
 
 #include "Document.h++"
+#include "ViewportColors.h++"
 #include "Camera.h++"
 
 
@@ -19,6 +20,7 @@ class GLWidget : public QGLWidget
 		QSize minimumSizeHint() const;
 		QSize sizeHint() const;
 		void setDocument(Document *);	// sets a reference to a document object
+		void setColors(ViewportColors *colors);
 		void setNodeRadiusScale(float r)	{ node_scale = r; }
 
 	public Q_SLOTS:
@@ -56,6 +58,8 @@ class GLWidget : public QGLWidget
 
 		float node_scale;	// the scale used by the nodes, reset when a window resizes
 		float scale;
+
+		ViewportColors *colors;	// color definitions
 };
 
 #endif

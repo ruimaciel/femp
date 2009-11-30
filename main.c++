@@ -1,6 +1,6 @@
 #include <QApplication>
 
-#include <ecl/ecl.h>
+// #include <ecl/ecl.h>
 #include "MainWindow.h++"
 #include "ProgramOptions.h++"
 

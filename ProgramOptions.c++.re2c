@@ -13,6 +13,7 @@
 
 Option::Option()
 {
+	value.number = 0;
 }
 
 
@@ -45,6 +46,14 @@ void Option::setOption(bool value, Level level)
 }
 
 
+void Option::setOption(std::vector<double> value, Level level)
+{
+	this->option_level = level;
+	this->type = VAL_NUMBER_LIST;
+	this->number_list = value;
+}
+
+
 double Option::getNumber()	
 {
 	 return value.number; 
@@ -60,6 +69,11 @@ std::string Option::getString()
 bool Option::getBool()		
 {
 	 return value.b; 
+}
+
+std::vector<double> Option::getNumberList()		
+{
+	 return number_list;
 }
 
 
@@ -99,6 +113,14 @@ void ProgramOptions::setOption(const std::string option, std::string value)
 
 
 void ProgramOptions::setOption(const std::string option, bool value)
+{
+	Option op;
+	op.setOption(value, option_level);
+	options_list[option] = op;
+}
+
+
+void ProgramOptions::setOption(const std::string option, std::vector<double> value)
 {
 	Option op;
 	op.setOption(value, option_level);
@@ -220,6 +242,33 @@ bool ProgramOptions::getOption(const std::string op, bool &val, bool default_val
 }
 
 
+bool ProgramOptions::getOption(const std::string op, std::vector<double> &val, std::vector<double>default_value)
+{
+	std::map<std::string, class Option>::iterator it;
+	it = options_list.find(op);
+	if(it != options_list.end())
+	{
+		if( it->second.isNumberList())
+		{
+			val = it->second.getNumberList();
+			return true;
+		}
+		else
+		{
+			std::cerr << "option " << op << " isn't a number list" << std::endl;
+			val = default_value;
+			return false;
+		}
+	}
+	else
+	{
+		std::cerr << "option " << op << " wasn't set" << std::endl;
+		val = default_value;
+		return false;
+	}
+}
+
+
 std::ostream& operator << (std::ostream& os, ProgramOptions &prog)
 {
 	/*TODO implement this */
@@ -241,6 +290,16 @@ std::ostream& operator << (std::ostream& os, ProgramOptions &prog)
 				os << ( (*it).second.value.b ? "true": "false") << std::endl;
 				break;
 
+			case Option::VAL_NUMBER_LIST:	
+				os << "{ ";
+				for(std::vector<double>::iterator ni = (*it).second.number_list.begin(); ni != (*it).second.number_list.end(); ni++)
+				{
+					if(ni != (*it).second.number_list.begin())
+						os << ", ";
+					os << *ni;
+				}
+				os << "}" << std::endl;
+				break;
 
 			default:
 				/* this section is never reached */
@@ -352,6 +411,9 @@ std:
 	string	{ CPs; return LEX_STRING; }
 	"true"	{ value.b = true; return LEX_BOOL; }
 	"false"	{ value.b = false; return LEX_BOOL; }
+	'{'	{ return LEX_OPEN_VECTOR; }
+	'}'	{ return LEX_CLOSE_VECTOR; }
+	','	{ return LEX_VECTOR_SEPARATOR; }
 	'\n'	{ lex_state = 0; return LEX_EOL; }
 	' '+	{ goto std;}
 	.	{ return LEX_UNKNOWN_TOKEN; }
@@ -376,7 +438,8 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, std::str
 	int state = 0;
 	enum LEXER_TOKENS token = LEX_UNKNOWN_TOKEN;
 	vector<string> opname;
-	string temp;
+	string temp_string;
+	vector<double> temp_number_list;
 	vector<string>::iterator it;
 	size_t line = 1;
 	
@@ -439,19 +502,19 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, std::str
 				break;
 
 			case 3:	// waiting for option's value
-				temp.clear();
+				temp_string.clear();
 				if(!prefix.empty())
 				{
-					temp = prefix;
+					temp_string = prefix;
 					if(!opname.empty()) 
-						temp += ".";
+						temp_string += ".";
 				}
 				// generate string with full option name
 				it = opname.begin();
-				temp += *it;
+				temp_string += *it;
 				for(it++; it != opname.end(); it++)
 				{
-					temp += "." + *it;
+					temp_string += "." + *it;
 				}
 				switch(token)
 				{
@@ -467,6 +530,10 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, std::str
 						state = 7;	// wait for EOL before committing bool
 						break;
 
+					case LEX_OPEN_VECTOR:	// start vector
+						state = 8;
+						break;
+
 					default:
 						WARN();
 						break;
@@ -479,14 +546,14 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, std::str
 				{
 					case LEX_EOL:
 						line++;
-						op.setOption(temp, value.number);
-						temp.clear();
+						op.setOption(temp_string, value.number);
+						temp_string.clear();
 						opname.clear();	//TODO implement support the compact format
 						state = 0;
 						break;
 
 					case LEX_EOF:
-						op.setOption(temp, value.number);
+						op.setOption(temp_string, value.number);
 						return 0;	//TODO implement support the compact format
 						break;
 
@@ -501,14 +568,14 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, std::str
 				{
 					case LEX_EOL:
 						line++;
-						op.setOption(temp, text);
-						temp.clear();
+						op.setOption(temp_string, text);
+						temp_string.clear();
 						opname.clear();	//TODO implement support the compact format
 						state = 0;
 						break;
 
 					case LEX_EOF:
-						op.setOption(temp, text);
+						op.setOption(temp_string, text);
 						return 0;	//TODO implement support the compact format
 					default:
 						WARN();
@@ -521,15 +588,83 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, std::str
 				{
 					case LEX_EOL:
 						line++;
-						op.setOption(temp, value.b);
-						temp.clear();
+						op.setOption(temp_string, value.b);
+						temp_string.clear();
 						opname.clear();	//TODO implement support the compact format
 						state = 0;
 						break;
 
 					case LEX_EOF:
-						op.setOption(temp, value.b);
+						op.setOption(temp_string, value.b);
 						return 0;	//TODO implement support the compact format
+					default:
+						WARN();
+						break;
+				}
+				break;
+
+			case 8:	// start vector
+				switch(token)
+				{
+					case LEX_NUMBER:
+						temp_number_list.clear();
+						temp_number_list.push_back(value.number);
+						state = 9;	// continue vector
+						break;
+
+					default:
+						WARN();
+						break;
+				}
+				break;
+
+			case 9:	// continue vector: separator or end
+				switch(token)
+				{
+					case LEX_VECTOR_SEPARATOR:
+						state = 10;	// continue vector: number
+						break;
+
+					case LEX_CLOSE_VECTOR:
+						state = 11;	// wait for EOL before committing 
+						break;
+
+					default:
+						WARN();
+						break;
+				}
+				break;
+
+			case 10:	// continue vector: number
+				switch(token)
+				{
+					case LEX_NUMBER:
+						temp_number_list.push_back(value.number);
+						state = 9;
+						break;
+
+					default:
+						WARN();
+						break;
+				}
+				break;
+
+			case 11:
+				switch(token)
+				{
+					case LEX_EOL:
+						line++;
+						op.setOption(temp_string, temp_number_list);
+						temp_string.clear();
+						opname.clear();	//TODO implement support the compact format
+						state = 0;
+						break;
+
+					case LEX_EOF:
+						op.setOption(temp_string, temp_number_list);
+						return 0;	//TODO implement support the compact format
+						break;
+
 					default:
 						WARN();
 						break;

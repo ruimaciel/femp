@@ -13,6 +13,7 @@ Each option has 4 levels
 
 #include <map>
 #include <string>
+#include <vector>
 #include <iostream>	// for ostream
 
 
@@ -22,7 +23,7 @@ class Option
 {
 	public:
 		enum Level {OPT_DEFAULT = 0, OPT_SYSTEM, OPT_LOCAL, OPT_TEMPORARY};
-		enum Type {VAL_NUMBER = 0, VAL_STRING = 1, VAL_BOOL = 2};
+		enum Type {VAL_NUMBER = 0, VAL_STRING = 1, VAL_BOOL = 2, VAL_NUMBER_LIST};
 
 	private:
 		enum Level option_level:	2;
@@ -32,6 +33,7 @@ class Option
 			bool b;
 		} value;
 		std::string text;
+		std::vector<double> number_list;
 
 	public:
 		friend class ProgramOptions;	// to grant access to the union
@@ -43,14 +45,17 @@ class Option
 		void setOption(double, Level);
 		void setOption(std::string, Level);
 		void setOption(bool, Level);
+		void setOption(std::vector<double>, Level);
 
 		bool isNumber()	{ return type == VAL_NUMBER; }
 		bool isString()	{ return type == VAL_STRING; }
 		bool isBool()	{ return type == VAL_BOOL; }
+		bool isNumberList()	{ return type == VAL_NUMBER_LIST; }
 
 		double getNumber();
 		std::string getString();
 		bool getBool();	
+		std::vector<double> getNumberList();	
 };
 
 
@@ -87,6 +92,7 @@ class ProgramOptions
 		void setOption(const std::string, double);
 		void setOption(const std::string, std::string);
 		void setOption(const std::string, bool);
+		void setOption(const std::string, std::vector<double>);
 
 		// checks if a given option was set
 		bool wasSet(const std::string) const;
@@ -96,6 +102,7 @@ class ProgramOptions
 		bool getOption(const std::string, double &, double);
 		bool getOption(const std::string, std::string &, std::string);
 		bool getOption(const std::string, bool &, bool);
+		bool getOption(const std::string, std::vector<double> &, std::vector<double>);
 
 		// generates an options file 
 		//TODO implement an export mechanism that enables exporting in the full and compacted formats
@@ -117,6 +124,7 @@ class ProgramOptions
 				LEX_BOOL,
 				LEX_OPEN_VECTOR,
 				LEX_CLOSE_VECTOR,
+				LEX_VECTOR_SEPARATOR,
 				LEX_EOL,
 				LEX_EOF,
 				LEX_STREAM_ERROR,
@@ -128,6 +136,7 @@ class ProgramOptions
 			// the temp values extracted from the lexer
 			union Option::u_value value;
 			std::string text;
+			std::vector<double> temp_number_list;
 
 			// helper variables that are used by the lexer
 			char *tok;	// marks the start of the current token

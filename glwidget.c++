@@ -14,7 +14,7 @@ GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 
 	// initialize the camera
 	camera.reset();
-	camera.setCenter(0,0,-10);
+	camera.setCenter(0,0,-5);
 
 	setNodeRadiusScale(20);	// default node radius, scaled
 	
@@ -23,6 +23,9 @@ GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 	colors = NULL;
 
 	qtPurple = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0);
+
+	// starts off with perspective
+	perspective = true;
 }
 
 
@@ -57,6 +60,13 @@ void GLWidget::setColors(ViewportColors *colors)
 {
 	assert(colors != NULL);
 	this->colors = colors;
+}
+
+
+void GLWidget::togglePerspective()
+{
+	perspective = (perspective?false:true);
+	this->resizeGL(this->width(), this->height());
 }
 
 
@@ -178,7 +188,10 @@ void GLWidget::resizeGL(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
-	glOrtho(-(width*2)/(scale), (width*2)/(scale), -height*2/(scale), +height*2/(scale), 2.0, 100.0);
+	if(perspective)
+		gluPerspective(45.0, (float)width/(float)height, 0.1, 1000);
+	else
+		glOrtho(-(width*2)/(scale), (width*2)/(scale), -height*2/(scale), +height*2/(scale), 0.1, 1000.0);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

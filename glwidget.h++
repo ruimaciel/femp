@@ -24,6 +24,7 @@ class GLWidget : public QGLWidget
 		void setNodeRadiusScale(float r)	{ node_scale = r; }
 
 	public Q_SLOTS:
+		void togglePerspective();
 		void setXRotation(int angle);
 		void setYRotation(int angle);
 		void setZRotation(int angle);
@@ -60,6 +61,7 @@ class GLWidget : public QGLWidget
 		float scale;
 
 		ViewportColors *colors;	// color definitions
+		bool perspective;	// true if perspective, false if ortogonal
 };
 
 #endif

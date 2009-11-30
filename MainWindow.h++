@@ -46,6 +46,9 @@ public Q_SLOTS:
 
 	void startNewProject(Document::Type type);	// starts a brand new project
 
+Q_SIGNALS:
+	void togglePerspective();	// toggles between orthographic and projection
+
 private:
 	void createActions();	// creates the actions and connects them
 	void loadOptions();	// loads global options from the options files

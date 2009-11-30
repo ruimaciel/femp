@@ -908,6 +908,7 @@ void MainWindow::createActions()
 	 connect(ui.actionClose, SIGNAL(triggered()), this, SLOT(closeProject()));
 	 connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
 	 connect(ui.actionImportMesh, SIGNAL(triggered()), this, SLOT(importMesh()));
+	 connect(ui.actionTogglePerspective, SIGNAL(triggered()), this, SIGNAL(togglePerspective()));
 }
 
 
@@ -1056,6 +1057,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	double radius;
 	options.getOption("viewport.nodes.radius",radius,20);
 	glWidget->setNodeRadiusScale(radius);
+	connect(this,SIGNAL(togglePerspective()), glWidget, SLOT(togglePerspective()));
 	
 	window_gl_viewport = new QMdiSubWindow(mdiArea);
 	window_gl_viewport->setWidget(glWidget);

@@ -52,10 +52,10 @@ class Option
 		bool isString()	{ return type == VAL_STRING; }
 		bool isBool()	{ return type == VAL_BOOL; }
 
-		long int getInteger()	{ return value.integer; }
-		double getFloat()	{ return value.fp; }
-		std::string getString()	{ return text; }
-		bool getBool()		{ return value.b; }
+		long int getInteger();
+		double getFloat();
+		std::string getString();
+		bool getBool();	
 };
 
 

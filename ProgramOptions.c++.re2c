@@ -53,6 +53,30 @@ void Option::setOption(bool value, Level level)
 }
 
 
+long int Option::getInteger()
+{
+	return value.integer;
+}
+
+
+double Option::getFloat()	
+{
+	 return value.fp; 
+}
+
+
+std::string Option::getString()	
+{
+	 return text; 
+}
+
+
+bool Option::getBool()		
+{
+	 return value.b; 
+}
+
+
 ProgramOptions::ProgramOptions()
 {
 	option_level = Option::OPT_DEFAULT;

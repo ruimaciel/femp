@@ -21,19 +21,11 @@ Option::~Option()
 }
 
 
-void Option::setOption(long int value, Level level)
-{
-	this->option_level = level;
-	this->type = VAL_INTEGER;
-	this->value.integer = value;
-}
-
-
 void Option::setOption(double value, Level level)
 {
 	this->option_level = level;
-	this->type = VAL_FLOAT;
-	this->value.fp = value;
+	this->type = VAL_NUMBER;
+	this->value.number = value;
 }
 
 
@@ -53,15 +45,9 @@ void Option::setOption(bool value, Level level)
 }
 
 
-long int Option::getInteger()
+double Option::getNumber()	
 {
-	return value.integer;
-}
-
-
-double Option::getFloat()	
-{
-	 return value.fp; 
+	 return value.number; 
 }
 
 
@@ -91,7 +77,7 @@ ProgramOptions::~ProgramOptions()
 void ProgramOptions::setOption(const std::string option, long int value)
 {
 	Option op;
-	op.setOption(value, option_level);
+	op.setOption((double)value, option_level);
 	options_list[option] = op;
 }
 
@@ -132,14 +118,14 @@ bool ProgramOptions::getOption(const std::string op, long int &val, long int def
 	it = options_list.find(op);
 	if(it != options_list.end())
 	{
-		if( it->second.isInteger())
+		if( it->second.isNumber())
 		{
-			val = it->second.getInteger();
+			val = (long int)it->second.getNumber();
 			return true;
 		}
 		else
 		{
-			std::cerr << "option " << op << " isn't an integer" << std::endl;
+			std::cerr << "option " << op << " isn't a number" << std::endl;
 			val = default_value;
 			return false;
 		}
@@ -159,9 +145,9 @@ bool ProgramOptions::getOption(const std::string op, double &val, double default
 	it = options_list.find(op);
 	if(it != options_list.end())
 	{
-		if( it->second.isFloat())
+		if( it->second.isNumber())
 		{
-			val = it->second.getFloat();
+			val = it->second.getNumber();
 			return true;
 		}
 		else
@@ -243,12 +229,8 @@ std::ostream& operator << (std::ostream& os, ProgramOptions &prog)
 		os << (*it).first << " = ";
 		switch( (*it).second.type)
 		{	
-			case Option::VAL_INTEGER:
-				os << (*it).second.value.integer << std::endl;
-				break;
-
-			case Option::VAL_FLOAT:
-				os << (*it).second.value.fp << std::endl;
+			case Option::VAL_NUMBER:
+				os << (*it).second.value.number << std::endl;
 				break;
 
 			case Option::VAL_STRING:
@@ -292,7 +274,7 @@ ProgramOptions::Parser::Parser()
 	buffer[0] = '\0';
 	pos = tok = lim = buffer;
 	lex_state = 0;
-	value.integer = 0;
+	value.number = 0;
 }
 
 
@@ -345,9 +327,10 @@ std:
 	re2c:define:YYMARKER 	= marker;
 	re2c:define:YYLIMIT	= lim;
 
-	integer = "-"? ("0"|[1-9][0-9]*);
 	option	= [a-zA-Z][a-zA-Z0-9_]*;
+	integer = "-"? ("0"|[1-9][0-9]*);
 	float	= integer "." [0-9]+([eE][+-]?[0-9]+)?;
+	number	= integer|float;
 	string	= '"' [a-zA-Z0-9]* '"';
 	indent	= [\t];
 
@@ -365,8 +348,7 @@ std:
 	case 1:	// only parses values
 	{
 	/*!re2c
-	integer	{ CP; value.integer = atoi(tmp.c_str()); return LEX_INTEGER; }
-	float	{ CP; value.fp = atof(tmp.c_str()); return LEX_FLOAT; }
+	number	{ CP; value.number = atof(tmp.c_str()); return LEX_NUMBER; }
 	string	{ CPs; return LEX_STRING; }
 	"true"	{ value.b = true; return LEX_BOOL; }
 	"false"	{ value.b = false; return LEX_BOOL; }
@@ -473,11 +455,7 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, std::str
 				}
 				switch(token)
 				{
-					case LEX_INTEGER:
-						state = 4;	// wait for EOL before committing integer
-						break;
-
-					case LEX_FLOAT:
+					case LEX_NUMBER:
 						state = 5;	// wait for EOL before committing float
 						break;
 
@@ -495,41 +473,20 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, std::str
 				}
 				break;
 
-			case 4:	// wait for EOL before committing integer
-				switch(token)
-				{
-					case LEX_EOL:
-						line++;
-						op.setOption(temp, value.integer);
-						temp.clear();
-						opname.clear();	//TODO implement support the compact format
-						state = 0;
-						break;
-
-					case LEX_EOF:
-						op.setOption(temp, value.integer);
-						return 0;	//TODO implement support the compact format
-						break;
-
-					default:
-						WARN();
-						break;
-				}
-				break;
 
 			case 5:	// wait for EOL before committing float
 				switch(token)
 				{
 					case LEX_EOL:
 						line++;
-						op.setOption(temp, value.fp);
+						op.setOption(temp, value.number);
 						temp.clear();
 						opname.clear();	//TODO implement support the compact format
 						state = 0;
 						break;
 
 					case LEX_EOF:
-						op.setOption(temp, value.fp);
+						op.setOption(temp, value.number);
 						return 0;	//TODO implement support the compact format
 						break;
 

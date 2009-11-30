@@ -22,14 +22,13 @@ class Option
 {
 	public:
 		enum Level {OPT_DEFAULT = 0, OPT_SYSTEM, OPT_LOCAL, OPT_TEMPORARY};
-		enum Type {VAL_INTEGER = 0, VAL_FLOAT = 1, VAL_STRING = 2, VAL_BOOL = 3};
+		enum Type {VAL_NUMBER = 0, VAL_STRING = 1, VAL_BOOL = 2};
 
 	private:
 		enum Level option_level:	2;
 		enum Type type:	3;
 		union u_value {
-			long int integer;
-			double fp;
+			double number;
 			bool b;
 		} value;
 		std::string text;
@@ -41,19 +40,15 @@ class Option
 		Option();
 		~Option();
 
-
-		void setOption(long int, Level);
 		void setOption(double, Level);
 		void setOption(std::string, Level);
 		void setOption(bool, Level);
 
-		bool isInteger()	{ return type == VAL_INTEGER; }
-		bool isFloat()	{ return type == VAL_FLOAT; }
+		bool isNumber()	{ return type == VAL_NUMBER; }
 		bool isString()	{ return type == VAL_STRING; }
 		bool isBool()	{ return type == VAL_BOOL; }
 
-		long int getInteger();
-		double getFloat();
+		double getNumber();
 		std::string getString();
 		bool getBool();	
 };
@@ -118,8 +113,7 @@ class ProgramOptions
 				LEX_OPTION_ASSIGN,
 				LEX_INDENT,
 				LEX_STRING, 
-				LEX_INTEGER,
-				LEX_FLOAT,
+				LEX_NUMBER,
 				LEX_BOOL,
 				LEX_OPEN_VECTOR,
 				LEX_CLOSE_VECTOR,
@@ -128,14 +122,14 @@ class ProgramOptions
 				LEX_STREAM_ERROR,
 				LEX_ERROR };
 
+			// the parser buffer
 			char buffer[1024];
-			union u_value {
-				long int integer;
-				double fp;
-				bool b;
-			} value;
+
+			// the temp values extracted from the lexer
+			union Option::u_value value;
 			std::string text;
 
+			// helper variables that are used by the lexer
 			char *tok;	// marks the start of the current token
 			char *pos; 	// marks the current position
 			char *marker;	

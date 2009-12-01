@@ -1061,7 +1061,7 @@ void MainWindow::setNodeRestraints()
 				if(r & NodeRestrainsDialog::RY)
 					nr.setdy();
 				if(r & NodeRestrainsDialog::RZ)
-					nr.setdy();
+					nr.setdz();
 				document.model.node_restrictions_list[it->first] = nr;
 			}
 		}

@@ -392,7 +392,7 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 			glVertex3i( 2,-2,-2);
 			glEnd();
 		}
-		if(document->model.node_restrictions_list[label].dy())
+		if(document->model.node_restrictions_list[label].dz())
 		{
 			glRotatef(-90,1,0,0);
 			// render the pyramid

@@ -12,6 +12,7 @@
 
 #include "NewProjectWizard.h++"
 #include "NodeRestrainsDialog.h++"
+#include "NodeActionsDialog.h++"
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
@@ -914,6 +915,7 @@ void MainWindow::createActions()
 	 connect(ui.actionImportMesh, SIGNAL(triggered()), this, SLOT(importMesh()));
 	 connect(ui.actionTogglePerspective, SIGNAL(triggered()), this, SIGNAL(togglePerspective()));
 	 connect(ui.actionNodeRestraints, SIGNAL(triggered()), this, SLOT(setNodeRestraints()));
+	 connect(ui.actionNodeActions, SIGNAL(triggered()), this, SLOT(setNodeActions()));
 }
 
 
@@ -1069,6 +1071,24 @@ void MainWindow::setNodeRestraints()
 }
 
 
+void MainWindow::setNodeActions()
+{
+	qWarning("dude");
+	NodeActionsDialog na(document.model, this);
+	if(na.exec() == QDialog::Accepted)
+	{
+		for(std::map<size_t,bool>::iterator it = document.selected_nodes.begin(); it != document.selected_nodes.end(); it++)
+		{
+		if(it->second == true)
+		{
+			document.model.load_pattern_list[na.getLoadPattern()].addNodalLoad(it->first, na.getForce());
+			document.model.load_pattern_list[na.getLoadPattern()].addNodalDisplacement(it->first, na.getDisplacement());
+		}
+		}
+	}
+}
+
+
 void MainWindow::setUserInterfaceAsOpened()	
 {
 	//TODO finish this
@@ -1080,6 +1100,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	ui.actionSaveAs->setEnabled(true);
 	ui.actionClose->setEnabled(true);
 	ui.actionNodeRestraints->setEnabled(true);
+	ui.actionNodeActions->setEnabled(true);
 
 	// open all relevant MDI windows
 	glWidget = new GLWidget(this);
@@ -1112,6 +1133,7 @@ void MainWindow::setUserInterfaceAsClosed()
 	ui.actionSaveAs->setDisabled(true);
 	ui.actionClose->setDisabled(true);
 	ui.actionNodeRestraints->setDisabled(true);
+	ui.actionNodeActions->setDisabled(true);
 
 	// close all MDI windows
 	if(window_gl_viewport != NULL)

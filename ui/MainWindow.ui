@@ -72,6 +72,7 @@
      <string>Edit</string>
     </property>
     <addaction name="actionNodeRestraints"/>
+    <addaction name="actionNodeActions"/>
     <addaction name="separator"/>
     <addaction name="actionPreferences"/>
    </widget>
@@ -177,6 +178,14 @@
    </property>
    <property name="text">
     <string>Node restraints</string>
+   </property>
+  </action>
+  <action name="actionNodeActions">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Node actions</string>
    </property>
   </action>
  </widget>

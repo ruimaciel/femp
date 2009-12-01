@@ -50,6 +50,7 @@ public Q_SLOTS:
 	Calls the "set node restraints" dialog and, from it's output, sets them
 	**/
 	void setNodeRestraints();
+	void setNodeActions();
 
 Q_SIGNALS:
 	void togglePerspective();	// toggles between orthographic and projection

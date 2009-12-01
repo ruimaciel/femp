@@ -46,6 +46,11 @@ public Q_SLOTS:
 
 	void startNewProject(Document::Type type);	// starts a brand new project
 
+	/**
+	Calls the "set node restraints" dialog and, from it's output, sets them
+	**/
+	void setNodeRestraints();
+
 Q_SIGNALS:
 	void togglePerspective();	// toggles between orthographic and projection
 

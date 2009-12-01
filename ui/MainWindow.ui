@@ -71,6 +71,8 @@
     <property name="title">
      <string>Edit</string>
     </property>
+    <addaction name="actionNodeRestraints"/>
+    <addaction name="separator"/>
     <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuProject">
@@ -167,6 +169,14 @@
   <action name="actionTogglePerspective">
    <property name="text">
     <string>Toggle perspective</string>
+   </property>
+  </action>
+  <action name="actionNodeRestraints">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Node restraints</string>
    </property>
   </action>
  </widget>

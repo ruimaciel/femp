@@ -11,8 +11,12 @@
 #include <stdlib.h>	// getenv()
 
 #include "NewProjectWizard.h++"
+#include "NodeRestrainsDialog.h++"
+
 #include "fem_msh.h++"
 #include "parsers/json.h"
+
+#include "fem/NodeRestrictions.h++"
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
@@ -909,6 +913,7 @@ void MainWindow::createActions()
 	 connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
 	 connect(ui.actionImportMesh, SIGNAL(triggered()), this, SLOT(importMesh()));
 	 connect(ui.actionTogglePerspective, SIGNAL(triggered()), this, SIGNAL(togglePerspective()));
+	 connect(ui.actionNodeRestraints, SIGNAL(triggered()), this, SLOT(setNodeRestraints()));
 }
 
 
@@ -1039,6 +1044,31 @@ void MainWindow::startNewProject(Document::Type type)
 }
 
 
+void MainWindow::setNodeRestraints()
+{
+	NodeRestrainsDialog nd;
+	if(nd.exec() == QDialog::Accepted)
+	{
+		fem::NodeRestrictions nr;
+		int r = nd.getRestraints();
+		for(std::map<size_t,bool>::iterator it = document.selected_nodes.begin(); it != document.selected_nodes.end(); it++)
+		{
+			if(it->second == true)
+			{
+				nr.reset();
+				if(r & NodeRestrainsDialog::RX)
+					nr.setdx();
+				if(r & NodeRestrainsDialog::RY)
+					nr.setdy();
+				if(r & NodeRestrainsDialog::RZ)
+					nr.setdy();
+				document.model.node_restrictions_list[it->first] = nr;
+			}
+		}
+	}
+}
+
+
 void MainWindow::setUserInterfaceAsOpened()	
 {
 	//TODO finish this
@@ -1049,6 +1079,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	ui.actionSave->setEnabled(true);
 	ui.actionSaveAs->setEnabled(true);
 	ui.actionClose->setEnabled(true);
+	ui.actionNodeRestraints->setEnabled(true);
 
 	// open all relevant MDI windows
 	glWidget = new GLWidget(this);
@@ -1080,6 +1111,7 @@ void MainWindow::setUserInterfaceAsClosed()
 	ui.actionSave->setDisabled(true);
 	ui.actionSaveAs->setDisabled(true);
 	ui.actionClose->setDisabled(true);
+	ui.actionNodeRestraints->setDisabled(true);
 
 	// close all MDI windows
 	if(window_gl_viewport != NULL)

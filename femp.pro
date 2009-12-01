@@ -14,7 +14,8 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem/DomainLoad.h++ fem/SurfaceLoad.h++\
 	Camera.h++ glwidget.h++ ViewportColors.h++\
 	fem_msh.h++ lex.msh_yy.h \
-	parsers/json.h
+	parsers/json.h \
+	NodeRestrainsDialog.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
 	ui/NewProjectWizardPage1.c++ ui/NewProjectWizardPage2.c++ ui/NewProjectWizardPageLast.c++  \
@@ -22,9 +23,11 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
 	Camera.c++ glwidget.c++ ViewportColors.c++\
 	fem_msh.c++ lex.msh_yy.c++ \
-	parsers/json.c
+	parsers/json.c \
+	NodeRestrainsDialog.c++
 
-FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPageLast.ui 
+FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPageLast.ui \
+	ui/NodeRestrainDialog.ui
 
 UI_DIR += ./ui
 OBJECTS_DIR += ./build

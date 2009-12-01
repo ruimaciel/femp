@@ -68,6 +68,7 @@ void GLWidget::togglePerspective()
 {
 	perspective = (perspective?false:true);
 	this->resizeGL(this->width(), this->height());
+	updateGL();
 }
 
 
@@ -271,6 +272,10 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 		case Qt::Key_Escape:
 			document->deselectAll();
 			updateGL();
+			break;
+
+		case Qt::Key_P:
+			togglePerspective();
 			break;
 
 		default:

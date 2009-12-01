@@ -95,7 +95,7 @@ HeaderField:	StartHeader HeaderValues EndHeader
 StartHeader:	LABEL_OPEN MESH_FORMAT '\n'
 		;
 
-HeaderValues:	INTEGER INTEGER  INTEGER '\n'
+HeaderValues:	NUMBER NUMBER  NUMBER '\n'
 		{ /*TODO check version */ }
 		;
 

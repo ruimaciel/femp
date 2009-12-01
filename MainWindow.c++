@@ -1057,6 +1057,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	double radius;
 	options.getOption("viewport.nodes.radius",radius,20);
 	glWidget->setNodeRadiusScale(radius);
+	glWidget->setFocusPolicy(Qt::StrongFocus);
 	connect(this,SIGNAL(togglePerspective()), glWidget, SLOT(togglePerspective()));
 	
 	window_gl_viewport = new QMdiSubWindow(mdiArea);

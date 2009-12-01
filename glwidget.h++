@@ -42,6 +42,7 @@ class GLWidget : public QGLWidget
 		void mousePressEvent(QMouseEvent *event);
 		void mouseMoveEvent(QMouseEvent *event);
 		void wheelEvent(QWheelEvent *event);
+		void keyPressEvent(QKeyEvent *event);
 
 	private:
 		void normalizeAngle(int *angle);
@@ -49,6 +50,10 @@ class GLWidget : public QGLWidget
 		// methods to render FEM elements
 		void paintNode(size_t label, const fem::Node);
 		void paintElement(const fem::Element element);
+
+		// select rendered objects that intersect a given line (start point, finish point)
+		void selectModelObjects(const fem::point &,const fem::point &);
+		void deselectAllModelObjects();
 
 		Camera camera;	// transition to a camera class
 

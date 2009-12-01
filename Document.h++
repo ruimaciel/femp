@@ -26,6 +26,13 @@ class Document
 		QString *file_name;	// path for the project's directory
 		fem::Model model;	// the FEM model
 
+
+		// data structures for storing selected objects
+		std::map<size_t,bool> selected_nodes;
+
+		// test code: remove
+		std::vector< std::pair<fem::point, fem::point> > ray_list;
+
 	public:
 		Document();
 		Document(const Document &copied);
@@ -36,6 +43,11 @@ class Document
 		void setProjectType(Type type)	{ document_type = type; }
 		enum Error load();	// loads the project
 		enum Error save();	// saves project in it's path
+
+		// object selection routines
+		void selectNode(const size_t &node);
+		void deselectNode(const size_t &node);
+		void deselectAll();
 };
 
 

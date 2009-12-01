@@ -4,6 +4,7 @@
 #include <math.h>
 #include <assert.h>
 #include <map>
+#include <algorithm>
 
 #include "fem/point.h++"
 #include "glwidget.h++"
@@ -177,6 +178,18 @@ void GLWidget::paintGL()
 		{
 			paintElement(*ei);
 		}
+
+		// test code: remove
+		std::vector< std::pair<fem::point, fem::point> >::iterator pi;
+		for(pi = document->ray_list.begin(); pi != document->ray_list.end(); pi++)
+		{
+			glColor3f(0,0,0);
+			glBegin(GL_LINES);
+			glVertex3dv(pi->first.data);
+			glVertex3dv(pi->second.data);
+			glEnd();
+		}
+
 	}
 }
 
@@ -201,6 +214,27 @@ void GLWidget::resizeGL(int width, int height)
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
 	lastPos = event->pos();
+
+	// process left clicks
+	if(event->buttons() & Qt::LeftButton)
+	{
+		fem::point near, far;
+		QPoint pos = event->pos();
+		GLdouble modelview[16];
+		GLdouble projection[16];
+		GLint viewport[4];
+
+		glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+		glGetDoublev(GL_PROJECTION_MATRIX, projection);
+		glGetIntegerv(GL_VIEWPORT, viewport);
+		gluUnProject(pos.x(), viewport[3]-pos.y(), 0, modelview, projection, viewport, &near.data[0], &near.data[1], &near.data[2]);
+		gluUnProject(pos.x(), viewport[3]-pos.y(), 1, modelview, projection, viewport, &far.data[0], &far.data[1], &far.data[2]);
+
+		// push the line
+		document->ray_list.push_back( std::pair< fem::point, fem::point>(near, far));
+		selectModelObjects(near, far);
+		updateGL();
+	}
 }
 
 
@@ -230,6 +264,21 @@ void GLWidget::wheelEvent(QWheelEvent *event)
 }
 
 
+void GLWidget::keyPressEvent(QKeyEvent *event)
+{
+	switch( event->key() )
+	{
+		case Qt::Key_Escape:
+			document->deselectAll();
+			updateGL();
+			break;
+
+		default:
+			break;
+	}
+}
+
+
 void GLWidget::normalizeAngle(int *angle)
 {
 	while (*angle < 0)
@@ -244,7 +293,7 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 	glPushMatrix();
 	glTranslated(node.data[0],node.data[1],node.data[2]);
 	
-	glScalef(node_scale*10/scale, node_scale*10/scale, node_scale*10/scale);
+	glScalef(node_scale/scale, node_scale/scale, node_scale/scale);
 
 	//TODO find a better rendering for the nodes
 	glBegin(GL_LINES);
@@ -260,7 +309,10 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 	glEnd();
 
 	// paint the nodal sphere
-	glColor3fv(colors->node);
+	if(document->selected_nodes[label])
+		glColor3f(1.0f,0,0);
+	else
+		glColor3fv(colors->node);
 	GLUquadric *p;
 	p = gluNewQuadric();
 	gluSphere(p,1,8,8);
@@ -529,3 +581,29 @@ void GLWidget::paintElement(const fem::Element element)
 	glPopMatrix();
 }
 
+
+void GLWidget::selectModelObjects(const fem::point &near,const fem::point &far)
+{
+	// test nodes
+	float a, b, c;
+	float x2x1, y2y1, z2z1; // helper temp variables to avoid remultiplying
+	std::map<size_t,float> distance_map;
+
+	// get 
+	for(std::map<size_t,fem::Node>::iterator i = document->model.node_list.begin(); i != document->model.node_list.end(); i++)
+	{
+		x2x1 = far.data[0]-near.data[0];
+		y2y1 = far.data[1]-near.data[1];
+		z2z1 = far.data[2]-near.data[2];
+		a = x2x1*x2x1 + y2y1*y2y1 + z2z1*z2z1;
+		b = 2*(x2x1*(near.data[0]-i->second.data[0]) + y2y1*(near.data[1] - i->second.data[1]) + z2z1*(near.data[2]-i->second.data[2]));
+		c = i->second.data[0]*i->second.data[0] + i->second.data[1]*i->second.data[1] + i->second.data[2]*i->second.data[2] + near.data[0]*near.data[0]+ near.data[1]*near.data[1] + near.data[2]*near.data[2] - 2*(i->second.data[0]*near.data[0]+i->second.data[1]*near.data[1]+i->second.data[2]*near.data[2]) - node_scale*node_scale/(scale*scale);
+		if(b*b - 4*a*c > 0)
+		{
+			//distance_map[i->first] = (i->second-near).norm(); // get distances
+			document->selectNode(i->first);
+		}
+	}
+	// select the nearest hit
+	// document->selectNode(std::min_element(distance_map.begin(), distance_map.end(), distance_map.value_comp())->first);
+}

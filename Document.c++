@@ -318,3 +318,19 @@ enum Document::Error Document::save()
 }
 
 
+void Document::selectNode(const size_t &node)
+{
+	selected_nodes[node] = true;
+}
+
+
+void Document::deselectNode(const size_t &node)
+{
+	selected_nodes.erase(node);
+}
+
+
+void Document::deselectAll()
+{
+	selected_nodes.clear();
+}

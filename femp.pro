@@ -14,7 +14,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem/DomainLoad.h++ fem/SurfaceLoad.h++\
 	Camera.h++ glwidget.h++ ViewportColors.h++\
 	fem_msh.h++ lex.msh_yy.h \
-	parsers/json.h \
+	parsers/parser.h++ parsers/msh.h++ parsers/json.h \
 	NodeRestrainsDialog.h++ NodeActionsDialog.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
@@ -23,7 +23,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
 	Camera.c++ glwidget.c++ ViewportColors.c++\
 	fem_msh.c++ lex.msh_yy.c++ \
-	parsers/json.c \
+	parsers/parser.c++ parsers/msh.c++ parsers/json.c \
 	NodeRestrainsDialog.c++ NodeActionsDialog.c++
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPageLast.ui \
@@ -31,6 +31,11 @@ FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui ui/NewProjectWizardPage1.u
 
 UI_DIR += ./ui
 OBJECTS_DIR += ./build
+
+MshParserRe2c.target = fem/msh.c++
+MshParserRe2c.commands = re2c -o fem/msh.c++ fem/msh.c++.re2c
+MshParserRe2c.depends = fem/msh.c++.re2c
+MshParserRe2c.output = fem/msh.c++
 
 ProgramOptionRe2c.target = ProgramOptions.c++
 ProgramOptionRe2c.commands = re2c -o ProgramOptions.c++ ProgramOptions.c++.re2c
@@ -60,4 +65,4 @@ BisonCompile.output = msh.tab.o
 OBJECTS += msh.tab.o
 QMAKE_CLEAN += lex.msh_yy.h lex.msh_yy.c++ msh.tab.c msh.tab.h msh.tab.o
 
-QMAKE_EXTRA_TARGETS += ProgramOptionRe2c  ElementRe2c FlexOutput BisonOutput BisonCompile
+QMAKE_EXTRA_TARGETS += MshParserRe2c ProgramOptionRe2c  ElementRe2c FlexOutput BisonOutput BisonCompile 

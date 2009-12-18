@@ -52,6 +52,12 @@ public Q_SLOTS:
 	void setNodeRestraints();
 	void setNodeActions();
 
+
+	/**
+	runs the analysis on the current model
+	**/
+	void runAnalysis();
+
 Q_SIGNALS:
 	void togglePerspective();	// toggles between orthographic and projection
 

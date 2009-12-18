@@ -6,7 +6,7 @@ QT += opengl
 QMAKE_EXT_CPP += c++
 
 # LIBS += -lecl
-LIBS += -ll -ly
+LIBS += -ll -ly -lblitz
 
 HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.h++ NewProjectWizard.h++ \
 	ui/NewProjectWizardPage1.h++ ui/NewProjectWizardPage2.h++ ui/NewProjectWizardPageLast.h++ \
@@ -15,7 +15,8 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	Camera.h++ glwidget.h++ ViewportColors.h++\
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h \
-	NodeRestrainsDialog.h++ NodeActionsDialog.h++
+	NodeRestrainsDialog.h++ NodeActionsDialog.h++ \
+	fem/FemEquation.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
 	ui/NewProjectWizardPage1.c++ ui/NewProjectWizardPage2.c++ ui/NewProjectWizardPageLast.c++  \

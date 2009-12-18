@@ -84,6 +84,8 @@
      <string>Project</string>
     </property>
     <addaction name="actionImportMesh"/>
+    <addaction name="separator"/>
+    <addaction name="actionRun"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -186,6 +188,11 @@
    </property>
    <property name="text">
     <string>Node actions</string>
+   </property>
+  </action>
+  <action name="actionRun">
+   <property name="text">
+    <string>Run</string>
    </property>
   </action>
  </widget>

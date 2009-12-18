@@ -916,6 +916,7 @@ void MainWindow::createActions()
 	 connect(ui.actionTogglePerspective, SIGNAL(triggered()), this, SIGNAL(togglePerspective()));
 	 connect(ui.actionNodeRestraints, SIGNAL(triggered()), this, SLOT(setNodeRestraints()));
 	 connect(ui.actionNodeActions, SIGNAL(triggered()), this, SLOT(setNodeActions()));
+	 connect(ui.actionRun, SIGNAL(triggered()), this, SLOT(runAnalysis()));
 }
 
 
@@ -1086,6 +1087,15 @@ void MainWindow::setNodeActions()
 		}
 		}
 	}
+}
+
+
+void MainWindow::runAnalysis()
+{
+	//TODO finish this
+
+	//TODO for testing purposes only. remove
+	document.model.run(document.model.load_pattern_list[0]);	// nasty hack to test the code
 }
 
 

@@ -179,18 +179,6 @@ void GLWidget::paintGL()
 		{
 			paintElement(*ei);
 		}
-
-		// test code: remove
-		std::vector< std::pair<fem::point, fem::point> >::iterator pi;
-		for(pi = document->ray_list.begin(); pi != document->ray_list.end(); pi++)
-		{
-			glColor3f(0,0,0);
-			glBegin(GL_LINES);
-			glVertex3dv(pi->first.data);
-			glVertex3dv(pi->second.data);
-			glEnd();
-		}
-
 	}
 }
 
@@ -232,7 +220,6 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 		gluUnProject(pos.x(), viewport[3]-pos.y(), 1, modelview, projection, viewport, &far.data[0], &far.data[1], &far.data[2]);
 
 		// push the line
-		document->ray_list.push_back( std::pair< fem::point, fem::point>(near, far));
 		selectModelObjects(near, far);
 		updateGL();
 	}

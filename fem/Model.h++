@@ -73,6 +73,17 @@ class Model {
 		@return 
 		**/
 		enum Error run(const LoadPattern &lp);
+
+
+		/**
+		  Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
+		  (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and
+		  B.P. Flannery
+		@param x	array of doubles, stores the abcissa of the integration point
+		@param w	array of doubles, stores the weights of the integration points
+		@param n	the number of integration
+		*/
+		void gauleg(double x[], double w[], int n);
 };
 
 

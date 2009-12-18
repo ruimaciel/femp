@@ -30,9 +30,6 @@ class Document
 		// data structures for storing selected objects
 		std::map<size_t,bool> selected_nodes;
 
-		// test code: remove
-		std::vector< std::pair<fem::point, fem::point> > ray_list;
-
 	public:
 		Document();
 		Document(const Document &copied);

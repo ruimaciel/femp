@@ -243,7 +243,7 @@ enum Document::Error Document::save()
 		if(it != model.load_pattern_list.begin())
 			out << ",";
 		out << "\n\t{";
-		out << "\t\"label\": \"" << it->label; 
+		out << "\t\"label\": \"" << it->label << "\""; 
 		// take care of the nodal loads
 		if( !it->nodal_loads.empty() )
 		{

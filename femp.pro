@@ -1,6 +1,7 @@
 TEMPLATE = app
 
 CONFIG += qt debug no_keywords
+QMAKE_CXXFLAGS_DEBUG +=-O0
 
 QT += opengl
 QMAKE_EXT_CPP += c++

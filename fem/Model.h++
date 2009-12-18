@@ -11,6 +11,8 @@
 #include "Material.h++"
 #include "NodeRestrictions.h++"
 #include "LoadPattern.h++"
+#include "FemEquation.h++"
+
 
 namespace fem
 {
@@ -20,7 +22,8 @@ class Model {
 		int default_material;	// used when adding elements
 
 	public:
-		enum Error {	ERR_NONE = 0,
+		enum Error {	ERR_OK = 0,	// no error
+				ERR_NO_ELEMENTS,
 				ERR_INVALID_NODE_REFERENCE
 				};
 
@@ -56,6 +59,20 @@ class Model {
 		**/
 		enum Error pushLoadPattern(fem::LoadPattern lp);
 
+
+		/** sets up a FEM equation according to the info contained in the instance of this class
+		@param f	a struct FemEquation object that will be used to store the FEM equation
+		@param lp	the load pattern
+		@return an error
+		**/
+		enum Error build_fem_equation(struct FemEquation &f, const LoadPattern &lp);
+
+
+		/** runs the analysis based on a given load pattern
+		@param lp	the load pattern
+		@return 
+		**/
+		enum Error run(const LoadPattern &lp);
 };
 
 

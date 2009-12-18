@@ -2,6 +2,7 @@
 #define MATERIAL_HPP
 
 #include <QString>
+#include <blitz/tinymat.h>
 
 
 namespace fem
@@ -24,6 +25,12 @@ class Material {
 		Material();
 		Material(const Material &);
 		~Material();
+
+		/**
+		Generates a constitutive matrix
+		@return	a matrix type
+		**/
+		blitz::TinyMatrix<double, 6, 6> generateD();
 };
 
 

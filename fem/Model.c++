@@ -61,7 +61,7 @@ enum Model::Error Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions 
 	node_restrictions_list[pos] = nr;
 
 	// everything went smoothly
-	return ERR_NONE;
+	return ERR_OK;
 }
 
 
@@ -71,7 +71,60 @@ enum Model::Error Model::pushLoadPattern(fem::LoadPattern lp)
 
 	load_pattern_list.push_back(lp);
 
-	return ERR_NONE;
+	return ERR_OK;
 }
+
+
+enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPattern &lp)
+{
+	using namespace std;
+
+	// perform sanity checks on the model
+	if(element_list.empty() )
+		return ERR_NO_ELEMENTS;
+
+	// model is OK.
+
+	//build a list of constitutive matrices
+	vector<blitz::TinyMatrix<double, 6, 6> > D_list;
+	for(vector<Material>::iterator it = material_list.begin(); it != material_list.end(); it++)
+	{
+		D_list.push_back(it->generateD());
+	}
+
+	// cycle through all elements in the model
+	for(std::vector<Element>::iterator it = element_list.begin(); it != element_list.end(); it++)
+	{
+		switch(it->type)
+		{
+			case Element::FE_TETRAHEDRON4:
+			break;
+
+			/*
+			case Element::FE_HEXAHEDRON8:
+			break;
+			*/
+
+			default:
+				cerr << "Model::build_fem_structure: unsupported element" << it->type << endl;
+				break;
+		}
+	}
+
+	return ERR_OK;
+}
+
+
+enum Model::Error Model::run(const LoadPattern &lp)
+{
+	struct FemEquation f;
+	//TODO finish this
+
+	//this is a nasty hack to test the code. To be removed.
+	build_fem_equation(f, lp);
+
+	return ERR_OK;
+}
+
 
 }

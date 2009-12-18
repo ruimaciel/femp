@@ -77,9 +77,6 @@
           </item>
           <item>
            <widget class="QDoubleSpinBox" name="doubleSpinBoxFx">
-            <property name="suffix">
-             <string> kN</string>
-            </property>
             <property name="maximum">
              <double>1000.000000000000000</double>
             </property>
@@ -104,9 +101,6 @@
           </item>
           <item>
            <widget class="QDoubleSpinBox" name="doubleSpinBoxFy">
-            <property name="suffix">
-             <string> kN</string>
-            </property>
             <property name="maximum">
              <double>1000.000000000000000</double>
             </property>
@@ -131,9 +125,6 @@
           </item>
           <item>
            <widget class="QDoubleSpinBox" name="doubleSpinBoxFz">
-            <property name="suffix">
-             <string> kN</string>
-            </property>
             <property name="maximum">
              <double>1000.000000000000000</double>
             </property>
@@ -170,9 +161,6 @@
           </item>
           <item>
            <widget class="QDoubleSpinBox" name="doubleSpinBoxDx">
-            <property name="suffix">
-             <string> m</string>
-            </property>
             <property name="maximum">
              <double>1000.000000000000000</double>
             </property>
@@ -197,9 +185,6 @@
           </item>
           <item>
            <widget class="QDoubleSpinBox" name="doubleSpinBoxDy">
-            <property name="suffix">
-             <string> m</string>
-            </property>
             <property name="maximum">
              <double>1000.000000000000000</double>
             </property>
@@ -224,9 +209,6 @@
           </item>
           <item>
            <widget class="QDoubleSpinBox" name="doubleSpinBoxDz">
-            <property name="suffix">
-             <string> m</string>
-            </property>
             <property name="maximum">
              <double>1000.000000000000000</double>
             </property>

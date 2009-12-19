@@ -2152,10 +2152,6 @@ json_parse_fragment (struct json_parsing_info *info, char *buffer)
 					info->state = 1;	/* begin object */
 					break;
 
-				case LEX_BEGIN_ARRAY:
-					info->state = 7;	/* begin array */
-					break;
-
 				case LEX_INVALID_CHARACTER:
 					return JSON_MALFORMED_DOCUMENT;
 					break;

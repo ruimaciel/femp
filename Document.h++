@@ -11,8 +11,9 @@ class Document
 {
 	public:
 		enum Type { TYPE_NONE, TYPE_SOLID3D};
-		enum Error {ERR_NONE, 
-			ERR_NONEXISTENT_FILE,	// path to project dir doesn't exist
+		enum Error {ERR_OK, 
+			ERR_FILE_NOT_FOUND,	// path to project file doesn't exist
+			ERR_FILE_OPEN,		// file.open() failed
 			ERR_INVALID_FILE,	// path doesn't point to a valid project file
 			ERR_PARSER_ERROR,	// the parser stumbled on a formatting error
 			ERR_WRITING_FILE	// error while writing file

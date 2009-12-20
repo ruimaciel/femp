@@ -809,9 +809,7 @@ enum Document::Error Document::load()
 
 									// all info extracted
 									force_list.push_back(force);
-									qWarning("domain force: %f, %f, %f",force.data[0], force.data[1], force.data[2]);
 								}
-								qWarning("number of domain loads points: %zd of %d",force_list.size(), nodes);
 								PTEST(force_list.size() == (size_t)nodes);
 								lp.addDomainLoad(n, force_list);
 							}
@@ -870,7 +868,6 @@ enum Document::Error Document::save()
 	// check if if the given file_name exists
 	if(file_name == NULL)
 		return ERR_FILE_NOT_FOUND;
-	qWarning("Document:save(): %s", qPrintable(*file_name));
 
 	file.setFileName(*file_name);
 

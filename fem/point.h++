@@ -59,6 +59,7 @@ namespace fem
         	bool operator != (const point &other);
     
         	
+    		friend point operator +(const point &lhs, const point &rhs);
     		friend point operator *(const double &s, const point &v);
     		friend point operator *(const point &v, const double &s);
     

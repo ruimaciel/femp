@@ -194,6 +194,16 @@ bool point::operator != (const point &other)
 	Friend functions
 */
 
+point operator +(const point &lhs, const point &rhs)
+{
+	point temp;
+	temp.data[0] = lhs.data[0] + rhs.data[0];
+	temp.data[1] = lhs.data[1] + rhs.data[1];
+	temp.data[2] = lhs.data[2] + rhs.data[2];
+	return temp;
+}
+
+
 point operator *(const double &s, const point &v)
 {
 	point temp;

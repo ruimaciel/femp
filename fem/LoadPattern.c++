@@ -48,12 +48,12 @@ namespace fem
 		nodal_displacements[node] = n;
 	}
 
-	void LoadPattern::addDomainLoad(size_t node, point force)
+	void LoadPattern::addDomainLoad(size_t element, std::vector<point> force_shape)
 	{
 		//TODO perform sanity checks
 		DomainLoad n;
-		n.force = force;
-		domain_loads[node] = n;
+		n.force_shape = force_shape;
+		domain_loads[element] = n;
 	}
 }
 

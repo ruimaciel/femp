@@ -94,12 +94,18 @@ enum Document::Error Document::load()
 
 	#define PTEST(TEST) {if(!(TEST)){qWarning("PERROR line %d: " #TEST, __LINE__); return ERR_PARSER_ERROR;} }
 	#define PMOVE(TO)	{ PTEST(TO != NULL); cursor = TO; }
+	#define PMOVE_TYPE(CURSOR,TO,TYPE)	{ PTEST(TO != NULL); PTEST(TO->type != TYPE); CURSOR = TO; }
+	#define PMOVE_TOCHILD(CURSOR)	{ PTEST(CURSOR->child != NULL); CURSOR = CURSOR->child;}
+	#define PMOVE_TOCHILD_TYPE(CURSOR,TYPE)	{ PTEST(CURSOR->child != NULL); CURSOR = CURSOR->child; PTEST(CURSOR->type == TYPE);}
+	#define PMOVE_TONEXT(CURSOR)	{ PTEST(CURSOR->next != NULL); CURSOR = CURSOR->next;}
+	#define PMOVE_TONEXT_TYPE(CURSOR,TYPE)	{ PTEST(CURSOR->next != NULL); CURSOR = CURSOR->next; PTEST(CURSOR->type == TYPE);}
+	#define PMOVE_DOWN(CURSOR)	{ PTEST(CURSOR->parent != NULL); CURSOR = CURSOR->parent;}
 
 	// document in memory, now let the importing begin
 	json_t *cursor = root;
-	PTEST(cursor->child != NULL);
 
-	cursor = cursor->child;
+	PMOVE_TOCHILD(cursor);
+	
 	PTEST(cursor->type == JSON_STRING);
 	PTEST( QString::compare(cursor->text,"fem") == 0);
 	//TODO finish this
@@ -107,8 +113,7 @@ enum Document::Error Document::load()
 	// move to the materials field
 	PMOVE(cursor->next);	// pointing to root->materials
 	PTEST( QString::compare(cursor->text,"materials") == 0);
-	PMOVE(cursor->child);	// pointing to root->materials->array
-	PTEST(cursor->type == JSON_ARRAY);
+	PMOVE_TOCHILD_TYPE(cursor, JSON_ARRAY);
 	if(cursor->child != NULL)	// root-"materials"->array should have items
 	{
 		// there are defined elements
@@ -118,7 +123,7 @@ enum Document::Error Document::load()
 			QString temp;
 			PTEST(mc->type == JSON_OBJECT);
 			PTEST(mc->child != NULL);
-			json_t *c = mc->child;
+			json_t *c = mc->child;	// switched cursor
 			PTEST(c->type == JSON_STRING);
 			PTEST( QString::compare(c->text,"type") == 0);
 
@@ -127,16 +132,12 @@ enum Document::Error Document::load()
 			mat.type = fem::Material::MAT_LINEAR_ELASTIC;
 
 			// move to the label field
-			PTEST(c->next != NULL);
-			c = c->next;
-			PTEST(c->type == JSON_STRING);
+			PMOVE_TONEXT_TYPE(c,JSON_STRING);
 			PTEST( QString::compare(c->text,"label") == 0);
 			mat.label = c->child->text;
 
 			// move to the Young modulus field
-			PTEST(c->next != NULL);
-			c = c->next;
-			PTEST(c->type == JSON_STRING);
+			PMOVE_TONEXT_TYPE(c,JSON_STRING);
 			PTEST( QString::compare(c->text,"E") == 0);
 			PTEST(c->child != NULL);
 			PTEST(c->child->type == JSON_NUMBER);
@@ -487,7 +488,7 @@ enum Document::Error Document::load()
 
 				PTEST(lpc->type == JSON_OBJECT);
 				PTEST(lpc->child != NULL);
-				c = lpc->child;	// point to the first "node loads" entry, which must be "label"
+				c = lpc->child;	// point to the first "nodal loads" entry, which must be "label"
 
 				// get this load pattern's label
 				PTEST(c->type == JSON_STRING);
@@ -499,16 +500,16 @@ enum Document::Error Document::load()
 				{
 					c = c->next;	// move to the next field
 
-					// get the "node loads"
+					// get the "nodal loads"
 					PTEST(c->type == JSON_STRING);
-					if(QString::compare(c->text,"node loads") == 0)
+					if(QString::compare(c->text,"nodal loads") == 0)
 					{
 						// next item is a node load
 						PTEST(c->child != NULL);
-						PTEST(c->child->type == JSON_ARRAY);	// the "node loads" value must be a JSON_ARRAY
-						if(c->child->child != NULL)	// node loads array is populated
+						PTEST(c->child->type == JSON_ARRAY);	// the "nodal loads" value must be a JSON_ARRAY
+						if(c->child->child != NULL)	// nodal loads array is populated
 						{
-							json_t *nltc;	// node loads temporary cursor
+							json_t *nltc;	// nodal loads temporary cursor
 							size_t n = 0;	// temporary node reference
 							QString temp;	// temporary string for the number conversion
 							fem::point force;	// temporary nodal load
@@ -566,7 +567,7 @@ enum Document::Error Document::load()
 					{
 						//TODO finish this
 						PTEST(c->child != NULL);
-						PTEST(c->child->type == JSON_ARRAY);	// the "node loads" value must be a JSON_ARRAY
+						PTEST(c->child->type == JSON_ARRAY);	// the "nodal loads" value must be a JSON_ARRAY
 						if(c->child->child != NULL)	// array is populated
 						{
 							//TODO this 
@@ -628,55 +629,191 @@ enum Document::Error Document::load()
 					{
 						//TODO finish this
 						PTEST(c->child != NULL);
-						PTEST(c->child->type == JSON_ARRAY);	// the "node loads" value must be a JSON_ARRAY
+						PTEST(c->child->type == JSON_ARRAY);	// the "nodal loads" value must be a JSON_ARRAY
 						if(c->child->child != NULL)	// array is populated
 						{
 							//TODO this 
 							json_t *nltc;	// domain forces temporary cursor
-							size_t n = 0;	// temporary domain reference
+							size_t n = 0;	// temporary element reference
 							QString temp;	// temporary string for the number conversion
 							fem::point force;	// temporary nodal force
+							std::vector<fem::point> force_list;	// a temporary vector for the nodal components of the domain force
 
-							// extract all nodal forces
+							// extract all domain load definitions
 							for(json_t *nlc = c->child->child; nlc != NULL; nlc = nlc->next)
 							{
+								//TODO redefine this entire part
 								PTEST(nlc->type == JSON_OBJECT);
 								PTEST(nlc->child != NULL);
 								nltc = nlc->child;
 
 								// extract the domain reference
-								PTEST(QString::compare(nltc->text,"node") == 0);
+								PTEST(QString::compare(nltc->text,"element") == 0);
 								PTEST(nltc->child != NULL);
 								PTEST(nltc->child->type == JSON_NUMBER);
 								temp = nltc->child->text;
-								n = temp.toLongLong();	// and we have the domain reference
+								n = temp.toLongLong();	// and we have the element reference
+
+								// extract the number of expected nodes for this particular element type
+								int nodes;	// to store the expected number of nodes
+								switch(model.element_list[n].type)
+								{
+									case fem::Element::FE_LINE2: 
+										nodes = 2;
+										break;
+
+									case fem::Element::FE_TRIANGLE3: 
+										nodes = 3;
+										break;
+
+									case fem::Element::FE_QUADRANGLE4: 
+										nodes = 4;
+										break;
+
+									case fem::Element::FE_TETRAHEDRON4: 
+										nodes = 4;
+										break;
+
+									case fem::Element::FE_HEXAHEDRON8: 
+										nodes = 8;
+										break;
+
+									case fem::Element::FE_PRISM6: 
+										nodes = 6;
+										break;
+
+									case fem::Element::FE_PYRAMID5: 
+										nodes = 5;
+										break;
+
+									case fem::Element::FE_LINE3: 
+										nodes = 3;
+										break;
+
+									case fem::Element::FE_TRIANGLE6: 
+										nodes = 6;
+										break;
+
+									case fem::Element::FE_QUADRANGLE9: 
+										nodes = 9;
+										break;
+
+									case fem::Element::FE_TETRAHEDRON10: 
+										nodes = 10;
+										break;
+
+									case fem::Element::FE_HEXAHEDRON27: 
+										nodes = 27;
+										break;
+
+									case fem::Element::FE_PRISM18: 
+										nodes = 18;
+										break;
+
+									case fem::Element::FE_PYRAMID14: 
+										nodes = 14;
+										break;
+
+									case fem::Element::FE_QUADRANGLE8: 
+											nodes = 8;
+											break;
+
+									case fem::Element::FE_HEXAHEDRON20: 
+											nodes = 20;
+											break;
+
+									case fem::Element::FE_PRISM15: 
+											nodes = 15;
+											break;
+
+									case fem::Element::FE_PYRAMID13: 
+											nodes = 13;
+											break;
+
+									case fem::Element::FE_ITRIANGLE9: 
+											nodes = 9;
+											break;
+
+									case fem::Element::FE_TRIANGLE10: 
+											nodes = 10;
+											break;
+
+									case fem::Element::FE_ITRIANGLE12: 
+											nodes = 12;
+											break;
+
+									case fem::Element::FE_TRIANGLE15: 
+											nodes = 15;
+											break;
+
+									case fem::Element::FE_ITRIANGLE15: 
+											nodes = 15;
+											break;
+
+									case fem::Element::FE_TRIANGLE21: 
+											nodes = 21;
+											break;
+
+									case fem::Element::FE_EDGE4: 
+											nodes = 4;
+											break;
+
+									case fem::Element::FE_EDGE5: 
+											nodes = 5;
+											break;
+
+									case fem::Element::FE_EDGE6: 
+											nodes = 6;
+											break;
+
+									case fem::Element::FE_TETRAHEDRON20: 
+											nodes = 20;
+											break;
+
+									case fem::Element::FE_TETRAHEDRON35: 
+											nodes = 35;
+											break;
+
+									case fem::Element::FE_TETRAHEDRON56: 
+											nodes = 56;
+											break;
+
+									default:
+											break;
+								}
 
 								PTEST(nltc->next != NULL);
 								nltc = nltc->next;
-								PTEST(QString::compare(nltc->text,"force") == 0);
-								PTEST(nltc->child != NULL);
-								PTEST(nltc->child->type == JSON_ARRAY);
-								PTEST(nltc->child->child != NULL);
-								nltc = nltc->child->child;	// point domain force temp cursor to the first item in the "force array"
+								PTEST(QString::compare(nltc->text,"forces") == 0);
+								PMOVE_TOCHILD_TYPE(nltc,JSON_ARRAY);
 
-								// extract the force components
-								PTEST(nltc->type == JSON_NUMBER);
-								temp = nltc->text;
-								force.x(temp.toDouble());	// force XX componet was obtained
-								PTEST(nltc->next != NULL);
-								nltc = nltc->next;
-								PTEST(nltc->type == JSON_NUMBER);
-								temp = nltc->text;
-								force.y(temp.toDouble());	// force YY componet was obtained
-								PTEST(nltc->next != NULL);
-								nltc = nltc->next;
-								PTEST(nltc->type == JSON_NUMBER);
-								temp = nltc->text;
-								force.z(temp.toDouble());	// force ZZ componet was obtained
+								// now cycle all force vectors
+								force_list.clear();
+								for(nltc = nltc->child; nltc != NULL; nltc = nltc->next)
+								{
+									json_t *dlf = nltc;
+									PTEST(dlf->type == JSON_ARRAY);
 
-								PTEST(nltc->next == NULL);
-								// all info extracted
-								lp.addDomainLoad(n, force);
+									// extract the force components
+									PMOVE_TOCHILD_TYPE(dlf,JSON_NUMBER);
+									temp = dlf->text;
+									force.x(temp.toDouble());	// force XX component was obtained
+									PMOVE_TONEXT_TYPE(dlf,JSON_NUMBER);
+									temp = dlf->text;
+									force.y(temp.toDouble());	// force YY componet was obtained
+									PMOVE_TONEXT_TYPE(dlf,JSON_NUMBER);
+									temp = dlf->text;
+									force.z(temp.toDouble());	// force ZZ componet was obtained
+
+									PTEST(dlf->next == NULL);
+
+									// all info extracted
+									force_list.push_back(force);
+									qWarning("domain force: %f, %f, %f",force.data[0], force.data[1], force.data[2]);
+								}
+								qWarning("number of domain loads points: %zd of %d",force_list.size(), nodes);
+								PTEST(force_list.size() == (size_t)nodes);
+								lp.addDomainLoad(n, force_list);
 							}
 						}
 						if(c->next == NULL)	// no more entries
@@ -690,18 +827,19 @@ enum Document::Error Document::load()
 					{
 						//TODO finish this
 						PTEST(c->child != NULL);
-						PTEST(c->child->type == JSON_ARRAY);	// the "node loads" value must be a JSON_ARRAY
+						PTEST(c->child->type == JSON_ARRAY);	// the "nodal loads" value must be a JSON_ARRAY
 						if(c->child->child != NULL)	// array is populated
 						{
+							//TODO implement surface loads
 						}
 						if(c->next == NULL)	// no more entries
-						goto load_pattern_push;
-					c = c->next;
-					PTEST(c->type == JSON_STRING);
-				}
+							goto load_pattern_push;
+						c = c->next;
+						PTEST(c->type == JSON_STRING);
+					}
 				}
 
-			load_pattern_push:	// nasty hack
+load_pattern_push:	// nasty hack
 				// push the newly prepared load pattern into the model stack
 				model.pushLoadPattern(lp);
 			}
@@ -863,14 +1001,8 @@ enum Document::Error Document::save()
 		//TODO test this
 		if(it != model.node_restrictions_list.begin())
 			out << ",";
-		out << "\n\t";
+		out << "\n\t\t";
 		out << "{ \"node\":" << it->first;
-		/*
-		out << ", displacement:[" ;
-		out << (it->second.dx? "true,": "false,");
-		out << (it->second.dy? "true,": "false,");
-		out << (it->second.dz? "true]": "false]");
-		*/
 		if(it->second.dx() == true)
 			out << ", \"dx\":true";
 		if(it->second.dy() == true)
@@ -888,63 +1020,72 @@ enum Document::Error Document::save()
 	{
 		if(it != model.load_pattern_list.begin())
 			out << ",";
-		out << "\n\t{";
+		out << "\n\t\t{";
 		out << "\t\"label\": \"" << it->label << "\""; 
 		// take care of the nodal loads
 		if( !it->nodal_loads.empty() )
 		{
-			out << "\",\n\t";
-			out << "\"node loads\":[";
+			out << ",\n\t\t";
+			out << "\"nodal loads\":[";
 			for(std::map<size_t,fem::NodalLoad>::iterator n = it->nodal_loads.begin(); n != it->nodal_loads.end(); n++)
 			{
 				if(n != it->nodal_loads.begin())
 					out << ",";
-				out << "\n\t\t{";
+				out << "\n\t\t\t{";
 				out << "\"node\":" << n->first;
 				out << ", \"force\":" << "[" << n->second.force.x() << ", " << n->second.force.y() << ", " << n->second.force.z() << "]}";
 			}
-			out << "\n\t]";
+			out << "\n\t\t]";
 		}
 
 		// take care of the nodal displacements
 		if( !it->nodal_displacements.empty() )
 		{
-			out << "\",\n\t";
+			out << ",\n\t\t";
 			out << "\"node displacements\":[";
 			for(std::map<size_t,fem::NodalDisplacement>::iterator n = it->nodal_displacements.begin(); n != it->nodal_displacements.end(); n++)
 			{
 				if(n != it->nodal_displacements.begin())
 					out << ",";
-				out << "\n\t\t{";
+				out << "\n\t\t\t{";
 				out << "\"node\":" << n->first;
 				out << ", \"displacement\":" << "[" << n->second.displacement.data[0] << ", " << n->second.displacement.data[1] << ", " << n->second.displacement.data[2] << "]}";
 			}
-			out << "\n\t]";
+			out << "\n\t\t]";
 		}
 
 
 		// take care of the domain displacements
 		if( !it->domain_loads.empty() )
 		{
-			out << ",\n\t";
+			out << ",\n\t\t";
 			out << "\"domain loads\":[";
 			for(std::map<size_t,fem::DomainLoad>::iterator n = it->domain_loads.begin(); n != it->domain_loads.end(); n++)
 			{
 				if(n != it->domain_loads.begin())
 					out << ",";
-				out << "\n\t\t{";
-				out << "\"node\":" << n->first;
-				out << ", \"force\":" << "[" << n->second.force.data[0] << ", " << n->second.force.data[1] << ", " << n->second.force.data[2] << "]}";
+				out << "\n\t\t\t{";
+				out << "\"element\":" << n->first;
+				out << ", ";
+				out << "\"forces\": [";
+				for(std::vector<fem::point>::iterator i = n->second.force_shape.begin(); i != n->second.force_shape.end(); i++)
+				{
+					if(i != n->second.force_shape.begin())
+						out << ",";
+					out << "[" << i->x() << "," << i->y() << "," << i->z() << "]";
+				}
+				out << "]";
+				out << "}";
 			}
-			out << "\n\t]";
+			out << "\n\t\t\t]\n";
 		}
 
 		// take care of the surface loads
 		//TODO finish surface loads
 
-		out << "}";
+		out << "\t\t}\n";
 	}
-	out << "\n\t],\n";
+	out << "\t],\n";
 
 
 	// dump the load combinations list

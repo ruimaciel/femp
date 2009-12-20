@@ -84,6 +84,9 @@ class Model {
 		@param n	the number of integration
 		*/
 		void gauleg(double x[], double w[], int n);
+
+
+		//TODO perform sanity checks on data structure
 };
 
 

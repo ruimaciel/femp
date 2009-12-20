@@ -21,7 +21,7 @@ namespace fem
 			QString label;	// this load pattern's label
 			std::map<size_t,NodalLoad> 	nodal_loads;	// maps nodal loads to node references
 			std::map<size_t,NodalDisplacement> 	nodal_displacements;	// maps nodal loads to node references
-			std::map<size_t,DomainLoad>	domain_loads;	// maps to element nodes
+			std::map<size_t,DomainLoad>	domain_loads;	// maps to element references
 			//TODO surface loads
 
 		public:
@@ -35,7 +35,13 @@ namespace fem
 
 			void addNodalLoad(size_t, point);
 			void addNodalDisplacement(size_t, point);
-			void addDomainLoad(size_t, point);
+
+			/**
+			sets the domain load for a given element
+			@param element	element that will get a new domain load definition
+			@param force_shape	a list of forces acting on each of the element's nodes
+			**/
+			void addDomainLoad(size_t element, std::vector<point> force_shape);
 	};
 }
 

@@ -179,7 +179,54 @@ void GLWidget::paintGL()
 		{
 			paintElement(*ei);
 		}
+
+		// render all optional information, if it's enabled
+		if(display_options.load_pattern != NULL)
+		{
+			// render the nodal forces
+			if(display_options.nodal_forces)
+			{
+				// set the color
+				for(std::map<size_t,fem::NodalLoad>::iterator i = display_options.load_pattern->nodal_loads.begin(); i != display_options.load_pattern->nodal_loads.end(); i++)
+				{
+					//TODO draw an arrow
+					paintArrow(document->model.node_list[i->first], i->second.force.director());
+				}
+			}
+
+			// render the surface forces
+			if(display_options.surface_forces)
+			{
+				//TODO implement this
+			}
+
+			// render the domain forces
+			if(display_options.domain_forces)
+			{
+				//TODO implement this
+			}
+
+			// and finally render the nodal displacements 
+			if(display_options.nodal_displacements)
+			{
+				for(std::map<size_t,fem::NodalDisplacement>::iterator i = display_options.load_pattern->nodal_displacements.begin(); i != display_options.load_pattern->nodal_displacements.end(); i++)
+				{
+					//TODO draw an arrow
+					paintArrow(document->model.node_list[i->first], i->second.displacement.director());
+				}
+			}
+		}
 	}
+}
+
+
+void GLWidget::paintArrow(const fem::point &p, const fem::point &direction)
+{
+	// draw line
+	glBegin(GL_LINES);
+	glVertex3dv(p.data);
+	glVertex3dv((p + direction).data);
+	glEnd();
 }
 
 

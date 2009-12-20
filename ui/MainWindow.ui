@@ -59,13 +59,14 @@
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="title">
      <string>View</string>
     </property>
     <addaction name="actionCommand_line"/>
     <addaction name="actionTogglePerspective"/>
+    <addaction name="actionViewActions"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -95,17 +96,6 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QToolBar" name="toolBar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>
@@ -193,6 +183,60 @@
   <action name="actionRun">
    <property name="text">
     <string>Run</string>
+   </property>
+  </action>
+  <action name="actionShowNodalDisplacements">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Nodal displacements</string>
+   </property>
+  </action>
+  <action name="actionNodal">
+   <property name="text">
+    <string>Nodal</string>
+   </property>
+  </action>
+  <action name="actionShowNodalForces">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Nodal forces</string>
+   </property>
+  </action>
+  <action name="actionShowDomainForces">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Domain forces</string>
+   </property>
+  </action>
+  <action name="actionShowSurfaceForces">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Surface forces</string>
+   </property>
+  </action>
+  <action name="actionViewActions">
+   <property name="text">
+    <string>Actions</string>
    </property>
   </action>
  </widget>

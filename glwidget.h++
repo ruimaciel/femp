@@ -7,6 +7,7 @@
 #include "Document.h++"
 #include "ViewportColors.h++"
 #include "Camera.h++"
+#include "DisplayOptions.h++"
 
 
 class GLWidget : public QGLWidget
@@ -38,11 +39,15 @@ class GLWidget : public QGLWidget
 	protected:
 		void initializeGL();
 		void paintGL();
+		inline void paintArrow(const fem::point &p, const fem::point &direction);
 		void resizeGL(int width, int height);
 		void mousePressEvent(QMouseEvent *event);
 		void mouseMoveEvent(QMouseEvent *event);
 		void wheelEvent(QWheelEvent *event);
 		void keyPressEvent(QKeyEvent *event);
+
+	public:
+		DisplayOptions display_options;	// options list to be used by the render routine
 
 	private:
 		void normalizeAngle(int *angle);
@@ -67,6 +72,7 @@ class GLWidget : public QGLWidget
 
 		ViewportColors *colors;	// color definitions
 		bool perspective;	// true if perspective, false if ortogonal
+
 };
 
 #endif

@@ -51,6 +51,7 @@ public Q_SLOTS:
 	**/
 	void setNodeRestraints();
 	void setNodeActions();
+	void setDisplayOptions();
 
 
 	/**

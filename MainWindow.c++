@@ -13,6 +13,7 @@
 #include "NewProjectWizard.h++"
 #include "NodeRestrainsDialog.h++"
 #include "NodeActionsDialog.h++"
+#include "DisplayOptionsDialog.h++"
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
@@ -287,6 +288,7 @@ void MainWindow::createActions()
 	 connect(ui.actionNodeRestraints, SIGNAL(triggered()), this, SLOT(setNodeRestraints()));
 	 connect(ui.actionNodeActions, SIGNAL(triggered()), this, SLOT(setNodeActions()));
 	 connect(ui.actionRun, SIGNAL(triggered()), this, SLOT(runAnalysis()));
+	 connect(ui.actionViewActions, SIGNAL(triggered()), this, SLOT(setDisplayOptions()));
 }
 
 
@@ -456,6 +458,24 @@ void MainWindow::setNodeActions()
 			document.model.load_pattern_list[na.getLoadPattern()].addNodalDisplacement(it->first, na.getDisplacement());
 		}
 		}
+	}
+}
+
+
+void MainWindow::setDisplayOptions()
+{
+	DisplayOptionsDialog da(document.model, this);
+	if(da.exec() == QDialog::Accepted)
+	{
+		// set the LoadPattern pointer
+		size_t n = da.getLoadPatternIndex();
+		glWidget->display_options.load_pattern = &document.model.load_pattern_list[n];
+
+		// set the other visualization options
+		glWidget->display_options.nodal_forces = da.renderNodalForces();
+		glWidget->display_options.surface_forces = da.renderSurfaceForces();
+		glWidget->display_options.domain_forces = da.renderDomainForces();
+		glWidget->display_options.nodal_displacements = da.renderNodalDisplacements();
 	}
 }
 

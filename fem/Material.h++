@@ -2,8 +2,7 @@
 #define MATERIAL_HPP
 
 #include <QString>
-#include <blitz/tinymat.h>
-
+#include <boost/numeric/ublas/symmetric.hpp>
 
 namespace fem
 {
@@ -30,7 +29,7 @@ class Material {
 		Generates a constitutive matrix
 		@return	a matrix type
 		**/
-		blitz::TinyMatrix<double, 6, 6> generateD();
+		boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper>  generateD();
 };
 
 

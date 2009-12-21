@@ -1,5 +1,8 @@
 #include "Material.h++"
 
+#include <boost/numeric/ublas/io.hpp>
+
+
 namespace fem
 {
 
@@ -24,9 +27,10 @@ Material::~Material()
 }
 
 
-blitz::TinyMatrix<double, 6, 6> Material::generateD()
+boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper>  Material::generateD()
 {
-	blitz::TinyMatrix<double, 6, 6> D;
+	using namespace boost::numeric::ublas;
+	symmetric_matrix<double, upper> D(6,6);
 
 	switch(type)
 	{
@@ -36,12 +40,13 @@ blitz::TinyMatrix<double, 6, 6> Material::generateD()
 
 			// attribute values to D
 			// isotropic Hooke's law (fish, pg 241)
-			D =	a*(1-nu),	a*nu,	a*nu,	0,	0,	0,
-				  a*nu,	a*(1-nu),	a*nu,	0,	0,	0,
-				  a*nu,	a*nu,	a*(1-nu),	0,	0,	0,
-				  0,	0,	0,	a*(1-2*nu)/2,	0,	0,
-				  0,	0,	0,	0,	a*(1-2*nu)/2,	0,
-				  0,	0,	0,	0,	0,	a*(1-2*nu)/2;
+			D.clear();
+			D(0,0) = a*(1-nu);	D(0,1) = a*nu; 		D(0,2) = a*nu;
+			D(1,0) = a*nu; 		D(1,1) = a*(1-nu); 	D(1,2) = a*nu;
+			D(2,0) = a*nu; 		D(2,1) = a*nu; 		D(2,2) = a*(1-nu);
+			D(3,3) = a*(1-2*nu)/2.0;
+			D(4,4) = a*(1-2*nu)/2.0;
+			D(5,5) = a*(1-2*nu)/2.0;
 		}
 		break;
 	

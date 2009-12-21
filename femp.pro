@@ -7,7 +7,7 @@ QT += opengl
 QMAKE_EXT_CPP += c++
 
 # LIBS += -lecl
-LIBS += -ll -ly -lblitz
+LIBS += -ll -ly -lboost_math_c99-mt
 
 HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.h++ NewProjectWizard.h++ \
 	ui/NewProjectWizardPage1.h++ ui/NewProjectWizardPage2.h++ ui/NewProjectWizardPageLast.h++ \

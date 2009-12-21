@@ -78,6 +78,7 @@ enum Model::Error Model::pushLoadPattern(fem::LoadPattern lp)
 enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPattern &lp)
 {
 	using namespace std;
+	using namespace boost::numeric::ublas;
 
 	// perform sanity checks on the model
 	if(element_list.empty() )
@@ -86,8 +87,8 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 	// at this point the model is considered to be OK.
 
 	//build a list of constitutive matrices
-	vector<blitz::TinyMatrix<double, 6, 6> > D_list;
-	for(vector<Material>::iterator it = material_list.begin(); it != material_list.end(); it++)
+	std::vector< symmetric_matrix<double, upper> > D_list;
+	for(std::vector<Material>::iterator it = material_list.begin(); it != material_list.end(); it++)
 	{
 		D_list.push_back(it->generateD());
 	}
@@ -99,15 +100,17 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 		{
 			case Element::FE_TETRAHEDRON4:
 			{
-				blitz::TinyMatrix<double,12, 12> k_elem;
-				blitz::TinyVector<double,12> f_elem;
+				symmetric_matrix<double, upper> k_elem(12,12);
+				symmetric_matrix<double, upper> f_elem(12,12);
 			}
 			break;
 
-			/*
-			   case Element::FE_HEXAHEDRON8:
-			   break;
-			 */
+			case Element::FE_HEXAHEDRON8:
+			{
+				symmetric_matrix<double, upper> k_elem(12,12);
+				symmetric_matrix<double, upper> f_elem(12,12);
+			}
+			break;
 
 			default:
 			cerr << "Model::build_fem_structure: unsupported element" << it->type << endl;

@@ -6,6 +6,10 @@
 #include <map>
 #include <vector>
 
+#include <boost/numeric/ublas/symmetric.hpp>
+#include <boost/numeric/ublas/vector_sparse.hpp>
+#include <boost/numeric/ublas/io.hpp>
+
 #include "Node.h++"
 #include "Element.h++"
 #include "Material.h++"
@@ -68,6 +72,29 @@ class Model {
 		enum Error build_fem_equation(struct FemEquation &f, const LoadPattern &lp);
 
 
+		/*
+		returns the jacobian matrix of a given element
+		*/
+		inline boost::numeric::ublas::matrix<double> J(double csi,double eta,double zeta, const Element &element);
+
+		/*
+		return the inverse of a 3 by 3 matrix
+		*/
+		inline boost::numeric::ublas::matrix<double> invert3by3(const boost::numeric::ublas::matrix<double> &M, double det);
+
+		/*
+		return the determinant of a 3 by 3 matrix
+		*/
+		double det3by3(const boost::numeric::ublas::matrix<double> &M);
+
+		/* 
+		same as above but takes a fem::point as a source of [csi,eta,zeta] coordinates
+		@param p	local coordinates
+		@param element	the element in question
+		*/
+		inline boost::numeric::ublas::matrix<double> J(fem::point p, const Element &element);
+
+
 		/** runs the analysis based on a given load pattern
 		@param lp	the load pattern
 		@return 
@@ -81,7 +108,7 @@ class Model {
 		  B.P. Flannery
 		@param x	array of doubles, stores the abcissa of the integration point
 		@param w	array of doubles, stores the weights of the integration points
-		@param n	the number of integration
+		@param n	the number of Gauss points
 		*/
 		void gauleg(double x[], double w[], int n);
 

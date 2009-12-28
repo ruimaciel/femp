@@ -28,9 +28,9 @@ namespace fem
     		void zero();   // assigns 0 to all the vector's values
     		
     		// returns individual values from the vector
-    		double x()	{return data[0];}
-      		double y() 	{return data[1];}
-        	double z()	{return data[2];}
+    		double x() const	{return data[0];} 
+      		double y() const	{return data[1];}
+        	double z() const	{return data[2];}
         	
         	// sets individual vector values
         	void x(const double &val) {data[0] = val;}

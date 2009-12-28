@@ -1,0 +1,43 @@
+{"fem":
+	{	"version": "1.0",
+	"type": "unknown"
+	},
+"materials": [
+	{"type":"linear elastic", "label": "A400", "E":2e+11,"nu":0.2, "fy": 2e+07},
+	{"type":"linear elastic", "label": "C30/37", "E":3.3e+10,"nu":0.2, "fy": 2e+07}	],
+"nodes":[
+	[4,[2,1,-1]],
+	[5,[2,1,0]],
+	[17,[1,1,-1]],
+	[18,[2,0.5,-1]],
+	[21,[2,0.5,0]],
+	[32,[1,1,0]],
+	[33,[1,0.5,-1]],
+	[42,[1,0.5,0]]
+	],
+"elements":[
+	{"type":"hexahedron8", "nodes":[4,17,33,18,5,32,42,21], "material": 0}
+	],
+"node restrictions": [
+	{ "node":17, "dx":true, "dy":true, "dz":true},
+	{ "node":32, "dx":true, "dy":true, "dz":true},
+	{ "node":33, "dx":true, "dy":true, "dz":true},
+	{ "node":42, "dx":true, "dy":true, "dz":true}
+	],
+"load patterns":[
+	{	"label": "First test pattern",
+		"nodal loads":[
+			{"node":4, "force":[3, 2, 0]},
+			{"node":5, "force":[3, 2, 0]}
+		],
+		"node displacements":[
+			{"node":4, "displacement":[0, 0, 0]},
+			{"node":5, "displacement":[0, 0, 0]}
+		],
+		"domain loads": [
+			{"element":0 , "forces":[[1,2,3],[2,4,6],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]]}
+		]
+		}
+	],
+"combinations":[	]
+}

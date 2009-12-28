@@ -1,0 +1,32 @@
+{"fem":
+	{	"version": "1.0",
+	"type": "solid3d"
+	},
+"materials": [
+	{"type":"linear elastic", "label": "A400", "E":2e+11,"nu":0.2, "fy": 2e+07},
+	{"type":"linear elastic", "label": "C30/37", "E":3.3e+10,"nu":0.2, "fy": 2e+07}
+],
+"nodes":[
+	[4,[2,1,-1]],
+	[5,[2,1,0]],
+	[17,[1,1,-1]],
+	[18,[2,0.5,-1]],
+	[21,[2,0.5,0]],
+	[32,[1,1,0]],
+	[33,[1,0.5,-1]],
+	[42,[1,0.5,0]]
+	],
+"elements":[
+	{"type":"hexahedron8", "nodes":[4,17,33,18,5,32,42,21], "material": 0}
+	],
+"node restrictions": [
+	],
+"load patterns":[
+	{
+		"label":"Nodal forces",
+		"node loads":[
+		]
+	}
+],
+"combinations":[]
+}

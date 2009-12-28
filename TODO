@@ -1,0 +1,5 @@
+- nodal force data structure must inform the programmer if a certain force component was set (i.e., pointer to double)
+- implement a single data structure to deal with both nodal displacements and nodal forces, which are mutually exclusive
+- import only the elements which are supported, filter out all other cruft
+- separate designation for the element type supported by the program and those supported by the document format
+

@@ -942,6 +942,7 @@ enum Document::Error Document::save()
 		// get the name of the element
 		switch(it->type)
 		{
+			/*
 			case fem::Element::FE_LINE2:
 				out << "\"line2\", ";
 				break;
@@ -949,6 +950,7 @@ enum Document::Error Document::save()
 			case fem::Element::FE_TRIANGLE3:
 				out << "\"triangle3\", ";
 				break;
+				*/
 
 			case fem::Element::FE_TETRAHEDRON4:
 				out << "\"tetrahedron4\", ";
@@ -962,9 +964,16 @@ enum Document::Error Document::save()
 				out << "\"tetrahedron10\", ";
 				break;
 
+			/*
 			case fem::Element::FE_HEXAHEDRON20:
 				out << "\"hexahedron20\", ";
 				break;
+				*/
+
+			case fem::Element::FE_HEXAHEDRON20:
+				out << "\"hexahedron28\", ";
+				break;
+
 
 			default:
 				//TODO finish this

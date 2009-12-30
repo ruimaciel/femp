@@ -49,6 +49,13 @@ void Element::set(Type type, std::vector<size_t> nodes)
 			}
 			break;
 
+		case FE_HEXAHEDRON27:
+			if(nodes.size() != 27)
+			{
+				std::cerr << "error: FE_HEXAHEDRON27 needs 27 nodes" << std::endl;
+				return;
+			}
+			break;
 		default:
 			std::cerr << "error: unsupported type" << std::endl;
 			return;

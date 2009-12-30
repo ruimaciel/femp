@@ -65,6 +65,7 @@ class Model {
 
 
 		/** sets up a FEM equation according to the info contained in the instance of this class
+		The struct FemEquation objects must already be resized to handle the model and initialized
 		@param f	a struct FemEquation object that will be used to store the FEM equation
 		@param lp	the load pattern
 		@return an error

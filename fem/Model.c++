@@ -80,6 +80,8 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 	using namespace std;
 	using namespace boost::numeric::ublas;
 
+	// the data types for the 
+
 	// perform sanity checks on the model
 	if(element_list.empty() )
 		return ERR_NO_ELEMENTS;
@@ -93,7 +95,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 		D_list.push_back(element->generateD());
 	}
 
-	// cycle through all elements in the model
+	// generate stiffness matrix by cycling through all elements in the model
 	for(std::vector<Element>::iterator element = element_list.begin(); element != element_list.end(); element++)
 	{
 		switch(element->type)
@@ -101,14 +103,13 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 			case Element::FE_TETRAHEDRON4:
 			{
 				symmetric_matrix<double, upper> k_elem(4*3,4*3);
-				mapped_vector<double> f_elem(12);
+				mapped_vector<double> f_elem(4*3);
 				//TODO finish this
 			}
 			break;
 
 			case Element::FE_HEXAHEDRON8:
 			{
-// shape function
 /*	hexahedron8 node order
 	3 ------ 2
 	| \      . \
@@ -132,11 +133,15 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 				}
 
 				// set up the temporary variables for the elementary matrix and vector
-				symmetric_matrix<double, upper> k_elem(24,24);
-				mapped_vector<double> f_elem(24);
+				symmetric_matrix<double, upper> k_elem(8*3,8*3);
+				mapped_vector<double> f_elem(8*3);
 				matrix<double>	B(6,3*8);
 				matrix<double>	Bt(3*8,6);
 				matrix<double>	Jacobian(3,3), invJ(3,3);
+				std::vector<std::pair<fem::point, double> > integration_points;
+				int int_points = 2;	// tweak if needed
+				double x[int_points], w[int_points];	// for the Gauss-Legendre integration points and weights
+				double detJ = 0;
 
 				// build a local coordinates list for the hexahedron's nodes
 				std::vector<fem::point> local_coord;
@@ -150,14 +155,12 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 				local_coord.push_back(fem::point(-1, 1, 1));
 
 				// build the integration point/weight list
-				std::vector<std::pair<fem::point, double> > integration_points;
-				double x[3], w[3];
-				gauleg(x,w,3);
-				for(int i = 0; i < 2; i++)
+				gauleg(x,w,int_points);
+				for(int i = 0; i < int_points; i++)
 				{
-					for(int j = 0; j < 2; j++)
+					for(int j = 0; j < int_points; j++)
 					{
-						for(int k = 0; k < 2; k++)
+						for(int k = 0; k < int_points; k++)
 						{
 							integration_points.push_back(std::pair<fem::point,double>(fem::point(x[i],x[j],x[k]), w[i]*w[j]*w[k]));
 						}
@@ -166,20 +169,22 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 
 				// cycle through the number of integration points
 				k_elem.clear();
+				size_t ei = std::distance(element_list.begin(), element) ;	// get the element index
+				std::map<size_t,fem::DomainLoad>::const_iterator domain_load;
+				domain_load = lp.domain_loads.find(ei);
 				for (std::vector<std::pair<fem::point,double> >::iterator i = integration_points.begin(); i != integration_points.end(); i++)
 				{
-					std::cout << "pos: [" << i->first.x() << "," << i->first.y() << "," << i->first.z() << "],\tweight: " << i->second << std::endl;
-
 					// generate the jacobian
-					Jacobian = J(i->first,*element);
-					double detJ = det3by3(Jacobian);
+					Jacobian = J(i->first,*element);	// generate the jacobian matrix for this element
+					detJ = det3by3(Jacobian);
 					invJ = invert3by3(Jacobian,detJ);
-
 
 					// cycle through the element's nodes to set up the B matrix
 					B.clear();
 					for(int n = 0; n < 8; n++)
 					{
+//local: local coordinate constant
+// p: coordinates of the integration points
 #define DCSI(p,local) local.x()*(1+local.y()*p.y())*(1+local.z()*p.z())/8.0
 #define DETA(p,local) local.y()*(1+local.x()*p.x())*(1+local.z()*p.z())/8.0
 #define DZETA(p,local) local.z()*(1+local.x()*p.x())*(1+local.y()*p.y())/8.0
@@ -199,23 +204,153 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 						B(3,3*n) = dNdy;	B(3,3*n+1) = dNdx;
 						B(4,3*n) = dNdz;	B(4,3*n+2) = dNdx;
 						B(5,3*n+1) = dNdz;	B(4,3*n+2) = dNdy;
+
+						// set the force vector for the domain loads
+						if(domain_load != lp.domain_loads.end())
+						{
+#define PSI(p,local) (1+local.x()*p.x())*(1+local.y()*p.y())*(1+local.z()*p.z())/8.0
+							f_elem(3*n) += PSI(i->first,local_coord[n])*domain_load->second.force_shape[n].x()*detJ*i->second;
+							f_elem(3*n+1) += PSI(i->first,local_coord[n])*domain_load->second.force_shape[n].y()*detJ*i->second;
+							f_elem(3*n+2) += PSI(i->first,local_coord[n])*domain_load->second.force_shape[n].z()*detJ*i->second;
+#undef PSI
+						}
 					}
 					Bt = trans(B);
 					symmetric_matrix<double> D = D_list[element->material];
 
 					matrix<double> temp;
-
-					// and now, k_elem = Bt*D*B*detJ*i->second;
-					std::cout << Bt << std::endl;
-					std::cout << D << std::endl;
-
+					// and now, k_elem = sum(Bt*D*B*detJ*i->second);
 					temp = prod(Bt,D);
 					temp = prod(temp,B);
 					temp *= detJ*i->second;
-					std::cout << temp << std::endl;
-
-					//k_elem += temp;
+					k_elem += temp;	// adding up the full result
 				}
+
+				// add the nodal loads contributions
+				std::cout << D_list[element->material]  << endl;
+
+				//TODO setup k from k_elem through scatter operation
+				std::cout << k_elem << endl;
+				std::cout << f_elem << endl;
+			}
+			break;
+
+
+			case Element::FE_HEXAHEDRON27:
+			{
+/*	hexahedron27 node order
+	3----13----2
+	|\         |\
+	|15    24  | 14
+	9  \ 20    11 \
+	|   7----19+---6
+	|22 |  26  | 23|
+	0---+-8----1   |
+	 \ 17    25 \  18
+	 10 |  21    12|
+	   \|         \|
+	    4----16----5
+*/
+				//testing hack. remove.
+				if(element->nodes.size() != 27)
+				{
+					std::cerr << "Element without the right number of nodes" << std::endl;
+					continue;
+				}
+
+				// set up the temporary variables for the elementary matrix and vector
+				symmetric_matrix<double, upper> k_elem(27*3,27*3);
+				mapped_vector<double> f_elem(27*3);
+				matrix<double>	B(6,3*27);
+				matrix<double>	Bt(3*27,6);
+				matrix<double>	Jacobian(3,3), invJ(3,3);
+				std::vector<std::pair<fem::point, double> > integration_points;
+				int int_points = 3;	// tweak if needed
+				double x[int_points], w[int_points];	// for the Gauss-Legendre integration points and weights
+				double detJ = 0;
+
+				// build the integration point/weight list
+				gauleg(x,w,int_points);
+				for(int i = 0; i < int_points; i++)
+				{
+					for(int j = 0; j < int_points; j++)
+					{
+						for(int k = 0; k < int_points; k++)
+						{
+							integration_points.push_back(std::pair<fem::point,double>(fem::point(x[i],x[j],x[k]), w[i]*w[j]*w[k]));
+						}
+					}
+				}
+
+				// cycle through the number of integration points
+				k_elem.clear();
+				size_t ei = std::distance(element_list.begin(), element) ;	// get the element index
+				std::map<size_t,fem::DomainLoad>::const_iterator domain_load;
+				domain_load = lp.domain_loads.find(ei);
+				for (std::vector<std::pair<fem::point,double> >::iterator i = integration_points.begin(); i != integration_points.end(); i++)
+				{
+					// generate the jacobian
+					Jacobian = J(i->first,*element);	// generate the jacobian matrix for this element
+					detJ = det3by3(Jacobian);
+					invJ = invert3by3(Jacobian,detJ);
+
+					// cycle through the element's nodes to set up the B matrix
+					B.clear();
+					for(int n = 0; n < 27; n++)
+					{
+//local: local coordinate constant
+// p: coordinates of the integration points
+#define DCSI(p,local) local.x()*(1+local.y()*p.y())*(1+local.z()*p.z())/8.0
+#define DETA(p,local) local.y()*(1+local.x()*p.x())*(1+local.z()*p.z())/8.0
+#define DZETA(p,local) local.z()*(1+local.x()*p.x())*(1+local.y()*p.y())/8.0
+						// set the partial derivatives
+						double dNdx, dNdy, dNdz; 
+						/*
+						dNdx = invJ(0,0)*DCSI(i->first,local_coord[n]) + invJ(0,1)*DETA(i->first,local_coord[n]) + invJ(0,2)*DZETA(i->first,local_coord[n]); 
+						dNdy = invJ(1,0)*DCSI(i->first,local_coord[n]) + invJ(1,1)*DETA(i->first,local_coord[n]) + invJ(1,2)*DZETA(i->first,local_coord[n]); 
+						dNdz = invJ(2,0)*DCSI(i->first,local_coord[n]) + invJ(2,1)*DETA(i->first,local_coord[n]) + invJ(2,2)*DZETA(i->first,local_coord[n]); 
+						*/
+#undef DCSI
+#undef DETA
+#undef DZETA
+
+						// set the current node portion of the B matrix
+						B(0,3*n) = dNdx;
+						B(1,3*n+1) = dNdy;
+						B(2,3*n+2) = dNdz;
+						B(3,3*n) = dNdy;	B(3,3*n+1) = dNdx;
+						B(4,3*n) = dNdz;	B(4,3*n+2) = dNdx;
+						B(5,3*n+1) = dNdz;	B(4,3*n+2) = dNdy;
+
+						// set the force vector for the domain loads
+						if(domain_load != lp.domain_loads.end())
+						{
+#define PSI(p,local) (1+local.x()*p.x())*(1+local.y()*p.y())*(1+local.z()*p.z())/8.0
+							/*
+							f_elem(3*n) += PSI(i->first,local_coord[n])*domain_load->second.force_shape[n].x()*detJ*i->second;
+							f_elem(3*n+1) += PSI(i->first,local_coord[n])*domain_load->second.force_shape[n].y()*detJ*i->second;
+							f_elem(3*n+2) += PSI(i->first,local_coord[n])*domain_load->second.force_shape[n].z()*detJ*i->second;
+							*/
+#undef PSI
+						}
+					}
+					Bt = trans(B);
+					symmetric_matrix<double> D = D_list[element->material];
+
+					matrix<double> temp;
+					// and now, k_elem = sum(Bt*D*B*detJ*i->second);
+					temp = prod(Bt,D);
+					temp = prod(temp,B);
+					temp *= detJ*i->second;
+					k_elem += temp;	// adding up the full result
+				}
+
+				// add the nodal loads contributions
+				std::cout << D_list[element->material]  << endl;
+
+				//TODO setup k from k_elem through scatter operation
+				std::cout << k_elem << endl;
+				std::cout << f_elem << endl;
 			}
 			break;
 
@@ -223,6 +358,22 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 			cerr << "Model::build_fem_structure: unsupported element" << element->type << endl;
 			break;
 		}
+	}
+
+
+	// now set up the equivalent forces vector
+
+	// set nodal forces
+	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
+	{
+		//TODO must implement the scatter operation
+		size_t n;
+		n = nodal_load->first;
+
+		// set the nodal loads
+		f.f[3*n] = nodal_load->second.force.data[0];
+		f.f[3*n+1] = nodal_load->second.force.data[1];
+		f.f[3*n+2] = nodal_load->second.force.data[2];
 	}
 
 	// fem equation is set.
@@ -321,8 +472,268 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 					 DZETA(csi, 1,eta, 1, zeta, -1)*node_list[element.nodes[5]].z() + \
 					 DZETA(csi, 1,eta, 1, zeta,  1)*node_list[element.nodes[6]].z() + \
 					 DZETA(csi, 1,eta,-1, zeta,  1)*node_list[element.nodes[7]].z();
-
 				// Jacobian matriz all set up. return it
+				return J;
+			}
+			break;
+
+		case Element::FE_HEXAHEDRON27:
+			{
+				double c[3] = {csi*(csi+1),	(csi-1)*(csi+1),	(csi-1)*csi};
+				double e[3] = {eta*(eta+1),	(eta-1)*(eta+1),	(eta-1)*eta};
+				double z[3] = {zeta*(zeta+1),	(zeta-1)*(zeta+1),	(zeta-1)*zeta};
+
+				J(1,1) = node_list[element.nodes[7]].x()*((csi+1)*e[0]*z[0]/8+csi*e[0]*z[0]/8) \
+					+node_list[element.nodes[20]].x()*(-(csi+1)*e[0]*z[0]/4-(csi-1)*e[0]*z[0]/4) \
+					+node_list[element.nodes[8]].x()*(csi*e[0]*z[0]/8+(csi-1)*e[0]*z[0]/8) \
+					+node_list[element.nodes[26]].x()*((csi+1)*e[1]*z[0]/2+(csi-1)*e[1]*z[0]/2) \
+					+node_list[element.nodes[19]].x()*(-(csi+1)*e[1]*z[0]/4-csi*e[1]*z[0]/4) \
+					+node_list[element.nodes[18]].x()*(-csi*e[1]*z[0]/4-(csi-1)*e[1]*z[0]/4) \
+					+node_list[element.nodes[6]].x()*((csi+1)*e[2]*z[0]/8+csi*e[2]*z[0]/8) \
+					+node_list[element.nodes[17]].x()*(-(csi+1)*e[2]*z[0]/4-(csi-1)*e[2]*z[0]/4) \
+					+node_list[element.nodes[5]].x()*(csi*e[2]*z[0]/8+(csi-1)*e[2]*z[0]/8) \
+					+node_list[element.nodes[25]].x()*((csi+1)*e[0]*z[2]/2+(csi-1)*e[0]*z[2]/2) \
+					+node_list[element.nodes[15]].x()*(-(csi+1)*e[0]*z[2]/4-csi*e[0]*z[2]/4) \
+					+node_list[element.nodes[16]].x()*(-csi*e[0]*z[2]/4-(csi-1)*e[0]*z[2]/4) \
+					+node_list[element.nodes[24]].x()*((csi+1)*e[1]*z[2]/2+csi*e[1]*z[2]/2) \
+					+node_list[element.nodes[27]].x()*(-(csi+1)*e[1]*z[2]-(csi-1)*e[1]*z[2]) \
+					+node_list[element.nodes[23]].x()*(csi*e[1]*z[2]/2+(csi-1)*e[1]*z[2]/2) \
+					+node_list[element.nodes[22]].x()*((csi+1)*e[2]*z[2]/2+(csi-1)*e[2]*z[2]/2) \
+					+node_list[element.nodes[13]].x()*(-(csi+1)*e[2]*z[2]/4-csi*e[2]*z[2]/4) \
+					+node_list[element.nodes[11]].x()*(-csi*e[2]*z[2]/4-(csi-1)*e[2]*z[2]/4) \
+					+node_list[element.nodes[3]].x()*((csi+1)*e[0]*z[2]/8+csi*e[0]*z[2]/8) \
+					+node_list[element.nodes[14]].x()*(-(csi+1)*e[0]*z[2]/4-(csi-1)*e[0]*z[2]/4) \
+					+node_list[element.nodes[4]].x()*(csi*e[0]*z[2]/8+(csi-1)*e[0]*z[2]/8) \
+					+node_list[element.nodes[21]].x()*((csi+1)*e[1]*z[2]/2+(csi-1)*e[1]*z[2]/2) \
+					+node_list[element.nodes[12]].x()*(-(csi+1)*e[1]*z[2]/4-csi*e[1]*z[2]/4) \
+					+node_list[element.nodes[10]].x()*(-csi*e[1]*z[2]/4-(csi-1)*e[1]*z[2]/4) \
+					+node_list[element.nodes[2]].x()*((csi+1)*e[2]*z[2]/8+csi*e[2]*z[2]/8) \
+					+node_list[element.nodes[9]].x()*(-(csi+1)*e[2]*z[2]/4-(csi-1)*e[2]*z[2]/4) \
+					+node_list[element.nodes[1]].x()*(csi*e[2]*z[2]/8+(csi-1)*e[2]*z[2]/8);
+
+					J(1,2) =node_list[element.nodes[7]].y()*((csi+1)*e[0]*z[0]/8+csi*e[0]*z[0]/8) \
+					+node_list[element.nodes[20]].y()*(-(csi+1)*e[0]*z[0]/4-(csi-1)*e[0]*z[0]/4) \
+					+node_list[element.nodes[8]].y()*(csi*e[0]*z[0]/8+(csi-1)*e[0]*z[0]/8) \
+					+node_list[element.nodes[26]].y()*((csi+1)*e[1]*z[0]/2+(csi-1)*e[1]*z[0]/2) \
+					+node_list[element.nodes[19]].y()*(-(csi+1)*e[1]*z[0]/4-csi*e[1]*z[0]/4) \
+					+node_list[element.nodes[18]].y()*(-csi*e[1]*z[0]/4-(csi-1)*e[1]*z[0]/4) \
+					+node_list[element.nodes[6]].y()*((csi+1)*e[2]*z[0]/8+csi*e[2]*z[0]/8) \
+					+node_list[element.nodes[17]].y()*(-(csi+1)*e[2]*z[0]/4-(csi-1)*e[2]*z[0]/4) \
+					+node_list[element.nodes[5]].y()*(csi*e[2]*z[0]/8+(csi-1)*e[2]*z[0]/8) \
+					+node_list[element.nodes[25]].y()*((csi+1)*e[0]*z[1]/2+(csi-1)*e[0]*z[1]/2) \
+					+node_list[element.nodes[15]].y()*(-(csi+1)*e[0]*z[1]/4-csi*e[0]*z[1]/4) \
+					+node_list[element.nodes[16]].y()*(-csi*e[0]*z[1]/4-(csi-1)*e[0]*z[1]/4) \
+					+node_list[element.nodes[24]].y()*((csi+1)*e[1]*z[1]/2+csi*e[1]*z[1]/2) \
+					+node_list[element.nodes[27]].y()*(-(csi+1)*e[1]*z[1]-(csi-1)*e[1]*z[1]) \
+					+node_list[element.nodes[23]].y()*(csi*e[1]*z[1]/2+(csi-1)*e[1]*z[1]/2) \
+					+node_list[element.nodes[22]].y()*((csi+1)*e[2]*z[1]/2+(csi-1)*e[2]*z[1]/2) \
+					+node_list[element.nodes[13]].y()*(-(csi+1)*e[2]*z[1]/4-csi*e[2]*z[1]/4) \
+					+node_list[element.nodes[11]].y()*(-csi*e[2]*z[1]/4-(csi-1)*e[2]*z[1]/4) \
+					+node_list[element.nodes[3]].y()*((csi+1)*e[0]*z[2]/8+csi*e[0]*z[2]/8) \
+					+node_list[element.nodes[14]].y()*(-(csi+1)*e[0]*z[2]/4-(csi-1)*e[0]*z[2]/4) \
+					+node_list[element.nodes[4]].y()*(csi*e[0]*z[2]/8+(csi-1)*e[0]*z[2]/8) \
+					+node_list[element.nodes[21]].y()*((csi+1)*e[1]*z[2]/2+(csi-1)*e[1]*z[2]/2) \
+					+node_list[element.nodes[12]].y()*(-(csi+1)*e[1]*z[2]/4-csi*e[1]*z[2]/4) \
+					+node_list[element.nodes[10]].y()*(-csi*e[1]*z[2]/4-(csi-1)*e[1]*z[2]/4) \
+					+node_list[element.nodes[2]].y()*((csi+1)*e[2]*z[2]/8+csi*e[2]*z[2]/8) \
+					+node_list[element.nodes[9]].y()*(-(csi+1)*e[2]*z[2]/4-(csi-1)*e[2]*z[2]/4) \
+					+node_list[element.nodes[1]].y()*(csi*e[2]*z[2]/8+(csi-1)*e[2]*z[2]/8);
+
+					J(1,3) = node_list[element.nodes[7]].z()*((csi+1)*e[0]*z[0]/8+csi*e[0]*z[0]/8) \
+					+node_list[element.nodes[20]].z()*(-(csi+1)*e[0]*z[0]/4-(csi-1)*e[0]*z[0]/4) \
+					+node_list[element.nodes[8]].z()*(csi*e[0]*z[0]/8+(csi-1)*e[0]*z[0]/8) \
+					+node_list[element.nodes[26]].z()*((csi+1)*e[1]*z[0]/2+(csi-1)*e[1]*z[0]/2) \
+					+node_list[element.nodes[19]].z()*(-(csi+1)*e[1]*z[0]/4-csi*e[1]*z[0]/4) \
+					+node_list[element.nodes[18]].z()*(-csi*e[1]*z[0]/4-(csi-1)*e[1]*z[0]/4) \
+					+node_list[element.nodes[6]].z()*((csi+1)*e[2]*z[0]/8+csi*e[2]*z[0]/8) \
+					+node_list[element.nodes[17]].z()*(-(csi+1)*e[2]*z[0]/4-(csi-1)*e[2]*z[0]/4) \
+					+node_list[element.nodes[5]].z()*(csi*e[2]*z[0]/8+(csi-1)*e[2]*z[0]/8) \
+					+node_list[element.nodes[25]].z()*((csi+1)*e[0]*z[1]/2+(csi-1)*e[0]*z[1]/2) \
+					+node_list[element.nodes[15]].z()*(-(csi+1)*e[0]*z[1]/4-csi*e[0]*z[1]/4) \
+					+node_list[element.nodes[16]].z()*(-csi*e[0]*z[1]/4-(csi-1)*e[0]*z[1]/4) \
+					+node_list[element.nodes[24]].z()*((csi+1)*e[1]*z[1]/2+csi*e[1]*z[1]/2) \
+					+node_list[element.nodes[27]].z()*(-(csi+1)*e[1]*z[1]-(csi-1)*e[1]*z[1]) \
+					+node_list[element.nodes[23]].z()*(csi*e[1]*z[1]/2+(csi-1)*e[1]*z[1]/2) \
+					+node_list[element.nodes[22]].z()*((csi+1)*e[2]*z[1]/2+(csi-1)*e[2]*z[1]/2) \
+					+node_list[element.nodes[13]].z()*(-(csi+1)*e[2]*z[1]/4-csi*e[2]*z[1]/4) \
+					+node_list[element.nodes[11]].z()*(-csi*e[2]*z[1]/4-(csi-1)*e[2]*z[1]/4) \
+					+node_list[element.nodes[3]].z()*((csi+1)*e[0]*z[2]/8+csi*e[0]*z[2]/8) \
+					+node_list[element.nodes[14]].z()*(-(csi+1)*e[0]*z[2]/4-(csi-1)*e[0]*z[2]/4) \
+					+node_list[element.nodes[4]].z()*(csi*e[0]*z[2]/8+(csi-1)*e[0]*z[2]/8) \
+					+node_list[element.nodes[21]].z()*((csi+1)*e[1]*z[2]/2+(csi-1)*e[1]*z[2]/2) \
+					+node_list[element.nodes[12]].z()*(-(csi+1)*e[1]*z[2]/4-csi*e[1]*z[2]/4) \
+					+node_list[element.nodes[10]].z()*(-csi*e[1]*z[2]/4-(csi-1)*e[1]*z[2]/4) \
+					+node_list[element.nodes[2]].z()*((csi+1)*e[2]*z[2]/8+csi*e[2]*z[2]/8) \
+					+node_list[element.nodes[9]].z()*(-(csi+1)*e[2]*z[2]/4-(csi-1)*e[2]*z[2]/4) \
+					+node_list[element.nodes[1]].z()*(csi*e[2]*z[2]/8+(csi-1)*e[2]*z[2]/8);
+
+					J(2,1) = node_list[element.nodes[7]].x()*(c[0]*(eta+1)*z[0]/8+c[0]*eta*z[0]/8) \
+					+node_list[element.nodes[19]].x()*(-c[0]*(eta+1)*z[0]/4-c[0]*(eta-1)*z[0]/4) \
+					+node_list[element.nodes[26]].x()*(c[1]*(eta+1)*z[0]/2+c[1]*(eta-1)*z[0]/2) \
+					+node_list[element.nodes[20]].x()*(-c[1]*(eta+1)*z[0]/4-c[1]*eta*z[0]/4) \
+					+node_list[element.nodes[8]].x()*(c[2]*(eta+1)*z[0]/8+c[2]*eta*z[0]/8) \
+					+node_list[element.nodes[18]].x()*(-c[2]*(eta+1)*z[0]/4-c[2]*(eta-1)*z[0]/4) \
+					+node_list[element.nodes[6]].x()*(c[0]*eta*z[0]/8+c[0]*(eta-1)*z[0]/8) \
+					+node_list[element.nodes[17]].x()*(-c[1]*eta*z[0]/4-c[1]*(eta-1)*z[0]/4) \
+					+node_list[element.nodes[5]].x()*(c[2]*eta*z[0]/8+c[2]*(eta-1)*z[0]/8) \
+					+node_list[element.nodes[24]].x()*(c[0]*(eta+1)*z[1]/2+c[0]*(eta-1)*z[1]/2) \
+					+node_list[element.nodes[15]].x()*(-c[0]*(eta+1)*z[1]/4-c[0]*eta*z[1]/4) \
+					+node_list[element.nodes[25]].x()*(c[1]*(eta+1)*z[1]/2+c[1]*eta*z[1]/2) \
+					+node_list[element.nodes[27]].x()*(-c[1]*(eta+1)*z[1]-c[1]*(eta-1)*z[1]) \
+					+node_list[element.nodes[23]].x()*(c[2]*(eta+1)*z[1]/2+c[2]*(eta-1)*z[1]/2) \
+					+node_list[element.nodes[16]].x()*(-c[2]*(eta+1)*z[1]/4-c[2]*eta*z[1]/4) \
+					+node_list[element.nodes[13]].x()*(-c[0]*eta*z[1]/4-c[0]*(eta-1)*z[1]/4) \
+					+node_list[element.nodes[22]].x()*(c[1]*eta*z[1]/2+c[1]*(eta-1)*z[1]/2) \
+					+node_list[element.nodes[11]].x()*(-c[2]*eta*z[1]/4-c[2]*(eta-1)*z[1]/4) \
+					+node_list[element.nodes[3]].x()*(c[0]*(eta+1)*z[2]/8+c[0]*eta*z[2]/8) \
+					+node_list[element.nodes[12]].x()*(-c[0]*(eta+1)*z[2]/4-c[0]*(eta-1)*z[2]/4) \
+					+node_list[element.nodes[21]].x()*(c[1]*(eta+1)*z[2]/2+c[1]*(eta-1)*z[2]/2) \
+					+node_list[element.nodes[14]].x()*(-c[1]*(eta+1)*z[2]/4-c[1]*eta*z[2]/4) \
+					+node_list[element.nodes[4]].x()*(c[2]*(eta+1)*z[2]/8+c[2]*eta*z[2]/8) \
+					+node_list[element.nodes[10]].x()*(-c[2]*(eta+1)*z[2]/4-c[2]*(eta-1)*z[2]/4) \
+					+node_list[element.nodes[2]].x()*(c[0]*eta*z[2]/8+c[0]*(eta-1)*z[2]/8) \
+					+node_list[element.nodes[9]].x()*(-c[1]*eta*z[2]/4-c[1]*(eta-1)*z[2]/4) \
+					+node_list[element.nodes[1]].x()*(c[2]*eta*z[2]/8+c[2]*(eta-1)*z[2]/8);
+
+					J(2,2) = node_list[element.nodes[7]].y()*(c[0]*(eta+1)*z[0]/8+c[0]*eta*z[0]/8) \
+					+node_list[element.nodes[19]].y()*(-c[0]*(eta+1)*z[0]/4-c[0]*(eta-1)*z[0]/4) \
+					+node_list[element.nodes[26]].y()*(c[1]*(eta+1)*z[0]/2+c[1]*(eta-1)*z[0]/2) \
+					+node_list[element.nodes[20]].y()*(-c[1]*(eta+1)*z[0]/4-c[1]*eta*z[0]/4) \
+					+node_list[element.nodes[8]].y()*(c[2]*(eta+1)*z[0]/8+c[2]*eta*z[0]/8) \
+					+node_list[element.nodes[18]].y()*(-c[2]*(eta+1)*z[0]/4-c[2]*(eta-1)*z[0]/4) \
+					+node_list[element.nodes[6]].y()*(c[0]*eta*z[0]/8+c[0]*(eta-1)*z[0]/8) \
+					+node_list[element.nodes[17]].y()*(-c[1]*eta*z[0]/4-c[1]*(eta-1)*z[0]/4) \
+					+node_list[element.nodes[5]].y()*(c[2]*eta*z[0]/8+c[2]*(eta-1)*z[0]/8) \
+					+node_list[element.nodes[24]].y()*(c[0]*(eta+1)*z[1]/2+c[0]*(eta-1)*z[1]/2) \
+					+node_list[element.nodes[15]].y()*(-c[0]*(eta+1)*z[1]/4-c[0]*eta*z[1]/4) \
+					+node_list[element.nodes[25]].y()*(c[1]*(eta+1)*z[1]/2+c[1]*eta*z[1]/2) \
+					+node_list[element.nodes[27]].y()*(-c[1]*(eta+1)*z[1]-c[1]*(eta-1)*z[1]) \
+					+node_list[element.nodes[23]].y()*(c[2]*(eta+1)*z[1]/2+c[2]*(eta-1)*z[1]/2) \
+					+node_list[element.nodes[16]].y()*(-c[2]*(eta+1)*z[1]/4-c[2]*eta*z[1]/4) \
+					+node_list[element.nodes[13]].y()*(-c[0]*eta*z[1]/4-c[0]*(eta-1)*z[1]/4) \
+					+node_list[element.nodes[22]].y()*(c[1]*eta*z[1]/2+c[1]*(eta-1)*z[1]/2) \
+					+node_list[element.nodes[11]].y()*(-c[2]*eta*z[1]/4-c[2]*(eta-1)*z[1]/4) \
+					+node_list[element.nodes[3]].y()*(c[0]*(eta+1)*z[2]/8+c[0]*eta*z[2]/8) \
+					+node_list[element.nodes[12]].y()*(-c[0]*(eta+1)*z[2]/4-c[0]*(eta-1)*z[2]/4) \
+					+node_list[element.nodes[21]].y()*(c[1]*(eta+1)*z[2]/2+c[1]*(eta-1)*z[2]/2) \
+					+node_list[element.nodes[14]].y()*(-c[1]*(eta+1)*z[2]/4-c[1]*eta*z[2]/4) \
+					+node_list[element.nodes[4]].y()*(c[2]*(eta+1)*z[2]/8+c[2]*eta*z[2]/8) \
+					+node_list[element.nodes[10]].y()*(-c[2]*(eta+1)*z[2]/4-c[2]*(eta-1)*z[2]/4) \
+					+node_list[element.nodes[2]].y()*(c[0]*eta*z[2]/8+c[0]*(eta-1)*z[2]/8) \
+					+node_list[element.nodes[9]].y()*(-c[1]*eta*z[2]/4-c[1]*(eta-1)*z[2]/4) \
+					+node_list[element.nodes[1]].y()*(c[2]*eta*z[2]/8+c[2]*(eta-1)*z[2]/8);
+
+				J(2,3) = node_list[element.nodes[7]].z()*(c[0]*(eta+1)*z[0]/8+c[0]*eta*z[0]/8) \
+					+node_list[element.nodes[19]].z()*(-c[0]*(eta+1)*z[0]/4-c[0]*(eta-1)*z[0]/4) \
+					+node_list[element.nodes[26]].z()*(c[1]*(eta+1)*z[0]/2+c[1]*(eta-1)*z[0]/2) \
+					+node_list[element.nodes[20]].z()*(-c[1]*(eta+1)*z[0]/4-c[1]*eta*z[0]/4) \
+					+node_list[element.nodes[8]].z()*(c[2]*(eta+1)*z[0]/8+c[2]*eta*z[0]/8) \
+					+node_list[element.nodes[18]].z()*(-c[2]*(eta+1)*z[0]/4-c[2]*(eta-1)*z[0]/4) \
+					+node_list[element.nodes[6]].z()*(c[0]*eta*z[0]/8+c[0]*(eta-1)*z[0]/8) \
+					+node_list[element.nodes[17]].z()*(-c[1]*eta*z[0]/4-c[1]*(eta-1)*z[0]/4) \
+					+node_list[element.nodes[5]].z()*(c[2]*eta*z[0]/8+c[2]*(eta-1)*z[0]/8) \
+					+node_list[element.nodes[24]].z()*(c[0]*(eta+1)*z[1]/2+c[0]*(eta-1)*z[1]/2) \
+					+node_list[element.nodes[15]].z()*(-c[0]*(eta+1)*z[1]/4-c[0]*eta*z[1]/4) \
+					+node_list[element.nodes[25]].z()*(c[1]*(eta+1)*z[1]/2+c[1]*eta*z[1]/2) \
+					+node_list[element.nodes[27]].z()*(-c[1]*(eta+1)*z[1]-c[1]*(eta-1)*z[1]) \
+					+node_list[element.nodes[23]].z()*(c[2]*(eta+1)*z[1]/2+c[2]*(eta-1)*z[1]/2) \
+					+node_list[element.nodes[16]].z()*(-c[2]*(eta+1)*z[1]/4-c[2]*eta*z[1]/4) \
+					+node_list[element.nodes[13]].z()*(-c[0]*eta*z[1]/4-c[0]*(eta-1)*z[1]/4) \
+					+node_list[element.nodes[22]].z()*(c[1]*eta*z[1]/2+c[1]*(eta-1)*z[1]/2) \
+					+node_list[element.nodes[11]].z()*(-c[2]*eta*z[1]/4-c[2]*(eta-1)*z[1]/4) \
+					+node_list[element.nodes[3]].z()*(c[0]*(eta+1)*z[2]/8+c[0]*eta*z[2]/8) \
+					+node_list[element.nodes[12]].z()*(-c[0]*(eta+1)*z[2]/4-c[0]*(eta-1)*z[2]/4) \
+					+node_list[element.nodes[21]].z()*(c[1]*(eta+1)*z[2]/2+c[1]*(eta-1)*z[2]/2) \
+					+node_list[element.nodes[14]].z()*(-c[1]*(eta+1)*z[2]/4-c[1]*eta*z[2]/4) \
+					+node_list[element.nodes[4]].z()*(c[2]*(eta+1)*z[2]/8+c[2]*eta*z[2]/8) \
+					+node_list[element.nodes[10]].z()*(-c[2]*(eta+1)*z[2]/4-c[2]*(eta-1)*z[2]/4) \
+					+node_list[element.nodes[2]].z()*(c[0]*eta*z[2]/8+c[0]*(eta-1)*z[2]/8) \
+					+node_list[element.nodes[9]].z()*(-c[1]*eta*z[2]/4-c[1]*(eta-1)*z[2]/4) \
+					+node_list[element.nodes[1]].z()*(c[2]*eta*z[2]/8+c[2]*(eta-1)*z[2]/8);
+
+					J(3,1) = node_list[element.nodes[7]].x()*(c[0]*e[0]*(zeta+1)/8+c[0]*e[0]*zeta/8)\
+					+node_list[element.nodes[15]].x()*(-c[0]*e[0]*(zeta+1)/4-c[0]*e[0]*(zeta-1)/4) \
+					+node_list[element.nodes[25]].x()*(c[1]*e[0]*(zeta+1)/2+c[1]*e[0]*(zeta-1)/2) \
+					+node_list[element.nodes[20]].x()*(-c[1]*e[0]*(zeta+1)/4-c[1]*e[0]*zeta/4) \
+					+node_list[element.nodes[8]].x()*(c[2]*e[0]*(zeta+1)/8+c[2]*e[0]*zeta/8) \
+					+node_list[element.nodes[16]].x()*(-c[2]*e[0]*(zeta+1)/4-c[2]*e[0]*(zeta-1)/4) \
+					+node_list[element.nodes[24]].x()*(c[0]*e[1]*(zeta+1)/2+c[0]*e[1]*(zeta-1)/2) \
+					+node_list[element.nodes[19]].x()*(-c[0]*e[1]*(zeta+1)/4-c[0]*e[1]*zeta/4) \
+					+node_list[element.nodes[26]].x()*(c[1]*e[1]*(zeta+1)/2+c[1]*e[1]*zeta/2) \
+					+node_list[element.nodes[27]].x()*(-c[1]*e[1]*(zeta+1)-c[1]*e[1]*(zeta-1)) \
+					+node_list[element.nodes[23]].x()*(c[2]*e[1]*(zeta+1)/2+c[2]*e[1]*(zeta-1)/2) \
+					+node_list[element.nodes[18]].x()*(-c[2]*e[1]*(zeta+1)/4-c[2]*e[1]*zeta/4) \
+					+node_list[element.nodes[6]].x()*(c[0]*e[2]*(zeta+1)/8+c[0]*e[2]*zeta/8) \
+					+node_list[element.nodes[13]].x()*(-c[0]*e[2]*(zeta+1)/4-c[0]*e[2]*(zeta-1)/4) \
+					+node_list[element.nodes[22]].x()*(c[1]*e[2]*(zeta+1)/2+c[1]*e[2]*(zeta-1)/2) \
+					+node_list[element.nodes[17]].x()*(-c[1]*e[2]*(zeta+1)/4-c[1]*e[2]*zeta/4) \
+					+node_list[element.nodes[5]].x()*(c[2]*e[2]*(zeta+1)/8+c[2]*e[2]*zeta/8) \
+					+node_list[element.nodes[11]].x()*(-c[2]*e[2]*(zeta+1)/4-c[2]*e[2]*(zeta-1)/4) \
+					+node_list[element.nodes[3]].x()*(c[0]*e[0]*zeta/8+c[0]*e[0]*(zeta-1)/8) \
+					+node_list[element.nodes[14]].x()*(-c[1]*e[0]*zeta/4-c[1]*e[0]*(zeta-1)/4) \
+					+node_list[element.nodes[4]].x()*(c[2]*e[0]*zeta/8+c[2]*e[0]*(zeta-1)/8) \
+					+node_list[element.nodes[12]].x()*(-c[0]*e[1]*zeta/4-c[0]*e[1]*(zeta-1)/4) \
+					+node_list[element.nodes[21]].x()*(c[1]*e[1]*zeta/2+c[1]*e[1]*(zeta-1)/2) \
+					+node_list[element.nodes[10]].x()*(-c[2]*e[1]*zeta/4-c[2]*e[1]*(zeta-1)/4) \
+					+node_list[element.nodes[2]].x()*(c[0]*e[2]*zeta/8+c[0]*e[2]*(zeta-1)/8) \
+					+node_list[element.nodes[9]].x()*(-c[1]*e[2]*zeta/4-c[1]*e[2]*(zeta-1)/4) \
+					+node_list[element.nodes[1]].x()*(c[2]*e[2]*zeta/8+c[2]*e[2]*(zeta-1)/8);
+
+					J(3,2) = node_list[element.nodes[7]].y()*(c[0]*e[0]*(zeta+1)/8+c[0]*e[0]*zeta/8) \
+					+node_list[element.nodes[15]].y()*(-c[0]*e[0]*(zeta+1)/4-c[0]*e[0]*(zeta-1)/4) \
+					+node_list[element.nodes[25]].y()*(c[1]*e[0]*(zeta+1)/2+c[1]*e[0]*(zeta-1)/2) \
+					+node_list[element.nodes[20]].y()*(-c[1]*e[0]*(zeta+1)/4-c[1]*e[0]*zeta/4) \
+					+node_list[element.nodes[8]].y()*(c[2]*e[0]*(zeta+1)/8+c[2]*e[0]*zeta/8) \
+					+node_list[element.nodes[16]].y()*(-c[2]*e[0]*(zeta+1)/4-c[2]*e[0]*(zeta-1)/4) \
+					+node_list[element.nodes[24]].y()*(c[0]*e[1]*(zeta+1)/2+c[0]*e[1]*(zeta-1)/2) \
+					+node_list[element.nodes[19]].y()*(-c[0]*e[1]*(zeta+1)/4-c[0]*e[1]*zeta/4) \
+					+node_list[element.nodes[26]].y()*(c[1]*e[1]*(zeta+1)/2+c[1]*e[1]*zeta/2) \
+					+node_list[element.nodes[27]].y()*(-c[1]*e[1]*(zeta+1)-c[1]*e[1]*(zeta-1)) \
+					+node_list[element.nodes[23]].y()*(c[2]*e[1]*(zeta+1)/2+c[2]*e[1]*(zeta-1)/2) \
+					+node_list[element.nodes[18]].y()*(-c[2]*e[1]*(zeta+1)/4-c[2]*e[1]*zeta/4) \
+					+node_list[element.nodes[6]].y()*(c[0]*e[2]*(zeta+1)/8+c[0]*e[2]*zeta/8) \
+					+node_list[element.nodes[13]].y()*(-c[0]*e[2]*(zeta+1)/4-c[0]*e[2]*(zeta-1)/4) \
+					+node_list[element.nodes[22]].y()*(c[1]*e[2]*(zeta+1)/2+c[1]*e[2]*(zeta-1)/2) \
+					+node_list[element.nodes[17]].y()*(-c[1]*e[2]*(zeta+1)/4-c[1]*e[2]*zeta/4) \
+					+node_list[element.nodes[5]].y()*(c[2]*e[2]*(zeta+1)/8+c[2]*e[2]*zeta/8) \
+					+node_list[element.nodes[11]].y()*(-c[2]*e[2]*(zeta+1)/4-c[2]*e[2]*(zeta-1)/4) \
+					+node_list[element.nodes[3]].y()*(c[0]*e[0]*zeta/8+c[0]*e[0]*(zeta-1)/8) \
+					+node_list[element.nodes[14]].y()*(-c[1]*e[0]*zeta/4-c[1]*e[0]*(zeta-1)/4) \
+					+node_list[element.nodes[4]].y()*(c[2]*e[0]*zeta/8+c[2]*e[0]*(zeta-1)/8) \
+					+node_list[element.nodes[12]].y()*(-c[0]*e[1]*zeta/4-c[0]*e[1]*(zeta-1)/4) \
+					+node_list[element.nodes[21]].y()*(c[1]*e[1]*zeta/2+c[1]*e[1]*(zeta-1)/2) \
+					+node_list[element.nodes[10]].y()*(-c[2]*e[1]*zeta/4-c[2]*e[1]*(zeta-1)/4) \
+					+node_list[element.nodes[2]].y()*(c[0]*e[2]*zeta/8+c[0]*e[2]*(zeta-1)/8) \
+					+node_list[element.nodes[9]].y()*(-c[1]*e[2]*zeta/4-c[1]*e[2]*(zeta-1)/4) \
+					+node_list[element.nodes[1]].y()*(c[2]*e[2]*zeta/8+c[2]*e[2]*(zeta-1)/8) ;
+
+					J(3,3) = node_list[element.nodes[7]].z()*(c[0]*e[0]*(zeta+1)/8+c[0]*e[0]*zeta/8) \
+					+node_list[element.nodes[15]].z()*(-c[0]*e[0]*(zeta+1)/4-c[0]*e[0]*(zeta-1)/4) \
+					+node_list[element.nodes[25]].z()*(c[1]*e[0]*(zeta+1)/2+c[1]*e[0]*(zeta-1)/2) \
+					+node_list[element.nodes[20]].z()*(-c[1]*e[0]*(zeta+1)/4-c[1]*e[0]*zeta/4) \
+					+node_list[element.nodes[8]].z()*(c[2]*e[0]*(zeta+1)/8+c[2]*e[0]*zeta/8) \
+					+node_list[element.nodes[16]].z()*(-c[2]*e[0]*(zeta+1)/4-c[2]*e[0]*(zeta-1)/4) \
+					+node_list[element.nodes[24]].z()*(c[0]*e[1]*(zeta+1)/2+c[0]*e[1]*(zeta-1)/2) \
+					+node_list[element.nodes[19]].z()*(-c[0]*e[1]*(zeta+1)/4-c[0]*e[1]*zeta/4) \
+					+node_list[element.nodes[26]].z()*(c[1]*e[1]*(zeta+1)/2+c[1]*e[1]*zeta/2) \
+					+node_list[element.nodes[27]].z()*(-c[1]*e[1]*(zeta+1)-c[1]*e[1]*(zeta-1)) \
+					+node_list[element.nodes[23]].z()*(c[2]*e[1]*(zeta+1)/2+c[2]*e[1]*(zeta-1)/2) \
+					+node_list[element.nodes[18]].z()*(-c[2]*e[1]*(zeta+1)/4-c[2]*e[1]*zeta/4) \
+					+node_list[element.nodes[6]].z()*(c[0]*e[2]*(zeta+1)/8+c[0]*e[2]*zeta/8) \
+					+node_list[element.nodes[13]].z()*(-c[0]*e[2]*(zeta+1)/4-c[0]*e[2]*(zeta-1)/4) \
+					+node_list[element.nodes[22]].z()*(c[1]*e[2]*(zeta+1)/2+c[1]*e[2]*(zeta-1)/2) \
+					+node_list[element.nodes[17]].z()*(-c[1]*e[2]*(zeta+1)/4-c[1]*e[2]*zeta/4) \
+					+node_list[element.nodes[5]].z()*(c[2]*e[2]*(zeta+1)/8+c[2]*e[2]*zeta/8) \
+					+node_list[element.nodes[11]].z()*(-c[2]*e[2]*(zeta+1)/4-c[2]*e[2]*(zeta-1)/4) \
+					+node_list[element.nodes[3]].z()*(c[0]*e[0]*zeta/8+c[0]*e[0]*(zeta-1)/8) \
+					+node_list[element.nodes[14]].z()*(-c[1]*e[0]*zeta/4-c[1]*e[0]*(zeta-1)/4) \
+					+node_list[element.nodes[4]].z()*(c[2]*e[0]*zeta/8+c[2]*e[0]*(zeta-1)/8) \
+					+node_list[element.nodes[12]].z()*(-c[0]*e[1]*zeta/4-c[0]*e[1]*(zeta-1)/4) \
+					+node_list[element.nodes[21]].z()*(c[1]*e[1]*zeta/2+c[1]*e[1]*(zeta-1)/2) \
+					+node_list[element.nodes[10]].z()*(-c[2]*e[1]*zeta/4-c[2]*e[1]*(zeta-1)/4) \
+					+node_list[element.nodes[2]].z()*(c[0]*e[2]*zeta/8+c[0]*e[2]*(zeta-1)/8) \
+					+node_list[element.nodes[9]].z()*(-c[1]*e[2]*zeta/4-c[1]*e[2]*(zeta-1)/4) \
+					+node_list[element.nodes[1]].z()*(c[2]*e[2]*zeta/8+c[2]*e[2]*(zeta-1)/8) ;
 				return J;
 			}
 			break;
@@ -343,22 +754,22 @@ boost::numeric::ublas::matrix<double> Model::invert3by3(const boost::numeric::ub
 	assert(M.size1() == 3);
 	assert(M.size2() == 3);
 	assert(det > 0);
-/*
-(%i1) M: matrix([a,b,c],[d,e,f],[g,h,i]);
-                                  [ a  b  c ]
-                                  [         ]
-(%o1)                             [ d  e  f ]
-                                  [         ]
-                                  [ g  h  i ]
-(%i2) N: invert(M), detout;
-                      [ e i - f h  c h - b i  b f - c e ]
-                      [                                 ]
-                      [ f g - d i  a i - c g  c d - a f ]
-                      [                                 ]
-                      [ d h - e g  b g - a h  a e - b d ]
-(%o2)            ---------------------------------------------
-                 a (e i - f h) + b (f g - d i) + c (d h - e g)
-*/
+	/*
+	   (%i1) M: matrix([a,b,c],[d,e,f],[g,h,i]);
+	   [ a  b  c ]
+	   [         ]
+	   (%o1)                             [ d  e  f ]
+	   [         ]
+	   [ g  h  i ]
+	   (%i2) N: invert(M), detout;
+	   [ e i - f h  c h - b i  b f - c e ]
+	   [                                 ]
+	   [ f g - d i  a i - c g  c d - a f ]
+	   [                                 ]
+	   [ d h - e g  b g - a h  a e - b d ]
+	   (%o2)            ---------------------------------------------
+	   a (e i - f h) + b (f g - d i) + c (d h - e g)
+	 */
 	boost::numeric::ublas::matrix<double> invJ(3,3);
 	invJ(0,0) = (M(1,1)*M(2,2) - M(1,2)*M(2,1))/det;
 	invJ(0,1) = (M(0,2)*M(2,1) - M(0,1)*M(2,2))/det;

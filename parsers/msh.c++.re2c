@@ -148,7 +148,6 @@ enum MshParser::Error MshParser::parse(std::string file_name, fem::Model &model)
 				switch(token)
 				{
 					case LEX_INDEX:
-						model.node_list.reserve(val.index);
 						state = 9;	// $Nodes: wait for post-index EOL
 						break;
 
@@ -308,13 +307,13 @@ enum MshParser::Error MshParser::parse(std::string file_name, fem::Model &model)
 				{
 			case LEX_LINE2:
 				el_count = 0, el_number = 2;
-				type = FE_LINE2;
+				type = fem::Element::FE_LINE2;
 				state = 20;	// $Elements LEX_LINE2: wait for tag
 				break;
 
 			case LEX_TRIANGLE3:
 				el_count = 0, el_number = 3;
-				type = FE_LINE2;
+				type = fem::Element::FE_TRIANGLE3;
 				state = 20;	// $Elements LEX_LINE2: wait for tag
 				break;
 

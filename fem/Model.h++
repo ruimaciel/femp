@@ -78,6 +78,14 @@ class Model {
 		*/
 		inline boost::numeric::ublas::matrix<double> J(double csi,double eta,double zeta, const Element &element);
 
+		/* 
+		same as above but takes a fem::point as a source of [csi,eta,zeta] coordinates
+		@param p	local coordinates
+		@param element	the element in question
+		*/
+		inline boost::numeric::ublas::matrix<double> J(const fem::point &p, const Element &element);
+
+
 		/*
 		return the inverse of a 3 by 3 matrix
 		*/
@@ -87,14 +95,6 @@ class Model {
 		return the determinant of a 3 by 3 matrix
 		*/
 		double det3by3(const boost::numeric::ublas::matrix<double> &M);
-
-		/* 
-		same as above but takes a fem::point as a source of [csi,eta,zeta] coordinates
-		@param p	local coordinates
-		@param element	the element in question
-		*/
-		inline boost::numeric::ublas::matrix<double> J(fem::point p, const Element &element);
-
 
 		/** runs the analysis based on a given load pattern
 		@param lp	the load pattern

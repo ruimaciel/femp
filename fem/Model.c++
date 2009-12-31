@@ -181,6 +181,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 				{
 					// generate the jacobian
 					Jacobian = J(i->first,*element);	// generate the jacobian matrix for this element
+
 					detJ = det3by3(Jacobian);
 					invJ = invert3by3(Jacobian,detJ);
 
@@ -232,10 +233,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 				}
 
 				// add the nodal loads contributions
-				std::cout << D_list[element->material]  << endl;
-
 				//TODO setup k from k_elem through scatter operation
-				std::cout << k_elem << endl;
 			}
 			break;
 
@@ -309,8 +307,8 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 #define DETA(p,local) local.y()*(1+local.x()*p.x())*(1+local.z()*p.z())/8.0
 #define DZETA(p,local) local.z()*(1+local.x()*p.x())*(1+local.y()*p.y())/8.0
 						// set the partial derivatives
-						double dNdx, dNdy, dNdz; 
 						/*
+						double dNdx, dNdy, dNdz; 
 						dNdx = invJ(0,0)*DCSI(i->first,local_coord[n]) + invJ(0,1)*DETA(i->first,local_coord[n]) + invJ(0,2)*DZETA(i->first,local_coord[n]); 
 						dNdy = invJ(1,0)*DCSI(i->first,local_coord[n]) + invJ(1,1)*DETA(i->first,local_coord[n]) + invJ(1,2)*DZETA(i->first,local_coord[n]); 
 						dNdz = invJ(2,0)*DCSI(i->first,local_coord[n]) + invJ(2,1)*DETA(i->first,local_coord[n]) + invJ(2,2)*DZETA(i->first,local_coord[n]); 
@@ -319,6 +317,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 #undef DETA
 #undef DZETA
 
+						/*
 						// set the current node portion of the B matrix
 						B(0,3*n) = dNdx;
 						B(1,3*n+1) = dNdy;
@@ -326,6 +325,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 						B(3,3*n) = dNdy;	B(3,3*n+1) = dNdx;
 						B(4,3*n) = dNdz;	B(4,3*n+2) = dNdx;
 						B(5,3*n+1) = dNdz;	B(5,3*n+2) = dNdy;
+						*/
 
 						// set the force vector for the domain loads
 						if(domain_load != lp.domain_loads.end())
@@ -351,8 +351,6 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 				}
 
 				// add the nodal loads contributions
-				std::cout << D_list[element->material]  << endl;
-
 				//TODO setup k from k_elem through scatter operation
 				std::cout << k_elem << endl;
 				std::cout << f_elem << endl;
@@ -403,80 +401,88 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 		case Element::FE_HEXAHEDRON8:
 			{
 				// dN/dcsi
-				J(0,0) = DCSI(csi,-1,eta,-1, zeta, -1)*node_list[element.nodes[0]].x() + \
-					 DCSI(csi,-1,eta, 1, zeta, -1)*node_list[element.nodes[1]].x() + \
-					 DCSI(csi,-1,eta, 1, zeta,  1)*node_list[element.nodes[2]].x() + \
-					 DCSI(csi,-1,eta,-1, zeta,  1)*node_list[element.nodes[3]].x() + \
-					 DCSI(csi, 1,eta,-1, zeta, -1)*node_list[element.nodes[4]].x() + \
-					 DCSI(csi, 1,eta, 1, zeta, -1)*node_list[element.nodes[5]].x() + \
-					 DCSI(csi, 1,eta, 1, zeta,  1)*node_list[element.nodes[6]].x() + \
-					 DCSI(csi, 1,eta,-1, zeta,  1)*node_list[element.nodes[7]].x();
-				J(0,1) = DCSI(csi,-1,eta,-1, zeta, -1)*node_list[element.nodes[0]].y() + \
-					 DCSI(csi,-1,eta, 1, zeta, -1)*node_list[element.nodes[1]].y() + \
-					 DCSI(csi,-1,eta, 1, zeta,  1)*node_list[element.nodes[2]].y() + \
-					 DCSI(csi,-1,eta,-1, zeta,  1)*node_list[element.nodes[3]].y() + \
-					 DCSI(csi, 1,eta,-1, zeta, -1)*node_list[element.nodes[4]].y() + \
-					 DCSI(csi, 1,eta, 1, zeta, -1)*node_list[element.nodes[5]].y() + \
-					 DCSI(csi, 1,eta, 1, zeta,  1)*node_list[element.nodes[6]].y() + \
-					 DCSI(csi, 1,eta,-1, zeta,  1)*node_list[element.nodes[7]].y();
-				J(0,2) = DCSI(csi,-1,eta,-1, zeta, -1)*node_list[element.nodes[0]].z() + \
-					 DCSI(csi,-1,eta, 1, zeta, -1)*node_list[element.nodes[1]].z() + \
-					 DCSI(csi,-1,eta, 1, zeta,  1)*node_list[element.nodes[2]].z() + \
-					 DCSI(csi,-1,eta,-1, zeta,  1)*node_list[element.nodes[3]].z() + \
-					 DCSI(csi, 1,eta,-1, zeta, -1)*node_list[element.nodes[4]].z() + \
-					 DCSI(csi, 1,eta, 1, zeta, -1)*node_list[element.nodes[5]].z() + \
-					 DCSI(csi, 1,eta, 1, zeta,  1)*node_list[element.nodes[6]].z() + \
-					 DCSI(csi, 1,eta,-1, zeta,  1)*node_list[element.nodes[7]].z();
+				J(0,0) = DCSI(csi,-1,eta,-1,zeta,-1)*node_list[element.nodes[0]].x() + \
+					 DCSI(csi, 1,eta,-1,zeta,-1)*node_list[element.nodes[1]].x() + \
+					 DCSI(csi, 1,eta, 1,zeta,-1)*node_list[element.nodes[2]].x() + \
+					 DCSI(csi,-1,eta, 1,zeta,-1)*node_list[element.nodes[3]].x() + \
+					 DCSI(csi,-1,eta,-1,zeta, 1)*node_list[element.nodes[4]].x() + \
+					 DCSI(csi, 1,eta,-1,zeta, 1)*node_list[element.nodes[5]].x() + \
+					 DCSI(csi, 1,eta, 1,zeta, 1)*node_list[element.nodes[6]].x() + \
+					 DCSI(csi,-1,eta, 1,zeta, 1)*node_list[element.nodes[7]].x();
+
+				J(0,1) = DCSI(csi,-1,eta,-1,zeta,-1)*node_list[element.nodes[0]].y() + \
+					 DCSI(csi, 1,eta,-1,zeta,-1)*node_list[element.nodes[1]].y() + \
+					 DCSI(csi, 1,eta, 1,zeta,-1)*node_list[element.nodes[2]].y() + \
+					 DCSI(csi,-1,eta, 1,zeta,-1)*node_list[element.nodes[3]].y() + \
+					 DCSI(csi,-1,eta,-1,zeta, 1)*node_list[element.nodes[4]].y() + \
+					 DCSI(csi, 1,eta,-1,zeta, 1)*node_list[element.nodes[5]].y() + \
+					 DCSI(csi, 1,eta, 1,zeta, 1)*node_list[element.nodes[6]].y() + \
+					 DCSI(csi,-1,eta, 1,zeta, 1)*node_list[element.nodes[7]].y();
+
+				J(0,2) = DCSI(csi,-1,eta,-1,zeta,-1)*node_list[element.nodes[0]].z() + \
+					 DCSI(csi, 1,eta,-1,zeta,-1)*node_list[element.nodes[1]].z() + \
+					 DCSI(csi, 1,eta, 1,zeta,-1)*node_list[element.nodes[2]].z() + \
+					 DCSI(csi,-1,eta, 1,zeta,-1)*node_list[element.nodes[3]].z() + \
+					 DCSI(csi,-1,eta,-1,zeta, 1)*node_list[element.nodes[4]].z() + \
+					 DCSI(csi, 1,eta,-1,zeta, 1)*node_list[element.nodes[5]].z() + \
+					 DCSI(csi, 1,eta, 1,zeta, 1)*node_list[element.nodes[6]].z() + \
+					 DCSI(csi,-1,eta, 1,zeta, 1)*node_list[element.nodes[7]].z();
+
 				// dN/deta
-				J(1,0) = DETA(csi,-1,eta,-1, zeta, -1)*node_list[element.nodes[0]].x() + \
-					 DETA(csi,-1,eta, 1, zeta, -1)*node_list[element.nodes[1]].x() + \
-					 DETA(csi,-1,eta, 1, zeta,  1)*node_list[element.nodes[2]].x() + \
-					 DETA(csi,-1,eta,-1, zeta,  1)*node_list[element.nodes[3]].x() + \
-					 DETA(csi, 1,eta,-1, zeta, -1)*node_list[element.nodes[4]].x() + \
-					 DETA(csi, 1,eta, 1, zeta, -1)*node_list[element.nodes[5]].x() + \
-					 DETA(csi, 1,eta, 1, zeta,  1)*node_list[element.nodes[6]].x() + \
-					 DETA(csi, 1,eta,-1, zeta,  1)*node_list[element.nodes[7]].x();
-				J(1,1) = DETA(csi,-1,eta,-1, zeta, -1)*node_list[element.nodes[0]].y() + \
-					 DETA(csi,-1,eta, 1, zeta, -1)*node_list[element.nodes[1]].y() + \
-					 DETA(csi,-1,eta, 1, zeta,  1)*node_list[element.nodes[2]].y() + \
-					 DETA(csi,-1,eta,-1, zeta,  1)*node_list[element.nodes[3]].y() + \
-					 DETA(csi, 1,eta,-1, zeta, -1)*node_list[element.nodes[4]].y() + \
-					 DETA(csi, 1,eta, 1, zeta, -1)*node_list[element.nodes[5]].y() + \
-					 DETA(csi, 1,eta, 1, zeta,  1)*node_list[element.nodes[6]].y() + \
-					 DETA(csi, 1,eta,-1, zeta,  1)*node_list[element.nodes[7]].y();
-				J(1,2) = DETA(csi,-1,eta,-1, zeta, -1)*node_list[element.nodes[0]].z() + \
-					 DETA(csi,-1,eta, 1, zeta, -1)*node_list[element.nodes[1]].z() + \
-					 DETA(csi,-1,eta, 1, zeta,  1)*node_list[element.nodes[2]].z() + \
-					 DETA(csi,-1,eta,-1, zeta,  1)*node_list[element.nodes[3]].z() + \
-					 DETA(csi, 1,eta,-1, zeta, -1)*node_list[element.nodes[4]].z() + \
-					 DETA(csi, 1,eta, 1, zeta, -1)*node_list[element.nodes[5]].z() + \
-					 DETA(csi, 1,eta, 1, zeta,  1)*node_list[element.nodes[6]].z() + \
-					 DETA(csi, 1,eta,-1, zeta,  1)*node_list[element.nodes[7]].z();
+				J(1,0) = DETA(csi,-1,eta,-1,zeta,-1)*node_list[element.nodes[0]].x() + \
+					 DETA(csi, 1,eta,-1,zeta,-1)*node_list[element.nodes[1]].x() + \
+					 DETA(csi, 1,eta, 1,zeta,-1)*node_list[element.nodes[2]].x() + \
+					 DETA(csi,-1,eta, 1,zeta,-1)*node_list[element.nodes[3]].x() + \
+					 DETA(csi,-1,eta,-1,zeta, 1)*node_list[element.nodes[4]].x() + \
+					 DETA(csi, 1,eta,-1,zeta, 1)*node_list[element.nodes[5]].x() + \
+					 DETA(csi, 1,eta, 1,zeta, 1)*node_list[element.nodes[6]].x() + \
+					 DETA(csi,-1,eta, 1,zeta, 1)*node_list[element.nodes[7]].x();
+
+				J(1,1) = DETA(csi,-1,eta,-1,zeta,-1)*node_list[element.nodes[0]].y() + \
+					 DETA(csi, 1,eta,-1,zeta,-1)*node_list[element.nodes[1]].y() + \
+					 DETA(csi, 1,eta, 1,zeta,-1)*node_list[element.nodes[2]].y() + \
+					 DETA(csi,-1,eta, 1,zeta,-1)*node_list[element.nodes[3]].y() + \
+					 DETA(csi,-1,eta,-1,zeta, 1)*node_list[element.nodes[4]].y() + \
+					 DETA(csi, 1,eta,-1,zeta, 1)*node_list[element.nodes[5]].y() + \
+					 DETA(csi, 1,eta, 1,zeta, 1)*node_list[element.nodes[6]].y() + \
+					 DETA(csi,-1,eta, 1,zeta, 1)*node_list[element.nodes[7]].y();
+
+				J(1,2) = DETA(csi,-1,eta,-1,zeta,-1)*node_list[element.nodes[0]].z() + \
+					 DETA(csi, 1,eta,-1,zeta,-1)*node_list[element.nodes[1]].z() + \
+					 DETA(csi, 1,eta, 1,zeta,-1)*node_list[element.nodes[2]].z() + \
+					 DETA(csi,-1,eta, 1,zeta,-1)*node_list[element.nodes[3]].z() + \
+					 DETA(csi,-1,eta,-1,zeta, 1)*node_list[element.nodes[4]].z() + \
+					 DETA(csi, 1,eta,-1,zeta, 1)*node_list[element.nodes[5]].z() + \
+					 DETA(csi, 1,eta, 1,zeta, 1)*node_list[element.nodes[6]].z() + \
+					 DETA(csi,-1,eta, 1,zeta, 1)*node_list[element.nodes[7]].z();
+
 				// dN/dzeta
-				J(2,0) = DZETA(csi,-1,eta,-1, zeta, -1)*node_list[element.nodes[0]].x() + \
-					 DZETA(csi,-1,eta, 1, zeta, -1)*node_list[element.nodes[1]].x() + \
-					 DZETA(csi,-1,eta, 1, zeta,  1)*node_list[element.nodes[2]].x() + \
-					 DZETA(csi,-1,eta,-1, zeta,  1)*node_list[element.nodes[3]].x() + \
-					 DZETA(csi, 1,eta,-1, zeta, -1)*node_list[element.nodes[4]].x() + \
-					 DZETA(csi, 1,eta, 1, zeta, -1)*node_list[element.nodes[5]].x() + \
-					 DZETA(csi, 1,eta, 1, zeta,  1)*node_list[element.nodes[6]].x() + \
-					 DZETA(csi, 1,eta,-1, zeta,  1)*node_list[element.nodes[7]].x();
-				J(2,1) = DZETA(csi,-1,eta,-1, zeta, -1)*node_list[element.nodes[0]].y() + \
-					 DZETA(csi,-1,eta, 1, zeta, -1)*node_list[element.nodes[1]].y() + \
-					 DZETA(csi,-1,eta, 1, zeta,  1)*node_list[element.nodes[2]].y() + \
-					 DZETA(csi,-1,eta,-1, zeta,  1)*node_list[element.nodes[3]].y() + \
-					 DZETA(csi, 1,eta,-1, zeta, -1)*node_list[element.nodes[4]].y() + \
-					 DZETA(csi, 1,eta, 1, zeta, -1)*node_list[element.nodes[5]].y() + \
-					 DZETA(csi, 1,eta, 1, zeta,  1)*node_list[element.nodes[6]].y() + \
-					 DZETA(csi, 1,eta,-1, zeta,  1)*node_list[element.nodes[7]].y();
-				J(2,2) = DZETA(csi,-1,eta,-1, zeta, -1)*node_list[element.nodes[0]].z() + \
-					 DZETA(csi,-1,eta, 1, zeta, -1)*node_list[element.nodes[1]].z() + \
-					 DZETA(csi,-1,eta, 1, zeta,  1)*node_list[element.nodes[2]].z() + \
-					 DZETA(csi,-1,eta,-1, zeta,  1)*node_list[element.nodes[3]].z() + \
-					 DZETA(csi, 1,eta,-1, zeta, -1)*node_list[element.nodes[4]].z() + \
-					 DZETA(csi, 1,eta, 1, zeta, -1)*node_list[element.nodes[5]].z() + \
-					 DZETA(csi, 1,eta, 1, zeta,  1)*node_list[element.nodes[6]].z() + \
-					 DZETA(csi, 1,eta,-1, zeta,  1)*node_list[element.nodes[7]].z();
+				J(2,0) = DZETA(csi,-1,eta,-1,zeta,-1)*node_list[element.nodes[0]].x() + \
+					 DZETA(csi, 1,eta,-1,zeta,-1)*node_list[element.nodes[1]].x() + \
+					 DZETA(csi, 1,eta, 1,zeta,-1)*node_list[element.nodes[2]].x() + \
+					 DZETA(csi,-1,eta, 1,zeta,-1)*node_list[element.nodes[3]].x() + \
+					 DZETA(csi,-1,eta,-1,zeta, 1)*node_list[element.nodes[4]].x() + \
+					 DZETA(csi, 1,eta,-1,zeta, 1)*node_list[element.nodes[5]].x() + \
+					 DZETA(csi, 1,eta, 1,zeta, 1)*node_list[element.nodes[6]].x() + \
+					 DZETA(csi,-1,eta, 1,zeta, 1)*node_list[element.nodes[7]].x();
+
+				J(2,1) = DZETA(csi,-1,eta,-1,zeta,-1)*node_list[element.nodes[0]].y() + \
+					 DZETA(csi, 1,eta,-1,zeta,-1)*node_list[element.nodes[1]].y() + \
+					 DZETA(csi, 1,eta, 1,zeta,-1)*node_list[element.nodes[2]].y() + \
+					 DZETA(csi,-1,eta, 1,zeta,-1)*node_list[element.nodes[3]].y() + \
+					 DZETA(csi,-1,eta,-1,zeta, 1)*node_list[element.nodes[4]].y() + \
+					 DZETA(csi, 1,eta,-1,zeta, 1)*node_list[element.nodes[5]].y() + \
+					 DZETA(csi, 1,eta, 1,zeta, 1)*node_list[element.nodes[6]].y() + \
+					 DZETA(csi,-1,eta, 1,zeta, 1)*node_list[element.nodes[7]].y();
+
+				J(2,2) = DZETA(csi,-1,eta,-1,zeta,-1)*node_list[element.nodes[0]].z() + \
+					 DZETA(csi, 1,eta,-1,zeta,-1)*node_list[element.nodes[1]].z() + \
+					 DZETA(csi, 1,eta, 1,zeta,-1)*node_list[element.nodes[2]].z() + \
+					 DZETA(csi,-1,eta, 1,zeta,-1)*node_list[element.nodes[3]].z() + \
+					 DZETA(csi,-1,eta,-1,zeta, 1)*node_list[element.nodes[4]].z() + \
+					 DZETA(csi, 1,eta,-1,zeta, 1)*node_list[element.nodes[5]].z() + \
+					 DZETA(csi, 1,eta, 1,zeta, 1)*node_list[element.nodes[6]].z() + \
+					 DZETA(csi,-1,eta, 1,zeta, 1)*node_list[element.nodes[7]].z();
 				// Jacobian matriz all set up. return it
 				return J;
 			}
@@ -753,6 +759,11 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 }
 
 
+boost::numeric::ublas::matrix<double> Model::J(const fem::point &p, const Element &element)
+{
+	return J(p.x(),p.y(), p.z(), element);
+}
+
 
 boost::numeric::ublas::matrix<double> Model::invert3by3(const boost::numeric::ublas::matrix<double> &M, double det)
 {
@@ -797,12 +808,6 @@ double Model::det3by3(const boost::numeric::ublas::matrix<double> &M)
 	return	M(0,0)*( M(1,1)*M(2,2) - M(1,2)*M(2,1)) + \
 		M(0,1)*( M(1,2)*M(2,0) - M(1,0)*M(2,2)) + \
 		M(0,2)*( M(1,0)*M(2,1) - M(1,1)*M(2,0));
-}
-
-
-boost::numeric::ublas::matrix<double> Model::J(fem::point p, const Element &element)
-{
-	return J(p.x(),p.y(), p.z(), element);
 }
 
 

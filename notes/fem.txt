@@ -1,0 +1,18 @@
+algorithm
+	for each element do:
+	- generate D, the constitutive matrix 
+	- generate the list of integration points/weights pairs
+	- calculate det(J);
+		- calculate J, the Jacobian matrix
+		- calculate det(J);
+	- calculate the B matrix
+		- from J and det(J), invert J
+		- calculate dNi/dx, dNi/dy, dNi/dz
+		- fill B's values
+	- calculate K_elem
+		- invert B
+		- K_elem = B^-1.D.B
+
+	integrate domain loads
+	add nodal loads
+

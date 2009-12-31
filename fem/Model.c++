@@ -203,7 +203,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 						B(2,3*n+2) = dNdz;
 						B(3,3*n) = dNdy;	B(3,3*n+1) = dNdx;
 						B(4,3*n) = dNdz;	B(4,3*n+2) = dNdx;
-						B(5,3*n+1) = dNdz;	B(4,3*n+2) = dNdy;
+						B(5,3*n+1) = dNdz;	B(5,3*n+2) = dNdy;
 
 						// set the force vector for the domain loads
 						if(domain_load != lp.domain_loads.end())

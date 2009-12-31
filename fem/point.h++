@@ -1,6 +1,8 @@
 #ifndef POINT_HPP
 #define POINT_HPP
 
+#include <iostream>
+
 
 namespace fem
 {
@@ -71,6 +73,8 @@ namespace fem
     point cross_product(const point &LHV, const point &RHV);      //assuming vector is 3D
     double dot_product(const point &LHV, const point &RHV);
     point getNormalVector(point &a, point &b, point &c);
+
+    std::ostream &operator<< (std::ostream &out, const point &p);
 }
 #endif 
 

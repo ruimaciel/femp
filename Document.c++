@@ -51,6 +51,16 @@ enum Document::Error Document::setFileName(QString new_file)
 		this->file_name = new QString;
 	*this->file_name = new_file;
 
+	// check if file exists
+	QFile file;
+	file.setFileName(*file_name);
+	if(!file.exists())
+	{
+		delete (this->file_name);
+		this->file_name = NULL;
+		return ERR_FILE_NOT_FOUND;
+	}
+
 	//TODO perform checks on the file_name
 
 	return ERR_OK;

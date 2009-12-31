@@ -80,26 +80,29 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 	using namespace std;
 	using namespace boost::numeric::ublas;
 
-	// the data types for the 
-
 	// perform sanity checks on the model
 	if(element_list.empty() )
 		return ERR_NO_ELEMENTS;
 
 	// at this point the model is considered to be OK.
+	//TODO resize the global stiffness matrix and nodal forces vector
+	f.f.clear();
+	f.f.resize(node_list.size()*3);	// remove this after implementing a decent resize code
 
 	//build a list of constitutive matrices
 	std::vector< symmetric_matrix<double, upper> > D_list;
-	for(std::vector<Material>::iterator element = material_list.begin(); element != material_list.end(); element++)
+	for(std::vector<Material>::iterator material = material_list.begin(); material != material_list.end(); material++)
 	{
-		D_list.push_back(element->generateD());
+		D_list.push_back(material->generateD());
 	}
 
 	// generate stiffness matrix by cycling through all elements in the model
 	for(std::vector<Element>::iterator element = element_list.begin(); element != element_list.end(); element++)
 	{
+		qWarning("process element");
 		switch(element->type)
 		{
+			/*
 			case Element::FE_TETRAHEDRON4:
 			{
 				symmetric_matrix<double, upper> k_elem(4*3,4*3);
@@ -107,9 +110,11 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 				//TODO finish this
 			}
 			break;
+			*/
 
 			case Element::FE_HEXAHEDRON8:
 			{
+			qWarning("hexahedron8");
 /*	hexahedron8 node order
 	3 ------ 2
 	| \      . \
@@ -183,8 +188,8 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 					B.clear();
 					for(int n = 0; n < 8; n++)
 					{
-//local: local coordinate constant
-// p: coordinates of the integration points
+						//local: local coordinate constant
+						// p: coordinates of the integration points
 #define DCSI(p,local) local.x()*(1+local.y()*p.y())*(1+local.z()*p.z())/8.0
 #define DETA(p,local) local.y()*(1+local.x()*p.x())*(1+local.z()*p.z())/8.0
 #define DZETA(p,local) local.z()*(1+local.x()*p.x())*(1+local.y()*p.y())/8.0
@@ -198,12 +203,12 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 #undef DZETA
 
 						// set the current node portion of the B matrix
-						B(0,3*n) = dNdx;
-						B(1,3*n+1) = dNdy;
-						B(2,3*n+2) = dNdz;
-						B(3,3*n) = dNdy;	B(3,3*n+1) = dNdx;
-						B(4,3*n) = dNdz;	B(4,3*n+2) = dNdx;
-						B(5,3*n+1) = dNdz;	B(5,3*n+2) = dNdy;
+						B(0,3*n)	= dNdx;
+						B(1,3*n+1)	= dNdy;
+						B(2,3*n+2)	= dNdz;
+						B(3,3*n)	= dNdy;	B(3,3*n+1) = dNdx;
+						B(4,3*n)	= dNdz;	B(4,3*n+2) = dNdx;
+						B(5,3*n+1)	= dNdz;	B(5,3*n+2) = dNdy;
 
 						// set the force vector for the domain loads
 						if(domain_load != lp.domain_loads.end())
@@ -231,7 +236,6 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 
 				//TODO setup k from k_elem through scatter operation
 				std::cout << k_elem << endl;
-				std::cout << f_elem << endl;
 			}
 			break;
 
@@ -321,7 +325,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 						B(2,3*n+2) = dNdz;
 						B(3,3*n) = dNdy;	B(3,3*n+1) = dNdx;
 						B(4,3*n) = dNdz;	B(4,3*n+2) = dNdx;
-						B(5,3*n+1) = dNdz;	B(4,3*n+2) = dNdy;
+						B(5,3*n+1) = dNdz;	B(5,3*n+2) = dNdy;
 
 						// set the force vector for the domain loads
 						if(domain_load != lp.domain_loads.end())

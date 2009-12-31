@@ -238,6 +238,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 
 			case Element::FE_HEXAHEDRON27:
 			{
+			qWarning("hexahedron27");
 /*	hexahedron27 node order
 	3----13----2
 	|\         |\
@@ -483,7 +484,7 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 				double e[3] = {eta*(eta+1),	(eta-1)*(eta+1),	(eta-1)*eta};
 				double z[3] = {zeta*(zeta+1),	(zeta-1)*(zeta+1),	(zeta-1)*zeta};
 
-				J(1,1) = node_list[element.nodes[7]].x()*((csi+1)*e[0]*z[0]/8+csi*e[0]*z[0]/8) \
+				J(0,0) = node_list[element.nodes[7]].x()*((csi+1)*e[0]*z[0]/8+csi*e[0]*z[0]/8) \
 					+node_list[element.nodes[20]].x()*(-(csi+1)*e[0]*z[0]/4-(csi-1)*e[0]*z[0]/4) \
 					+node_list[element.nodes[8]].x()*(csi*e[0]*z[0]/8+(csi-1)*e[0]*z[0]/8) \
 					+node_list[element.nodes[26]].x()*((csi+1)*e[1]*z[0]/2+(csi-1)*e[1]*z[0]/2) \
@@ -511,7 +512,7 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 					+node_list[element.nodes[9]].x()*(-(csi+1)*e[2]*z[2]/4-(csi-1)*e[2]*z[2]/4) \
 					+node_list[element.nodes[1]].x()*(csi*e[2]*z[2]/8+(csi-1)*e[2]*z[2]/8);
 
-					J(1,2) =node_list[element.nodes[7]].y()*((csi+1)*e[0]*z[0]/8+csi*e[0]*z[0]/8) \
+					J(0,1) =node_list[element.nodes[7]].y()*((csi+1)*e[0]*z[0]/8+csi*e[0]*z[0]/8) \
 					+node_list[element.nodes[20]].y()*(-(csi+1)*e[0]*z[0]/4-(csi-1)*e[0]*z[0]/4) \
 					+node_list[element.nodes[8]].y()*(csi*e[0]*z[0]/8+(csi-1)*e[0]*z[0]/8) \
 					+node_list[element.nodes[26]].y()*((csi+1)*e[1]*z[0]/2+(csi-1)*e[1]*z[0]/2) \
@@ -539,7 +540,7 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 					+node_list[element.nodes[9]].y()*(-(csi+1)*e[2]*z[2]/4-(csi-1)*e[2]*z[2]/4) \
 					+node_list[element.nodes[1]].y()*(csi*e[2]*z[2]/8+(csi-1)*e[2]*z[2]/8);
 
-					J(1,3) = node_list[element.nodes[7]].z()*((csi+1)*e[0]*z[0]/8+csi*e[0]*z[0]/8) \
+					J(0,2) = node_list[element.nodes[7]].z()*((csi+1)*e[0]*z[0]/8+csi*e[0]*z[0]/8) \
 					+node_list[element.nodes[20]].z()*(-(csi+1)*e[0]*z[0]/4-(csi-1)*e[0]*z[0]/4) \
 					+node_list[element.nodes[8]].z()*(csi*e[0]*z[0]/8+(csi-1)*e[0]*z[0]/8) \
 					+node_list[element.nodes[26]].z()*((csi+1)*e[1]*z[0]/2+(csi-1)*e[1]*z[0]/2) \
@@ -567,7 +568,7 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 					+node_list[element.nodes[9]].z()*(-(csi+1)*e[2]*z[2]/4-(csi-1)*e[2]*z[2]/4) \
 					+node_list[element.nodes[1]].z()*(csi*e[2]*z[2]/8+(csi-1)*e[2]*z[2]/8);
 
-					J(2,1) = node_list[element.nodes[7]].x()*(c[0]*(eta+1)*z[0]/8+c[0]*eta*z[0]/8) \
+					J(1,0) = node_list[element.nodes[7]].x()*(c[0]*(eta+1)*z[0]/8+c[0]*eta*z[0]/8) \
 					+node_list[element.nodes[19]].x()*(-c[0]*(eta+1)*z[0]/4-c[0]*(eta-1)*z[0]/4) \
 					+node_list[element.nodes[26]].x()*(c[1]*(eta+1)*z[0]/2+c[1]*(eta-1)*z[0]/2) \
 					+node_list[element.nodes[20]].x()*(-c[1]*(eta+1)*z[0]/4-c[1]*eta*z[0]/4) \
@@ -595,7 +596,7 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 					+node_list[element.nodes[9]].x()*(-c[1]*eta*z[2]/4-c[1]*(eta-1)*z[2]/4) \
 					+node_list[element.nodes[1]].x()*(c[2]*eta*z[2]/8+c[2]*(eta-1)*z[2]/8);
 
-					J(2,2) = node_list[element.nodes[7]].y()*(c[0]*(eta+1)*z[0]/8+c[0]*eta*z[0]/8) \
+					J(1,1) = node_list[element.nodes[7]].y()*(c[0]*(eta+1)*z[0]/8+c[0]*eta*z[0]/8) \
 					+node_list[element.nodes[19]].y()*(-c[0]*(eta+1)*z[0]/4-c[0]*(eta-1)*z[0]/4) \
 					+node_list[element.nodes[26]].y()*(c[1]*(eta+1)*z[0]/2+c[1]*(eta-1)*z[0]/2) \
 					+node_list[element.nodes[20]].y()*(-c[1]*(eta+1)*z[0]/4-c[1]*eta*z[0]/4) \
@@ -623,7 +624,7 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 					+node_list[element.nodes[9]].y()*(-c[1]*eta*z[2]/4-c[1]*(eta-1)*z[2]/4) \
 					+node_list[element.nodes[1]].y()*(c[2]*eta*z[2]/8+c[2]*(eta-1)*z[2]/8);
 
-				J(2,3) = node_list[element.nodes[7]].z()*(c[0]*(eta+1)*z[0]/8+c[0]*eta*z[0]/8) \
+				J(1,2) = node_list[element.nodes[7]].z()*(c[0]*(eta+1)*z[0]/8+c[0]*eta*z[0]/8) \
 					+node_list[element.nodes[19]].z()*(-c[0]*(eta+1)*z[0]/4-c[0]*(eta-1)*z[0]/4) \
 					+node_list[element.nodes[26]].z()*(c[1]*(eta+1)*z[0]/2+c[1]*(eta-1)*z[0]/2) \
 					+node_list[element.nodes[20]].z()*(-c[1]*(eta+1)*z[0]/4-c[1]*eta*z[0]/4) \
@@ -651,7 +652,7 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 					+node_list[element.nodes[9]].z()*(-c[1]*eta*z[2]/4-c[1]*(eta-1)*z[2]/4) \
 					+node_list[element.nodes[1]].z()*(c[2]*eta*z[2]/8+c[2]*(eta-1)*z[2]/8);
 
-					J(3,1) = node_list[element.nodes[7]].x()*(c[0]*e[0]*(zeta+1)/8+c[0]*e[0]*zeta/8)\
+					J(2,0) = node_list[element.nodes[7]].x()*(c[0]*e[0]*(zeta+1)/8+c[0]*e[0]*zeta/8)\
 					+node_list[element.nodes[15]].x()*(-c[0]*e[0]*(zeta+1)/4-c[0]*e[0]*(zeta-1)/4) \
 					+node_list[element.nodes[25]].x()*(c[1]*e[0]*(zeta+1)/2+c[1]*e[0]*(zeta-1)/2) \
 					+node_list[element.nodes[20]].x()*(-c[1]*e[0]*(zeta+1)/4-c[1]*e[0]*zeta/4) \
@@ -679,7 +680,7 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 					+node_list[element.nodes[9]].x()*(-c[1]*e[2]*zeta/4-c[1]*e[2]*(zeta-1)/4) \
 					+node_list[element.nodes[1]].x()*(c[2]*e[2]*zeta/8+c[2]*e[2]*(zeta-1)/8);
 
-					J(3,2) = node_list[element.nodes[7]].y()*(c[0]*e[0]*(zeta+1)/8+c[0]*e[0]*zeta/8) \
+					J(2,1) = node_list[element.nodes[7]].y()*(c[0]*e[0]*(zeta+1)/8+c[0]*e[0]*zeta/8) \
 					+node_list[element.nodes[15]].y()*(-c[0]*e[0]*(zeta+1)/4-c[0]*e[0]*(zeta-1)/4) \
 					+node_list[element.nodes[25]].y()*(c[1]*e[0]*(zeta+1)/2+c[1]*e[0]*(zeta-1)/2) \
 					+node_list[element.nodes[20]].y()*(-c[1]*e[0]*(zeta+1)/4-c[1]*e[0]*zeta/4) \
@@ -707,7 +708,7 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 					+node_list[element.nodes[9]].y()*(-c[1]*e[2]*zeta/4-c[1]*e[2]*(zeta-1)/4) \
 					+node_list[element.nodes[1]].y()*(c[2]*e[2]*zeta/8+c[2]*e[2]*(zeta-1)/8) ;
 
-					J(3,3) = node_list[element.nodes[7]].z()*(c[0]*e[0]*(zeta+1)/8+c[0]*e[0]*zeta/8) \
+					J(2,2) = node_list[element.nodes[7]].z()*(c[0]*e[0]*(zeta+1)/8+c[0]*e[0]*zeta/8) \
 					+node_list[element.nodes[15]].z()*(-c[0]*e[0]*(zeta+1)/4-c[0]*e[0]*(zeta-1)/4) \
 					+node_list[element.nodes[25]].z()*(c[1]*e[0]*(zeta+1)/2+c[1]*e[0]*(zeta-1)/2) \
 					+node_list[element.nodes[20]].z()*(-c[1]*e[0]*(zeta+1)/4-c[1]*e[0]*zeta/4) \

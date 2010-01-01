@@ -294,18 +294,195 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 				{
 					// generate the jacobian
 					Jacobian = J(i->first,*element);	// generate the jacobian matrix for this element
-					cout << Jacobian << endl;
 
 					detJ = det3by3(Jacobian);
 					invJ = invert3by3(Jacobian,detJ);
 
 					// cycle through the element's nodes to set up the B matrix
+					std::vector<fem::point> dN;	// list of {dNdx, dNdy, dNdz} pairs for each node
+					double dNdcsi, dNdeta, dNdzeta;
+					double csi, eta,zeta;
+					csi = i->first.x();
+					eta = i->first.y();
+					zeta = i->first.z();
+
+					// node 1
+					dNdcsi	= (csi*(eta-1)*eta*(zeta-1)*zeta + (csi-1)*(eta-1)*eta*(zeta-1)*zeta)/8.0;
+					dNdeta	= (csi-1)*csi*eta*(zeta-1)*zeta/8+(csi-1)*csi*(eta-1)*(zeta-1)*zeta/8;
+					dNdzeta	= (csi-1)*csi*(eta-1)*eta*zeta/8+(csi-1)*csi*(eta-1)*eta*(zeta-1)/8;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 2
+					dNdcsi = (csi+1)*(eta-1)*eta*(zeta-1)*zeta/8+csi*(eta-1)*eta*(zeta-1)*zeta/8;
+					dNdeta = csi*(csi+1)*eta*(zeta-1)*zeta/8+csi*(csi+1)*(eta-1)*(zeta-1)*zeta/8;
+					dNdzeta = csi*(csi+1)*(eta-1)*eta*zeta/8+csi*(csi+1)*(eta-1)*eta*(zeta-1)/8;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 3
+					dNdcsi = (csi+1)*eta*(eta+1)*(zeta-1)*zeta/8+csi*eta*(eta+1)*(zeta-1)*zeta/8;
+					dNdeta = csi*(csi+1)*(eta+1)*(zeta-1)*zeta/8+csi*(csi+1)*eta*(zeta-1)*zeta/8;
+					dNdzeta = csi*(csi+1)*eta*(eta+1)*zeta/8+csi*(csi+1)*eta*(eta+1)*(zeta-1)/8;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 4
+					dNdcsi = csi*eta*(eta+1)*(zeta-1)*zeta/8+(csi-1)*eta*(eta+1)*(zeta-1)*zeta/8;
+					dNdeta = (csi-1)*csi*(eta+1)*(zeta-1)*zeta/8+(csi-1)*csi*eta*(zeta-1)*zeta/8;
+					dNdzeta = (csi-1)*csi*eta*(eta+1)*zeta/8+(csi-1)*csi*eta*(eta+1)*(zeta-1)/8;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 5
+					dNdcsi = csi*(eta-1)*eta*zeta*(zeta+1)/8+(csi-1)*(eta-1)*eta*zeta*(zeta+1)/8;
+					dNdeta = (csi-1)*csi*eta*zeta*(zeta+1)/8+(csi-1)*csi*(eta-1)*zeta*(zeta+1)/8;
+					dNdzeta = (csi-1)*csi*(eta-1)*eta*(zeta+1)/8+(csi-1)*csi*(eta-1)*eta*zeta/8;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 6
+					dNdcsi = (csi+1)*(eta-1)*eta*zeta*(zeta+1)/8+csi*(eta-1)*eta*zeta*(zeta+1)/8;
+					dNdeta = csi*(csi+1)*eta*zeta*(zeta+1)/8+csi*(csi+1)*(eta-1)*zeta*(zeta+1)/8;
+					dNdzeta = csi*(csi+1)*(eta-1)*eta*(zeta+1)/8+csi*(csi+1)*(eta-1)*eta*zeta/8;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 7
+					dNdcsi = (csi+1)*eta*(eta+1)*zeta*(zeta+1)/8+csi*eta*(eta+1)*zeta*(zeta+1)/8;
+					dNdeta = csi*(csi+1)*(eta+1)*zeta*(zeta+1)/8+csi*(csi+1)*eta*zeta*(zeta+1)/8;
+					dNdzeta = csi*(csi+1)*eta*(eta+1)*(zeta+1)/8+csi*(csi+1)*eta*(eta+1)*zeta/8;
+
+					// node 8
+					dNdcsi = csi*eta*(eta+1)*zeta*(zeta+1)/8+(csi-1)*eta*(eta+1)*zeta*(zeta+1)/8;
+					dNdeta = (csi-1)*csi*(eta+1)*zeta*(zeta+1)/8+(csi-1)*csi*eta*zeta*(zeta+1)/8;
+					dNdzeta = (csi-1)*csi*eta*(eta+1)*(zeta+1)/8+(csi-1)*csi*eta*(eta+1)*zeta/8;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					//node 9
+
+					dNdcsi = -(csi+1)*(eta-1)*eta*(zeta-1)*zeta/4-(csi-1)*(eta-1)*eta*(zeta-1)*zeta/4;
+					dNdeta = -(csi-1)*(csi+1)*eta*(zeta-1)*zeta/4-(csi-1)*(csi+1)*(eta-1)*(zeta-1)*zeta/4;
+					dNdzeta = -(csi-1)*(csi+1)*(eta-1)*eta*zeta/4-(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)/4;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 10
+					dNdcsi = -csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4-(csi-1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
+					dNdeta = -(csi-1)*csi*(eta+1)*(zeta-1)*zeta/4-(csi-1)*csi*(eta-1)*(zeta-1)*zeta/4;
+					dNdzeta = -(csi-1)*csi*(eta-1)*(eta+1)*zeta/4-(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)/4;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 11
+					dNdcsi = -csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4-(csi-1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
+					dNdeta = -(csi-1)*csi*eta*(zeta-1)*(zeta+1)/4-(csi-1)*csi*(eta-1)*(zeta-1)*(zeta+1)/4;
+					dNdzeta = -(csi-1)*csi*(eta-1)*eta*(zeta+1)/4-(csi-1)*csi*(eta-1)*eta*(zeta-1)/4;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 12
+					dNdcsi = -(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4-csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
+					dNdeta = -csi*(csi+1)*(eta+1)*(zeta-1)*zeta/4-csi*(csi+1)*(eta-1)*(zeta-1)*zeta/4;
+					dNdzeta = -csi*(csi+1)*(eta-1)*(eta+1)*zeta/4-csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/4;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 13
+					dNdcsi = -(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4-csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
+					dNdeta = -csi*(csi+1)*eta*(zeta-1)*(zeta+1)/4-csi*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/4;
+					dNdzeta = -csi*(csi+1)*(eta-1)*eta*(zeta+1)/4-csi*(csi+1)*(eta-1)*eta*(zeta-1)/4;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 14
+					dNdcsi = -(csi+1)*eta*(eta+1)*(zeta-1)*zeta/4-(csi-1)*eta*(eta+1)*(zeta-1)*zeta/4;
+					dNdeta = -(csi-1)*(csi+1)*(eta+1)*(zeta-1)*zeta/4-(csi-1)*(csi+1)*eta*(zeta-1)*zeta/4;
+					dNdzeta = -(csi-1)*(csi+1)*eta*(eta+1)*zeta/4-(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)/4;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 15
+					dNdcsi = -(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4-csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
+					dNdeta = -csi*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/4-csi*(csi+1)*eta*(zeta-1)*(zeta+1)/4;
+					dNdzeta = -csi*(csi+1)*eta*(eta+1)*(zeta+1)/4-csi*(csi+1)*eta*(eta+1)*(zeta-1)/4;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 16
+					dNdcsi = -csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4-(csi-1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
+					dNdeta = -(csi-1)*csi*(eta+1)*(zeta-1)*(zeta+1)/4-(csi-1)*csi*eta*(zeta-1)*(zeta+1)/4;
+					dNdzeta = -(csi-1)*csi*eta*(eta+1)*(zeta+1)/4-(csi-1)*csi*eta*(eta+1)*(zeta-1)/4;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+					// node 17
+					dNdcsi = -(csi+1)*(eta-1)*eta*zeta*(zeta+1)/4-(csi-1)*(eta-1)*eta*zeta*(zeta+1)/4;
+					dNdeta = -(csi-1)*(csi+1)*eta*zeta*(zeta+1)/4-(csi-1)*(csi+1)*(eta-1)*zeta*(zeta+1)/4;
+					dNdzeta = -(csi-1)*(csi+1)*(eta-1)*eta*(zeta+1)/4-(csi-1)*(csi+1)*(eta-1)*eta*zeta/4;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 18
+					dNdcsi = -csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4-(csi-1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
+					dNdeta = -(csi-1)*csi*(eta+1)*zeta*(zeta+1)/4-(csi-1)*csi*(eta-1)*zeta*(zeta+1)/4;
+					dNdzeta = -(csi-1)*csi*(eta-1)*(eta+1)*(zeta+1)/4-(csi-1)*csi*(eta-1)*(eta+1)*zeta/4;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+
+					// node 19
+					dNdcsi = -(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4-csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
+					dNdeta = -csi*(csi+1)*(eta+1)*zeta*(zeta+1)/4-csi*(csi+1)*(eta-1)*zeta*(zeta+1)/4;
+					dNdzeta = -csi*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/4-csi*(csi+1)*(eta-1)*(eta+1)*zeta/4;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 20
+					dNdcsi = -(csi+1)*eta*(eta+1)*zeta*(zeta+1)/4-(csi-1)*eta*(eta+1)*zeta*(zeta+1)/4;
+					dNdeta = -(csi-1)*(csi+1)*(eta+1)*zeta*(zeta+1)/4-(csi-1)*(csi+1)*eta*zeta*(zeta+1)/4;
+					dNdzeta = -(csi-1)*(csi+1)*eta*(eta+1)*(zeta+1)/4-(csi-1)*(csi+1)*eta*(eta+1)*zeta/4;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 21
+					dNdcsi = (csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2+(csi-1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2;
+					dNdeta = (csi-1)*(csi+1)*(eta+1)*(zeta-1)*zeta/2+(csi-1)*(csi+1)*(eta-1)*(zeta-1)*zeta/2;
+					dNdzeta = (csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta/2+(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/2;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 22
+					dNdcsi = (csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2+(csi-1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2;
+					dNdeta = (csi-1)*(csi+1)*eta*(zeta-1)*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/2;
+					dNdzeta = (csi-1)*(csi+1)*(eta-1)*eta*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)/2;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 23
+					dNdcsi = csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
+					dNdeta = (csi-1)*csi*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*csi*(eta-1)*(zeta-1)*(zeta+1)/2;
+					dNdzeta = (csi-1)*csi*(eta-1)*(eta+1)*(zeta+1)/2+(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)/2;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 24
+					dNdcsi = (csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2+csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
+					dNdeta = csi*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/2+csi*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/2;
+					dNdzeta = csi*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/2+csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/2;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 25
+					dNdcsi = (csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2;
+					dNdeta = (csi-1)*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*(csi+1)*eta*(zeta-1)*(zeta+1)/2;
+					dNdzeta = (csi-1)*(csi+1)*eta*(eta+1)*(zeta+1)/2+(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)/2;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 26
+					dNdcsi = (csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2+(csi-1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2;
+					dNdeta = (csi-1)*(csi+1)*(eta+1)*zeta*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*zeta*(zeta+1)/2;
+					dNdzeta = (csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta/2;
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+					// node 27
+					dNdcsi = -(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)-(csi-1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1);
+					dNdeta = -(csi-1)*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)-(csi-1)*(csi+1)*(eta-1)*(zeta-1)*(zeta+1);
+					dNdzeta = -(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta+1)-(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1);
+					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
+
+
 					B.clear();
+					double dNdx, dNdy, dNdz; 
 					for(int n = 0; n < 27; n++)
 					{
-						// set the partial derivatives
+						// set temp variables, to make the code more readable for testing purposes
+						dNdcsi = dN[n].x();
+						dNdeta = dN[n].y();
+						dNdzeta = dN[n].z();
 
-						/*
+						// set the partial derivatives
+						dNdx = invJ(0,0)*dNdcsi + invJ(0,1)*dNdeta + invJ(0,2)*dNdzeta;
+						dNdy = invJ(1,0)*dNdcsi + invJ(1,1)*dNdeta + invJ(1,2)*dNdzeta;
+						dNdz = invJ(2,0)*dNdcsi + invJ(2,1)*dNdeta + invJ(2,2)*dNdzeta;
+
 						// set the current node portion of the B matrix
 						B(0,3*n) = dNdx;
 						B(1,3*n+1) = dNdy;
@@ -313,7 +490,6 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 						B(3,3*n) = dNdy;	B(3,3*n+1) = dNdx;
 						B(4,3*n) = dNdz;	B(4,3*n+2) = dNdx;
 						B(5,3*n+1) = dNdz;	B(5,3*n+2) = dNdy;
-						*/
 
 						// set the force vector for the domain loads
 						if(domain_load != lp.domain_loads.end())
@@ -327,6 +503,9 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 #undef PSI
 						}
 					}
+					cout << i->first << endl;
+					cout << B << endl;
+
 					Bt = trans(B);
 					symmetric_matrix<double> D = D_list[element->material];
 
@@ -375,7 +554,6 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta, const Element &element)
 {
 	boost::numeric::ublas::matrix<double> J(3,3);
-	std::cout << fem::point(csi,eta,zeta) << std::endl;
 
 	switch(element.type)
 	{
@@ -468,7 +646,6 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 					 DZETA(csi, 1,eta, 1,zeta, 1)*node_list[element.nodes[6]].z() + \
 					 DZETA(csi,-1,eta, 1,zeta, 1)*node_list[element.nodes[7]].z();
 				// Jacobian matriz all set up. return it
-				return J;
 				#undef DCSI
 				#undef DETA
 				#undef DZETA
@@ -736,16 +913,15 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 					 +node_list[element.nodes[2-1]].z()*(csi*(csi+1)*(eta-1)*eta*zeta/8+csi*(csi+1)*(eta-1)*eta*(zeta-1)/8) \
 					 +node_list[element.nodes[9-1]].z()*(-(csi-1)*(csi+1)*(eta-1)*eta*zeta/4-(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)/4) \
 					 +node_list[element.nodes[1-1]].z()*((csi-1)*csi*(eta-1)*eta*zeta/8+(csi-1)*csi*(eta-1)*eta*(zeta-1)/8);
-
-				std::cout << J << std::endl;
-				return J;
 			}
 			break;
 
 		default:
+			J.clear();
 			std::cerr << "Model::J(): missing type" << std::endl;
 			break;
 	}
+	return J;
 }
 
 
@@ -761,21 +937,23 @@ boost::numeric::ublas::matrix<double> Model::invert3by3(const boost::numeric::ub
 	assert(M.size2() == 3);
 	assert(det > 0);
 	/*
-	   (%i1) M: matrix([a,b,c],[d,e,f],[g,h,i]);
+(%i1) M: matrix([a,b,c],[d,e,f],[g,h,i]);
 	   [ a  b  c ]
 	   [         ]
-	   (%o1)                             [ d  e  f ]
+(%o1)      [ d  e  f ]
 	   [         ]
 	   [ g  h  i ]
-	   (%i2) N: invert(M), detout;
+
+(%i2) N: invert(M), detout;
 	   [ e i - f h  c h - b i  b f - c e ]
 	   [                                 ]
 	   [ f g - d i  a i - c g  c d - a f ]
 	   [                                 ]
 	   [ d h - e g  b g - a h  a e - b d ]
-	   (%o2)            ---------------------------------------------
-	   a (e i - f h) + b (f g - d i) + c (d h - e g)
+(%o2) ---------------------------------------------
+      a (e i - f h) + b (f g - d i) + c (d h - e g)
 	 */
+
 	boost::numeric::ublas::matrix<double> invJ(3,3);
 	invJ(0,0) = (M(1,1)*M(2,2) - M(1,2)*M(2,1))/det;
 	invJ(0,1) = (M(0,2)*M(2,1) - M(0,1)*M(2,2))/det;
@@ -815,7 +993,6 @@ enum Model::Error Model::run(const LoadPattern &lp)
 
 void Model::gauleg(double x[], double w[], int n)
 {
-	//TODO test this code
 	int m,j,i;
 	double z1,z,pp,p3,p2,p1;
 	m=(n+1)/2; /* The roots are symmetric, so we only find half of them. */

@@ -8,6 +8,12 @@ namespace fem
 
 	class Element {
 		public:
+			enum Error {
+				ERR_OK,
+				ERR_NODE_NUMBER,	// the number of nodes are off for the element type
+				ERR_INVALID_TYPE
+			};
+
 			enum Type {
 				FE_INVALID	= 0,	/* test entry */
 				FE_LINE2         = 1,    /* 2-node line */
@@ -52,7 +58,7 @@ namespace fem
 			Element(const Element &);
 			~Element();
 
-			void set(Type type, std::vector<size_t> nodes);
+			enum Error set(Type type, std::vector<size_t> nodes);
 
 			static enum Type extractType(char *);
 	};

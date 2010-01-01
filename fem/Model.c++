@@ -294,6 +294,8 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 				{
 					// generate the jacobian
 					Jacobian = J(i->first,*element);	// generate the jacobian matrix for this element
+					cout << Jacobian << endl;
+
 					detJ = det3by3(Jacobian);
 					invJ = invert3by3(Jacobian,detJ);
 
@@ -301,21 +303,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 					B.clear();
 					for(int n = 0; n < 27; n++)
 					{
-//local: local coordinate constant
-// p: coordinates of the integration points
-#define DCSI(p,local) local.x()*(1+local.y()*p.y())*(1+local.z()*p.z())/8.0
-#define DETA(p,local) local.y()*(1+local.x()*p.x())*(1+local.z()*p.z())/8.0
-#define DZETA(p,local) local.z()*(1+local.x()*p.x())*(1+local.y()*p.y())/8.0
 						// set the partial derivatives
-						/*
-						double dNdx, dNdy, dNdz; 
-						dNdx = invJ(0,0)*DCSI(i->first,local_coord[n]) + invJ(0,1)*DETA(i->first,local_coord[n]) + invJ(0,2)*DZETA(i->first,local_coord[n]); 
-						dNdy = invJ(1,0)*DCSI(i->first,local_coord[n]) + invJ(1,1)*DETA(i->first,local_coord[n]) + invJ(1,2)*DZETA(i->first,local_coord[n]); 
-						dNdz = invJ(2,0)*DCSI(i->first,local_coord[n]) + invJ(2,1)*DETA(i->first,local_coord[n]) + invJ(2,2)*DZETA(i->first,local_coord[n]); 
-						*/
-#undef DCSI
-#undef DETA
-#undef DZETA
 
 						/*
 						// set the current node portion of the B matrix
@@ -352,8 +340,8 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 
 				// add the nodal loads contributions
 				//TODO setup k from k_elem through scatter operation
-				std::cout << k_elem << endl;
-				std::cout << f_elem << endl;
+				//std::cout << k_elem << endl;
+				//std::cout << f_elem << endl;
 			}
 			break;
 
@@ -386,20 +374,16 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 
 boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta, const Element &element)
 {
-#define DCSI(C,C1,E,E1,Z,Z1) C1*(1+E1*E)*(1+Z1*Z)/8.0
-#define DETA(C,C1,E,E1,Z,Z1) E1*(1+C1*C)*(1+Z1*Z)/8.0
-#define DZETA(C,C1,E,E1,Z,Z1) Z1*(1+C1*C)*(1+E1*E)/8.0
 	boost::numeric::ublas::matrix<double> J(3,3);
+	std::cout << fem::point(csi,eta,zeta) << std::endl;
 
 	switch(element.type)
 	{
-		/*
-		case Element::FE_TETRAHEDRON4:
-			break;
-		*/
-
 		case Element::FE_HEXAHEDRON8:
 			{
+				#define DCSI(C,C1,E,E1,Z,Z1) C1*(1+E1*E)*(1+Z1*Z)/8.0
+				#define DETA(C,C1,E,E1,Z,Z1) E1*(1+C1*C)*(1+Z1*Z)/8.0
+				#define DZETA(C,C1,E,E1,Z,Z1) Z1*(1+C1*C)*(1+E1*E)/8.0
 				// dN/dcsi
 				J(0,0) = DCSI(csi,-1,eta,-1,zeta,-1)*node_list[element.nodes[0]].x() + \
 					 DCSI(csi, 1,eta,-1,zeta,-1)*node_list[element.nodes[1]].x() + \
@@ -485,266 +469,275 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 					 DZETA(csi,-1,eta, 1,zeta, 1)*node_list[element.nodes[7]].z();
 				// Jacobian matriz all set up. return it
 				return J;
+				#undef DCSI
+				#undef DETA
+				#undef DZETA
 			}
 			break;
 
 		case Element::FE_HEXAHEDRON27:
 			{
+				/*
 				double c[3] = {csi*(csi+1),	(csi-1)*(csi+1),	(csi-1)*csi};
 				double e[3] = {eta*(eta+1),	(eta-1)*(eta+1),	(eta-1)*eta};
 				double z[3] = {zeta*(zeta+1),	(zeta-1)*(zeta+1),	(zeta-1)*zeta};
+				*/
+ 
+				J(0,0) = node_list[element.nodes[7-1]].x()*((csi+1)*eta*(eta+1)*zeta*(zeta+1)/8+csi*eta*(eta+1)*zeta*(zeta+1)/8)
+					+node_list[element.nodes[20-1]].x()*(-(csi+1)*eta*(eta+1)*zeta*(zeta+1)/4-(csi-1)*eta*(eta+1)*zeta*(zeta+1)/4) \
+					+node_list[element.nodes[8-1]].x()*(csi*eta*(eta+1)*zeta*(zeta+1)/8+(csi-1)*eta*(eta+1)*zeta*(zeta+1)/8) \
+					+node_list[element.nodes[26-1]].x()*((csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2+(csi-1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2) \
+					+node_list[element.nodes[19-1]].x()*(-(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4-csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4) \
+					+node_list[element.nodes[18-1]].x()*(-csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4-(csi-1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4) \
+					+node_list[element.nodes[6-1]].x()*((csi+1)*(eta-1)*eta*zeta*(zeta+1)/8+csi*(eta-1)*eta*zeta*(zeta+1)/8) \
+					+node_list[element.nodes[17-1]].x()*(-(csi+1)*(eta-1)*eta*zeta*(zeta+1)/4-(csi-1)*(eta-1)*eta*zeta*(zeta+1)/4) \
+					+node_list[element.nodes[5-1]].x()*(csi*(eta-1)*eta*zeta*(zeta+1)/8+(csi-1)*(eta-1)*eta*zeta*(zeta+1)/8) \
+					+node_list[element.nodes[25-1]].x()*((csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2) \
+					+node_list[element.nodes[15-1]].x()*(-(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4-csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4) \
+					+node_list[element.nodes[16-1]].x()*(-csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4-(csi-1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4) \
+					+node_list[element.nodes[24-1]].x()*((csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2+csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2) \
+					+node_list[element.nodes[27-1]].x()*(-(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)-(csi-1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)) \
+					+node_list[element.nodes[23-1]].x()*(csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2) \
+					+node_list[element.nodes[22-1]].x()*((csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2+(csi-1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2) \
+					+node_list[element.nodes[13-1]].x()*(-(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4-csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4) \
+					+node_list[element.nodes[11-1]].x()*(-csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4-(csi-1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4) \
+					+node_list[element.nodes[3-1]].x()*((csi+1)*eta*(eta+1)*(zeta-1)*zeta/8+csi*eta*(eta+1)*(zeta-1)*zeta/8) \
+					+node_list[element.nodes[14-1]].x()*(-(csi+1)*eta*(eta+1)*(zeta-1)*zeta/4-(csi-1)*eta*(eta+1)*(zeta-1)*zeta/4) \
+					+node_list[element.nodes[4-1]].x()*(csi*eta*(eta+1)*(zeta-1)*zeta/8+(csi-1)*eta*(eta+1)*(zeta-1)*zeta/8) \
+					+node_list[element.nodes[21-1]].x()*((csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2+(csi-1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2) \
+					+node_list[element.nodes[12-1]].x()*(-(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4-csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4) \
+					+node_list[element.nodes[10-1]].x()*(-csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4-(csi-1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4) \
+					+node_list[element.nodes[2-1]].x()*((csi+1)*(eta-1)*eta*(zeta-1)*zeta/8+csi*(eta-1)*eta*(zeta-1)*zeta/8) \
+					+node_list[element.nodes[9-1]].x()*(-(csi+1)*(eta-1)*eta*(zeta-1)*zeta/4-(csi-1)*(eta-1)*eta*(zeta-1)*zeta/4) \
+					+node_list[element.nodes[1-1]].x()*(csi*(eta-1)*eta*(zeta-1)*zeta/8+(csi-1)*(eta-1)*eta*(zeta-1)*zeta/8);
 
-				J(0,0) = node_list[element.nodes[7]].x()*((csi+1)*e[0]*z[0]/8+csi*e[0]*z[0]/8) \
-					+node_list[element.nodes[20]].x()*(-(csi+1)*e[0]*z[0]/4-(csi-1)*e[0]*z[0]/4) \
-					+node_list[element.nodes[8]].x()*(csi*e[0]*z[0]/8+(csi-1)*e[0]*z[0]/8) \
-					+node_list[element.nodes[26]].x()*((csi+1)*e[1]*z[0]/2+(csi-1)*e[1]*z[0]/2) \
-					+node_list[element.nodes[19]].x()*(-(csi+1)*e[1]*z[0]/4-csi*e[1]*z[0]/4) \
-					+node_list[element.nodes[18]].x()*(-csi*e[1]*z[0]/4-(csi-1)*e[1]*z[0]/4) \
-					+node_list[element.nodes[6]].x()*((csi+1)*e[2]*z[0]/8+csi*e[2]*z[0]/8) \
-					+node_list[element.nodes[17]].x()*(-(csi+1)*e[2]*z[0]/4-(csi-1)*e[2]*z[0]/4) \
-					+node_list[element.nodes[5]].x()*(csi*e[2]*z[0]/8+(csi-1)*e[2]*z[0]/8) \
-					+node_list[element.nodes[25]].x()*((csi+1)*e[0]*z[2]/2+(csi-1)*e[0]*z[2]/2) \
-					+node_list[element.nodes[15]].x()*(-(csi+1)*e[0]*z[2]/4-csi*e[0]*z[2]/4) \
-					+node_list[element.nodes[16]].x()*(-csi*e[0]*z[2]/4-(csi-1)*e[0]*z[2]/4) \
-					+node_list[element.nodes[24]].x()*((csi+1)*e[1]*z[2]/2+csi*e[1]*z[2]/2) \
-					+node_list[element.nodes[27]].x()*(-(csi+1)*e[1]*z[2]-(csi-1)*e[1]*z[2]) \
-					+node_list[element.nodes[23]].x()*(csi*e[1]*z[2]/2+(csi-1)*e[1]*z[2]/2) \
-					+node_list[element.nodes[22]].x()*((csi+1)*e[2]*z[2]/2+(csi-1)*e[2]*z[2]/2) \
-					+node_list[element.nodes[13]].x()*(-(csi+1)*e[2]*z[2]/4-csi*e[2]*z[2]/4) \
-					+node_list[element.nodes[11]].x()*(-csi*e[2]*z[2]/4-(csi-1)*e[2]*z[2]/4) \
-					+node_list[element.nodes[3]].x()*((csi+1)*e[0]*z[2]/8+csi*e[0]*z[2]/8) \
-					+node_list[element.nodes[14]].x()*(-(csi+1)*e[0]*z[2]/4-(csi-1)*e[0]*z[2]/4) \
-					+node_list[element.nodes[4]].x()*(csi*e[0]*z[2]/8+(csi-1)*e[0]*z[2]/8) \
-					+node_list[element.nodes[21]].x()*((csi+1)*e[1]*z[2]/2+(csi-1)*e[1]*z[2]/2) \
-					+node_list[element.nodes[12]].x()*(-(csi+1)*e[1]*z[2]/4-csi*e[1]*z[2]/4) \
-					+node_list[element.nodes[10]].x()*(-csi*e[1]*z[2]/4-(csi-1)*e[1]*z[2]/4) \
-					+node_list[element.nodes[2]].x()*((csi+1)*e[2]*z[2]/8+csi*e[2]*z[2]/8) \
-					+node_list[element.nodes[9]].x()*(-(csi+1)*e[2]*z[2]/4-(csi-1)*e[2]*z[2]/4) \
-					+node_list[element.nodes[1]].x()*(csi*e[2]*z[2]/8+(csi-1)*e[2]*z[2]/8);
 
-					J(0,1) =node_list[element.nodes[7]].y()*((csi+1)*e[0]*z[0]/8+csi*e[0]*z[0]/8) \
-					+node_list[element.nodes[20]].y()*(-(csi+1)*e[0]*z[0]/4-(csi-1)*e[0]*z[0]/4) \
-					+node_list[element.nodes[8]].y()*(csi*e[0]*z[0]/8+(csi-1)*e[0]*z[0]/8) \
-					+node_list[element.nodes[26]].y()*((csi+1)*e[1]*z[0]/2+(csi-1)*e[1]*z[0]/2) \
-					+node_list[element.nodes[19]].y()*(-(csi+1)*e[1]*z[0]/4-csi*e[1]*z[0]/4) \
-					+node_list[element.nodes[18]].y()*(-csi*e[1]*z[0]/4-(csi-1)*e[1]*z[0]/4) \
-					+node_list[element.nodes[6]].y()*((csi+1)*e[2]*z[0]/8+csi*e[2]*z[0]/8) \
-					+node_list[element.nodes[17]].y()*(-(csi+1)*e[2]*z[0]/4-(csi-1)*e[2]*z[0]/4) \
-					+node_list[element.nodes[5]].y()*(csi*e[2]*z[0]/8+(csi-1)*e[2]*z[0]/8) \
-					+node_list[element.nodes[25]].y()*((csi+1)*e[0]*z[1]/2+(csi-1)*e[0]*z[1]/2) \
-					+node_list[element.nodes[15]].y()*(-(csi+1)*e[0]*z[1]/4-csi*e[0]*z[1]/4) \
-					+node_list[element.nodes[16]].y()*(-csi*e[0]*z[1]/4-(csi-1)*e[0]*z[1]/4) \
-					+node_list[element.nodes[24]].y()*((csi+1)*e[1]*z[1]/2+csi*e[1]*z[1]/2) \
-					+node_list[element.nodes[27]].y()*(-(csi+1)*e[1]*z[1]-(csi-1)*e[1]*z[1]) \
-					+node_list[element.nodes[23]].y()*(csi*e[1]*z[1]/2+(csi-1)*e[1]*z[1]/2) \
-					+node_list[element.nodes[22]].y()*((csi+1)*e[2]*z[1]/2+(csi-1)*e[2]*z[1]/2) \
-					+node_list[element.nodes[13]].y()*(-(csi+1)*e[2]*z[1]/4-csi*e[2]*z[1]/4) \
-					+node_list[element.nodes[11]].y()*(-csi*e[2]*z[1]/4-(csi-1)*e[2]*z[1]/4) \
-					+node_list[element.nodes[3]].y()*((csi+1)*e[0]*z[2]/8+csi*e[0]*z[2]/8) \
-					+node_list[element.nodes[14]].y()*(-(csi+1)*e[0]*z[2]/4-(csi-1)*e[0]*z[2]/4) \
-					+node_list[element.nodes[4]].y()*(csi*e[0]*z[2]/8+(csi-1)*e[0]*z[2]/8) \
-					+node_list[element.nodes[21]].y()*((csi+1)*e[1]*z[2]/2+(csi-1)*e[1]*z[2]/2) \
-					+node_list[element.nodes[12]].y()*(-(csi+1)*e[1]*z[2]/4-csi*e[1]*z[2]/4) \
-					+node_list[element.nodes[10]].y()*(-csi*e[1]*z[2]/4-(csi-1)*e[1]*z[2]/4) \
-					+node_list[element.nodes[2]].y()*((csi+1)*e[2]*z[2]/8+csi*e[2]*z[2]/8) \
-					+node_list[element.nodes[9]].y()*(-(csi+1)*e[2]*z[2]/4-(csi-1)*e[2]*z[2]/4) \
-					+node_list[element.nodes[1]].y()*(csi*e[2]*z[2]/8+(csi-1)*e[2]*z[2]/8);
+				J(0,1) = node_list[element.nodes[7-1]].y()*((csi+1)*eta*(eta+1)*zeta*(zeta+1)/8+csi*eta*(eta+1)*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[20-1]].y()*(-(csi+1)*eta*(eta+1)*zeta*(zeta+1)/4-(csi-1)*eta*(eta+1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[8-1]].y()*(csi*eta*(eta+1)*zeta*(zeta+1)/8+(csi-1)*eta*(eta+1)*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[26-1]].y()*((csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2+(csi-1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2) \
+					 +node_list[element.nodes[19-1]].y()*(-(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4-csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[18-1]].y()*(-csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4-(csi-1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[6-1]].y()*((csi+1)*(eta-1)*eta*zeta*(zeta+1)/8+csi*(eta-1)*eta*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[17-1]].y()*(-(csi+1)*(eta-1)*eta*zeta*(zeta+1)/4-(csi-1)*(eta-1)*eta*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[5-1]].y()*(csi*(eta-1)*eta*zeta*(zeta+1)/8+(csi-1)*(eta-1)*eta*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[25-1]].y()*((csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[15-1]].y()*(-(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4-csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[16-1]].y()*(-csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4-(csi-1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[24-1]].y()*((csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2+csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[27-1]].y()*(-(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)-(csi-1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)) \
+					 +node_list[element.nodes[23-1]].y()*(csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[22-1]].y()*((csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2+(csi-1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[13-1]].y()*(-(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4-csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[11-1]].y()*(-csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4-(csi-1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[3-1]].y()*((csi+1)*eta*(eta+1)*(zeta-1)*zeta/8+csi*eta*(eta+1)*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[14-1]].y()*(-(csi+1)*eta*(eta+1)*(zeta-1)*zeta/4-(csi-1)*eta*(eta+1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[4-1]].y()*(csi*eta*(eta+1)*(zeta-1)*zeta/8+(csi-1)*eta*(eta+1)*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[21-1]].y()*((csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2+(csi-1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2) \
+					 +node_list[element.nodes[12-1]].y()*(-(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4-csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[10-1]].y()*(-csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4-(csi-1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[2-1]].y()*((csi+1)*(eta-1)*eta*(zeta-1)*zeta/8+csi*(eta-1)*eta*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[9-1]].y()*(-(csi+1)*(eta-1)*eta*(zeta-1)*zeta/4-(csi-1)*(eta-1)*eta*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[1-1]].y()*(csi*(eta-1)*eta*(zeta-1)*zeta/8+(csi-1)*(eta-1)*eta*(zeta-1)*zeta/8);
 
-					J(0,2) = node_list[element.nodes[7]].z()*((csi+1)*e[0]*z[0]/8+csi*e[0]*z[0]/8) \
-					+node_list[element.nodes[20]].z()*(-(csi+1)*e[0]*z[0]/4-(csi-1)*e[0]*z[0]/4) \
-					+node_list[element.nodes[8]].z()*(csi*e[0]*z[0]/8+(csi-1)*e[0]*z[0]/8) \
-					+node_list[element.nodes[26]].z()*((csi+1)*e[1]*z[0]/2+(csi-1)*e[1]*z[0]/2) \
-					+node_list[element.nodes[19]].z()*(-(csi+1)*e[1]*z[0]/4-csi*e[1]*z[0]/4) \
-					+node_list[element.nodes[18]].z()*(-csi*e[1]*z[0]/4-(csi-1)*e[1]*z[0]/4) \
-					+node_list[element.nodes[6]].z()*((csi+1)*e[2]*z[0]/8+csi*e[2]*z[0]/8) \
-					+node_list[element.nodes[17]].z()*(-(csi+1)*e[2]*z[0]/4-(csi-1)*e[2]*z[0]/4) \
-					+node_list[element.nodes[5]].z()*(csi*e[2]*z[0]/8+(csi-1)*e[2]*z[0]/8) \
-					+node_list[element.nodes[25]].z()*((csi+1)*e[0]*z[1]/2+(csi-1)*e[0]*z[1]/2) \
-					+node_list[element.nodes[15]].z()*(-(csi+1)*e[0]*z[1]/4-csi*e[0]*z[1]/4) \
-					+node_list[element.nodes[16]].z()*(-csi*e[0]*z[1]/4-(csi-1)*e[0]*z[1]/4) \
-					+node_list[element.nodes[24]].z()*((csi+1)*e[1]*z[1]/2+csi*e[1]*z[1]/2) \
-					+node_list[element.nodes[27]].z()*(-(csi+1)*e[1]*z[1]-(csi-1)*e[1]*z[1]) \
-					+node_list[element.nodes[23]].z()*(csi*e[1]*z[1]/2+(csi-1)*e[1]*z[1]/2) \
-					+node_list[element.nodes[22]].z()*((csi+1)*e[2]*z[1]/2+(csi-1)*e[2]*z[1]/2) \
-					+node_list[element.nodes[13]].z()*(-(csi+1)*e[2]*z[1]/4-csi*e[2]*z[1]/4) \
-					+node_list[element.nodes[11]].z()*(-csi*e[2]*z[1]/4-(csi-1)*e[2]*z[1]/4) \
-					+node_list[element.nodes[3]].z()*((csi+1)*e[0]*z[2]/8+csi*e[0]*z[2]/8) \
-					+node_list[element.nodes[14]].z()*(-(csi+1)*e[0]*z[2]/4-(csi-1)*e[0]*z[2]/4) \
-					+node_list[element.nodes[4]].z()*(csi*e[0]*z[2]/8+(csi-1)*e[0]*z[2]/8) \
-					+node_list[element.nodes[21]].z()*((csi+1)*e[1]*z[2]/2+(csi-1)*e[1]*z[2]/2) \
-					+node_list[element.nodes[12]].z()*(-(csi+1)*e[1]*z[2]/4-csi*e[1]*z[2]/4) \
-					+node_list[element.nodes[10]].z()*(-csi*e[1]*z[2]/4-(csi-1)*e[1]*z[2]/4) \
-					+node_list[element.nodes[2]].z()*((csi+1)*e[2]*z[2]/8+csi*e[2]*z[2]/8) \
-					+node_list[element.nodes[9]].z()*(-(csi+1)*e[2]*z[2]/4-(csi-1)*e[2]*z[2]/4) \
-					+node_list[element.nodes[1]].z()*(csi*e[2]*z[2]/8+(csi-1)*e[2]*z[2]/8);
+				J(0,2) = node_list[element.nodes[7-1]].z()*((csi+1)*eta*(eta+1)*zeta*(zeta+1)/8+csi*eta*(eta+1)*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[20-1]].z()*(-(csi+1)*eta*(eta+1)*zeta*(zeta+1)/4-(csi-1)*eta*(eta+1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[8-1]].z()*(csi*eta*(eta+1)*zeta*(zeta+1)/8+(csi-1)*eta*(eta+1)*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[26-1]].z()*((csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2+(csi-1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2) \
+					 +node_list[element.nodes[19-1]].z()*(-(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4-csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[18-1]].z()*(-csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4-(csi-1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[6-1]].z()*((csi+1)*(eta-1)*eta*zeta*(zeta+1)/8+csi*(eta-1)*eta*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[17-1]].z()*(-(csi+1)*(eta-1)*eta*zeta*(zeta+1)/4-(csi-1)*(eta-1)*eta*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[5-1]].z()*(csi*(eta-1)*eta*zeta*(zeta+1)/8+(csi-1)*(eta-1)*eta*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[25-1]].z()*((csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[15-1]].z()*(-(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4-csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[16-1]].z()*(-csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4-(csi-1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[24-1]].z()*((csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2+csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[27-1]].z()*(-(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)-(csi-1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)) \
+					 +node_list[element.nodes[23-1]].z()*(csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[22-1]].z()*((csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2+(csi-1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[13-1]].z()*(-(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4-csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[11-1]].z()*(-csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4-(csi-1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[3-1]].z()*((csi+1)*eta*(eta+1)*(zeta-1)*zeta/8+csi*eta*(eta+1)*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[14-1]].z()*(-(csi+1)*eta*(eta+1)*(zeta-1)*zeta/4-(csi-1)*eta*(eta+1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[4-1]].z()*(csi*eta*(eta+1)*(zeta-1)*zeta/8+(csi-1)*eta*(eta+1)*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[21-1]].z()*((csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2+(csi-1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2) \
+					 +node_list[element.nodes[12-1]].z()*(-(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4-csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[10-1]].z()*(-csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4-(csi-1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[2-1]].z()*((csi+1)*(eta-1)*eta*(zeta-1)*zeta/8+csi*(eta-1)*eta*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[9-1]].z()*(-(csi+1)*(eta-1)*eta*(zeta-1)*zeta/4-(csi-1)*(eta-1)*eta*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[1-1]].z()*(csi*(eta-1)*eta*(zeta-1)*zeta/8+(csi-1)*(eta-1)*eta*(zeta-1)*zeta/8) ;
 
-					J(1,0) = node_list[element.nodes[7]].x()*(c[0]*(eta+1)*z[0]/8+c[0]*eta*z[0]/8) \
-					+node_list[element.nodes[19]].x()*(-c[0]*(eta+1)*z[0]/4-c[0]*(eta-1)*z[0]/4) \
-					+node_list[element.nodes[26]].x()*(c[1]*(eta+1)*z[0]/2+c[1]*(eta-1)*z[0]/2) \
-					+node_list[element.nodes[20]].x()*(-c[1]*(eta+1)*z[0]/4-c[1]*eta*z[0]/4) \
-					+node_list[element.nodes[8]].x()*(c[2]*(eta+1)*z[0]/8+c[2]*eta*z[0]/8) \
-					+node_list[element.nodes[18]].x()*(-c[2]*(eta+1)*z[0]/4-c[2]*(eta-1)*z[0]/4) \
-					+node_list[element.nodes[6]].x()*(c[0]*eta*z[0]/8+c[0]*(eta-1)*z[0]/8) \
-					+node_list[element.nodes[17]].x()*(-c[1]*eta*z[0]/4-c[1]*(eta-1)*z[0]/4) \
-					+node_list[element.nodes[5]].x()*(c[2]*eta*z[0]/8+c[2]*(eta-1)*z[0]/8) \
-					+node_list[element.nodes[24]].x()*(c[0]*(eta+1)*z[1]/2+c[0]*(eta-1)*z[1]/2) \
-					+node_list[element.nodes[15]].x()*(-c[0]*(eta+1)*z[1]/4-c[0]*eta*z[1]/4) \
-					+node_list[element.nodes[25]].x()*(c[1]*(eta+1)*z[1]/2+c[1]*eta*z[1]/2) \
-					+node_list[element.nodes[27]].x()*(-c[1]*(eta+1)*z[1]-c[1]*(eta-1)*z[1]) \
-					+node_list[element.nodes[23]].x()*(c[2]*(eta+1)*z[1]/2+c[2]*(eta-1)*z[1]/2) \
-					+node_list[element.nodes[16]].x()*(-c[2]*(eta+1)*z[1]/4-c[2]*eta*z[1]/4) \
-					+node_list[element.nodes[13]].x()*(-c[0]*eta*z[1]/4-c[0]*(eta-1)*z[1]/4) \
-					+node_list[element.nodes[22]].x()*(c[1]*eta*z[1]/2+c[1]*(eta-1)*z[1]/2) \
-					+node_list[element.nodes[11]].x()*(-c[2]*eta*z[1]/4-c[2]*(eta-1)*z[1]/4) \
-					+node_list[element.nodes[3]].x()*(c[0]*(eta+1)*z[2]/8+c[0]*eta*z[2]/8) \
-					+node_list[element.nodes[12]].x()*(-c[0]*(eta+1)*z[2]/4-c[0]*(eta-1)*z[2]/4) \
-					+node_list[element.nodes[21]].x()*(c[1]*(eta+1)*z[2]/2+c[1]*(eta-1)*z[2]/2) \
-					+node_list[element.nodes[14]].x()*(-c[1]*(eta+1)*z[2]/4-c[1]*eta*z[2]/4) \
-					+node_list[element.nodes[4]].x()*(c[2]*(eta+1)*z[2]/8+c[2]*eta*z[2]/8) \
-					+node_list[element.nodes[10]].x()*(-c[2]*(eta+1)*z[2]/4-c[2]*(eta-1)*z[2]/4) \
-					+node_list[element.nodes[2]].x()*(c[0]*eta*z[2]/8+c[0]*(eta-1)*z[2]/8) \
-					+node_list[element.nodes[9]].x()*(-c[1]*eta*z[2]/4-c[1]*(eta-1)*z[2]/4) \
-					+node_list[element.nodes[1]].x()*(c[2]*eta*z[2]/8+c[2]*(eta-1)*z[2]/8);
 
-					J(1,1) = node_list[element.nodes[7]].y()*(c[0]*(eta+1)*z[0]/8+c[0]*eta*z[0]/8) \
-					+node_list[element.nodes[19]].y()*(-c[0]*(eta+1)*z[0]/4-c[0]*(eta-1)*z[0]/4) \
-					+node_list[element.nodes[26]].y()*(c[1]*(eta+1)*z[0]/2+c[1]*(eta-1)*z[0]/2) \
-					+node_list[element.nodes[20]].y()*(-c[1]*(eta+1)*z[0]/4-c[1]*eta*z[0]/4) \
-					+node_list[element.nodes[8]].y()*(c[2]*(eta+1)*z[0]/8+c[2]*eta*z[0]/8) \
-					+node_list[element.nodes[18]].y()*(-c[2]*(eta+1)*z[0]/4-c[2]*(eta-1)*z[0]/4) \
-					+node_list[element.nodes[6]].y()*(c[0]*eta*z[0]/8+c[0]*(eta-1)*z[0]/8) \
-					+node_list[element.nodes[17]].y()*(-c[1]*eta*z[0]/4-c[1]*(eta-1)*z[0]/4) \
-					+node_list[element.nodes[5]].y()*(c[2]*eta*z[0]/8+c[2]*(eta-1)*z[0]/8) \
-					+node_list[element.nodes[24]].y()*(c[0]*(eta+1)*z[1]/2+c[0]*(eta-1)*z[1]/2) \
-					+node_list[element.nodes[15]].y()*(-c[0]*(eta+1)*z[1]/4-c[0]*eta*z[1]/4) \
-					+node_list[element.nodes[25]].y()*(c[1]*(eta+1)*z[1]/2+c[1]*eta*z[1]/2) \
-					+node_list[element.nodes[27]].y()*(-c[1]*(eta+1)*z[1]-c[1]*(eta-1)*z[1]) \
-					+node_list[element.nodes[23]].y()*(c[2]*(eta+1)*z[1]/2+c[2]*(eta-1)*z[1]/2) \
-					+node_list[element.nodes[16]].y()*(-c[2]*(eta+1)*z[1]/4-c[2]*eta*z[1]/4) \
-					+node_list[element.nodes[13]].y()*(-c[0]*eta*z[1]/4-c[0]*(eta-1)*z[1]/4) \
-					+node_list[element.nodes[22]].y()*(c[1]*eta*z[1]/2+c[1]*(eta-1)*z[1]/2) \
-					+node_list[element.nodes[11]].y()*(-c[2]*eta*z[1]/4-c[2]*(eta-1)*z[1]/4) \
-					+node_list[element.nodes[3]].y()*(c[0]*(eta+1)*z[2]/8+c[0]*eta*z[2]/8) \
-					+node_list[element.nodes[12]].y()*(-c[0]*(eta+1)*z[2]/4-c[0]*(eta-1)*z[2]/4) \
-					+node_list[element.nodes[21]].y()*(c[1]*(eta+1)*z[2]/2+c[1]*(eta-1)*z[2]/2) \
-					+node_list[element.nodes[14]].y()*(-c[1]*(eta+1)*z[2]/4-c[1]*eta*z[2]/4) \
-					+node_list[element.nodes[4]].y()*(c[2]*(eta+1)*z[2]/8+c[2]*eta*z[2]/8) \
-					+node_list[element.nodes[10]].y()*(-c[2]*(eta+1)*z[2]/4-c[2]*(eta-1)*z[2]/4) \
-					+node_list[element.nodes[2]].y()*(c[0]*eta*z[2]/8+c[0]*(eta-1)*z[2]/8) \
-					+node_list[element.nodes[9]].y()*(-c[1]*eta*z[2]/4-c[1]*(eta-1)*z[2]/4) \
-					+node_list[element.nodes[1]].y()*(c[2]*eta*z[2]/8+c[2]*(eta-1)*z[2]/8);
+				J(1,0) = node_list[element.nodes[7-1]].x()*(csi*(csi+1)*(eta+1)*zeta*(zeta+1)/8+csi*(csi+1)*eta*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[19-1]].x()*(-csi*(csi+1)*(eta+1)*zeta*(zeta+1)/4-csi*(csi+1)*(eta-1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[26-1]].x()*((csi-1)*(csi+1)*(eta+1)*zeta*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*zeta*(zeta+1)/2) \
+					 +node_list[element.nodes[20-1]].x()*(-(csi-1)*(csi+1)*(eta+1)*zeta*(zeta+1)/4-(csi-1)*(csi+1)*eta*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[8-1]].x()*((csi-1)*csi*(eta+1)*zeta*(zeta+1)/8+(csi-1)*csi*eta*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[18-1]].x()*(-(csi-1)*csi*(eta+1)*zeta*(zeta+1)/4-(csi-1)*csi*(eta-1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[6-1]].x()*(csi*(csi+1)*eta*zeta*(zeta+1)/8+csi*(csi+1)*(eta-1)*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[17-1]].x()*(-(csi-1)*(csi+1)*eta*zeta*(zeta+1)/4-(csi-1)*(csi+1)*(eta-1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[5-1]].x()*((csi-1)*csi*eta*zeta*(zeta+1)/8+(csi-1)*csi*(eta-1)*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[24-1]].x()*(csi*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/2+csi*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[15-1]].x()*(-csi*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/4-csi*(csi+1)*eta*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[25-1]].x()*((csi-1)*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*(csi+1)*eta*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[27-1]].x()*(-(csi-1)*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)-(csi-1)*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)) \
+					 +node_list[element.nodes[23-1]].x()*((csi-1)*csi*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*csi*(eta-1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[16-1]].x()*(-(csi-1)*csi*(eta+1)*(zeta-1)*(zeta+1)/4-(csi-1)*csi*eta*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[13-1]].x()*(-csi*(csi+1)*eta*(zeta-1)*(zeta+1)/4-csi*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[22-1]].x()*((csi-1)*(csi+1)*eta*(zeta-1)*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[11-1]].x()*(-(csi-1)*csi*eta*(zeta-1)*(zeta+1)/4-(csi-1)*csi*(eta-1)*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[3-1]].x()*(csi*(csi+1)*(eta+1)*(zeta-1)*zeta/8+csi*(csi+1)*eta*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[12-1]].x()*(-csi*(csi+1)*(eta+1)*(zeta-1)*zeta/4-csi*(csi+1)*(eta-1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[21-1]].x()*((csi-1)*(csi+1)*(eta+1)*(zeta-1)*zeta/2+(csi-1)*(csi+1)*(eta-1)*(zeta-1)*zeta/2) \
+					 +node_list[element.nodes[14-1]].x()*(-(csi-1)*(csi+1)*(eta+1)*(zeta-1)*zeta/4-(csi-1)*(csi+1)*eta*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[4-1]].x()*((csi-1)*csi*(eta+1)*(zeta-1)*zeta/8+(csi-1)*csi*eta*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[10-1]].x()*(-(csi-1)*csi*(eta+1)*(zeta-1)*zeta/4-(csi-1)*csi*(eta-1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[2-1]].x()*(csi*(csi+1)*eta*(zeta-1)*zeta/8+csi*(csi+1)*(eta-1)*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[9-1]].x()*(-(csi-1)*(csi+1)*eta*(zeta-1)*zeta/4-(csi-1)*(csi+1)*(eta-1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[1-1]].x()*((csi-1)*csi*eta*(zeta-1)*zeta/8+(csi-1)*csi*(eta-1)*(zeta-1)*zeta/8) ;
 
-				J(1,2) = node_list[element.nodes[7]].z()*(c[0]*(eta+1)*z[0]/8+c[0]*eta*z[0]/8) \
-					+node_list[element.nodes[19]].z()*(-c[0]*(eta+1)*z[0]/4-c[0]*(eta-1)*z[0]/4) \
-					+node_list[element.nodes[26]].z()*(c[1]*(eta+1)*z[0]/2+c[1]*(eta-1)*z[0]/2) \
-					+node_list[element.nodes[20]].z()*(-c[1]*(eta+1)*z[0]/4-c[1]*eta*z[0]/4) \
-					+node_list[element.nodes[8]].z()*(c[2]*(eta+1)*z[0]/8+c[2]*eta*z[0]/8) \
-					+node_list[element.nodes[18]].z()*(-c[2]*(eta+1)*z[0]/4-c[2]*(eta-1)*z[0]/4) \
-					+node_list[element.nodes[6]].z()*(c[0]*eta*z[0]/8+c[0]*(eta-1)*z[0]/8) \
-					+node_list[element.nodes[17]].z()*(-c[1]*eta*z[0]/4-c[1]*(eta-1)*z[0]/4) \
-					+node_list[element.nodes[5]].z()*(c[2]*eta*z[0]/8+c[2]*(eta-1)*z[0]/8) \
-					+node_list[element.nodes[24]].z()*(c[0]*(eta+1)*z[1]/2+c[0]*(eta-1)*z[1]/2) \
-					+node_list[element.nodes[15]].z()*(-c[0]*(eta+1)*z[1]/4-c[0]*eta*z[1]/4) \
-					+node_list[element.nodes[25]].z()*(c[1]*(eta+1)*z[1]/2+c[1]*eta*z[1]/2) \
-					+node_list[element.nodes[27]].z()*(-c[1]*(eta+1)*z[1]-c[1]*(eta-1)*z[1]) \
-					+node_list[element.nodes[23]].z()*(c[2]*(eta+1)*z[1]/2+c[2]*(eta-1)*z[1]/2) \
-					+node_list[element.nodes[16]].z()*(-c[2]*(eta+1)*z[1]/4-c[2]*eta*z[1]/4) \
-					+node_list[element.nodes[13]].z()*(-c[0]*eta*z[1]/4-c[0]*(eta-1)*z[1]/4) \
-					+node_list[element.nodes[22]].z()*(c[1]*eta*z[1]/2+c[1]*(eta-1)*z[1]/2) \
-					+node_list[element.nodes[11]].z()*(-c[2]*eta*z[1]/4-c[2]*(eta-1)*z[1]/4) \
-					+node_list[element.nodes[3]].z()*(c[0]*(eta+1)*z[2]/8+c[0]*eta*z[2]/8) \
-					+node_list[element.nodes[12]].z()*(-c[0]*(eta+1)*z[2]/4-c[0]*(eta-1)*z[2]/4) \
-					+node_list[element.nodes[21]].z()*(c[1]*(eta+1)*z[2]/2+c[1]*(eta-1)*z[2]/2) \
-					+node_list[element.nodes[14]].z()*(-c[1]*(eta+1)*z[2]/4-c[1]*eta*z[2]/4) \
-					+node_list[element.nodes[4]].z()*(c[2]*(eta+1)*z[2]/8+c[2]*eta*z[2]/8) \
-					+node_list[element.nodes[10]].z()*(-c[2]*(eta+1)*z[2]/4-c[2]*(eta-1)*z[2]/4) \
-					+node_list[element.nodes[2]].z()*(c[0]*eta*z[2]/8+c[0]*(eta-1)*z[2]/8) \
-					+node_list[element.nodes[9]].z()*(-c[1]*eta*z[2]/4-c[1]*(eta-1)*z[2]/4) \
-					+node_list[element.nodes[1]].z()*(c[2]*eta*z[2]/8+c[2]*(eta-1)*z[2]/8);
+				J(1,1) = node_list[element.nodes[7-1]].y()*(csi*(csi+1)*(eta+1)*zeta*(zeta+1)/8+csi*(csi+1)*eta*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[19-1]].y()*(-csi*(csi+1)*(eta+1)*zeta*(zeta+1)/4-csi*(csi+1)*(eta-1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[26-1]].y()*((csi-1)*(csi+1)*(eta+1)*zeta*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*zeta*(zeta+1)/2) \
+					 +node_list[element.nodes[20-1]].y()*(-(csi-1)*(csi+1)*(eta+1)*zeta*(zeta+1)/4-(csi-1)*(csi+1)*eta*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[8-1]].y()*((csi-1)*csi*(eta+1)*zeta*(zeta+1)/8+(csi-1)*csi*eta*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[18-1]].y()*(-(csi-1)*csi*(eta+1)*zeta*(zeta+1)/4-(csi-1)*csi*(eta-1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[6-1]].y()*(csi*(csi+1)*eta*zeta*(zeta+1)/8+csi*(csi+1)*(eta-1)*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[17-1]].y()*(-(csi-1)*(csi+1)*eta*zeta*(zeta+1)/4-(csi-1)*(csi+1)*(eta-1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[5-1]].y()*((csi-1)*csi*eta*zeta*(zeta+1)/8+(csi-1)*csi*(eta-1)*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[24-1]].y()*(csi*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/2+csi*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[15-1]].y()*(-csi*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/4-csi*(csi+1)*eta*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[25-1]].y()*((csi-1)*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*(csi+1)*eta*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[27-1]].y()*(-(csi-1)*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)-(csi-1)*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)) \
+					 +node_list[element.nodes[23-1]].y()*((csi-1)*csi*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*csi*(eta-1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[16-1]].y()*(-(csi-1)*csi*(eta+1)*(zeta-1)*(zeta+1)/4-(csi-1)*csi*eta*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[13-1]].y()*(-csi*(csi+1)*eta*(zeta-1)*(zeta+1)/4-csi*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[22-1]].y()*((csi-1)*(csi+1)*eta*(zeta-1)*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[11-1]].y()*(-(csi-1)*csi*eta*(zeta-1)*(zeta+1)/4-(csi-1)*csi*(eta-1)*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[3-1]].y()*(csi*(csi+1)*(eta+1)*(zeta-1)*zeta/8+csi*(csi+1)*eta*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[12-1]].y()*(-csi*(csi+1)*(eta+1)*(zeta-1)*zeta/4-csi*(csi+1)*(eta-1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[21-1]].y()*((csi-1)*(csi+1)*(eta+1)*(zeta-1)*zeta/2+(csi-1)*(csi+1)*(eta-1)*(zeta-1)*zeta/2) \
+					 +node_list[element.nodes[14-1]].y()*(-(csi-1)*(csi+1)*(eta+1)*(zeta-1)*zeta/4-(csi-1)*(csi+1)*eta*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[4-1]].y()*((csi-1)*csi*(eta+1)*(zeta-1)*zeta/8+(csi-1)*csi*eta*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[10-1]].y()*(-(csi-1)*csi*(eta+1)*(zeta-1)*zeta/4-(csi-1)*csi*(eta-1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[2-1]].y()*(csi*(csi+1)*eta*(zeta-1)*zeta/8+csi*(csi+1)*(eta-1)*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[9-1]].y()*(-(csi-1)*(csi+1)*eta*(zeta-1)*zeta/4-(csi-1)*(csi+1)*(eta-1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[1-1]].y()*((csi-1)*csi*eta*(zeta-1)*zeta/8+(csi-1)*csi*(eta-1)*(zeta-1)*zeta/8) ;
 
-					J(2,0) = node_list[element.nodes[7]].x()*(c[0]*e[0]*(zeta+1)/8+c[0]*e[0]*zeta/8)\
-					+node_list[element.nodes[15]].x()*(-c[0]*e[0]*(zeta+1)/4-c[0]*e[0]*(zeta-1)/4) \
-					+node_list[element.nodes[25]].x()*(c[1]*e[0]*(zeta+1)/2+c[1]*e[0]*(zeta-1)/2) \
-					+node_list[element.nodes[20]].x()*(-c[1]*e[0]*(zeta+1)/4-c[1]*e[0]*zeta/4) \
-					+node_list[element.nodes[8]].x()*(c[2]*e[0]*(zeta+1)/8+c[2]*e[0]*zeta/8) \
-					+node_list[element.nodes[16]].x()*(-c[2]*e[0]*(zeta+1)/4-c[2]*e[0]*(zeta-1)/4) \
-					+node_list[element.nodes[24]].x()*(c[0]*e[1]*(zeta+1)/2+c[0]*e[1]*(zeta-1)/2) \
-					+node_list[element.nodes[19]].x()*(-c[0]*e[1]*(zeta+1)/4-c[0]*e[1]*zeta/4) \
-					+node_list[element.nodes[26]].x()*(c[1]*e[1]*(zeta+1)/2+c[1]*e[1]*zeta/2) \
-					+node_list[element.nodes[27]].x()*(-c[1]*e[1]*(zeta+1)-c[1]*e[1]*(zeta-1)) \
-					+node_list[element.nodes[23]].x()*(c[2]*e[1]*(zeta+1)/2+c[2]*e[1]*(zeta-1)/2) \
-					+node_list[element.nodes[18]].x()*(-c[2]*e[1]*(zeta+1)/4-c[2]*e[1]*zeta/4) \
-					+node_list[element.nodes[6]].x()*(c[0]*e[2]*(zeta+1)/8+c[0]*e[2]*zeta/8) \
-					+node_list[element.nodes[13]].x()*(-c[0]*e[2]*(zeta+1)/4-c[0]*e[2]*(zeta-1)/4) \
-					+node_list[element.nodes[22]].x()*(c[1]*e[2]*(zeta+1)/2+c[1]*e[2]*(zeta-1)/2) \
-					+node_list[element.nodes[17]].x()*(-c[1]*e[2]*(zeta+1)/4-c[1]*e[2]*zeta/4) \
-					+node_list[element.nodes[5]].x()*(c[2]*e[2]*(zeta+1)/8+c[2]*e[2]*zeta/8) \
-					+node_list[element.nodes[11]].x()*(-c[2]*e[2]*(zeta+1)/4-c[2]*e[2]*(zeta-1)/4) \
-					+node_list[element.nodes[3]].x()*(c[0]*e[0]*zeta/8+c[0]*e[0]*(zeta-1)/8) \
-					+node_list[element.nodes[14]].x()*(-c[1]*e[0]*zeta/4-c[1]*e[0]*(zeta-1)/4) \
-					+node_list[element.nodes[4]].x()*(c[2]*e[0]*zeta/8+c[2]*e[0]*(zeta-1)/8) \
-					+node_list[element.nodes[12]].x()*(-c[0]*e[1]*zeta/4-c[0]*e[1]*(zeta-1)/4) \
-					+node_list[element.nodes[21]].x()*(c[1]*e[1]*zeta/2+c[1]*e[1]*(zeta-1)/2) \
-					+node_list[element.nodes[10]].x()*(-c[2]*e[1]*zeta/4-c[2]*e[1]*(zeta-1)/4) \
-					+node_list[element.nodes[2]].x()*(c[0]*e[2]*zeta/8+c[0]*e[2]*(zeta-1)/8) \
-					+node_list[element.nodes[9]].x()*(-c[1]*e[2]*zeta/4-c[1]*e[2]*(zeta-1)/4) \
-					+node_list[element.nodes[1]].x()*(c[2]*e[2]*zeta/8+c[2]*e[2]*(zeta-1)/8);
+				J(1,2) = node_list[element.nodes[7-1]].z()*(csi*(csi+1)*(eta+1)*zeta*(zeta+1)/8+csi*(csi+1)*eta*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[19-1]].z()*(-csi*(csi+1)*(eta+1)*zeta*(zeta+1)/4-csi*(csi+1)*(eta-1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[26-1]].z()*((csi-1)*(csi+1)*(eta+1)*zeta*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*zeta*(zeta+1)/2) \
+					 +node_list[element.nodes[20-1]].z()*(-(csi-1)*(csi+1)*(eta+1)*zeta*(zeta+1)/4-(csi-1)*(csi+1)*eta*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[8-1]].z()*((csi-1)*csi*(eta+1)*zeta*(zeta+1)/8+(csi-1)*csi*eta*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[18-1]].z()*(-(csi-1)*csi*(eta+1)*zeta*(zeta+1)/4-(csi-1)*csi*(eta-1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[6-1]].z()*(csi*(csi+1)*eta*zeta*(zeta+1)/8+csi*(csi+1)*(eta-1)*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[17-1]].z()*(-(csi-1)*(csi+1)*eta*zeta*(zeta+1)/4-(csi-1)*(csi+1)*(eta-1)*zeta*(zeta+1)/4) \
+					 +node_list[element.nodes[5-1]].z()*((csi-1)*csi*eta*zeta*(zeta+1)/8+(csi-1)*csi*(eta-1)*zeta*(zeta+1)/8) \
+					 +node_list[element.nodes[24-1]].z()*(csi*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/2+csi*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[15-1]].z()*(-csi*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/4-csi*(csi+1)*eta*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[25-1]].z()*((csi-1)*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*(csi+1)*eta*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[27-1]].z()*(-(csi-1)*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)-(csi-1)*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)) \
+					 +node_list[element.nodes[23-1]].z()*((csi-1)*csi*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*csi*(eta-1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[16-1]].z()*(-(csi-1)*csi*(eta+1)*(zeta-1)*(zeta+1)/4-(csi-1)*csi*eta*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[13-1]].z()*(-csi*(csi+1)*eta*(zeta-1)*(zeta+1)/4-csi*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[22-1]].z()*((csi-1)*(csi+1)*eta*(zeta-1)*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/2) \
+					 +node_list[element.nodes[11-1]].z()*(-(csi-1)*csi*eta*(zeta-1)*(zeta+1)/4-(csi-1)*csi*(eta-1)*(zeta-1)*(zeta+1)/4) \
+					 +node_list[element.nodes[3-1]].z()*(csi*(csi+1)*(eta+1)*(zeta-1)*zeta/8+csi*(csi+1)*eta*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[12-1]].z()*(-csi*(csi+1)*(eta+1)*(zeta-1)*zeta/4-csi*(csi+1)*(eta-1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[21-1]].z()*((csi-1)*(csi+1)*(eta+1)*(zeta-1)*zeta/2+(csi-1)*(csi+1)*(eta-1)*(zeta-1)*zeta/2) \
+					 +node_list[element.nodes[14-1]].z()*(-(csi-1)*(csi+1)*(eta+1)*(zeta-1)*zeta/4-(csi-1)*(csi+1)*eta*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[4-1]].z()*((csi-1)*csi*(eta+1)*(zeta-1)*zeta/8+(csi-1)*csi*eta*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[10-1]].z()*(-(csi-1)*csi*(eta+1)*(zeta-1)*zeta/4-(csi-1)*csi*(eta-1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[2-1]].z()*(csi*(csi+1)*eta*(zeta-1)*zeta/8+csi*(csi+1)*(eta-1)*(zeta-1)*zeta/8) \
+					 +node_list[element.nodes[9-1]].z()*(-(csi-1)*(csi+1)*eta*(zeta-1)*zeta/4-(csi-1)*(csi+1)*(eta-1)*(zeta-1)*zeta/4) \
+					 +node_list[element.nodes[1-1]].z()*((csi-1)*csi*eta*(zeta-1)*zeta/8+(csi-1)*csi*(eta-1)*(zeta-1)*zeta/8) ;
 
-					J(2,1) = node_list[element.nodes[7]].y()*(c[0]*e[0]*(zeta+1)/8+c[0]*e[0]*zeta/8) \
-					+node_list[element.nodes[15]].y()*(-c[0]*e[0]*(zeta+1)/4-c[0]*e[0]*(zeta-1)/4) \
-					+node_list[element.nodes[25]].y()*(c[1]*e[0]*(zeta+1)/2+c[1]*e[0]*(zeta-1)/2) \
-					+node_list[element.nodes[20]].y()*(-c[1]*e[0]*(zeta+1)/4-c[1]*e[0]*zeta/4) \
-					+node_list[element.nodes[8]].y()*(c[2]*e[0]*(zeta+1)/8+c[2]*e[0]*zeta/8) \
-					+node_list[element.nodes[16]].y()*(-c[2]*e[0]*(zeta+1)/4-c[2]*e[0]*(zeta-1)/4) \
-					+node_list[element.nodes[24]].y()*(c[0]*e[1]*(zeta+1)/2+c[0]*e[1]*(zeta-1)/2) \
-					+node_list[element.nodes[19]].y()*(-c[0]*e[1]*(zeta+1)/4-c[0]*e[1]*zeta/4) \
-					+node_list[element.nodes[26]].y()*(c[1]*e[1]*(zeta+1)/2+c[1]*e[1]*zeta/2) \
-					+node_list[element.nodes[27]].y()*(-c[1]*e[1]*(zeta+1)-c[1]*e[1]*(zeta-1)) \
-					+node_list[element.nodes[23]].y()*(c[2]*e[1]*(zeta+1)/2+c[2]*e[1]*(zeta-1)/2) \
-					+node_list[element.nodes[18]].y()*(-c[2]*e[1]*(zeta+1)/4-c[2]*e[1]*zeta/4) \
-					+node_list[element.nodes[6]].y()*(c[0]*e[2]*(zeta+1)/8+c[0]*e[2]*zeta/8) \
-					+node_list[element.nodes[13]].y()*(-c[0]*e[2]*(zeta+1)/4-c[0]*e[2]*(zeta-1)/4) \
-					+node_list[element.nodes[22]].y()*(c[1]*e[2]*(zeta+1)/2+c[1]*e[2]*(zeta-1)/2) \
-					+node_list[element.nodes[17]].y()*(-c[1]*e[2]*(zeta+1)/4-c[1]*e[2]*zeta/4) \
-					+node_list[element.nodes[5]].y()*(c[2]*e[2]*(zeta+1)/8+c[2]*e[2]*zeta/8) \
-					+node_list[element.nodes[11]].y()*(-c[2]*e[2]*(zeta+1)/4-c[2]*e[2]*(zeta-1)/4) \
-					+node_list[element.nodes[3]].y()*(c[0]*e[0]*zeta/8+c[0]*e[0]*(zeta-1)/8) \
-					+node_list[element.nodes[14]].y()*(-c[1]*e[0]*zeta/4-c[1]*e[0]*(zeta-1)/4) \
-					+node_list[element.nodes[4]].y()*(c[2]*e[0]*zeta/8+c[2]*e[0]*(zeta-1)/8) \
-					+node_list[element.nodes[12]].y()*(-c[0]*e[1]*zeta/4-c[0]*e[1]*(zeta-1)/4) \
-					+node_list[element.nodes[21]].y()*(c[1]*e[1]*zeta/2+c[1]*e[1]*(zeta-1)/2) \
-					+node_list[element.nodes[10]].y()*(-c[2]*e[1]*zeta/4-c[2]*e[1]*(zeta-1)/4) \
-					+node_list[element.nodes[2]].y()*(c[0]*e[2]*zeta/8+c[0]*e[2]*(zeta-1)/8) \
-					+node_list[element.nodes[9]].y()*(-c[1]*e[2]*zeta/4-c[1]*e[2]*(zeta-1)/4) \
-					+node_list[element.nodes[1]].y()*(c[2]*e[2]*zeta/8+c[2]*e[2]*(zeta-1)/8) ;
+				J(2,0) = node_list[element.nodes[7-1]].x()*(csi*(csi+1)*eta*(eta+1)*(zeta+1)/8+csi*(csi+1)*eta*(eta+1)*zeta/8) \
+					 +node_list[element.nodes[15-1]].x()*(-csi*(csi+1)*eta*(eta+1)*(zeta+1)/4-csi*(csi+1)*eta*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[25-1]].x()*((csi-1)*(csi+1)*eta*(eta+1)*(zeta+1)/2+(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)/2) \
+					 +node_list[element.nodes[20-1]].x()*(-(csi-1)*(csi+1)*eta*(eta+1)*(zeta+1)/4-(csi-1)*(csi+1)*eta*(eta+1)*zeta/4) \
+					 +node_list[element.nodes[8-1]].x()*((csi-1)*csi*eta*(eta+1)*(zeta+1)/8+(csi-1)*csi*eta*(eta+1)*zeta/8) \
+					 +node_list[element.nodes[16-1]].x()*(-(csi-1)*csi*eta*(eta+1)*(zeta+1)/4-(csi-1)*csi*eta*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[24-1]].x()*(csi*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/2+csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/2) \
+					 +node_list[element.nodes[19-1]].x()*(-csi*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/4-csi*(csi+1)*(eta-1)*(eta+1)*zeta/4) \
+					 +node_list[element.nodes[26-1]].x()*((csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta/2) \
+					 +node_list[element.nodes[27-1]].x()*(-(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta+1)-(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)) \
+					 +node_list[element.nodes[23-1]].x()*((csi-1)*csi*(eta-1)*(eta+1)*(zeta+1)/2+(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)/2) \
+					 +node_list[element.nodes[18-1]].x()*(-(csi-1)*csi*(eta-1)*(eta+1)*(zeta+1)/4-(csi-1)*csi*(eta-1)*(eta+1)*zeta/4) \
+					 +node_list[element.nodes[6-1]].x()*(csi*(csi+1)*(eta-1)*eta*(zeta+1)/8+csi*(csi+1)*(eta-1)*eta*zeta/8) \
+					 +node_list[element.nodes[13-1]].x()*(-csi*(csi+1)*(eta-1)*eta*(zeta+1)/4-csi*(csi+1)*(eta-1)*eta*(zeta-1)/4) \
+					 +node_list[element.nodes[22-1]].x()*((csi-1)*(csi+1)*(eta-1)*eta*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)/2) \
+					 +node_list[element.nodes[17-1]].x()*(-(csi-1)*(csi+1)*(eta-1)*eta*(zeta+1)/4-(csi-1)*(csi+1)*(eta-1)*eta*zeta/4) \
+					 +node_list[element.nodes[5-1]].x()*((csi-1)*csi*(eta-1)*eta*(zeta+1)/8+(csi-1)*csi*(eta-1)*eta*zeta/8) \
+					 +node_list[element.nodes[11-1]].x()*(-(csi-1)*csi*(eta-1)*eta*(zeta+1)/4-(csi-1)*csi*(eta-1)*eta*(zeta-1)/4) \
+					 +node_list[element.nodes[3-1]].x()*(csi*(csi+1)*eta*(eta+1)*zeta/8+csi*(csi+1)*eta*(eta+1)*(zeta-1)/8) \
+					 +node_list[element.nodes[14-1]].x()*(-(csi-1)*(csi+1)*eta*(eta+1)*zeta/4-(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[4-1]].x()*((csi-1)*csi*eta*(eta+1)*zeta/8+(csi-1)*csi*eta*(eta+1)*(zeta-1)/8) \
+					 +node_list[element.nodes[12-1]].x()*(-csi*(csi+1)*(eta-1)*(eta+1)*zeta/4-csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[21-1]].x()*((csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta/2+(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/2) \
+					 +node_list[element.nodes[10-1]].x()*(-(csi-1)*csi*(eta-1)*(eta+1)*zeta/4-(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[2-1]].x()*(csi*(csi+1)*(eta-1)*eta*zeta/8+csi*(csi+1)*(eta-1)*eta*(zeta-1)/8) \
+					 +node_list[element.nodes[9-1]].x()*(-(csi-1)*(csi+1)*(eta-1)*eta*zeta/4-(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)/4) \
+					 +node_list[element.nodes[1-1]].x()*((csi-1)*csi*(eta-1)*eta*zeta/8+(csi-1)*csi*(eta-1)*eta*(zeta-1)/8) ;
 
-					J(2,2) = node_list[element.nodes[7]].z()*(c[0]*e[0]*(zeta+1)/8+c[0]*e[0]*zeta/8) \
-					+node_list[element.nodes[15]].z()*(-c[0]*e[0]*(zeta+1)/4-c[0]*e[0]*(zeta-1)/4) \
-					+node_list[element.nodes[25]].z()*(c[1]*e[0]*(zeta+1)/2+c[1]*e[0]*(zeta-1)/2) \
-					+node_list[element.nodes[20]].z()*(-c[1]*e[0]*(zeta+1)/4-c[1]*e[0]*zeta/4) \
-					+node_list[element.nodes[8]].z()*(c[2]*e[0]*(zeta+1)/8+c[2]*e[0]*zeta/8) \
-					+node_list[element.nodes[16]].z()*(-c[2]*e[0]*(zeta+1)/4-c[2]*e[0]*(zeta-1)/4) \
-					+node_list[element.nodes[24]].z()*(c[0]*e[1]*(zeta+1)/2+c[0]*e[1]*(zeta-1)/2) \
-					+node_list[element.nodes[19]].z()*(-c[0]*e[1]*(zeta+1)/4-c[0]*e[1]*zeta/4) \
-					+node_list[element.nodes[26]].z()*(c[1]*e[1]*(zeta+1)/2+c[1]*e[1]*zeta/2) \
-					+node_list[element.nodes[27]].z()*(-c[1]*e[1]*(zeta+1)-c[1]*e[1]*(zeta-1)) \
-					+node_list[element.nodes[23]].z()*(c[2]*e[1]*(zeta+1)/2+c[2]*e[1]*(zeta-1)/2) \
-					+node_list[element.nodes[18]].z()*(-c[2]*e[1]*(zeta+1)/4-c[2]*e[1]*zeta/4) \
-					+node_list[element.nodes[6]].z()*(c[0]*e[2]*(zeta+1)/8+c[0]*e[2]*zeta/8) \
-					+node_list[element.nodes[13]].z()*(-c[0]*e[2]*(zeta+1)/4-c[0]*e[2]*(zeta-1)/4) \
-					+node_list[element.nodes[22]].z()*(c[1]*e[2]*(zeta+1)/2+c[1]*e[2]*(zeta-1)/2) \
-					+node_list[element.nodes[17]].z()*(-c[1]*e[2]*(zeta+1)/4-c[1]*e[2]*zeta/4) \
-					+node_list[element.nodes[5]].z()*(c[2]*e[2]*(zeta+1)/8+c[2]*e[2]*zeta/8) \
-					+node_list[element.nodes[11]].z()*(-c[2]*e[2]*(zeta+1)/4-c[2]*e[2]*(zeta-1)/4) \
-					+node_list[element.nodes[3]].z()*(c[0]*e[0]*zeta/8+c[0]*e[0]*(zeta-1)/8) \
-					+node_list[element.nodes[14]].z()*(-c[1]*e[0]*zeta/4-c[1]*e[0]*(zeta-1)/4) \
-					+node_list[element.nodes[4]].z()*(c[2]*e[0]*zeta/8+c[2]*e[0]*(zeta-1)/8) \
-					+node_list[element.nodes[12]].z()*(-c[0]*e[1]*zeta/4-c[0]*e[1]*(zeta-1)/4) \
-					+node_list[element.nodes[21]].z()*(c[1]*e[1]*zeta/2+c[1]*e[1]*(zeta-1)/2) \
-					+node_list[element.nodes[10]].z()*(-c[2]*e[1]*zeta/4-c[2]*e[1]*(zeta-1)/4) \
-					+node_list[element.nodes[2]].z()*(c[0]*e[2]*zeta/8+c[0]*e[2]*(zeta-1)/8) \
-					+node_list[element.nodes[9]].z()*(-c[1]*e[2]*zeta/4-c[1]*e[2]*(zeta-1)/4) \
-					+node_list[element.nodes[1]].z()*(c[2]*e[2]*zeta/8+c[2]*e[2]*(zeta-1)/8) ;
+				J(2,1) = node_list[element.nodes[7-1]].y()*(csi*(csi+1)*eta*(eta+1)*(zeta+1)/8+csi*(csi+1)*eta*(eta+1)*zeta/8) \
+					 +node_list[element.nodes[15-1]].y()*(-csi*(csi+1)*eta*(eta+1)*(zeta+1)/4-csi*(csi+1)*eta*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[25-1]].y()*((csi-1)*(csi+1)*eta*(eta+1)*(zeta+1)/2+(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)/2) \
+					 +node_list[element.nodes[20-1]].y()*(-(csi-1)*(csi+1)*eta*(eta+1)*(zeta+1)/4-(csi-1)*(csi+1)*eta*(eta+1)*zeta/4) \
+					 +node_list[element.nodes[8-1]].y()*((csi-1)*csi*eta*(eta+1)*(zeta+1)/8+(csi-1)*csi*eta*(eta+1)*zeta/8) \
+					 +node_list[element.nodes[16-1]].y()*(-(csi-1)*csi*eta*(eta+1)*(zeta+1)/4-(csi-1)*csi*eta*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[24-1]].y()*(csi*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/2+csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/2) \
+					 +node_list[element.nodes[19-1]].y()*(-csi*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/4-csi*(csi+1)*(eta-1)*(eta+1)*zeta/4) \
+					 +node_list[element.nodes[26-1]].y()*((csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta/2) \
+					 +node_list[element.nodes[27-1]].y()*(-(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta+1)-(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)) \
+					 +node_list[element.nodes[23-1]].y()*((csi-1)*csi*(eta-1)*(eta+1)*(zeta+1)/2+(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)/2) \
+					 +node_list[element.nodes[18-1]].y()*(-(csi-1)*csi*(eta-1)*(eta+1)*(zeta+1)/4-(csi-1)*csi*(eta-1)*(eta+1)*zeta/4) \
+					 +node_list[element.nodes[6-1]].y()*(csi*(csi+1)*(eta-1)*eta*(zeta+1)/8+csi*(csi+1)*(eta-1)*eta*zeta/8) \
+					 +node_list[element.nodes[13-1]].y()*(-csi*(csi+1)*(eta-1)*eta*(zeta+1)/4-csi*(csi+1)*(eta-1)*eta*(zeta-1)/4) \
+					 +node_list[element.nodes[22-1]].y()*((csi-1)*(csi+1)*(eta-1)*eta*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)/2) \
+					 +node_list[element.nodes[17-1]].y()*(-(csi-1)*(csi+1)*(eta-1)*eta*(zeta+1)/4-(csi-1)*(csi+1)*(eta-1)*eta*zeta/4) \
+					 +node_list[element.nodes[5-1]].y()*((csi-1)*csi*(eta-1)*eta*(zeta+1)/8+(csi-1)*csi*(eta-1)*eta*zeta/8) \
+					 +node_list[element.nodes[11-1]].y()*(-(csi-1)*csi*(eta-1)*eta*(zeta+1)/4-(csi-1)*csi*(eta-1)*eta*(zeta-1)/4) \
+					 +node_list[element.nodes[3-1]].y()*(csi*(csi+1)*eta*(eta+1)*zeta/8+csi*(csi+1)*eta*(eta+1)*(zeta-1)/8) \
+					 +node_list[element.nodes[14-1]].y()*(-(csi-1)*(csi+1)*eta*(eta+1)*zeta/4-(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[4-1]].y()*((csi-1)*csi*eta*(eta+1)*zeta/8+(csi-1)*csi*eta*(eta+1)*(zeta-1)/8) \
+					 +node_list[element.nodes[12-1]].y()*(-csi*(csi+1)*(eta-1)*(eta+1)*zeta/4-csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[21-1]].y()*((csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta/2+(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/2) \
+					 +node_list[element.nodes[10-1]].y()*(-(csi-1)*csi*(eta-1)*(eta+1)*zeta/4-(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[2-1]].y()*(csi*(csi+1)*(eta-1)*eta*zeta/8+csi*(csi+1)*(eta-1)*eta*(zeta-1)/8) \
+					 +node_list[element.nodes[9-1]].y()*(-(csi-1)*(csi+1)*(eta-1)*eta*zeta/4-(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)/4) \
+					 +node_list[element.nodes[1-1]].y()*((csi-1)*csi*(eta-1)*eta*zeta/8+(csi-1)*csi*(eta-1)*eta*(zeta-1)/8);
+
+				J(2,2) = node_list[element.nodes[7-1]].z()*(csi*(csi+1)*eta*(eta+1)*(zeta+1)/8+csi*(csi+1)*eta*(eta+1)*zeta/8) \
+					 +node_list[element.nodes[15-1]].z()*(-csi*(csi+1)*eta*(eta+1)*(zeta+1)/4-csi*(csi+1)*eta*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[25-1]].z()*((csi-1)*(csi+1)*eta*(eta+1)*(zeta+1)/2+(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)/2) \
+					 +node_list[element.nodes[20-1]].z()*(-(csi-1)*(csi+1)*eta*(eta+1)*(zeta+1)/4-(csi-1)*(csi+1)*eta*(eta+1)*zeta/4) \
+					 +node_list[element.nodes[8-1]].z()*((csi-1)*csi*eta*(eta+1)*(zeta+1)/8+(csi-1)*csi*eta*(eta+1)*zeta/8) \
+					 +node_list[element.nodes[16-1]].z()*(-(csi-1)*csi*eta*(eta+1)*(zeta+1)/4-(csi-1)*csi*eta*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[24-1]].z()*(csi*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/2+csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/2) \
+					 +node_list[element.nodes[19-1]].z()*(-csi*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/4-csi*(csi+1)*(eta-1)*(eta+1)*zeta/4) \
+					 +node_list[element.nodes[26-1]].z()*((csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta/2) \
+					 +node_list[element.nodes[27-1]].z()*(-(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta+1)-(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)) \
+					 +node_list[element.nodes[23-1]].z()*((csi-1)*csi*(eta-1)*(eta+1)*(zeta+1)/2+(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)/2) \
+					 +node_list[element.nodes[18-1]].z()*(-(csi-1)*csi*(eta-1)*(eta+1)*(zeta+1)/4-(csi-1)*csi*(eta-1)*(eta+1)*zeta/4) \
+					 +node_list[element.nodes[6-1]].z()*(csi*(csi+1)*(eta-1)*eta*(zeta+1)/8+csi*(csi+1)*(eta-1)*eta*zeta/8) \
+					 +node_list[element.nodes[13-1]].z()*(-csi*(csi+1)*(eta-1)*eta*(zeta+1)/4-csi*(csi+1)*(eta-1)*eta*(zeta-1)/4) \
+					 +node_list[element.nodes[22-1]].z()*((csi-1)*(csi+1)*(eta-1)*eta*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)/2) \
+					 +node_list[element.nodes[17-1]].z()*(-(csi-1)*(csi+1)*(eta-1)*eta*(zeta+1)/4-(csi-1)*(csi+1)*(eta-1)*eta*zeta/4) \
+					 +node_list[element.nodes[5-1]].z()*((csi-1)*csi*(eta-1)*eta*(zeta+1)/8+(csi-1)*csi*(eta-1)*eta*zeta/8) \
+					 +node_list[element.nodes[11-1]].z()*(-(csi-1)*csi*(eta-1)*eta*(zeta+1)/4-(csi-1)*csi*(eta-1)*eta*(zeta-1)/4) \
+					 +node_list[element.nodes[3-1]].z()*(csi*(csi+1)*eta*(eta+1)*zeta/8+csi*(csi+1)*eta*(eta+1)*(zeta-1)/8) \
+					 +node_list[element.nodes[14-1]].z()*(-(csi-1)*(csi+1)*eta*(eta+1)*zeta/4-(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[4-1]].z()*((csi-1)*csi*eta*(eta+1)*zeta/8+(csi-1)*csi*eta*(eta+1)*(zeta-1)/8) \
+					 +node_list[element.nodes[12-1]].z()*(-csi*(csi+1)*(eta-1)*(eta+1)*zeta/4-csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[21-1]].z()*((csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta/2+(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/2) \
+					 +node_list[element.nodes[10-1]].z()*(-(csi-1)*csi*(eta-1)*(eta+1)*zeta/4-(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)/4) \
+					 +node_list[element.nodes[2-1]].z()*(csi*(csi+1)*(eta-1)*eta*zeta/8+csi*(csi+1)*(eta-1)*eta*(zeta-1)/8) \
+					 +node_list[element.nodes[9-1]].z()*(-(csi-1)*(csi+1)*(eta-1)*eta*zeta/4-(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)/4) \
+					 +node_list[element.nodes[1-1]].z()*((csi-1)*csi*(eta-1)*eta*zeta/8+(csi-1)*csi*(eta-1)*eta*(zeta-1)/8);
+
+				std::cout << J << std::endl;
 				return J;
 			}
 			break;
@@ -753,9 +746,6 @@ boost::numeric::ublas::matrix<double> Model::J(double csi,double eta,double zeta
 			std::cerr << "Model::J(): missing type" << std::endl;
 			break;
 	}
-#undef DCSI
-#undef DETA
-#undef DZETA
 }
 
 

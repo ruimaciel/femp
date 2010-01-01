@@ -252,6 +252,7 @@ enum Document::Error Document::load()
 			PTEST(ec->child->type == JSON_STRING);	// value of label "type" must be a string
 			
 			// identify this type and act accordingly
+			qWarning("type: %s",ec->child->text);
 			switch(type = fem::Element::extractType(ec->child->text) )
 			{
 				case fem::Element::FE_LINE2:
@@ -665,7 +666,7 @@ enum Document::Error Document::load()
 								n = temp.toLongLong();	// and we have the element reference
 
 								// extract the number of expected nodes for this particular element type
-								int nodes;	// to store the expected number of nodes
+								size_t nodes;	// to store the expected number of nodes
 								switch(model.element_list[n].type)
 								{
 									case fem::Element::FE_LINE2: 
@@ -725,71 +726,73 @@ enum Document::Error Document::load()
 										break;
 
 									case fem::Element::FE_QUADRANGLE8: 
-											nodes = 8;
-											break;
+										nodes = 8;
+										break;
 
 									case fem::Element::FE_HEXAHEDRON20: 
-											nodes = 20;
-											break;
+										nodes = 20;
+										break;
 
 									case fem::Element::FE_PRISM15: 
-											nodes = 15;
-											break;
+										nodes = 15;
+										break;
 
 									case fem::Element::FE_PYRAMID13: 
-											nodes = 13;
-											break;
+										nodes = 13;
+										break;
 
 									case fem::Element::FE_ITRIANGLE9: 
-											nodes = 9;
-											break;
+										nodes = 9;
+										break;
 
 									case fem::Element::FE_TRIANGLE10: 
-											nodes = 10;
-											break;
+										nodes = 10;
+										break;
 
 									case fem::Element::FE_ITRIANGLE12: 
-											nodes = 12;
-											break;
+										nodes = 12;
+										break;
 
 									case fem::Element::FE_TRIANGLE15: 
-											nodes = 15;
-											break;
+										nodes = 15;
+										break;
 
 									case fem::Element::FE_ITRIANGLE15: 
-											nodes = 15;
-											break;
+										nodes = 15;
+										break;
 
 									case fem::Element::FE_TRIANGLE21: 
-											nodes = 21;
-											break;
+										nodes = 21;
+										break;
 
 									case fem::Element::FE_EDGE4: 
-											nodes = 4;
-											break;
+										nodes = 4;
+										break;
 
 									case fem::Element::FE_EDGE5: 
-											nodes = 5;
-											break;
+										nodes = 5;
+										break;
 
 									case fem::Element::FE_EDGE6: 
-											nodes = 6;
-											break;
+										nodes = 6;
+										break;
 
 									case fem::Element::FE_TETRAHEDRON20: 
-											nodes = 20;
-											break;
+										nodes = 20;
+										break;
 
 									case fem::Element::FE_TETRAHEDRON35: 
-											nodes = 35;
-											break;
+										nodes = 35;
+										break;
 
 									case fem::Element::FE_TETRAHEDRON56: 
-											nodes = 56;
-											break;
+										nodes = 56;
+										break;
 
 									default:
-											break;
+										qWarning("unknown element type");
+										//TODO return to sane point
+										break;
 								}
 
 								PTEST(nltc->next != NULL);
@@ -797,7 +800,7 @@ enum Document::Error Document::load()
 								PTEST(QString::compare(nltc->text,"forces") == 0);
 								PMOVE_TOCHILD_TYPE(nltc,JSON_ARRAY);
 
-								// now cycle all force vectors
+								// now cycle through all force vectors
 								force_list.clear();
 								for(nltc = nltc->child; nltc != NULL; nltc = nltc->next)
 								{
@@ -820,7 +823,7 @@ enum Document::Error Document::load()
 									// all info extracted
 									force_list.push_back(force);
 								}
-								PTEST(force_list.size() == (size_t)nodes);
+								PTEST(force_list.size() == nodes);	// the domain load must be defined in all of the element's nodes
 								lp.addDomainLoad(n, force_list);
 							}
 						}

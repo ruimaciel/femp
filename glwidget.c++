@@ -679,6 +679,81 @@ void GLWidget::paintElement(const fem::Element &element)
 			}
 			break;
 
+		case fem::Element::FE_HEXAHEDRON27:
+			{
+				//GLfloat mapsurface[12];	// for the mapsurface
+				if(element.nodes.size() != 27)
+				{
+					qWarning("error: invalid number of nodes for a FE_HEXAHEDRON27");
+					//TODO remove element
+					return;
+				}
+
+				// build the node temp list
+				for(int i = 0; i < 27; i++)
+				{
+					nl.push_back(document->model.node_list.find(element.nodes[i])->second);
+				}
+
+				if(display_options.surfaces)
+				{
+					// set the color
+					glColor3fv(colors->hexahedron8);
+
+					glBegin(GL_QUADS);
+					//TODO render surface
+					glEnd();
+				}
+
+				if(display_options.wireframe)
+				{
+					// set the color
+					glColor3fv(colors->wireframe);
+
+					glBegin(GL_LINE_STRIP);
+					glVertex3dv(nl[0].data);
+					glVertex3dv(nl[8].data);
+					glVertex3dv(nl[1].data);
+					glVertex3dv(nl[11].data);
+					glVertex3dv(nl[2].data);
+					glVertex3dv(nl[13].data);
+					glVertex3dv(nl[3].data);
+					glVertex3dv(nl[9].data);
+					glVertex3dv(nl[0].data);
+
+					glVertex3dv(nl[10].data);
+
+					glVertex3dv(nl[4].data);
+					glVertex3dv(nl[16].data);
+					glVertex3dv(nl[5].data);
+					glVertex3dv(nl[18].data);
+					glVertex3dv(nl[6].data);
+					glVertex3dv(nl[19].data);
+					glVertex3dv(nl[7].data);
+					glVertex3dv(nl[17].data);
+					glVertex3dv(nl[4].data);
+					glEnd();
+
+					glBegin(GL_LINES);
+					glVertex3dv(nl[1].data);
+					glVertex3dv(nl[12].data);
+					glVertex3dv(nl[12].data);
+					glVertex3dv(nl[5].data);
+
+					glVertex3dv(nl[2].data);
+					glVertex3dv(nl[14].data);
+					glVertex3dv(nl[14].data);
+					glVertex3dv(nl[6].data);
+
+					glVertex3dv(nl[3].data);
+					glVertex3dv(nl[15].data);
+					glVertex3dv(nl[15].data);
+					glVertex3dv(nl[7].data);
+					glEnd();
+				}
+			}
+			break;
+
 		default:
 			//qWarning("error: unknown element type: %d", element.type);
 			break;

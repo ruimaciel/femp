@@ -10,8 +10,12 @@ struct ViewportColors {
 
 	// set of color options
 	GLfloat node[3];
+	GLfloat wireframe[3];
+
 	GLfloat tetrahedron4[3];
+	GLfloat tetrahedron10[3];
 	GLfloat hexahedron8[3];
+	GLfloat hexahedron27[3];
 };
 
 

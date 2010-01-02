@@ -304,8 +304,13 @@ void MainWindow::loadOptions()
 	default_color.reserve(3);
 	default_color[0] = 0, default_color[1] = 0.8f, default_color[2] = 0.8f;
 	options.setOption("viewport.nodes.color",default_color);
+	default_color[0] = 0, default_color[1] = 0, default_color[2] = 0;
+	options.setOption("viewport.wireframe.color",default_color);
+	default_color[0] = 0, default_color[1] = 0, default_color[2] = 1;
 	options.setOption("viewport.elements.tetrahedron4.color",default_color);
-	options.setOption("viewport.elements.hexahedron4.color",default_color);
+	options.setOption("viewport.elements.tetrahedron10.color",default_color);
+	options.setOption("viewport.elements.hexahedron8.color",default_color);
+	options.setOption("viewport.elements.hexahedron27.color",default_color);
 
 	//TODO Set default options
 
@@ -343,6 +348,17 @@ void MainWindow::loadOptions()
 		} 
 	} 
 
+	if(options.getOption("viewport.wireframe.color",temp, std::vector<double>())) 
+	{ 
+		if(temp.size() == 3) 
+		{ 
+			colors.wireframe[0] = temp[0]; 
+			colors.wireframe[1] = temp[1]; 
+			colors.wireframe[2] = temp[2]; 
+		} 
+	} 
+
+
 	// set up a helper function
 	#define SET_ELEMENT_COLOR(ELEMENT) { \
 	if(options.getOption("viewport.elements."#ELEMENT".color",temp, std::vector<double>())) \
@@ -357,8 +373,9 @@ void MainWindow::loadOptions()
 
 	// let's set the element colors
 	SET_ELEMENT_COLOR(tetrahedron4);
+	SET_ELEMENT_COLOR(tetrahedron10);
 	SET_ELEMENT_COLOR(hexahedron8);
-
+	SET_ELEMENT_COLOR(hexahedron27);
 
 	#undef SET_ELEMENT_COLOR
 	}

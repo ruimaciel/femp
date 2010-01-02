@@ -5,11 +5,15 @@ ViewportColors::ViewportColors ()
 {
 	// set helper function
 	#define INIT_ELEMENT(ELEMENT) \
-	ELEMENT[0] = 0, ELEMENT[1] = 0, ELEMENT[2] = 0;
+	ELEMENT[0] = 0.5, ELEMENT[1] = 0.5, ELEMENT[2] = 0.5;
 
 	INIT_ELEMENT(node);
+	INIT_ELEMENT(wireframe);
+
 	INIT_ELEMENT(tetrahedron4);
+	INIT_ELEMENT(tetrahedron10);
 	INIT_ELEMENT(hexahedron8);
+	INIT_ELEMENT(hexahedron27);
 
 	#undef INIT_ELEMENT
 }
@@ -26,8 +30,12 @@ ViewportColors::ViewportColors (const ViewportColors &copied)
 
 	// set the element colors
 	SET_COLOR(node);
+	SET_COLOR(wireframe);
+
 	SET_COLOR(tetrahedron4);
+	SET_COLOR(tetrahedron10);
 	SET_COLOR(hexahedron8);
+	SET_COLOR(hexahedron27);
 
 	#undef SET_COLOR
 }

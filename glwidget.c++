@@ -474,7 +474,7 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 }
 
 
-void GLWidget::paintElement(const fem::Element element)
+void GLWidget::paintElement(const fem::Element &element)
 {
 	std::map<size_t, fem::Node>::iterator n;
 	std::vector<fem::point> nl;	// node list
@@ -482,6 +482,7 @@ void GLWidget::paintElement(const fem::Element element)
 	glPushMatrix();
 	switch(element.type)
 	{
+		/*
 		case fem::Element::FE_LINE2:
 			{
 				if(element.nodes.size() != 2)
@@ -518,12 +519,10 @@ void GLWidget::paintElement(const fem::Element element)
 				glEnd();
 			}
 			break;
+			*/
 
 		case fem::Element::FE_TETRAHEDRON4:
 			{
-				// set the color
-				glColor3fv(colors->tetrahedron4);
-
 				// set the node list
 				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
@@ -533,6 +532,9 @@ void GLWidget::paintElement(const fem::Element element)
 				// render the surfaces
 				if(display_options.surfaces == 1)
 				{
+					// set the color
+					glColor3fv(colors->tetrahedron4);
+
 					if(element.nodes.size() != 4)
 					{
 						qWarning("error: invalid number of nodes for a FE_TETRAHEDRON4. it's %zd", element.nodes.size());
@@ -566,6 +568,8 @@ void GLWidget::paintElement(const fem::Element element)
 				if(display_options.wireframe == 1)
 				{
 					//TODO set color
+					glColor3fv(colors->wireframe);	
+
 					glBegin(GL_LINE_STRIP);
 					glVertex3dv(nl[0].data);
 					glVertex3dv(nl[1].data);
@@ -647,7 +651,7 @@ void GLWidget::paintElement(const fem::Element element)
 				if(display_options.wireframe)
 				{
 					// set the color
-					glColor3f(0,0,0);	// TODO change this
+					glColor3fv(colors->wireframe);	// TODO change this
 
 					glBegin(GL_LINE_STRIP);
 					glVertex3dv(nl[0].data);

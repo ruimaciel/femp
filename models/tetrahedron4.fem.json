@@ -1,0 +1,34 @@
+{"fem":
+	{	"version": "1.0",
+	"type": "unknown"
+	},
+"materials": [
+	{"type":"linear elastic", "label": "A400", "E":1,"nu":0, "fy": 2e+07}
+	],
+"nodes":[
+	[1,[0, 0, 0]],
+	[2,[1, 0, 0]],
+	[3,[0, 1, 0]],
+	[4,[0, 0, 1]]
+	],
+"elements":[
+	{"type":"tetrahedron4", "nodes":[1,2,3,4], "material": 0}
+	],
+"node restrictions": [
+		{ "node":1, "dx":true, "dy":true, "dz":true},
+	],
+"load patterns":[
+		{	"label": "First test pattern",
+		"nodal loads":[
+			{"node":1, "force":[3, 2, 0]}
+		],
+		"node displacements":[
+			{"node":1, "displacement":[0, 0, 0]}
+		],
+		"domain loads":[
+			{"element":0, "forces": [[1,1,1],[1,1,1],[1,1,1],[1,1,1]]}
+			]
+		}
+	],
+"combinations":[	]
+}

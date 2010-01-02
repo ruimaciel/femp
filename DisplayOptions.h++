@@ -12,6 +12,10 @@ struct DisplayOptions {
 	fem::LoadPattern	*load_pattern;	//	pointer to the load pattern to be displayed
 
 	// boolean
+	unsigned int nodes:		1;
+	unsigned int surfaces:		1;
+	unsigned int wireframe:		1;
+
 	unsigned int nodal_forces: 	1;
 	unsigned int surface_forces: 	1;
 	unsigned int domain_forces: 	1;

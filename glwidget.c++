@@ -17,6 +17,8 @@ GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 	camera.reset();
 	camera.setCenter(0,0,-5);
 
+	//TODO set state from program option
+
 	setNodeRadiusScale(20);	// default node radius, scaled
 	
 	// initialize the dangling pointers
@@ -167,10 +169,14 @@ void GLWidget::paintGL()
 	// render all nodes
 	if(document)
 	{
-		std::map<size_t,fem::Node>::iterator ni;	// node iterator
-		for(ni = document->model.node_list.begin(); ni != document->model.node_list.end(); ni++)
+		// Render the nodes
+		if( display_options.nodes )
 		{
-			paintNode(ni->first, ni->second);
+			std::map<size_t,fem::Node>::iterator ni;	// node iterator
+			for(ni = document->model.node_list.begin(); ni != document->model.node_list.end(); ni++)
+			{
+				paintNode(ni->first, ni->second);
+			}
 		}
 
 		// render all elements
@@ -518,17 +524,22 @@ void GLWidget::paintElement(const fem::Element element)
 				// set the color
 				glColor3fv(colors->tetrahedron4);
 
-				if(element.nodes.size() != 4)
-				{
-					qWarning("error: invalid number of nodes for a FE_TETRAHEDRON4. it's %zd", element.nodes.size());
-					//TODO remove element
-					return;
-				}
+				// set the node list
 				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
-				glBegin(GL_TRIANGLES);
+
+				// render the surfaces
+				if(display_options.surfaces == 1)
+				{
+					if(element.nodes.size() != 4)
+					{
+						qWarning("error: invalid number of nodes for a FE_TETRAHEDRON4. it's %zd", element.nodes.size());
+						//TODO remove element
+						return;
+					}
+					glBegin(GL_TRIANGLES);
 					glNormal3dv(fem::getNormalVector(nl[0], nl[2], nl[1]).data);
 					glVertex3dv(nl[0].data);
 					glVertex3dv(nl[2].data);
@@ -548,15 +559,31 @@ void GLWidget::paintElement(const fem::Element element)
 					glVertex3dv(nl[2].data);
 					glVertex3dv(nl[0].data);
 					glVertex3dv(nl[3].data);
-				glEnd();
+					glEnd();
+				}
+
+				// render the wireframe
+				if(display_options.wireframe == 1)
+				{
+					//TODO set color
+					glBegin(GL_LINE_STRIP);
+					glVertex3dv(nl[0].data);
+					glVertex3dv(nl[1].data);
+					glVertex3dv(nl[2].data);
+					glVertex3dv(nl[0].data);
+					glVertex3dv(nl[3].data);
+					glVertex3dv(nl[1].data);
+					glEnd();
+					glBegin(GL_LINES);
+					glVertex3dv(nl[3].data);
+					glVertex3dv(nl[2].data);
+					glEnd();
+				}
 			}
 			break;
 
 		case fem::Element::FE_HEXAHEDRON8:
 			{
-				// set the color
-				glColor3fv(colors->hexahedron8);
-
 				//GLfloat mapsurface[12];	// for the mapsurface
 				if(element.nodes.size() != 8)
 				{
@@ -572,44 +599,79 @@ void GLWidget::paintElement(const fem::Element element)
 				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[6])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[7])->second);
-				glBegin(GL_QUADS);
-				// first surface
-				glNormal3dv(fem::getNormalVector(nl[0], nl[3], nl[2]).data);
-				glVertex3dv(nl[0].data);
-				glVertex3dv(nl[3].data);
-				glVertex3dv(nl[2].data);
-				glVertex3dv(nl[1].data);
-				// second surface
-				glNormal3dv(fem::getNormalVector(nl[1], nl[2], nl[6]).data);
-				glVertex3dv(nl[1].data);
-				glVertex3dv(nl[2].data);
-				glVertex3dv(nl[6].data);
-				glVertex3dv(nl[5].data);
-				// third surface
-				glNormal3dv(fem::getNormalVector(nl[5], nl[6], nl[7]).data);
-				glVertex3dv(nl[6].data);
-				glVertex3dv(nl[7].data);
-				glVertex3dv(nl[4].data);
-				glVertex3dv(nl[5].data);
-				// fourth surface
-				glNormal3dv(fem::getNormalVector(nl[4], nl[7], nl[3]).data);
-				glVertex3dv(nl[4].data);
-				glVertex3dv(nl[7].data);
-				glVertex3dv(nl[3].data);
-				glVertex3dv(nl[0].data);
-				// fifth surface, top
-				glNormal3dv(fem::getNormalVector(nl[2], nl[3], nl[7]).data);
-				glVertex3dv(nl[2].data);
-				glVertex3dv(nl[3].data);
-				glVertex3dv(nl[7].data);
-				glVertex3dv(nl[6].data);
-				// sixth surface, bottom
-				glNormal3dv(fem::getNormalVector(nl[0], nl[1], nl[5]).data);
-				glVertex3dv(nl[0].data);
-				glVertex3dv(nl[1].data);
-				glVertex3dv(nl[5].data);
-				glVertex3dv(nl[4].data);
-				glEnd();
+				if(display_options.surfaces)
+				{
+					// set the color
+					glColor3fv(colors->hexahedron8);
+
+					glBegin(GL_QUADS);
+					// first surface
+					glNormal3dv(fem::getNormalVector(nl[0], nl[3], nl[2]).data);
+					glVertex3dv(nl[0].data);
+					glVertex3dv(nl[3].data);
+					glVertex3dv(nl[2].data);
+					glVertex3dv(nl[1].data);
+					// second surface
+					glNormal3dv(fem::getNormalVector(nl[1], nl[2], nl[6]).data);
+					glVertex3dv(nl[1].data);
+					glVertex3dv(nl[2].data);
+					glVertex3dv(nl[6].data);
+					glVertex3dv(nl[5].data);
+					// third surface
+					glNormal3dv(fem::getNormalVector(nl[5], nl[6], nl[7]).data);
+					glVertex3dv(nl[6].data);
+					glVertex3dv(nl[7].data);
+					glVertex3dv(nl[4].data);
+					glVertex3dv(nl[5].data);
+					// fourth surface
+					glNormal3dv(fem::getNormalVector(nl[4], nl[7], nl[3]).data);
+					glVertex3dv(nl[4].data);
+					glVertex3dv(nl[7].data);
+					glVertex3dv(nl[3].data);
+					glVertex3dv(nl[0].data);
+					// fifth surface, top
+					glNormal3dv(fem::getNormalVector(nl[2], nl[3], nl[7]).data);
+					glVertex3dv(nl[2].data);
+					glVertex3dv(nl[3].data);
+					glVertex3dv(nl[7].data);
+					glVertex3dv(nl[6].data);
+					// sixth surface, bottom
+					glNormal3dv(fem::getNormalVector(nl[0], nl[1], nl[5]).data);
+					glVertex3dv(nl[0].data);
+					glVertex3dv(nl[1].data);
+					glVertex3dv(nl[5].data);
+					glVertex3dv(nl[4].data);
+					glEnd();
+				}
+
+				if(display_options.wireframe)
+				{
+					// set the color
+					glColor3f(0,0,0);	// TODO change this
+
+					glBegin(GL_LINE_STRIP);
+					glVertex3dv(nl[0].data);
+					glVertex3dv(nl[1].data);
+					glVertex3dv(nl[2].data);
+					glVertex3dv(nl[3].data);
+					glVertex3dv(nl[0].data);
+
+					glVertex3dv(nl[4].data);
+					glVertex3dv(nl[5].data);
+					glVertex3dv(nl[6].data);
+					glVertex3dv(nl[7].data);
+					glVertex3dv(nl[4].data);
+					glEnd();
+
+					glBegin(GL_LINES);
+					glVertex3dv(nl[1].data);
+					glVertex3dv(nl[5].data);
+					glVertex3dv(nl[2].data);
+					glVertex3dv(nl[6].data);
+					glVertex3dv(nl[3].data);
+					glVertex3dv(nl[7].data);
+					glEnd();
+				}
 			}
 			break;
 

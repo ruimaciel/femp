@@ -154,6 +154,9 @@ void GLWidget::initializeGL()
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
+
+	glEnable(GL_MAP2_VERTEX_3);	// to interpolate the elements' surfaces
+	glEnable(GL_AUTO_NORMAL);
 }
 
 
@@ -700,11 +703,45 @@ void GLWidget::paintElement(const fem::Element &element)
 					// set the color
 					glColor3fv(colors->hexahedron8);
 
+					GLfloat ctrlpoints[3][3][3];
+					int n = 20; \
+
+					#define SETP(X,Y,I) ctrlpoints[X][Y][0] = nl[I].x(),ctrlpoints[X][Y][1] = nl[I].y(), ctrlpoints[X][Y][2] = nl[I].z()
+					#define SURFACE(A,B,C,D,E,F,G,H,I) SETP(0,0,A); \
+					SETP(1,0,B); \
+					SETP(2,0,C); \
+					SETP(0,1,D); \
+					SETP(1,1,E); \
+					SETP(2,1,F); \
+					SETP(0,2,G); \
+					SETP(1,2,H); \
+					SETP(2,2,I); \
+					glMap2f(GL_MAP2_VERTEX_3,0,1,3,3,0,1,9,3, &ctrlpoints[0][0][0]); \
+					for (int i = 0; i < n; i++)  \
+					{ \
+						glBegin(GL_QUAD_STRIP);  \
+						for (int j = 0; j <= n; j++)  \
+						{ \
+							glEvalCoord2f(i/(float)n, j/(float)n);  \
+							glEvalCoord2f((i+1)/(float)n, j/(float)n);  \
+						} \
+						glEnd(); \
+					} 
+
+					SURFACE(0,8,1,9,20,11,3,13,2);
+					SURFACE(4,10,0,17,22,9,7,15,3);
+					SURFACE(5,16,4,18,25,17,6,19,7);
+					SURFACE(1,12,5,11,23,18,2,14,6);
+					SURFACE(0,10,4,8,21,16,1,12,5);
+					SURFACE(2,14,6,13,24,19,3,15,7);
+
 					glBegin(GL_QUADS);
 					//TODO render surface
 					glEnd();
+					#undef SETP
 				}
 
+				/*
 				if(display_options.wireframe)
 				{
 					// set the color
@@ -751,6 +788,7 @@ void GLWidget::paintElement(const fem::Element &element)
 					glVertex3dv(nl[7].data);
 					glEnd();
 				}
+				*/
 			}
 			break;
 

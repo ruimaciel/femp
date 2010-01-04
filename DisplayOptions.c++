@@ -3,6 +3,17 @@
 
 DisplayOptions::DisplayOptions()
 {
+	setDefaultOptions();
+}
+
+
+DisplayOptions::~DisplayOptions()
+{
+}
+
+
+void DisplayOptions::setDefaultOptions()
+{
 	load_pattern = NULL;
 	nodes = 1;
 	surfaces = 1;
@@ -13,9 +24,3 @@ DisplayOptions::DisplayOptions()
 	domain_forces =  0;
 	nodal_displacements = 0;
 }
-
-
-DisplayOptions::~DisplayOptions()
-{
-}
-

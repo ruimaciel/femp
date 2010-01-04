@@ -23,6 +23,8 @@ struct DisplayOptions {
 
 	DisplayOptions();
 	~DisplayOptions();
+
+	void setDefaultOptions();
 };
 
 #endif

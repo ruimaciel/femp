@@ -59,14 +59,23 @@
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="enabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="title">
      <string>View</string>
     </property>
+    <widget class="QMenu" name="menuModel">
+     <property name="title">
+      <string>Model</string>
+     </property>
+     <addaction name="actionDisplayWireframe"/>
+     <addaction name="actionDisplaySurfaces"/>
+     <addaction name="actionDisplayNodes"/>
+    </widget>
     <addaction name="actionCommand_line"/>
     <addaction name="actionTogglePerspective"/>
     <addaction name="actionViewActions"/>
+    <addaction name="menuModel"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -237,6 +246,39 @@
   <action name="actionViewActions">
    <property name="text">
     <string>Actions</string>
+   </property>
+  </action>
+  <action name="actionDisplayWireframe">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Wireframe</string>
+   </property>
+  </action>
+  <action name="actionDisplaySurfaces">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Faces</string>
+   </property>
+  </action>
+  <action name="actionDisplayNodes">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Nodes</string>
    </property>
   </action>
  </widget>

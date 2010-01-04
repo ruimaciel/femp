@@ -53,6 +53,10 @@ public Q_SLOTS:
 	void setNodeActions();
 	void setDisplayOptions();
 
+	/**
+	Sets DisplayOption's options refering to the element visualization
+	**/
+	void setElementDisplay();
 
 	/**
 	runs the analysis on the current model

@@ -289,6 +289,9 @@ void MainWindow::createActions()
 	 connect(ui.actionNodeActions, SIGNAL(triggered()), this, SLOT(setNodeActions()));
 	 connect(ui.actionRun, SIGNAL(triggered()), this, SLOT(runAnalysis()));
 	 connect(ui.actionViewActions, SIGNAL(triggered()), this, SLOT(setDisplayOptions()));
+	 connect(ui.actionDisplayNodes, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
+	 connect(ui.actionDisplaySurfaces, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
+	 connect(ui.actionDisplayWireframe, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
 }
 
 
@@ -497,6 +500,17 @@ void MainWindow::setDisplayOptions()
 }
 
 
+void MainWindow::setElementDisplay()
+{
+	if(glWidget != NULL)
+	{
+		glWidget->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
+		glWidget->display_options.surfaces	= this->ui.actionDisplaySurfaces->isChecked()?1:0;
+		glWidget->display_options.wireframe	= this->ui.actionDisplayWireframe->isChecked()?1:0;
+	}
+}
+
+
 void MainWindow::runAnalysis()
 {
 	//TODO finish this
@@ -518,6 +532,9 @@ void MainWindow::setUserInterfaceAsOpened()
 	ui.actionClose->setEnabled(true);
 	ui.actionNodeRestraints->setEnabled(true);
 	ui.actionNodeActions->setEnabled(true);
+	ui.actionDisplayNodes->setChecked(true);
+	ui.actionDisplaySurfaces->setChecked(true);
+	ui.actionDisplayWireframe->setChecked(true);
 
 	// open all relevant MDI windows
 	glWidget = new GLWidget(this);
@@ -527,6 +544,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	options.getOption("viewport.nodes.radius",radius,20);
 	glWidget->setNodeRadiusScale(radius);
 	glWidget->setFocusPolicy(Qt::StrongFocus);
+	glWidget->display_options.setDefaultOptions();
 	connect(this,SIGNAL(togglePerspective()), glWidget, SLOT(togglePerspective()));
 	
 	window_gl_viewport = new QMdiSubWindow(mdiArea);

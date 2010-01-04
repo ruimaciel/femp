@@ -114,7 +114,6 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 
 			case Element::FE_HEXAHEDRON8:
 			{
-			qWarning("hexahedron8");
 /*	hexahedron8 node order
 	3 ------ 2
 	| \      . \
@@ -286,14 +285,17 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 				}
 
 				// cycle through the number of integration points
-				k_elem.clear();
+				k_elem.clear(); f_elem.clear();	// set all elements to zero
 				size_t ei = std::distance(element_list.begin(), element) ;	// get the element index
 				std::map<size_t,fem::DomainLoad>::const_iterator domain_load;
 				domain_load = lp.domain_loads.find(ei);
+
 				for (std::vector<std::pair<fem::point,double> >::iterator i = integration_points.begin(); i != integration_points.end(); i++)
 				{
 					// generate the jacobian
 					Jacobian = J(i->first,*element);	// generate the jacobian matrix for this element
+
+					// std::cout << Jacobian << std::endl;
 
 					detJ = det3by3(Jacobian);
 					invJ = invert3by3(Jacobian,detJ);
@@ -306,6 +308,9 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 					eta = i->first.y();
 					zeta = i->first.z();
 
+					dN.reserve(27);
+
+					// calculate the partial derivatives of the shape function
 					// node 1
 					dNdcsi	= (csi*(eta-1)*eta*(zeta-1)*zeta + (csi-1)*(eta-1)*eta*(zeta-1)*zeta)/8.0;
 					dNdeta	= (csi-1)*csi*eta*(zeta-1)*zeta/8+(csi-1)*csi*(eta-1)*(zeta-1)*zeta/8;
@@ -354,7 +359,6 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
 
 					//node 9
-
 					dNdcsi = -(csi+1)*(eta-1)*eta*(zeta-1)*zeta/4-(csi-1)*(eta-1)*eta*(zeta-1)*zeta/4;
 					dNdeta = -(csi-1)*(csi+1)*eta*(zeta-1)*zeta/4-(csi-1)*(csi+1)*(eta-1)*(zeta-1)*zeta/4;
 					dNdzeta = -(csi-1)*(csi+1)*(eta-1)*eta*zeta/4-(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)/4;
@@ -413,7 +417,6 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 					dNdzeta = -(csi-1)*csi*(eta-1)*(eta+1)*(zeta+1)/4-(csi-1)*csi*(eta-1)*(eta+1)*zeta/4;
 					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
 
-
 					// node 19
 					dNdcsi = -(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4-csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
 					dNdeta = -csi*(csi+1)*(eta+1)*zeta*(zeta+1)/4-csi*(csi+1)*(eta-1)*zeta*(zeta+1)/4;
@@ -469,8 +472,9 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 					dN.push_back(fem::point(dNdcsi, dNdeta, dNdzeta));
 
 
+					// define the B matrix from the shape function derivatives
 					B.clear();
-					double dNdx, dNdy, dNdz; 
+					double dNdx, dNdy, dNdz; // define helper temp variables
 					for(int n = 0; n < 27; n++)
 					{
 						// set temp variables, to make the code more readable for testing purposes
@@ -484,28 +488,18 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 						dNdz = invJ(2,0)*dNdcsi + invJ(2,1)*dNdeta + invJ(2,2)*dNdzeta;
 
 						// set the current node portion of the B matrix
-						B(0,3*n) = dNdx;
-						B(1,3*n+1) = dNdy;
-						B(2,3*n+2) = dNdz;
-						B(3,3*n) = dNdy;	B(3,3*n+1) = dNdx;
-						B(4,3*n) = dNdz;	B(4,3*n+2) = dNdx;
-						B(5,3*n+1) = dNdz;	B(5,3*n+2) = dNdy;
+						B(0,3*n) 	= dNdx;
+						B(1,3*n+1) 	= dNdy;
+						B(2,3*n+2) 	= dNdz;
+						B(3,3*n) 	= dNdy;	B(3,3*n+1) = dNdx;
+						B(4,3*n) 	= dNdz;	B(4,3*n+2) = dNdx;
+						B(5,3*n+1) 	= dNdz;	B(5,3*n+2) = dNdy;
 
 						// set the force vector for the domain loads
-						if(domain_load != lp.domain_loads.end())
-						{
-#define PSI(p,local) (1+local.x()*p.x())*(1+local.y()*p.y())*(1+local.z()*p.z())/8.0
-							/*
-							f_elem(3*n) += PSI(i->first,local_coord[n])*domain_load->second.force_shape[n].x()*detJ*i->second;
-							f_elem(3*n+1) += PSI(i->first,local_coord[n])*domain_load->second.force_shape[n].y()*detJ*i->second;
-							f_elem(3*n+2) += PSI(i->first,local_coord[n])*domain_load->second.force_shape[n].z()*detJ*i->second;
-							*/
-#undef PSI
-						}
 					}
-					cout << i->first << endl;
-					cout << B << endl;
 
+
+					// set the Bt.D.B.detJ.W for this integration point
 					Bt = trans(B);
 					symmetric_matrix<double> D = D_list[element->material];
 
@@ -515,12 +509,53 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 					temp = prod(temp,B);
 					temp *= detJ*i->second;
 					k_elem += temp;	// adding up the full result
+
+					// and now, integrate the domain loads
+					if(domain_load != lp.domain_loads.end())
+					{
+						double N[27];	// temporary variables
+						N[1-1] = (csi-1)*csi*(eta-1)*eta*(zeta-1)*zeta/8;
+						N[2-1] = csi*(csi+1)*(eta-1)*eta*(zeta-1)*zeta/8;
+						N[3-1] = csi*(csi+1)*eta*(eta+1)*(zeta-1)*zeta/8;
+						N[4-1] = (csi-1)*csi*eta*(eta+1)*(zeta-1)*zeta/8;
+						N[5-1] = (csi-1)*csi*(eta-1)*eta*zeta*(zeta+1)/8;
+						N[6-1] = csi*(csi+1)*(eta-1)*eta*zeta*(zeta+1)/8;
+						N[7-1] = csi*(csi+1)*eta*(eta+1)*zeta*(zeta+1)/8;
+						N[8-1] = (csi-1)*csi*eta*(eta+1)*zeta*(zeta+1)/8;
+						N[9-1] = -(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)*zeta/4;
+						N[10-1] = -(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
+						N[11-1] = -(csi-1)*csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
+						N[12-1] = -csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
+						N[13-1] = -csi*(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
+						N[14-1] = -(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)*zeta/4;
+						N[15-1] = -csi*(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
+						N[16-1] = -(csi-1)*csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
+						N[17-1] = -(csi-1)*(csi+1)*(eta-1)*eta*zeta*(zeta+1)/4;
+						N[18-1] = -(csi-1)*csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
+						N[19-1] = -csi*(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
+						N[20-1] = -(csi-1)*(csi+1)*eta*(eta+1)*zeta*(zeta+1)/4;
+						N[21-1] = (csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2;
+						N[22-1] = (csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2;
+						N[23-1] = (csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
+						N[24-1] = csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
+						N[25-1] = (csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2;
+						N[26-1] = (csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2;
+						N[27-1] = -(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1);
+
+						for(int n = 0; n < 27; n++)
+						{
+							f_elem(n*3 + 0) += N[n]*domain_load->second.force_shape[n].x()*detJ*i->second;
+							f_elem(n*3 + 1) += N[n]*domain_load->second.force_shape[n].y()*detJ*i->second;
+							f_elem(n*3 + 2) += N[n]*domain_load->second.force_shape[n].z()*detJ*i->second;
+						}
+					}
+
 				}
 
 				// add the nodal loads contributions
 				//TODO setup k from k_elem through scatter operation
-				//std::cout << k_elem << endl;
-				//std::cout << f_elem << endl;
+				std::cout << k_elem << endl;
+				std::cout << f_elem << endl;
 			}
 			break;
 

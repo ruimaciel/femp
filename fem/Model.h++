@@ -9,6 +9,7 @@
 #include <boost/numeric/ublas/symmetric.hpp>
 #include <boost/numeric/ublas/vector_sparse.hpp>
 #include <boost/numeric/ublas/io.hpp>
+#include <boost/tuple/tuple.hpp>
 
 #include "Node.h++"
 #include "Element.h++"
@@ -119,13 +120,29 @@ class Model {
 		void gauleg(double x[], double w[], int n);
 
 
+		/** 
+		given an element and a position in local coordinates, it generates a list with the nodal weights for the shape function for each interpolation point in local coordinates
+		@param type	the element type
+		@param point	local coordinates
+		@return a boost::tuple consisting of three vector<double> storing each node's interpolation weights
+		**/
+		std::vector<double>  sf(const Element::Type type, const fem::point &p);
+
+
+		/** 
+		given an element and a position in local coordinates, it generates a list with the nodal weights for the shape function for each interpolation point in local coordinates
+		@param type	the element type
+		@param point	local coordinates
+		@return a boost::tuple consisting of three vector<double> storing each node's interpolation weights
+		**/
+		boost::tuple<std::vector<double>, std::vector<double>, std::vector<double> > dN(const Element::Type type, const fem::point &p);
+
 		/**
 		Performs a sanity check on the model
 		@retur ERR_OK if all is well, other error code if something bad happened
 		**/
 		enum Model::Error sanity_check();
 };
-
 
 }
 

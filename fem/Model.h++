@@ -137,6 +137,16 @@ class Model {
 		**/
 		boost::tuple<std::vector<double>, std::vector<double>, std::vector<double> > dN(const Element::Type type, const fem::point &p);
 
+
+		/**
+		Given an element type and the desired degree, returns a list Gauss quadrature integration points
+		@param type	element type
+		@param degree	integration degree
+		@return a list of integration points and the respective integration weights
+		**/
+		std::vector<boost::tuple<fem::point, double> > integration_points(const Element::Type &type, int degree); 
+
+
 		/**
 		Performs a sanity check on the model
 		@retur ERR_OK if all is well, other error code if something bad happened

@@ -1347,4 +1347,43 @@ enum Model::Error Model::sanity_check()
 	return ERR_OK;
 }
 
+
+std::vector<boost::tuple<fem::point, double> > Model::integration_points(const Element::Type &type, int degree)
+{
+	using namespace boost;
+	std::vector<tuple<fem::point, double> > integration_points;
+
+	// now build up
+	switch(type)
+	{
+		case Element::FE_HEXAHEDRON8:
+		case Element::FE_HEXAHEDRON27:
+			{
+				double x[degree], w[degree];	// for the Gauss-Legendre integration points and weights
+				// get the Gauss-Legendre integration points and weights
+				gauleg(x,w,degree);
+				// and now generate a list with those points
+				for(int i = 0; i < degree; i++)
+				{
+					for(int j = 0; j < degree; j++)
+					{
+						for(int k = 0; k < degree; k++)
+						{
+							integration_points.push_back(tuple<fem::point,double>(fem::point(x[i],x[j],x[k]), w[i]*w[j]*w[k]));
+						}
+					}
+				}
+			}
+			break;
+
+		default:
+			assert(false);	// this part should never be reached
+			break;
+	}
+
+	// and now return the integration points
+	return integration_points;
+}
+
+
 }

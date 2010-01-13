@@ -16,10 +16,10 @@ namespace fem
 
 			enum Type {
 				FE_INVALID	= 0,	/* test entry */
-				FE_LINE2         = 1,    /* 2-node line */
+				FE_LINE2        = 1,    /* 2-node line */
 				FE_TRIANGLE3    = 2,    /* 3-node triangle */
 				FE_QUADRANGLE4  = 3,    /* 4-node quadrangle */
-				FE_TETRAHEDRON4         = 4,    /* 4-node tetrahedron */
+				FE_TETRAHEDRON4	= 4,    /* 4-node tetrahedron */
 				FE_HEXAHEDRON8  = 5,    /* 8-node tetrahedron */
 				FE_PRISM6       = 6,    /* 6-node prism */
 				FE_PYRAMID5     = 7,    /* 5-node pyramid */
@@ -61,6 +61,12 @@ namespace fem
 			enum Error set(Type type, std::vector<size_t> nodes);
 
 			static enum Type extractType(char *);
+
+			/**
+			return the number of nodes that an element of this particular type has
+			@return	the number of nodes
+			**/
+			int node_number() const;
 	};
 
 }

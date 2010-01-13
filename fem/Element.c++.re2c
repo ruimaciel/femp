@@ -1,6 +1,7 @@
 #include "Element.h++"
 
 #include <iostream>
+#include <assert.h>
 
 namespace fem
 {
@@ -117,6 +118,30 @@ enum Element::Type Element::extractType(char *buffer)
 	"tetrahedron56"		{return FE_TETRAHEDRON56;}    
 	[^]			{return FE_INVALID; }
  */
+}
+
+
+int Element::node_number() const
+{
+	switch(this->type)
+	{
+		case FE_TETRAHEDRON4:
+			return 4;
+			break;
+
+		case FE_HEXAHEDRON8:
+			return 8;
+			break;
+
+		case FE_HEXAHEDRON27:
+			return 27;
+			break;
+
+		default:
+			std::cerr << "Element::nodes(): unsupported element" << std::endl;
+			assert(0);
+			break;
+	}
 }
 
 }

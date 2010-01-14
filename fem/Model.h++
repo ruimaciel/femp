@@ -80,27 +80,16 @@ class Model {
 
 
 		/*
-		returns the jacobian matrix of a given element
-		*/
-		inline boost::numeric::ublas::matrix<double> J(double csi,double eta,double zeta, const Element &element);
-
-		/* 
-		same as above but takes a fem::point as a source of [csi,eta,zeta] coordinates
-		@param p	local coordinates
-		@param element	the element in question
-		*/
-		inline boost::numeric::ublas::matrix<double> J(const fem::point &p, const Element &element);
-
-
-		/*
 		return the inverse of a 3 by 3 matrix
 		*/
 		inline boost::numeric::ublas::matrix<double> invert3by3(const boost::numeric::ublas::matrix<double> &M, double det);
+
 
 		/*
 		return the determinant of a 3 by 3 matrix
 		*/
 		double det3by3(const boost::numeric::ublas::matrix<double> &M);
+
 
 		/** runs the analysis based on a given load pattern
 		@param lp	the load pattern
@@ -126,16 +115,7 @@ class Model {
 		@param point	local coordinates
 		@return a boost::tuple consisting of three vector<double> storing each node's interpolation weights
 		**/
-		std::vector<double>  sf(const Element::Type type, const fem::point &p);
-
-
-		/** 
-		given an element and a position in local coordinates, it generates a list with the nodal weights for the shape function for each interpolation point in local coordinates
-		@param type	the element type
-		@param point	local coordinates
-		@return a boost::tuple consisting of three vector<double> storing each node's interpolation weights
-		**/
-		boost::tuple<std::vector<double>, std::vector<double>, std::vector<double> > dN(const Element::Type type, const fem::point &p);
+		boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double> >	sf(const Element::Type type, const fem::point &point);
 
 
 		/**
@@ -144,7 +124,7 @@ class Model {
 		@param degree	integration degree
 		@return a list of integration points and the respective integration weights
 		**/
-		std::vector<boost::tuple<fem::point, double> > integration_points(const Element::Type &type, int degree); 
+		std::vector<boost::tuple<fem::point, double> > integration_points(const Element::Type &type, const int &degree = 0); 
 
 
 		/**

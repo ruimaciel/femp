@@ -1,4 +1,5 @@
 #include "Model.h++"
+#include <algorithm>
 
 
 namespace fem
@@ -186,6 +187,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 			}
 
 			// having done the legwork, let's build up the elementary stiffness matrix and equivalent nodal force vector
+
 			Bt = trans(B);
 			symmetric_matrix<double> D = D_list[element->material];
 
@@ -195,6 +197,19 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 			temp = prod(temp,B);
 			temp *= detJ*i->get<1>();
 			k_elem += temp;	// adding up the full result
+
+
+			// check if there is a domain load associated with this element
+			// size_t d = distance(lp.domain_loads.begin(), element);
+
+			// integrate the domain loads
+			for(int n = 0; n < nnodes; n++)
+			{
+#define N(n) sf.get<0>()[n]
+
+#undef N
+			}
+			std::cout << B << std::endl;
 		}
 		//output
 		std::cout << k_elem << std::endl;
@@ -624,7 +639,34 @@ std::vector<boost::tuple<fem::point, double> > Model::integration_points(const E
 	{
 		case Element::FE_TETRAHEDRON4:
 			{
-			//TODO	
+				d=2;
+				switch(d)
+				{
+					case 1:
+						{
+							ips.push_back(tuple<fem::point,double>(fem::point(0.25,0.25,0.25), 1/6.0));
+						}
+						break;
+
+					case 2:
+						{
+							ips.push_back(tuple<fem::point,double>(fem::point(0.58541019662496845446,0.13819660112501051518,0.13819660112501051518),0.041666666666666666667));
+							ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.58541019662496845446,0.13819660112501051518),0.041666666666666666667));
+							ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.58541019662496845446),0.041666666666666666667));
+							ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.13819660112501051518),0.041666666666666666667));
+						}
+						break;
+
+					case 3:
+						{
+						}
+						break;
+
+					default:
+						//TODO
+						break;
+				}
+		
 			}
 			break;
 

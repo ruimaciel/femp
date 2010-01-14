@@ -1,25 +1,35 @@
 TEMPLATE = app
-QT -= gui
 
 CONFIG += qt debug no_keywords
-QMAKE_CXXFLAGS_DEBUG +=-O0 
+QMAKE_CXXFLAGS_DEBUG +=-O0
 
+QT += opengl
 QMAKE_EXT_CPP += c++
 
+# LIBS += -lecl
 LIBS += -ll -ly -lboost_math_c99-mt
 
-HEADERS += Document.h++ ProgramOptions.h++ \
+HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.h++ NewProjectWizard.h++ \
+	ui/NewProjectWizardPage1.h++ ui/NewProjectWizardPage2.h++ ui/NewProjectWizardPageLast.h++ \
 	fem/Model.h++ fem/Node.h++ fem/Element.h++ fem/Material.h++ fem/LoadPattern.h++ fem/NodalLoad.h++ fem/NodalDisplacement.h++ fem/point.h++ fem/NodeRestrictions.h++ \
 	fem/DomainLoad.h++ fem/SurfaceLoad.h++\
+	Camera.h++ glwidget.h++ ViewportColors.h++ DisplayOptions.h++\
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h \
+	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
 	fem/FemEquation.h++
 
-SOURCES += main.c++ Document.c++ ProgramOptions.c++ \
+SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
+	ui/NewProjectWizardPage1.c++ ui/NewProjectWizardPage2.c++ ui/NewProjectWizardPageLast.c++  \
 	fem/Model.c++ fem/Node.c++ fem/Element.c++ fem/Material.c++ fem/LoadPattern.c++ fem/NodalLoad.c++ fem/NodalDisplacement.c++ fem/point.c++ fem/NodeRestrictions.c++ \
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
+	Camera.c++ glwidget.c++ ViewportColors.c++ DisplayOptions.c++\
 	fem_msh.c++ lex.msh_yy.c++ \
-	parsers/parser.c++ parsers/msh.c++ parsers/json.c 
+	parsers/parser.c++ parsers/msh.c++ parsers/json.c \
+	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++
+
+FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPageLast.ui \
+	ui/NodeRestrainDialog.ui ui/NodeActionsDialog.ui ui/DisplayOptionsDialog.ui
 
 UI_DIR += ./ui
 OBJECTS_DIR += ./build

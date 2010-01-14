@@ -703,92 +703,77 @@ void GLWidget::paintElement(const fem::Element &element)
 					// set the color
 					glColor3fv(colors->hexahedron8);
 
-					GLfloat ctrlpoints[3][3][3];
-					int n = 20; \
-
-					#define SETP(X,Y,I) ctrlpoints[X][Y][0] = nl[I].x(),ctrlpoints[X][Y][1] = nl[I].y(), ctrlpoints[X][Y][2] = nl[I].z()
-					#define SURFACE(A,B,C,D,E,F,G,H,I) SETP(0,0,A); \
-					SETP(1,0,B); \
-					SETP(2,0,C); \
-					SETP(0,1,D); \
-					SETP(1,1,E); \
-					SETP(2,1,F); \
-					SETP(0,2,G); \
-					SETP(1,2,H); \
-					SETP(2,2,I); \
-					glMap2f(GL_MAP2_VERTEX_3,0,1,3,3,0,1,9,3, &ctrlpoints[0][0][0]); \
-					for (int i = 0; i < n; i++)  \
+					int subdiv = 10;
+					#define SURFACE(d1,d2,d3,d4,d5,d6,d7,d8,d9) \
+					for (int j = 0; j < subdiv; j++)  \
 					{ \
-						glBegin(GL_QUAD_STRIP);  \
-						for (int j = 0; j <= n; j++)  \
+						glBegin(GL_TRIANGLE_STRIP);  \
+						for (int i = 0; i < subdiv; i++)  \
 						{ \
-							glEvalCoord2f(i/(float)n, j/(float)n);  \
-							glEvalCoord2f((i+1)/(float)n, j/(float)n);  \
+							float x = i/(float)subdiv; \
+							float y = (j+1)/(float)subdiv; \
+							fem::point p[4]; \
+							p[0] = (4.0*nl[d9]*(x-0.5)*x*(y-0.5)*y-8.0*nl[d8]*(x-1)*x*(y-0.5)*y+4.0*nl[d7]*(x-1)*(x-0.5)*(y-0.5)*y-8.0*nl[d6]*(x-0.5)*x*(y-1)*y+16.0*nl[d5]*(x-1)*x*(y-1)*y-8.0*nl[d4]*(x-1)*(x-0.5)*(y-1)*y+4.0*nl[d3]*(x-0.5)*x*(y-1)*(y-0.5) -8.0*nl[d2]*(x-1)*x*(y-1)*(y-0.5)+4.0*nl[d1]*(x-1)*(x-0.5)*(y-1)*(y-0.5)); \
+							y = j/(float)subdiv; \
+							p[1] = (4.0*nl[d9]*(x-0.5)*x*(y-0.5)*y-8.0*nl[d8]*(x-1)*x*(y-0.5)*y+4.0*nl[d7]*(x-1)*(x-0.5)*(y-0.5)*y-8.0*nl[d6]*(x-0.5)*x*(y-1)*y+16.0*nl[d5]*(x-1)*x*(y-1)*y-8.0*nl[d4]*(x-1)*(x-0.5)*(y-1)*y+4.0*nl[d3]*(x-0.5)*x*(y-1)*(y-0.5) -8.0*nl[d2]*(x-1)*x*(y-1)*(y-0.5)+4.0*nl[d1]*(x-1)*(x-0.5)*(y-1)*(y-0.5)); \
+							x = (i+1)/(float)subdiv; \
+							y = (j+1)/(float)subdiv; \
+							p[2]=  (4.0*nl[d9]*(x-0.5)*x*(y-0.5)*y-8.0*nl[d8]*(x-1)*x*(y-0.5)*y+4.0*nl[d7]*(x-1)*(x-0.5)*(y-0.5)*y-8.0*nl[d6]*(x-0.5)*x*(y-1)*y+16.0*nl[d5]*(x-1)*x*(y-1)*y-8.0*nl[d4]*(x-1)*(x-0.5)*(y-1)*y+4.0*nl[d3]*(x-0.5)*x*(y-1)*(y-0.5) -8.0*nl[d2]*(x-1)*x*(y-1)*(y-0.5)+4.0*nl[d1]*(x-1)*(x-0.5)*(y-1)*(y-0.5)); \
+							y = j/(float)subdiv; \
+							p[3] = (4.0*nl[d9]*(x-0.5)*x*(y-0.5)*y-8.0*nl[d8]*(x-1)*x*(y-0.5)*y+4.0*nl[d7]*(x-1)*(x-0.5)*(y-0.5)*y-8.0*nl[d6]*(x-0.5)*x*(y-1)*y+16.0*nl[d5]*(x-1)*x*(y-1)*y-8.0*nl[d4]*(x-1)*(x-0.5)*(y-1)*y+4.0*nl[d3]*(x-0.5)*x*(y-1)*(y-0.5) -8.0*nl[d2]*(x-1)*x*(y-1)*(y-0.5)+4.0*nl[d1]*(x-1)*(x-0.5)*(y-1)*(y-0.5)); \
+							glNormal3dv(getNormalVector(p[0],p[1],p[2]).data); \
+							glVertex3dv(p[0].data); \
+							glNormal3dv(getNormalVector(p[1],p[3],p[0]).data); \
+							glVertex3dv(p[1].data); \
+							glNormal3dv(getNormalVector(p[2],p[0],p[3]).data); \
+							glVertex3dv(p[2].data); \
+							glNormal3dv( getNormalVector(p[3],p[2],p[1]).data ); \
+							glVertex3dv(p[3].data); \
 						} \
 						glEnd(); \
 					} 
 
-					SURFACE(0,8,1,9,20,11,3,13,2);
-					SURFACE(4,10,0,17,22,9,7,15,3);
-					SURFACE(5,16,4,18,25,17,6,19,7);
-					SURFACE(1,12,5,11,23,18,2,14,6);
-					SURFACE(0,10,4,8,21,16,1,12,5);
-					SURFACE(2,14,6,13,24,19,3,15,7);
+					SURFACE(1,8,0,11,20,9,2,13,3);
+					SURFACE(0,10,4,9,22,17,3,15,7);
+					SURFACE(4,16,5,17,25,18,7,19,6);
+					SURFACE(5,12,1,18,23,11,6,14,2);
+					SURFACE(7,19,6,15,24,14,3,13,2);
+					SURFACE(5,16,4,12,21,10,1,8,0);
 
-					glBegin(GL_QUADS);
-					//TODO render surface
-					glEnd();
-					#undef SETP
+					#undef SURFACE
 				}
 
-				/*
 				if(display_options.wireframe)
 				{
 					// set the color
 					glColor3fv(colors->wireframe);
 
-					glBegin(GL_LINE_STRIP);
-					glVertex3dv(nl[0].data);
-					glVertex3dv(nl[8].data);
-					glVertex3dv(nl[1].data);
-					glVertex3dv(nl[11].data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[13].data);
-					glVertex3dv(nl[3].data);
-					glVertex3dv(nl[9].data);
-					glVertex3dv(nl[0].data);
-
-					glVertex3dv(nl[10].data);
-
-					glVertex3dv(nl[4].data);
-					glVertex3dv(nl[16].data);
-					glVertex3dv(nl[5].data);
-					glVertex3dv(nl[18].data);
-					glVertex3dv(nl[6].data);
-					glVertex3dv(nl[19].data);
-					glVertex3dv(nl[7].data);
-					glVertex3dv(nl[17].data);
-					glVertex3dv(nl[4].data);
+					int subdiv = 10;	//TODO make this an option
+#define line(N0,N1,N2) \
+					glBegin(GL_LINE_STRIP); \
+					for(int i = 0; i <= subdiv; i++) \
+					{ \
+						float x = i/(float)subdiv; \
+						glVertex3dv( (2.0*nl[N2]*(x-0.5)*x-4.0*nl[N1]*(x-1)*x+2.0*nl[N0]*(x-1)*(x-0.5)).data); \
+					} \
 					glEnd();
 
-					glBegin(GL_LINES);
-					glVertex3dv(nl[1].data);
-					glVertex3dv(nl[12].data);
-					glVertex3dv(nl[12].data);
-					glVertex3dv(nl[5].data);
+					line(0,8,1);
+					line(1, 11, 2);
+					line(2, 13, 3);
+					line(3, 9, 0);
 
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[14].data);
-					glVertex3dv(nl[14].data);
-					glVertex3dv(nl[6].data);
+					line(4, 16, 5);
+					line(5, 18, 6);
+					line(6, 19, 7);
+					line(7, 17, 4);
 
-					glVertex3dv(nl[3].data);
-					glVertex3dv(nl[15].data);
-					glVertex3dv(nl[15].data);
-					glVertex3dv(nl[7].data);
-					glEnd();
+					line(0, 10, 4);
+					line(3, 15, 7);
+					line(2, 14, 6);
+					line(1, 12, 5);
+#undef line
 				}
-				*/
 			}
 			break;
 

@@ -3,3 +3,6 @@
 - import only the elements which are supported, filter out all other cruft
 - separate designation for the element type supported by the program and those supported by the document format
 
+- acabar funções de forma (fellipa)
+- vector de forças
+- superficies

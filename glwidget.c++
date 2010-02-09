@@ -529,45 +529,6 @@ void GLWidget::paintElement(const fem::Element &element)
 	glPushMatrix();
 	switch(element.type)
 	{
-		/*
-		case fem::Element::FE_LINE2:
-			{
-				if(element.nodes.size() != 2)
-				{
-					qWarning("error: invalid number of nodes for a FE_LINE2");
-					//TODO remove element
-					return;
-				}
-				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
-				glBegin(GL_LINES);
-				glVertex3dv(nl[0].data);
-				glVertex3dv(nl[1].data);
-				glEnd();
-			}
-			break;
-
-		case fem::Element::FE_TRIANGLE3:
-			{
-				if(element.nodes.size() != 3)
-				{
-					qWarning("error: invalid number of nodes for a FE_TRIANGLE3");
-					//TODO remove element
-					return;
-				}
-				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
-				glBegin(GL_LINE_STRIP);
-				glVertex3dv(nl[0].data);
-				glVertex3dv(nl[1].data);
-				glVertex3dv(nl[2].data);
-				glVertex3dv(nl[0].data);
-				glEnd();
-			}
-			break;
-			*/
-
 		case fem::Element::FE_TETRAHEDRON4:
 			{
 				// set the node list
@@ -747,7 +708,7 @@ void GLWidget::paintElement(const fem::Element &element)
 					// set the color
 					glColor3fv(colors->hexahedron8);
 
-					int subdiv = 10;
+					int subdiv = 10;	// surface subdivision
 					#define SURFACE(d1,d2,d3,d4,d5,d6,d7,d8,d9) \
 					for (int j = 0; j < subdiv; j++)  \
 					{ \
@@ -776,6 +737,15 @@ void GLWidget::paintElement(const fem::Element &element)
 						} \
 						glEnd(); \
 					} 
+
+					/*
+					for (int j = 0; j < subdiv; j++)  
+					{ 
+						for (int i = 0; i < subdiv; i++)  
+						{ 
+						}
+					}
+					*/
 
 					SURFACE(1,8,0,11,20,9,2,13,3);
 					SURFACE(0,10,4,9,22,17,3,15,7);

@@ -371,6 +371,112 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 			dNdzeta[3] = 1;
 			break;
 
+		
+		case Element::FE_TETRAHEDRON10:
+			{
+				double L[4];
+				L[0] = 1-csi-eta-zeta;
+				L[1] = csi;
+				L[2] = eta;
+				L[3] = zeta;
+			
+				sf.resize(10);
+				sf[0] = (2*L[0]-1)*L[0];
+				sf[1] = (2*L[1]-1)*L[1];
+				sf[2] = (2*L[2]-1)*L[2];
+				sf[3] = (2*L[3]-1)*L[3];
+				sf[4] = 4*L[0]*L[1];
+				sf[5] = 4*L[1]*L[2];
+				sf[6] = 4*L[0]*L[2];
+				sf[7] = 4*L[0]*L[3];
+				sf[8] = 4*L[2]*L[3];
+				sf[9] = 4*L[1]*L[3];
+
+				dNdcsi.resize(10);
+				dNdcsi[0] = -4*L[0]+1;
+				dNdcsi[1] = 4*L[1]-1;
+				dNdcsi[2] = 0;
+				dNdcsi[3] = 0;
+				dNdcsi[4] = 4*(-L[1]+L[0]);
+				dNdcsi[5] = 4*L[2];
+				dNdcsi[6] = -4*L[2];
+				dNdcsi[7] = -4*L[3];
+				dNdcsi[8] = 0;
+				dNdcsi[9] = 4*L[3];
+
+
+				dNdeta.resize(10);
+				dNdeta[0] = -4*L[0]+1;
+				dNdeta[1] = 0;
+				dNdeta[2] = 4*L[2]-1;
+				dNdeta[3] = 0;
+				dNdeta[4] = -4*L[1];
+				dNdeta[5] = 4*L[1];
+				dNdeta[6] = 4*(-L[2]+L[0]);
+				dNdeta[7] = -4*L[3];
+				dNdeta[8] = 4*L[3];
+				dNdeta[9] = 0;
+
+				dNdzeta.resize(10);
+				dNdzeta[0] = -4*L[0]+1;
+				dNdzeta[1] = 0;
+				dNdzeta[2] = 0;
+				dNdzeta[3] = 4*L[3]-1;
+				dNdzeta[4] = -4*L[1];
+				dNdzeta[5] = 0;
+				dNdzeta[6] = -4*L[2];
+				dNdzeta[7] = 4*(-L[3]+L[0]);
+				dNdzeta[8] = 4*L[2];
+				dNdzeta[9] = 4*L[1];
+			}
+			break;
+
+		case Element::FE_TETRAHEDRON20:
+			{
+				double L[4];
+				L[0] = 1-csi-eta-zeta;
+				L[1] = csi;
+				L[2] = eta;
+				L[3] = zeta;
+			
+				sf.resize(10);
+				sf[0] = (2*L[0]-1)*L[0];
+				sf[1] = (2*L[1]-1)*L[1];
+				sf[2] = (2*L[2]-1)*L[2];
+				sf[3] = (2*L[3]-1)*L[3];
+				sf[4] = 4*L[0]*L[1];
+				sf[5] = 4*L[1]*L[2];
+				sf[6] = 4*L[0]*L[2];
+				sf[7] = 4*L[0]*L[3];
+				sf[8] = 4*L[2]*L[3];
+				sf[9] = 4*L[1]*L[3];
+				sf[10] = (2*L[0]-1)*L[0];
+				sf[11] = (2*L[1]-1)*L[1];
+				sf[12] = (2*L[2]-1)*L[2];
+				sf[13] = (2*L[3]-1)*L[3];
+				sf[14] = 4*L[0]*L[1];
+				sf[15] = 4*L[1]*L[2];
+				sf[16] = 4*L[0]*L[2];
+				sf[17] = 4*L[0]*L[3];
+				sf[18] = 4*L[2]*L[3];
+				sf[19] = 4*L[1]*L[3];
+
+				dNdcsi.resize(10);
+				dNdcsi[0] = -4*L[0]+1;
+				dNdcsi[1] = 4*L[1]-1;
+				dNdcsi[2] = 0;
+				dNdcsi[3] = 0;
+				dNdcsi[4] = 4*(-L[1]+L[0]);
+				dNdcsi[5] = 4*L[2];
+				dNdcsi[6] = -4*L[2];
+				dNdcsi[7] = -4*L[3];
+				dNdcsi[8] = 0;
+				dNdcsi[9] = 4*L[3];
+
+
+			}
+			break;
+
 		case Element::FE_HEXAHEDRON8:
 			sf.resize(8);
 			sf[0] = (1-csi)*(1-eta)*(1-zeta)/8;
@@ -638,8 +744,10 @@ std::vector<boost::tuple<fem::point, double> > Model::integration_points(const E
 	switch(type)
 	{
 		case Element::FE_TETRAHEDRON4:
+			d = (degree == 0)?1:degree;
+		case Element::FE_TETRAHEDRON10:
+			d = (degree == 0)?2:degree;
 			{
-				d=2;
 				switch(d)
 				{
 					case 1:

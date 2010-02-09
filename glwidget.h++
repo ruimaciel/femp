@@ -41,7 +41,11 @@ class GLWidget : public QGLWidget
 		void paintGL();
 		inline void paintArrow(const fem::point &p, const fem::point &direction);
 		void resizeGL(int width, int height);
+		
+		// display lists methods
 		void generateDisplayLists();
+		void generateNodesDisplayList();
+
 		void mousePressEvent(QMouseEvent *event);
 		void mouseMoveEvent(QMouseEvent *event);
 		void wheelEvent(QWheelEvent *event);

@@ -269,14 +269,7 @@ void GLWidget::generateDisplayLists()
 {
 	qWarning("generating display lists");
 	// generate nodes display list
-	glNewList( dl_nodes, GL_COMPILE);
-	std::map<size_t,fem::Node>::iterator ni;	// node iterator
-	for(ni = document->model.node_list.begin(); ni != document->model.node_list.end(); ni++)
-	{
-		paintNode(ni->first, ni->second);
-	}
-	glEndList();
-
+	generateNodesDisplayList();
 
 	// the faces
 	glNewList( dl_faces, GL_COMPILE);
@@ -290,6 +283,18 @@ void GLWidget::generateDisplayLists()
 
 	// and now the wireframe
 	glNewList( dl_wireframe, GL_COMPILE);
+	glEndList();
+}
+
+
+void GLWidget::generateNodesDisplayList()
+{
+	glNewList( dl_nodes, GL_COMPILE);
+	std::map<size_t,fem::Node>::iterator ni;	// node iterator
+	for(ni = document->model.node_list.begin(); ni != document->model.node_list.end(); ni++)
+	{
+		paintNode(ni->first, ni->second);
+	}
 	glEndList();
 }
 
@@ -315,6 +320,7 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 
 		// push the line
 		selectModelObjects(near, far);
+		generateNodesDisplayList();
 		updateGL();
 	}
 }

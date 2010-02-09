@@ -573,6 +573,7 @@ void MainWindow::setUserInterfaceAsClosed()
 	// close all MDI windows
 	if(window_gl_viewport != NULL)
 	{
+		//TODO free glWidget?
 		mdiArea->removeSubWindow(window_gl_viewport);
 		delete window_gl_viewport; 
 		window_gl_viewport = NULL;

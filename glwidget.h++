@@ -41,6 +41,7 @@ class GLWidget : public QGLWidget
 		void paintGL();
 		inline void paintArrow(const fem::point &p, const fem::point &direction);
 		void resizeGL(int width, int height);
+		void generateDisplayLists();
 		void mousePressEvent(QMouseEvent *event);
 		void mouseMoveEvent(QMouseEvent *event);
 		void wheelEvent(QWheelEvent *event);
@@ -73,6 +74,10 @@ class GLWidget : public QGLWidget
 		ViewportColors *colors;	// color definitions
 		bool perspective;	// true if perspective, false if ortogonal
 
+		// display list indices
+		GLuint dl_nodes;
+		GLuint dl_faces;
+		GLuint dl_wireframe;
 };
 
 #endif

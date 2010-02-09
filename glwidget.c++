@@ -29,11 +29,20 @@ GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 
 	// starts off with perspective
 	perspective = true;
+
+	// assign display lists
+	dl_nodes = glGenLists(1);
+	dl_faces = glGenLists(1);
+	dl_wireframe = glGenLists(1);
 }
 
 
 GLWidget::~GLWidget()
 {
+	//TODO add cleanup code
+	glDeleteLists(dl_nodes,1);
+	glDeleteLists(dl_faces,1);
+	glDeleteLists(dl_wireframe,1);
 }
 
 
@@ -157,6 +166,10 @@ void GLWidget::initializeGL()
 
 	glEnable(GL_MAP2_VERTEX_3);	// to interpolate the elements' surfaces
 	glEnable(GL_AUTO_NORMAL);
+
+
+	// generate display lists
+	generateDisplayLists();
 }
 
 
@@ -175,19 +188,11 @@ void GLWidget::paintGL()
 		// Render the nodes
 		if( display_options.nodes )
 		{
-			std::map<size_t,fem::Node>::iterator ni;	// node iterator
-			for(ni = document->model.node_list.begin(); ni != document->model.node_list.end(); ni++)
-			{
-				paintNode(ni->first, ni->second);
-			}
+			glCallList(dl_nodes);
 		}
 
 		// render all elements
-		std::vector<fem::Element>::iterator ei;	// element iterator
-		for(ei = document->model.element_list.begin(); ei != document->model.element_list.end(); ei++)
-		{
-			paintElement(*ei);
-		}
+		glCallList(dl_faces);
 
 		// render all optional information, if it's enabled
 		if(display_options.load_pattern != NULL)
@@ -226,6 +231,7 @@ void GLWidget::paintGL()
 			}
 		}
 	}
+
 }
 
 
@@ -253,6 +259,38 @@ void GLWidget::resizeGL(int width, int height)
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	
+	// generate display lists
+	generateDisplayLists();	// put in place to preserve the scale of certain drawing components
+}
+
+
+void GLWidget::generateDisplayLists()
+{
+	qWarning("generating display lists");
+	// generate nodes display list
+	glNewList( dl_nodes, GL_COMPILE);
+	std::map<size_t,fem::Node>::iterator ni;	// node iterator
+	for(ni = document->model.node_list.begin(); ni != document->model.node_list.end(); ni++)
+	{
+		paintNode(ni->first, ni->second);
+	}
+	glEndList();
+
+
+	// the faces
+	glNewList( dl_faces, GL_COMPILE);
+	std::vector<fem::Element>::iterator ei;	// element iterator
+	for(ei = document->model.element_list.begin(); ei != document->model.element_list.end(); ei++)
+	{
+		paintElement(*ei);
+	}
+	glEndList();
+
+
+	// and now the wireframe
+	glNewList( dl_wireframe, GL_COMPILE);
+	glEndList();
 }
 
 

@@ -404,7 +404,6 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 				dNdcsi[8] = 0;
 				dNdcsi[9] = 4*L[3];
 
-
 				dNdeta.resize(10);
 				dNdeta[0] = -4*L[0]+1;
 				dNdeta[1] = 0;
@@ -431,8 +430,10 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 			}
 			break;
 
+		/*
 		case Element::FE_TETRAHEDRON20:
 			{
+				//TODO finish this
 				double L[4];
 				L[0] = 1-csi-eta-zeta;
 				L[1] = csi;
@@ -476,6 +477,7 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 
 			}
 			break;
+			*/
 
 		case Element::FE_HEXAHEDRON8:
 			sf.resize(8);
@@ -660,6 +662,7 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 	return sfd;
 }
 
+
 enum Model::Error Model::sanity_check()
 {
 	// check if the Element's nodes are right
@@ -743,30 +746,73 @@ std::vector<boost::tuple<fem::point, double> > Model::integration_points(const E
 	// now build up
 	switch(type)
 	{
-		case Element::FE_TETRAHEDRON4:
+		case Element::FE_TETRAHEDRON4:	// Radau quadrature expressions (Zienkievics, pg 175)
 			d = (degree == 0)?1:degree;
 		case Element::FE_TETRAHEDRON10:
 			d = (degree == 0)?2:degree;
 			{
 				switch(d)
 				{
-					case 1:
+					case 1:	// degree 1, 1 point
 						{
-							ips.push_back(tuple<fem::point,double>(fem::point(0.25,0.25,0.25), 1/6.0));
+							ips.push_back(tuple<fem::point,double>(fem::point(0.25,0.25,0.25), 1.0/6.0));
 						}
 						break;
 
-					case 2:
+					case 2:	// degree 2, 4 points
 						{
-							ips.push_back(tuple<fem::point,double>(fem::point(0.58541019662496845446,0.13819660112501051518,0.13819660112501051518),0.041666666666666666667));
-							ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.58541019662496845446,0.13819660112501051518),0.041666666666666666667));
-							ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.58541019662496845446),0.041666666666666666667));
-							ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.13819660112501051518),0.041666666666666666667));
+							ips.push_back(tuple<fem::point,double>(fem::point(0.58541019662496845446,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
+							ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.58541019662496845446,0.13819660112501051518),1.0/(6*4)));
+							ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.58541019662496845446),1.0/(6*4)));
+							ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
 						}
 						break;
 
-					case 3:
+					case 3:	// degree 3, 8 points
+						{	// rule -8
+							ips.push_back(tuple<fem::point,double>(fem::point(0, 0, 0), 1.0/(40*6)));
+							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+						}
+						break;
+
+					case 4:	// degree 4, 14 points
 						{
+							//TODO extract floating point value
+							//TODO this needs testing
+							double g[3];
+							double w[2];
+							g[0]=0.09273525031089122640232391373703060;
+							g[1]=0.31088591926330060979734573376345783;
+							g[2]=0.45449629587435035050811947372066056;
+
+							w[0] = (-1+6*g[1]*(2+g[1]*(-7+8*g[1]))+14*g[2]-60*g[1]*(3+4*g[1]* (-3+4*g[1]))*g[2]+4*(-7+30*g[1]*(3+4*g[1]*(-3+4*g[1])))*g[2]*g[2])/ (120*(g[0]-g[1])*(g[1]*(-3+8*g[1])+6*g[2]+8*g[1]*(-3+4*g[1])*g[2]-4* (3+4*g[1]*(-3+4*g[1]))*g[2]*g[2]+8*g[0]*g[0]*(1+12*g[1]* (-1+2*g[1])+4*g[2]-8*g[2]*g[2])+g[0]*(-3-96*g[1]*g[1]+24*g[2]*(-1+2*g[2])+ g[1]*(44+32*(1-2*g[2])*g[2]))));
+							w[1] = (-1-20*(1+12*g[0]*(2*g[0]-1))*w[0]+20*g[2]*(2*g[2]-1)*(4*w[0]-1))/ (20*(1+12*g[1]*(2*g[1]-1)+4*g[2]-8*g[2]*g[2]));
+
+							// 1 to 4
+							ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[0], g[0], g[0]), w[0] ));
+							ips.push_back(tuple<fem::point,double>(fem::point(g[0], 1-3*g[0], g[0]), w[0] ));
+							ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], 1-3*g[0]), w[0] ));
+							ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], g[0]), w[0] ));
+
+							// 5 to 8
+							ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[1], g[1], g[1]), w[1] ));
+							ips.push_back(tuple<fem::point,double>(fem::point(g[1], 1-3*g[1], g[1]), w[1] ));
+							ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], 1-3*g[1]), w[1] ));
+							ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], g[1]), w[1] ));
+
+							// 9 to 14
+							ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+							ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+							ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+							ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+							ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+							ips.push_back(tuple<fem::point,double>(fem::point(g[3], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
 						}
 						break;
 
@@ -786,6 +832,7 @@ std::vector<boost::tuple<fem::point, double> > Model::integration_points(const E
 				double x[d], w[d];	// for the Gauss-Legendre integration points and weights
 				// get the Gauss-Legendre integration points and weights
 				gauleg(x,w,d);
+
 				// and now generate a list with those points
 				for(int i = 0; i < d; i++)
 				{

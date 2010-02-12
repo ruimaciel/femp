@@ -149,6 +149,10 @@ void GLWidget::initializeGL()
 
 	glEnable(GL_NORMALIZE);
 
+	// set antialias options
+	glEnable(GL_POLYGON_SMOOTH);
+	glEnable(GL_LINE_SMOOTH);
+
 	glShadeModel(GL_SMOOTH);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, specularity);
 	glMateriali(GL_FRONT, GL_SHININESS, specmaterial);
@@ -464,6 +468,7 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 	{
 		case Qt::Key_Escape:
 			document->deselectAll();
+			generateNodesDisplayList();
 			updateGL();
 			break;
 

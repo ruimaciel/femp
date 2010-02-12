@@ -265,6 +265,112 @@ void GLWidget::resizeGL(int width, int height)
 }
 
 
+inline void GLWidget::renderLine3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions)
+{
+	glBegin(GL_LINE_STRIP); 
+	for(int i = 0; i <= partitions; i++) 
+	{ 
+		float x = i/(float)partitions; 
+		glVertex3dv( (2.0*p3*(x-0.5)*x-4.0*p2*(x-1)*x+2.0*p1*(x-1)*(x-0.5)).data); 
+	} 
+	glEnd();
+}
+
+
+inline void GLWidget::renderQuad9(const fem::point &p1, const fem::point &p2, const fem::point &p3, const fem::point &p4,const fem::point &p5, const fem::point &p6, const fem::point &p7, const fem::point &p8, const fem::point &p9, int partitions)
+{
+	// defining temporary structures for points and normal vectors
+	fem::point p_upper_row[partitions+1];
+	fem::point *pu;
+	fem::point n_upper_row[partitions+1];
+	fem::point *nu;
+	fem::point p_lower_row[partitions+1];
+	fem::point *pl;
+	fem::point n_lower_row[partitions+1];
+	fem::point *nl;
+
+	float x, y;
+	fem::point dndx;
+	fem::point dndy;
+
+	// position the pointers
+	pu = p_upper_row;
+	pl = p_lower_row;
+
+	nu = n_upper_row;
+	nl = n_lower_row;
+
+	// initialize the bottom row
+	y = 0;
+	for(int i = 0; i <= partitions; i++)
+	{
+		x = ((double)i)/partitions;
+		p_lower_row[i] = 16.0*p5*(1-x)*x*(1-y)*y - 8.0*p6*(0.5-x)*x*(1-y)*y + 8.0*p4*(0.5-x)*(1-x)*(1-y)*y - 8.0*p8*(1-x)*x*(0.5-y)*y + 4.0*p9*(0.5-x)*x*(0.5-y)*y - 4.0*p7*(0.5-x)*(1-x)*(0.5-y)*y + 8.0*p2*(1-x)*x*(0.5-y)*(1-y) - 4.0*p3*(0.5-x)*x*(0.5-y)*(1-y) + 4.0*p1*(0.5-x)*(1-x)*(0.5-y)*(1-y);
+
+		// and now set the normal vector
+		dndx = 8.0*p6*x*(1-y)*y-16.0*p5*x*(1-y)*y+16.0*p5*(1-x)*(1-y)*y-8.0*p4*(1-x)*(1-y)*y-8.0*p6*(0.5-x)*(1-y)*y-8.0*p4*(0.5-x)*(1-y)*y-4.0*p9*x*(0.5-y)*y+8.0*p8*x*(0.5-y)*y-8.0*p8*(1-x)*(0.5-y)*y +4.0*p7*(1-x)*(0.5-y)*y+4.0*p9*(0.5-x)*(0.5-y)*y+4.0*p7*(0.5-x)*(0.5-y)*y+4.0*p3*x*(0.5-y)*(1-y)-8.0*p2*x*(0.5-y)*(1-y)+8.0*p2*(1-x)*(0.5-y)*(1-y)-4.0*p1*(1-x)*(0.5-y)*(1-y) -4.0*p3*(0.5-x)*(0.5-y)*(1-y)-4.0*p1*(0.5-x)*(0.5-y)*(1-y);
+		dndy = 8.0*p8*(1-x)*x*y-16.0*p5*(1-x)*x*y-4.0*p9*(0.5-x)*x*y+8.0*p6*(0.5-x)*x*y+4.0*p7*(0.5-x)*(1-x)*y-8.0*p4*(0.5-x)*(1-x)*y+16.0*p5*(1-x)*x*(1-y)-8.0*p2*(1-x)*x*(1-y)-8.0*p6*(0.5-x)*x*(1-y) +4.0*p3*(0.5-x)*x*(1-y)+8.0*p4*(0.5-x)*(1-x)*(1-y)-4.0*p1*(0.5-x)*(1-x)*(1-y)-8.0*p8*(1-x)*x*(0.5-y)-8.0*p2*(1-x)*x*(0.5-y)+4.0*p9*(0.5-x)*x*(0.5-y)+4.0*p3*(0.5-x)*x*(0.5-y) -4.0*p7*(0.5-x)*(1-x)*(0.5-y)-4.0*p1*(0.5-x)*(1-x)*(0.5-y);
+		n_lower_row[i] = fem::cross_product(dndx, dndy);
+	}
+
+	// the rest of the loop
+	for (int j = 0; j <= partitions; j++)  
+	{ 
+		y = (double)j/partitions;
+		// and now let's render
+		glBegin(GL_TRIANGLE_STRIP);  
+		for (int i = 0; i <= partitions; i++)  
+		{ 
+			/*
+			   float x = i/(float)partitions; 
+			   float y = (j+1)/(float)partitions; 
+			   fem::point p[4]; 
+			   p[0] = 16*p5*(1-x)*x*(1-y)*y - 8*p6*(0.5-x)*x*(1-y)*y + 8*p4*(0.5-x)*(1-x)*(1-y)*y - 8*p8*(1-x)*x*(0.5-y)*y + 4*p9*(0.5-x)*x*(0.5-y)*y - 4*p7*(0.5-x)*(1-x)*(0.5-y)*y + 8*p2*(1-x)*x*(0.5-y)*(1-y) - 4*p3*(0.5-x)*x*(0.5-y)*(1-y) + 4*p1*(0.5-x)*(1-x)*(0.5-y)*(1-y);
+
+			   y = j/(float)partitions; 
+			   p[1] = (4.0*p9*(x-0.5)*x*(y-0.5)*y-8.0*p8*(x-1)*x*(y-0.5)*y+4.0*p7*(x-1)*(x-0.5)*(y-0.5)*y-8.0*p6*(x-0.5)*x*(y-1)*y+16.0*p5*(x-1)*x*(y-1)*y-8.0*p4*(x-1)*(x-0.5)*(y-1)*y+4.0*p3*(x-0.5)*x*(y-1)*(y-0.5) -8.0*p2*(x-1)*x*(y-1)*(y-0.5)+4.0*p1*(x-1)*(x-0.5)*(y-1)*(y-0.5)); 
+			   x = (i+1)/(float)partitions; 
+			   y = (j+1)/(float)partitions; 
+			   p[2]=  (4.0*p9*(x-0.5)*x*(y-0.5)*y-8.0*p8*(x-1)*x*(y-0.5)*y+4.0*p7*(x-1)*(x-0.5)*(y-0.5)*y-8.0*p6*(x-0.5)*x*(y-1)*y+16.0*p5*(x-1)*x*(y-1)*y-8.0*p4*(x-1)*(x-0.5)*(y-1)*y+4.0*p3*(x-0.5)*x*(y-1)*(y-0.5) -8.0*p2*(x-1)*x*(y-1)*(y-0.5)+4.0*p1*(x-1)*(x-0.5)*(y-1)*(y-0.5)); 
+			   y = j/(float)partitions; 
+			   p[3] = (4.0*p9*(x-0.5)*x*(y-0.5)*y-8.0*p8*(x-1)*x*(y-0.5)*y+4.0*p7*(x-1)*(x-0.5)*(y-0.5)*y-8.0*p6*(x-0.5)*x*(y-1)*y+16.0*p5*(x-1)*x*(y-1)*y-8.0*p4*(x-1)*(x-0.5)*(y-1)*y+4.0*p3*(x-0.5)*x*(y-1)*(y-0.5) -8.0*p2*(x-1)*x*(y-1)*(y-0.5)+4.0*p1*(x-1)*(x-0.5)*(y-1)*(y-0.5)); 
+			   glNormal3dv(getNormalVector(p[0],p[1],p[2]).data); 
+			   glVertex3dv(p[0].data); 
+			   glNormal3dv(getNormalVector(p[1],p[3],p[0]).data); 
+			   glVertex3dv(p[1].data); 
+			   glNormal3dv(getNormalVector(p[2],p[0],p[3]).data); 
+			   glVertex3dv(p[2].data); 
+			   glNormal3dv( getNormalVector(p[3],p[2],p[1]).data ); 
+			   glVertex3dv(p[3].data); 
+			 */
+
+			// get the upper row points and normal vectors
+			x = (double)i/partitions;
+			pu[i] = 16.0*p5*(1-x)*x*(1-y)*y - 8.0*p6*(0.5-x)*x*(1-y)*y + 8.0*p4*(0.5-x)*(1-x)*(1-y)*y - 8.0*p8*(1-x)*x*(0.5-y)*y + 4.0*p9*(0.5-x)*x*(0.5-y)*y - 4.0*p7*(0.5-x)*(1-x)*(0.5-y)*y + 8.0*p2*(1-x)*x*(0.5-y)*(1-y) - 4.0*p3*(0.5-x)*x*(0.5-y)*(1-y) + 4.0*p1*(0.5-x)*(1-x)*(0.5-y)*(1-y);
+
+			// and now set the normal vector for the upper row
+			dndx = 8.0*p6*x*(1-y)*y-16.0*p5*x*(1-y)*y+16.0*p5*(1-x)*(1-y)*y-8.0*p4*(1-x)*(1-y)*y-8.0*p6*(0.5-x)*(1-y)*y-8.0*p4*(0.5-x)*(1-y)*y-4.0*p9*x*(0.5-y)*y+8.0*p8*x*(0.5-y)*y-8.0*p8*(1-x)*(0.5-y)*y +4.0*p7*(1-x)*(0.5-y)*y+4.0*p9*(0.5-x)*(0.5-y)*y+4.0*p7*(0.5-x)*(0.5-y)*y+4.0*p3*x*(0.5-y)*(1-y)-8.0*p2*x*(0.5-y)*(1-y)+8.0*p2*(1-x)*(0.5-y)*(1-y)-4.0*p1*(1-x)*(0.5-y)*(1-y) -4.0*p3*(0.5-x)*(0.5-y)*(1-y)-4.0*p1*(0.5-x)*(0.5-y)*(1-y);
+			dndy = 8.0*p8*(1-x)*x*y-16.0*p5*(1-x)*x*y-4.0*p9*(0.5-x)*x*y+8.0*p6*(0.5-x)*x*y+4.0*p7*(0.5-x)*(1-x)*y-8.0*p4*(0.5-x)*(1-x)*y+16.0*p5*(1-x)*x*(1-y)-8.0*p2*(1-x)*x*(1-y)-8.0*p6*(0.5-x)*x*(1-y) +4.0*p3*(0.5-x)*x*(1-y)+8.0*p4*(0.5-x)*(1-x)*(1-y)-4.0*p1*(0.5-x)*(1-x)*(1-y)-8.0*p8*(1-x)*x*(0.5-y)-8.0*p2*(1-x)*x*(0.5-y)+4.0*p9*(0.5-x)*x*(0.5-y)+4.0*p3*(0.5-x)*x*(0.5-y) -4.0*p7*(0.5-x)*(1-x)*(0.5-y)-4.0*p1*(0.5-x)*(1-x)*(0.5-y);
+			nu[i] = fem::cross_product(dndx, dndy);
+
+			// draw the triangles
+			glNormal3dv(nu[i].data);
+			glVertex3dv(pu[i].data);
+			glNormal3dv(nl[i].data);
+			glVertex3dv(pl[i].data);
+
+			// swap buffer pointes
+			pl = pu;
+			pu = (pu == p_upper_row)?p_lower_row:p_upper_row;
+
+			nl = nu;
+			nu = (nu == n_upper_row)?n_lower_row:n_upper_row;
+		} 
+		glEnd(); 
+	} 
+}
+
+
 void GLWidget::generateDisplayLists()
 {
 	qWarning("generating display lists");
@@ -708,53 +814,12 @@ void GLWidget::paintElement(const fem::Element &element)
 					// set the color
 					glColor3fv(colors->hexahedron8);
 
-					int subdiv = 10;	// surface subdivision
-					#define SURFACE(d1,d2,d3,d4,d5,d6,d7,d8,d9) \
-					for (int j = 0; j < subdiv; j++)  \
-					{ \
-						glBegin(GL_TRIANGLE_STRIP);  \
-						for (int i = 0; i < subdiv; i++)  \
-						{ \
-							float x = i/(float)subdiv; \
-							float y = (j+1)/(float)subdiv; \
-							fem::point p[4]; \
-							p[0] = (4.0*nl[d9]*(x-0.5)*x*(y-0.5)*y-8.0*nl[d8]*(x-1)*x*(y-0.5)*y+4.0*nl[d7]*(x-1)*(x-0.5)*(y-0.5)*y-8.0*nl[d6]*(x-0.5)*x*(y-1)*y+16.0*nl[d5]*(x-1)*x*(y-1)*y-8.0*nl[d4]*(x-1)*(x-0.5)*(y-1)*y+4.0*nl[d3]*(x-0.5)*x*(y-1)*(y-0.5) -8.0*nl[d2]*(x-1)*x*(y-1)*(y-0.5)+4.0*nl[d1]*(x-1)*(x-0.5)*(y-1)*(y-0.5)); \
-							y = j/(float)subdiv; \
-							p[1] = (4.0*nl[d9]*(x-0.5)*x*(y-0.5)*y-8.0*nl[d8]*(x-1)*x*(y-0.5)*y+4.0*nl[d7]*(x-1)*(x-0.5)*(y-0.5)*y-8.0*nl[d6]*(x-0.5)*x*(y-1)*y+16.0*nl[d5]*(x-1)*x*(y-1)*y-8.0*nl[d4]*(x-1)*(x-0.5)*(y-1)*y+4.0*nl[d3]*(x-0.5)*x*(y-1)*(y-0.5) -8.0*nl[d2]*(x-1)*x*(y-1)*(y-0.5)+4.0*nl[d1]*(x-1)*(x-0.5)*(y-1)*(y-0.5)); \
-							x = (i+1)/(float)subdiv; \
-							y = (j+1)/(float)subdiv; \
-							p[2]=  (4.0*nl[d9]*(x-0.5)*x*(y-0.5)*y-8.0*nl[d8]*(x-1)*x*(y-0.5)*y+4.0*nl[d7]*(x-1)*(x-0.5)*(y-0.5)*y-8.0*nl[d6]*(x-0.5)*x*(y-1)*y+16.0*nl[d5]*(x-1)*x*(y-1)*y-8.0*nl[d4]*(x-1)*(x-0.5)*(y-1)*y+4.0*nl[d3]*(x-0.5)*x*(y-1)*(y-0.5) -8.0*nl[d2]*(x-1)*x*(y-1)*(y-0.5)+4.0*nl[d1]*(x-1)*(x-0.5)*(y-1)*(y-0.5)); \
-							y = j/(float)subdiv; \
-							p[3] = (4.0*nl[d9]*(x-0.5)*x*(y-0.5)*y-8.0*nl[d8]*(x-1)*x*(y-0.5)*y+4.0*nl[d7]*(x-1)*(x-0.5)*(y-0.5)*y-8.0*nl[d6]*(x-0.5)*x*(y-1)*y+16.0*nl[d5]*(x-1)*x*(y-1)*y-8.0*nl[d4]*(x-1)*(x-0.5)*(y-1)*y+4.0*nl[d3]*(x-0.5)*x*(y-1)*(y-0.5) -8.0*nl[d2]*(x-1)*x*(y-1)*(y-0.5)+4.0*nl[d1]*(x-1)*(x-0.5)*(y-1)*(y-0.5)); \
-							glNormal3dv(getNormalVector(p[0],p[1],p[2]).data); \
-							glVertex3dv(p[0].data); \
-							glNormal3dv(getNormalVector(p[1],p[3],p[0]).data); \
-							glVertex3dv(p[1].data); \
-							glNormal3dv(getNormalVector(p[2],p[0],p[3]).data); \
-							glVertex3dv(p[2].data); \
-							glNormal3dv( getNormalVector(p[3],p[2],p[1]).data ); \
-							glVertex3dv(p[3].data); \
-						} \
-						glEnd(); \
-					} 
-
-					/*
-					for (int j = 0; j < subdiv; j++)  
-					{ 
-						for (int i = 0; i < subdiv; i++)  
-						{ 
-						}
-					}
-					*/
-
-					SURFACE(1,8,0,11,20,9,2,13,3);
-					SURFACE(0,10,4,9,22,17,3,15,7);
-					SURFACE(4,16,5,17,25,18,7,19,6);
-					SURFACE(5,12,1,18,23,11,6,14,2);
-					SURFACE(7,19,6,15,24,14,3,13,2);
-					SURFACE(5,16,4,12,21,10,1,8,0);
-
-					#undef SURFACE
+					renderQuad9(nl[1],nl[8],nl[0],nl[11],nl[20],nl[9],nl[2],nl[13],nl[3]);
+					renderQuad9(nl[0],nl[10],nl[4],nl[9],nl[22],nl[17],nl[3],nl[15],nl[7]);
+					renderQuad9(nl[4],nl[16],nl[5],nl[17],nl[25],nl[18],nl[7],nl[19],nl[6]);
+					renderQuad9(nl[5],nl[12],nl[1],nl[18],nl[23],nl[11],nl[6],nl[14],nl[2]);
+					renderQuad9(nl[7],nl[19],nl[6],nl[15],nl[24],nl[14],nl[3],nl[13],nl[2]);
+					renderQuad9(nl[5],nl[16],nl[4],nl[12],nl[21],nl[10],nl[1],nl[8],nl[0]);
 				}
 
 				if(display_options.wireframe)
@@ -763,30 +828,21 @@ void GLWidget::paintElement(const fem::Element &element)
 					glColor3fv(colors->wireframe);
 
 					int subdiv = 10;	//TODO make this an option
-#define line(N0,N1,N2) \
-					glBegin(GL_LINE_STRIP); \
-					for(int i = 0; i <= subdiv; i++) \
-					{ \
-						float x = i/(float)subdiv; \
-						glVertex3dv( (2.0*nl[N2]*(x-0.5)*x-4.0*nl[N1]*(x-1)*x+2.0*nl[N0]*(x-1)*(x-0.5)).data); \
-					} \
-					glEnd();
 
-					line(0,8,1);
-					line(1, 11, 2);
-					line(2, 13, 3);
-					line(3, 9, 0);
+					renderLine3(nl[0],nl[8],nl[1]);
+					renderLine3(nl[1], nl[11], nl[2]);
+					renderLine3(nl[2], nl[13], nl[3]);
+					renderLine3(nl[3], nl[9], nl[0]);
 
-					line(4, 16, 5);
-					line(5, 18, 6);
-					line(6, 19, 7);
-					line(7, 17, 4);
+					renderLine3(nl[4], nl[16], nl[5]);
+					renderLine3(nl[5], nl[18], nl[6]);
+					renderLine3(nl[6], nl[19], nl[7]);
+					renderLine3(nl[7], nl[17], nl[4]);
 
-					line(0, 10, 4);
-					line(3, 15, 7);
-					line(2, 14, 6);
-					line(1, 12, 5);
-#undef line
+					renderLine3(nl[0], nl[10], nl[4]);
+					renderLine3(nl[3], nl[15], nl[7]);
+					renderLine3(nl[2], nl[14], nl[6]);
+					renderLine3(nl[1], nl[12], nl[5]);
 				}
 			}
 			break;

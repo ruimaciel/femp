@@ -281,6 +281,77 @@ inline void GLWidget::renderLine3(const fem::point &p1, const fem::point &p2, co
 }
 
 
+inline void GLWidget::renderQuad4(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, int partitions)
+{
+	// defining temporary structures for points and normal vectors
+	fem::point p_upper_row[partitions+1];
+	fem::point *pu;
+	fem::point n_upper_row[partitions+1];
+	fem::point *nu;
+	fem::point p_lower_row[partitions+1];
+	fem::point *pl;
+	fem::point n_lower_row[partitions+1];
+	fem::point *nl;
+
+	float x, y;
+	fem::point dndx;
+	fem::point dndy;
+
+	// position the pointers
+	pu = p_upper_row;
+	pl = p_lower_row;
+
+	nu = n_upper_row;
+	nl = n_lower_row;
+
+	// initialize the bottom row
+	y = 0;
+	for(int i = 0; i <= partitions; i++)
+	{
+		x = ((double)i)/partitions;
+		p_lower_row[i] = p4*x*y+p3*(1-x)*y+p2*x*(1-y)+p1*(1-x)*(1-y);
+
+		// and now set the normal vector
+		dndx = p4*y-p3*y+p2*(1-y)-p1*(1-y);
+		dndy = p4*x-p2*x+p3*(1-x)-p1*(1-x);
+		n_lower_row[i] = fem::cross_product(dndx, dndy);
+	}
+
+	// the rest of the loop
+	for (int j = 1; j <= partitions; j++)  
+	{ 
+		y = (double)j/partitions;
+		// and now let's render
+		glBegin(GL_TRIANGLE_STRIP);  
+		for (int i = 0; i <= partitions; i++)  
+		{ 
+			// get the upper row points and normal vectors
+			x = (double)i/partitions;
+			pu[i] = p4*x*y+p3*(1-x)*y+p2*x*(1-y)+p1*(1-x)*(1-y);
+
+			// and now set the normal vector
+			dndx = p4*y-p3*y+p2*(1-y)-p1*(1-y);
+			dndy = p4*x-p2*x+p3*(1-x)-p1*(1-x);
+
+			nu[i] = fem::cross_product(dndx, dndy);
+
+			// draw the triangles
+			glNormal3dv(nu[i].data);
+			glVertex3dv(pu[i].data);
+			glNormal3dv(nl[i].data);
+			glVertex3dv(pl[i].data);
+		} 
+		// swap buffer pointes
+		pl = pu;
+		pu = (pu == p_upper_row)?p_lower_row:p_upper_row;
+		nl = nu;
+		nu = (nu == n_upper_row)?n_lower_row:n_upper_row;
+
+		glEnd(); 
+	} 
+}
+
+
 inline void GLWidget::renderQuad9(const fem::point &p1, const fem::point &p2, const fem::point &p3, const fem::point &p4,const fem::point &p5, const fem::point &p6, const fem::point &p7, const fem::point &p8, const fem::point &p9, int partitions)
 {
 	// defining temporary structures for points and normal vectors
@@ -318,36 +389,13 @@ inline void GLWidget::renderQuad9(const fem::point &p1, const fem::point &p2, co
 	}
 
 	// the rest of the loop
-	for (int j = 0; j <= partitions; j++)  
+	for (int j = 1; j <= partitions; j++)  
 	{ 
 		y = (double)j/partitions;
 		// and now let's render
 		glBegin(GL_TRIANGLE_STRIP);  
 		for (int i = 0; i <= partitions; i++)  
 		{ 
-			/*
-			   float x = i/(float)partitions; 
-			   float y = (j+1)/(float)partitions; 
-			   fem::point p[4]; 
-			   p[0] = 16*p5*(1-x)*x*(1-y)*y - 8*p6*(0.5-x)*x*(1-y)*y + 8*p4*(0.5-x)*(1-x)*(1-y)*y - 8*p8*(1-x)*x*(0.5-y)*y + 4*p9*(0.5-x)*x*(0.5-y)*y - 4*p7*(0.5-x)*(1-x)*(0.5-y)*y + 8*p2*(1-x)*x*(0.5-y)*(1-y) - 4*p3*(0.5-x)*x*(0.5-y)*(1-y) + 4*p1*(0.5-x)*(1-x)*(0.5-y)*(1-y);
-
-			   y = j/(float)partitions; 
-			   p[1] = (4.0*p9*(x-0.5)*x*(y-0.5)*y-8.0*p8*(x-1)*x*(y-0.5)*y+4.0*p7*(x-1)*(x-0.5)*(y-0.5)*y-8.0*p6*(x-0.5)*x*(y-1)*y+16.0*p5*(x-1)*x*(y-1)*y-8.0*p4*(x-1)*(x-0.5)*(y-1)*y+4.0*p3*(x-0.5)*x*(y-1)*(y-0.5) -8.0*p2*(x-1)*x*(y-1)*(y-0.5)+4.0*p1*(x-1)*(x-0.5)*(y-1)*(y-0.5)); 
-			   x = (i+1)/(float)partitions; 
-			   y = (j+1)/(float)partitions; 
-			   p[2]=  (4.0*p9*(x-0.5)*x*(y-0.5)*y-8.0*p8*(x-1)*x*(y-0.5)*y+4.0*p7*(x-1)*(x-0.5)*(y-0.5)*y-8.0*p6*(x-0.5)*x*(y-1)*y+16.0*p5*(x-1)*x*(y-1)*y-8.0*p4*(x-1)*(x-0.5)*(y-1)*y+4.0*p3*(x-0.5)*x*(y-1)*(y-0.5) -8.0*p2*(x-1)*x*(y-1)*(y-0.5)+4.0*p1*(x-1)*(x-0.5)*(y-1)*(y-0.5)); 
-			   y = j/(float)partitions; 
-			   p[3] = (4.0*p9*(x-0.5)*x*(y-0.5)*y-8.0*p8*(x-1)*x*(y-0.5)*y+4.0*p7*(x-1)*(x-0.5)*(y-0.5)*y-8.0*p6*(x-0.5)*x*(y-1)*y+16.0*p5*(x-1)*x*(y-1)*y-8.0*p4*(x-1)*(x-0.5)*(y-1)*y+4.0*p3*(x-0.5)*x*(y-1)*(y-0.5) -8.0*p2*(x-1)*x*(y-1)*(y-0.5)+4.0*p1*(x-1)*(x-0.5)*(y-1)*(y-0.5)); 
-			   glNormal3dv(getNormalVector(p[0],p[1],p[2]).data); 
-			   glVertex3dv(p[0].data); 
-			   glNormal3dv(getNormalVector(p[1],p[3],p[0]).data); 
-			   glVertex3dv(p[1].data); 
-			   glNormal3dv(getNormalVector(p[2],p[0],p[3]).data); 
-			   glVertex3dv(p[2].data); 
-			   glNormal3dv( getNormalVector(p[3],p[2],p[1]).data ); 
-			   glVertex3dv(p[3].data); 
-			 */
-
 			// get the upper row points and normal vectors
 			x = (double)i/partitions;
 			pu[i] = 16.0*p5*(1-x)*x*(1-y)*y - 8.0*p6*(0.5-x)*x*(1-y)*y + 8.0*p4*(0.5-x)*(1-x)*(1-y)*y - 8.0*p8*(1-x)*x*(0.5-y)*y + 4.0*p9*(0.5-x)*x*(0.5-y)*y - 4.0*p7*(0.5-x)*(1-x)*(0.5-y)*y + 8.0*p2*(1-x)*x*(0.5-y)*(1-y) - 4.0*p3*(0.5-x)*x*(0.5-y)*(1-y) + 4.0*p1*(0.5-x)*(1-x)*(0.5-y)*(1-y);
@@ -362,14 +410,13 @@ inline void GLWidget::renderQuad9(const fem::point &p1, const fem::point &p2, co
 			glVertex3dv(pu[i].data);
 			glNormal3dv(nl[i].data);
 			glVertex3dv(pl[i].data);
-
-			// swap buffer pointes
-			pl = pu;
-			pu = (pu == p_upper_row)?p_lower_row:p_upper_row;
-
-			nl = nu;
-			nu = (nu == n_upper_row)?n_lower_row:n_upper_row;
 		} 
+		// swap buffer pointes
+		pl = pu;
+		pu = (pu == p_upper_row)?p_lower_row:p_upper_row;
+
+		nl = nu;
+		nu = (nu == n_upper_row)?n_lower_row:n_upper_row;
 		glEnd(); 
 	} 
 }
@@ -727,44 +774,16 @@ void GLWidget::paintElement(const fem::Element &element)
 					// set the color
 					glColor3fv(colors->hexahedron8);
 
-					glBegin(GL_QUADS);
-					// first surface
-					glNormal3dv(fem::getNormalVector(nl[0], nl[3], nl[2]).data);
-					glVertex3dv(nl[0].data);
-					glVertex3dv(nl[3].data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[1].data);
-					// second surface
-					glNormal3dv(fem::getNormalVector(nl[1], nl[2], nl[6]).data);
-					glVertex3dv(nl[1].data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[6].data);
-					glVertex3dv(nl[5].data);
-					// third surface
-					glNormal3dv(fem::getNormalVector(nl[5], nl[6], nl[7]).data);
-					glVertex3dv(nl[6].data);
-					glVertex3dv(nl[7].data);
-					glVertex3dv(nl[4].data);
-					glVertex3dv(nl[5].data);
-					// fourth surface
-					glNormal3dv(fem::getNormalVector(nl[4], nl[7], nl[3]).data);
-					glVertex3dv(nl[4].data);
-					glVertex3dv(nl[7].data);
-					glVertex3dv(nl[3].data);
-					glVertex3dv(nl[0].data);
-					// fifth surface, top
-					glNormal3dv(fem::getNormalVector(nl[2], nl[3], nl[7]).data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[3].data);
-					glVertex3dv(nl[7].data);
-					glVertex3dv(nl[6].data);
-					// sixth surface, bottom
-					glNormal3dv(fem::getNormalVector(nl[0], nl[1], nl[5]).data);
-					glVertex3dv(nl[0].data);
-					glVertex3dv(nl[1].data);
-					glVertex3dv(nl[5].data);
-					glVertex3dv(nl[4].data);
-					glEnd();
+					/*
+					renderQuad4(nl[0], nl[3], nl[2], nl[1]);
+					renderQuad4(nl[1], nl[2], nl[6], nl[5]);
+					*/
+					renderQuad4(nl[4], nl[5], nl[7], nl[6]);
+					/*
+					renderQuad4(nl[4], nl[7], nl[3], nl[0]);
+					renderQuad4(nl[2], nl[3], nl[7], nl[6]);
+					renderQuad4(nl[0], nl[1], nl[5], nl[4]);
+					*/
 				}
 
 				if(display_options.wireframe)

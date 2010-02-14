@@ -422,6 +422,93 @@ inline void GLWidget::renderQuad9(const fem::point &p1, const fem::point &p2, co
 }
 
 
+inline void GLWidget::renderTriangle3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions)
+{
+	fem::point temp;
+	temp = getNormalVector(p1,p2,p3);
+	glBegin(GL_TRIANGLES);
+	glNormal3dv(temp.data);
+	glVertex3dv(p1.data);
+	glVertex3dv(p2.data);
+	glVertex3dv(p3.data);
+	glEnd();
+}
+
+
+inline void GLWidget::renderTriangle6(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, const fem::point &p5, const fem::point &p6, int partitions)
+{
+	// defining temporary structures for points and normal vectors
+	fem::point p_upper_row[partitions+1];
+	fem::point *pu;
+	fem::point n_upper_row[partitions+1];
+	fem::point *nu;
+	fem::point p_lower_row[partitions+1];
+	fem::point *pl;
+	fem::point n_lower_row[partitions+1];
+	fem::point *nl;
+
+	float x, y;
+	fem::point dndx;
+	fem::point dndy;
+
+	// position the pointers
+	pu = p_upper_row;
+	pl = p_lower_row;
+
+	nu = n_upper_row;
+	nl = n_lower_row;
+
+	// initialize the bottom row
+	y = 0;
+	for(int i = 0; i <= partitions; i++)
+	{
+		x = ((double)i)/partitions;
+		p_lower_row[i] = p3*y*(2*y-1)+4*p6*(-y-x+1)*y+4*p5*x*y+p1*(2*(-y-x+1)-1)*(-y-x+1)+4*p4*x*(-y-x+1)+p2*x*(2*x-1);
+
+		// and now set the normal vector
+		dndx = -4*p6*y+4*p5*y+4*p4*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+p2*(2*x-1)-4*p4*x+2*p2*x;
+		dndy = p3*(2*y-1)-4*p6*y+2*p3*y+4*p6*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+4*p5*x-4*p4*x;
+		
+		n_lower_row[i] = fem::cross_product(dndx, dndy);
+	}
+
+	// the rest of the loop
+	for (int j = 1, i; j <= partitions; j++)  
+	{ 
+		y = (double)j/partitions;
+		// and now let's render
+		glBegin(GL_TRIANGLE_STRIP);  
+		for (i = 0; i <= (partitions-j); i++)  
+		{ 
+			// get the upper row points and normal vectors
+			x = (double)i/partitions;
+			pu[i] = p3*y*(2*y-1)+4*p6*(-y-x+1)*y+4*p5*x*y+p1*(2*(-y-x+1)-1)*(-y-x+1)+4*p4*x*(-y-x+1)+p2*x*(2*x-1);
+
+			// and now set the normal vector for the upper row
+			dndx = -4*p6*y+4*p5*y+4*p4*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+p2*(2*x-1)-4*p4*x+2*p2*x;
+			dndy = p3*(2*y-1)-4*p6*y+2*p3*y+4*p6*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+4*p5*x-4*p4*x;
+			nu[i] = fem::cross_product(dndx, dndy);
+
+			// draw the triangles
+			glNormal3dv(nu[i].data);
+			glVertex3dv(pu[i].data);
+			glNormal3dv(nl[i].data);
+			glVertex3dv(pl[i].data);
+		} 
+		glNormal3dv(nl[i].data);
+		glVertex3dv(pl[i].data);
+		glEnd(); 
+
+		// swap buffer pointes
+		pl = pu;
+		pu = (pu == p_upper_row)?p_lower_row:p_upper_row;
+
+		nl = nu;
+		nu = (nu == n_upper_row)?n_lower_row:n_upper_row;
+	} 
+}
+
+
 void GLWidget::generateDisplayLists()
 {
 	qWarning("generating display lists");
@@ -707,27 +794,11 @@ void GLWidget::paintElement(const fem::Element &element)
 						//TODO remove element
 						return;
 					}
-					glBegin(GL_TRIANGLES);
-					glNormal3dv(fem::getNormalVector(nl[0], nl[2], nl[1]).data);
-					glVertex3dv(nl[0].data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[1].data);
 
-					glNormal3dv(fem::getNormalVector(nl[0], nl[1], nl[3]).data);
-					glVertex3dv(nl[0].data);
-					glVertex3dv(nl[1].data);
-					glVertex3dv(nl[3].data);
-
-					glNormal3dv(fem::getNormalVector(nl[1], nl[2], nl[3]).data);
-					glVertex3dv(nl[1].data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[3].data);
-
-					glNormal3dv(fem::getNormalVector(nl[2], nl[0], nl[3]).data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[0].data);
-					glVertex3dv(nl[3].data);
-					glEnd();
+					renderTriangle3(nl[0], nl[2], nl[1]);
+					renderTriangle3(nl[0], nl[1], nl[3]);
+					renderTriangle3(nl[1], nl[2], nl[3]);
+					renderTriangle3(nl[2], nl[0], nl[3]);
 				}
 
 				// render the wireframe
@@ -752,6 +823,68 @@ void GLWidget::paintElement(const fem::Element &element)
 			}
 			break;
 
+		case fem::Element::FE_TETRAHEDRON10:
+			{
+				// set the node list
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[6])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[7])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[8])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[9])->second);
+
+				// render the surfaces
+				if(display_options.surfaces == 1)
+				{
+					// set the color
+					glColor3fv(colors->tetrahedron4);
+
+					if(element.nodes.size() != 10)
+					{
+						qWarning("error: invalid number of nodes for a FE_TETRAHEDRON10. it's %zd", element.nodes.size());
+						//TODO remove element
+						return;
+					}
+
+					renderTriangle6(nl[0], nl[3], nl[2], nl[7], nl[8], nl[6]);
+					renderTriangle6(nl[3], nl[1], nl[2], nl[9], nl[5], nl[8]);
+					renderTriangle6(nl[1], nl[0], nl[2], nl[4], nl[6], nl[5]);
+					renderTriangle6(nl[0], nl[1], nl[3], nl[4], nl[9], nl[7]);
+				}
+
+				// render the wireframe
+				if(display_options.wireframe == 1)
+				{
+					//TODO set color
+					glColor3fv(colors->wireframe);	
+
+					renderLine3(nl[0], nl[7], nl[3]);
+					renderLine3(nl[3], nl[9], nl[1]);
+					renderLine3(nl[1], nl[4], nl[0]);
+					renderLine3(nl[0], nl[6], nl[2]);
+					renderLine3(nl[2], nl[5], nl[1]);
+					renderLine3(nl[2], nl[8], nl[3]);
+					/*
+					glBegin(GL_LINE_STRIP);
+					glVertex3dv(nl[0].data);
+					glVertex3dv(nl[1].data);
+					glVertex3dv(nl[2].data);
+					glVertex3dv(nl[0].data);
+					glVertex3dv(nl[3].data);
+					glVertex3dv(nl[1].data);
+					glEnd();
+					glBegin(GL_LINES);
+					glVertex3dv(nl[3].data);
+					glVertex3dv(nl[2].data);
+					glEnd();
+					*/
+				}
+			}
+			break;
 		case fem::Element::FE_HEXAHEDRON8:
 			{
 				//GLfloat mapsurface[12];	// for the mapsurface

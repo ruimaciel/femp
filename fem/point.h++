@@ -62,12 +62,13 @@ namespace fem
     
         	
     		friend point operator +(const point &lhs, const point &rhs);
+    		friend point operator -(const point &lhs, const point &rhs);
     		friend point operator *(const double &s, const point &v);
     		friend point operator *(const point &v, const double &s);
     
     		friend point cross_product(const point &LHV, const point &RHV);      //assuming vector is 3D
     		friend double dot_product(const point &LHV, const point &RHV);
-		friend point getNormalVector(point &a, point &b, point &c);
+		friend point getNormalVector(const point &a, const point &b, const point &c);
     };
 
     point cross_product(const point &LHV, const point &RHV);      //assuming vector is 3D

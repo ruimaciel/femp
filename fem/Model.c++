@@ -653,36 +653,36 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 				L[2] = eta;
 
 				sf.resize(6);
-				sf[ 0] = L[0]*(1+zeta)/2.0;
-				sf[ 1] = L[1]*(1+zeta)/2.0;
-				sf[ 2] = L[2]*(1+zeta)/2.0;
-				sf[ 3] = L[3]*(1-zeta)/2.0;
-				sf[ 4] = L[4]*(1-zeta)/2.0;
-				sf[ 5] = L[5]*(1-zeta)/2.0;
+				sf[ 0] = L[0]*(1-zeta)/2.0;
+				sf[ 1] = L[1]*(1-zeta)/2.0;
+				sf[ 2] = L[2]*(1-zeta)/2.0;
+				sf[ 3] = L[0]*(1+zeta)/2.0;
+				sf[ 4] = L[1]*(1+zeta)/2.0;
+				sf[ 5] = L[2]*(1+zeta)/2.0;
 
 				dNdcsi.resize(6);
-				dNdcsi[ 0] = -(1+zeta)/2.0;
-				dNdcsi[ 1] = (1+zeta)/2.0;
+				dNdcsi[ 0] = -(1-zeta)/2.0;
+				dNdcsi[ 1] =  (1-zeta)/2.0;
 				dNdcsi[ 2] = 0;
-				dNdcsi[ 3] = -(1-zeta)/2.0;
-				dNdcsi[ 4] =  (1-zeta)/2.0;
+				dNdcsi[ 3] = -(1+zeta)/2.0;
+				dNdcsi[ 4] =  (1+zeta)/2.0;
 				dNdcsi[ 5] = 0;
 
 				dNdeta.resize(6);
-				dNdeta[ 0] = -(1+zeta)/2.0;
+				dNdeta[ 0] = -(1-zeta)/2.0;
 				dNdeta[ 1] = 0;
-				dNdeta[ 2] = (1+zeta)/2.0;
-				dNdeta[ 3] = -(1-zeta)/2.0;
+				dNdeta[ 2] = (1-zeta)/2.0;
+				dNdeta[ 3] = -(1+zeta)/2.0;
 				dNdeta[ 4] = 0;
-				dNdeta[ 5] = (1-zeta)/2.0;
+				dNdeta[ 5] = (1+zeta)/2.0;
 
 				dNdzeta.resize(6);
-				dNdzeta[ 0] = L[0]/2.0;
-				dNdzeta[ 1] = L[1]/2.0;
-				dNdzeta[ 2] = L[2]/2.0;
-				dNdzeta[ 3] = -L[0]/2.0;
-				dNdzeta[ 4] = -L[1]/2.0;
-				dNdzeta[ 5] = -L[2]/2.0;
+				dNdzeta[ 0] = -L[0]/2.0;
+				dNdzeta[ 1] = -L[1]/2.0;
+				dNdzeta[ 2] = -L[2]/2.0;
+				dNdzeta[ 3] = L[0]/2.0;
+				dNdzeta[ 4] = L[1]/2.0;
+				dNdzeta[ 5] = L[2]/2.0;
 				break;
 
 		default:

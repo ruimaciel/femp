@@ -791,6 +791,7 @@ enum Document::Error Document::load()
 
 									default:
 										qWarning("unknown element type");
+										return ERR_PARSER_ERROR;
 										//TODO return to sane point
 										break;
 								}
@@ -987,6 +988,9 @@ enum Document::Error Document::save()
 				out << "\"hexahedron28\", ";
 				break;
 
+			case fem::Element::FE_PRISM6:
+				out << "\"prism6\", ";
+				break;
 
 			default:
 				//TODO finish this

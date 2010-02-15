@@ -885,6 +885,7 @@ void GLWidget::paintElement(const fem::Element &element)
 				}
 			}
 			break;
+
 		case fem::Element::FE_HEXAHEDRON8:
 			{
 				//GLfloat mapsurface[12];	// for the mapsurface
@@ -1000,6 +1001,57 @@ void GLWidget::paintElement(const fem::Element &element)
 					renderLine3(nl[3], nl[15], nl[7]);
 					renderLine3(nl[2], nl[14], nl[6]);
 					renderLine3(nl[1], nl[12], nl[5]);
+				}
+			}
+			break;
+
+		case fem::Element::FE_PRISM6:
+			{
+				// set the node list
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
+
+				// render the surfaces
+				if(display_options.surfaces == 1)
+				{
+					// set the color
+					glColor3fv(colors->prism6);
+
+					if(element.nodes.size() != 6)
+					{
+						qWarning("error: invalid number of nodes for a FE_PRISM6. it's %zd", element.nodes.size());
+						//TODO remove element
+						return;
+					}
+
+					//TODO check surface orientation
+					renderTriangle3(nl[2], nl[1], nl[0]);
+					renderTriangle3(nl[4], nl[5], nl[3]);
+					renderQuad4(nl[3], nl[0], nl[4], nl[1]);
+					renderQuad4(nl[5], nl[2], nl[3], nl[0]);
+					renderQuad4(nl[4], nl[1], nl[5], nl[2]);
+
+				}
+
+				// render the wireframe
+				if(display_options.wireframe == 1)
+				{
+					//TODO set color
+					glColor3fv(colors->wireframe);	
+
+					//TODO set wireframe
+					/*
+					renderLine3(nl[0], nl[7], nl[3]);
+					renderLine3(nl[3], nl[9], nl[1]);
+					renderLine3(nl[1], nl[4], nl[0]);
+					renderLine3(nl[0], nl[6], nl[2]);
+					renderLine3(nl[2], nl[5], nl[1]);
+					renderLine3(nl[2], nl[8], nl[3]);
+					*/
 				}
 			}
 			break;

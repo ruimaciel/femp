@@ -646,6 +646,45 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 			dNdzeta[26] =  -(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta+1)-(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1);
 				break;
 
+		case Element::FE_PRISM6:
+				double L[3];
+				L[0] = 1-csi-eta;
+				L[1] = csi;
+				L[2] = eta;
+
+				sf.resize(6);
+				sf[ 0] = L[0]*(1+zeta)/2.0;
+				sf[ 1] = L[1]*(1+zeta)/2.0;
+				sf[ 2] = L[2]*(1+zeta)/2.0;
+				sf[ 3] = L[3]*(1-zeta)/2.0;
+				sf[ 4] = L[4]*(1-zeta)/2.0;
+				sf[ 5] = L[5]*(1-zeta)/2.0;
+
+				dNdcsi.resize(6);
+				dNdcsi[ 0] = -(1+zeta)/2.0;
+				dNdcsi[ 1] = (1+zeta)/2.0;
+				dNdcsi[ 2] = 0;
+				dNdcsi[ 3] = -(1-zeta)/2.0;
+				dNdcsi[ 4] =  (1-zeta)/2.0;
+				dNdcsi[ 5] = 0;
+
+				dNdeta.resize(6);
+				dNdeta[ 0] = -(1+zeta)/2.0;
+				dNdeta[ 1] = 0;
+				dNdeta[ 2] = (1+zeta)/2.0;
+				dNdeta[ 3] = -(1-zeta)/2.0;
+				dNdeta[ 4] = 0;
+				dNdeta[ 5] = (1-zeta)/2.0;
+
+				dNdzeta.resize(6);
+				dNdzeta[ 0] = L[0]/2.0;
+				dNdzeta[ 1] = L[1]/2.0;
+				dNdzeta[ 2] = L[2]/2.0;
+				dNdzeta[ 3] = -L[0]/2.0;
+				dNdzeta[ 4] = -L[1]/2.0;
+				dNdzeta[ 5] = -L[2]/2.0;
+				break;
+
 		default:
 			//TODO this part should never be reached
 			break;
@@ -817,7 +856,7 @@ std::vector<boost::tuple<fem::point, double> > Model::integration_points(const E
 						break;
 
 					default:
-						//TODO
+						//TODO add error handling code
 						break;
 				}
 		
@@ -846,6 +885,40 @@ std::vector<boost::tuple<fem::point, double> > Model::integration_points(const E
 				}
 			}
 			break;
+
+		case Element::FE_PRISM6:
+		d = (degree == 0)?2:degree;
+			{
+				switch(d)
+				{
+					case 1:
+					{
+						ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3,0), 1*2/2));
+					}
+					break;
+
+					case 2:
+						ips.push_back(tuple<fem::point,double>(fem::point(2.0/3,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
+						ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,2.0/3,-1.0/sqrt(3)), (1.0/3)*1/2));
+						ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
+						ips.push_back(tuple<fem::point,double>(fem::point(2.0/3,1.0/6, 1.0/sqrt(3)), (1.0/3)*1/2));
+						ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,2.0/3, 1.0/sqrt(3)), (1.0/3)*1/2));
+						ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,1.0/6, 1.0/sqrt(3)), (1.0/3)*1/2));
+					break;
+
+					/*
+					case 3:
+					TODO add integration points
+					break
+					*/
+
+					default:
+					//TODO
+					break;
+				}
+			}
+			break;
+
 
 		default:
 			std::cerr << "Model::integration_points(): unsupported element" << std::endl;

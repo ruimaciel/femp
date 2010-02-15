@@ -16,6 +16,7 @@ struct ViewportColors {
 	GLfloat tetrahedron10[3];
 	GLfloat hexahedron8[3];
 	GLfloat hexahedron27[3];
+	GLfloat prism6[3];
 };
 
 

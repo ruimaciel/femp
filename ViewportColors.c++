@@ -14,6 +14,7 @@ ViewportColors::ViewportColors ()
 	INIT_ELEMENT(tetrahedron10);
 	INIT_ELEMENT(hexahedron8);
 	INIT_ELEMENT(hexahedron27);
+	INIT_ELEMENT(prism6);
 
 	#undef INIT_ELEMENT
 }
@@ -36,6 +37,7 @@ ViewportColors::ViewportColors (const ViewportColors &copied)
 	SET_COLOR(tetrahedron10);
 	SET_COLOR(hexahedron8);
 	SET_COLOR(hexahedron27);
+	SET_COLOR(prism6);
 
 	#undef SET_COLOR
 }

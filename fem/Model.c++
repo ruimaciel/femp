@@ -102,6 +102,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 	matrix<double> Bt;
 	boost::tuple< std::vector<double>, std::vector<double>, std::vector<double>,std::vector<double> > sf;	// tuple: sf, dNdcsi, dNdeta, dNdzeta
 	int nnodes;	// number of nodes
+	std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;	// the location matrix
 
 
 	//build a list of constitutive matrices
@@ -109,6 +110,10 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 	{
 		D_list.push_back(material->generateD());
 	}
+
+	// build the location matrix, for the degrees of freedom
+	//TODO finish
+	lm = make_location_matrix();
 
 	// generate stiffness matrix by cycling through all elements in the model
 	for(std::vector<Element>::iterator element = element_list.begin(); element != element_list.end(); element++)
@@ -129,6 +134,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 		k_elem.clear();
 		f_elem.clear();
 		B.clear();
+
 
 		// cycle through the number of integration points
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl.begin(); i != ipwpl.end(); i++)
@@ -152,7 +158,6 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 				J(1,0) += dNdeta(n)*X(n);	J(1,1) += dNdeta(n)*Y(n);	J(1,2) += dNdeta(n)*Z(n);
 				J(2,0) += dNdzeta(n)*X(n);	J(2,1) += dNdzeta(n)*Y(n);	J(2,2) += dNdzeta(n)*Z(n);
 			}
-			cout << J << endl;
 
 			detJ = det3by3(J);
 			invJ = invert3by3(J,detJ);
@@ -206,13 +211,15 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 			for(int n = 0; n < nnodes; n++)
 			{
 #define N(n) sf.get<0>()[n]
+			//TODO implement domain nodes
 
 #undef N
 			}
-			std::cout << B << std::endl;
+			//std::cout << B << std::endl;
 		}
+
 		//output
-		std::cout << k_elem << std::endl;
+		//std::cout << k_elem << std::endl;
 	}
 
 
@@ -930,5 +937,38 @@ std::vector<boost::tuple<fem::point, double> > Model::integration_points(const E
 	return ips;
 }
 
+
+std::map<size_t, boost::tuple<size_t,size_t,size_t> > Model::make_location_matrix()
+{
+	std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;	// the location matrix
+	size_t dof = 1;	// degree of freedom count, the 0 value is interpreted as a prescribed movement
+
+	for(std::map<size_t, fem::Node>::iterator i = node_list.begin(); i != node_list.end(); i++)
+	{
+		
+		if(node_restrictions_list.find(i->first) == node_restrictions_list.end())
+		{
+			// there are no node restrictions set for this node
+			lm[i->first].get<0>() = dof++;
+			lm[i->first].get<1>() = dof++;
+			lm[i->first].get<2>() = dof++;
+		}
+		else
+		{
+			// there are some node restrictions set for this node
+			if(node_restrictions_list[i->first].dx() == false)
+				lm[i->first].get<0>() = dof++;
+			if(node_restrictions_list[i->first].dy() == false)
+				lm[i->first].get<1>() = dof++;
+			if(node_restrictions_list[i->first].dz() == false)
+				lm[i->first].get<2>() = dof++;
+		}
+
+		//TEST CODE: REMOVE
+		// std::cout << "Node " << i->first << ": x[" << lm[i->first].get<0>() << "], y[" << lm[i->first].get<1>() << "], z[" << lm[i->first].get<2>() << "]" << std::endl;
+	}
+
+	return lm;
+}
 
 }

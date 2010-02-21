@@ -40,7 +40,7 @@ class Model {
 		std::map<size_t, Node> 	node_list;
 		std::vector<Element> 	element_list;
 		std::vector<Material> 	material_list;
-		std::map<size_t, NodeRestrictions>	node_restrictions_list;
+		std::map<size_t, NodeRestrictions>	node_restrictions_list;	// the node restrictions aren't stored in the Node class in order to save up memory
 		std::vector<LoadPattern>	load_pattern_list;
 
 	public:
@@ -119,6 +119,13 @@ class Model {
 
 
 		/**
+		Performs a sanity check on the model
+		@retur ERR_OK if all is well, other error code if something bad happened
+		**/
+		enum Model::Error sanity_check();
+
+	private:
+		/**
 		Given an element type and the desired degree, returns a list Gauss quadrature integration points
 		@param type	element type
 		@param degree	integration degree
@@ -126,12 +133,10 @@ class Model {
 		**/
 		std::vector<boost::tuple<fem::point, double> > integration_points(const Element::Type &type, const int &degree = 0); 
 
-
 		/**
-		Performs a sanity check on the model
-		@retur ERR_OK if all is well, other error code if something bad happened
+		Builds the location matrix, a map between the node number and a 3-tuple holding the degree of freedom reference numbers for each degree of freedom
 		**/
-		enum Model::Error sanity_check();
+		std::map<size_t, boost::tuple<size_t,size_t,size_t> > make_location_matrix();
 };
 
 }

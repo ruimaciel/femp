@@ -135,8 +135,13 @@ class Model {
 
 		/**
 		Builds the location matrix, a map between the node number and a 3-tuple holding the degree of freedom reference numbers for each degree of freedom
+		@return a 2-tuple consisting of a map between the node reference number and it's corresponding degree of freedom references and a number of the total number of dof 
 		**/
-		std::map<size_t, boost::tuple<size_t,size_t,size_t> > make_location_matrix();
+		boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  make_location_matrix();
+
+
+
+		void add_k_elem_to_kg(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element);
 };
 
 }

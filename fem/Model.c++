@@ -112,8 +112,15 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 	}
 
 	// build the location matrix, for the degrees of freedom
-	//TODO finish
-	lm = make_location_matrix();
+	{
+		boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  temp;
+		temp = make_location_matrix();
+		lm =  temp.get<0>();
+
+		// resize the global stiffness matrix and global force vector, don't preserve
+		f.k.resize(temp.get<1>(), temp.get<1>(), false);
+		f.f.resize(temp.get<1>(), false);
+	}
 
 	// generate stiffness matrix by cycling through all elements in the model
 	for(std::vector<Element>::iterator element = element_list.begin(); element != element_list.end(); element++)
@@ -219,16 +226,20 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 		}
 
 		//output
-		//std::cout << k_elem << std::endl;
+		std::cout << k_elem << std::endl;
+		// add to the global stiffness matrix, 
+		add_k_elem_to_kg(k_elem, f, lm, *element);
+
 	}
 
 
 	// now set up the equivalent forces vector
 
 	// set nodal forces
+	/*
 	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
 	{
-		//TODO must implement the scatter operation
+		//TODO must implement the scatter operation according to the LM map
 		size_t n;
 		n = nodal_load->first;
 
@@ -237,6 +248,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 		f.f[3*n+1] = nodal_load->second.force.data[1];
 		f.f[3*n+2] = nodal_load->second.force.data[2];
 	}
+	*/
 
 	// fem equation is set.
 	return ERR_OK;
@@ -938,11 +950,12 @@ std::vector<boost::tuple<fem::point, double> > Model::integration_points(const E
 }
 
 
-std::map<size_t, boost::tuple<size_t,size_t,size_t> > Model::make_location_matrix()
+boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  Model::make_location_matrix()
 {
 	std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;	// the location matrix
 	size_t dof = 1;	// degree of freedom count, the 0 value is interpreted as a prescribed movement
 
+	// iterate through the node list
 	for(std::map<size_t, fem::Node>::iterator i = node_list.begin(); i != node_list.end(); i++)
 	{
 		
@@ -968,7 +981,75 @@ std::map<size_t, boost::tuple<size_t,size_t,size_t> > Model::make_location_matri
 		// std::cout << "Node " << i->first << ": x[" << lm[i->first].get<0>() << "], y[" << lm[i->first].get<1>() << "], z[" << lm[i->first].get<2>() << "]" << std::endl;
 	}
 
-	return lm;
+	dof--;	// avoid the off by one error in resizing K_g and f_g
+
+	for(std::map<size_t, boost::tuple<size_t,size_t,size_t> >::iterator i = lm.begin(); i != lm.end(); i++)
+	{
+		std::cout << "node: " << i->first << "\tdof[" << i->second.get<0>() << ", " << i->second.get<1>() << ", " << i->second.get<2>() << "]" << std::endl;
+	}
+
+	return  boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>(lm,dof);
+}
+
+
+inline void Model::add_k_elem_to_kg(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
+{
+	using namespace std;	//TODO remove cleanup code
+
+	assert(k_elem.size1() == element.nodes.size()*3);
+	assert(k_elem.size2() == element.nodes.size()*3);
+
+	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator idof, jdof;	// degrees of freedom for the line and column 
+	size_t id[3], jd[3]; // boost::tuple, being a template, doesn't accept non-const parameters.  This is a way to sidestep it
+
+	boost::tuple<size_t,size_t,size_t> dof;
+	for(size_t i = 0; i < element.nodes.size(); i++)
+	{
+		// if all three DoF of this node are prescribed then they aren't added to K_g
+		idof = lm.find(element.nodes[i]);
+		if(idof  == lm.end()) // no entry in lm means all 3 DoF are prescribed
+			continue;
+
+		// get the global DoF
+		id[0] = idof->second.get<0>();
+		id[1] = idof->second.get<1>();
+		id[2] = idof->second.get<2>();
+
+		// the node has non-prescribed DoF
+		for(size_t j = 0; j < element.nodes.size(); j++)
+		{
+			// if all three DoF of this node are prescribed then they aren't added to K_g
+			jdof = lm.find(element.nodes[j]);
+			if(jdof == lm.end()) // no entry in lm means all 3 DoF are prescribed
+				continue;
+
+			// get the global DoF
+			jd[0] = jdof->second.get<0>();
+			jd[1] = jdof->second.get<1>();
+			jd[2] = jdof->second.get<2>();
+
+			//now let's cycle this node's stiffness sub-matrix
+			// get the degrees of freedom for this node
+			cout << "begin node [" << i << "," << j << "]" << endl;
+			for(int u = 0; u < 3; u++)
+			{
+				// add the remaining elements
+				for(int v = 0; v < 3; v++)
+				{
+					//cout << "id[u]: " << id[u] << ", jd[v]: " << jd[v] << endl;
+					if( (id[u] != 0) && (jd[v] != 0) )
+					{
+						std::cout << "k_elem[" << 3*i+u << ", " << 3*j+v << "] => K[" << id[u]-1 << ", " << jd[v]-1 << "] += " << k_elem(3*i+u, 3*j+v) << std::endl;
+						f.k(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
+					}
+				}
+			}
+			cout << "end node [" << i << "," << j << "]" << endl;
+		}
+	}
+
+	std::cout << "testing matrix" << std::endl;
+	std::cout << f.k << std::endl;
 }
 
 }

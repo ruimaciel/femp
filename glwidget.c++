@@ -908,16 +908,13 @@ void GLWidget::paintElement(const fem::Element &element)
 					// set the color
 					glColor3fv(colors->hexahedron8);
 
-					/*
+					// render the hexahedron's 6 surfaces
 					renderQuad4(nl[0], nl[3], nl[2], nl[1]);
 					renderQuad4(nl[1], nl[2], nl[6], nl[5]);
-					*/
 					renderQuad4(nl[4], nl[5], nl[7], nl[6]);
-					/*
 					renderQuad4(nl[4], nl[7], nl[3], nl[0]);
 					renderQuad4(nl[2], nl[3], nl[7], nl[6]);
 					renderQuad4(nl[0], nl[1], nl[5], nl[4]);
-					*/
 				}
 
 				if(display_options.wireframe)

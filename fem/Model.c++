@@ -228,7 +228,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 		//output
 		std::cout << k_elem << std::endl;
 		// add to the global stiffness matrix, 
-		add_k_elem_to_kg(k_elem, f, lm, *element);
+		add_k_elem_to_kg(k_elem, f_elem, f, lm, *element);
 
 	}
 
@@ -236,7 +236,6 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 	// now set up the equivalent forces vector
 
 	// set nodal forces
-	/*
 	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
 	{
 		//TODO must implement the scatter operation according to the LM map
@@ -244,11 +243,19 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 		n = nodal_load->first;
 
 		// set the nodal loads
-		f.f[3*n] = nodal_load->second.force.data[0];
-		f.f[3*n+1] = nodal_load->second.force.data[1];
-		f.f[3*n+2] = nodal_load->second.force.data[2];
+		if(lm[n].get<0>() != 0)
+			f.f[lm[n].get<0>()-1] += nodal_load->second.x();
+		if(lm[n].get<1>() != 0)
+			f.f[lm[n].get<1>()-1] += nodal_load->second.y();
+		if(lm[n].get<2>() != 0)
+			f.f[lm[n].get<2>()-1] += nodal_load->second.z();
 	}
-	*/
+
+	// testing
+	std::cout << "testing matrix" << std::endl;
+	std::cout << f.k << std::endl;
+	std::cout << "testing vector" << std::endl;
+	std::cout << f.f << std::endl;
 
 	// fem equation is set.
 	return ERR_OK;
@@ -992,7 +999,7 @@ boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  Mod
 }
 
 
-inline void Model::add_k_elem_to_kg(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
+inline void Model::add_k_elem_to_kg(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, const boost::numeric::ublas::mapped_vector<double> &f_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
 {
 	using namespace std;	//TODO remove cleanup code
 
@@ -1046,10 +1053,17 @@ inline void Model::add_k_elem_to_kg(const boost::numeric::ublas::symmetric_matri
 			}
 			cout << "end node [" << i << "," << j << "]" << endl;
 		}
+
+		// and now let's process f_elem
+		for(int u = 0; u < 3; u++)
+		{
+			if(id[u] != 0)
+			{
+				f.f(id[u]-1) += f_elem(3*i+u);
+			}
+		}
 	}
 
-	std::cout << "testing matrix" << std::endl;
-	std::cout << f.k << std::endl;
 }
 
 }

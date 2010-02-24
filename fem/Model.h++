@@ -140,8 +140,8 @@ class Model {
 		boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  make_location_matrix();
 
 
-
-		void add_k_elem_to_kg(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element);
+		//TODO get a better name
+		void add_k_elem_to_kg(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, const boost::numeric::ublas::mapped_vector<double> &f_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element);
 };
 
 }

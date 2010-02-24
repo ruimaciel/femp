@@ -143,7 +143,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 		B.clear();
 
 
-		// cycle through the number of integration points
+		// build the element stiffness matrix: cycle through the number of integration points
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl.begin(); i != ipwpl.end(); i++)
 		{
 #define X(N) node_list[element->nodes[N]].x()
@@ -212,16 +212,29 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 
 
 			// check if there is a domain load associated with this element
-			// size_t d = distance(lp.domain_loads.begin(), element);
 
-			// integrate the domain loads
-			for(int n = 0; n < nnodes; n++)
+			// integrate the domain loads, if it is defined
+			// get the current element's index
+			size_t element_index = distance(element_list.begin(), element);
+			//TODO check why ::iterator doesn't compile
+			std::map<size_t,DomainLoad>::const_iterator dli;	// domain load iterator
+
+			dli = lp.domain_loads.find(element_index);
+			if(dli != lp.domain_loads.end())
 			{
+				for(int n = 0; n < nnodes; n++)
+				{
 #define N(n) sf.get<0>()[n]
-			//TODO implement domain nodes
-
+#define W    i->get<1>()
+					//TODO implement domain nodes
+					f_elem(3*n) += N(n)*dli->second.force.x()*detJ*W;
+					f_elem(3*n+1) += N(n)*dli->second.force.y()*detJ*W;
+					f_elem(3*n+2) += N(n)*dli->second.force.z()*detJ*W;
+#undef W
 #undef N
+				}
 			}
+
 			//std::cout << B << std::endl;
 		}
 
@@ -267,21 +280,21 @@ boost::numeric::ublas::matrix<double> Model::invert3by3(const boost::numeric::ub
 	assert(M.size2() == 3);
 	assert(det > 0);
 	/*
-(%i1) M: matrix([a,b,c],[d,e,f],[g,h,i]);
+	   (%i1) M: matrix([a,b,c],[d,e,f],[g,h,i]);
 	   [ a  b  c ]
 	   [         ]
-(%o1)      [ d  e  f ]
+	   (%o1)      [ d  e  f ]
 	   [         ]
 	   [ g  h  i ]
 
-(%i2) N: invert(M), detout;
+	   (%i2) N: invert(M), detout;
 	   [ e i - f h  c h - b i  b f - c e ]
 	   [                                 ]
 	   [ f g - d i  a i - c g  c d - a f ]
 	   [                                 ]
 	   [ d h - e g  b g - a h  a e - b d ]
-(%o2) ---------------------------------------------
-      a (e i - f h) + b (f g - d i) + c (d h - e g)
+	   (%o2) ---------------------------------------------
+	   a (e i - f h) + b (f g - d i) + c (d h - e g)
 	 */
 
 	boost::numeric::ublas::matrix<double> invJ(3,3);
@@ -896,6 +909,7 @@ std::vector<boost::tuple<fem::point, double> > Model::integration_points(const E
 		d = (degree == 0)?3:degree;
 			{
 				double x[d], w[d];	// for the Gauss-Legendre integration points and weights
+				//TODO replace with list of values
 				// get the Gauss-Legendre integration points and weights
 				gauleg(x,w,d);
 

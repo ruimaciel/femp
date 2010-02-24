@@ -14,6 +14,11 @@ namespace fem
 			NodalLoad (const NodalLoad &);
 			~NodalLoad ();
 
+
+			double x()	const {return force.x();};
+			double y()	const {return force.y();};
+			double z()	const {return force.z();};
+
 	};
 }
 

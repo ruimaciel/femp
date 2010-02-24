@@ -238,7 +238,6 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 	// set nodal forces
 	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
 	{
-		//TODO must implement the scatter operation according to the LM map
 		size_t n;
 		n = nodal_load->first;
 
@@ -251,7 +250,7 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 			f.f[lm[n].get<2>()-1] += nodal_load->second.z();
 	}
 
-	// testing
+	//TODO remove testing code
 	std::cout << "testing matrix" << std::endl;
 	std::cout << f.k << std::endl;
 	std::cout << "testing vector" << std::endl;
@@ -713,6 +712,7 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 
 		default:
 			//TODO this part should never be reached
+			assert(false);
 			break;
 	}
 #undef csi
@@ -883,6 +883,7 @@ std::vector<boost::tuple<fem::point, double> > Model::integration_points(const E
 
 					default:
 						//TODO add error handling code
+						assert(false);
 						break;
 				}
 		
@@ -940,6 +941,7 @@ std::vector<boost::tuple<fem::point, double> > Model::integration_points(const E
 
 					default:
 					//TODO
+					assert(false);
 					break;
 				}
 			}

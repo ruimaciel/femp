@@ -648,7 +648,6 @@ enum Document::Error Document::load()
 							size_t n = 0;	// temporary element reference
 							QString temp;	// temporary string for the number conversion
 							fem::point force;	// temporary nodal force
-							std::vector<fem::point> force_list;	// a temporary vector for the nodal components of the domain force
 
 							// extract all domain load definitions
 							for(json_t *nlc = c->child->child; nlc != NULL; nlc = nlc->next)
@@ -665,6 +664,7 @@ enum Document::Error Document::load()
 								temp = nltc->child->text;
 								n = temp.toLongLong();	// and we have the element reference
 
+								/*
 								// extract the number of expected nodes for this particular element type
 								size_t nodes;	// to store the expected number of nodes
 								switch(model.element_list[n].type)
@@ -795,37 +795,30 @@ enum Document::Error Document::load()
 										//TODO return to sane point
 										break;
 								}
+								*/
 
 								PTEST(nltc->next != NULL);
 								nltc = nltc->next;
-								PTEST(QString::compare(nltc->text,"forces") == 0);
+								PTEST(QString::compare(nltc->text,"force") == 0);
 								PMOVE_TOCHILD_TYPE(nltc,JSON_ARRAY);
 
 								// now cycle through all force vectors
-								force_list.clear();
-								for(nltc = nltc->child; nltc != NULL; nltc = nltc->next)
-								{
-									json_t *dlf = nltc;
-									PTEST(dlf->type == JSON_ARRAY);
 
 									// extract the force components
-									PMOVE_TOCHILD_TYPE(dlf,JSON_NUMBER);
-									temp = dlf->text;
+									PMOVE_TOCHILD_TYPE(nltc,JSON_NUMBER);
+									temp = nltc->text;
 									force.x(temp.toDouble());	// force XX component was obtained
-									PMOVE_TONEXT_TYPE(dlf,JSON_NUMBER);
-									temp = dlf->text;
+									PMOVE_TONEXT_TYPE(nltc,JSON_NUMBER);
+									temp = nltc->text;
 									force.y(temp.toDouble());	// force YY componet was obtained
-									PMOVE_TONEXT_TYPE(dlf,JSON_NUMBER);
-									temp = dlf->text;
+									PMOVE_TONEXT_TYPE(nltc,JSON_NUMBER);
+									temp = nltc->text;
 									force.z(temp.toDouble());	// force ZZ componet was obtained
 
-									PTEST(dlf->next == NULL);
+									PTEST(nltc->next == NULL);
 
 									// all info extracted
-									force_list.push_back(force);
-								}
-								PTEST(force_list.size() == nodes);	// the domain load must be defined in all of the element's nodes
-								lp.addDomainLoad(n, force_list);
+								lp.addDomainLoad(n, force);
 							}
 						}
 						if(c->next == NULL)	// no more entries
@@ -1090,14 +1083,7 @@ enum Document::Error Document::save()
 				out << "\n\t\t\t{";
 				out << "\"element\":" << n->first;
 				out << ", ";
-				out << "\"forces\": [";
-				for(std::vector<fem::point>::iterator i = n->second.force_shape.begin(); i != n->second.force_shape.end(); i++)
-				{
-					if(i != n->second.force_shape.begin())
-						out << ",";
-					out << "[" << i->x() << "," << i->y() << "," << i->z() << "]";
-				}
-				out << "]";
+				out << "\"force\": [" << n->second.force.x() << "," << n->second.force.y() << "," << n->second.force.z() << "]";
 				out << "}";
 			}
 			out << "\n\t\t\t]\n";

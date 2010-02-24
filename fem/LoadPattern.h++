@@ -41,7 +41,7 @@ namespace fem
 			@param element	element that will get a new domain load definition
 			@param force_shape	a list of forces acting on each of the element's nodes
 			**/
-			void addDomainLoad(size_t element, std::vector<point> force_shape);
+			void addDomainLoad(size_t element, point force);
 	};
 }
 

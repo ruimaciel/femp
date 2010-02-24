@@ -11,7 +11,7 @@ namespace fem
 class DomainLoad
 {
 	public:
-		std::vector<point> force_shape;	// force values on each of the element's nodes, which are interpolated across the domain
+		point force;	// force value for the entire element
 
 	public:
 		DomainLoad();

@@ -15,18 +15,19 @@
 	{"type":"tetrahedron4", "nodes":[1,2,3,4], "material": 0}
 	],
 "node restrictions": [
-		{ "node":1, "dx":true, "dy":true, "dz":true},
+		{ "node":2, "dx":true, "dy":true, "dz":true},
 	],
 "load patterns":[
 		{	"label": "First test pattern",
 		"nodal loads":[
-			{"node":1, "force":[3, 2, 0]}
+			{"node":1, "force":[3, 2, 0]},
+			{"node":3, "force":[6, 4, 1]}
 		],
 		"node displacements":[
 			{"node":1, "displacement":[0, 0, 0]}
 		],
 		"domain loads":[
-			{"element":0, "forces": [[1,1,1],[1,1,1],[1,1,1],[1,1,1]]}
+			{"element":0, "force": [1,1,1]}
 			]
 		}
 	],

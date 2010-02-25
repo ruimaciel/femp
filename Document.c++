@@ -102,6 +102,7 @@ enum Document::Error Document::load()
 			break;
 	}
 
+	// JSON document successfully parsed. Now let's extract stuff from it
 	#define PTEST(TEST) {if(!(TEST)){qWarning("PERROR line %d: " #TEST, __LINE__); return ERR_PARSER_ERROR;} }
 	#define PMOVE(TO)	{ PTEST(TO != NULL); cursor = TO; }
 	#define PMOVE_TYPE(CURSOR,TO,TYPE)	{ PTEST(TO != NULL); PTEST(TO->type != TYPE); CURSOR = TO; }
@@ -252,7 +253,6 @@ enum Document::Error Document::load()
 			PTEST(ec->child->type == JSON_STRING);	// value of label "type" must be a string
 			
 			// identify this type and act accordingly
-			qWarning("type: %s",ec->child->text);
 			switch(type = fem::Element::extractType(ec->child->text) )
 			{
 				case fem::Element::FE_LINE2:

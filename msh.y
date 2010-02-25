@@ -179,19 +179,25 @@ ElementsLines:
 	;
 
 ElementLine:	INTEGER EL_LINE2 Tags INTEGER INTEGER '\n'	{ 
+	/*
 	temp.clear(); temp.reserve(2);
 	temp.push_back($4), temp.push_back($5); 
 	model.pushElement(fem::Element::FE_LINE2,temp);
+	*/
 	}
 	|	INTEGER EL_TRIANGLE3 Tags INTEGER INTEGER INTEGER '\n' {
+	/*
 	temp.clear(); temp.reserve(3);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6); 
 	model.pushElement(fem::Element::FE_TRIANGLE3,temp);
+	*/
 	}
 	|	INTEGER EL_QUADRANGLE4 Tags INTEGER INTEGER INTEGER INTEGER '\n' {
+	/*
 	temp.clear(); temp.reserve(4);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7);
 	model.pushElement(fem::Element::FE_QUADRANGLE4,temp);
+	*/
 	}
 	|	INTEGER EL_TETRAHEDRON4 Tags INTEGER INTEGER INTEGER INTEGER '\n' {
 	temp.clear(); temp.reserve(4);
@@ -216,21 +222,27 @@ ElementLine:	INTEGER EL_LINE2 Tags INTEGER INTEGER '\n'	{
 	model.pushElement(fem::Element::FE_PYRAMID5, temp); 
 	}
 	|	INTEGER EL_LINE3 Tags INTEGER  INTEGER  INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve(3);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6);
 	model.pushElement(fem::Element::FE_LINE3, temp); 
+	*/
 	}
 	|	INTEGER EL_TRIANGLE6 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve(6);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	temp.push_back($9);
 	model.pushElement(fem::Element::FE_TRIANGLE6, temp); 
+	*/
 	}
 	|	INTEGER EL_QUADRANGLE9 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve(9);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	temp.push_back($9), temp.push_back($10), temp.push_back($11), temp.push_back($12);
 	model.pushElement(fem::Element::FE_QUADRANGLE9, temp); 
+	*/
 	}
 	|	INTEGER EL_TETRAHEDRON10 Tags INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER '\n' {
 	temp.clear(); temp.reserve(10);
@@ -264,9 +276,11 @@ ElementLine:	INTEGER EL_LINE2 Tags INTEGER INTEGER '\n'	{
 	model.pushElement(fem::Element::FE_PYRAMID14, temp); 
 	}
 	|	INTEGER EL_POINT Tags INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve(1);
 	temp.push_back($4);
 	model.pushElement(fem::Element::FE_POINT,temp);
+	*/
 	}
 	|	INTEGER EL_QUADRANGLE8 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
 	temp.clear(); temp.reserve(8);
@@ -297,39 +311,50 @@ ElementLine:	INTEGER EL_LINE2 Tags INTEGER INTEGER '\n'	{
 	model.pushElement(fem::Element::FE_PYRAMID13, temp); 
 	}
 	|	INTEGER EL_ITRIANGLE9 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve( 9);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	temp.push_back($9), temp.push_back($10), temp.push_back($11), temp.push_back($12);
 	model.pushElement(fem::Element::FE_ITRIANGLE9, temp); 
+	*/
 	}
 	|	INTEGER EL_TRIANGLE10 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve(10);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	temp.push_back($9), temp.push_back($10), temp.push_back($11), temp.push_back($12), temp.push_back($13);
 	model.pushElement(fem::Element::FE_TRIANGLE10, temp); 
+	*/
 	}
 	|	INTEGER EL_ITRIANGLE12 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve(12);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	temp.push_back($9), temp.push_back($10), temp.push_back($11), temp.push_back($12), temp.push_back($13);
 	temp.push_back($14), temp.push_back($15);
 	model.pushElement(fem::Element::FE_ITRIANGLE12, temp); 
+	*/
 	}
 	|	INTEGER EL_TRIANGLE15 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve(15);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	temp.push_back($9), temp.push_back($10), temp.push_back($11), temp.push_back($12), temp.push_back($13);
 	temp.push_back($14), temp.push_back($15), temp.push_back($16), temp.push_back($17), temp.push_back($18);
 	model.pushElement(fem::Element::FE_TRIANGLE15, temp); 
+	*/
 	}
 	|	INTEGER EL_ITRIANGLE15 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve(15);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	temp.push_back($9), temp.push_back($10), temp.push_back($11), temp.push_back($12), temp.push_back($13);
 	temp.push_back($14), temp.push_back($15), temp.push_back($16), temp.push_back($17), temp.push_back($18);
 	model.pushElement(fem::Element::FE_ITRIANGLE15, temp); 
+	*/
 	}
 	|	INTEGER EL_TRIANGLE21 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve(21);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	temp.push_back($9), temp.push_back($10), temp.push_back($11), temp.push_back($12), temp.push_back($13);
@@ -337,22 +362,29 @@ ElementLine:	INTEGER EL_LINE2 Tags INTEGER INTEGER '\n'	{
 	temp.push_back($19), temp.push_back($20), temp.push_back($21), temp.push_back($22), temp.push_back($23);
 	temp.push_back($24);
 	model.pushElement(fem::Element::FE_TRIANGLE21, temp); 
+	*/
 	}
 	|	INTEGER EL_EDGE4 Tags INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve( 4);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7);
 	model.pushElement(fem::Element::FE_EDGE4, temp); 
+	*/
 	}
 	|	INTEGER EL_EDGE5 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve( 5);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	model.pushElement(fem::Element::FE_EDGE5, temp); 
+	*/
 	}
 	|	INTEGER EL_EDGE6 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve( 6);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	temp.push_back($9);
 	model.pushElement(fem::Element::FE_EDGE6, temp); 
+	*/
 	}
 	|	INTEGER EL_TETRAHEDRON20 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
 	temp.clear(); temp.reserve(20);

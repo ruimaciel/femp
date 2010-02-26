@@ -3,6 +3,8 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QMdiSubWindow>
+#include <QTranslator>
+#include <QToolBar>
 
 #include <string>
 #include <fstream>
@@ -42,8 +44,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	this->addDockWidget(static_cast<Qt::DockWidgetArea>(8), commandLineDockWidget);
 	*/
 
+	// initialize the toolbars
+	visibilityToolBar = NULL;
+	viewportToolBar = NULL;
+
 	// create actions and connect signals to slots
 	this->createActions();
+	this->createToolBars();
+
+	// set the user interface
+	setUserInterfaceAsClosed();
 }
 
 
@@ -306,6 +316,22 @@ void MainWindow::createActions()
 }
 
 
+void MainWindow::createToolBars()
+{
+	visibilityToolBar = addToolBar(tr("Visibility"));
+	visibilityToolBar->addAction(ui.actionDisplayNodes);
+	visibilityToolBar->addAction(ui.actionDisplaySurfaces);
+	visibilityToolBar->addAction(ui.actionDisplayWireframe);
+	//TODO add actions
+}
+
+
+void MainWindow::destroyToolBars()
+{
+	removeToolBar(visibilityToolBar);
+}
+
+
 void MainWindow::loadOptions()
 {
 	std::ifstream is;
@@ -553,6 +579,9 @@ void MainWindow::setUserInterfaceAsOpened()
 	window_gl_viewport->showMaximized();
 	//mdiArea->addSubWindow(window_gl_viewport);
 	// enable the "close"
+
+	// set toolbars
+	createToolBars();
 }
 
 
@@ -578,5 +607,8 @@ void MainWindow::setUserInterfaceAsClosed()
 		window_gl_viewport = NULL;
 	}
 	mdiArea->closeAllSubWindows();
+
+	// handle the toolbars
+	destroyToolBars();
 }
 

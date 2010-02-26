@@ -27,6 +27,10 @@ private:
 	QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport
 	GLWidget 	* glWidget;
 
+	// the toolbars
+	QToolBar *visibilityToolBar;
+	QToolBar *viewportToolBar;
+
 	ProgramOptions 	options;	// the global program options
 	bool 	hasUnsavedChanges;	// true if the document has unsaved changes
 
@@ -66,6 +70,8 @@ Q_SIGNALS:
 
 private:
 	void createActions();	// creates the actions and connects them
+	void createToolBars();
+	void destroyToolBars();
 	void loadOptions();	// loads global options from the options files
 	void setUserInterfaceAsOpened();	// sets the user interface in it's "opened document" state
 	void setUserInterfaceAsClosed();	// sets the user interface in it's "closed document" state

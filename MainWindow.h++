@@ -44,8 +44,6 @@ public Q_SLOTS:
 	void quit();
 	void importMesh();
 
-	void startNewProject(Document::Type type);	// starts a brand new project
-
 	/**
 	Calls the "set node restraints" dialog and, from it's output, sets them
 	**/

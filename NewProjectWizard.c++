@@ -3,21 +3,29 @@
 #include <QDir>
 #include <QMessageBox>
 
-#include "ui/NewProjectWizardPage1.h++"
-#include "ui/NewProjectWizardPage2.h++"
-#include "ui/NewProjectWizardPageLast.h++"
 
-NewProjectWizard::NewProjectWizard(QWidget *parent)
+NewProjectWizard::NewProjectWizard(Document *doc, QWidget *parent)
 	: QWizard(parent)
 {
+	assert(doc != NULL);
+
+	// clear the model, start with a clean slate
+	doc->clear();
+
 	// sets the pages that will be displayed by the wizard
 	/*
 	page1 = new NewProjectWizardPage1(this,basedir);
 	addPage(page1);
 	*/
+
 	//TODO rename ProjectWizardPage2 class
 	page2 = new NewProjectWizardPage2;
 	addPage(page2);
+
+	page3 = new NewProjectWizardPage3;
+	page3->document = doc;
+	addPage(page3);
+
 	/*
 	pageLast = new NewProjectWizardPageLast;
 	addPage(pageLast);

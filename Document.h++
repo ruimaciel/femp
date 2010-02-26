@@ -41,6 +41,7 @@ class Document
 		void setProjectType(Type type)	{ document_type = type; }
 		enum Error load();	// loads the project
 		enum Error save();	// saves project in it's path
+		enum Error importMesh(QString file_name);
 
 		// object selection routines
 		void selectNode(const size_t &node);

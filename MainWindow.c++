@@ -62,9 +62,17 @@ void MainWindow::newProject()
 	Now the "new project" wizard will create a new project directory.
 	Then it will call loadProject() to load the newly created project.
 	*/
-	NewProjectWizard np(this);
-	connect(&np,SIGNAL(newProject(Document::Type)), this, SLOT(startNewProject(Document::Type)));
-	np.exec();
+	NewProjectWizard np(&document, this);
+	switch(np.exec())
+	{
+		case QDialog::Accepted:
+			setUserInterfaceAsOpened();
+			break;
+
+		default:
+			document.clear();
+			break;
+	}
 }
 
 
@@ -97,6 +105,9 @@ void MainWindow::openProject()
 	switch( document.load() )
 	{
 		case Document::ERR_OK:
+			// tweak the UI
+			setUserInterfaceAsOpened();
+			return;
 			break;
 
 		case Document::ERR_FILE_NOT_FOUND:
@@ -120,8 +131,8 @@ void MainWindow::openProject()
 			break;
 	}
 
-	// tweak the UI
-	setUserInterfaceAsOpened();
+	// clean up the mess
+	document.clear();
 }
 
 
@@ -427,18 +438,6 @@ void MainWindow::importMesh()
 }
 
 	
-void MainWindow::startNewProject(Document::Type type)
-{
-	// set the document settings 
-	document.clear();
-	document.setProjectType(type);
-
-	// set the UI
-	setUserInterfaceAsOpened();
-	hasUnsavedChanges = false;
-}
-
-
 void MainWindow::setNodeRestraints()
 {
 	NodeRestrainsDialog nd;

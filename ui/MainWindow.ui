@@ -27,7 +27,7 @@
      <x>0</x>
      <y>0</y>
      <width>629</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -88,13 +88,11 @@
    </widget>
    <widget class="QMenu" name="menuProject">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="title">
      <string>Project</string>
     </property>
-    <addaction name="actionImportMesh"/>
-    <addaction name="separator"/>
     <addaction name="actionRun"/>
    </widget>
    <addaction name="menuFile"/>

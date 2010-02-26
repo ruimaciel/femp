@@ -511,7 +511,6 @@ inline void GLWidget::renderTriangle6(const fem::point &p1, const fem::point &p2
 
 void GLWidget::generateDisplayLists()
 {
-	qWarning("generating display lists");
 	// generate nodes display list
 	generateNodesDisplayList();
 

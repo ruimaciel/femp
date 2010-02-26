@@ -2,6 +2,7 @@
 
 #include <QTextStream>
 
+#include "fem_msh.h++"
 #include "parsers/json.h"
 
 
@@ -1110,6 +1111,25 @@ enum Document::Error Document::save()
 	file.close();
 
 	unsaved = false;
+	return ERR_OK;
+}
+
+
+enum Document::Error Document::importMesh(QString file_name)
+{
+	QFile mesh_file;
+
+	mesh_file.setFileName(file_name);
+	if(!mesh_file.open(QIODevice::ReadOnly | QIODevice::Text) )
+	{	// failed to open file
+		return ERR_FILE_OPEN;
+	}
+
+	// TODO import mesh from a Gmsh file
+	FILE *f = fdopen(mesh_file.handle(), "r");
+	fem_model_import_msh(f,model);
+	mesh_file.close();
+
 	return ERR_OK;
 }
 

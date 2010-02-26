@@ -196,7 +196,16 @@ void GLWidget::paintGL()
 		}
 
 		// render all elements
-		glCallList(dl_faces);
+		if(display_options.surfaces)
+		{
+			glCallList(dl_faces);
+		}
+
+		// render all wireframe
+		if(display_options.wireframe)
+		{
+			glCallList(dl_wireframe);
+		}
 
 		// render all optional information, if it's enabled
 		if(display_options.load_pattern != NULL)
@@ -526,6 +535,10 @@ void GLWidget::generateDisplayLists()
 
 	// and now the wireframe
 	glNewList( dl_wireframe, GL_COMPILE);
+	for(ei = document->model.element_list.begin(); ei != document->model.element_list.end(); ei++)
+	{
+		paintWireframe(*ei);
+	}
 	glEndList();
 }
 
@@ -782,43 +795,20 @@ void GLWidget::paintElement(const fem::Element &element)
 				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
 
 				// render the surfaces
-				if(display_options.surfaces == 1)
+				// set the color
+				glColor3fv(colors->tetrahedron4);
+
+				if(element.nodes.size() != 4)
 				{
-					// set the color
-					glColor3fv(colors->tetrahedron4);
-
-					if(element.nodes.size() != 4)
-					{
-						qWarning("error: invalid number of nodes for a FE_TETRAHEDRON4. it's %zd", element.nodes.size());
-						//TODO remove element
-						return;
-					}
-
-					renderTriangle3(nl[0], nl[2], nl[1]);
-					renderTriangle3(nl[0], nl[1], nl[3]);
-					renderTriangle3(nl[1], nl[2], nl[3]);
-					renderTriangle3(nl[2], nl[0], nl[3]);
+					qWarning("error: invalid number of nodes for a FE_TETRAHEDRON4. it's %zd", element.nodes.size());
+					//TODO remove element?
+					return;
 				}
 
-				// render the wireframe
-				if(display_options.wireframe == 1)
-				{
-					//TODO set color
-					glColor3fv(colors->wireframe);	
-
-					glBegin(GL_LINE_STRIP);
-					glVertex3dv(nl[0].data);
-					glVertex3dv(nl[1].data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[0].data);
-					glVertex3dv(nl[3].data);
-					glVertex3dv(nl[1].data);
-					glEnd();
-					glBegin(GL_LINES);
-					glVertex3dv(nl[3].data);
-					glVertex3dv(nl[2].data);
-					glEnd();
-				}
+				renderTriangle3(nl[0], nl[2], nl[1]);
+				renderTriangle3(nl[0], nl[1], nl[3]);
+				renderTriangle3(nl[1], nl[2], nl[3]);
+				renderTriangle3(nl[2], nl[0], nl[3]);
 			}
 			break;
 
@@ -837,51 +827,20 @@ void GLWidget::paintElement(const fem::Element &element)
 				nl.push_back(document->model.node_list.find(element.nodes[9])->second);
 
 				// render the surfaces
-				if(display_options.surfaces == 1)
+				// set the color
+				glColor3fv(colors->tetrahedron4);
+
+				if(element.nodes.size() != 10)
 				{
-					// set the color
-					glColor3fv(colors->tetrahedron4);
-
-					if(element.nodes.size() != 10)
-					{
-						qWarning("error: invalid number of nodes for a FE_TETRAHEDRON10. it's %zd", element.nodes.size());
-						//TODO remove element
-						return;
-					}
-
-					renderTriangle6(nl[0], nl[3], nl[2], nl[7], nl[8], nl[6]);
-					renderTriangle6(nl[3], nl[1], nl[2], nl[9], nl[5], nl[8]);
-					renderTriangle6(nl[1], nl[0], nl[2], nl[4], nl[6], nl[5]);
-					renderTriangle6(nl[0], nl[1], nl[3], nl[4], nl[9], nl[7]);
+					qWarning("error: invalid number of nodes for a FE_TETRAHEDRON10. it's %zd", element.nodes.size());
+					//TODO remove element
+					return;
 				}
 
-				// render the wireframe
-				if(display_options.wireframe == 1)
-				{
-					//TODO set color
-					glColor3fv(colors->wireframe);	
-
-					renderLine3(nl[0], nl[7], nl[3]);
-					renderLine3(nl[3], nl[9], nl[1]);
-					renderLine3(nl[1], nl[4], nl[0]);
-					renderLine3(nl[0], nl[6], nl[2]);
-					renderLine3(nl[2], nl[5], nl[1]);
-					renderLine3(nl[2], nl[8], nl[3]);
-					/*
-					glBegin(GL_LINE_STRIP);
-					glVertex3dv(nl[0].data);
-					glVertex3dv(nl[1].data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[0].data);
-					glVertex3dv(nl[3].data);
-					glVertex3dv(nl[1].data);
-					glEnd();
-					glBegin(GL_LINES);
-					glVertex3dv(nl[3].data);
-					glVertex3dv(nl[2].data);
-					glEnd();
-					*/
-				}
+				renderTriangle6(nl[0], nl[3], nl[2], nl[7], nl[8], nl[6]);
+				renderTriangle6(nl[3], nl[1], nl[2], nl[9], nl[5], nl[8]);
+				renderTriangle6(nl[1], nl[0], nl[2], nl[4], nl[6], nl[5]);
+				renderTriangle6(nl[0], nl[1], nl[3], nl[4], nl[9], nl[7]);
 			}
 			break;
 
@@ -902,48 +861,16 @@ void GLWidget::paintElement(const fem::Element &element)
 				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[6])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[7])->second);
-				if(display_options.surfaces)
-				{
-					// set the color
-					glColor3fv(colors->hexahedron8);
+				// set the color
+				glColor3fv(colors->hexahedron8);
 
-					// render the hexahedron's 6 surfaces
-					renderQuad4(nl[1], nl[0], nl[2], nl[3]);
-					renderQuad4(nl[5], nl[1], nl[6], nl[2]);
-					renderQuad4(nl[4], nl[5], nl[7], nl[6]);
-					renderQuad4(nl[0], nl[4], nl[3], nl[7]);
-					renderQuad4(nl[7], nl[6], nl[3], nl[2]);
-					renderQuad4(nl[0], nl[1], nl[4], nl[5]);
-				}
-
-				if(display_options.wireframe)
-				{
-					// set the color
-					glColor3fv(colors->wireframe);	// TODO change this
-
-					glBegin(GL_LINE_STRIP);
-					glVertex3dv(nl[0].data);
-					glVertex3dv(nl[1].data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[3].data);
-					glVertex3dv(nl[0].data);
-
-					glVertex3dv(nl[4].data);
-					glVertex3dv(nl[5].data);
-					glVertex3dv(nl[6].data);
-					glVertex3dv(nl[7].data);
-					glVertex3dv(nl[4].data);
-					glEnd();
-
-					glBegin(GL_LINES);
-					glVertex3dv(nl[1].data);
-					glVertex3dv(nl[5].data);
-					glVertex3dv(nl[2].data);
-					glVertex3dv(nl[6].data);
-					glVertex3dv(nl[3].data);
-					glVertex3dv(nl[7].data);
-					glEnd();
-				}
+				// render the hexahedron's 6 surfaces
+				renderQuad4(nl[1], nl[0], nl[2], nl[3]);
+				renderQuad4(nl[5], nl[1], nl[6], nl[2]);
+				renderQuad4(nl[4], nl[5], nl[7], nl[6]);
+				renderQuad4(nl[0], nl[4], nl[3], nl[7]);
+				renderQuad4(nl[7], nl[6], nl[3], nl[2]);
+				renderQuad4(nl[0], nl[1], nl[4], nl[5]);
 			}
 			break;
 
@@ -963,41 +890,15 @@ void GLWidget::paintElement(const fem::Element &element)
 					nl.push_back(document->model.node_list.find(element.nodes[i])->second);
 				}
 
-				if(display_options.surfaces)
-				{
-					// set the color
-					glColor3fv(colors->hexahedron8);
+				// set the color
+				glColor3fv(colors->hexahedron8);
 
-					renderQuad9(nl[1],nl[8],nl[0],nl[11],nl[20],nl[9],nl[2],nl[13],nl[3]);
-					renderQuad9(nl[0],nl[10],nl[4],nl[9],nl[22],nl[17],nl[3],nl[15],nl[7]);
-					renderQuad9(nl[4],nl[16],nl[5],nl[17],nl[25],nl[18],nl[7],nl[19],nl[6]);
-					renderQuad9(nl[5],nl[12],nl[1],nl[18],nl[23],nl[11],nl[6],nl[14],nl[2]);
-					renderQuad9(nl[7],nl[19],nl[6],nl[15],nl[24],nl[14],nl[3],nl[13],nl[2]);
-					renderQuad9(nl[5],nl[16],nl[4],nl[12],nl[21],nl[10],nl[1],nl[8],nl[0]);
-				}
-
-				if(display_options.wireframe)
-				{
-					// set the color
-					glColor3fv(colors->wireframe);
-
-					int subdiv = 10;	//TODO make this an option
-
-					renderLine3(nl[0],nl[8],nl[1]);
-					renderLine3(nl[1], nl[11], nl[2]);
-					renderLine3(nl[2], nl[13], nl[3]);
-					renderLine3(nl[3], nl[9], nl[0]);
-
-					renderLine3(nl[4], nl[16], nl[5]);
-					renderLine3(nl[5], nl[18], nl[6]);
-					renderLine3(nl[6], nl[19], nl[7]);
-					renderLine3(nl[7], nl[17], nl[4]);
-
-					renderLine3(nl[0], nl[10], nl[4]);
-					renderLine3(nl[3], nl[15], nl[7]);
-					renderLine3(nl[2], nl[14], nl[6]);
-					renderLine3(nl[1], nl[12], nl[5]);
-				}
+				renderQuad9(nl[1],nl[8],nl[0],nl[11],nl[20],nl[9],nl[2],nl[13],nl[3]);
+				renderQuad9(nl[0],nl[10],nl[4],nl[9],nl[22],nl[17],nl[3],nl[15],nl[7]);
+				renderQuad9(nl[4],nl[16],nl[5],nl[17],nl[25],nl[18],nl[7],nl[19],nl[6]);
+				renderQuad9(nl[5],nl[12],nl[1],nl[18],nl[23],nl[11],nl[6],nl[14],nl[2]);
+				renderQuad9(nl[7],nl[19],nl[6],nl[15],nl[24],nl[14],nl[3],nl[13],nl[2]);
+				renderQuad9(nl[5],nl[16],nl[4],nl[12],nl[21],nl[10],nl[1],nl[8],nl[0]);
 			}
 			break;
 
@@ -1012,43 +913,22 @@ void GLWidget::paintElement(const fem::Element &element)
 				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
 
 				// render the surfaces
-				if(display_options.surfaces == 1)
+				// set the color
+				glColor3fv(colors->prism6);
+
+				if(element.nodes.size() != 6)
 				{
-					// set the color
-					glColor3fv(colors->prism6);
-
-					if(element.nodes.size() != 6)
-					{
-						qWarning("error: invalid number of nodes for a FE_PRISM6. it's %zd", element.nodes.size());
-						//TODO remove element
-						return;
-					}
-
-					//TODO check surface orientation
-					renderTriangle3(nl[2], nl[1], nl[0]);
-					renderTriangle3(nl[4], nl[5], nl[3]);
-					renderQuad4(nl[3], nl[0], nl[4], nl[1]);
-					renderQuad4(nl[5], nl[2], nl[3], nl[0]);
-					renderQuad4(nl[4], nl[1], nl[5], nl[2]);
-
+					qWarning("error: invalid number of nodes for a FE_PRISM6. it's %zd", element.nodes.size());
+					//TODO remove element
+					return;
 				}
 
-				// render the wireframe
-				if(display_options.wireframe == 1)
-				{
-					//TODO set color
-					glColor3fv(colors->wireframe);	
-
-					//TODO set wireframe
-					/*
-					renderLine3(nl[0], nl[7], nl[3]);
-					renderLine3(nl[3], nl[9], nl[1]);
-					renderLine3(nl[1], nl[4], nl[0]);
-					renderLine3(nl[0], nl[6], nl[2]);
-					renderLine3(nl[2], nl[5], nl[1]);
-					renderLine3(nl[2], nl[8], nl[3]);
-					*/
-				}
+				//TODO check surface orientation
+				renderTriangle3(nl[2], nl[1], nl[0]);
+				renderTriangle3(nl[4], nl[5], nl[3]);
+				renderQuad4(nl[3], nl[0], nl[4], nl[1]);
+				renderQuad4(nl[5], nl[2], nl[3], nl[0]);
+				renderQuad4(nl[4], nl[1], nl[5], nl[2]);
 			}
 			break;
 
@@ -1057,6 +937,188 @@ void GLWidget::paintElement(const fem::Element &element)
 			break;
 	}
 	glPopMatrix();
+}
+
+
+void GLWidget::paintWireframe(const fem::Element &element)
+{
+	std::map<size_t, fem::Node>::iterator n;
+	std::vector<fem::point> nl;	// node list
+	fem::point p;
+	glDisable(GL_LIGHTING); 
+	glPushMatrix();
+
+	switch(element.type)
+	{
+		case fem::Element::FE_TETRAHEDRON4:
+			{
+				// set the node list
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
+				// render the wireframe
+				//TODO set color
+				glColor3fv(colors->wireframe);	
+				glBegin(GL_LINE_STRIP);
+				glVertex3dv(nl[0].data);
+				glVertex3dv(nl[1].data);
+				glVertex3dv(nl[2].data);
+				glVertex3dv(nl[0].data);
+				glVertex3dv(nl[3].data);
+				glVertex3dv(nl[1].data);
+				glEnd();
+				glBegin(GL_LINES);
+				glVertex3dv(nl[3].data);
+				glVertex3dv(nl[2].data);
+				glEnd();
+			}
+			break;
+
+		case fem::Element::FE_TETRAHEDRON10:
+			{
+				// set the node list
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[6])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[7])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[8])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[9])->second);
+
+
+				// render the wireframe
+				//TODO set color
+				glColor3fv(colors->wireframe);	
+
+				renderLine3(nl[0], nl[7], nl[3]);
+				renderLine3(nl[3], nl[9], nl[1]);
+				renderLine3(nl[1], nl[4], nl[0]);
+				renderLine3(nl[0], nl[6], nl[2]);
+				renderLine3(nl[2], nl[5], nl[1]);
+				renderLine3(nl[2], nl[8], nl[3]);
+			}
+			break;
+
+		case fem::Element::FE_HEXAHEDRON8:
+			{
+				//GLfloat mapsurface[12];	// for the mapsurface
+				if(element.nodes.size() != 8)
+				{
+					qWarning("error: invalid number of nodes for a FE_HEXAHEDRON8");
+					//TODO remove element
+					return;
+				}
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[6])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[7])->second);
+				// set the color
+				glColor3fv(colors->wireframe);	// TODO change this
+
+				glBegin(GL_LINE_STRIP);
+				glVertex3dv(nl[0].data);
+				glVertex3dv(nl[1].data);
+				glVertex3dv(nl[2].data);
+				glVertex3dv(nl[3].data);
+				glVertex3dv(nl[0].data);
+
+				glVertex3dv(nl[4].data);
+				glVertex3dv(nl[5].data);
+				glVertex3dv(nl[6].data);
+				glVertex3dv(nl[7].data);
+				glVertex3dv(nl[4].data);
+				glEnd();
+
+				glBegin(GL_LINES);
+				glVertex3dv(nl[1].data);
+				glVertex3dv(nl[5].data);
+				glVertex3dv(nl[2].data);
+				glVertex3dv(nl[6].data);
+				glVertex3dv(nl[3].data);
+				glVertex3dv(nl[7].data);
+				glEnd();
+			}
+			break;
+
+		case fem::Element::FE_HEXAHEDRON27:
+			{
+				//GLfloat mapsurface[12];	// for the mapsurface
+				if(element.nodes.size() != 27)
+				{
+					qWarning("error: invalid number of nodes for a FE_HEXAHEDRON27");
+					//TODO remove element
+					return;
+				}
+
+				// build the node temp list
+				for(int i = 0; i < 27; i++)
+				{
+					nl.push_back(document->model.node_list.find(element.nodes[i])->second);
+				}
+
+				// set the color
+				glColor3fv(colors->wireframe);
+
+				//TODO make this an option
+				//int subdiv = 10;	
+
+				renderLine3(nl[0],nl[8],nl[1]);
+				renderLine3(nl[1], nl[11], nl[2]);
+				renderLine3(nl[2], nl[13], nl[3]);
+				renderLine3(nl[3], nl[9], nl[0]);
+
+				renderLine3(nl[4], nl[16], nl[5]);
+				renderLine3(nl[5], nl[18], nl[6]);
+				renderLine3(nl[6], nl[19], nl[7]);
+				renderLine3(nl[7], nl[17], nl[4]);
+
+				renderLine3(nl[0], nl[10], nl[4]);
+				renderLine3(nl[3], nl[15], nl[7]);
+				renderLine3(nl[2], nl[14], nl[6]);
+				renderLine3(nl[1], nl[12], nl[5]);
+			}
+			break;
+
+		case fem::Element::FE_PRISM6:
+			{
+				// set the node list
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
+
+				// render the wireframe
+				//TODO set color
+				glColor3fv(colors->wireframe);	
+
+				//TODO set wireframe
+				/*
+				   renderLine3(nl[0], nl[7], nl[3]);
+				   renderLine3(nl[3], nl[9], nl[1]);
+				   renderLine3(nl[1], nl[4], nl[0]);
+				   renderLine3(nl[0], nl[6], nl[2]);
+				   renderLine3(nl[2], nl[5], nl[1]);
+				   renderLine3(nl[2], nl[8], nl[3]);
+				 */
+			}
+			break;
+
+		default:
+			//qWarning("error: unknown element type: %d", element.type);
+			break;
+	}
+	glPopMatrix();
+	glEnable(GL_LIGHTING);
 }
 
 

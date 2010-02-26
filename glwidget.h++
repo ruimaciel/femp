@@ -67,6 +67,7 @@ class GLWidget : public QGLWidget
 		// methods to render FEM elements
 		void paintNode(size_t label, const fem::Node);
 		void paintElement(const fem::Element &element);
+		void paintWireframe(const fem::Element &element);
 
 		// select rendered objects that intersect a given line (start point, finish point)
 		void selectModelObjects(const fem::point &,const fem::point &);

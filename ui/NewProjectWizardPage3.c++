@@ -1,11 +1,16 @@
 #include "NewProjectWizardPage3.h++"
 
 #include <QFileDialog>
+
 #include "Document.h++"	// for the loading test
+#include "ui/NewMaterialDialog.h++"
 
 
-NewProjectWizardPage3::NewProjectWizardPage3()
+NewProjectWizardPage3::NewProjectWizardPage3(Document *document)
 {
+	assert(document != NULL);
+	this->document = document;
+
 	setupUi(this);
 
 	// set the variable
@@ -14,6 +19,10 @@ NewProjectWizardPage3::NewProjectWizardPage3()
 	// connect signals
 	connect(toolButtonSelectFile, SIGNAL(clicked()), this, SLOT(getFileFromDialog()));
 	connect(lineEditFilePath, SIGNAL(returnPressed()), this, SLOT(loadMeshFile()));
+	connect(pushButtonNewMaterial, SIGNAL(clicked()), this, SLOT(addNewMaterial()));
+
+	// load the materials combo
+	loadMaterialsCombo();
 }
 
 
@@ -25,6 +34,15 @@ NewProjectWizardPage3::~NewProjectWizardPage3()
 bool NewProjectWizardPage3::validatePage()
 {
 	return successful_import;
+}
+
+
+void NewProjectWizardPage3::loadMaterialsCombo()
+{
+	for(std::vector<fem::Material>::iterator i = document->model.material_list.begin(); i != document->model.material_list.end(); i++)
+	{
+		comboBoxMaterialsList->addItem(i->label);
+	}
 }
 
 
@@ -102,4 +120,24 @@ void NewProjectWizardPage3::getFileFromDialog(void)
 	 //TODO load the file
 	 loadMeshFile();
 }
+
+
+void NewProjectWizardPage3::addNewMaterial(void)
+{
+	NewMaterialDialog dialog(&document->model, this);
+	switch(dialog.exec())
+	{
+		case QDialog::Accepted:
+			loadMaterialsCombo();
+
+			// and now turn on the UI
+			lineEditFilePath->setEnabled(true);
+			toolButtonSelectFile->setEnabled(true);
+			break;
+
+		case QDialog::Rejected:
+			break;
+	}
+}
+
 

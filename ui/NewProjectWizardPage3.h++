@@ -8,7 +8,8 @@
 #include "Document.h++"
 
 
-class NewProjectWizardPage3: public QWizardPage, public Ui_NewProjectWizardPage3
+class NewProjectWizardPage3
+	: public QWizardPage, public Ui_NewProjectWizardPage3
 {
 	Q_OBJECT
 
@@ -19,7 +20,7 @@ class NewProjectWizardPage3: public QWizardPage, public Ui_NewProjectWizardPage3
 		Document *document;	// must point to a valid instance or it crashes
 
 	public:
-		NewProjectWizardPage3();
+		NewProjectWizardPage3(Document *document);
 		~NewProjectWizardPage3();
 
 		bool validatePage();
@@ -27,10 +28,12 @@ class NewProjectWizardPage3: public QWizardPage, public Ui_NewProjectWizardPage3
 
 	private:
 		bool validMeshFile();
+		void loadMaterialsCombo();
 
 	private slots:
 		void loadMeshFile();
 		void getFileFromDialog(void);
+		void addNewMaterial(void);
 };
 
 

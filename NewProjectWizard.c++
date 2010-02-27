@@ -22,7 +22,7 @@ NewProjectWizard::NewProjectWizard(Document *doc, QWidget *parent)
 	page2 = new NewProjectWizardPage2;
 	addPage(page2);
 
-	page3 = new NewProjectWizardPage3;
+	page3 = new NewProjectWizardPage3(doc);
 	page3->document = doc;
 	addPage(page3);
 

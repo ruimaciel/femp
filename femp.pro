@@ -16,6 +16,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h \
 	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
+	ui/NewMaterialDialog.h++ \
 	fem/FemEquation.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
@@ -26,11 +27,12 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	fem_msh.c++ lex.msh_yy.c++ \
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c \
 	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++ \
+	ui/NewMaterialDialog.c++ \
 	fem/FemEquation.c++
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 	ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPage3.ui  ui/NewProjectWizardPageLast.ui \
-	ui/NodeRestrainDialog.ui ui/NodeActionsDialog.ui ui/DisplayOptionsDialog.ui
+	ui/NodeRestrainDialog.ui ui/NodeActionsDialog.ui ui/DisplayOptionsDialog.ui ui/NewMaterialDialog.ui
 
 UI_DIR += ./ui
 OBJECTS_DIR += ./build

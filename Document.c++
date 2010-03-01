@@ -2,6 +2,8 @@
 
 #include <QTextStream>
 
+#include <stack>
+
 #include "fem_msh.h++"
 #include "parsers/json.h"
 
@@ -865,6 +867,129 @@ load_pattern_push:	// nasty hack
 
 	unsaved = false;
 	return ERR_OK;
+}
+
+
+enum Document::Error Document::load2()
+{
+	QFile file;
+	//TODO check if path exists
+	if(file_name == NULL)
+		return ERR_FILE_NOT_FOUND;
+
+	file.setFileName(*file_name);
+	if(!file.exists())
+		return ERR_FILE_NOT_FOUND;
+
+	// sets up all variables
+	model.clear();
+
+	//load the project files
+	//file exists, now open it and parse it
+	if(file.open(QIODevice::ReadOnly|QIODevice::Text) == false)
+	{
+		return ERR_FILE_OPEN;
+	}
+
+	// read the file
+	json_t *root = NULL;
+	FILE *f = fdopen(file.handle(), "r");
+	switch(json_stream_parse(f,&root) )
+	{
+		case JSON_OK:
+			// all went well
+			break;
+
+		default:
+			return ERR_PARSER_ERROR;
+			break;
+	}
+
+	// JSON document successfully parsed. Now let's extract stuff from it
+	std::stack<json_t*> cursor;
+	std::stack<int> state;	// the parser's states
+
+	// initializing the parser
+	cursor.push(root);
+	state.push(0);	// starting state
+
+#define CURSOR_PUSH(TYPE) if(cursor.top()->child == NULL) goto error \
+	if (cursor.top()->child->type != TYPE) goto error; \
+	cursor.push(cursor.top()->child);
+#define CURSOR_VERIFY_TEXT(TEXT)	if(cursor.top()->text == NULL) goto error;	\
+				if(strcmp(cursor.top()->text, TEXT) != 0) goto error;
+
+
+	while(state.size() > 0)
+	{
+		switch(state.top())
+		{
+			case 0:
+				/* replaced by the CURSOR_PUSH(TYPE) macro
+				if(cursor.top()->child == NULL)
+					goto error;	// Root object must have child nodes
+				if(cursor.top()->child->type != JSON_STRING)
+					goto error;	// must be a label in a label:value pair
+				cursor.push(cursor.top()->child);	
+				*/
+
+				// point cursor to the first child node
+				CURSOR_PUSH(JSON_STRING);
+
+				// set the state stack
+				state.top() = 2;	// OtherFields
+				state.push(1);		// MandatoryFields
+				break;
+
+			case 1:	// MandatoryFields -> Header Materials Nodes Surfaces Elements
+				state.top() = 14;	// Elements
+				state.push(28);		// Surfaces
+				state.push(12);		// Nodes
+				state.push(10);		// Materials
+				state.push(9);		// Header
+				break;
+
+			case 2:	// Header	-> VersionNumber FemModelType
+				/*
+				if(cursor.top()->text == NULL)
+					goto error;	// label must be non-null
+				if(strcmp(cursor.top()->text, "fem") != 0)
+					goto error;	// header label must be "fem"
+				*/
+
+				CURSOR_VERIFY_TEXT("fem");	// header label must be "fem"
+
+				CURSOR_PUSH(JSON_OBJECT);
+
+				// set the state stack
+				state.top() = 4;	// FemModelType
+				state.push(3);	// VersionNumber
+				break;
+
+			case 3:	// VersionNumber	-> "version": "1.0"
+				CURSOR_VERIFY_TEXT("version");	// header label must be "fem"
+				CURSOR_PUSH(JSON_STRING);
+				break;
+
+
+
+			default:
+				goto unknown_error;	// common way to handle all parser errors
+				break;
+		}
+	}
+
+	unsaved = false;
+	return ERR_OK;
+
+error:
+	return ERR_PARSER_ERROR;
+
+unknown_error:	// some programming error happened
+	return ERR_UNKNOWN;
+
+#undef CURSOR_PUSH
+#undef CURSOR_VERIFY_TEXT
 }
 
 

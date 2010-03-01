@@ -1,0 +1,58 @@
+state	non-terminal	rest
+0	Document 	-> MandatoryFields OtherFields
+
+1	MandatoryFields	-> Header Materials Nodes surfaces Elements
+
+ 	OtherFields	-> NodesRestrictions LoadPatterns combinations
+ 			-> NodesRestrictions LoadPatterns 
+ 			-> NodesRestrictions 
+ 			-> LoadPatterns combinations
+ 			-> LoadPatterns 
+ 			-> Combinations
+ 			->
+
+2	Header		-> VersionNumber FemModelType
+
+3	VersionNumber	-> "version": "1.0"
+
+4	FemModelType	-> "type": "3D solid"
+
+	Materials	-> Material+
+
+	Material	-> type label E nu fy
+
+	Nodes		-> Node*
+
+	Node		-> NodeReference coordinate
+
+	Elements	-> Element*
+
+	Element		-> ElementType ElementNodes MaterialReference
+
+	NodesRestrictions	-> NodeRestriction*
+
+	NodeRestriction	-> NodeReference dx dy dz
+
+	LoadPatterns	-> LoadPattern*
+
+	LoadPattern	-> label NodalLoads NodeDisplacements DomainLoads SurfaceLoads
+
+	NodalLoads	-> NodalLoad*
+
+	NodalLoad	-> Nodereference force
+
+	NodeDisplacements	-> NodeDisplacement*
+
+	NodeDisplacement	-> Nodereference displacement
+
+	DomainLoads	-> domainload*
+
+	DomainLoad	-> Elementreference	force
+
+	SurfaceLoads	-> SurfaceLoad*
+
+	SurfaceLoad	-> surfacereference	force
+
+	Surfaces	-> Surface*
+
+	Surface		-> SurfaceReference SurfaceType SurfaceNodes

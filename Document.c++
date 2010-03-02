@@ -909,15 +909,18 @@ enum Document::Error Document::load2()
 	std::stack<json_t*> cursor;
 	std::stack<int> state;	// the parser's states
 
+	// temporary variables used to build the document
+	fem::Material material;
+
 	// initializing the parser
 	cursor.push(root);
 	state.push(0);	// starting state
 
-#define CURSOR_PUSH(TYPE) if(cursor.top()->child == NULL) goto error \
-	if (cursor.top()->child->type != TYPE) goto error; \
-	cursor.push(cursor.top()->child);
-#define CURSOR_VERIFY_TEXT(TEXT)	if(cursor.top()->text == NULL) goto error;	\
-				if(strcmp(cursor.top()->text, TEXT) != 0) goto error;
+#define ERROR()	{std::cout << "State " << state.top() << std::endl; goto error;}
+#define CURSOR_PUSH(TYPE) { if(cursor.top()->child == NULL) ERROR(); if (cursor.top()->child->type != TYPE) ERROR(); cursor.push(cursor.top()->child);}
+#define CURSOR_VERIFY_TEXT(TEXT)	{if(cursor.top()->text == NULL) ERROR(); if(strcmp(cursor.top()->text, TEXT) != 0) ERROR();}
+#define CURSOR_NEXT_LABEL()	{if(cursor.top()->next == NULL) ERROR(); cursor.top() = cursor.top()->next;}
+#define CURSOR_VERIFY_LABEL_TEXT(LABEL, VALUE) CURSOR_VERIFY_TEXT(LABEL); CURSOR_PUSH(JSON_STRING); CURSOR_VERIFY_TEXT(VALUE); cursor.pop();
 
 
 	while(state.size() > 0)
@@ -925,16 +928,8 @@ enum Document::Error Document::load2()
 		switch(state.top())
 		{
 			case 0:
-				/* replaced by the CURSOR_PUSH(TYPE) macro
-				if(cursor.top()->child == NULL)
-					goto error;	// Root object must have child nodes
-				if(cursor.top()->child->type != JSON_STRING)
-					goto error;	// must be a label in a label:value pair
-				cursor.push(cursor.top()->child);	
-				*/
-
 				// point cursor to the first child node
-				CURSOR_PUSH(JSON_STRING);
+				CURSOR_PUSH(JSON_STRING);	// { -> "fem": {
 
 				// set the state stack
 				state.top() = 2;	// OtherFields
@@ -945,35 +940,154 @@ enum Document::Error Document::load2()
 				state.top() = 14;	// Elements
 				state.push(28);		// Surfaces
 				state.push(12);		// Nodes
-				state.push(10);		// Materials
-				state.push(9);		// Header
+				state.push(6);		// Materials
+				//TODO update the above states
+				state.push(2);		// Header
 				break;
 
 			case 2:	// Header	-> VersionNumber FemModelType
-				/*
-				if(cursor.top()->text == NULL)
-					goto error;	// label must be non-null
-				if(strcmp(cursor.top()->text, "fem") != 0)
-					goto error;	// header label must be "fem"
-				*/
 
 				CURSOR_VERIFY_TEXT("fem");	// header label must be "fem"
 
-				CURSOR_PUSH(JSON_OBJECT);
+				CURSOR_PUSH(JSON_OBJECT);	// "fem": -> { "version":
+				CURSOR_PUSH(JSON_STRING);	// { -> "version": "1.0"
 
 				// set the state stack
-				state.top() = 4;	// FemModelType
+				state.pop();
+
+				state.push(5);	// EOF
+				state.push(4);	// FemModelType
 				state.push(3);	// VersionNumber
 				break;
 
 			case 3:	// VersionNumber	-> "version": "1.0"
 				CURSOR_VERIFY_TEXT("version");	// header label must be "fem"
-				CURSOR_PUSH(JSON_STRING);
+				CURSOR_PUSH(JSON_STRING);	// { "version": -> "1.0"
+				CURSOR_VERIFY_TEXT("1.0");	// header label must be "fem"
+				
+				// reposition the cursor
+				cursor.pop();	// { -> "version": "1.0"
+				CURSOR_NEXT_LABEL()	// { -> "type": "3D solid"
+
+				state.pop();
 				break;
 
+			case 4:	// <FemModelType>	-> "type": "3D solid"
+				CURSOR_VERIFY_TEXT("type");	// header label must be "fem"
+				CURSOR_PUSH(JSON_STRING);	// { "version": -> "1.0"
+				CURSOR_VERIFY_TEXT("3D solid");	// header label must be "fem"
+				
+				// reposition the cursor
+				cursor.pop();	// { -> "type": "3D solid"
+				// CURSOR_NEXT_LABEL()	// { -> "type": "3D solid"
 
+				state.pop();
 
-			default:
+				// reposition the cursor
+				break;
+
+			case 5:	// EndHeader
+				cursor.pop();	// { "fem": {
+				cursor.pop();	// { -> "fem"
+				if(cursor.top()->next == NULL) ERROR(); // must have a followup field
+				cursor.top() = cursor.top()->next;	// { -> "materials"
+				CURSOR_VERIFY_TEXT("materials");	// header label must be "fem"
+				CURSOR_PUSH(JSON_ARRAY);	// "materials": -> [ {
+
+				state.pop();
+				break;
+
+			case 6:	// Materials
+				CURSOR_PUSH(JSON_OBJECT);	// "materials": [ -> { "type":
+				
+				state.pop();	
+
+				state.push(9);	// <MaterialsFollow>
+				state.push(7);	// <Material>
+				break;
+
+			case 7:	// Material
+				//TODO
+				CURSOR_PUSH(JSON_STRING);
+				CURSOR_VERIFY_LABEL_TEXT("type","linear elastic");
+				material.type = fem::Material::MAT_LINEAR_ELASTIC;
+
+				CURSOR_NEXT_LABEL();
+				CURSOR_VERIFY_TEXT("label");
+				CURSOR_PUSH(JSON_STRING);
+				material.label.fromUtf8(cursor.top()->text);
+				cursor.pop();
+
+				CURSOR_NEXT_LABEL();
+				CURSOR_VERIFY_TEXT("E");
+				CURSOR_PUSH(JSON_NUMBER);
+				material.E = QString(cursor.top()->text).toDouble();
+				cursor.pop();
+
+				CURSOR_NEXT_LABEL();
+				CURSOR_VERIFY_TEXT("nu");
+				CURSOR_PUSH(JSON_NUMBER);
+				material.nu = QString(cursor.top()->text).toDouble();
+				cursor.pop();
+
+				CURSOR_NEXT_LABEL();
+				CURSOR_VERIFY_TEXT("fy");
+				CURSOR_PUSH(JSON_NUMBER);
+				material.fy = QString(cursor.top()->text).toDouble();
+				cursor.pop();
+
+				// update field
+				state.pop();
+
+				state.push(8);	// EndMaterial
+				break;
+
+			case 8:	// EndMaterial
+				if(cursor.top()->next != NULL)	ERROR();
+				cursor.pop();
+				cursor.pop();
+
+				// Material field is complete. Push material to the list
+				this->model.material_list.push_back(material);
+
+				state.pop();
+				break;
+				
+			case 9:	// MaterialsFollow
+				// test the FIRST of fury
+				if(cursor.top()->next == NULL)
+				{
+					state.pop();
+
+					state.push(10);	// EndMaterialsFollow
+				}
+				else
+				{
+					cursor.top() = cursor.top()->next;
+
+					state.pop();
+
+					state.push(9);
+					state.push(7);
+				}
+				return ERR_OK;
+				break;
+
+			case 10:	// EndMaterialsFollow
+				//TODO
+				cursor.pop();	// { "fem": {
+				cursor.pop();	// { -> "fem"
+				if(cursor.top()->next == NULL) ERROR(); // must have a followup field
+				cursor.top() = cursor.top()->next;	// { -> "materials"
+				CURSOR_VERIFY_TEXT("materials");	// header label must be "fem"
+				CURSOR_PUSH(JSON_ARRAY);	// "materials": -> [ {
+
+				state.pop();
+				return ERR_OK;
+				break;
+
+			default: 
+				std::cout << "unsupported state: " << state.top() << std::endl;
 				goto unknown_error;	// common way to handle all parser errors
 				break;
 		}

@@ -264,10 +264,15 @@ enum Model::Error Model::build_fem_equation(struct FemEquation &f, const LoadPat
 	}
 
 	//TODO remove testing code
-	std::cout << "testing matrix" << std::endl;
+	std::cout << "testing stiffness matrix" << std::endl;
 	std::cout << f.k << std::endl;
-	std::cout << "testing vector" << std::endl;
+	std::cout << "testing force vector" << std::endl;
 	std::cout << f.f << std::endl;
+	
+	f.solve();
+	std::cout << "testing displacement vector" << std::endl;
+	std::cout << f.f << std::endl;
+
 
 	// fem equation is set.
 	return ERR_OK;

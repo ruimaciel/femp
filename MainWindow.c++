@@ -21,6 +21,7 @@
 #include "parsers/json.h"
 
 #include "fem/NodeRestrictions.h++"
+#include "fem/Analysis.h++"
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
@@ -539,9 +540,11 @@ void MainWindow::setElementDisplay()
 void MainWindow::runAnalysis()
 {
 	//TODO finish this
+	fem::Analysis analysis;
 
 	//TODO for testing purposes only. remove
-	document.model.run(document.model.load_pattern_list[0]);	// nasty hack to test the code
+	// document.model.run(document.model.load_pattern_list[0]);	// nasty hack to test the code
+	analysis.run(document.model, document.model.load_pattern_list[0]);
 }
 
 

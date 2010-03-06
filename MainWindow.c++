@@ -352,6 +352,11 @@ void MainWindow::loadOptions()
 	options.setOption("viewport.elements.hexahedron8.color",default_color);
 	options.setOption("viewport.elements.hexahedron27.color",default_color);
 
+	default_color[0] = 1, default_color[1] = 0, default_color[2] = 0;
+	options.setOption("viewport.arrows.color",default_color);
+	options.setOption("viewport.arrows.radius",10.0f);
+	options.setOption("viewport.arrows.length",100.0f);
+
 	//TODO Set default options
 
 	// Set system options
@@ -418,6 +423,8 @@ void MainWindow::loadOptions()
 	SET_ELEMENT_COLOR(hexahedron27);
 
 	#undef SET_ELEMENT_COLOR
+
+	//TODO add code for the force arrows custom color code
 	}
 }
 

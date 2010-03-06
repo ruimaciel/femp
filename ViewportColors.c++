@@ -4,17 +4,19 @@
 ViewportColors::ViewportColors ()
 {
 	// set helper function
-	#define INIT_ELEMENT(ELEMENT) \
-	ELEMENT[0] = 0.5, ELEMENT[1] = 0.5, ELEMENT[2] = 0.5;
+	#define INIT_ELEMENT(ELEMENT, R, G, B) \
+	ELEMENT[0] = R, ELEMENT[1] = G, ELEMENT[2] = B;
 
-	INIT_ELEMENT(node);
-	INIT_ELEMENT(wireframe);
+	INIT_ELEMENT(node, 0,0.5,0);
+	INIT_ELEMENT(wireframe,0,0,0);
 
-	INIT_ELEMENT(tetrahedron4);
-	INIT_ELEMENT(tetrahedron10);
-	INIT_ELEMENT(hexahedron8);
-	INIT_ELEMENT(hexahedron27);
-	INIT_ELEMENT(prism6);
+	INIT_ELEMENT(tetrahedron4, 0, 0.5, 0);
+	INIT_ELEMENT(tetrahedron10, 0, 0.5, 0);
+	INIT_ELEMENT(hexahedron8, 0, 0.5, 0);
+	INIT_ELEMENT(hexahedron27, 0, 0.5, 0);
+	INIT_ELEMENT(prism6, 0, 0.5, 0);
+
+	INIT_ELEMENT(arrow, 1, 0, 0);
 
 	#undef INIT_ELEMENT
 }
@@ -38,6 +40,8 @@ ViewportColors::ViewportColors (const ViewportColors &copied)
 	SET_COLOR(hexahedron8);
 	SET_COLOR(hexahedron27);
 	SET_COLOR(prism6);
+
+	SET_COLOR(arrow);
 
 	#undef SET_COLOR
 }

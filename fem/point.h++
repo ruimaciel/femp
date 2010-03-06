@@ -23,9 +23,9 @@ namespace fem
     		void set(const double& a, const double& b, const double& c = 0);
     		void set_cylindrical(const double& radius, const double& alfa, const double &height = 0);
     		
-    		double norm();  // returns the vector's "lenght"
+    		double norm() const;  // returns the vector's "lenght"
     		void normalize(); // converts the vector to it's director vector (norm() == 1)
-    		point director();  // return the vector's director vector
+    		point director() const;  // return the vector's director vector
     		
     		void zero();   // assigns 0 to all the vector's values
     		

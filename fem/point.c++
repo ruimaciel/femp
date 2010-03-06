@@ -64,7 +64,7 @@ void point::set_cylindrical(const double& radius, const double& alfa, const doub
 /*
 	Returns the vector's norm (or length);
 */
-double point::norm()
+double point::norm() const
 {
 	return sqrt(this->data[0]*this->data[0] + this->data[1]*this->data[1] + this->data[2]*this->data[2] );
 }
@@ -85,16 +85,16 @@ void point::normalize()
 }
 
 
-point point::director()
+point point::director() const
 {
-    point temp = *this;
-    double length = temp.norm();
+	point temp = *this;
+	double length = temp.norm();
 
 	temp.data[0] /= length;
-    temp.data[1] /= length;
-    temp.data[2] /= length;
+	temp.data[1] /= length;
+	temp.data[2] /= length;
 
-    return temp;
+	return temp;
 }
 
 

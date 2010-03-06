@@ -24,6 +24,7 @@
 #include "fem/Analysis.h++"
 
 
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
 	ui.setupUi(this);
@@ -149,7 +150,6 @@ void MainWindow::openProject()
 
 void MainWindow::saveProject()
 {
-	//TODO finish this
 	if(document.file_name == NULL)
 	{
 		QFileDialog dialog(this);
@@ -198,7 +198,6 @@ void MainWindow::saveProject()
 void MainWindow::saveProjectAs()
 {
 	qWarning("MainWindow::saveProjectAs() not yet implemented");
-	//TODO finish this
 
 	QFileDialog dialog(this);
 	QStringList sl;
@@ -444,7 +443,6 @@ void MainWindow::importMesh()
 		mesh_file.setFileName(files[0]);
 		if(!mesh_file.open(QIODevice::ReadOnly | QIODevice::Text) )
 		{	// failed to open file
-			//TODO include file name
 			qWarning("unable to open file %s",qPrintable(mesh_file.fileName()));
 			QMessageBox msgBox(this);
 			msgBox.setIcon(QMessageBox::Warning);
@@ -455,7 +453,7 @@ void MainWindow::importMesh()
 			return;
 		}
 
-		// TODO import mesh from a Gmsh file
+		// import mesh from a Gmsh file
 		FILE *f = fdopen(mesh_file.handle(), "r");
 		fem_model_import_msh(f,document.model);
 		mesh_file.close();
@@ -543,14 +541,12 @@ void MainWindow::runAnalysis()
 	fem::Analysis analysis;
 
 	//TODO for testing purposes only. remove
-	// document.model.run(document.model.load_pattern_list[0]);	// nasty hack to test the code
 	analysis.run(document.model, document.model.load_pattern_list[0]);
 }
 
 
 void MainWindow::setUserInterfaceAsOpened()	
 {
-	//TODO finish this
 	// set the menus
 	ui.menuProject->setEnabled(true);
 	ui.menuView->setEnabled(true);
@@ -590,7 +586,6 @@ void MainWindow::setUserInterfaceAsOpened()
 
 void MainWindow::setUserInterfaceAsClosed()	
 {
-	//TODO finish this
 	// set the menus
 	ui.menuProject->setDisabled(true);
 	ui.menuView->setDisabled(true);

@@ -17,7 +17,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h \
 	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
 	ui/NewMaterialDialog.h++ \
-	fem/FemEquation.h++
+	fem/FemEquation.h++ fem/Analysis.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
 	ui/NewProjectWizardPage1.c++ ui/NewProjectWizardPage2.c++ ui/NewProjectWizardPage3.c++ ui/NewProjectWizardPageLast.c++  \
@@ -28,7 +28,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c \
 	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++ \
 	ui/NewMaterialDialog.c++ \
-	fem/FemEquation.c++
+	fem/FemEquation.c++ fem/Analysis.c++
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 	ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPage3.ui  ui/NewProjectWizardPageLast.ui \

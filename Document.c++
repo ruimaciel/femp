@@ -910,7 +910,13 @@ enum Document::Error Document::load2()
 	std::stack<int> state;	// the parser's states
 
 	// temporary variables used to build the document
-	fem::Material material;
+	fem::Material 	material;
+	size_t		ref;
+	std::vector<size_t>	refs;
+	fem::Element	element;
+	fem::NodeRestrictions node_restrictions;
+	QString		text;
+	fem::point	v;
 
 	// initializing the parser
 	cursor.push(root);
@@ -919,7 +925,8 @@ enum Document::Error Document::load2()
 #define ERROR()	{std::cout << "State " << state.top() << std::endl; goto error;}
 #define CURSOR_PUSH(TYPE) { if(cursor.top()->child == NULL) ERROR(); if (cursor.top()->child->type != TYPE) ERROR(); cursor.push(cursor.top()->child);}
 #define CURSOR_VERIFY_TEXT(TEXT)	{if(cursor.top()->text == NULL) ERROR(); if(strcmp(cursor.top()->text, TEXT) != 0) ERROR();}
-#define CURSOR_NEXT_LABEL()	{if(cursor.top()->next == NULL) ERROR(); cursor.top() = cursor.top()->next;}
+#define CURSOR_NEXT()	{if(cursor.top()->next == NULL) ERROR(); cursor.top() = cursor.top()->next;}
+#define CURSOR_NEXT_TEST(TYPE)	{CURSOR_NEXT(); if(cursor.top()->type != TYPE) ERROR() }
 #define CURSOR_VERIFY_LABEL_TEXT(LABEL, VALUE) CURSOR_VERIFY_TEXT(LABEL); CURSOR_PUSH(JSON_STRING); CURSOR_VERIFY_TEXT(VALUE); cursor.pop();
 
 
@@ -932,16 +939,18 @@ enum Document::Error Document::load2()
 				CURSOR_PUSH(JSON_STRING);	// { -> "fem": {
 
 				// set the state stack
-				state.top() = 2;	// OtherFields
+				state.pop();
+
+				state.push(25);		// OtherFields
 				state.push(1);		// MandatoryFields
 				break;
 
 			case 1:	// MandatoryFields -> Header Materials Nodes Surfaces Elements
-				state.top() = 14;	// Elements
-				state.push(28);		// Surfaces
-				state.push(12);		// Nodes
+				state.pop();
+
+				state.push(18);		// Elements
+				state.push(11);		// Nodes
 				state.push(6);		// Materials
-				//TODO update the above states
 				state.push(2);		// Header
 				break;
 
@@ -955,7 +964,7 @@ enum Document::Error Document::load2()
 				// set the state stack
 				state.pop();
 
-				state.push(5);	// EOF
+				state.push(5);	// EndHeader
 				state.push(4);	// FemModelType
 				state.push(3);	// VersionNumber
 				break;
@@ -967,7 +976,7 @@ enum Document::Error Document::load2()
 				
 				// reposition the cursor
 				cursor.pop();	// { -> "version": "1.0"
-				CURSOR_NEXT_LABEL()	// { -> "type": "3D solid"
+				CURSOR_NEXT()	// { -> "type": "3D solid"
 
 				state.pop();
 				break;
@@ -979,7 +988,7 @@ enum Document::Error Document::load2()
 				
 				// reposition the cursor
 				cursor.pop();	// { -> "type": "3D solid"
-				// CURSOR_NEXT_LABEL()	// { -> "type": "3D solid"
+				// CURSOR_NEXT()	// { -> "type": "3D solid"
 
 				state.pop();
 
@@ -1007,30 +1016,29 @@ enum Document::Error Document::load2()
 				break;
 
 			case 7:	// Material
-				//TODO
 				CURSOR_PUSH(JSON_STRING);
 				CURSOR_VERIFY_LABEL_TEXT("type","linear elastic");
 				material.type = fem::Material::MAT_LINEAR_ELASTIC;
 
-				CURSOR_NEXT_LABEL();
+				CURSOR_NEXT();
 				CURSOR_VERIFY_TEXT("label");
 				CURSOR_PUSH(JSON_STRING);
 				material.label.fromUtf8(cursor.top()->text);
 				cursor.pop();
 
-				CURSOR_NEXT_LABEL();
+				CURSOR_NEXT();
 				CURSOR_VERIFY_TEXT("E");
 				CURSOR_PUSH(JSON_NUMBER);
 				material.E = QString(cursor.top()->text).toDouble();
 				cursor.pop();
 
-				CURSOR_NEXT_LABEL();
+				CURSOR_NEXT();
 				CURSOR_VERIFY_TEXT("nu");
 				CURSOR_PUSH(JSON_NUMBER);
 				material.nu = QString(cursor.top()->text).toDouble();
 				cursor.pop();
 
-				CURSOR_NEXT_LABEL();
+				CURSOR_NEXT();
 				CURSOR_VERIFY_TEXT("fy");
 				CURSOR_PUSH(JSON_NUMBER);
 				material.fy = QString(cursor.top()->text).toDouble();
@@ -1067,24 +1075,416 @@ enum Document::Error Document::load2()
 
 					state.pop();
 
-					state.push(9);
-					state.push(7);
+					state.push(9);	// MaterialsFollow
+					state.push(7);	// Material
 				}
-				return ERR_OK;
 				break;
 
 			case 10:	// EndMaterialsFollow
 				//TODO
-				cursor.pop();	// { "fem": {
-				cursor.pop();	// { -> "fem"
+				cursor.pop();	// { "materials": {
 				if(cursor.top()->next == NULL) ERROR(); // must have a followup field
-				cursor.top() = cursor.top()->next;	// { -> "materials"
-				CURSOR_VERIFY_TEXT("materials");	// header label must be "fem"
-				CURSOR_PUSH(JSON_ARRAY);	// "materials": -> [ {
+				cursor.top() = cursor.top()->next;	// { -> "nodes"
+				CURSOR_VERIFY_TEXT("nodes");	// header label must be "nodes"
+				CURSOR_PUSH(JSON_ARRAY);	// "nodes": -> [ [
 
 				state.pop();
+				break;
+
+			case 11:	// Nodes
+				CURSOR_PUSH(JSON_ARRAY);	// "nodes": [ -> [1, [
+				state.pop();
+
+				state.push(13);	// NodeFollow
+				state.push(12);	// Node
+				break;
+
+			case 12:	// Node
+				CURSOR_PUSH(JSON_NUMBER);	// "nodes": [ [ -> 1, [
+				state.pop();
+
+				state.push(16);	// EndNode
+				state.push(15);	// Coordinate
+				state.push(14);	// NodeReference
+				break;
+
+			case 13:	// NodeFollow
+				// TODO test the FIRST of fury
+				if(cursor.top()->next == NULL)
+				{
+					state.pop();
+
+					state.push(17);	// EndNodes
+				}
+				else
+				{
+					CURSOR_NEXT_TEST(JSON_ARRAY);
+					state.pop();
+
+					state.push(13);	// NodeFollow
+					state.push(12);	// Node
+				}
+				break;
+
+			case 14:	// NodeReference
+				text = cursor.top()->text;
+				ref = text.toULongLong();
+
+				CURSOR_NEXT();
+				if(cursor.top()->type != JSON_ARRAY) goto error;
+				state.pop();
+				break;
+
+			case 15:	// Coordinate
+				CURSOR_PUSH(JSON_NUMBER);
+
+				// get the vector components
+				text = cursor.top()->text;
+				v.x(text.toDouble());
+				CURSOR_NEXT_TEST(JSON_NUMBER);
+				text = cursor.top()->text;
+				v.y(text.toDouble());
+				CURSOR_NEXT_TEST(JSON_NUMBER);
+				text = cursor.top()->text;
+				v.z(text.toDouble());
+
+				if(cursor.top()->next != NULL) goto error;
+				cursor.pop();
+
+				state.pop();
+				break;
+
+			case 16:	// EndNode
+				//TODO finish
+				model.setNode(ref,v);
+
+				cursor.pop();
+
+				state.pop();
+				break;
+
+			case 17:	// EndNodes
+				//TODO finish
+				cursor.pop();	// { "nodes": {
+				cursor.pop();	// { "nodes": {
+				if(cursor.top()->next == NULL) ERROR(); // must have a followup field
+				cursor.top() = cursor.top()->next;	// { -> "nodes"
+				CURSOR_VERIFY_TEXT("elements");	// header label must be "nodes"
+				CURSOR_PUSH(JSON_ARRAY);	// "nodes": -> [ [
+
+				state.pop();
+				break;
+
+			case 18:	// Elements
+				CURSOR_PUSH(JSON_OBJECT);	// "elements": [ -> { "element"
+
+				state.pop();
+
+				state.push(20);	// ElementFollow
+				state.push(19);	// Element
+				break;
+
+			case 19:	// Element
+				//TODO finish
+				CURSOR_PUSH(JSON_STRING);	// "elements": [ { -> "type"
+				CURSOR_VERIFY_TEXT("type");
+				
+				CURSOR_PUSH(JSON_STRING);	// "elements": [ { "type": -> "tetrahedron"
+
+				// clear the temp element
+				element.nodes.clear();
+
+				state.pop();
+
+				state.push(23);	// MaterialReference
+				switch(fem::Element::extractType(cursor.top()->text))
+				{
+					case fem::Element::FE_TETRAHEDRON4:
+						element.type = fem::Element::FE_TETRAHEDRON4;
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(21);	// ElementFirstNode
+						break;
+
+					case fem::Element::FE_TETRAHEDRON10:
+						element.type = fem::Element::FE_TETRAHEDRON10;
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(21);	// ElementFirstNode
+						break;
+
+					case fem::Element::FE_HEXAHEDRON8:
+						element.type = fem::Element::FE_HEXAHEDRON8;
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(21);	// ElementFirstNode
+						break;
+
+					case fem::Element::FE_HEXAHEDRON20:
+						element.type = fem::Element::FE_HEXAHEDRON20;
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(21);	// ElementFirstNode
+						break;
+
+					case fem::Element::FE_HEXAHEDRON27:
+						element.type = fem::Element::FE_HEXAHEDRON27;
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(21);	// ElementFirstNode
+						break;
+
+					case fem::Element::FE_PRISM6:
+						element.type = fem::Element::FE_PRISM6;
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(21);	// ElementFirstNode
+						break;
+
+					default:
+						std::cout << "unsupported element: " << state.top() << std::endl;
+						goto unknown_error;
+						break;
+				}
+
+				cursor.pop();	// "elements": [ { -> "type"
+				CURSOR_NEXT_TEST(JSON_STRING);
+				CURSOR_VERIFY_TEXT("nodes");
+				CURSOR_PUSH(JSON_ARRAY);	// "elements": [ { "nodes":->[
+				CURSOR_PUSH(JSON_NUMBER);	// "elements": [ { "nodes":[ -> 1
+				break;
+
+			case 20:	// ElementsFollow
+				//TODO
+				if(cursor.top()->next != NULL)
+				{
+					CURSOR_NEXT_TEST(JSON_OBJECT);
+
+					state.pop();
+
+					state.push(20);	// ElementsFollow
+					state.push(19);	// Element
+				}
+				else
+				{
+					state.pop();
+
+					state.push(24);	// EndElements
+				}
+				break;
+
+			case 21:	// ElementFirstNode
+				//TODO
+				text = cursor.top()->text;
+				element.nodes.push_back(text.toULongLong());
+
+				state.pop();
+				break;
+
+			case 22:	// ElementNextNode
+				CURSOR_NEXT_TEST(JSON_NUMBER);
+
+				text = cursor.top()->text;
+				element.nodes.push_back(text.toULongLong());
+
+				state.pop();
+				break;
+
+			case 23:	// MaterialReference
+				cursor.pop();	// "elements": [ { "nodes": -> [
+				cursor.pop();	// "elements": [ { -> "nodes"
+				if(cursor.top()->next == NULL)
+				{
+					cursor.pop();	// "elements": [ -> { "nodes"
+				}
+				else
+				{
+					CURSOR_NEXT_TEST(JSON_STRING);
+					CURSOR_VERIFY_TEXT("material");
+					CURSOR_PUSH(JSON_NUMBER);
+					text = cursor.top()->text;
+					model.setDefaultMaterial(text.toULongLong());
+					cursor.pop();	// "elements": [ { -> "material"
+					cursor.pop();	// "elements": [ -> { "material"
+				}
+
+				// push element
+				model.pushElement(element);
+
+				state.pop();
+				break;
+
+			case 24:	// EndElements
+				//TODO finish
+				cursor.pop();	// { "elements": -> [
+				cursor.pop();	// { -> "elements": [
+
+				state.pop();
+				break;
+
+
+			case 25:	// OtherFields
+				//TODO finish
+				// test the FIRST
+				if(cursor.top()->next == NULL)
+				{
+					// no node restrictions
+					// no load patterns
+					// no combinations
+
+					// reached the end of the document
+					return ERR_OK;
+				}
+				else
+				{
+					cursor.top() = cursor.top()->next;	// { -> "nodes"
+
+					// verify first
+					if(strcmp(cursor.top()->text, "node restrictions") == 0)
+					{
+						CURSOR_PUSH(JSON_ARRAY);	// { "node restrictions": -> [ {
+
+						state.pop();
+
+						state.push(29);	// AfterNodeRestrictions
+						state.push(26);	// NodeRestrictions
+					}
+					else if(strcmp(cursor.top()->text, "load patterns") == 0)
+					{
+						//TODO
+						return ERR_OK;
+					}
+					else if(strcmp(cursor.top()->text, "load combinations") == 0)
+					{
+						//TODO
+						return ERR_OK;
+					}
+					else
+					{
+						ERROR();
+					}
+				}
+				break;
+
+			case 26:	// NodeRestrictions
+				//TODO finish
+				CURSOR_PUSH(JSON_OBJECT);	// { "node restrictions": [ -> {
+
+				state.pop();
+				state.push(28);	// NodeRestrictionFollow
+				state.push(27);	// NodeRestriction
+				break;
+
+			case 27:	// NodeRestriction
+				//TODO finish
+				CURSOR_PUSH(JSON_STRING);	// { "node restrictions": [ { -> "node"
+				CURSOR_VERIFY_TEXT("node");
+				CURSOR_PUSH(JSON_NUMBER);	// { "node restrictions": [ { "node": -> 0
+
+				// set the temps
+				node_restrictions.reset();
+
+				text = cursor.top()->text;
+				ref = text.toULongLong();
+
+				cursor.pop();
+				CURSOR_NEXT_TEST(JSON_STRING);
+
+				if(strcmp(cursor.top()->text, "dx") == 0)
+				{
+					if(cursor.top()->child->type == JSON_TRUE) 
+						node_restrictions.setdx();
+
+					CURSOR_NEXT_TEST(JSON_STRING);
+				}
+
+				if(strcmp(cursor.top()->text, "dy") == 0)
+				{
+					if(cursor.top()->child->type == JSON_TRUE) 
+						node_restrictions.setdy();
+
+					CURSOR_NEXT_TEST(JSON_STRING);
+				}
+
+				if(strcmp(cursor.top()->text, "dz") == 0)
+				{
+					if(cursor.top()->child->type == JSON_TRUE) 
+						node_restrictions.setdy();
+				}
+
+				if(cursor.top()->next != NULL)	ERROR();
+
+				// set the node restrictions
+				model.pushNodeRestrictions(ref, node_restrictions);
+
+				cursor.pop();	// { "node restrictions": [ -> { "node"
+
+				state.pop();
+				break;
+
+			case 28:	// NodeRestrictionFollow
+				//TODO finish
 				return ERR_OK;
 				break;
+
+
 
 			default: 
 				std::cout << "unsupported state: " << state.top() << std::endl;

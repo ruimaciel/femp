@@ -26,11 +26,21 @@ void Model::clear()
 }
 
 
-void Model::setNode(size_t pos, double x, double y, double z)
+void Model::setNode(size_t ref, double x, double y, double z)
 {
 	Node n;
 	n.set(x,y,z);
-	this->node_list[pos] = n;
+	this->node_list[ref] = n;
+}
+
+
+void Model::setNode(size_t ref, fem::point p)
+{
+	Node n;
+	n.x(p.x());
+	n.y(p.y());
+	n.z(p.z());
+	this->node_list[ref] = n;
 }
 
 

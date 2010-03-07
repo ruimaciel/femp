@@ -3,39 +3,80 @@ state	non-terminal	rest
 
 1	MandatoryFields	-> Header Materials Nodes surfaces Elements
 
- 	OtherFields	-> NodesRestrictions LoadPatterns combinations
- 			-> NodesRestrictions LoadPatterns 
- 			-> NodesRestrictions 
- 			-> LoadPatterns combinations
- 			-> LoadPatterns 
- 			-> Combinations
- 			->
-
 2	Header		-> VersionNumber FemModelType
 
 3	VersionNumber	-> "version": "1.0"
 
 4	FemModelType	-> "type": "3D solid"
 
-	Materials	-> Material+
+6	Materials	-> Material MaterialsFollow
 
-	Material	-> type label E nu fy
+7	Material	-> type label E nu fy EndMaterial
 
-	Nodes		-> Node*
+8	EndMaterial	-> "terminal"
 
-	Node		-> NodeReference coordinate
+9	MaterialsFollow	-> Material MaterialsFollow
+			-> EndMaterialsFolow
 
-	Elements	-> Element*
+10	EndMaterialsFollow ->
 
-	Element		-> ElementType ElementNodes MaterialReference
 
-	NodesRestrictions	-> NodeRestriction*
+11	Nodes		-> Node NodeFollow
 
-	NodeRestriction	-> NodeReference dx dy dz
+12	Node		-> NodeReference Coordinate EndNode
+
+13	NodeFollow	-> Node NodeFollow
+			-> EndNodes
+
+14	NodeReference	->  JSON_NUMBER
+
+15	Coordinate	->  JSON_ARRAY[JSON_NUMBER, JSON_NUMBER, JSON_NUMBER]
+
+16	EndNode		-> 
+
+17	EndNodes	->
+
+18	Elements	-> Element ElementsFollow
+
+19	Element		-> "tetrahedron4" ElementFirstNode ElementNextNode{3} MaterialReference
+			-> "tetrahedron10" ElementFirstNode ElementNextNode{3} MaterialReference
+			...
+
+20	ElementsFollow	-> Element ElementsFollow
+			-> EndElements
+
+21	ElementFirstNode	-> 
+
+22	ElementNextNode	->
+
+23	MaterialReference
+
+24	EndElements	->
+
+
+
+25 	OtherFields	-> NodesRestrictions AfterNodesRestrictions
+ 			-> LoadPatterns AfterLoadPatterns
+ 			-> LoadCombinations
+ 			-> EOF
+
+26	NodesRestrictions	-> NodeRestriction NodeRestrictionFollow
+
+27	NodeRestriction	-> NodeReference dx dy dz
+
+28	NodeRestrictionFollow	-> NodeRestriction NodeRestrictionFollow
+				-> EndNodeRestriction
+
+
+
+29	AfterNodesRestrictions	->	LoadPatterns AfterLoadPatterns
+				->	LoadCombinations
 
 	LoadPatterns	-> LoadPattern*
 
 	LoadPattern	-> label NodalLoads NodeDisplacements DomainLoads SurfaceLoads
+
+	AfterLoadPatterns	-> LoadCombinations
 
 	NodalLoads	-> NodalLoad*
 

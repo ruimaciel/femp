@@ -51,7 +51,9 @@ class Model {
 		void clear();
 
 		// sets a node
-		void setNode(size_t pos, double x, double y, double z);
+		void setNode(size_t ref, double x, double y, double z);
+		void setNode(size_t ref, fem::point p);
+
 		void setDefaultMaterial(int material)	{ default_material = material; }
 		void pushElement(fem::Element);
 		void pushElement(fem::Element::Type type, std::vector<size_t> nodes);

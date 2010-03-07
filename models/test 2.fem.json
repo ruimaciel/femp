@@ -1,6 +1,6 @@
 {"fem":
 	{	"version": "1.0",
-	"type": "unknown"
+	"type": "3D solids"
 	},
 "materials": [
 	{"type":"linear elastic", "label": "A400", "E":2e+11,"nu":0.2, "fy": 2e+07},
@@ -30,24 +30,7 @@
 	[22,[5.91527e-13,0.75,0.5]]
 	],
 "elements":[
-	{"type":"line2", "nodes":[2,7], "material": 0},
-	{"type":"line2", "nodes":[7,3]},
-	{"type":"line2", "nodes":[3,8]},
-	{"type":"line2", "nodes":[8,1]},
-	{"type":"line2", "nodes":[1,9]},
-	{"type":"line2", "nodes":[9,10]},
-	{"type":"line2", "nodes":[10,2]},
-	{"type":"line2", "nodes":[4,11]},
-	{"type":"line2", "nodes":[11,5]},
-	{"type":"line2", "nodes":[5,12]},
-	{"type":"line2", "nodes":[12,13]},
-	{"type":"line2", "nodes":[13,6]},
-	{"type":"line2", "nodes":[6,14]},
-	{"type":"line2", "nodes":[14,4]},
-	{"type":"line2", "nodes":[3,4]},
-	{"type":"line2", "nodes":[1,5]},
-	{"type":"line2", "nodes":[2,6]},
-	{"type":"tetrahedron4", "nodes":[17,16,18,9]},
+	{"type":"tetrahedron4", "nodes":[17,16,18,9], "material": 0},
 	{"type":"tetrahedron4", "nodes":[16,18,12,17]},
 	{"type":"tetrahedron4", "nodes":[10,19,20,18]},
 	{"type":"tetrahedron4", "nodes":[13,20,19,18]},
@@ -90,7 +73,7 @@
 	],
 "node restrictions": [
 	{ "node":1, "dx":true, "dy":true},
-	{ "node":2, "dz":true, "ry":true}
+	{ "node":2, "dz":true, "dy":true}
 	],
 "load patterns":[
 	{	"label": "an example of a node load label",
@@ -101,6 +84,8 @@
 	"domain loads":[
 		{"node":7, "force":[10, 0, -10]},
 		{"node":8, "force":[0, 0, -10]}
+	],
+	"surface loads": [
 	]},
 	{	"label": "another example of a node load label",
 	"node displacements":[
@@ -108,8 +93,8 @@
 		{"node":5, "displacement":[10, 20, 0]}
 	],
 	"domain loads":[
-		{"node":7, "force":[10, 0, -10]},
-		{"node":8, "force":[0, 0, -10]}
+		{"element":7, "force":[10, 0, -10]},
+		{"element":8, "force":[0, 0, -10]}
 	]}
 	],
 "combinations":[	]

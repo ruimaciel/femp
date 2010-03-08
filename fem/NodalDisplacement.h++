@@ -7,6 +7,7 @@ namespace fem
 {
 	class NodalDisplacement {
 		public:
+			//TODO change this
 			point displacement;
 
 		public:

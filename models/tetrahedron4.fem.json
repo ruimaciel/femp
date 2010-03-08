@@ -29,7 +29,8 @@
 			],
 
 				"node displacements":[
-				{"node":1, "displacement":[0, 0, 0]}
+				{"node":1, "dx": 1},
+				{"node":2, "dy": 1, "dz": 2}
 			],
 
 				"domain loads":[

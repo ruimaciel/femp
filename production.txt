@@ -65,18 +65,54 @@ state	non-terminal	rest
 27	NodeRestriction	-> NodeReference dx dy dz
 
 28	NodeRestrictionFollow	-> NodeRestriction NodeRestrictionFollow
-				-> EndNodeRestriction
-
-
+				-> AfterNodeRestriction
 
 29	AfterNodesRestrictions	->	LoadPatterns AfterLoadPatterns
 				->	LoadCombinations
+				-> 	EOF
 
-	LoadPatterns	-> LoadPattern*
 
-	LoadPattern	-> label NodalLoads NodeDisplacements DomainLoads SurfaceLoads
+30	LoadPatterns	-> LoadPattern LoadPatternFollow
+
+31	LoadPattern	-> label 	NodalLoads AfterNodalLoads
+					NodeDisplacements AfterNodeDisplacements
+					DomainLoads AfterDomainLoads
+					SurfaceLoads AfterSurfaceLoads 
+
+32	NodalLoads	->	NodalLoad NodalLoadFollow
+
+33	NodalLoad	->	"node": JSON_NUMBER, "force": Coordinate
+
+34	NodalLoadFollow	->	NodalLoad NodalLoadFollow
+			->
+
+35	AfterNodalLoads	->	NodeDisplacements
+			-> 	DomainLoads
+			-> 	SurfaceLoads
+			->
+
+
+
+36	NodeDisplacements	-> NodeDisplacement NodeDisplacementFollow
+
+37	NodeDisplacement	->
+
+38	NodeDisplacementFollow	-> NodeDisplacement NodeDisplacementFollow
+				-> 
+
+	AfterNodeDisplacements	-> 	DomainLoads
+				-> 	SurfaceLoads
+				->
+
+39	DomainLoads	-> 	SurfaceLoads
+
+
+40	LoadPatternFollow	->	LoadPattern LoadPatternFollow
+				->
 
 	AfterLoadPatterns	-> LoadCombinations
+
+
 
 	NodalLoads	-> NodalLoad*
 

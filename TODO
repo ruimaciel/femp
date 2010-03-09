@@ -10,3 +10,4 @@
 - certificar que antes da importação da malha há materiais definidos
 - ao importar a malha, escolher o material a atribuir
 - seleccionar o tipo de elementos a importar
+- não interpretar matrix singular como erro

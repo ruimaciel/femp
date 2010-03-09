@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QMdiSubWindow>
+#include <QTime>
 #include <QTranslator>
 #include <QToolBar>
 
@@ -40,15 +41,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	// initialize the member attributes
 	this->hasUnsavedChanges = false;
 
-	// set up the dock widgets
-	/*
-	commandLineDockWidget = new CommandLineDockWidget(this);
-	this->addDockWidget(static_cast<Qt::DockWidgetArea>(8), commandLineDockWidget);
-	*/
 
 	// initialize the toolbars
 	visibilityToolBar = NULL;
 	viewportToolBar = NULL;
+
+	// initialize the Docks
+	commandLineDockWidget = new CommandLineDockWidget(this);
+	connect(this, SIGNAL(setMessage(QString)), commandLineDockWidget, SLOT(getMessage(QString)));
+	connect(this, SIGNAL(setWarning(QString)), commandLineDockWidget, SLOT(getWarning(QString)));
+	connect(this, SIGNAL(setError(QString)), commandLineDockWidget, SLOT(getError(QString)));
 
 	// create actions and connect signals to slots
 	this->createActions();
@@ -328,6 +330,7 @@ void MainWindow::createToolBars()
 
 void MainWindow::destroyToolBars()
 {
+	//TODO free memory
 	removeToolBar(visibilityToolBar);
 }
 
@@ -544,11 +547,39 @@ void MainWindow::setElementDisplay()
 
 void MainWindow::runAnalysis()
 {
+	emit setMessage("Model analysis: started");
+	QString message;
+	QTime time;
+
+	time.start();	// to get the run time
+
 	//TODO finish this
 	fem::Analysis analysis;
 
 	//TODO for testing purposes only. remove
 	analysis.run(document.model, document.model.load_pattern_list[0]);
+
+	message.sprintf("Model analysis: finished after %d ms", time.elapsed());
+
+	emit setMessage(message);
+}
+
+
+void MainWindow::getMessage(QString message)
+{
+	emit setMessage(message);
+}
+
+
+void MainWindow::getWarning(QString message)
+{
+	emit setMessage(message);
+}
+
+
+void MainWindow::getError(QString message)
+{
+	emit setMessage(message);
 }
 
 
@@ -588,6 +619,9 @@ void MainWindow::setUserInterfaceAsOpened()
 
 	// set toolbars
 	createToolBars();
+
+	// set the docks
+	this->addDockWidget(static_cast<Qt::DockWidgetArea>(8), commandLineDockWidget);
 }
 
 
@@ -615,5 +649,9 @@ void MainWindow::setUserInterfaceAsClosed()
 
 	// handle the toolbars
 	destroyToolBars();
+
+	// handle the docks
+	this->removeDockWidget(commandLineDockWidget);
+	commandLineDockWidget->clear();
 }
 

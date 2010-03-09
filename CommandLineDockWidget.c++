@@ -24,6 +24,32 @@ void CommandLineDockWidget::standard_error(const QString &text)
 }
 
 
+void CommandLineDockWidget::getMessage(QString message)
+{
+	this->ui.commandHistoryLog->appendPlainText(message);
+}
+
+
+void CommandLineDockWidget::getWarning(QString message)
+{
+	//TODO tweak colors
+	this->ui.commandHistoryLog->appendPlainText("Warning: " + message);
+}
+
+
+void CommandLineDockWidget::getError(QString message)
+{
+	//TODO tweak colors
+	this->ui.commandHistoryLog->appendPlainText("Error: " + message);
+}
+
+
+void CommandLineDockWidget::clear()
+{
+	this->ui.commandHistoryLog->clear();
+}
+
+
 void CommandLineDockWidget::commandEntered(void)
 {
 	Q_EMIT executeCommand(ui.commandLineInput->text() );

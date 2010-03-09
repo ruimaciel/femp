@@ -65,8 +65,19 @@ public Q_SLOTS:
 	**/
 	void runAnalysis();
 
+	/**
+	Logging slots
+	**/
+	void getMessage(QString);
+	void getWarning(QString);
+	void getError(QString);
+
 Q_SIGNALS:
 	void togglePerspective();	// toggles between orthographic and projection
+
+	void setMessage(QString);
+	void setWarning(QString);
+	void setError(QString);
 
 private:
 	void createActions();	// creates the actions and connects them

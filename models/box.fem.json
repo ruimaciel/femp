@@ -1,7 +1,9 @@
 {"fem":
-	{	"version": "1.0",
-	"type": "solid3d"
+	{	
+		"version": "1.0",
+		"type": "3D solid"
 	},
+
 "materials": [
 	{"type":"linear elastic", "label": "A400", "E":2e+11,"nu":0.2, "fy": 2e+07},
 	{"type":"linear elastic", "label": "C30/37", "E":3.3e+10,"nu":0.2, "fy": 2e+07}
@@ -76,6 +78,7 @@
 	{"type":"hexahedron8", "nodes":[40,13,12,41,49,28,27,50]},
 	{"type":"hexahedron8", "nodes":[41,12,1,11,50,27,7,26]}
 	],
+
 "node restrictions": [
 		{"node":1, "dx":true, "dy": true, "dz": true},
 		{"node":3, "dx":true, "dy": true, "dz": true},
@@ -88,10 +91,11 @@
 		{"node":28, "dx":true, "dy": true, "dz": true},
 		{"node":29, "dx":true, "dy": true, "dz": true}
 	],
+
 "load patterns":[
 	{
 		"label":"Nodal forces",
-		"node loads":[
+		"nodal loads":[
 			{"node": 4, "force":[10,0,0]},
 			{"node": 5, "force":[10,0,0]}
 		]
@@ -102,6 +106,5 @@
 			{"node": 4, "displacement":[10,0,0]}, {"node": 4, "displacement":	[10,0,0]}
 			]
 	}
-],
-"combinations":[]
+]
 }

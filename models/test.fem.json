@@ -1,6 +1,6 @@
 {"fem":
 	{	"version": "1.0",
-	"type": "unknown"
+	"type": "3D solid"
 	},
 "materials": [
 	{"type":"linear elastic", "label": "Steel", "E":2e+11,"nu":0.2, "fy": 2.96439e-323}	],
@@ -1259,9 +1259,5 @@
 	{"type":"tetrahedron10", "nodes":[25,235,19,224,297,507,124,255,823,295]},
 	{"type":"tetrahedron10", "nodes":[223,234,348,475,292,505,493,497,496,556]},
 	{"type":"tetrahedron10", "nodes":[419,234,64,55,491,546,453,460,421,317]}
-	],
-"node restrictions": [
-	],
-"load patterns":[	],
-"combinations":[	]
+	]
 }

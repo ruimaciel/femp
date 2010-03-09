@@ -55,6 +55,12 @@ namespace fem
 		n.force = force;
 		domain_loads[element] = n;
 	}
+
+
+	void LoadPattern::addSurfaceLoad(SurfaceLoad lp)
+	{
+		surface_loads.push_back(lp);
+	}
 }
 
 

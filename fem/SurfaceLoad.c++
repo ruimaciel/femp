@@ -6,22 +6,27 @@ namespace fem
 
 SurfaceLoad::SurfaceLoad()
 {
-	force[0] = 0;
-	force[1] = 0;
-	force[2] = 0;
 }
 
 
 SurfaceLoad::SurfaceLoad(const SurfaceLoad &copied)
 {
-	force[0] = copied.force[0];
-	force[1] = copied.force[1];
-	force[2] = copied.force[2];
+	type = copied.type;
+	node_reference = copied.node_reference;
+	surface_forces = copied.surface_forces;
 }
 
 
 SurfaceLoad::~SurfaceLoad()
 {
+}
+
+
+void SurfaceLoad::clear()
+{
+	type = Element::FE_INVALID;
+	node_reference.clear();
+	surface_forces.clear();
 }
 
 }

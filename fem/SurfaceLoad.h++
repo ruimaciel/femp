@@ -1,6 +1,11 @@
 #ifndef SURFACE_LOAD_HPP
 #define SURFACE_LOAD_HPP
 
+#include <vector>
+
+#include "Element.h++"
+
+#include "point.h++"
 
 namespace fem
 {
@@ -8,13 +13,20 @@ namespace fem
 class SurfaceLoad
 {
 	public:
-		//short surface;	// speficies the element's surface where this force is applied
-		double force[3];	// force acting paralel to XX, YY and ZZ
+		Element::Type	type;
+		std::vector<size_t>	node_reference;	// nodes that define the surface
+		std::vector<fem::point>	surface_forces;	// forces acting in each node, used to interpolate the surface load
 
 	public:
 		SurfaceLoad();
 		SurfaceLoad(const SurfaceLoad &);
 		~SurfaceLoad();
+
+
+		/**
+		Clears all attributes
+		**/
+		void clear();
 };
 
 }

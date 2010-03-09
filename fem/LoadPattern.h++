@@ -22,7 +22,7 @@ namespace fem
 			std::map<size_t,NodalLoad> 	nodal_loads;	// maps nodal loads to node references
 			std::map<size_t,NodalDisplacement> 	nodal_displacements;	// maps nodal loads to node references
 			std::map<size_t,DomainLoad>	domain_loads;	// maps to element references
-			//TODO surface loads
+			std::vector<SurfaceLoad>	surface_loads;	// lists surface loads
 
 		public:
 			LoadPattern();
@@ -42,6 +42,8 @@ namespace fem
 			@param force_shape	a list of forces acting on each of the element's nodes
 			**/
 			void addDomainLoad(size_t element, point force);
+
+			void addSurfaceLoad(SurfaceLoad);
 	};
 }
 

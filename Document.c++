@@ -128,7 +128,7 @@ enum Document::Error Document::load()
 #define CURSOR_NEXT_TEST(TYPE)	{CURSOR_NEXT(); if(cursor.top()->type != TYPE) ERROR() }
 #define CURSOR_VERIFY_LABEL_TEXT(LABEL, VALUE) CURSOR_VERIFY_TEXT(LABEL); CURSOR_PUSH(JSON_STRING); CURSOR_VERIFY_TEXT(VALUE); cursor.pop();
 
-#define DECHO()	{ std::cerr << "State " << state.top() << std::endl; }
+#define DECHO()	{ /* std::cerr << "State " << state.top() << std::endl;*/ }
 
 
 	while (state.size() > 0) 
@@ -191,8 +191,10 @@ enum Document::Error Document::load()
 				DECHO();
 				CURSOR_VERIFY_TEXT("type");	// header label must be "fem"
 				CURSOR_PUSH(JSON_STRING);	// "version": -> "1.0"
+
+				//TODO support more types 
 				CURSOR_VERIFY_TEXT("3D solid");	// header label must be
-				// "fem"
+				this->document_type = TYPE_SOLID3D;
 
 				// reposition the cursor
 				cursor.pop();
@@ -683,23 +685,78 @@ enum Document::Error Document::load()
 				cursor.pop();
 				CURSOR_NEXT_TEST(JSON_STRING);
 
-				if (strcmp(cursor.top()->text, "dx") == 0) {
-					if (cursor.top()->child->type == JSON_TRUE)
-						node_restrictions.setdx();
+				if (strcmp(cursor.top()->text, "dx") == 0) 
+				{
+					switch(cursor.top()->child->type)
+					{
+						case JSON_TRUE:
+							node_restrictions.setdx();
+							break;
 
+						case JSON_FALSE:
+							break;
+
+						default:
+							ERROR();
+							break;
+					}
+
+					if (cursor.top()->next == NULL)
+					{
+						// set the node restrictions
+						model.pushNodeRestrictions(ref, node_restrictions);
+
+						cursor.pop();	
+
+						state.pop();
+						break;
+					}
 					CURSOR_NEXT_TEST(JSON_STRING);
 				}
 
 				if (strcmp(cursor.top()->text, "dy") == 0) {
-					if (cursor.top()->child->type == JSON_TRUE)
-						node_restrictions.setdy();
+					switch(cursor.top()->child->type)
+					{
+						case JSON_TRUE:
+							node_restrictions.setdy();
+							break;
 
+						case JSON_FALSE:
+							break;
+
+						default:
+							ERROR();
+							break;
+					}
+
+
+					if (cursor.top()->next == NULL)
+					{
+						// set the node restrictions
+						model.pushNodeRestrictions(ref, node_restrictions);
+
+						cursor.pop();	
+
+						state.pop();
+						break;
+					}
 					CURSOR_NEXT_TEST(JSON_STRING);
 				}
 
 				if (strcmp(cursor.top()->text, "dz") == 0) {
-					if (cursor.top()->child->type == JSON_TRUE)
-						node_restrictions.setdy();
+					switch(cursor.top()->child->type)
+					{
+						case JSON_TRUE:
+							node_restrictions.setdz();
+							break;
+
+						case JSON_FALSE:
+							break;
+
+						default:
+							ERROR();
+							break;
+					}
 				}
 
 				if (cursor.top()->next != NULL)
@@ -1376,9 +1433,11 @@ enum Document::Error Document::save()
 	out << "\t{";
 	out << "\t\"version\": \"1.0\",\n";
 	out << "\t\"type\": ";
-	switch (document_type) {
+
+	switch (document_type) 
+	{
 		case TYPE_SOLID3D:
-			out << "\"solid3d\"\n";
+			out << "\"3D solid\"\n";
 			break;
 
 		default:
@@ -1516,82 +1575,151 @@ enum Document::Error Document::save()
 		out << "}";
 	}
 
-	out << "\n\t],\n";
+	if(!model.load_pattern_list.empty())
+	{
+		out << "\n\t],\n";
 
-	// dump the load patterns list
-	out << "\"load patterns\":[";
-	for (std::vector < fem::LoadPattern >::iterator it =
-			model.load_pattern_list.begin();
-			it != model.load_pattern_list.end(); it++) {
-		if (it != model.load_pattern_list.begin())
-			out << ",";
-		out << "\n\t\t{";
-		out << "\t\"label\": \"" << it->label << "\"";
-		// take care of the nodal loads
-		if (!it->nodal_loads.empty()) {
-			out << ",\n\t\t";
-			out << "\"nodal loads\":[";
-			for (std::map < size_t, fem::NodalLoad >::iterator n =
-					it->nodal_loads.begin(); n != it->nodal_loads.end(); n++)
+		// dump the load patterns list
+		out << "\"load patterns\":[";
+		for (std::vector < fem::LoadPattern >::iterator it = model.load_pattern_list.begin(); it != model.load_pattern_list.end(); it++) 
+		{
+			if (it != model.load_pattern_list.begin())
+				out << ",";
+			out << "\n\t\t{";
+			out << "\t\"label\": \"" << it->label << "\"";
+			// take care of the nodal loads
+			if (!it->nodal_loads.empty()) {
+				out << ",\n\t\t";
+				out << "\"nodal loads\":[";
+				for (std::map < size_t, fem::NodalLoad >::iterator n =
+						it->nodal_loads.begin(); n != it->nodal_loads.end(); n++)
+				{
+					if (n != it->nodal_loads.begin())
+						out << ",";
+					out << "\n\t\t\t{";
+					out << "\"node\":" << n->first;
+					out << ", \"force\":" << "[" << n->second.force.
+						x() << ", " << n->second.force.
+						y() << ", " << n->second.force.z() << "]}";
+				}
+				out << "\n\t\t]";
+			}
+			// take care of the nodal displacements
+			if (!it->nodal_displacements.empty()) {
+				out << ",\n\t\t";
+				out << "\"node displacements\":[";
+				for (std::map < size_t, fem::NodalDisplacement >::iterator n =
+						it->nodal_displacements.begin();
+						n != it->nodal_displacements.end(); n++) {
+					if (n != it->nodal_displacements.begin())
+						out << ",";
+					out << "\n\t\t\t{";
+					out << "\"node\":" << n->first;
+					out << ", \"displacement\":" << "[" << n->
+						second.displacement.data[0] << ", " << n->second.
+						displacement.data[1] << ", " << n->second.
+						displacement.data[2] << "]}";
+				}
+				out << "\n\t\t]";
+			}
+
+			// take care of the domain displacements
+			if (!it->domain_loads.empty()) 
 			{
-				if (n != it->nodal_loads.begin())
-					out << ",";
-				out << "\n\t\t\t{";
-				out << "\"node\":" << n->first;
-				out << ", \"force\":" << "[" << n->second.force.
-					x() << ", " << n->second.force.
-					y() << ", " << n->second.force.z() << "]}";
+				out << ",\n\t\t";
+				out << "\"domain loads\":[";
+				for (std::map < size_t, fem::DomainLoad >::iterator n = it->domain_loads.begin(); n != it->domain_loads.end(); n++) 
+				{
+					if (n != it->domain_loads.begin())
+						out << ",";
+					out << "\n\t\t\t{";
+					out << "\"element\":" << n->first;
+					out << ", ";
+					out << "\"force\": [" << n->second.force.x() << "," << n-> second.force.y() << "," << n->second.force.z() << "]";
+					out << "}";
+				}
+				out << "\n\t\t\t]\n";
 			}
-			out << "\n\t\t]";
-		}
-		// take care of the nodal displacements
-		if (!it->nodal_displacements.empty()) {
-			out << ",\n\t\t";
-			out << "\"node displacements\":[";
-			for (std::map < size_t, fem::NodalDisplacement >::iterator n =
-					it->nodal_displacements.begin();
-					n != it->nodal_displacements.end(); n++) {
-				if (n != it->nodal_displacements.begin())
-					out << ",";
-				out << "\n\t\t\t{";
-				out << "\"node\":" << n->first;
-				out << ", \"displacement\":" << "[" << n->
-					second.displacement.data[0] << ", " << n->second.
-					displacement.data[1] << ", " << n->second.
-					displacement.data[2] << "]}";
-			}
-			out << "\n\t\t]";
-		}
-		// take care of the domain displacements
-		if (!it->domain_loads.empty()) {
-			out << ",\n\t\t";
-			out << "\"domain loads\":[";
-			for (std::map < size_t, fem::DomainLoad >::iterator n =
-					it->domain_loads.begin(); n != it->domain_loads.end();
-					n++) {
-				if (n != it->domain_loads.begin())
-					out << ",";
-				out << "\n\t\t\t{";
-				out << "\"element\":" << n->first;
-				out << ", ";
-				out << "\"force\": [" << n->second.force.x() << "," << n->
-					second.force.y() << "," << n->second.force.z() << "]";
-				out << "}";
-			}
-			out << "\n\t\t\t]\n";
-		}
-		// take care of the surface loads
-		// TODO finish surface loads
 
-		out << "\t\t}\n";
+			// take care of the surface loads
+			if (!it->surface_loads.empty())
+			{
+				out << ",\n\t\t";
+				out << "\"surface loads\":[";
+				for(std::vector<fem::SurfaceLoad>::iterator n = it->surface_loads.begin(); n != it->surface_loads.end(); n++)
+				{
+					if (n != it->surface_loads.begin())
+						out << ",";
+					out << "\n\t\t\t{";
+					out << "\"type\": ";
+					switch(n->type)
+					{
+						case fem::Element::FE_TRIANGLE3:
+							out << "\"triangle3\"";
+							break;
+
+						case fem::Element::FE_TRIANGLE6:
+							out << "\"triangle6\"";
+							break;
+
+						case fem::Element::FE_QUADRANGLE4:
+							out << "\"quadrangle4\"";
+							break;
+
+						case fem::Element::FE_QUADRANGLE8:
+							out << "\"quadrangle8\"";
+							break;
+
+						case fem::Element::FE_QUADRANGLE9:
+							out << "\"quadrangle9\"";
+							break;
+
+						default:
+							out << "\"unknown\"";
+							break;
+					}
+					out << ", ";
+
+					out << "\"nodes\": [";
+					for(std::vector<size_t>::iterator i = n->node_reference.begin(); i != n->node_reference.end(); i++)
+					{
+						if (i != n->node_reference.begin())
+							out << ",";
+						out << *i;
+					}
+					out << "], ";
+					out << "\"forces\": [";
+
+					for(std::vector<fem::point>::iterator i = n->surface_forces.begin(); i != n->surface_forces.end(); i++)
+					{
+						if (i != n->surface_forces.begin())
+							out << ",";
+						out << "[";
+						out << i->x();
+						out << ",";
+						out << i->y();
+						out << ",";
+						out << i->z();
+						out << "]";
+					}
+					out << "]";
+					out << "}";
+				}
+				out << "\n\t\t\t]\n";
+			}
+
+			out << "\t\t}\n";
+		}
+		out << "\t]\n";
 	}
-	out << "\t],\n";
 
 
+	/*
 	// dump the load combinations list
 	out << "\"combinations\":[";
 	// TODO finish combinations
 	out << "\t]\n";
+	 */
 
 	out << "}\n";		// final, closing bracket
 

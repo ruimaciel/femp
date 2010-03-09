@@ -14,6 +14,7 @@ namespace fem
 		this->nodal_loads = copied.nodal_loads;
 		this->nodal_displacements = copied.nodal_displacements;
 		this->domain_loads = copied.domain_loads;
+		this->surface_loads = copied.surface_loads;
 	}
 
 
@@ -28,7 +29,7 @@ namespace fem
 		nodal_loads.clear();
 		nodal_displacements.clear();
 		domain_loads.clear();
-		//TODO add surface loads
+		surface_loads.clear();
 	}
 
 
@@ -57,7 +58,7 @@ namespace fem
 	}
 
 
-	void LoadPattern::addSurfaceLoad(SurfaceLoad lp)
+	void LoadPattern::addSurfaceLoad(SurfaceLoad &lp)
 	{
 		surface_loads.push_back(lp);
 	}

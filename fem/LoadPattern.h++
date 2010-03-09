@@ -43,7 +43,7 @@ namespace fem
 			**/
 			void addDomainLoad(size_t element, point force);
 
-			void addSurfaceLoad(SurfaceLoad);
+			void addSurfaceLoad(SurfaceLoad &);
 	};
 }
 

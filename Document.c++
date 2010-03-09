@@ -128,7 +128,7 @@ enum Document::Error Document::load()
 #define CURSOR_NEXT_TEST(TYPE)	{CURSOR_NEXT(); if(cursor.top()->type != TYPE) ERROR() }
 #define CURSOR_VERIFY_LABEL_TEXT(LABEL, VALUE) CURSOR_VERIFY_TEXT(LABEL); CURSOR_PUSH(JSON_STRING); CURSOR_VERIFY_TEXT(VALUE); cursor.pop();
 
-#define DECHO()	{ std::cerr << "State " << state.top() << std::endl; }
+#define DECHO()	{ /* std::cerr << "State " << state.top() << std::endl;*/ }
 
 
 	while (state.size() > 0) 
@@ -1432,8 +1432,13 @@ unknown_error:		// some programming error happened
 	return ERR_UNKNOWN;
 
 	//TODO undef all macros
+#undef ERROR
 #undef CURSOR_PUSH
 #undef CURSOR_VERIFY_TEXT
+#undef CURSOR_NEXT
+#undef CURSOR_NEXT_TEST
+#undef CURSOR_VERIFY_LABEL_TEXT
+
 }
 
 
@@ -1453,12 +1458,11 @@ enum Document::Error Document::save()
 		return ERR_WRITING_FILE;
 	}
 	QTextStream     out(&file);
-	out << "{";
+	out << "{\n";
 	// dump the header field
-	out << "\"fem\":\n";
-	out << "\t{";
-	out << "\t\"version\": \"1.0\",\n";
-	out << "\t\"type\": ";
+	out << "\t\"fem\": {\n";
+	out << "\t\t\"version\": \"1.0\",\n";
+	out << "\t\t\"type\": ";
 
 	switch (document_type) 
 	{
@@ -1473,10 +1477,9 @@ enum Document::Error Document::save()
 	out << "\t},\n";
 
 	// dump the materials list
-	out << "\"materials\": [";
-	for (std::vector < fem::Material >::iterator it =
-			model.material_list.begin(); it != model.material_list.end();
-			it++) {
+	out << "\t\"materials\": [";
+	for (std::vector < fem::Material >::iterator it = model.material_list.begin(); it != model.material_list.end(); it++) 
+	{
 		// to print the comman between entries and avoiding printing it
 		// after the last
 		if (it != model.material_list.begin())
@@ -1485,9 +1488,7 @@ enum Document::Error Document::save()
 			out << "\n\t";
 		switch (it->type) {
 			case fem::Material::MAT_LINEAR_ELASTIC:
-				out << "{\"type\":" << "\"linear elastic\", \"label\": \"" <<
-					it->label << "\", \"E\":" << it->E << ",\"nu\":" << it->
-					nu << ", \"fy\": " << it->fy << "}";
+				out << "{\"type\":" << "\"linear elastic\", \"label\": \"" << it->label << "\", \"E\":" << it->E << ",\"nu\":" << it-> nu << ", \"fy\": " << it->fy << "}";
 				break;
 
 			default:
@@ -1499,15 +1500,13 @@ enum Document::Error Document::save()
 
 	// dump the nodes list
 	out << "\"nodes\":[";
-	for (std::map < size_t, fem::Node >::iterator it =
-			model.node_list.begin(); it != model.node_list.end(); it++) {
+	for (std::map < size_t, fem::Node >::iterator it = model.node_list.begin(); it != model.node_list.end(); it++) 
+	{
 		if (it != model.node_list.begin())
 			out << ",\n\t";
 		else
 			out << "\n\t";
-		out << "[" << it->first << ",[" << it->
-			second.data[0] << "," << it->second.data[1] << "," << it->
-			second.data[2] << "]]";
+		out << "[" << it->first << ",[" << it-> second.data[0] << "," << it->second.data[1] << "," << it-> second.data[2] << "]]";
 
 	}
 	out << "\n\t],\n";
@@ -1515,8 +1514,7 @@ enum Document::Error Document::save()
 	// dump the elements list
 	out << "\"elements\":[";
 	int             material = 0;
-	for (std::vector < fem::Element >::iterator it =
-			model.element_list.begin(); it != model.element_list.end(); it++)
+	for (std::vector < fem::Element >::iterator it = model.element_list.begin(); it != model.element_list.end(); it++)
 	{
 		if (it != model.element_list.begin())
 			out << ",\n\t";
@@ -1524,33 +1522,26 @@ enum Document::Error Document::save()
 			out << "\n\t";
 		out << "{\"type\":";
 		// get the name of the element
-		switch (it->type) {
-			/*
-			 * case fem::Element::FE_LINE2: out << "\"line2\", "; break;
-			 * 
-			 * case fem::Element::FE_TRIANGLE3: out << "\"triangle3\", ";
-			 * break; 
-			 */
-
+		switch (it->type) 
+		{
 			case fem::Element::FE_TETRAHEDRON4:
 				out << "\"tetrahedron4\", ";
-				break;
-
-			case fem::Element::FE_HEXAHEDRON8:
-				out << "\"hexahedron8\", ";
 				break;
 
 			case fem::Element::FE_TETRAHEDRON10:
 				out << "\"tetrahedron10\", ";
 				break;
 
-				/*
-				 * case fem::Element::FE_HEXAHEDRON20: out <<
-				 * "\"hexahedron20\", "; break; 
-				 */
+			case fem::Element::FE_HEXAHEDRON8:
+				out << "\"hexahedron8\", ";
+				break;
 
-			case fem::Element::FE_HEXAHEDRON20:
-				out << "\"hexahedron28\", ";
+			case fem::Element::FE_HEXAHEDRON20: 
+				out << "\"hexahedron20\", "; 
+				break; 
+
+			case fem::Element::FE_HEXAHEDRON27:
+				out << "\"hexahedron27\", ";
 				break;
 
 			case fem::Element::FE_PRISM6:
@@ -1563,6 +1554,7 @@ enum Document::Error Document::save()
 				qWarning("element defaulted");
 				break;
 		}
+
 		// output the element's nodes
 		out << "\"nodes\":[";
 		for (std::vector < size_t >::iterator n = it->nodes.begin();
@@ -1580,33 +1572,37 @@ enum Document::Error Document::save()
 		}
 		out << "}";
 	}
-	out << "\n\t],\n";
+	out << "\n\t]";
 
-	// dump the load restrictions list
-	out << "\"node restrictions\": [";
-	for (std::map < size_t, fem::NodeRestrictions >::iterator it =
-			model.node_restrictions_list.begin();
-			it != model.node_restrictions_list.end(); it++) {
-		// TODO test this
-		if (it != model.node_restrictions_list.begin())
-			out << ",";
-		out << "\n\t\t";
-		out << "{ \"node\":" << it->first;
-		if (it->second.dx() == true)
-			out << ", \"dx\":true";
-		if (it->second.dy() == true)
-			out << ", \"dy\":true";
-		if (it->second.dz() == true)
-			out << ", \"dz\":true";
-		out << "}";
+	if(!model.node_restrictions_list.empty())
+	{
+		out << ",\n\n";
+		// dump the load restrictions list
+		out << "\t\"node restrictions\": [";
+		for (std::map < size_t, fem::NodeRestrictions >::iterator it = model.node_restrictions_list.begin(); it != model.node_restrictions_list.end(); it++) 
+		{
+			// TODO test this
+			if (it != model.node_restrictions_list.begin())
+				out << ",";
+			out << "\n\t\t";
+			out << "{ \"node\":" << it->first;
+			if (it->second.dx() == true)
+				out << ", \"dx\":true";
+			if (it->second.dy() == true)
+				out << ", \"dy\":true";
+			if (it->second.dz() == true)
+				out << ", \"dz\":true";
+			out << "}";
+		}
+		out << "\n\t]";
 	}
 
 	if(!model.load_pattern_list.empty())
 	{
-		out << "\n\t],\n";
+		out << ",\n\n";
 
 		// dump the load patterns list
-		out << "\"load patterns\":[";
+		out << "\t\"load patterns\":[";
 		for (std::vector < fem::LoadPattern >::iterator it = model.load_pattern_list.begin(); it != model.load_pattern_list.end(); it++) 
 		{
 			if (it != model.load_pattern_list.begin())
@@ -1617,19 +1613,20 @@ enum Document::Error Document::save()
 			if (!it->nodal_loads.empty()) {
 				out << ",\n\t\t";
 				out << "\"nodal loads\":[";
-				for (std::map < size_t, fem::NodalLoad >::iterator n =
-						it->nodal_loads.begin(); n != it->nodal_loads.end(); n++)
+				for (std::map < size_t, fem::NodalLoad >::iterator n = it->nodal_loads.begin(); n != it->nodal_loads.end(); n++)
 				{
 					if (n != it->nodal_loads.begin())
 						out << ",";
 					out << "\n\t\t\t{";
 					out << "\"node\":" << n->first;
-					out << ", \"force\":" << "[" << n->second.force.
-						x() << ", " << n->second.force.
-						y() << ", " << n->second.force.z() << "]}";
+					out << ", \"force\":" << "[" << n->second.force.  x() << ", " << n->second.force.  y() << ", " << n->second.force.z() << "]}";
 				}
 				out << "\n\t\t]";
 			}
+
+			/*
+			//TODO rethink the NodeDisplacement class
+
 			// take care of the nodal displacements
 			if (!it->nodal_displacements.empty()) {
 				out << ",\n\t\t";
@@ -1641,13 +1638,11 @@ enum Document::Error Document::save()
 						out << ",";
 					out << "\n\t\t\t{";
 					out << "\"node\":" << n->first;
-					out << ", \"displacement\":" << "[" << n->
-						second.displacement.data[0] << ", " << n->second.
-						displacement.data[1] << ", " << n->second.
-						displacement.data[2] << "]}";
+					out << ", \"displacement\":" << "[" << n-> second.displacement.data[0] << ", " << n->second.  displacement.data[1] << ", " << n->second.  displacement.data[2] << "]}";
 				}
 				out << "\n\t\t]";
 			}
+			*/
 
 			// take care of the domain displacements
 			if (!it->domain_loads.empty()) 
@@ -1747,7 +1742,7 @@ enum Document::Error Document::save()
 	out << "\t]\n";
 	 */
 
-	out << "}\n";		// final, closing bracket
+	out << "\n}\n";		// final, closing bracket
 
 	// cleanup and exit
 	// TODO see KDE/ext4 row on proper unix file_name writing

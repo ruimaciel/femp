@@ -24,7 +24,9 @@ class Analysis
 			ERR_ELEMENT_NODE_REFERENCE,	// an invalid node reference has been made
 			ERR_NODE_RESTRICTIONS_NODE_REFERENCE,	// an invalid node reference has been made
 			ERR_INVALID_MATERIAL_REFERENCE,
-			ERR_INVALID_NODE_REFERENCE
+			ERR_INVALID_NODE_REFERENCE,
+
+			ERR_SINGULAR_MATRIX
 		};
 
 	public:

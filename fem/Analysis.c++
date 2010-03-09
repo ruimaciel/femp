@@ -213,7 +213,9 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 	std::cout << "testing force vector" << std::endl;
 	std::cout << f.f << std::endl;
 	
-	f.solve();
+	if(f.solve() == true)
+		return ERR_SINGULAR_MATRIX;
+
 	std::cout << "testing displacement vector" << std::endl;
 	std::cout << f.f << std::endl;
 

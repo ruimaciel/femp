@@ -128,7 +128,7 @@ enum Document::Error Document::load()
 #define CURSOR_NEXT_TEST(TYPE)	{CURSOR_NEXT(); if(cursor.top()->type != TYPE) ERROR() }
 #define CURSOR_VERIFY_LABEL_TEXT(LABEL, VALUE) CURSOR_VERIFY_TEXT(LABEL); CURSOR_PUSH(JSON_STRING); CURSOR_VERIFY_TEXT(VALUE); cursor.pop();
 
-#define DECHO()	{ /* std::cerr << "State " << state.top() << std::endl;*/ }
+#define DECHO()	{ std::cerr << "State " << state.top() << std::endl; }
 
 
 	while (state.size() > 0) 
@@ -635,6 +635,7 @@ enum Document::Error Document::load()
 					// verify first
 					if (strcmp(cursor.top()->text, "node restrictions") == 0) {
 						CURSOR_PUSH(JSON_ARRAY);	
+						CURSOR_PUSH(JSON_OBJECT);	
 
 						state.pop();
 
@@ -662,9 +663,9 @@ enum Document::Error Document::load()
 			case 26:		// NodeRestrictions
 				DECHO();
 				// TODO finish
-				CURSOR_PUSH(JSON_OBJECT);	
 
 				state.pop();
+
 				state.push(28);	// NodeRestrictionFollow
 				state.push(27);	// NodeRestriction
 				break;
@@ -775,16 +776,17 @@ enum Document::Error Document::load()
 				// TODO finish
 				if (cursor.top()->next == NULL) {	// EndNodeRestriction
 					cursor.pop();	
-					cursor.pop();	
+					cursor.pop();	// "node restrictions" JSON_ARRAY JSON_OBJECT
 
 					state.pop();
-				} else {
+				} 
+				else 
+				{
 					CURSOR_NEXT();
-
-					cursor.pop();
+					state.pop();
 
 					state.push(28);	// NodeRestrictionsFollow
-					state.push(26);	// NodeRestrictions
+					state.push(27);	// NodeRestriction
 				}
 				break;
 
@@ -823,7 +825,7 @@ enum Document::Error Document::load()
 
 				state.pop();
 
-				state.push(46);	// LoadPatternFollow
+				state.push(52);	// LoadPatternFollow
 				state.push(31);	// LoadPattern
 				break;
 
@@ -946,6 +948,7 @@ enum Document::Error Document::load()
 				if(cursor.top()->next == NULL)
 				{
 					//TODO finish this
+					state.pop();
 				}
 				else
 				{
@@ -1046,6 +1049,7 @@ enum Document::Error Document::load()
 				if(cursor.top()->next == NULL)
 				{
 					//TODO finish this
+					state.pop();
 				}
 				else
 				{
@@ -1133,11 +1137,12 @@ enum Document::Error Document::load()
 				DECHO();
 				//TODO
 				cursor.pop();
-				cursor.pop();	// -> "node displacement"
+				cursor.pop();	// -> "domain loads"
 
 				if(cursor.top()->next == NULL)
 				{
 					//TODO finish this
+					state.pop();
 				}
 				else
 				{
@@ -1381,12 +1386,33 @@ enum Document::Error Document::load()
 			case 51:	// AfterSurfaceLoads
 				DECHO();
 				
-				model.pushLoadPattern(load_pattern);
-
 				if(cursor.top()->next != NULL) ERROR();
 				cursor.pop();	// JSON_OBJECT "surface loads" JSON_ARRAY
 
 				state.pop();
+				break;
+
+			case 52:	// LoadPatternFollow
+				DECHO();
+				//TODO
+				model.pushLoadPattern(load_pattern);
+
+				cursor.pop();	// JSON_OBJECT -> "force" JSON_ARRAY
+				cursor.pop();	// -> JSON_OBJECT "force"
+
+				// Test the FIRST
+				if(cursor.top()->next == NULL)
+				{
+					state.pop();
+				}
+				else
+				{
+					CURSOR_NEXT_TEST(JSON_OBJECT);
+					state.pop();
+
+					state.push(52);	// LoadPatternFollow
+					state.push(31);	// LoadPattern
+				}
 				break;
 
 			default:

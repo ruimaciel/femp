@@ -68,913 +68,7 @@ Document::setFileName(QString new_file)
 }
 
 
-enum Document:: Error
-Document::load()
-{
-    QFile           file;
-    // TODO check if path exists
-    if (file_name == NULL)
-	return ERR_FILE_NOT_FOUND;
-
-    file.setFileName(*file_name);
-    if (!file.exists())
-	return ERR_FILE_NOT_FOUND;
-
-    // sets up all variables
-    model.clear();
-
-    // load the project files
-    // file exists, now open it and parse it
-    if (file.open(QIODevice::ReadOnly | QIODevice::Text) == false) {
-	return ERR_FILE_OPEN;
-    }
-    // read the file
-    json_t         *root = NULL;
-    FILE           *f = fdopen(file.handle(), "r");
-    switch (json_stream_parse(f, &root)) {
-    case JSON_OK:
-	// all went well
-	break;
-
-    default:
-	return ERR_PARSER_ERROR;
-	break;
-    }
-
-    // JSON document successfully parsed. Now let's extract stuff from it
-#define PTEST(TEST) {if(!(TEST)){qWarning("PERROR line %d: " #TEST, __LINE__); return ERR_PARSER_ERROR;} }
-#define PMOVE(TO)	{ PTEST(TO != NULL); cursor = TO; }
-#define PMOVE_TYPE(CURSOR,TO,TYPE)	{ PTEST(TO != NULL); PTEST(TO->type != TYPE); CURSOR = TO; }
-#define PMOVE_TOCHILD(CURSOR)	{ PTEST(CURSOR->child != NULL); CURSOR = CURSOR->child;}
-#define PMOVE_TOCHILD_TYPE(CURSOR,TYPE)	{ PTEST(CURSOR->child != NULL); CURSOR = CURSOR->child; PTEST(CURSOR->type == TYPE);}
-#define PMOVE_TONEXT(CURSOR)	{ PTEST(CURSOR->next != NULL); CURSOR = CURSOR->next;}
-#define PMOVE_TONEXT_TYPE(CURSOR,TYPE)	{ PTEST(CURSOR->next != NULL); CURSOR = CURSOR->next; PTEST(CURSOR->type == TYPE);}
-#define PMOVE_DOWN(CURSOR)	{ PTEST(CURSOR->parent != NULL); CURSOR = CURSOR->parent;}
-
-    // document in memory, now let the importing begin
-    json_t         *cursor = root;
-
-    PMOVE_TOCHILD(cursor);
-
-    PTEST(cursor->type == JSON_STRING);
-    PTEST(QString::compare(cursor->text, "fem") == 0);
-    // TODO finish this
-
-    // move to the materials field
-    PMOVE(cursor->next);	// pointing to root->materials
-    PTEST(QString::compare(cursor->text, "materials") == 0);
-    PMOVE_TOCHILD_TYPE(cursor, JSON_ARRAY);
-    if (cursor->child != NULL)	// root-"materials"->array should have
-	// items
-    {
-	// there are defined elements
-	for (json_t * mc = cursor->child; mc != NULL; mc = mc->next) {
-	    fem::Material mat;
-	    QString         temp;
-	    PTEST(mc->type == JSON_OBJECT);
-	    PTEST(mc->child != NULL);
-	    json_t         *c = mc->child;	// switched cursor
-	    PTEST(c->type == JSON_STRING);
-	    PTEST(QString::compare(c->text, "type") == 0);
-
-	    // set the material type
-	    PTEST(QString::compare(c->child->text, "linear elastic") == 0);
-	    mat.type = fem::Material::MAT_LINEAR_ELASTIC;
-
-	    // move to the label field
-	    PMOVE_TONEXT_TYPE(c, JSON_STRING);
-	    PTEST(QString::compare(c->text, "label") == 0);
-	    mat.label = c->child->text;
-
-	    // move to the Young modulus field
-	    PMOVE_TONEXT_TYPE(c, JSON_STRING);
-	    PTEST(QString::compare(c->text, "E") == 0);
-	    PTEST(c->child != NULL);
-	    PTEST(c->child->type == JSON_NUMBER);
-	    temp = c->child->text;
-	    mat.E = temp.toDouble();
-
-	    // move to the Poisson coefficient field
-	    PTEST(c->next != NULL);
-	    c = c->next;
-	    PTEST(c->type == JSON_STRING);
-	    PTEST(QString::compare(c->text, "nu") == 0);
-	    PTEST(c->child != NULL);
-	    PTEST(c->child->type == JSON_NUMBER);
-	    temp = c->child->text;
-	    mat.nu = temp.toDouble();
-
-	    // move to the elastic limit field
-	    PTEST(c->next != NULL);
-	    c = c->next;
-	    PTEST(c->type == JSON_STRING);
-	    PTEST(QString::compare(c->text, "fy") == 0);
-	    PTEST(c->child != NULL);
-	    PTEST(c->child->type == JSON_NUMBER);
-	    temp = c->child->text;
-	    mat.fy = temp.toDouble();
-	    // end of field
-	    PTEST(c->next == NULL);
-
-	    model.material_list.push_back(mat);
-	}
-    }
-    cursor = cursor->parent;	// point to root->"materials"
-
-    // move to the nodes field
-    PMOVE(cursor->next);	// pointing to root->nodes
-    PTEST(QString::compare(cursor->text, "nodes") == 0);
-    PMOVE(cursor->child);
-    PTEST(cursor->type == JSON_ARRAY);
-    if (cursor->child != NULL)	// testing root->"nodes"->array for
-	// children
-    {				// has child nodes
-	QString         temp;
-	size_t          n = 0;
-	double          p[3] = { 0, 0, 0 };
-	json_t         *ac = NULL;
-	// iterate through the child nodes of "nodes":[]
-	for (json_t * c = cursor->child; c != NULL; c = c->next) {
-	    ac = c;
-	    PTEST(ac->type == JSON_ARRAY);
-	    PTEST(ac->child != NULL);
-	    ac = ac->child;
-	    PTEST(ac->type == JSON_NUMBER);
-	    temp = ac->text;
-	    n = temp.toLongLong();	// get the node index
-
-	    PTEST(ac->next != NULL);
-	    ac = ac->next;	// move c to the coordinates array
-	    PTEST(ac->type == JSON_ARRAY);
-	    PTEST(ac->child != NULL);
-	    ac = ac->child;
-	    PTEST(ac->type == JSON_NUMBER);	// point to the first
-	    // coordinate
-	    temp = ac->text;
-	    p[0] = temp.toDouble();	// get point.x()
-
-	    PTEST(ac->next != NULL);	// there must be a 2nd array
-	    // element
-	    ac = ac->next;
-	    PTEST(ac->type == JSON_NUMBER);	// point to the first
-	    // coordinate
-	    temp = ac->text;
-	    p[1] = temp.toDouble();	// get point.x()
-
-	    PTEST(ac->next != NULL);	// there must be a 2nd array
-	    // element
-	    ac = ac->next;
-	    PTEST(ac->type == JSON_NUMBER);	// point to the first
-	    // coordinate
-	    temp = ac->text;
-	    p[2] = temp.toDouble();	// get point.x()
-	    PTEST(ac->next == NULL);
-
-	    // having the values, let's add the node to the node list
-	    model.setNode(n, p[0], p[1], p[2]);
-	}
-    }
-    cursor = cursor->parent;	// move to root->"nodes"
-
-    // move to the elements field
-    PMOVE(cursor->next);	// pointing to root->"elements"
-    PTEST(QString::compare(cursor->text, "elements") == 0);
-    PMOVE(cursor->child);	// pointing to root->"elements"->array
-    PTEST(cursor->type == JSON_ARRAY);
-    if (cursor->child != NULL) {	// elements present in this
-	// document
-	size_t          nn;	// number of nodes which will be expected
-	// for each type
-	json_t         *ec = NULL;
-	fem::Element::Type type = fem::Element::FE_INVALID;
-
-	for (json_t * c = cursor->child; c != NULL; c = c->next) {
-	    PTEST(c->type == JSON_OBJECT);
-	    PTEST(c->child != NULL);
-	    ec = c->child;	// pointing to
-	    // root->"elements"->array->object->"type"
-	    PTEST(ec->type == JSON_STRING);
-	    PTEST(QString::compare(ec->text, "type") == 0);
-	    PTEST(ec->child->type == JSON_STRING);	// value of label
-	    // "type" must be
-	    // a string
-
-	    // identify this type and act accordingly
-	    switch (type = fem::Element::extractType(ec->child->text)) {
-	    case fem::Element::FE_LINE2:
-		nn = 2;
-		break;
-
-	    case fem::Element::FE_TRIANGLE3:
-		nn = 3;
-		break;
-
-	    case fem::Element::FE_QUADRANGLE4:
-		nn = 4;
-		break;
-
-	    case fem::Element::FE_TETRAHEDRON4:
-		nn = 4;		// expect 4 nodes in the "nodes" array
-		break;
-
-	    case fem::Element::FE_HEXAHEDRON8:
-		nn = 8;
-		break;
-
-	    case fem::Element::FE_PRISM6:
-		nn = 6;
-		break;
-
-	    case fem::Element::FE_PYRAMID5:
-		nn = 5;
-		break;
-
-	    case fem::Element::FE_LINE3:
-		nn = 3;
-		break;
-
-	    case fem::Element::FE_TRIANGLE6:
-		nn = 6;
-		break;
-
-	    case fem::Element::FE_QUADRANGLE9:
-		nn = 9;
-		break;
-
-	    case fem::Element::FE_TETRAHEDRON10:
-		nn = 10;
-		break;
-
-	    case fem::Element::FE_HEXAHEDRON27:
-		nn = 27;
-		break;
-
-	    case fem::Element::FE_PRISM18:
-		nn = 18;
-		break;
-
-	    case fem::Element::FE_PYRAMID14:
-		nn = 14;
-		break;
-
-	    case fem::Element::FE_QUADRANGLE8:
-		nn = 8;
-		break;
-
-	    case fem::Element::FE_HEXAHEDRON20:
-		nn = 20;
-		break;
-
-	    case fem::Element::FE_PRISM15:
-		nn = 15;
-		break;
-
-	    case fem::Element::FE_PYRAMID13:
-		nn = 13;
-		break;
-
-	    case fem::Element::FE_ITRIANGLE9:
-		nn = 9;
-		break;
-
-	    case fem::Element::FE_TRIANGLE10:
-		nn = 10;
-		break;
-
-	    case fem::Element::FE_ITRIANGLE12:
-		nn = 12;
-		break;
-
-	    case fem::Element::FE_TRIANGLE15:
-		nn = 15;
-		break;
-
-	    case fem::Element::FE_ITRIANGLE15:
-		nn = 15;
-		break;
-
-	    case fem::Element::FE_TRIANGLE21:
-		nn = 21;
-		break;
-
-	    case fem::Element::FE_EDGE4:
-		nn = 4;
-		break;
-
-	    case fem::Element::FE_EDGE5:
-		nn = 5;
-		break;
-
-	    case fem::Element::FE_EDGE6:
-		nn = 6;
-		break;
-
-	    case fem::Element::FE_TETRAHEDRON20:
-		nn = 20;
-		break;
-
-	    case fem::Element::FE_TETRAHEDRON35:
-		nn = 35;
-		break;
-
-	    case fem::Element::FE_TETRAHEDRON56:
-		nn = 56;
-		break;
-
-	    case fem::Element::FE_INVALID:
-	    default:
-		qWarning("invalid element");
-		continue;
-		break;
-
-	    }
-	    // extract nodes
-	    PTEST(ec->next != NULL);
-	    ec = ec->next;
-	    PTEST(ec->type == JSON_STRING);
-	    PTEST(QString::compare(ec->text, "nodes") == 0);
-	    PTEST(ec->child != NULL);
-	    ec = ec->child;	// pointing to
-	    // root->"elements"->array->object->"nodes"->array
-	    PTEST(ec->type == JSON_ARRAY);
-	    PTEST(ec->child != NULL);	// node array must be populated
-
-	    std::vector < size_t > tn;	// the temporary node vector
-	    QString         temp;	// the temporary string, to
-	    // convert numbers
-	    unsigned int    i = 0;
-	    for (json_t * eec = ec->child; eec != NULL; eec = eec->next, i++)	// pointing 
-										// 
-		// to 
-		// root->"elements"->array->objects->"nodes"->array->number
-	    {
-		PTEST(eec->type == JSON_NUMBER);
-		temp = eec->text;
-		tn.push_back(temp.toLongLong());
-	    }
-	    PTEST(tn.size() == nn);	// evaluate if the document had as 
-					// 
-	    // many nodes as those which were
-	    // expected
-
-	    // get this element's material
-	    if (ec->next != NULL) {
-		// there is still another field
-		ec = ec->next;	// pointing to
-		// root->"elements"->array->object->"material"
-		PTEST(ec->type == JSON_STRING);	// which must be a label
-		PTEST(QString::compare(ec->text, "material") == 0);
-		PTEST(ec->child != NULL);
-		PTEST(ec->child->type == JSON_NUMBER);	// material must
-		// be a number
-		temp = ec->child->text;
-		model.setDefaultMaterial(temp.toLongLong());	// sets
-		// the
-		// material
-	    }
-	    // now let's add the element
-	    model.pushElement(type, tn);
-	}
-    }
-    cursor = cursor->parent;	// move to root->"elements"
-
-    // move to the node restrictions field
-    {
-	// work the tree
-	PMOVE(cursor->next);	// pointing to root->node restrictions
-	PTEST(QString::compare(cursor->text, "node restrictions") == 0);
-	PMOVE(cursor->child);	// pointing to root->node restrictions
-	PTEST(cursor->type == JSON_ARRAY);
-
-	if (cursor->child != NULL)	// node restrictions ahoy
-	{
-	    // set the temporary variables
-	    fem::NodeRestrictions nr;
-	    QString         temp;
-	    size_t          node;
-	    json_t         *c = NULL;	// temporary cursor
-
-	    // now let's cycle through all child objects associated with
-	    // "node restrictions"
-	    for (json_t * nrc = cursor->child; nrc != NULL;
-		 nrc = nrc->next) {
-		nr.reset();
-		PTEST(nrc->type == JSON_OBJECT);
-		PTEST(nrc->child != NULL);
-		c = nrc->child;
-		PTEST(QString::compare(c->text, "node") == 0);
-		PTEST(c->child->type == JSON_NUMBER);
-		temp = c->child->text;
-		node = temp.toLongLong();	// get the target node
-		// number
-
-		// get restrictions, one at a time until no other
-		// restriction is available
-		if (c->next == NULL)	// no restrictions set. move on
-		    continue;
-		while ((c = c->next) != NULL) {
-		    PTEST(c->type == JSON_STRING);
-		    switch (fem::NodeRestrictions::extractType(c->text)) {
-		    case fem::NodeRestrictions::NR_DX:
-			nr.setdx();
-			break;
-
-		    case fem::NodeRestrictions::NR_DY:
-			nr.setdy();
-			break;
-
-		    case fem::NodeRestrictions::NR_DZ:
-			nr.setdz();
-			break;
-
-		    default:
-			PTEST(false);
-			break;
-		    }
-		}
-		// now push the new Node REstrictions
-		model.pushNodeRestrictions(node, nr);
-	    }
-	}
-	cursor = cursor->parent;
-    }
-
-    // move to the load patterns field
-    {
-	PMOVE(cursor->next);	// pointing to root->load patterns
-	PTEST(QString::compare(cursor->text, "load patterns") == 0);
-	PMOVE(cursor->child);
-	PTEST(cursor->type == JSON_ARRAY);
-	if (cursor->child != NULL)	// load patterns ahoy
-	{
-	    json_t         *c;
-	    fem::LoadPattern lp;	// temporary load pattern
-
-	    // cycle through the available load patterns
-	    for (json_t * lpc = cursor->child; lpc != NULL;
-		 lpc = lpc->next) {
-		lp.clear();	// cleans the temporary load pattern
-		// object
-
-		PTEST(lpc->type == JSON_OBJECT);
-		PTEST(lpc->child != NULL);
-		c = lpc->child;	// point to the first "nodal loads" entry, 
-				// 
-		// which must be "label"
-
-		// get this load pattern's label
-		PTEST(c->type == JSON_STRING);
-		PTEST(QString::compare(c->text, "label") == 0);
-		PTEST(c->child->type == JSON_STRING);
-		lp.label = c->child->text;	// set the label
-
-		if (c->next != NULL)	// this load pattern has declared
-		    // forces
-		{
-		    c = c->next;	// move to the next field
-
-		    // get the "nodal loads"
-		    PTEST(c->type == JSON_STRING);
-		    if (QString::compare(c->text, "nodal loads") == 0) {
-			// next item is a node load
-			PTEST(c->child != NULL);
-			PTEST(c->child->type == JSON_ARRAY);	// the
-			// "nodal
-			// loads"
-			// value
-			// must be 
-			// a
-			// JSON_ARRAY
-			if (c->child->child != NULL)	// nodal loads
-			    // array is
-			    // populated
-			{
-			    json_t         *nltc;	// nodal loads
-			    // temporary
-			    // cursor
-			    size_t          n = 0;	// temporary node
-			    // reference
-			    QString         temp;	// temporary
-			    // string for the
-			    // number
-			    // conversion
-			    fem::point force;	// temporary nodal load
-
-			    // extract all nodal loads
-			    for (json_t * nlc = c->child->child;
-				 nlc != NULL; nlc = nlc->next) {
-				PTEST(nlc->type == JSON_OBJECT);
-				PTEST(nlc->child != NULL);
-				nltc = nlc->child;
-
-				// extract the node reference
-				PTEST(QString::compare(nltc->text, "node")
-				      == 0);
-				PTEST(nltc->child != NULL);
-				PTEST(nltc->child->type == JSON_NUMBER);
-				temp = nltc->child->text;
-				n = temp.toLongLong();	// and we have the 
-							// 
-				// node reference
-
-				PTEST(nltc->next != NULL);
-				nltc = nltc->next;
-				PTEST(QString::compare(nltc->text, "force")
-				      == 0);
-				PTEST(nltc->child != NULL);
-				PTEST(nltc->child->type == JSON_ARRAY);
-				PTEST(nltc->child->child != NULL);
-				nltc = nltc->child->child;	// point
-				// node
-				// load
-				// temp
-				// cursor
-				// to the
-				// first
-				// item in 
-				// the
-				// "force
-				// array"
-
-				// extract the force components
-				PTEST(nltc->type == JSON_NUMBER);
-				temp = nltc->text;
-				force.x(temp.toDouble());	// force
-				// XX
-				// componet 
-				// was
-				// obtained
-				PTEST(nltc->next != NULL);
-				nltc = nltc->next;
-				PTEST(nltc->type == JSON_NUMBER);
-				temp = nltc->text;
-				force.y(temp.toDouble());	// force
-				// YY
-				// componet 
-				// was
-				// obtained
-				PTEST(nltc->next != NULL);
-				nltc = nltc->next;
-				PTEST(nltc->type == JSON_NUMBER);
-				temp = nltc->text;
-				force.z(temp.toDouble());	// force
-				// ZZ
-				// componet 
-				// was
-				// obtained
-
-				PTEST(nltc->next == NULL);
-				// all info extracted
-				lp.addNodalLoad(n, force);
-			    }
-			}
-			if (c->next == NULL)	// no more entries
-			    goto load_pattern_push;
-			c = c->next;
-			PTEST(c->type == JSON_STRING);
-		    }
-		    // get the "node displacements"
-		    if (QString::compare(c->text, "node displacements") ==
-			0) {
-			// TODO finish this
-			PTEST(c->child != NULL);
-			PTEST(c->child->type == JSON_ARRAY);	// the
-			// "nodal
-			// loads"
-			// value
-			// must be 
-			// a
-			// JSON_ARRAY
-			if (c->child->child != NULL)	// array is
-			    // populated
-			{
-			    // TODO this 
-			    json_t         *nltc;	// node
-			    // displacements
-			    // temporary
-			    // cursor
-			    size_t          n = 0;	// temporary node
-			    // reference
-			    QString         temp;	// temporary
-			    // string for the
-			    // number
-			    // conversion
-			    fem::point displacement;	// temporary nodal 
-							// 
-			    // displacement
-
-			    // extract all nodal displacements
-			    for (json_t * nlc = c->child->child;
-				 nlc != NULL; nlc = nlc->next) {
-				PTEST(nlc->type == JSON_OBJECT);
-				PTEST(nlc->child != NULL);
-				nltc = nlc->child;
-
-				// extract the node reference
-				PTEST(QString::compare(nltc->text, "node")
-				      == 0);
-				PTEST(nltc->child != NULL);
-				PTEST(nltc->child->type == JSON_NUMBER);
-				temp = nltc->child->text;
-				n = temp.toLongLong();	// and we have the 
-							// 
-				// node reference
-
-				PTEST(nltc->next != NULL);
-				nltc = nltc->next;
-				PTEST(QString::compare
-				      (nltc->text, "displacement") == 0);
-				PTEST(nltc->child != NULL);
-				PTEST(nltc->child->type == JSON_ARRAY);
-				PTEST(nltc->child->child != NULL);
-				nltc = nltc->child->child;	// point
-				// node
-				// displacement 
-				// temp
-				// cursor
-				// to the
-				// first
-				// item in 
-				// the
-				// "displacement 
-				// array"
-
-				// extract the displacement components
-				PTEST(nltc->type == JSON_NUMBER);
-				temp = nltc->text;
-				displacement.x(temp.toDouble());	// displacement 
-									// 
-				// XX 
-				// componet 
-				// was 
-				// obtained
-				PTEST(nltc->next != NULL);
-				nltc = nltc->next;
-				PTEST(nltc->type == JSON_NUMBER);
-				temp = nltc->text;
-				displacement.y(temp.toDouble());	// displacement 
-									// 
-				// YY 
-				// componet 
-				// was 
-				// obtained
-				PTEST(nltc->next != NULL);
-				nltc = nltc->next;
-				PTEST(nltc->type == JSON_NUMBER);
-				temp = nltc->text;
-				displacement.z(temp.toDouble());	// displacement 
-									// 
-				// ZZ 
-				// componet 
-				// was 
-				// obtained
-
-				PTEST(nltc->next == NULL);
-				// all info extracted
-				lp.addNodalDisplacement(n, displacement);
-			    }
-			}
-			if (c->next == NULL)	// no more entries
-			    goto load_pattern_push;
-			c = c->next;
-			PTEST(c->type == JSON_STRING);
-		    }
-		    // get the "domain loads"
-		    if (QString::compare(c->text, "domain loads") == 0) {
-			// TODO finish this
-			PTEST(c->child != NULL);
-			PTEST(c->child->type == JSON_ARRAY);	// the
-			// "nodal
-			// loads"
-			// value
-			// must be 
-			// a
-			// JSON_ARRAY
-			if (c->child->child != NULL)	// array is
-			    // populated
-			{
-			    // TODO this 
-			    json_t         *nltc;	// domain forces
-			    // temporary
-			    // cursor
-			    size_t          n = 0;	// temporary
-			    // element
-			    // reference
-			    QString         temp;	// temporary
-			    // string for the
-			    // number
-			    // conversion
-			    fem::point force;	// temporary nodal force
-
-			    // extract all domain load definitions
-			    for (json_t * nlc = c->child->child;
-				 nlc != NULL; nlc = nlc->next) {
-				// TODO redefine this entire part
-				PTEST(nlc->type == JSON_OBJECT);
-				PTEST(nlc->child != NULL);
-				nltc = nlc->child;
-
-				// extract the domain reference
-				PTEST(QString::compare
-				      (nltc->text, "element") == 0);
-				PTEST(nltc->child != NULL);
-				PTEST(nltc->child->type == JSON_NUMBER);
-				temp = nltc->child->text;
-				n = temp.toLongLong();	// and we have the 
-							// 
-				// element
-				// reference
-
-				/*
-				 * // extract the number of expected nodes 
-				 * for this particular element type size_t 
-				 * nodes; // to store the expected number
-				 * of nodes
-				 * switch(model.element_list[n].type) {
-				 * case fem::Element::FE_LINE2: nodes =
-				 * 2; break;
-				 * 
-				 * case fem::Element::FE_TRIANGLE3: nodes 
-				 * = 3; break;
-				 * 
-				 * case fem::Element::FE_QUADRANGLE4:
-				 * nodes = 4; break;
-				 * 
-				 * case fem::Element::FE_TETRAHEDRON4:
-				 * nodes = 4; break;
-				 * 
-				 * case fem::Element::FE_HEXAHEDRON8:
-				 * nodes = 8; break;
-				 * 
-				 * case fem::Element::FE_PRISM6: nodes =
-				 * 6; break;
-				 * 
-				 * case fem::Element::FE_PYRAMID5: nodes
-				 * = 5; break;
-				 * 
-				 * case fem::Element::FE_LINE3: nodes =
-				 * 3; break;
-				 * 
-				 * case fem::Element::FE_TRIANGLE6: nodes 
-				 * = 6; break;
-				 * 
-				 * case fem::Element::FE_QUADRANGLE9:
-				 * nodes = 9; break;
-				 * 
-				 * case fem::Element::FE_TETRAHEDRON10:
-				 * nodes = 10; break;
-				 * 
-				 * case fem::Element::FE_HEXAHEDRON27:
-				 * nodes = 27; break;
-				 * 
-				 * case fem::Element::FE_PRISM18: nodes = 
-				 * 18; break;
-				 * 
-				 * case fem::Element::FE_PYRAMID14: nodes 
-				 * = 14; break;
-				 * 
-				 * case fem::Element::FE_QUADRANGLE8:
-				 * nodes = 8; break;
-				 * 
-				 * case fem::Element::FE_HEXAHEDRON20:
-				 * nodes = 20; break;
-				 * 
-				 * case fem::Element::FE_PRISM15: nodes = 
-				 * 15; break;
-				 * 
-				 * case fem::Element::FE_PYRAMID13: nodes 
-				 * = 13; break;
-				 * 
-				 * case fem::Element::FE_ITRIANGLE9:
-				 * nodes = 9; break;
-				 * 
-				 * case fem::Element::FE_TRIANGLE10:
-				 * nodes = 10; break;
-				 * 
-				 * case fem::Element::FE_ITRIANGLE12:
-				 * nodes = 12; break;
-				 * 
-				 * case fem::Element::FE_TRIANGLE15:
-				 * nodes = 15; break;
-				 * 
-				 * case fem::Element::FE_ITRIANGLE15:
-				 * nodes = 15; break;
-				 * 
-				 * case fem::Element::FE_TRIANGLE21:
-				 * nodes = 21; break;
-				 * 
-				 * case fem::Element::FE_EDGE4: nodes =
-				 * 4; break;
-				 * 
-				 * case fem::Element::FE_EDGE5: nodes =
-				 * 5; break;
-				 * 
-				 * case fem::Element::FE_EDGE6: nodes =
-				 * 6; break;
-				 * 
-				 * case fem::Element::FE_TETRAHEDRON20:
-				 * nodes = 20; break;
-				 * 
-				 * case fem::Element::FE_TETRAHEDRON35:
-				 * nodes = 35; break;
-				 * 
-				 * case fem::Element::FE_TETRAHEDRON56:
-				 * nodes = 56; break;
-				 * 
-				 * default: qWarning("unknown element
-				 * type"); return ERR_PARSER_ERROR; //TODO 
-				 * return to sane point break; } 
-				 */
-
-				PTEST(nltc->next != NULL);
-				nltc = nltc->next;
-				PTEST(QString::compare(nltc->text, "force")
-				      == 0);
-				PMOVE_TOCHILD_TYPE(nltc, JSON_ARRAY);
-
-				// now cycle through all force vectors
-
-				// extract the force components
-				PMOVE_TOCHILD_TYPE(nltc, JSON_NUMBER);
-				temp = nltc->text;
-				force.x(temp.toDouble());	// force
-				// XX
-				// component 
-				// was
-				// obtained
-				PMOVE_TONEXT_TYPE(nltc, JSON_NUMBER);
-				temp = nltc->text;
-				force.y(temp.toDouble());	// force
-				// YY
-				// componet 
-				// was
-				// obtained
-				PMOVE_TONEXT_TYPE(nltc, JSON_NUMBER);
-				temp = nltc->text;
-				force.z(temp.toDouble());	// force
-				// ZZ
-				// componet 
-				// was
-				// obtained
-
-				PTEST(nltc->next == NULL);
-
-				// all info extracted
-				lp.addDomainLoad(n, force);
-			    }
-			}
-			if (c->next == NULL)	// no more entries
-			    goto load_pattern_push;
-			c = c->next;
-			PTEST(c->type == JSON_STRING);
-		    }
-		    // get the "surface loads"
-		    if (QString::compare(c->text, "surface loads") == 0) {
-			// TODO finish this
-			PTEST(c->child != NULL);
-			PTEST(c->child->type == JSON_ARRAY);	// the
-			// "nodal
-			// loads"
-			// value
-			// must be 
-			// a
-			// JSON_ARRAY
-			if (c->child->child != NULL)	// array is
-			    // populated
-			{
-			    // TODO implement surface loads
-			}
-			if (c->next == NULL)	// no more entries
-			    goto load_pattern_push;
-			c = c->next;
-			PTEST(c->type == JSON_STRING);
-		    }
-		}
-
-	      load_pattern_push:	// nasty hack
-		// push the newly prepared load pattern into the model
-		// stack
-		model.pushLoadPattern(lp);
-	    }
-
-	}
-	// TODO finish this
-	cursor = cursor->parent;
-    }
-
-    // move to the combinations field
-    PMOVE(cursor->next);	// pointing to root->combinations
-    PTEST(QString::compare(cursor->text, "combinations") == 0);
-
-    // TODO finish this
-#undef PTEST
-
-    unsaved = false;
-    return ERR_OK;
-}
-
-
-enum Document::Error Document::load2()
+enum Document::Error Document::load()
 {
 	QFile           file;
 	// TODO check if path exists
@@ -1011,14 +105,17 @@ enum Document::Error Document::load2()
 	std::stack < int >state;	// the parser's states
 
 	// temporary variables used to build the document
-	fem::Material material;
+	fem::Material 	material;
+	fem::Element 	element;
+	fem::NodeRestrictions 	node_restrictions;
+	fem::LoadPattern 	load_pattern;
+	fem::SurfaceLoad	surface_load;
+
 	size_t          ref;
 	std::vector < size_t > refs;
-	fem::Element element;
-	fem::NodeRestrictions node_restrictions;
-	fem::LoadPattern load_pattern;
-	QString         text;
 	fem::point v;
+	std::vector < fem::point > vs;
+	QString         text;
 
 	// initializing the parser
 	cursor.push(root);
@@ -1330,6 +427,7 @@ enum Document::Error Document::load2()
 				state.push(23);	// MaterialReference
 				switch (fem::Element::extractType(cursor.top()->text)) 
 				{
+					//TODO add more element definitions
 					case fem::Element::FE_TETRAHEDRON4:
 						element.type = fem::Element::FE_TETRAHEDRON4;
 						state.push(22);	// ElementNode
@@ -1668,7 +766,7 @@ enum Document::Error Document::load2()
 
 				state.pop();
 
-				state.push(40);	// LoadPatternFollow
+				state.push(46);	// LoadPatternFollow
 				state.push(31);	// LoadPattern
 				break;
 
@@ -1803,6 +901,7 @@ enum Document::Error Document::load2()
 
 						state.pop();
 
+						state.push(39);	// AfterNodeDisplacements
 						state.push(36);	// NodeDisplacements
 					} 
 					else if (strcmp(cursor.top()->text, "domain loads") == 0) 
@@ -1813,7 +912,8 @@ enum Document::Error Document::load2()
 
 						state.pop();
 
-						state.push(39);	// DomainLoads
+						state.push(43);	// AfterDomainLoads
+						state.push(40);	// DomainLoads
 					} 
 					else if (strcmp(cursor.top()->text, "surface loads") == 0) 
 					{
@@ -1823,7 +923,8 @@ enum Document::Error Document::load2()
 
 						state.pop();
 
-						state.push(35);	// SurfaceLoads
+						state.push(51);	// AfterSurfaceLoads
+						state.push(44);	// SurfaceLoads
 					} 
 					else 
 					{
@@ -1841,23 +942,27 @@ enum Document::Error Document::load2()
 				break;
 
 			case 37:	// NodeDisplacement
+				DECHO();
+
 				CURSOR_PUSH(JSON_STRING);
 				CURSOR_VERIFY_TEXT("node");
 				CURSOR_PUSH(JSON_NUMBER);
 				text = cursor.top()->text;
 				ref = text.toULongLong();
 				cursor.pop();
+
 				CURSOR_NEXT_TEST(JSON_STRING);
+
 
 				// CURSOR_VERIFY_TEXT("node");
 				//TODO add support for node displacements
+				state.pop();
 				break;
 
 			case 38:	// NodeDisplacementFollow
 				DECHO();
 				//TODO  add support for node displacements
 
-				// cursor.pop();	// JSON_OBJECT -> "force" JSON_ARRAY
 				cursor.pop();	// -> JSON_OBJECT "node"
 
 				// Test the FIRST
@@ -1873,6 +978,358 @@ enum Document::Error Document::load2()
 					state.push(38);	// NodeDisplacementFollow
 					state.push(37);	// NodeDisplacement
 				}
+				break;
+
+			case 39:	// AfterNodeDisplacements
+				DECHO();
+				//TODO
+				cursor.pop();
+				cursor.pop();	// -> "node displacement"
+
+				if(cursor.top()->next == NULL)
+				{
+					//TODO finish this
+				}
+				else
+				{
+					CURSOR_NEXT_TEST(JSON_STRING);
+					if (strcmp(cursor.top()->text, "domain loads") == 0) 
+					{
+						// TODO
+						CURSOR_PUSH(JSON_ARRAY);	
+						CURSOR_PUSH(JSON_OBJECT);	
+
+						state.pop();
+
+						state.push(43);	// AfterDomainLoads
+						state.push(40);	// DomainLoads
+					} 
+					else if (strcmp(cursor.top()->text, "surface loads") == 0) 
+					{
+						// TODO
+						CURSOR_PUSH(JSON_ARRAY);	
+						CURSOR_PUSH(JSON_OBJECT);	
+
+						state.pop();
+
+						state.push(51);	// AfterSurfaceLoads
+						state.push(44);	// SurfaceLoads
+					} 
+					else 
+					{
+						ERROR();
+					}
+				}
+				break;
+
+			case 40:	// DomainLoads
+				DECHO();
+				state.pop();
+
+				state.push(42);	// DomainLoadsFollow
+				state.push(41);	// DomainLoad
+				break;
+
+
+			case 41:	// DomainLoad
+				DECHO();
+
+				CURSOR_PUSH(JSON_STRING);
+				CURSOR_VERIFY_TEXT("element");
+				CURSOR_PUSH(JSON_NUMBER);
+				text = cursor.top()->text;
+				ref = text.toULongLong();
+				cursor.pop();
+
+				CURSOR_NEXT_TEST(JSON_STRING);
+				CURSOR_VERIFY_TEXT("force");
+				CURSOR_PUSH(JSON_ARRAY);
+
+				state.pop();
+				state.push(15);	// Coordinates
+				break;
+
+			case 42:	// DomainLoadsFollow
+				DECHO();
+				//TODO
+				load_pattern.addDomainLoad(ref, v);
+
+				cursor.pop();	// JSON_OBJECT -> "force" JSON_ARRAY
+				cursor.pop();	// -> JSON_OBJECT "force"
+
+				// Test the FIRST
+				if(cursor.top()->next == NULL)
+				{
+					state.pop();
+				}
+				else
+				{
+					CURSOR_NEXT_TEST(JSON_OBJECT);
+					state.pop();
+
+					state.push(42);	// DomainLoadsFollow
+					state.push(41);	// DomainLoad
+				}
+				break;
+
+			case 43:	// AfterDomainLoads
+				DECHO();
+				//TODO
+				cursor.pop();
+				cursor.pop();	// -> "node displacement"
+
+				if(cursor.top()->next == NULL)
+				{
+					//TODO finish this
+				}
+				else
+				{
+					CURSOR_NEXT_TEST(JSON_STRING);
+					if (strcmp(cursor.top()->text, "surface loads") == 0) 
+					{
+						// TODO
+						CURSOR_PUSH(JSON_ARRAY);	
+						CURSOR_PUSH(JSON_OBJECT);	
+
+						state.pop();
+
+						state.push(51);	// AfterSurfaceLoads
+						state.push(44);	// SurfaceLoads
+					} 
+					else 
+					{
+						ERROR();
+					}
+				}
+				break;
+
+			case 44:	// SurfaceLoads
+				DECHO();
+				state.pop();
+
+				state.push(50);	// SurfaceLoadsFollow
+				state.push(45);	// SurfaceLoad
+				break;
+
+			case 45:		// SurfaceLoad
+				DECHO();
+				// TODO finish
+				CURSOR_PUSH(JSON_STRING);	
+				CURSOR_VERIFY_TEXT("type");
+
+				CURSOR_PUSH(JSON_STRING);	
+
+				// clear the temp surface load
+				surface_load.clear();
+
+				state.pop();
+
+				switch (fem::Element::extractType(cursor.top()->text)) 
+				{
+					//TODO add more element definitions
+					case fem::Element::FE_TRIANGLE3:
+						surface_load.type = fem::Element::FE_TRIANGLE3;
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(48);	// SurfaceFirstForce
+
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(46);	// SurfaceFirstNode
+						break;
+
+					case fem::Element::FE_TRIANGLE6:
+						surface_load.type = fem::Element::FE_TRIANGLE6;
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(48);	// SurfaceFirstForce
+
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(46);	// SurfaceFirstNode
+						break;
+
+					case fem::Element::FE_QUADRANGLE4:
+						surface_load.type = fem::Element::FE_QUADRANGLE4;
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(48);	// SurfaceFirstForce
+
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(46);	// SurfaceFirstNode
+						break;
+
+					case fem::Element::FE_QUADRANGLE8:
+						surface_load.type = fem::Element::FE_QUADRANGLE8;
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(48);	// SurfaceFirstForce
+
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(46);	// SurfaceFirstNode
+						break;
+
+					case fem::Element::FE_QUADRANGLE9:
+						surface_load.type = fem::Element::FE_QUADRANGLE8;
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(49);	// SurfaceNextForce
+						state.push(48);	// SurfaceFirstForce
+
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(47);	// SurfaceNextNode
+						state.push(46);	// SurfaceFirstNode
+						break;
+
+					default:
+						std::cout << "unsupported element: " << state.
+							top() << std::endl;
+						goto unknown_error;
+						break;
+				}
+
+				cursor.pop();	
+				CURSOR_NEXT_TEST(JSON_STRING);
+				CURSOR_VERIFY_TEXT("nodes");
+				CURSOR_PUSH(JSON_ARRAY);
+				CURSOR_PUSH(JSON_NUMBER);
+				break;
+
+			case 46:	// SurfaceFirstNode
+				DECHO();
+
+				text = cursor.top()->text;
+				surface_load.node_reference.push_back(text.toULongLong());
+
+				state.pop();
+				break;
+
+			case 47:	// SurfaceNextNode
+				DECHO();
+				CURSOR_NEXT_TEST(JSON_NUMBER);
+
+				text = cursor.top()->text;
+				surface_load.node_reference.push_back(text.toULongLong());
+
+				state.pop();
+				break;
+
+			case 48:	// SurfaceFirstForce
+				DECHO();
+				if(cursor.top()->next != NULL)	ERROR();
+				cursor.pop();	// JSON_ARRAY JSON_NUMBER
+				cursor.pop();	// "nodes" JSON_ARRAY JSON_NUMBER
+
+				CURSOR_NEXT_TEST(JSON_STRING);
+				CURSOR_VERIFY_TEXT("forces");
+				CURSOR_PUSH(JSON_ARRAY);
+
+				CURSOR_PUSH(JSON_ARRAY);
+				CURSOR_PUSH(JSON_NUMBER);
+				text = cursor.top()->text;
+				v.x(text.toDouble());
+				CURSOR_NEXT_TEST(JSON_NUMBER);
+				text = cursor.top()->text;
+				v.y(text.toDouble());
+				CURSOR_NEXT_TEST(JSON_NUMBER);
+				text = cursor.top()->text;
+				v.z(text.toDouble());
+
+				surface_load.surface_forces.push_back(v);
+
+				state.pop();
+				break;
+
+			case 49:	//SurfaceNextForce
+				DECHO();
+
+				cursor.pop();
+
+				CURSOR_NEXT_TEST(JSON_ARRAY);
+				CURSOR_PUSH(JSON_NUMBER);
+				text = cursor.top()->text;
+				v.x(text.toDouble());
+				CURSOR_NEXT_TEST(JSON_NUMBER);
+				text = cursor.top()->text;
+				v.y(text.toDouble());
+				CURSOR_NEXT_TEST(JSON_NUMBER);
+				text = cursor.top()->text;
+				v.z(text.toDouble());
+
+				surface_load.surface_forces.push_back(v);
+
+				state.pop();
+				break;
+
+			case 50:	// SurfaceLoadsFollow
+				DECHO();
+				if(cursor.top()->next != NULL) ERROR();
+				cursor.pop();
+				if(cursor.top()->next != NULL) ERROR();
+				cursor.pop();
+				cursor.pop();
+				if(cursor.top()->next != NULL) ERROR();
+
+				load_pattern.addSurfaceLoad(surface_load);
+				cursor.pop();
+				if(cursor.top()->next != NULL) 
+				{
+					CURSOR_NEXT_TEST(JSON_OBJECT);
+
+					state.pop();
+
+					state.push(50);	// SurfaceLoadsFollow
+					state.push(45);	// SurfaceLoad
+				}
+				else
+				{
+					cursor.pop();	// JSON_ARRAY JSON_OBJECT
+					cursor.pop();	// "surface loads" JSON_ARRAY JSON_OBJECT
+
+					state.pop();
+				}
+				break;
+
+			case 51:	// AfterSurfaceLoads
+				DECHO();
+				
+				model.pushLoadPattern(load_pattern);
+
+				if(cursor.top()->next != NULL) ERROR();
+				cursor.pop();	// JSON_OBJECT "surface loads" JSON_ARRAY
+
+				state.pop();
 				break;
 
 			default:

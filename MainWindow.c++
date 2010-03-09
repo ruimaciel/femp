@@ -114,7 +114,7 @@ void MainWindow::openProject()
 	*document.file_name = sl.at(0);
 
 	// load the file and check for errors
-	switch( document.load2() )
+	switch( document.load() )
 	{
 		case Document::ERR_OK:
 			// tweak the UI

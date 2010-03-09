@@ -39,7 +39,7 @@ state	non-terminal	rest
 18	Elements	-> Element ElementsFollow
 
 19	Element		-> "tetrahedron4" ElementFirstNode ElementNextNode{3} MaterialReference
-			-> "tetrahedron10" ElementFirstNode ElementNextNode{3} MaterialReference
+			-> "tetrahedron10" ElementFirstNode ElementNextNode{9} MaterialReference
 			...
 
 20	ElementsFollow	-> Element ElementsFollow
@@ -86,9 +86,9 @@ state	non-terminal	rest
 34	NodalLoadFollow	->	NodalLoad NodalLoadFollow
 			->
 
-35	AfterNodalLoads	->	NodeDisplacements
-			-> 	DomainLoads
-			-> 	SurfaceLoads
+35	AfterNodalLoads	->	NodeDisplacements AfterNodeDisplacements
+			-> 	DomainLoads AfterDomainLoads
+			-> 	SurfaceLoads AfterSurfaceLoads
 			->
 
 
@@ -100,36 +100,50 @@ state	non-terminal	rest
 38	NodeDisplacementFollow	-> NodeDisplacement NodeDisplacementFollow
 				-> 
 
-	AfterNodeDisplacements	-> 	DomainLoads
-				-> 	SurfaceLoads
+
+
+39	AfterNodeDisplacements	-> 	DomainLoads AfterDomainLoads
+				-> 	SurfaceLoads AfterSurfaceLoads
 				->
 
-39	DomainLoads	-> 	SurfaceLoads
+40	DomainLoads	-> 	DomainLoad DomainLoadsFollow
+
+41	DomainLoad	->
+
+42	DomainLoadsFollow	-> DomainLoad	DomainLoadsFollow
+				->
+
+43	AfterDomainLoads	-> SurfaceLoads AfterSurfaceLoads
+				->
 
 
-40	LoadPatternFollow	->	LoadPattern LoadPatternFollow
+44	SurfaceLoads	->	SurfaceLoad	SurfaceLoadsFollow
+
+45	SurfaceLoad	->	"type": "triangle3"	SurfaceFirstNode SurfaceNextNode{2} SurfaceFirstForce SurfaceNextForce{2}
+			->	"type": "triangle6"	SurfaceFirstNode SurfaceNextNode{5} SurfaceFirstForce SurfaceNextForce{5}
+			->	"type": "quadrangle4"
+			->	"type": "quadrangle8"
+			->	"type": "quadrangle9"
+
+46	SurfaceFirstNode	->
+
+47	SurfaceNextNode	->
+
+48	SurfaceFirstForce	->
+
+49	SurfaceNextForce	->
+
+50	SurfaceLoadsFollow	-> SurfaceLoad SurfaceLoadFollow
+				->
+
+51	AfterSurfaceLoads	->
+
+
+
+
+
+	LoadPatternFollow	->	LoadPattern LoadPatternFollow
 				->
 
 	AfterLoadPatterns	-> LoadCombinations
 
-
-
-	NodalLoads	-> NodalLoad*
-
-	NodalLoad	-> Nodereference force
-
-	NodeDisplacements	-> NodeDisplacement*
-
-	NodeDisplacement	-> Nodereference displacement
-
-	DomainLoads	-> domainload*
-
-	DomainLoad	-> Elementreference	force
-
-	SurfaceLoads	-> SurfaceLoad*
-
-	SurfaceLoad	-> surfacereference	force
-
-	Surfaces	-> Surface*
-
-	Surface		-> SurfaceReference SurfaceType SurfaceNodes

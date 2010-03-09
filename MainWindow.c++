@@ -467,6 +467,9 @@ void MainWindow::importMesh()
 		FILE *f = fdopen(mesh_file.handle(), "r");
 		fem_model_import_msh(f,document.model);
 		mesh_file.close();
+
+		//TODO implement way to add document type from the dialog box
+		document.setProjectType( Document::TYPE_SOLID3D);
 	}
 	// now this document has unsaved changes
 	hasUnsavedChanges = true;

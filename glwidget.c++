@@ -433,6 +433,7 @@ inline void GLWidget::renderQuad9(const fem::point &p1, const fem::point &p2, co
 
 inline void GLWidget::renderTriangle3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions)
 {
+	partitions = 1;	// just to shut up the warning
 	fem::point temp;
 	temp = getNormalVector(p1,p2,p3);
 	glBegin(GL_TRIANGLES);

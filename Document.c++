@@ -237,7 +237,7 @@ enum Document::Error Document::load()
 				CURSOR_NEXT();
 				CURSOR_VERIFY_TEXT("label");
 				CURSOR_PUSH(JSON_STRING);
-				material.label.fromUtf8(cursor.top()->text);
+				material.label = cursor.top()->text;
 				cursor.pop();
 
 				CURSOR_NEXT();

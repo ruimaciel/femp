@@ -17,6 +17,7 @@
 #include "NodeRestrainsDialog.h++"
 #include "NodeActionsDialog.h++"
 #include "DisplayOptionsDialog.h++"
+#include "ui/MaterialsEditorDialog.h++"
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
@@ -300,7 +301,7 @@ void MainWindow::quit()
 
 void MainWindow::createActions()
 {
-	 connect(ui.actionNew, SIGNAL(triggered()), this, SLOT(newProject()));
+	 connect(ui.actionNew, 	SIGNAL(triggered()), this, SLOT(newProject()));
 	 connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openProject()));
 	 connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveProject()));
 	 connect(ui.actionSaveAs, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
@@ -312,6 +313,7 @@ void MainWindow::createActions()
 	 connect(ui.actionNodeActions, SIGNAL(triggered()), this, SLOT(setNodeActions()));
 	 connect(ui.actionRun, SIGNAL(triggered()), this, SLOT(runAnalysis()));
 	 connect(ui.actionViewActions, SIGNAL(triggered()), this, SLOT(setDisplayOptions()));
+	 connect(ui.actionEditMaterials, SIGNAL(triggered()),	this,	SLOT(editMaterials()));
 	 connect(ui.actionDisplayNodes, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
 	 connect(ui.actionDisplaySurfaces, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
 	 connect(ui.actionDisplayWireframe, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
@@ -537,6 +539,14 @@ void MainWindow::setDisplayOptions()
 }
 
 
+void MainWindow::editMaterials()
+{
+	//TODO finish this
+	MaterialsEditorDialog dialog(&document.model, this);
+	dialog.exec();
+}
+
+
 void MainWindow::setElementDisplay()
 {
 	if(glWidget != NULL)
@@ -597,6 +607,8 @@ void MainWindow::setUserInterfaceAsOpened()
 	ui.actionClose->setEnabled(true);
 	ui.actionNodeRestraints->setEnabled(true);
 	ui.actionNodeActions->setEnabled(true);
+	ui.actionEditMaterials->setEnabled(true);
+
 	ui.actionDisplayNodes->setChecked(true);
 	ui.actionDisplaySurfaces->setChecked(true);
 	ui.actionDisplayWireframe->setChecked(true);
@@ -639,6 +651,7 @@ void MainWindow::setUserInterfaceAsClosed()
 	ui.actionClose->setDisabled(true);
 	ui.actionNodeRestraints->setDisabled(true);
 	ui.actionNodeActions->setDisabled(true);
+	ui.actionEditMaterials->setDisabled(true);
 
 	// close all MDI windows
 	if(window_gl_viewport != NULL)

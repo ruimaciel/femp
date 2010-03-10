@@ -11,3 +11,5 @@
 - ao importar a malha, escolher o material a atribuir
 - seleccionar o tipo de elementos a importar
 - não interpretar matrix singular como erro
+- roda do rato para fazer zoom ao modelo
+- acabar editor de materiais

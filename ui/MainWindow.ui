@@ -77,15 +77,6 @@
     <addaction name="actionViewActions"/>
     <addaction name="menuModel"/>
    </widget>
-   <widget class="QMenu" name="menuEdit">
-    <property name="title">
-     <string>Edit</string>
-    </property>
-    <addaction name="actionNodeRestraints"/>
-    <addaction name="actionNodeActions"/>
-    <addaction name="separator"/>
-    <addaction name="actionPreferences"/>
-   </widget>
    <widget class="QMenu" name="menuProject">
     <property name="enabled">
      <bool>true</bool>
@@ -94,6 +85,16 @@
      <string>Project</string>
     </property>
     <addaction name="actionRun"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionNodeRestraints"/>
+    <addaction name="actionNodeActions"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreferences"/>
+    <addaction name="actionEditMaterials"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -277,6 +278,14 @@
    </property>
    <property name="text">
     <string>Nodes</string>
+   </property>
+  </action>
+  <action name="actionEditMaterials">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Materials</string>
    </property>
   </action>
  </widget>

@@ -19,17 +19,15 @@ namespace fem
 
 	enum FemEquation::Error FemEquation::solve()
 	{
-		//TODO detect and avoid singular matrix
 		using namespace boost::numeric::ublas;
 
 		permutation_matrix<> pm(k.size1());	// k will be symmetric
 		
-		if(lu_factorize(k,pm) == true) // LU factorized
-			return ERR_SINGULAR;
+		lu_factorize(k,pm); // LU factorized
 
-		d = boost::numeric::ublas::solve(k,f,upper_tag());
+		inplace_solve(k,f,lower_tag());
 
-		//All went well
+
 		return ERR_OK;
 	}
 

@@ -54,6 +54,7 @@ public Q_SLOTS:
 	void setNodeRestraints();
 	void setNodeActions();
 	void setDisplayOptions();
+	void editMaterials();
 
 	/**
 	Sets DisplayOption's options refering to the element visualization

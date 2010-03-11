@@ -207,18 +207,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 			f.f[lm[n].get<2>()-1] += nodal_load->second.z();
 	}
 
-	//TODO remove testing code
-	std::cout << "testing stiffness matrix" << std::endl;
-	std::cout << f.k << std::endl;
-	std::cout << "testing force vector" << std::endl;
-	std::cout << f.f << std::endl;
-	
-	if(f.solve() == true)
-		return ERR_SINGULAR_MATRIX;
-
-	std::cout << "testing displacement vector" << std::endl;
-	std::cout << f.f << std::endl;
-
 
 	// fem equation is set.
 	return ERR_OK;
@@ -275,11 +263,32 @@ double Analysis::det3by3(const boost::numeric::ublas::matrix<double> &M)
 
 enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
 {
+	using namespace std;
+
 	//TODO finish this
 	struct FemEquation f;
 
 	//this is a nasty hack to test the code. To be removed.
+	//TODO return a good return code
 	build_fem_equation(model,f, lp);
+
+	//TODO remove testing code
+	std::cout << "testing stiffness matrix" << std::endl;
+	std::cout << f.k << std::endl;
+	std::cout << "testing force vector" << std::endl;
+	std::cout << f.f << std::endl;
+
+	if(f.f.nnz() == 0)
+		return ERR_SINGULAR_MATRIX; 
+
+	cout << "nnz: " << f.f.nnz() << endl;
+
+	// solve the equation system
+	f.solve();
+	// f.CGsolve(10e-5);
+
+	std::cout << "testing displacement vector" << std::endl;
+	std::cout << f.f << std::endl;
 
 	return ERR_OK;
 }

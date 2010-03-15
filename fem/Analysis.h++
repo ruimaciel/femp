@@ -99,8 +99,15 @@ class Analysis
 		boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  make_location_matrix(Model &model);
 
 
-		//TODO get a better name
-		void add_k_elem_to_kg(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, const boost::numeric::ublas::mapped_vector<double> &f_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element);
+		/**
+		Adds the elementary stiffness matrix and nodal force vector to the global counterparts following the location matrix
+		@param k_elem	elementary stiffness matrix
+		@param f_elem	elementary nodal force vector
+		@param lm	location matrix
+		@param f	FemEquation
+		@param element	reference to the element
+		**/
+		void add_elementary_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, const boost::numeric::ublas::mapped_vector<double> &f_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element);
 };
 
 }

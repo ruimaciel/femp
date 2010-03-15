@@ -185,7 +185,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 		//output
 		std::cout << k_elem << std::endl;
 		// add to the global stiffness matrix, 
-		add_k_elem_to_kg(k_elem, f_elem, f, lm, *element);
+		add_elementary_to_global(k_elem, f_elem, f, lm, *element);
 
 	}
 
@@ -902,7 +902,7 @@ boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  Ana
 }
 
 
-inline void Analysis::add_k_elem_to_kg(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, const boost::numeric::ublas::mapped_vector<double> &f_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
+inline void Analysis::add_elementary_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, const boost::numeric::ublas::mapped_vector<double> &f_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
 {
 	using namespace std;	//TODO remove cleanup code
 

@@ -3,9 +3,9 @@
 
 #include <vector>
 
+
 namespace fem
 {
-
 	class Element {
 		public:
 			enum Error {
@@ -49,6 +49,17 @@ namespace fem
 				FE_TETRAHEDRON56        = 31    /* 56-node fifth order tetrahedron */
 			};
 
+			enum ElementFamily {
+			EF_TRIANGLE = 0, 
+			EF_QUADRILATERAL = 1, 
+			EF_TETRAHEDRON = 2, 
+			EF_PRISM = 3, 
+			EF_PYRAMID = 4, 
+			EF_HEXAHEDRON = 5,
+			EF_INVALID
+			};
+
+
 		public:
 			int material;		// reference to a material in Model's material map
 			std::vector<size_t> nodes;	// nodes that define this element
@@ -67,7 +78,10 @@ namespace fem
 			@return	the number of nodes
 			**/
 			int node_number() const;
-	};
+			
+			enum ElementFamily family() const;
+			int degree() const;
 
+	};
 }
 #endif

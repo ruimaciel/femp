@@ -159,4 +159,118 @@ int Element::node_number() const
 	}
 }
 
+
+enum Element::ElementFamily Element::family() const
+{
+	switch(this->type)
+	{
+		case FE_TRIANGLE3   :
+		case FE_TRIANGLE6   :
+		case FE_TRIANGLE10  :
+		case FE_TRIANGLE15  :
+		case FE_TRIANGLE21  :
+		case FE_ITRIANGLE9  :
+		case FE_ITRIANGLE12 :
+		case FE_ITRIANGLE15 :
+			return EF_TRIANGLE;
+			break;
+
+		case FE_QUADRANGLE4 :
+		case FE_QUADRANGLE8 :
+		case FE_QUADRANGLE9 :
+			return EF_QUADRILATERAL;
+			break;
+
+		case FE_TETRAHEDRON4:
+		case FE_TETRAHEDRON10:
+		case FE_TETRAHEDRON20:
+		case FE_TETRAHEDRON35:
+		case FE_TETRAHEDRON56:
+			return EF_TETRAHEDRON;
+			break;
+
+		case FE_HEXAHEDRON8:
+		case FE_HEXAHEDRON20:
+		case FE_HEXAHEDRON27:
+			return EF_HEXAHEDRON;
+			break;
+
+		case FE_PRISM6      :
+		case FE_PRISM18     :
+		case FE_PRISM15     :
+			return EF_PRISM;
+			break;
+
+		case FE_PYRAMID5    :
+		case FE_PYRAMID14   :
+		case FE_PYRAMID13   :
+			return EF_PYRAMID;
+			break;
+
+		default:
+			return EF_INVALID;
+			break;
+	}
+}
+
+
+int Element::degree() const
+{
+	switch(this->type)
+	{
+		case FE_TRIANGLE3   :
+		case FE_TRIANGLE6   :
+		case FE_TRIANGLE10  :
+		case FE_TRIANGLE15  :
+		case FE_TRIANGLE21  :
+		case FE_ITRIANGLE9  :
+		case FE_ITRIANGLE12 :
+		case FE_ITRIANGLE15 :
+			return 1;	//TODO change
+			break;
+
+		case FE_QUADRANGLE4 :
+		case FE_QUADRANGLE8 :
+		case FE_QUADRANGLE9 :
+			return 1;
+			break;
+
+		case FE_TETRAHEDRON4:
+			return 1;	//TODO change
+			break;
+
+		case FE_TETRAHEDRON10:
+		case FE_TETRAHEDRON20:
+		case FE_TETRAHEDRON35:
+		case FE_TETRAHEDRON56:
+			return 1;	//TODO change
+			break;
+
+		case FE_HEXAHEDRON8:
+			return 4;	//TODO change
+			break;
+
+		case FE_HEXAHEDRON20:
+		case FE_HEXAHEDRON27:
+			return 4;	//TODO change
+			break;
+
+		case FE_PRISM6      :
+		case FE_PRISM18     :
+		case FE_PRISM15     :
+			return 1;	//TODO change
+			break;
+
+		case FE_PYRAMID5    :
+		case FE_PYRAMID14   :
+		case FE_PYRAMID13   :
+			return 1;	//TODO change
+			break;
+
+		default:
+			return 0;	// should never be reached
+			break;
+	}
+
+}
 }

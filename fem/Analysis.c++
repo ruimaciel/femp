@@ -2,11 +2,14 @@
 
 
 
+
 namespace fem
 {
 
 Analysis::Analysis()
 {
+	// build all lists of integration points/weights pairs
+	integration_points();
 }
 
 
@@ -35,11 +38,12 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 	f.f.resize(model.node_list.size()*3);	// remove this after implementing a decent resize code
 				
 		// declare variables
-	std::vector<boost::tuple<fem::point, double> > ipwpl;	// integration points/weights pair list
+	// std::vector<boost::tuple<fem::point, double> > ipwpl;	// integration points/weights pair list
 	double detJ = 0;
 	matrix<double>	J(3,3), invJ(3,3);
 	std::vector< symmetric_matrix<double, upper> > D_list;
-	// set up the temporary variables for the elementary matrix and vector
+
+		// set up the temporary variables for the elementary matrix and vector
 	symmetric_matrix<double, upper> k_elem;
 	mapped_vector<double> f_elem;
 	matrix<double> B;
@@ -49,19 +53,19 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 	std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;	// the location matrix
 
 
-	//build a list of constitutive matrices
+		//build a list of constitutive matrices
 	for(std::vector<Material>::iterator material = model.material_list.begin(); material != model.material_list.end(); material++)
 	{
 		D_list.push_back(material->generateD());
 	}
 
-	// build the location matrix, for the degrees of freedom
+		// build the location matrix, for the degrees of freedom
 	{
 		boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  temp;
 		temp = make_location_matrix(model);
 		lm =  temp.get<0>();
 
-		// resize the global stiffness matrix and global force vector, don't preserve
+			// resize the global stiffness matrix and global force vector, don't preserve
 		f.k.resize(temp.get<1>(), temp.get<1>(), false);
 		f.f.resize(temp.get<1>(), false);
 	}
@@ -69,9 +73,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 	// generate stiffness matrix by cycling through all elements in the model
 	for(std::vector<Element>::iterator element = model.element_list.begin(); element != model.element_list.end(); element++)
 	{
-		// get a list for the Gauss quadrature to be used by the current element
-		ipwpl = integration_points(element->type);	
-
 		// get the number of expected nodes used by the current element type
 		nnodes = element->node_number();
 
@@ -86,9 +87,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 		f_elem.clear();
 		B.clear();
 
-
 		// build the element stiffness matrix: cycle through the number of integration points
-		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl.begin(); i != ipwpl.end(); i++)
+		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][element->degree()].begin(); i != ipwpl[element->family()][element->degree()].end(); i++)
 		{
 #define X(N) model.node_list[element->nodes[N]].x()
 #define Y(N) model.node_list[element->nodes[N]].y()
@@ -133,6 +133,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 				B(3,3*n)	= dNdy;	B(3,3*n+1) = dNdx;
 				B(4,3*n)	= dNdz;	B(4,3*n+2) = dNdx;
 				B(5,3*n+1)	= dNdz;	B(5,3*n+2) = dNdy;
+
+				//TODO consider also setting Bt, avoid trans(b)
 #undef dNdx
 #undef dNdy
 #undef dNdz
@@ -191,6 +193,12 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 
 
 	// now set up the equivalent forces vector
+
+	// set nodal force contribution made by the domain loads
+	for(std::map<size_t,fem::DomainLoad>::const_iterator domain_load = lp.domain_loads.begin(); domain_load != lp.domain_loads.end(); domain_load++)
+	{
+	}
+
 
 	// set nodal forces
 	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
@@ -701,162 +709,99 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 }
 
 
-
-std::vector<boost::tuple<fem::point, double> > Analysis::integration_points(const Element::Type &type, const int &degree)
+void Analysis::integration_points()
 {
 	using namespace boost;
 	std::vector<tuple<fem::point, double> > ips;
-	int d;
 
-	// now build up
-	switch(type)
+	// Tetrahedron family, degree 1
+	ips.push_back(tuple<fem::point,double>(fem::point(0.25,0.25,0.25), 1.0/6.0));
+	ipwpl[Element::EF_TETRAHEDRON][1] = ips;
+
+	// Tetrahedron family, degree 2
+	ips.push_back(tuple<fem::point,double>(fem::point(0.58541019662496845446,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
+	ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.58541019662496845446,0.13819660112501051518),1.0/(6*4)));
+	ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.58541019662496845446),1.0/(6*4)));
+	ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
+
+	ipwpl[Element::EF_TETRAHEDRON][2] = ips;
+						
+	// Tetrahedron family, degree 3
+	ips.push_back(tuple<fem::point,double>(fem::point(0, 0, 0), 1.0/(40*6)));
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+	ipwpl[Element::EF_TETRAHEDRON][3] = ips;
+						
+	// Tetrahedron family, degree 3
+	double g[3];
+	double w[2];
+	g[0]=0.09273525031089122640232391373703060;
+	g[1]=0.31088591926330060979734573376345783;
+	g[2]=0.45449629587435035050811947372066056;
+
+	w[0] = (-1+6*g[1]*(2+g[1]*(-7+8*g[1]))+14*g[2]-60*g[1]*(3+4*g[1]* (-3+4*g[1]))*g[2]+4*(-7+30*g[1]*(3+4*g[1]*(-3+4*g[1])))*g[2]*g[2])/ (120*(g[0]-g[1])*(g[1]*(-3+8*g[1])+6*g[2]+8*g[1]*(-3+4*g[1])*g[2]-4* (3+4*g[1]*(-3+4*g[1]))*g[2]*g[2]+8*g[0]*g[0]*(1+12*g[1]* (-1+2*g[1])+4*g[2]-8*g[2]*g[2])+g[0]*(-3-96*g[1]*g[1]+24*g[2]*(-1+2*g[2])+ g[1]*(44+32*(1-2*g[2])*g[2]))));
+	w[1] = (-1-20*(1+12*g[0]*(2*g[0]-1))*w[0]+20*g[2]*(2*g[2]-1)*(4*w[0]-1))/ (20*(1+12*g[1]*(2*g[1]-1)+4*g[2]-8*g[2]*g[2]));
+
+	// 1 to 4
+	ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[0], g[0], g[0]), w[0] ));
+	ips.push_back(tuple<fem::point,double>(fem::point(g[0], 1-3*g[0], g[0]), w[0] ));
+	ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], 1-3*g[0]), w[0] ));
+	ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], g[0]), w[0] ));
+	// 5 to 8
+	ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[1], g[1], g[1]), w[1] ));
+	ips.push_back(tuple<fem::point,double>(fem::point(g[1], 1-3*g[1], g[1]), w[1] ));
+	ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], 1-3*g[1]), w[1] ));
+	ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], g[1]), w[1] ));
+	// 9 to 14
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+	ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+	ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+	ips.push_back(tuple<fem::point,double>(fem::point(g[3], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+	ipwpl[Element::EF_TETRAHEDRON][4] = ips;
+
+
+	// Hexahedron family, degree 1 to 5
+	for(int d = 1; d < 6; d++)
 	{
-		case Element::FE_TETRAHEDRON4:	// Radau quadrature expressions (Zienkievics, pg 175)
-			d = (degree == 0)?1:degree;
-		case Element::FE_TETRAHEDRON10:
-			d = (degree == 0)?2:degree;
+		double x[d], w[d];	// for the Gauss-Legendre integration points and weights
+		// get the Gauss-Legendre integration points and weights
+		gauleg(x,w,d);
+
+		// and now generate a list with those points
+		for(int i = 0; i < d; i++)
+		{
+			for(int j = 0; j < d; j++)
 			{
-				switch(d)
+				for(int k = 0; k < d; k++)
 				{
-					case 1:	// degree 1, 1 point
-						{
-							ips.push_back(tuple<fem::point,double>(fem::point(0.25,0.25,0.25), 1.0/6.0));
-						}
-						break;
-
-					case 2:	// degree 2, 4 points
-						{
-							ips.push_back(tuple<fem::point,double>(fem::point(0.58541019662496845446,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
-							ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.58541019662496845446,0.13819660112501051518),1.0/(6*4)));
-							ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.58541019662496845446),1.0/(6*4)));
-							ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
-						}
-						break;
-
-					case 3:	// degree 3, 8 points
-						{	// rule -8
-							ips.push_back(tuple<fem::point,double>(fem::point(0, 0, 0), 1.0/(40*6)));
-							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-							ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-						}
-						break;
-
-					case 4:	// degree 4, 14 points
-						{
-							//TODO extract floating point value
-							//TODO this needs testing
-							double g[3];
-							double w[2];
-							g[0]=0.09273525031089122640232391373703060;
-							g[1]=0.31088591926330060979734573376345783;
-							g[2]=0.45449629587435035050811947372066056;
-
-							w[0] = (-1+6*g[1]*(2+g[1]*(-7+8*g[1]))+14*g[2]-60*g[1]*(3+4*g[1]* (-3+4*g[1]))*g[2]+4*(-7+30*g[1]*(3+4*g[1]*(-3+4*g[1])))*g[2]*g[2])/ (120*(g[0]-g[1])*(g[1]*(-3+8*g[1])+6*g[2]+8*g[1]*(-3+4*g[1])*g[2]-4* (3+4*g[1]*(-3+4*g[1]))*g[2]*g[2]+8*g[0]*g[0]*(1+12*g[1]* (-1+2*g[1])+4*g[2]-8*g[2]*g[2])+g[0]*(-3-96*g[1]*g[1]+24*g[2]*(-1+2*g[2])+ g[1]*(44+32*(1-2*g[2])*g[2]))));
-							w[1] = (-1-20*(1+12*g[0]*(2*g[0]-1))*w[0]+20*g[2]*(2*g[2]-1)*(4*w[0]-1))/ (20*(1+12*g[1]*(2*g[1]-1)+4*g[2]-8*g[2]*g[2]));
-
-							// 1 to 4
-							ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[0], g[0], g[0]), w[0] ));
-							ips.push_back(tuple<fem::point,double>(fem::point(g[0], 1-3*g[0], g[0]), w[0] ));
-							ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], 1-3*g[0]), w[0] ));
-							ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], g[0]), w[0] ));
-
-							// 5 to 8
-							ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[1], g[1], g[1]), w[1] ));
-							ips.push_back(tuple<fem::point,double>(fem::point(g[1], 1-3*g[1], g[1]), w[1] ));
-							ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], 1-3*g[1]), w[1] ));
-							ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], g[1]), w[1] ));
-
-							// 9 to 14
-							ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-							ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-							ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-							ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-							ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-							ips.push_back(tuple<fem::point,double>(fem::point(g[3], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-						}
-						break;
-
-					default:
-						//TODO add error handling code
-						assert(false);
-						break;
-				}
-		
-			}
-			break;
-
-		case Element::FE_HEXAHEDRON8:
-		d = (degree == 0)?2:degree;
-		case Element::FE_HEXAHEDRON27:
-		d = (degree == 0)?3:degree;
-			{
-				double x[d], w[d];	// for the Gauss-Legendre integration points and weights
-				//TODO replace with list of values
-				// get the Gauss-Legendre integration points and weights
-				gauleg(x,w,d);
-
-				// and now generate a list with those points
-				for(int i = 0; i < d; i++)
-				{
-					for(int j = 0; j < d; j++)
-					{
-						for(int k = 0; k < d; k++)
-						{
-							ips.push_back(tuple<fem::point,double>(fem::point(x[i],x[j],x[k]), w[i]*w[j]*w[k]));
-						}
-					}
+					ips.push_back(tuple<fem::point,double>(fem::point(x[i],x[j],x[k]), w[i]*w[j]*w[k]));
 				}
 			}
-			break;
-
-		case Element::FE_PRISM6:
-		d = (degree == 0)?2:degree;
-			{
-				switch(d)
-				{
-					case 1:
-					{
-						ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3,0), 1*2/2));
-					}
-					break;
-
-					case 2:
-						ips.push_back(tuple<fem::point,double>(fem::point(2.0/3,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
-						ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,2.0/3,-1.0/sqrt(3)), (1.0/3)*1/2));
-						ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
-						ips.push_back(tuple<fem::point,double>(fem::point(2.0/3,1.0/6, 1.0/sqrt(3)), (1.0/3)*1/2));
-						ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,2.0/3, 1.0/sqrt(3)), (1.0/3)*1/2));
-						ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,1.0/6, 1.0/sqrt(3)), (1.0/3)*1/2));
-					break;
-
-					/*
-					case 3:
-					TODO add integration points
-					break
-					*/
-
-					default:
-					//TODO
-					assert(false);
-					break;
-				}
-			}
-			break;
-
-
-		default:
-			std::cerr << "Analysis::integration_points(): unsupported element" << std::endl;
-			assert(false);	// this part should never be reached
-			break;
+		}
+		ipwpl[Element::EF_HEXAHEDRON][d] = ips;
 	}
 
-	// and now return the integration points
-	return ips;
+
+	//prisms
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3,0), 1*2/2));
+	ipwpl[Element::EF_PRISM][1] = ips;
+
+	ips.push_back(tuple<fem::point,double>(fem::point(2.0/3,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,2.0/3,-1.0/sqrt(3)), (1.0/3)*1/2));
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
+	ips.push_back(tuple<fem::point,double>(fem::point(2.0/3,1.0/6, 1.0/sqrt(3)), (1.0/3)*1/2));
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,2.0/3, 1.0/sqrt(3)), (1.0/3)*1/2));
+	ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,1.0/6, 1.0/sqrt(3)), (1.0/3)*1/2));
+	ipwpl[Element::EF_PRISM][2] = ips;
+
+	//TODO finish the rest
 }
 
 
@@ -868,7 +813,7 @@ boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  Ana
 	// iterate through the node list
 	for(std::map<size_t, fem::Node>::iterator i = model.node_list.begin(); i != model.node_list.end(); i++)
 	{
-		
+
 		if(model.node_restrictions_list.find(i->first) == model.node_restrictions_list.end())
 		{
 			// there are no node restrictions set for this node
@@ -968,6 +913,8 @@ inline void Analysis::add_elementary_to_global(const boost::numeric::ublas::symm
 	}
 
 }
+
+
 
 }
 

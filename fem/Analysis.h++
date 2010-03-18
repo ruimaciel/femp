@@ -6,7 +6,10 @@
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/tuple/tuple.hpp>
 
+#include <map>
+
 #include "Model.h++"
+#include "Element.h++"
 #include "FemEquation.h++"
 #include "LoadPattern.h++"
 
@@ -28,6 +31,10 @@ class Analysis
 
 			ERR_SINGULAR_MATRIX
 		};
+
+	private:
+		std::map<enum Element::ElementFamily, std::map<int, std::vector<boost::tuple<fem::point, double> > > > ipwpl;	// integration points/weights pair list
+		
 
 	public:
 		Analysis();
@@ -85,12 +92,9 @@ class Analysis
 
 
 		/**
-		Given an element type and the desired degree, returns a list Gauss quadrature integration points
-		@param type	element type
-		@param degree	integration degree
-		@return a list of integration points and the respective integration weights
+		Pre-builds all lists of integration points 
 		**/
-		std::vector<boost::tuple<fem::point, double> > integration_points(const Element::Type &type, const int &degree = 0); 
+		void integration_points();
 
 		/**
 		Builds the location matrix, a map between the node number and a 3-tuple holding the degree of freedom reference numbers for each degree of freedom
@@ -108,6 +112,7 @@ class Analysis
 		@param element	reference to the element
 		**/
 		void add_elementary_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, const boost::numeric::ublas::mapped_vector<double> &f_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element);
+
 };
 
 }

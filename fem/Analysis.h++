@@ -34,7 +34,7 @@ class Analysis
 
 	private:
 		std::map<enum Element::ElementFamily, std::map<int, std::vector<boost::tuple<fem::point, double> > > > ipwpl;	// integration points/weights pair list
-		
+		std::map<enum Element::Type, int> degree;	// integration point degree for this particular element
 
 	public:
 		Analysis();
@@ -79,7 +79,21 @@ class Analysis
 		boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double> >	sf(const Element::Type type, const fem::point &point);
 
 
+		/**
+		Set a new integration degree for a specific element
+		@param type	element type
+		@param d	desired degree
+		**/
+		void setDegree(Element::Type &type, int d);
+
+
 	private:
+		/**
+		Set the default values for the intended integration degrees for all supported elements
+		**/
+		void setDefaultIntegrationDegrees();
+
+
 		/**
 		  Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
 		  (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and

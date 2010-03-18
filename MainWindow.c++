@@ -567,6 +567,7 @@ void MainWindow::runAnalysis()
 	time.start();	// to get the run time
 
 	//TODO finish this
+	//TODO consider options for integration points
 	fem::Analysis analysis;
 
 	//TODO for testing purposes only. remove

@@ -10,6 +10,7 @@ Analysis::Analysis()
 {
 	// build all lists of integration points/weights pairs
 	integration_points();
+	setDefaultIntegrationDegrees();
 }
 
 
@@ -88,7 +89,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 		B.clear();
 
 		// build the element stiffness matrix: cycle through the number of integration points
-		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][element->degree()].begin(); i != ipwpl[element->family()][element->degree()].end(); i++)
+		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][degree[element->type]].begin(); i != ipwpl[element->family()][degree[element->type]].end(); i++)
 		{
 #define X(N) model.node_list[element->nodes[N]].x()
 #define Y(N) model.node_list[element->nodes[N]].y()
@@ -706,6 +707,49 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 	sfd.get<2>() = dNdeta;
 	sfd.get<3>() = dNdzeta;
 	return sfd;
+}
+
+
+void Analysis::setDegree(Element::Type &type, int d)
+{
+	degree[type] = d;
+}
+
+
+void Analysis::setDefaultIntegrationDegrees()
+{
+	//TODO tweak integration points
+	degree[Element::FE_TRIANGLE3] = 1;
+	degree[Element::FE_TRIANGLE6] = 1;
+	degree[Element::FE_TRIANGLE10] = 1;
+	degree[Element::FE_TRIANGLE15] = 1;
+
+	degree[Element::FE_QUADRANGLE4] = 1;
+	degree[Element::FE_QUADRANGLE8] = 1;
+	degree[Element::FE_QUADRANGLE9] = 1;
+
+	degree[Element::FE_TETRAHEDRON4] = 4;
+	degree[Element::FE_TETRAHEDRON10] = 4;
+	degree[Element::FE_TETRAHEDRON20] = 4;
+	degree[Element::FE_TETRAHEDRON35] = 4;
+	degree[Element::FE_TETRAHEDRON56] = 4;
+
+	degree[Element::FE_HEXAHEDRON8] = 4;
+	degree[Element::FE_HEXAHEDRON20] = 4;
+	degree[Element::FE_HEXAHEDRON27] = 4;
+
+	degree[Element::FE_PRISM6] = 4;
+	degree[Element::FE_PRISM15] = 4;
+	degree[Element::FE_PRISM18] = 4;
+
+	degree[Element::FE_PYRAMID5] = 4;
+	degree[Element::FE_PYRAMID14] = 4;
+	degree[Element::FE_PYRAMID13] = 4;
+
+	degree[Element::FE_ITRIANGLE9] = 1;
+	degree[Element::FE_ITRIANGLE12] = 1;
+	degree[Element::FE_ITRIANGLE15] = 1;
+	degree[Element::FE_TRIANGLE21] = 1;
 }
 
 

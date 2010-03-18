@@ -1,8 +1,8 @@
 Makefile
 femp
-build/*
+gui/build/*
 moc_*
-ui/ui_*
+gui/ui/ui_*
 lex.msh_yy.*
 msh.tab.*
 .*

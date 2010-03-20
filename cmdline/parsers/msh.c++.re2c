@@ -1,0 +1,744 @@
+#include "msh.h++"
+
+#include <iostream>	// for cerr
+#include <sstream>
+
+MshParser::MshParser()
+{
+}
+
+
+MshParser::~MshParser()
+{
+}
+
+
+enum MshParser::Error MshParser::parse(std::string file_name, fem::Model &model)
+{
+	using namespace std;
+	std::vector<size_t> index_vector;
+	std::vector<double> number_vector;
+
+	int el_count, el_number;
+	int tag_count, tag_number;
+	fem::Element::Type type;
+
+	// clean up the model 
+	model.clear();
+
+	int state = 0;	// parser state
+
+	file.open(file_name.c_str());
+	if(!file.is_open())
+		return Parser::P_OPEN_FILE;
+
+	enum MshParser::Lexer token = LEX_OPEN_MESH_FORMAT;
+	while( (token = lexer()) != LEX_EOF)
+	{
+		switch(state)
+		{
+			case 0:	// starting point
+				switch(token)
+				{
+					case LEX_OPEN_MESH_FORMAT:
+						state = 1;	// $MeshFormat, wait for version
+						break;
+
+					case LEX_EOL:
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 1:	// $MeshFormat, wait for version
+				switch(token)
+				{
+					case LEX_VERSION_2_1:
+						state = 2;	// $MeshFormat, wait for file type
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 2:// $MeshFormat, wait for file type
+				switch(token)
+				{
+					case LEX_FILE_TYPE:
+						state = 3;	//$MeshFormat, wait for data size
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 3:	// $MeshFormat, wait for EOL
+				switch(token)
+				{
+					case LEX_EOL:
+						state = 4;	// $MeshFormat, wait for fiel closer
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 4:	// $MeshFormat, wait for EOL
+				switch(token)
+				{
+					case LEX_CLOSE_MESH_FORMAT:
+						state = 5;	// wait for pre-$Nodes EOL
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 5:	// wait for pre-$Nodes EOL
+				switch(token)
+				{
+					case LEX_EOL:
+						state = 6;	// wait for $Nodes
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 6:	// wait for $Nodes
+				switch(token)
+				{
+					case LEX_OPEN_NODES:
+						state = 7;	// $Nodes: wait for first EOL
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 7:	// $Nodes: wait for first EOL
+				switch(token)
+				{
+					case LEX_EOL:
+						state = 8;	// $Nodes: wait for index
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 8:	// $Nodes
+				switch(token)
+				{
+					case LEX_INDEX:
+						state = 9;	// $Nodes: wait for post-index EOL
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 9:	// $Nodes: wait for post-index EOL
+				switch(token)
+				{
+					case LEX_EOL:
+						state = 10;	// $Nodes: get node: wait for index
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 10:	// $Nodes: get node: wait for index
+				index_vector.clear();
+				number_vector.clear();
+				switch(token)
+				{
+					case LEX_INDEX:
+						index_vector.push_back(val.index);
+						state = 11;	// $Nodes: get node: wait for 1 of 3
+						break;
+
+					case LEX_CLOSE_NODES:
+						state = 15;	// wait for $Elements
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 11:	// $Nodes: get node: wait for 1 of 3
+				switch(token)
+				{
+					case LEX_NUMBER:
+						number_vector.push_back(val.number);
+						state = 12;	// $Nodes: get node: wait for 2 of 3
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+
+			case 12:	// $Nodes: get node: wait for 2 of 3
+				switch(token)
+				{
+					case LEX_NUMBER:
+						state = 13;	// $Nodes: get node: wait for 3 of 3
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+
+			case 13:	// $Nodes: get node: wait for 3 of 3
+				switch(token)
+				{
+					case LEX_NUMBER:
+						state = 14;	// $Nodes: get node: wait for EOL
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 14:	// $Nodes: get node: wait for index
+				switch(token)
+				{
+					case LEX_EOL:
+						model.setNode(index_vector[0], number_vector[0], number_vector[1], number_vector[2]);
+						state = 10;	// $Nodes: get node: wait for index
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 15:	// wait for $Elements
+				switch(token)
+				{
+					case LEX_OPEN_ELEMENTS:
+						state = 16;	// post-$Elements EOL
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 16:	// post-$Elements EOL
+				switch(token)
+				{
+					case LEX_INDEX:
+						state = 17;	// $Elements: post-index EOL
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 17:	// $Elements: post-index EOL
+				switch(token)
+				{
+					case LEX_EOL:
+						state = 18;	// $Elements: element index
+						break;
+
+					case LEX_CLOSE_ELEMENTS:
+						state = 24;
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 18:	// $Elements: element index
+				switch(token)
+				{
+					case LEX_INDEX:
+						state = 19;	// $Elements: element type
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 19:	// $Elements: element type
+				switch(token)
+				{
+			case LEX_LINE2:
+				el_count = 0, el_number = 2;
+				type = fem::Element::FE_LINE2;
+				state = 20;	// $Elements LEX_LINE2: wait for tag
+				break;
+
+			case LEX_TRIANGLE3:
+				el_count = 0, el_number = 3;
+				type = fem::Element::FE_TRIANGLE3;
+				state = 20;	// $Elements LEX_LINE2: wait for tag
+				break;
+
+			/*
+			case LEX_QUADRANGLE4:
+			//TODO
+			break;
+
+			case LEX_TETRAHEDRON4:
+			//TODO
+			break;
+
+			case LEX_HEXAHEDRON8:
+			//TODO
+			break;
+
+			case LEX_PRISM6:
+			//TODO
+			break;
+
+			case LEX_PYRAMID5:
+			//TODO
+			break;
+
+			case LEX_LINE3:
+			//TODO
+			break;
+
+			case LEX_TRIANGLE6:
+			//TODO
+			break;
+
+			case LEX_QUADRANGLE9:
+			//TODO
+			break;
+
+			case LEX_TETRAHEDRON10:
+			//TODO
+			break;
+
+			case LEX_HEXAHEDRON27:
+			//TODO
+			break;
+
+			case LEX_PRISM18:
+			//TODO
+			break;
+
+			case LEX_PYRAMID14:
+			//TODO
+			break;
+
+			case LEX_POINT:
+			//TODO
+			break;
+
+			case LEX_QUADRANGLE8:
+			//TODO
+			break;
+
+			case LEX_HEXAHEDRON20:
+			//TODO
+			break;
+
+			case LEX_PRISM15:
+			//TODO
+			break;
+
+			case LEX_PYRAMID13:
+			//TODO
+			break;
+
+			case LEX_ITRIANGLE9:
+			//TODO
+			break;
+
+			case LEX_TRIANGLE10:
+			//TODO
+			break;
+
+			case LEX_ITRIANGLE12:
+			//TODO
+			break;
+
+			case LEX_TRIANGLE15:
+			//TODO
+			break;
+
+			case LEX_ITRIANGLE15:
+			//TODO
+			break;
+
+			case LEX_TRIANGLE21:
+			//TODO
+			break;
+
+			case LEX_EDGE4:
+			//TODO
+			break;
+
+			case LEX_EDGE5:
+			//TODO
+			break;
+
+			case LEX_EDGE6:
+			//TODO
+			break;
+
+			case LEX_TETRAHEDRON20:
+			//TODO
+			break;
+
+			case LEX_TETRAHEDRON35:
+			//TODO
+			break;
+
+			case LEX_TETRAHEDRON56:
+			//TODO
+			break;
+			*/
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 20:	// $Elements: get tag count
+				switch(token)
+				{
+					case LEX_TOKEN_0:
+						tag_count = 0, tag_number = 0;
+						state = 22;	// $Elements: get nodes
+						break;
+
+					case LEX_TOKEN_1:
+						tag_count = 0, tag_number = 1;
+						state = 21;
+						break;
+
+					case LEX_TOKEN_2:
+						tag_count = 0, tag_number = 2;
+						state = 21;
+						break;
+
+					case LEX_TOKEN_3:
+						tag_count = 0, tag_number = 3;
+						state = 21;
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 21:	// $Elements: get tag indexes
+				switch(token)
+				{
+					case LEX_INDEX:
+						if(tag_count < tag_number)
+						{
+							tag_count++;
+						}
+						else
+						{
+							// move to greener pastures
+							state = 22;	// $Elements: get nodes
+						}
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 22:
+				switch(token)
+				{
+					case LEX_INDEX:
+						if(el_count < el_number)
+						{
+							index_vector.push_back(val.index);
+							el_count++;
+						}
+						else
+						{
+							state = 23;	// $Elements: wait for EOL
+						}
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 23:
+				switch(token)
+				{
+					case LEX_EOL:
+						model.pushElement(type, index_vector);
+						index_vector.clear();
+						state = 17;	// $Element: post-index EOL
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 24:	// post-$Elements
+				switch(token)
+				{
+					case LEX_EOL:
+						state = 99;	// wait until EOF
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			case 99:
+				switch(token)
+				{
+					case LEX_EOL:
+						state = 99;	// wait until EOF
+						break;
+
+					default:
+						return P_INVALID_DOCUMENT;
+						break;
+				}
+				break;
+
+			default:
+				return P_UNKNOWN;	// this state shouldn't be here
+				break;
+		}
+	}
+
+	// exit
+	file.close();
+	return MshParser::P_OK;
+}
+
+
+enum MshParser::Lexer MshParser::lexer()
+{
+	tok = pos;
+std:
+	switch(lex_state)
+	{
+		case 0:
+		{
+	#define YYFILL(n) { if(file.eof()){ if(tok == lim) return LEX_EOF; } else fill(); }
+	/*!re2c
+	re2c:yyfill:enable   	= 1;
+	re2c:define:YYCTYPE  	= "char";
+	re2c:define:YYCURSOR 	= pos;
+	re2c:define:YYMARKER 	= marker;
+	re2c:define:YYLIMIT	= lim;
+
+	index	= "0"|[1-9][0-9]*;
+	integer = "-"? index;
+	float	= integer "." [0-9]+([eE][+-]?[0-9]+)?;
+	number	= integer|float;
+	string	= '"' [a-zA-Z0-9]* '"';
+
+	"$MeshFormat"	{ lex_state = 1; return LEX_OPEN_MESH_FORMAT;	}
+	"$Nodes"	{ lex_state = 2; return LEX_OPEN_NODES;	}
+	"$Elements"	{ lex_state = 4; return LEX_OPEN_ELEMENTS;	}
+	"$PhysicalNames"	{ return LEX_OPEN_PHYSICAL_NAMES;	}
+	"$NodeData"	{ return LEX_OPEN_NODE_DATA;	}
+	"$ElementData"	{ return LEX_OPEN_ELEMENT_DATA;	}
+	"$ElementNodeData"	{ return LEX_OPEN_ELEMENT_NODE_DATA;	}
+	'\n'	{ return LEX_EOL; }
+	' '+	{ goto std;}
+	.	{ return LEX_UNKNOWN_TOKEN; }
+	*/
+		}
+		break;
+
+		case 1:	// get parser version as a lexer token
+		{
+	/*!re2c
+	"2.1"	{ return LEX_VERSION_2_1;	}
+	"0"	{ return LEX_FILE_TYPE;	}
+	[0-9]	{ return LEX_DATA_SIZE;	}
+	"$EndMeshFormat"	{ lex_state = 0;	return LEX_CLOSE_MESH_FORMAT; }
+	'\n'	{ return LEX_EOL; }
+	' '+	{ goto std;	}
+	.	{ return LEX_UNKNOWN_TOKEN; }
+	*/
+		}
+		break;
+
+		case 2:	// parse nodes section: index
+		{
+	/*!re2c
+	index	{ lex_state = 3; setIndex(); return LEX_INDEX; }
+	"$EndNodes"	{ lex_state = 0;	return LEX_CLOSE_NODES; }
+	'\n'	{ return LEX_EOL; }
+	' '+	{ goto std;	}
+	.	{ return LEX_UNKNOWN_TOKEN; }
+	*/
+		}
+		break;
+
+		case 3:	// parse nodes section: coordinates
+		{
+	/*!re2c
+	number	{ return LEX_NUMBER; }
+	'\n'	{ lex_state = 2; return LEX_EOL; }
+	' '+	{ goto std;	}
+	.	{ return LEX_UNKNOWN_TOKEN; }
+	*/
+		}
+		break;
+
+		case 4:	// parse elements section
+		{
+	/*!re2c
+	index	{ lex_state = 5; setIndex(); return LEX_INDEX; }
+	"$EndElements"	{ lex_state = 0;	return LEX_CLOSE_ELEMENTS; }
+	'\n'	{ return LEX_EOL; }
+	' '+	{ goto std;	}
+	.	{ return LEX_UNKNOWN_TOKEN; }
+	*/
+		}
+		break;
+
+		case 5:	// parse element type
+		{
+	/*!re2c
+	[0-9]+	{setIndex();
+		lex_state = 6;
+		switch(val.index)
+		{
+		case 1:return LEX_LINE2;
+		case 2:return LEX_TRIANGLE3;
+		case 3:return LEX_QUADRANGLE4;
+		case 4:return LEX_TETRAHEDRON4;
+		case 5:return LEX_HEXAHEDRON8;
+		case 6:return LEX_PRISM6;
+		case 7:return LEX_PYRAMID5;
+		case 8:return LEX_LINE3;
+		case 9:return LEX_TRIANGLE6;
+		case 10:return LEX_QUADRANGLE9;
+		case 11:return LEX_TETRAHEDRON10;
+		case 12:return LEX_HEXAHEDRON27;
+		case 13:return LEX_PRISM18;
+		case 14:return LEX_PYRAMID14;
+		case 15:return LEX_POINT;
+		case 16:return LEX_QUADRANGLE8;
+		case 17:return LEX_HEXAHEDRON20;
+		case 18:return LEX_PRISM15;
+		case 19:return LEX_PYRAMID13;
+		case 20:return LEX_ITRIANGLE9;
+		case 21:return LEX_TRIANGLE10;
+		case 22:return LEX_ITRIANGLE12;
+		case 23:return LEX_TRIANGLE15;
+		case 24:return LEX_ITRIANGLE15;
+		case 25:return LEX_TRIANGLE21;
+		case 26:return LEX_EDGE4;
+		case 27:return LEX_EDGE5;
+		case 28:return LEX_EDGE6;
+		case 29:return LEX_TETRAHEDRON20;
+		case 30:return LEX_TETRAHEDRON35;
+		case 31:return LEX_TETRAHEDRON56;
+		default:
+			return LEX_UNKNOWN_TOKEN;
+		}
+		}
+	'\n'	{ lex_state = 4; return LEX_EOL; }
+	' '+	{ goto std;	}
+	.	{ return LEX_UNKNOWN_TOKEN; }
+		*/
+		}
+		break;
+
+	case 6:	// get number of tokens
+		{
+	/*!re2c
+	' '+	{ goto std;	}
+	"0"	{ lex_state = 7; return LEX_TOKEN_0; }
+	"1"	{ lex_state = 7; return LEX_TOKEN_1; }
+	"2"	{ lex_state = 7; return LEX_TOKEN_2; }
+	"3"	{ lex_state = 7; return LEX_TOKEN_3; }
+	.	{ return LEX_UNKNOWN_TOKEN; }
+	*/
+		}
+		break;
+
+	case 7:	// extract indexes until EOL
+		{
+	/*!re2c
+	index	{ setIndex(); return LEX_INDEX; }
+	' '+	{ goto std;	}
+	'\n'	{ lex_state = 4; return LEX_EOL; }
+	.	{ return LEX_UNKNOWN_TOKEN; }
+	*/
+		}
+
+		default:
+			std::cerr << "Error: default lexer state" << std::endl;
+			return LEX_ERROR;
+			break;
+	}
+
+	// should never be reached
+	return LEX_ERROR;
+	#undef YYFILL
+}
+
+
+void MshParser::setIndex()
+{
+	std::string tmp;
+	tmp.append(tok,pos-tok); 
+	std::istringstream f(tmp);
+	f >> val.index;
+}
+

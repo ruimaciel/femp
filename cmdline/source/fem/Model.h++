@@ -1,7 +1,7 @@
 #ifndef FEM_HPP
 #define FEM_HPP
 
-#include <QString>
+// #include <QString>
 
 #include <map>
 #include <vector>

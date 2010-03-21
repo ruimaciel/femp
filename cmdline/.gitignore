@@ -1,0 +1,4 @@
+debug/*
+autom4te.cache/*
+aclocal.m4
+Makefile.in

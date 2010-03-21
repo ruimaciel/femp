@@ -1,7 +1,8 @@
 #ifndef MATERIAL_HPP
 #define MATERIAL_HPP
 
-#include <QString>
+// #include <QString>
+#include <string>
 #include <boost/numeric/ublas/symmetric.hpp>
 
 namespace fem
@@ -13,7 +14,8 @@ class Material {
 			MAT_LINEAR_ELASTIC = 0
 		};
 
-		QString label;	// a label describing this material
+		//QString label;	// a label describing this material
+		std::string label;	// a label describing this material
 		enum Type type;
 
 		double E, nu;	// linear elastic material

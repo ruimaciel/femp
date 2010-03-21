@@ -1,7 +1,8 @@
 #ifndef LOAD_PATTERN_HPP
 #define LOAD_PATTERN_HPP
 
-#include <QString>
+//#include <QString>
+#include <string>
 #include <map>
 
 #include "NodalLoad.h++"
@@ -18,7 +19,7 @@ namespace fem
 	class LoadPattern
 	{
 		public:
-			QString label;	// this load pattern's label
+			std::string label;	// this load pattern's label
 			std::map<size_t,NodalLoad> 	nodal_loads;	// maps nodal loads to node references
 			std::map<size_t,NodalDisplacement> 	nodal_displacements;	// maps nodal loads to node references
 			std::map<size_t,DomainLoad>	domain_loads;	// maps to element references

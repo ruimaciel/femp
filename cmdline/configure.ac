@@ -3,14 +3,10 @@
 
 AC_PREREQ([2.64])
 
-AC_INIT([cmdline], VERSION)
+AC_INIT([cmdline], [0.1])
 AC_CONFIG_SRCDIR([source/main.c++])
-AM_INIT_AUTOMAKE(cmdline, 0.1)
+AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
-
-VERSION="0.1"
-AC_SUBST(VERSION)
-
 
 
 # Checks for programs.

@@ -11,6 +11,8 @@
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/tuple/tuple.hpp>
 
+#include "../parsers/json.h"
+
 #include "Node.h++"
 #include "Element.h++"
 #include "Material.h++"
@@ -27,15 +29,18 @@ class Model {
 		int default_material;	// used when adding elements
 
 	public:
-		enum Error {	ERR_OK = 0,	// no error
-				ERR_NO_ELEMENTS,
-				ERR_UNSUPPORTED_ELEMENT,
-				ERR_NODE_NUMBER,
-				ERR_ELEMENT_NODE_REFERENCE,	// an invalid node reference has been made
-				ERR_NODE_RESTRICTIONS_NODE_REFERENCE,	// an invalid node reference has been made
-				ERR_INVALID_MATERIAL_REFERENCE,
-				ERR_INVALID_NODE_REFERENCE
-				};
+		enum Error {	
+			ERR_OK = 0,	// no error
+			ERR_PARSER,	// the parser stumbled on a grammar error
+			ERR_NO_ELEMENTS,
+			ERR_UNSUPPORTED_ELEMENT,
+			ERR_NODE_NUMBER,
+			ERR_ELEMENT_NODE_REFERENCE,	// an invalid node reference has been made
+			ERR_NODE_RESTRICTIONS_NODE_REFERENCE,	// an invalid node reference has been made
+			ERR_INVALID_MATERIAL_REFERENCE,
+			ERR_INVALID_NODE_REFERENCE,
+			ERR_UNKNOWN	// a bug somewhere. Never should happen
+		};
 
 		std::map<size_t, Node> 	node_list;
 		std::vector<Element> 	element_list;
@@ -76,6 +81,16 @@ class Model {
 		@retur ERR_OK if all is well, other error code if something bad happened
 		**/
 		enum Model::Error sanity_check();
+
+
+		/**
+		Imports a model from a fem.json document which will be available through a given opened file stream
+		@param file	a pointer to an opened file stream
+		@return	ERR_OK if all went well, a relevant error code according to the error
+		**/
+		enum Model::Error import_json(FILE *file);
+
+		void text_dump() const;
 };
 
 }

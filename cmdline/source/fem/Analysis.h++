@@ -81,7 +81,16 @@ class Analysis
 		@param point	local coordinates
 		@return a boost::tuple consisting of three vector<double> storing each node's interpolation weights
 		**/
-		boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double> >	sf(const Element::Type type, const fem::point &point);
+		std::vector<double> shape_function(const Element::Type type, const fem::point &point);
+
+
+		/** 
+		given an element and a position in local coordinates, it generates a list with the nodal weights for the derivatives of the shape function for each interpolation point in local coordinates
+		@param type	the element type
+		@param point	local coordinates
+		@return a boost::tuple consisting of three vector<double> storing each node's interpolation weights
+		**/
+		boost::tuple<std::vector<double>, std::vector<double>, std::vector<double> > shape_function_derivatives(const Element::Type type, const fem::point &point);
 
 
 		/**

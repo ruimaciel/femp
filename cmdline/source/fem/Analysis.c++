@@ -46,7 +46,10 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 	mapped_vector<double> f_elem;
 	matrix<double> B;
 	matrix<double> Bt;
-	boost::tuple< std::vector<double>, std::vector<double>, std::vector<double>,std::vector<double> > sf;	// tuple: sf, dNdcsi, dNdeta, dNdzeta
+
+		//TODO get a separate function to return the shape function
+	std::vector<double>	sf;	// shape function
+	boost::tuple< std::vector<double>, std::vector<double>,std::vector<double> > sfd;	// tuple: dNdcsi, dNdeta, dNdzeta
 	int nnodes;	// number of nodes
 
 
@@ -59,35 +62,35 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 		// generate stiffness matrix by cycling through all elements in the model
 	for(std::vector<Element>::iterator element = model.element_list.begin(); element != model.element_list.end(); element++)
 	{
-		// get the number of expected nodes used by the current element type
+			// get the number of expected nodes used by the current element type
 		nnodes = element->node_number();
 
-		// resize the elementary matrices to fit the new node size
+			// resize the elementary matrices to fit the new node size
 		k_elem.resize(nnodes*3,nnodes*3,false);
 		f_elem.resize(nnodes*3,false);
 		B.resize(6,3*nnodes,false);
 		Bt.resize(3*nnodes,6,false);
 
-		// initialize variables
+			// initialize variables
 		k_elem.clear();
 		f_elem.clear();
 		B.clear();
 
-		// build the element stiffness matrix: cycle through the number of integration points
+			// build the element stiffness matrix: cycle through the number of integration points
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][degree[element->type]].begin(); i != ipwpl[element->family()][degree[element->type]].end(); i++)
 		{
 #define X(N) model.node_list[element->nodes[N]].x()
 #define Y(N) model.node_list[element->nodes[N]].y()
 #define Z(N) model.node_list[element->nodes[N]].z()
-#define dNdcsi(N) sf.get<1>()[n]
-#define dNdeta(N) sf.get<2>()[n]
-#define dNdzeta(N) sf.get<3>()[n]
+#define dNdcsi(N) sfd.get<0>()[n]
+#define dNdeta(N) sfd.get<1>()[n]
+#define dNdzeta(N) sfd.get<2>()[n]
 
-			// get the shape function and it's partial derivatives for this integration point
-			sf = this->sf(element->type, i->get<0>());
-			std::vector<double> test = sf.get<0>();
+				// get the shape function and it's partial derivatives for this integration point
+			sf = this->shape_function(element->type, i->get<0>());
+			sfd = this->shape_function_derivatives(element->type, i->get<0>() );
 
-			// generate the jacobian
+				// generate the jacobian
 			J.clear();
 			for(int n = 0; n < nnodes; n++)
 			{
@@ -99,7 +102,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 			detJ = det3by3(J);
 			invJ = invert3by3(J,detJ);
 
-			// Set up the B matrix
+				// Set up the B matrix
 			for(int n = 0; n < nnodes; n++)
 			{
 				// set the variables
@@ -156,7 +159,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 			{
 				for(int n = 0; n < nnodes; n++)
 				{
-#define N(n) sf.get<0>()[n]
+#define N(n) sf[n]
 #define W    i->get<1>()
 					//TODO implement domain nodes
 					f_elem(3*n) += N(n)*dli->second.force.x()*detJ*W;
@@ -170,7 +173,13 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 			//std::cout << B << std::endl;
 		}
 
-		// add to the global stiffness matrix, 
+			// integrate the domain loads
+		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][1].begin(); i != ipwpl[element->family()][1].end(); i++)
+		{
+			//TODO finish this
+		}
+
+			// add to the global stiffness matrix, 
 		add_elementary_to_global(k_elem, f_elem, f, lm, *element);
 
 	}
@@ -335,12 +344,13 @@ void Analysis::gauleg(double x[], double w[], int n)
 }
 
 
-boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double> > Analysis::sf(const Element::Type type, const fem::point &point)
+std::vector<double> 
+Analysis::shape_function(const Element::Type type, const fem::point &point)
 {
 	using namespace boost;
 	using namespace std;
-	tuple<vector<double>, vector<double>, vector<double>, vector<double> > sfd;	// shape function derivatives tuple
-	vector<double> sf, dNdcsi, dNdeta, dNdzeta;	// shape function derivatives weights 
+
+	vector<double> sf;	// shape function derivatives weights 
 
 	// declare a set of macros to make the code more readable
 #define csi point.data[0]
@@ -356,7 +366,151 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 			sf[1] = csi;
 			sf[2] = eta;
 			sf[3] = zeta;
+			break;
 
+		
+		case Element::FE_TETRAHEDRON10:
+			{
+				double L[4];
+				L[0] = 1-csi-eta-zeta;
+				L[1] = csi;
+				L[2] = eta;
+				L[3] = zeta;
+			
+				sf.resize(10);
+				sf[0] = (2*L[0]-1)*L[0];
+				sf[1] = (2*L[1]-1)*L[1];
+				sf[2] = (2*L[2]-1)*L[2];
+				sf[3] = (2*L[3]-1)*L[3];
+				sf[4] = 4*L[0]*L[1];
+				sf[5] = 4*L[1]*L[2];
+				sf[6] = 4*L[0]*L[2];
+				sf[7] = 4*L[0]*L[3];
+				sf[8] = 4*L[2]*L[3];
+				sf[9] = 4*L[1]*L[3];
+			}
+			break;
+
+		case Element::FE_TETRAHEDRON20:
+			{
+				double L[4];
+				L[0] = 1-csi-eta-zeta;
+				L[1] = csi;
+				L[2] = eta;
+				L[3] = zeta;
+			
+				sf.resize(10);
+				sf[0] = (2*L[0]-1)*L[0];
+				sf[1] = (2*L[1]-1)*L[1];
+				sf[2] = (2*L[2]-1)*L[2];
+				sf[3] = (2*L[3]-1)*L[3];
+				sf[4] = 4*L[0]*L[1];
+				sf[5] = 4*L[1]*L[2];
+				sf[6] = 4*L[0]*L[2];
+				sf[7] = 4*L[0]*L[3];
+				sf[8] = 4*L[2]*L[3];
+				sf[9] = 4*L[1]*L[3];
+				sf[10] = (2*L[0]-1)*L[0];
+				sf[11] = (2*L[1]-1)*L[1];
+				sf[12] = (2*L[2]-1)*L[2];
+				sf[13] = (2*L[3]-1)*L[3];
+				sf[14] = 4*L[0]*L[1];
+				sf[15] = 4*L[1]*L[2];
+				sf[16] = 4*L[0]*L[2];
+				sf[17] = 4*L[0]*L[3];
+				sf[18] = 4*L[2]*L[3];
+				sf[19] = 4*L[1]*L[3];
+			}
+			break;
+
+		case Element::FE_HEXAHEDRON8:
+			sf.resize(8);
+			sf[0] = (1-csi)*(1-eta)*(1-zeta)/8;
+			sf[1] = (csi+1)*(1-eta)*(1-zeta)/8;
+			sf[2] = (csi+1)*(eta+1)*(1-zeta)/8;
+			sf[3] = (1-csi)*(eta+1)*(1-zeta)/8;
+			sf[4] = (1-csi)*(1-eta)*(zeta+1)/8;
+			sf[5] = (csi+1)*(1-eta)*(zeta+1)/8;
+			sf[6] = (csi+1)*(eta+1)*(zeta+1)/8;
+			sf[7] = (1-csi)*(eta+1)*(zeta+1)/8;
+			break;
+
+		case Element::FE_HEXAHEDRON27:
+			// sf
+			sf.resize(27);
+			sf[ 0] = (csi-1)*csi*(eta-1)*eta*(zeta-1)*zeta/8;
+			sf[ 1] = csi*(csi+1)*(eta-1)*eta*(zeta-1)*zeta/8;
+			sf[ 2] = csi*(csi+1)*eta*(eta+1)*(zeta-1)*zeta/8;
+			sf[ 3] = (csi-1)*csi*eta*(eta+1)*(zeta-1)*zeta/8;
+			sf[ 4] = (csi-1)*csi*(eta-1)*eta*zeta*(zeta+1)/8;
+			sf[ 5] = csi*(csi+1)*(eta-1)*eta*zeta*(zeta+1)/8;
+			sf[ 6] = csi*(csi+1)*eta*(eta+1)*zeta*(zeta+1)/8;
+			sf[ 7] = (csi-1)*csi*eta*(eta+1)*zeta*(zeta+1)/8;
+			sf[ 8] = -(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)*zeta/4;
+			sf[ 9] = -(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
+			sf[10] = -(csi-1)*csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
+			sf[11] = -csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
+			sf[12] = -csi*(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
+			sf[13] = -(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)*zeta/4;
+			sf[14] = -csi*(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
+			sf[15] = -(csi-1)*csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
+			sf[16] = -(csi-1)*(csi+1)*(eta-1)*eta*zeta*(zeta+1)/4;
+			sf[17] = -(csi-1)*csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
+			sf[18] = -csi*(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
+			sf[19] = -(csi-1)*(csi+1)*eta*(eta+1)*zeta*(zeta+1)/4;
+			sf[20] = (csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2;
+			sf[21] = (csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2;
+			sf[22] = (csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
+			sf[23] = csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
+			sf[24] = (csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2;
+			sf[25] = (csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2;
+			sf[26] = -(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1);
+			break;
+
+		case Element::FE_PRISM6:
+			double L[3];
+			L[0] = 1-csi-eta;
+			L[1] = csi;
+			L[2] = eta;
+
+			sf.resize(6);
+			sf[ 0] = L[0]*(1-zeta)/2.0;
+			sf[ 1] = L[1]*(1-zeta)/2.0;
+			sf[ 2] = L[2]*(1-zeta)/2.0;
+			sf[ 3] = L[0]*(1+zeta)/2.0;
+			sf[ 4] = L[1]*(1+zeta)/2.0;
+			sf[ 5] = L[2]*(1+zeta)/2.0;
+			break;
+
+		default:
+			//TODO this part should never be reached
+			assert(false);
+			break;
+	}
+#undef csi
+#undef eta
+#undef zeta
+
+	return sf;
+}
+
+
+boost::tuple<std::vector<double>, std::vector<double>, std::vector<double> > Analysis::shape_function_derivatives(const Element::Type type, const fem::point &point)
+{
+	using namespace boost;
+	using namespace std;
+	tuple<vector<double>, vector<double>, vector<double> > sfd;	// shape function derivatives tuple
+	vector<double> dNdcsi, dNdeta, dNdzeta;	// shape function derivatives weights 
+
+	// declare a set of macros to make the code more readable
+#define csi point.data[0]
+#define eta point.data[1]
+#define zeta point.data[2]
+
+	// let's fill in the vectors
+	switch(type)
+	{
+		case Element::FE_TETRAHEDRON4:
 			dNdcsi.resize(4);
 			dNdcsi[0] = -1;
 			dNdcsi[1] = 1;
@@ -385,18 +539,6 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 				L[2] = eta;
 				L[3] = zeta;
 			
-				sf.resize(10);
-				sf[0] = (2*L[0]-1)*L[0];
-				sf[1] = (2*L[1]-1)*L[1];
-				sf[2] = (2*L[2]-1)*L[2];
-				sf[3] = (2*L[3]-1)*L[3];
-				sf[4] = 4*L[0]*L[1];
-				sf[5] = 4*L[1]*L[2];
-				sf[6] = 4*L[0]*L[2];
-				sf[7] = 4*L[0]*L[3];
-				sf[8] = 4*L[2]*L[3];
-				sf[9] = 4*L[1]*L[3];
-
 				dNdcsi.resize(10);
 				dNdcsi[0] = -4*L[0]+1;
 				dNdcsi[1] = 4*L[1]-1;
@@ -485,16 +627,6 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 			*/
 
 		case Element::FE_HEXAHEDRON8:
-			sf.resize(8);
-			sf[0] = (1-csi)*(1-eta)*(1-zeta)/8;
-			sf[1] = (csi+1)*(1-eta)*(1-zeta)/8;
-			sf[2] = (csi+1)*(eta+1)*(1-zeta)/8;
-			sf[3] = (1-csi)*(eta+1)*(1-zeta)/8;
-			sf[4] = (1-csi)*(1-eta)*(zeta+1)/8;
-			sf[5] = (csi+1)*(1-eta)*(zeta+1)/8;
-			sf[6] = (csi+1)*(eta+1)*(zeta+1)/8;
-			sf[7] = (1-csi)*(eta+1)*(zeta+1)/8;
-
 			// dNdcsi
 			dNdcsi.resize(8);
 			dNdcsi[ 0] = -(1-eta)*(1-zeta)/8;
@@ -530,36 +662,6 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 			break;
 
 		case Element::FE_HEXAHEDRON27:
-			// sf
-			sf.resize(27);
-			sf[ 0] = (csi-1)*csi*(eta-1)*eta*(zeta-1)*zeta/8;
-			sf[ 1] = csi*(csi+1)*(eta-1)*eta*(zeta-1)*zeta/8;
-			sf[ 2] = csi*(csi+1)*eta*(eta+1)*(zeta-1)*zeta/8;
-			sf[ 3] = (csi-1)*csi*eta*(eta+1)*(zeta-1)*zeta/8;
-			sf[ 4] = (csi-1)*csi*(eta-1)*eta*zeta*(zeta+1)/8;
-			sf[ 5] = csi*(csi+1)*(eta-1)*eta*zeta*(zeta+1)/8;
-			sf[ 6] = csi*(csi+1)*eta*(eta+1)*zeta*(zeta+1)/8;
-			sf[ 7] = (csi-1)*csi*eta*(eta+1)*zeta*(zeta+1)/8;
-			sf[ 8] = -(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)*zeta/4;
-			sf[ 9] = -(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
-			sf[10] = -(csi-1)*csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
-			sf[11] = -csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
-			sf[12] = -csi*(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
-			sf[13] = -(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)*zeta/4;
-			sf[14] = -csi*(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
-			sf[15] = -(csi-1)*csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
-			sf[16] = -(csi-1)*(csi+1)*(eta-1)*eta*zeta*(zeta+1)/4;
-			sf[17] = -(csi-1)*csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
-			sf[18] = -csi*(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
-			sf[19] = -(csi-1)*(csi+1)*eta*(eta+1)*zeta*(zeta+1)/4;
-			sf[20] = (csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2;
-			sf[21] = (csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2;
-			sf[22] = (csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
-			sf[23] = csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
-			sf[24] = (csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2;
-			sf[25] = (csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2;
-			sf[26] = -(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1);
-
 			// dNdcsi
 			dNdcsi.resize(27);
 			dNdcsi[ 0] = csi*(eta-1)*eta*(zeta-1)*zeta/8+(csi-1)*(eta-1)*eta*(zeta-1)*zeta/8;
@@ -657,14 +759,6 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 				L[1] = csi;
 				L[2] = eta;
 
-				sf.resize(6);
-				sf[ 0] = L[0]*(1-zeta)/2.0;
-				sf[ 1] = L[1]*(1-zeta)/2.0;
-				sf[ 2] = L[2]*(1-zeta)/2.0;
-				sf[ 3] = L[0]*(1+zeta)/2.0;
-				sf[ 4] = L[1]*(1+zeta)/2.0;
-				sf[ 5] = L[2]*(1+zeta)/2.0;
-
 				dNdcsi.resize(6);
 				dNdcsi[ 0] = -(1-zeta)/2.0;
 				dNdcsi[ 1] =  (1-zeta)/2.0;
@@ -700,10 +794,9 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 #undef zeta
 
 	// let's fill in the tuple
-	sfd.get<0>() = sf;
-	sfd.get<1>() = dNdcsi;
-	sfd.get<2>() = dNdeta;
-	sfd.get<3>() = dNdzeta;
+	sfd.get<0>() = dNdcsi;
+	sfd.get<1>() = dNdeta;
+	sfd.get<2>() = dNdzeta;
 	return sfd;
 }
 

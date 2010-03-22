@@ -32,13 +32,11 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 	if(model.element_list.empty() )
 		return ERR_NO_ELEMENTS;
 
-	// at this point the model is considered to be OK.
-	//TODO resize the global stiffness matrix and nodal forces vector
+		// initialize the FemEquation object
+	f.k.clear();
 	f.f.clear();
-	f.f.resize(model.node_list.size()*3);	// remove this after implementing a decent resize code
 				
 		// declare variables
-	// std::vector<boost::tuple<fem::point, double> > ipwpl;	// integration points/weights pair list
 	double detJ = 0;
 	matrix<double>	J(3,3), invJ(3,3);
 	std::vector< symmetric_matrix<double, upper> > D_list;
@@ -50,7 +48,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 	matrix<double> Bt;
 	boost::tuple< std::vector<double>, std::vector<double>, std::vector<double>,std::vector<double> > sf;	// tuple: sf, dNdcsi, dNdeta, dNdzeta
 	int nnodes;	// number of nodes
-	std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;	// the location matrix
 
 
 		//build a list of constitutive matrices
@@ -59,18 +56,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 		D_list.push_back(material->generateD());
 	}
 
-		// build the location matrix, for the degrees of freedom
-	{
-		boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  temp;
-		temp = make_location_matrix(model);
-		lm =  temp.get<0>();
-
-			// resize the global stiffness matrix and global force vector, don't preserve
-		f.k.resize(temp.get<1>(), temp.get<1>(), false);
-		f.f.resize(temp.get<1>(), false);
-	}
-
-	// generate stiffness matrix by cycling through all elements in the model
+		// generate stiffness matrix by cycling through all elements in the model
 	for(std::vector<Element>::iterator element = model.element_list.begin(); element != model.element_list.end(); element++)
 	{
 		// get the number of expected nodes used by the current element type
@@ -184,8 +170,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 			//std::cout << B << std::endl;
 		}
 
-		//output
-		std::cout << k_elem << std::endl;
 		// add to the global stiffness matrix, 
 		add_elementary_to_global(k_elem, f_elem, f, lm, *element);
 
@@ -273,30 +257,45 @@ enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
 {
 	using namespace std;
 
-	//TODO finish this
-	struct FemEquation f;
+		// build the location matrix, for the degrees of freedom
+	make_location_matrix(model);
+	
+		// output location matrix
+	cout << "{\n";
+	cout << "\t\"degrees of freedom\": [";
+	for(map<size_t, boost::tuple<size_t,size_t,size_t> >::const_iterator i = lm.begin(); i != lm.end(); i++)
+	{
+		if(i != lm.begin())
+			cout << ",";
+		cout << "\n\t\t{ \"node\": " << i->first;
+		if(i->second.get<0>() != 0)
+			cout << ", \"dx\": " << i->second.get<0>();
+		if(i->second.get<1>() != 0)
+			cout << ", \"dy\": " << i->second.get<1>();
+		if(i->second.get<2>() != 0)
+			cout << ", \"dz\": " << i->second.get<2>();
+		cout << "}";
+	}
+	cout << "\n\t],\n" << endl;
 
-	//this is a nasty hack to test the code. To be removed.
+		//this is a nasty hack to test the code. To be removed.
 	//TODO return a good return code
-	build_fem_equation(model,f, lp);
+	build_fem_equation(model, f, lp);
 
-	//TODO remove testing code
-	std::cout << "testing stiffness matrix" << std::endl;
-	std::cout << f.k << std::endl;
-	std::cout << "testing force vector" << std::endl;
-	std::cout << f.f << std::endl;
-
-	if(f.f.nnz() == 0)
-		return ERR_SINGULAR_MATRIX; 
-
-	cout << "nnz: " << f.f.nnz() << endl;
-
-	// solve the equation system
+		// solve the equation system
 	f.solve();
 	// f.CGsolve(10e-5);
 
-	std::cout << "testing displacement vector" << std::endl;
-	std::cout << f.f << std::endl;
+		// output displacements field
+	cout << "\t\"displacement\": [\n";
+	for(size_t i = 0; i < f.d.size(); i++)
+	{
+		if(i != 0)
+			cout << ",\n";
+		cout << "\t\t" << f.d[i];
+	}
+	cout << "\n\t]\n";
+	cout << "}\n";
 
 	return ERR_OK;
 }
@@ -848,9 +847,9 @@ void Analysis::integration_points()
 }
 
 
-boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  Analysis::make_location_matrix(Model &model)
+void
+Analysis::make_location_matrix(Model &model)
 {
-	std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;	// the location matrix
 	size_t dof = 1;	// degree of freedom count, the 0 value is interpreted as a prescribed movement
 
 	// iterate through the node list
@@ -874,19 +873,14 @@ boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  Ana
 			if(model.node_restrictions_list[i->first].dz() == false)
 				lm[i->first].get<2>() = dof++;
 		}
-
-		//TEST CODE: REMOVE
-		// std::cout << "Node " << i->first << ": x[" << lm[i->first].get<0>() << "], y[" << lm[i->first].get<1>() << "], z[" << lm[i->first].get<2>() << "]" << std::endl;
 	}
 
 	dof--;	// avoid the off by one error in resizing K_g and f_g
 
-	for(std::map<size_t, boost::tuple<size_t,size_t,size_t> >::iterator i = lm.begin(); i != lm.end(); i++)
-	{
-		std::cout << "node: " << i->first << "\tdof[" << i->second.get<0>() << ", " << i->second.get<1>() << ", " << i->second.get<2>() << "]" << std::endl;
-	}
-
-	return  boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>(lm,dof);
+		// resize the FEM equation
+	f.k.resize(dof,dof, false);
+	f.f.resize(dof, false);
+	f.d.resize(dof, false);
 }
 
 
@@ -926,9 +920,8 @@ inline void Analysis::add_elementary_to_global(const boost::numeric::ublas::symm
 			jd[1] = jdof->second.get<1>();
 			jd[2] = jdof->second.get<2>();
 
-			//now let's cycle this node's stiffness sub-matrix
-			// get the degrees of freedom for this node
-			cout << "begin node [" << i << "," << j << "]" << endl;
+				//now let's cycle this node's stiffness sub-matrix
+				// get the degrees of freedom for this node
 			for(int u = 0; u < 3; u++)
 			{
 				// add the remaining elements
@@ -937,12 +930,10 @@ inline void Analysis::add_elementary_to_global(const boost::numeric::ublas::symm
 					//cout << "id[u]: " << id[u] << ", jd[v]: " << jd[v] << endl;
 					if( (id[u] != 0) && (jd[v] != 0) )
 					{
-						std::cout << "k_elem[" << 3*i+u << ", " << 3*j+v << "] => K[" << id[u]-1 << ", " << jd[v]-1 << "] += " << k_elem(3*i+u, 3*j+v) << std::endl;
 						f.k(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
 					}
 				}
 			}
-			cout << "end node [" << i << "," << j << "]" << endl;
 		}
 
 		// and now let's process f_elem

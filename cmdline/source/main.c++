@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdio>
+#include <limits>
 
 #include "parsers/json.h"
 
@@ -70,8 +71,6 @@ int main(int argc, char **argv)
 						return 1;
 						break;
 				}
-
-				model.text_dump();
 
 				// TODO run analysis
 				Analysis analysis;

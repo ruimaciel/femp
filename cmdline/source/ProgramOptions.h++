@@ -9,6 +9,7 @@ struct ProgramOptions
 {
 	// program options
 	std::string input_file;	// the name of a file that will be read to input a model
+	int digits10;	// default precision
 
 
 	// other info

@@ -29,7 +29,8 @@ namespace fem
 		
 		lu_factorize(k,pm); // LU factorized
 
-		inplace_solve(k,f,lower_tag());
+		//inplace_solve(k,f,lower_tag());
+		d = boost::numeric::ublas::solve(k,f, lower_tag() );
 
 
 		return ERR_OK;

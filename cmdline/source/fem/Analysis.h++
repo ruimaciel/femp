@@ -35,6 +35,11 @@ class Analysis
 	private:
 		std::map<enum Element::ElementFamily, std::map<int, std::vector<boost::tuple<fem::point, double> > > > ipwpl;	// integration points/weights pair list
 		std::map<enum Element::Type, int> degree;	// integration point degree for this particular element
+			// location matrix: <node, <DoF number, DoF number, DoF number> >
+		std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;
+			// the FEM equation
+		FemEquation f;
+
 
 	public:
 		Analysis();
@@ -111,10 +116,9 @@ class Analysis
 		void integration_points();
 
 		/**
-		Builds the location matrix, a map between the node number and a 3-tuple holding the degree of freedom reference numbers for each degree of freedom
-		@return a 2-tuple consisting of a map between the node reference number and it's corresponding degree of freedom references and a number of the total number of dof 
+		Builds the location matrix, a map between the node number and a 3-tuple holding the degree of freedom reference numbers for each degree of freedom, and resizes the temp FemEquation object
 		**/
-		boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  make_location_matrix(Model &model);
+		void make_location_matrix(Model &model);
 
 
 		/**

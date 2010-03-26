@@ -1366,7 +1366,7 @@ enum Model::Error Model::import_json(FILE *file)
 				DECHO();
 
 				
-				surface_load.node_reference.push_back(strtoul(cursor.top()->text, NULL, 0));
+				surface_load.nodes.push_back(strtoul(cursor.top()->text, NULL, 0));
 
 				state.pop();
 				break;
@@ -1375,7 +1375,7 @@ enum Model::Error Model::import_json(FILE *file)
 				DECHO();
 				CURSOR_NEXT_TEST(JSON_NUMBER);
 
-				surface_load.node_reference.push_back(strtoul(cursor.top()->text, NULL, 0));
+				surface_load.nodes.push_back(strtoul(cursor.top()->text, NULL, 0));
 
 				state.pop();
 				break;

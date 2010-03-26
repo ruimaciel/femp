@@ -12,7 +12,7 @@ SurfaceLoad::SurfaceLoad()
 SurfaceLoad::SurfaceLoad(const SurfaceLoad &copied)
 {
 	type = copied.type;
-	node_reference = copied.node_reference;
+	nodes = copied.nodes;
 	surface_forces = copied.surface_forces;
 }
 
@@ -25,7 +25,7 @@ SurfaceLoad::~SurfaceLoad()
 void SurfaceLoad::clear()
 {
 	type = Element::FE_INVALID;
-	node_reference.clear();
+	nodes.clear();
 	surface_forces.clear();
 }
 

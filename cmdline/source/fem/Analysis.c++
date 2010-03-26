@@ -43,6 +43,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 
 		// set up the temporary variables for the elementary matrix and vector
 	symmetric_matrix<double, upper> k_elem;
+	//TODO replace mapped_vector with vector
 	mapped_vector<double> f_elem;
 	matrix<double> B;
 	matrix<double> Bt;
@@ -87,7 +88,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 #define dNdzeta(N) sfd.get<2>()[n]
 
 				// get the shape function and it's partial derivatives for this integration point
-			sf = this->shape_function(element->type, i->get<0>());
+			// sf = this->shape_function(element->type, i->get<0>());
 			sfd = this->shape_function_derivatives(element->type, i->get<0>() );
 
 				// generate the jacobian
@@ -146,12 +147,13 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 			k_elem += temp;	// adding up the full result
 
 
+			/*
 			// check if there is a domain load associated with this element
 
 			// integrate the domain loads, if it is defined
 			// get the current element's index
 			size_t element_index = distance(model.element_list.begin(), element);
-			//TODO check why ::iterator doesn't compile
+			
 			std::map<size_t,DomainLoad>::const_iterator dli;	// domain load iterator
 
 			dli = lp.domain_loads.find(element_index);
@@ -169,28 +171,73 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 #undef N
 				}
 			}
-
-			//std::cout << B << std::endl;
+			*/
 		}
 
-			// integrate the domain loads
-		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][1].begin(); i != ipwpl[element->family()][1].end(); i++)
-		{
-			//TODO finish this
-		}
-
-			// add to the global stiffness matrix, 
-		add_elementary_to_global(k_elem, f_elem, f, lm, *element);
-
+			// add elementary stiffness matrix to the global stiffness matrix 
+		add_elementary_stiffness_to_global(k_elem, f, lm, *element);
 	}
 
 
-	// now set up the equivalent forces vector
-
+		// now set up the equivalent forces vector
 	// set nodal force contribution made by the domain loads
 	for(std::map<size_t,fem::DomainLoad>::const_iterator domain_load = lp.domain_loads.begin(); domain_load != lp.domain_loads.end(); domain_load++)
 	{
+		//TODO finish this
+		fem::Element *element;
+		element = &model.element_list[domain_load->first];
+		nnodes = element->node_number();
+
+		f_elem.resize(nnodes*3, false);
+
+		// as the distribution is linear across the domain then degree 1 is enough
+		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][1].begin(); i != ipwpl[element->family()][1].end(); i++)
+		{
+				// build the Jacobian
+			sf = shape_function(element->type, i->get<0>() );
+			sfd = shape_function_derivatives(element->type, i->get<0>() );
+
+				// generate the jacobian
+			J.clear();
+#define X(N)	model.node_list[element->nodes[N]].x()
+#define Y(N)	model.node_list[element->nodes[N]].y()
+#define Z(N)	model.node_list[element->nodes[N]].z()
+#define dNdcsi(N) sfd.get<0>()[n]
+#define dNdeta(N) sfd.get<1>()[n]
+#define dNdzeta(N) sfd.get<2>()[n]
+			for(int n = 0; n < nnodes; n++)
+			{
+				J(0,0) += dNdcsi(n)*X(n);	J(0,1) += dNdcsi(n)*Y(n);	J(0,2) += dNdcsi(n)*Z(n);
+				J(1,0) += dNdeta(n)*X(n);	J(1,1) += dNdeta(n)*Y(n);	J(1,2) += dNdeta(n)*Z(n);
+				J(2,0) += dNdzeta(n)*X(n);	J(2,1) += dNdzeta(n)*Y(n);	J(2,2) += dNdzeta(n)*Z(n);
+			}
+#undef dNdcsi
+#undef dNdeta
+#undef dNdzeta
+
+			detJ = det3by3(J);
+
+			// and now the f_elem
+			for(int n = 0; n < nnodes; n++)
+			{
+#define N(n) sf[n]
+#define b(COORD) domain_load->second.force.COORD()
+#define W    i->get<1>()
+				f_elem(3*n) += N(n)*b(x)*detJ*W;
+				f_elem(3*n+1) += N(n)*b(y)*detJ*W;
+				f_elem(3*n+2) += N(n)*b(z)*detJ*W;
+#undef N
+#undef b
+#undef W
+			}
+		}
+#undef X
+#undef Y
+#undef Z
 	}
+
+		// integrate the surface loads
+	//TODO finish this
 
 
 	// set nodal forces
@@ -977,7 +1024,8 @@ Analysis::make_location_matrix(Model &model)
 }
 
 
-inline void Analysis::add_elementary_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, const boost::numeric::ublas::mapped_vector<double> &f_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
+//inline void Analysis::add_elementary_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, const boost::numeric::ublas::mapped_vector<double> &f_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
+inline void Analysis::add_elementary_stiffness_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
 {
 	using namespace std;	//TODO remove cleanup code
 
@@ -1029,6 +1077,7 @@ inline void Analysis::add_elementary_to_global(const boost::numeric::ublas::symm
 			}
 		}
 
+		/*
 		// and now let's process f_elem
 		for(int u = 0; u < 3; u++)
 		{
@@ -1037,6 +1086,7 @@ inline void Analysis::add_elementary_to_global(const boost::numeric::ublas::symm
 				f.f(id[u]-1) += f_elem(3*i+u);
 			}
 		}
+		*/
 	}
 
 }

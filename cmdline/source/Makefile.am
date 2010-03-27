@@ -3,3 +3,10 @@ cmdline_SOURCES = main.c++ fem/Analysis.c++ fem/Element.c++ fem/LoadPattern.c++ 
 	fem/point.c++ \
 	ProgramOptions.c++ \
 	parsers/json.c
+
+
+if HAVE_RE2C
+$(srcdir)/fem/Element.c++:	$(srcdir)/fem/Element.c++.re2c
+	re2c -o $(srcdir)/fem/Element.c++ $(srcdir)/fem/Element.c++.re2c
+endif
+

@@ -132,6 +132,14 @@ int Element::node_number() const
 {
 	switch(this->type)
 	{
+		case FE_QUADRANGLE4:
+			return 4;
+			break;
+
+		case FE_QUADRANGLE9:
+			return 9;
+			break;
+
 		case FE_TETRAHEDRON4:
 			return 4;
 			break;

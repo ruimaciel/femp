@@ -12,6 +12,8 @@ AC_CONFIG_HEADERS([config.h])
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_CXX
+AC_CHECK_PROG(RE2C, re2c, yes, no)
+AM_CONDITIONAL([HAVE_RE2C],[test "$RE2C" = yes])
 
 AC_LANG_CPLUSPLUS
 

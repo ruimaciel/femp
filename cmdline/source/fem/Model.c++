@@ -833,13 +833,25 @@ enum Model::Error Model::import_json(FILE *file)
 							ERROR();
 							break;
 					}
+
+
+					if (cursor.top()->next == NULL)
+					{
+						// set the node restrictions
+						this->pushNodeRestrictions(ref, node_restrictions);
+
+						cursor.pop();	
+
+						state.pop();
+						break;
+					}
 				}
 
 				if (cursor.top()->next != NULL)
 					ERROR();
 
 				// set the node restrictions
-				this->pushNodeRestrictions(ref, node_restrictions);
+				//this->pushNodeRestrictions(ref, node_restrictions);
 
 				cursor.pop();	
 
@@ -875,18 +887,20 @@ enum Model::Error Model::import_json(FILE *file)
 
 				CURSOR_NEXT_TEST(JSON_STRING);
 
-				if (strcmp(cursor.top()->text, "load patterns") == 0) {
-					CURSOR_PUSH(JSON_ARRAY);	
-
-
+				if (strcmp(cursor.top()->text, "load patterns") == 0) 
+				{
+					CURSOR_PUSH(JSON_ARRAY);
 					state.pop();
 
 					state.push(30);	// LoadPatterns
-				} else if (strcmp(cursor.top()->text, "load combinations") ==
-						0) {
+				} 
+				else if (strcmp(cursor.top()->text, "load combinations") == 0) 
+				{
 					// TODO
-					return ERR_OK;
-				} else {
+					return ERR_UNKNOWN;
+				} 
+				else 
+				{
 					ERROR();
 				}
 
@@ -945,7 +959,7 @@ enum Model::Error Model::import_json(FILE *file)
 
 					state.pop();
 
-					state.push(39);	// DomainLoads
+					state.push(40);	// DomainLoads
 				} 
 				else if (strcmp(cursor.top()->text, "surface loads") == 0) 
 				{
@@ -955,7 +969,7 @@ enum Model::Error Model::import_json(FILE *file)
 
 					state.pop();
 
-					state.push(35);	// SurfaceLoads
+					state.push(44);	// SurfaceLoads
 				} 
 				else 
 				{
@@ -1471,8 +1485,8 @@ enum Model::Error Model::import_json(FILE *file)
 				//TODO
 				this->pushLoadPattern(load_pattern);
 
-				cursor.pop();	// JSON_OBJECT -> "force" JSON_ARRAY
-				cursor.pop();	// -> JSON_OBJECT "force"
+				// cursor.pop();	// JSON_OBJECT -> "force" JSON_ARRAY
+				// cursor.pop();	// -> JSON_OBJECT "force"
 
 				// Test the FIRST
 				if(cursor.top()->next == NULL)

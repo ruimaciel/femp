@@ -47,22 +47,6 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 	// set the lexer
 	symbol = lexer(argc, argv);
 
-	/*
-	while(state.size() > 0)
-	{
-		switch(state.top())
-		{
-			case 0:	// initial state
-				break;
-
-			default:
-				// error parsing
-				return OPT_PARSER_ERROR;
-				break;
-		}
-	}
-	*/
-
 	// build parser table
 	map< enum Symbol, map<enum Symbol, int> > table;	// LL parser table, maps < non-terminal, terminal> pair to action
 
@@ -245,7 +229,6 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 					ss.pop();
 
 					// set 
-					cout << "setting option" << endl;
 					output_fem = true;
 					break;
 

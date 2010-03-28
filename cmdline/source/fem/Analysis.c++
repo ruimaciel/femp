@@ -92,7 +92,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 #define dNdzeta(N) sfd.get<2>()[n]
 
 				// get the shape function and it's partial derivatives for this integration point
-			// sf = this->shape_function(element->type, i->get<0>());
 			sfd = this->shape_function_derivatives(element->type, i->get<0>() );
 
 				// generate the jacobian
@@ -111,7 +110,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			for(int n = 0; n < nnodes; n++)
 			{
 				// set the variables
-
 				// set the partial derivatives
 #undef X
 #undef Y
@@ -364,30 +362,6 @@ enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
 		// build the location matrix, for the degrees of freedom
 	make_location_matrix(model);
 	
-	/*
-		// output location matrix
-	cout << "{\n";
-	cout << "\t\"degrees of freedom\": [";
-	for(map<size_t, boost::tuple<size_t,size_t,size_t> >::const_iterator i = lm.begin(); i != lm.end(); i++)
-	{
-		if( (i->second.get<0>() == 0)&& (i->second.get<1>() == 0) &&  (i->second.get<1>() == 0) )
-			continue;
-
-		if(i != lm.begin())
-			cout << ",";
-		cout << "\n\t\t{ \"node\": " << i->first;
-		if(i->second.get<0>() != 0)
-			cout << ", \"dx\": " << i->second.get<0>();
-		if(i->second.get<1>() != 0)
-			cout << ", \"dy\": " << i->second.get<1>();
-		if(i->second.get<2>() != 0)
-			cout << ", \"dz\": " << i->second.get<2>();
-		cout << "}";
-	}
-	cout << "\n\t],\n" << endl;
-	*/
-	
-
 		//this is a nasty hack to test the code. To be removed.
 	//TODO return a good return code
 	build_fem_equation(model, lp);
@@ -1240,7 +1214,6 @@ Analysis::make_location_matrix(Model &model)
 }
 
 
-//inline void Analysis::add_elementary_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, const boost::numeric::ublas::mapped_vector<double> &f_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
 inline void Analysis::add_elementary_stiffness_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
 {
 	using namespace std;	//TODO remove cleanup code
@@ -1284,7 +1257,6 @@ inline void Analysis::add_elementary_stiffness_to_global(const boost::numeric::u
 				// add the remaining elements
 				for(int v = 0; v < 3; v++)
 				{
-					//cout << "id[u]: " << id[u] << ", jd[v]: " << jd[v] << endl;
 					if( (id[u] != 0) && (jd[v] != 0) )
 					{
 						f.k(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
@@ -1292,17 +1264,6 @@ inline void Analysis::add_elementary_stiffness_to_global(const boost::numeric::u
 				}
 			}
 		}
-
-		/*
-		// and now let's process f_elem
-		for(int u = 0; u < 3; u++)
-		{
-			if(id[u] != 0)
-			{
-				f.f(id[u]-1) += f_elem(3*i+u);
-			}
-		}
-		*/
 	}
 
 }

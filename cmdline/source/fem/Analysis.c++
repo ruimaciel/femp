@@ -23,7 +23,7 @@ Analysis::~Analysis()
 }
 
 
-enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquation &f, const LoadPattern &lp)
+enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPattern &lp)
 {
 	using namespace std;
 	using namespace boost::numeric::ublas;
@@ -35,6 +35,9 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 		// initialize the FemEquation object
 	f.k.clear();
 	f.f.clear();
+
+		// generate the location matrix
+	make_location_matrix(model);
 				
 		// declare variables
 	double detJ = 0;
@@ -361,6 +364,7 @@ enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
 		// build the location matrix, for the degrees of freedom
 	make_location_matrix(model);
 	
+	/*
 		// output location matrix
 	cout << "{\n";
 	cout << "\t\"degrees of freedom\": [";
@@ -381,17 +385,74 @@ enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
 		cout << "}";
 	}
 	cout << "\n\t],\n" << endl;
+	*/
+	
 
 		//this is a nasty hack to test the code. To be removed.
 	//TODO return a good return code
-	build_fem_equation(model, f, lp);
+	build_fem_equation(model, lp);
 
 		// solve the equation system
 	f.solve();
 	// f.CGsolve(10e-5);
 
+
+	return ERR_OK;
+}
+
+
+enum Analysis::Error Analysis::solve()
+{
+	//TODO finish
+	f.solve();
+}
+
+
+void Analysis::output(std::ostream &out, bool equation)
+{
+	using namespace std;
+
+	out << "{\n";
+
+		// output FEM equation
+	if(equation)
+	{
+		out << "\t\"fem equation\" : {\n";
+
+		out << "\t\t\"stiffness matrix\" : [\n";
+		// output matrix
+		for(size_t i = 0; i < f.k.size1(); i++)
+		{
+			out << "\t\t\t[";
+			for(size_t j = 0; j < f.k.size2(); j++)
+			{
+				if(j != 0)
+					out << ",";
+				out << "\t" << f.k(i,j);
+			}
+			out << "]";
+			if(i + 1 < f.k.size1())
+				out << ",";
+			out << "\n";
+		}
+		out << "\t\t],\n";
+
+		out << "\t\t\"force vector\" : [\n";
+		// output vector
+		for(size_t i = 0; i < f.f.size(); i++)
+		{
+			out << "\t\t\t";
+			out << f.f(i);
+			if(i +1 < f.f.size() )
+				out << ",";
+			out << "\n";
+		}
+		out << "\t\t]\n";
+		out << "\t},\n";
+	}
+
 		// output displacements field
-	cout << "\t\"displacement\": [\n";
+	out << "\t\"displacement\": [";
 	size_t n = 0;
 	for(map<size_t, boost::tuple<size_t,size_t,size_t> >::const_iterator i = lm.begin(); i != lm.end(); i++)
 	{
@@ -399,21 +460,19 @@ enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
 			continue;
 
 		if(i != lm.begin())
-			cout << ",";
-		cout << "\n\t\t{ \"node\": " << i->first;
+			out << ",";
+		out << "\n\t\t{ \"node\": " << i->first;
 		if(i->second.get<0>() != 0)
-			cout << ", \"dx\": " << f.f(n++);
+			out << ", \"dx\": " << f.f(n++);
 		if(i->second.get<1>() != 0)
-			cout << ", \"dy\": " << f.f(n++);
+			out << ", \"dy\": " << f.f(n++);
 		if(i->second.get<2>() != 0)
-			cout << ", \"dz\": " << f.f(n++);
-		cout << "}";
+			out << ", \"dz\": " << f.f(n++);
+		out << "}";
 	}
 
-	cout << "\n\t]\n";
-	cout << "}\n";
-
-	return ERR_OK;
+	out << "\n\t]\n";
+	out << "}\n";
 }
 
 

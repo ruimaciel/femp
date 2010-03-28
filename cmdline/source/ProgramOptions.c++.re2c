@@ -12,6 +12,7 @@ ProgramOptions::ProgramOptions()
 {
 	//TODO set default options
 	digits10 = std::numeric_limits<double>::digits10;
+	output_fem = false;	// don't output the FEM equation along with the displacements
 }
 
 
@@ -69,12 +70,14 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 	table[SN_START][S_HELP]		= 1;	
 	table[SN_START][S_VERSION]	= 2;	
 	table[SN_START][S_IPS] 		= 3;
+	table[SN_START][S_OUTPUT_FEM_EQUATION]	= 3;
 
 	table[SN_SET_OPTION][S_IPS]	= 4;
+	table[SN_SET_OPTION][S_OUTPUT_FEM_EQUATION]	= 6;
 
 	table[SN_SET_OPTION_FOLLOW][S_IPS]	= 5;	
-	table[SN_SET_OPTION_FOLLOW][S_EOL]	= 6;
-	table[SN_SET_OPTION_FOLLOW][S_EOA]	= 6;
+	table[SN_SET_OPTION_FOLLOW][S_OUTPUT_FEM_EQUATION]	= 5;	
+	table[SN_SET_OPTION_FOLLOW][S_EOL]	= 100;
 
 	table[SN_SET_IPS][S_IPS]	= 7;
 	
@@ -89,14 +92,18 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 	table[SG_IPS_DOMAIN_ASSIGN][S_EOA]	= 14;
 	table[SG_IPS_DOMAIN_ASSIGN][S_EOL]	= 14;
 
-	table[SN_IPS_FOLLOW_S_ASSIGN][S_EOA]	= 12;
-	table[SN_IPS_FOLLOW_S_ASSIGN][S_EOL]	= 6;	// epsilon 
+	table[SN_IPS_FOLLOW_S_ASSIGN][S_FE_ELEMENT]	= 12;
+	table[SN_IPS_FOLLOW_S_ASSIGN][S_EOL]	= 100;	
+	table[SN_IPS_FOLLOW_S_ASSIGN][S_OUTPUT_FEM_EQUATION]	= 13;
 
-	table[SN_IPS_FOLLOW2_S_ASSIGN][S_FE_ELEMENT]	=13;
-	table[SN_IPS_FOLLOW2_S_ASSIGN][S_IPS]	= 6;
+	table[SN_IPS_FOLLOW_D_ASSIGN][S_FE_ELEMENT] = 15;
+	table[SN_IPS_FOLLOW_D_ASSIGN][S_OUTPUT_FEM_EQUATION]	= 13;
 
-	table[SN_IPS_FOLLOW_D_ASSIGN][S_EOA]	= 15;
-	table[SN_IPS_FOLLOW_D_ASSIGN][S_EOL]	= 6;	// epsilon 
+	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOA] = 17;
+	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOL] = 17;
+
+	table[SN_END_FIELD][S_EOA] = 99;
+	table[SN_END_FIELD][S_EOL] = 100;
 
 
 
@@ -142,12 +149,15 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 
 				case 5:	// <set option follow>	::= <set option> <set option follow> 
 					ss.pop();
-					ss.push(SN_SET_OPTION_FOLLOW);	// <set option follow>
-					ss.push(SN_SET_OPTION);	// <set option>
+					ss.push(SN_SET_OPTION_FOLLOW);
+					ss.push(SN_SET_OPTION);
 					break;
 
-				case 6:	// epsilon state
+				case 6: // <set option follow>	::= "--output-equation"	<G output equation assign>
 					ss.pop();
+					ss.push(SN_END_FIELD);
+					ss.push(SG_OUTPUT_EQUATION_ASSIGN);
+					ss.push(S_OUTPUT_FEM_EQUATION);
 					break;
 
 				case 7:	// <set IPs>	::= "--ips" ":" <set IPs follow>
@@ -161,65 +171,92 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 				case 8:	// <set IPs follow>	::= "stiffness" <EOA> <IPs first assignment> <IPs follow assignment>
 					ss.pop();
 
-					ss.push(SG_IPS_STIFFNESS_ASSIGN);	// <IPs stiffness assign>
-					ss.push(SN_IPS_FIRST_ASSIGN);	// <IPs first assignment>
-					ss.push(S_EOA);			// <EOA>
-					ss.push(S_IPS_STIFFNESS);	// "stiffness"
+					ss.push(SN_IPS_FOLLOW_S_ASSIGN);
+					ss.push(SN_END_FIELD);
+					ss.push(SG_IPS_STIFFNESS_ASSIGN);
+					ss.push(SN_IPS_FIRST_ASSIGN);	
+					ss.push(S_EOA);		
+					ss.push(S_IPS_STIFFNESS);
 					break;
 
-				case 9:	// <set IPs follow>	::= "domain" <EOA> <IPs first assignment> <IPs domain assign>
+				case 9:	// <set IPs follow>	::= "domain" <EOA> <IPs first assignment> <G IPs domain assign>
 					ss.pop();
 
+					ss.push(SN_IPS_FOLLOW_D_ASSIGN);
+					ss.push(SN_END_FIELD);
 					ss.push(SG_IPS_DOMAIN_ASSIGN);
 					ss.push(SN_IPS_FIRST_ASSIGN);	
 					ss.push(S_EOA);		
 					ss.push(S_IPS_DOMAIN);
 					break;
 
-				case 10: // <IPs first assignment>	::= <element type> ":" <integer> 
+				case 10: // <IPs first assignment> ::= <element type> ":" <integer> 
 					ss.pop();
 
-					ss.push(S_INTEGER);	// <integer>
-					ss.push(S_SUBARG_SEPARATOR);	// ":"
-					ss.push(S_FE_ELEMENT);	// <element type>
+					ss.push(S_INTEGER);	
+					ss.push(S_SUBARG_SEPARATOR);
+					ss.push(S_FE_ELEMENT);
 					break;
 
-				case 11: //<IPs stiffness assign>	::= <IPs follow stiffness assignment>
+				case 11: //<G IPs stiffness assign> ::=
 					ss.pop();
-					ss.push(SN_IPS_FOLLOW_S_ASSIGN);
 
 					//TODO assign
 					// assign a new IP degree to the element
 					analysis.setDegree(element_type, integer);
 					break;
 
-				case 12: // <IPs follow stiffness assignment>	::= <EOA> <IPs follow2 stiffness assignment>
+				case 12: // <IPs follow stiffness assignment>	::= <IPs first assignment> <G IPs stiffness assign> <end field>
 					ss.pop();
-					ss.push(SN_IPS_FOLLOW2_S_ASSIGN);
-					ss.push(S_EOA);
-					break;
-
-				case 13: // <IPs follow2 stiffness assignment>	::= <IPs first assignment> <IPs follow stiffness assignment>
-					ss.pop();
-
+					ss.push(SN_END_FIELD);
 					ss.push(SG_IPS_STIFFNESS_ASSIGN);
 					ss.push(SN_IPS_FIRST_ASSIGN);
 					break;
 
-				case 14: //<IPs domain assign>	::= <IPs follow domain assignment>
+				case 13: // <IPs follow stiffness assignment> ::= "--output-equation" <G output equation assign> <end field>
 					ss.pop();
-					ss.push(SN_IPS_FOLLOW_D_ASSIGN);
+					ss.push(SN_END_FIELD);
+					ss.push(SG_OUTPUT_EQUATION_ASSIGN);
+					ss.push(S_OUTPUT_FEM_EQUATION);
+					break;
+
+				case 14: //<G IPs domain assign> ::= 
+					ss.pop();
 
 					// assign a new IP degree to the element
 					analysis.setDDegree(element_type, integer);
 					break;
 
-				case 15: // <IPs follow domain assignment>	::= <EOA> <IPs follow2 domain assignment>
+				case 15: // <IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>
 					ss.pop();
-					ss.push(SN_IPS_FOLLOW2_S_ASSIGN);
+					ss.push(SN_END_FIELD);
+					ss.push(SG_IPS_DOMAIN_ASSIGN);
+					ss.push(SN_IPS_FIRST_ASSIGN);
+					break;
+
+				case 16: // <IPs follow domain assignment> ::= "--output-equation" <G output equation assign> <end field>
+					ss.pop();
+					ss.push(SN_END_FIELD);
+					ss.push(SG_OUTPUT_EQUATION_ASSIGN);
+					ss.push(S_OUTPUT_FEM_EQUATION);
+					break;
+
+				case 17: // <G output equation assign>	::= 
+					ss.pop();
+
+					// set 
+					cout << "setting option" << endl;
+					output_fem = true;
+					break;
+
+				case 99:	// <end field>
+					ss.pop();
 					ss.push(S_EOA);
 					break;
 
+				case 100:	// <epsilon>
+					ss.pop();
+					break;
 
 				default:
 					// error parsing the command line
@@ -262,6 +299,7 @@ enum ProgramOptions::Symbol ProgramOptions::lexer(int argc, char **argv, int sta
 	"--ips"		{ return S_IPS;	}
 	"stiffness"	{ return S_IPS_STIFFNESS;	}
 	"domain"	{ return S_IPS_DOMAIN;	}
+	"--output-equation"	{ return S_OUTPUT_FEM_EQUATION; }
 
         "line2"                 { element_type = fem::Element::FE_LINE2;	return S_FE_ELEMENT;}
         "triangle3"             { element_type = fem::Element::FE_TRIANGLE3;	return S_FE_ELEMENT;}

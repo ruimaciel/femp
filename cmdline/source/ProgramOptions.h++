@@ -13,6 +13,7 @@ struct ProgramOptions
 	// program options
 	std::string input_file;	// the name of a file that will be read to input a model
 	int digits10;	// default precision
+	bool output_fem;	// outputs the FEM equation along with the displacements
 
 	std::map<enum fem::Element::Type, int> degree;	// stiffness matrix integration point degree for a particular element
 	std::map<enum fem::Element::Type, int> ddegree;	// domain load integration point degree for a particular element
@@ -51,6 +52,7 @@ struct ProgramOptions
 			S_IPS,	// integration points command
 			S_IPS_STIFFNESS,	// integration points for stiffness
 			S_IPS_DOMAIN,	// integration points for domain
+			S_OUTPUT_FEM_EQUATION,	// output FEM equation along with displacements
 
 			S_FE_ELEMENT,	// generic element
 
@@ -98,14 +100,18 @@ struct ProgramOptions
 			SN_SET_IPS, 		// <set IPs>
 			SN_SET_IPS_FOLLOW, 	// <set IPs follow>
 			SN_IPS_FIRST_ASSIGN, 	// <IPs first assignment>
-			SG_IPS_STIFFNESS_ASSIGN, 	// <IPs stiffness assign>
-			SG_IPS_DOMAIN_ASSIGN, 	// <IPs domain assign>
 			SN_IPS_FOLLOW_S_ASSIGN,		// <IPs follow stiffness assignment>
 			SN_IPS_FOLLOW2_S_ASSIGN,	// <IPs follow2 stiffness assignment>
 			SN_IPS_FOLLOW_D_ASSIGN,		// <IPs follow domain assignment>
 			SN_IPS_FOLLOW2_D_ASSIGN,	// <IPs follow2 domain assignment>
 
+			SN_END_FIELD,	// <end field>
 			SN_EOS,	// <EO?>
+
+			// The ghost symbols
+			SG_IPS_STIFFNESS_ASSIGN, 	// <G IPs stiffness assign>
+			SG_IPS_DOMAIN_ASSIGN, 	// <G IPs domain assign>
+			SG_OUTPUT_EQUATION_ASSIGN,	// <G output equation assign>
 
 			S_UNKNOWN	// to sign off an error
 		} symbol;

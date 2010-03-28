@@ -56,7 +56,7 @@ class Analysis
 		@param lp	the load pattern
 		@return an error
 		**/
-		enum Error build_fem_equation(Model &model, struct FemEquation &f, const LoadPattern &lp);
+		enum Error build_fem_equation(Model &model, const LoadPattern &lp);
 
 
 		/*
@@ -76,6 +76,10 @@ class Analysis
 		@return 
 		**/
 		enum Error run(Model &model, const LoadPattern &lp);
+
+
+		enum Error solve();
+
 
 
 		/** 
@@ -110,6 +114,8 @@ class Analysis
 		**/
 		void setDDegree(Element::Type &type, int &d);
 
+
+		void output(std::ostream &out, bool equation);
 
 	private:
 		/**

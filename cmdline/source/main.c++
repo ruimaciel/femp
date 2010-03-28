@@ -75,11 +75,13 @@ int main(int argc, char **argv)
 						break;
 				}
 
-				// TODO run analysis
+					// run the analysis
+				analysis.build_fem_equation(model, model.load_pattern_list[0]);
+				analysis.solve();
+				// analysis.run(model, model.load_pattern_list[0]);
 
-				analysis.run(model, model.load_pattern_list[0]);
-
-				// TODO output results
+				// output results
+				analysis.output(cout,options.output_fem);
 			}
 			break;
 

@@ -31,7 +31,14 @@ int main(int argc, char **argv)
 		case ProgramOptions::OPT_HELP:	// return the help menu
 			//TODO finish this
 			cout << "usage:" << endl;
-			cout << "\tcmdline" << endl;
+			cout << "\tcmdline --help\n";
+			cout << "\tcmdline --version\n";
+			cout << "\tcmdline <option>*\n\n";
+			cout << "options:\n";
+			cout << "\t--ips:stiffness (<element type>:<degree>)+\n";
+			cout << "\t--ips:domain (<element type>:<degree>)+\n";
+			cout << "\t--output-matrix\n";
+			cout << endl;
 			break;
 
 		case ProgramOptions::OPT_VERSION:	// return the program's version

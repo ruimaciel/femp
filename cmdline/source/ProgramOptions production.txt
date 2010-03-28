@@ -19,15 +19,17 @@ action	non-terminal	production
 11	<G IPs stiffness assign>	::= 
 
 12	<IPs follow stiffness assignment>	::= <IPs first assignment> <G IPs stiffness assign> <end field>
-13						::= "--output-equation" <G output equation assign> <end field>
+4						::= <set IPs>
+6						::= "--output-equation" <G output equation assign> <end field>
 
-14	<G IPs domain assign>	::= 
+17	<G IPs domain assign>	::= 
 
-15	<IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>
-16					::= "--output-equation" <G output equation assign> <end field>
+19	<IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>
+4					::= <set IPs>
+6					::= "--output-equation" <G output equation assign> <end field>
 
 
-17	<G output equation assign>	::= 
+30	<G output equation assign>	::= 
 
 99	<end field>	::=	<EOA>
 100	<epsilon>	::= 

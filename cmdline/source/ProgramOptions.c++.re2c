@@ -73,18 +73,21 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 	table[SG_IPS_STIFFNESS_ASSIGN][S_EOA]	= 11;
 	table[SG_IPS_STIFFNESS_ASSIGN][S_EOL]	= 11;
 
-	table[SG_IPS_DOMAIN_ASSIGN][S_EOA]	= 14;
-	table[SG_IPS_DOMAIN_ASSIGN][S_EOL]	= 14;
+	table[SG_IPS_DOMAIN_ASSIGN][S_EOA]	= 17;
+	table[SG_IPS_DOMAIN_ASSIGN][S_EOL]	= 17;
 
 	table[SN_IPS_FOLLOW_S_ASSIGN][S_FE_ELEMENT]	= 12;
 	table[SN_IPS_FOLLOW_S_ASSIGN][S_EOL]	= 100;	
-	table[SN_IPS_FOLLOW_S_ASSIGN][S_OUTPUT_FEM_EQUATION]	= 13;
+	table[SN_IPS_FOLLOW_S_ASSIGN][S_IPS]	= 4;
+	table[SN_IPS_FOLLOW_S_ASSIGN][S_OUTPUT_FEM_EQUATION]	= 6;
 
-	table[SN_IPS_FOLLOW_D_ASSIGN][S_FE_ELEMENT] = 15;
-	table[SN_IPS_FOLLOW_D_ASSIGN][S_OUTPUT_FEM_EQUATION]	= 13;
+	table[SN_IPS_FOLLOW_D_ASSIGN][S_FE_ELEMENT] = 19;
+	table[SN_IPS_FOLLOW_D_ASSIGN][S_EOL]	= 100;	
+	table[SN_IPS_FOLLOW_D_ASSIGN][S_IPS]	= 4;
+	table[SN_IPS_FOLLOW_D_ASSIGN][S_OUTPUT_FEM_EQUATION]	= 6;
 
-	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOA] = 17;
-	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOL] = 17;
+	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOA] = 30;
+	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOL] = 30;
 
 	table[SN_END_FIELD][S_EOA] = 99;
 	table[SN_END_FIELD][S_EOL] = 100;
@@ -197,35 +200,21 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 					ss.push(SN_IPS_FIRST_ASSIGN);
 					break;
 
-				case 13: // <IPs follow stiffness assignment> ::= "--output-equation" <G output equation assign> <end field>
-					ss.pop();
-					ss.push(SN_END_FIELD);
-					ss.push(SG_OUTPUT_EQUATION_ASSIGN);
-					ss.push(S_OUTPUT_FEM_EQUATION);
-					break;
-
-				case 14: //<G IPs domain assign> ::= 
+				case 17: //<G IPs domain assign> ::= 
 					ss.pop();
 
 					// assign a new IP degree to the element
 					analysis.setDDegree(element_type, integer);
 					break;
 
-				case 15: // <IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>
+				case 19: // <IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>
 					ss.pop();
 					ss.push(SN_END_FIELD);
 					ss.push(SG_IPS_DOMAIN_ASSIGN);
 					ss.push(SN_IPS_FIRST_ASSIGN);
 					break;
 
-				case 16: // <IPs follow domain assignment> ::= "--output-equation" <G output equation assign> <end field>
-					ss.pop();
-					ss.push(SN_END_FIELD);
-					ss.push(SG_OUTPUT_EQUATION_ASSIGN);
-					ss.push(S_OUTPUT_FEM_EQUATION);
-					break;
-
-				case 17: // <G output equation assign>	::= 
+				case 30: // <G output equation assign>	::= 
 					ss.pop();
 
 					// set 

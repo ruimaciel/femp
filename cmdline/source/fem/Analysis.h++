@@ -34,9 +34,12 @@ class Analysis
 
 	private:
 		std::map<enum Element::ElementFamily, std::map<int, std::vector<boost::tuple<fem::point, double> > > > ipwpl;	// integration points/weights pair list
-		std::map<enum Element::Type, int> degree;	// integration point degree for this particular element
-			// location matrix: <node, <DoF number, DoF number, DoF number> >
+		std::map<enum Element::Type, int> degree;	// stiffness matrix integration point degree for a particular element
+		std::map<enum Element::Type, int> ddegree;	// domain load integration point degree for a particular element
+
+			// location matrix: <node, <DoF number, DoF number, DoF number> >, if DoF == 0 then this isn't a DoF
 		std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;
+
 			// the FEM equation
 		FemEquation f;
 
@@ -94,11 +97,18 @@ class Analysis
 
 
 		/**
-		Set a new integration degree for a specific element
+		Set a new integration degree for a specific element: stiffness matrix integration
 		@param type	element type
 		@param d	desired degree
 		**/
-		void setDegree(Element::Type &type, int d);
+		void setDegree(Element::Type &type, int &d);
+
+		/**
+		Set a new integration degree for a specific element: domain loads integration
+		@param type	element type
+		@param d	desired degree
+		**/
+		void setDDegree(Element::Type &type, int &d);
 
 
 	private:

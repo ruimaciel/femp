@@ -1,0 +1,30 @@
+action	non-terminal	production
+1	<Options>	::= "--help" 
+2			::= "--version"
+3			::= <set option> <set option follow>
+	
+4	<set option>	::= <set IPs> 
+	
+5	<set option follow>	::= <set option> <set option follow>
+6				::= epsilon
+	
+7	<set IPs>	::= "--ips" ":" <set IPs follow>
+	
+8	<set IPs follow>	::= "stiffness" <EOA> <IPs first assignment> <IPs stiffness assign>
+9				::= "domain" <EOA> <IPs first assignment> <IPs domain assign>
+	
+10	<IPs first assignment>	::= <element type> ":" <integer> 
+	
+11	<IPs stiffness assign>	::= <IPs follow stiffness assignment>
+
+12	<IPs follow stiffness assignment>	::= <EOA> <IPs follow2 stiffness assignment>
+6						::= epsilon
+
+13	<IPs follow2 stiffness assignment>	::= <IPs first assignment> <IPs stiffness assign>
+6						::= epsilon
+
+14	<IPs domain assign>	::= <IPs follow domain assignment>
+
+15	<IPs follow domain assignment>	::= <EOA> <IPs follow2 domain assignment>
+6					::= epsilon
+

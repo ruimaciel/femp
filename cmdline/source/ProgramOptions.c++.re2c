@@ -1,0 +1,368 @@
+#include "ProgramOptions.h++"
+
+#include <cstdlib>	// for strtol()
+
+#include <iostream>
+#include <limits>
+#include <map>
+#include <stack>
+
+
+ProgramOptions::ProgramOptions()
+{
+	//TODO set default options
+	digits10 = std::numeric_limits<double>::digits10;
+}
+
+
+ProgramOptions::~ProgramOptions()
+{
+}
+
+
+enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char **argv, fem::Analysis &analysis)
+{
+	using namespace std;
+
+	//TODO implement support for command line options
+	std::cout.precision(digits10);	// set the default precision
+
+	// if no commands were passed then use default options and parse from stdin
+	if(argc < 2)
+	{
+		return OPT_RUN;
+	}
+
+	// set the lexer variables
+	init_lexer_vars(argv);
+	Option opt = OPT_PARSER_ERROR;
+
+	// set the parser's objects
+	stack<enum Symbol> ss;	// parser's symbol stack
+
+	ss.push(S_EOL);
+	ss.push(SN_START);
+
+	// set the lexer
+	symbol = lexer(argc, argv);
+
+	/*
+	while(state.size() > 0)
+	{
+		switch(state.top())
+		{
+			case 0:	// initial state
+				break;
+
+			default:
+				// error parsing
+				return OPT_PARSER_ERROR;
+				break;
+		}
+	}
+	*/
+
+	// build parser table
+	map< enum Symbol, map<enum Symbol, int> > table;	// LL parser table, maps < non-terminal, terminal> pair to action
+
+	// set the state's parser tables
+	table[SN_START][S_HELP]		= 1;	
+	table[SN_START][S_VERSION]	= 2;	
+	table[SN_START][S_IPS] 		= 3;
+
+	table[SN_SET_OPTION][S_IPS]	= 4;
+
+	table[SN_SET_OPTION_FOLLOW][S_IPS]	= 5;	
+	table[SN_SET_OPTION_FOLLOW][S_EOL]	= 6;
+	table[SN_SET_OPTION_FOLLOW][S_EOA]	= 6;
+
+	table[SN_SET_IPS][S_IPS]	= 7;
+	
+	table[SN_SET_IPS_FOLLOW][S_IPS_STIFFNESS]	= 8;
+	table[SN_SET_IPS_FOLLOW][S_IPS_DOMAIN]		= 9;
+
+	table[SN_IPS_FIRST_ASSIGN][S_FE_ELEMENT]	=10;
+
+	table[SG_IPS_STIFFNESS_ASSIGN][S_EOA]	= 11;
+	table[SG_IPS_STIFFNESS_ASSIGN][S_EOL]	= 11;
+
+	table[SG_IPS_DOMAIN_ASSIGN][S_EOA]	= 14;
+	table[SG_IPS_DOMAIN_ASSIGN][S_EOL]	= 14;
+
+	table[SN_IPS_FOLLOW_S_ASSIGN][S_EOA]	= 12;
+	table[SN_IPS_FOLLOW_S_ASSIGN][S_EOL]	= 6;	// epsilon 
+
+	table[SN_IPS_FOLLOW2_S_ASSIGN][S_FE_ELEMENT]	=13;
+	table[SN_IPS_FOLLOW2_S_ASSIGN][S_IPS]	= 6;
+
+	table[SN_IPS_FOLLOW_D_ASSIGN][S_EOA]	= 15;
+	table[SN_IPS_FOLLOW_D_ASSIGN][S_EOL]	= 6;	// epsilon 
+
+
+
+	while(ss.size() > 0)
+	{
+		if(ss.top() == symbol)
+		{
+			// cout << "Matched: " << ss.top() << endl;
+			ss.pop();	// ss.top() == symbol
+			symbol = lexer(argc,argv);
+		}
+		else
+		{
+			// cout << "Action [" << ss.top() << "][" << symbol << "] == " << table[ss.top()][symbol] << endl;
+			switch(table[ss.top()][symbol])
+			{
+				case 1:	// <Options>	::= "--help"
+					ss.pop();
+					ss.push(S_HELP);
+
+					opt = OPT_HELP;
+					break;
+
+				case 2: // <Options>	::= "--version"
+					ss.pop();
+					ss.push(S_VERSION);
+
+					opt = OPT_VERSION;
+					break;
+
+				case 3:	// <Options>	::= <set option> <set option follow>
+					ss.pop();
+					ss.push(SN_SET_OPTION_FOLLOW);	// <set option follow>
+					ss.push(SN_SET_OPTION);	// <set option>
+
+					opt = OPT_RUN;
+					break;
+
+				case 4:	// <set option>	::= <set IPs> 
+					ss.pop();
+					ss.push(SN_SET_IPS);
+					break;
+
+				case 5:	// <set option follow>	::= <set option> <set option follow> 
+					ss.pop();
+					ss.push(SN_SET_OPTION_FOLLOW);	// <set option follow>
+					ss.push(SN_SET_OPTION);	// <set option>
+					break;
+
+				case 6:	// epsilon state
+					ss.pop();
+					break;
+
+				case 7:	// <set IPs>	::= "--ips" ":" <set IPs follow>
+					ss.pop();
+
+					ss.push(SN_SET_IPS_FOLLOW);	// <set IPs follow>
+					ss.push(S_SUBARG_SEPARATOR);	// ":"
+					ss.push(S_IPS);			// "--ips"
+					break;
+
+				case 8:	// <set IPs follow>	::= "stiffness" <EOA> <IPs first assignment> <IPs follow assignment>
+					ss.pop();
+
+					ss.push(SG_IPS_STIFFNESS_ASSIGN);	// <IPs stiffness assign>
+					ss.push(SN_IPS_FIRST_ASSIGN);	// <IPs first assignment>
+					ss.push(S_EOA);			// <EOA>
+					ss.push(S_IPS_STIFFNESS);	// "stiffness"
+					break;
+
+				case 9:	// <set IPs follow>	::= "domain" <EOA> <IPs first assignment> <IPs domain assign>
+					ss.pop();
+
+					ss.push(SG_IPS_DOMAIN_ASSIGN);
+					ss.push(SN_IPS_FIRST_ASSIGN);	
+					ss.push(S_EOA);		
+					ss.push(S_IPS_DOMAIN);
+					break;
+
+				case 10: // <IPs first assignment>	::= <element type> ":" <integer> 
+					ss.pop();
+
+					ss.push(S_INTEGER);	// <integer>
+					ss.push(S_SUBARG_SEPARATOR);	// ":"
+					ss.push(S_FE_ELEMENT);	// <element type>
+					break;
+
+				case 11: //<IPs stiffness assign>	::= <IPs follow stiffness assignment>
+					ss.pop();
+					ss.push(SN_IPS_FOLLOW_S_ASSIGN);
+
+					//TODO assign
+					// assign a new IP degree to the element
+					analysis.setDegree(element_type, integer);
+					break;
+
+				case 12: // <IPs follow stiffness assignment>	::= <EOA> <IPs follow2 stiffness assignment>
+					ss.pop();
+					ss.push(SN_IPS_FOLLOW2_S_ASSIGN);
+					ss.push(S_EOA);
+					break;
+
+				case 13: // <IPs follow2 stiffness assignment>	::= <IPs first assignment> <IPs follow stiffness assignment>
+					ss.pop();
+
+					ss.push(SG_IPS_STIFFNESS_ASSIGN);
+					ss.push(SN_IPS_FIRST_ASSIGN);
+					break;
+
+				case 14: //<IPs domain assign>	::= <IPs follow domain assignment>
+					ss.pop();
+					ss.push(SN_IPS_FOLLOW_D_ASSIGN);
+
+					// assign a new IP degree to the element
+					analysis.setDDegree(element_type, integer);
+					break;
+
+				case 15: // <IPs follow domain assignment>	::= <EOA> <IPs follow2 domain assignment>
+					ss.pop();
+					ss.push(SN_IPS_FOLLOW2_S_ASSIGN);
+					ss.push(S_EOA);
+					break;
+
+
+				default:
+					// error parsing the command line
+					return OPT_PARSER_ERROR;
+					break;
+			}
+		}
+	}
+
+	// exit 
+	return opt;
+}
+
+
+enum ProgramOptions::Symbol ProgramOptions::lexer(int argc, char **argv, int state)
+{
+	using namespace std;
+
+	// reposition the token start marker
+	token = p;
+
+	// once S_EOL is catched, its allways S_EOL
+	if(symbol == S_EOL) 
+		return S_EOL;
+	
+	switch(state)
+	{
+		case 0:	// default state
+		{
+/*!re2c
+	re2c:define:YYCTYPE 	= "char";
+	re2c:define:YYCURSOR 	= p;
+	re2c:define:YYMARKER 	= q;
+	re2c:yyfill:enable	= 0;
+	re2c:yych:conversion	= 1;
+
+
+	"--help"	{ return S_HELP;	}
+	"--version"	{ return S_VERSION;	}
+	"--ips"		{ return S_IPS;	}
+	"stiffness"	{ return S_IPS_STIFFNESS;	}
+	"domain"	{ return S_IPS_DOMAIN;	}
+
+        "line2"                 { element_type = fem::Element::FE_LINE2;	return S_FE_ELEMENT;}
+        "triangle3"             { element_type = fem::Element::FE_TRIANGLE3;	return S_FE_ELEMENT;}
+        "quadrangle4"           { element_type = fem::Element::FE_QUADRANGLE4;	return S_FE_ELEMENT;}
+        "tetrahedron4"          { element_type = fem::Element::FE_TETRAHEDRON4;	return S_FE_ELEMENT;}
+        "hexahedron8"           { element_type = fem::Element::FE_HEXAHEDRON8;	return S_FE_ELEMENT;}
+        "prism6"                { element_type = fem::Element::FE_PRISM6;	return S_FE_ELEMENT;}
+        "pyramid5"              { element_type = fem::Element::FE_PYRAMID5;	return S_FE_ELEMENT;}
+        "line3"                 { element_type = fem::Element::FE_LINE3;	return S_FE_ELEMENT;}
+        "triangle6"             { element_type = fem::Element::FE_TRIANGLE6;	return S_FE_ELEMENT;}
+        "quadrangle9"           { element_type = fem::Element::FE_QUADRANGLE9;	return S_FE_ELEMENT;}
+        "tetrahedron10"         { element_type = fem::Element::FE_TETRAHEDRON10;	return S_FE_ELEMENT;}
+        "hexahedron27"          { element_type = fem::Element::FE_HEXAHEDRON27;	return S_FE_ELEMENT;}
+        "prism18"               { element_type = fem::Element::FE_PRISM18;	return S_FE_ELEMENT;}
+        "pyramid14"             { element_type = fem::Element::FE_PYRAMID14;	return S_FE_ELEMENT;}
+        "quadrangle8"           { element_type = fem::Element::FE_QUADRANGLE8;	return S_FE_ELEMENT;}
+        "hexahedron20"          { element_type = fem::Element::FE_HEXAHEDRON20;	return S_FE_ELEMENT;}
+        "prism15"               { element_type = fem::Element::FE_PRISM15;	return S_FE_ELEMENT;}
+        "pyramid13"             { element_type = fem::Element::FE_PYRAMID13;	return S_FE_ELEMENT;}
+        "itriangle9"            { element_type = fem::Element::FE_ITRIANGLE9;	return S_FE_ELEMENT;}
+        "triangle10"            { element_type = fem::Element::FE_TRIANGLE10;	return S_FE_ELEMENT;}
+        "itriangle12"           { element_type = fem::Element::FE_ITRIANGLE12;	return S_FE_ELEMENT;}
+        "triangle15"            { element_type = fem::Element::FE_TRIANGLE15;	return S_FE_ELEMENT;}
+        "itriangle15"           { element_type = fem::Element::FE_ITRIANGLE15;	return S_FE_ELEMENT;}
+        "triangle21"            { element_type = fem::Element::FE_TRIANGLE21;	return S_FE_ELEMENT;}
+        "edge4"                 { element_type = fem::Element::FE_EDGE4;	return S_FE_ELEMENT;}
+        "edge5"                 { element_type = fem::Element::FE_EDGE5;	return S_FE_ELEMENT;}
+        "edge6"                 { element_type = fem::Element::FE_EDGE6;	return S_FE_ELEMENT;}
+        "tetrahedron20"         { element_type = fem::Element::FE_TETRAHEDRON20;	return S_FE_ELEMENT;}
+        "tetrahedron35"         { element_type = fem::Element::FE_TETRAHEDRON35;	return S_FE_ELEMENT;}
+        "tetrahedron56"         { element_type = fem::Element::FE_TETRAHEDRON56;	return S_FE_ELEMENT;}
+
+	":"		{ return S_SUBARG_SEPARATOR; }
+	"\000"		{ argn++; if(argn < argc) { p = q = token =  &argv[argn][0]; return S_EOA;} else { p = token = q = NULL; return S_EOL; } }
+	[0-9]+		{ integer = strtol(token,&p,NULL); return S_INTEGER;	}
+
+	[^]		{ return S_UNKNOWN;	}
+*/
+		}
+		break;
+
+		case 1:
+		{
+	/*!re2c
+	"--help"	{ return S_HELP;	}
+	"--version"	{ return S_VERSION;	}
+	"--ips"		{ return S_IPS;	}
+	"stiffness"	{ return S_IPS_STIFFNESS;	}
+	"domain"	{ return S_IPS_DOMAIN;	}
+
+        "line2"                 {return S_FE_LINE2;}
+        "triangle3"             {return S_FE_TRIANGLE3;}
+        "quadrangle4"           {return S_FE_QUADRANGLE4;}
+        "tetrahedron4"          {return S_FE_TETRAHEDRON4;}
+        "hexahedron8"           {return S_FE_HEXAHEDRON8;}
+        "prism6"                {return S_FE_PRISM6;}
+        "pyramid5"              {return S_FE_PYRAMID5;}
+        "line3"                 {return S_FE_LINE3;}
+        "triangle6"             {return S_FE_TRIANGLE6;}
+        "quadrangle9"           {return S_FE_QUADRANGLE9;}
+        "tetrahedron10"         {return S_FE_TETRAHEDRON10;}
+        "hexahedron27"          {return S_FE_HEXAHEDRON27;}
+        "prism18"               {return S_FE_PRISM18;}
+        "pyramid14"             {return S_FE_PYRAMID14;}
+        "quadrangle8"           {return S_FE_QUADRANGLE8;}
+        "hexahedron20"          {return S_FE_HEXAHEDRON20;}
+        "prism15"               {return S_FE_PRISM15;}
+        "pyramid13"             {return S_FE_PYRAMID13;}
+        "itriangle9"            {return S_FE_ITRIANGLE9;}
+        "triangle10"            {return S_FE_TRIANGLE10;}
+        "itriangle12"           {return S_FE_ITRIANGLE12;}
+        "triangle15"            {return S_FE_TRIANGLE15;}
+        "itriangle15"           {return S_FE_ITRIANGLE15;}
+        "triangle21"            {return S_FE_TRIANGLE21;}
+        "edge4"                 {return S_FE_EDGE4;}
+        "edge5"                 {return S_FE_EDGE5;}
+        "edge6"                 {return S_FE_EDGE6;}
+        "tetrahedron20"         {return S_FE_TETRAHEDRON20;}
+        "tetrahedron35"         {return S_FE_TETRAHEDRON35;}
+        "tetrahedron56"         {return S_FE_TETRAHEDRON56;}
+
+	":"		{ return S_SUBARG_SEPARATOR; }
+	"\000"		{ if(argn < argc-1) {argn++; p = q = token =  &argv[argn][0]; return S_EOA;} else { p = token = q = NULL; return S_EOL; } }
+	[0-9]+		{ return S_INTEGER;	}
+
+	[^]		{ return S_UNKNOWN;	}
+*/
+		}
+		break;
+
+		default:
+			return S_UNKNOWN;
+		break;
+	}
+}
+
+
+void ProgramOptions::init_lexer_vars(char **argv)
+{
+	symbol = S_UNKNOWN;
+	argn = 1;
+	p = token = q = &argv[argn][0];
+}
+

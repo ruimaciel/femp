@@ -13,12 +13,15 @@
 int main(int argc, char **argv)
 {
 	using namespace std;
+	using namespace fem;
 
-	// set the program's options
+	// declaring the objects
 	ProgramOptions options;
+	fem::Model model;
+	Analysis analysis;
 
 	// get the remaining options from the command line
-	switch(options.setCommandLineOptions(argc, argv))
+	switch(options.setCommandLineOptions(argc, argv, analysis))
 	{
 		case ProgramOptions::OPT_PARSER_ERROR:	// some invalid options passed
 			cout << "Invalid option" << endl;
@@ -38,10 +41,8 @@ int main(int argc, char **argv)
 
 		case ProgramOptions::OPT_RUN:	// run the model
 			{
-				using namespace fem;
 
 				//TODO import a model from a file
-				fem::Model model;
 				FILE *file;	// a pointer to the object controlling the file stream
 
 					// set the input source stream: stdin or file?
@@ -52,6 +53,8 @@ int main(int argc, char **argv)
 				else
 				{
 					//TODO finish this
+					cerr << "needs finishing" << endl;
+					return 0;
 				}
 
 					// parse the input strean
@@ -73,7 +76,6 @@ int main(int argc, char **argv)
 				}
 
 				// TODO run analysis
-				Analysis analysis;
 
 				analysis.run(model, model.load_pattern_list[0]);
 

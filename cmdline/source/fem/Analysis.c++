@@ -164,7 +164,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 		f_elem.resize(nnodes*3, false);
 
 		// as the distribution is linear across the domain then degree 1 is enough
-		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][3].begin(); i != ipwpl[element->family()][3].end(); i++)
+		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][ddegree[element->type]].begin(); i != ipwpl[element->family()][ddegree[element->type]].end(); i++)
 		{
 				// build the Jacobian
 			sf = shape_function(element->type, i->get<0>() );
@@ -984,46 +984,53 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double> > Ana
 }
 
 
-void Analysis::setDegree(Element::Type &type, int d)
+void Analysis::setDegree(Element::Type &type, int &d)
 {
 	degree[type] = d;
 }
 
 
+void Analysis::setDDegree(Element::Type &type, int &d)
+{
+	ddegree[type] = d;
+}
+
+
 void Analysis::setDefaultIntegrationDegrees()
 {
-	//TODO tweak integration points
-	degree[Element::FE_TRIANGLE3] = 1;
-	degree[Element::FE_TRIANGLE6] = 1;
-	degree[Element::FE_TRIANGLE10] = 1;
-	degree[Element::FE_TRIANGLE15] = 1;
+	//TODO tweak integration points	
+	// the degree for the stiffness matrix	// and the degree for the domain loads
+	degree[Element::FE_TRIANGLE3 ] = 1;	ddegree[Element::FE_TRIANGLE3 ] = 1;
+	degree[Element::FE_TRIANGLE6 ] = 1;	ddegree[Element::FE_TRIANGLE6 ] = 1;
+	degree[Element::FE_TRIANGLE10] = 1;	ddegree[Element::FE_TRIANGLE10] = 1;
+	degree[Element::FE_TRIANGLE15] = 1;	ddegree[Element::FE_TRIANGLE15] = 1;
 
-	degree[Element::FE_QUADRANGLE4] = 1;
-	degree[Element::FE_QUADRANGLE8] = 1;
-	degree[Element::FE_QUADRANGLE9] = 1;
+	degree[Element::FE_QUADRANGLE4] = 1;	ddegree[Element::FE_QUADRANGLE4] = 1;
+	degree[Element::FE_QUADRANGLE8] = 1;	ddegree[Element::FE_QUADRANGLE8] = 1;
+	degree[Element::FE_QUADRANGLE9] = 1;	ddegree[Element::FE_QUADRANGLE9] = 1;
 
-	degree[Element::FE_TETRAHEDRON4] = 4;
-	degree[Element::FE_TETRAHEDRON10] = 4;
-	degree[Element::FE_TETRAHEDRON20] = 4;
-	degree[Element::FE_TETRAHEDRON35] = 4;
-	degree[Element::FE_TETRAHEDRON56] = 4;
+	degree[Element::FE_TETRAHEDRON4 ] = 4;	ddegree[Element::FE_TETRAHEDRON4 ] = 1;
+	degree[Element::FE_TETRAHEDRON10] = 4;	ddegree[Element::FE_TETRAHEDRON10] = 2;
+	degree[Element::FE_TETRAHEDRON20] = 4;	ddegree[Element::FE_TETRAHEDRON20] = 3;
+	degree[Element::FE_TETRAHEDRON35] = 4;	ddegree[Element::FE_TETRAHEDRON35] = 4;
+	degree[Element::FE_TETRAHEDRON56] = 4;	ddegree[Element::FE_TETRAHEDRON56] = 5;
 
-	degree[Element::FE_HEXAHEDRON8] = 4;
-	degree[Element::FE_HEXAHEDRON20] = 4;
-	degree[Element::FE_HEXAHEDRON27] = 4;
+	degree[Element::FE_HEXAHEDRON8 ] = 4;	ddegree[Element::FE_HEXAHEDRON8 ] = 1;
+	degree[Element::FE_HEXAHEDRON20] = 4;	ddegree[Element::FE_HEXAHEDRON20] = 2;
+	degree[Element::FE_HEXAHEDRON27] = 4;	ddegree[Element::FE_HEXAHEDRON27] = 3;
 
-	degree[Element::FE_PRISM6] = 4;
-	degree[Element::FE_PRISM15] = 4;
-	degree[Element::FE_PRISM18] = 4;
+	degree[Element::FE_PRISM6 ] = 4;	ddegree[Element::FE_PRISM6 ] = 4;
+	degree[Element::FE_PRISM15] = 4;	ddegree[Element::FE_PRISM15] = 4;
+	degree[Element::FE_PRISM18] = 4;	ddegree[Element::FE_PRISM18] = 4;
 
-	degree[Element::FE_PYRAMID5] = 4;
-	degree[Element::FE_PYRAMID14] = 4;
-	degree[Element::FE_PYRAMID13] = 4;
+	degree[Element::FE_PYRAMID5 ] = 4;	ddegree[Element::FE_PYRAMID5 ] = 4;
+	degree[Element::FE_PYRAMID14] = 4;	ddegree[Element::FE_PYRAMID14] = 4;
+	degree[Element::FE_PYRAMID13] = 4;	ddegree[Element::FE_PYRAMID13] = 4;
 
-	degree[Element::FE_ITRIANGLE9] = 1;
-	degree[Element::FE_ITRIANGLE12] = 1;
-	degree[Element::FE_ITRIANGLE15] = 1;
-	degree[Element::FE_TRIANGLE21] = 1;
+	degree[Element::FE_ITRIANGLE9 ] = 1;	ddegree[Element::FE_ITRIANGLE9 ] = 1;
+	degree[Element::FE_ITRIANGLE12] = 1;	ddegree[Element::FE_ITRIANGLE12] = 1;
+	degree[Element::FE_ITRIANGLE15] = 1;	ddegree[Element::FE_ITRIANGLE15] = 1;
+	degree[Element::FE_TRIANGLE21 ] = 1;	ddegree[Element::FE_TRIANGLE21 ] = 1;
 }
 
 

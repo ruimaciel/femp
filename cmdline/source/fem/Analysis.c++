@@ -367,7 +367,7 @@ enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
 	build_fem_equation(model, lp);
 
 		// solve the equation system
-	f.solve();
+	// f.solve();
 	// f.CGsolve(10e-5);
 
 
@@ -377,8 +377,10 @@ enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
 
 enum Analysis::Error Analysis::solve()
 {
+ 	using namespace std;
 	//TODO finish
-	f.solve();
+	// f.solve();
+	f.my_plain_gauss_solve();
 }
 
 
@@ -437,11 +439,11 @@ void Analysis::output(std::ostream &out, bool equation)
 			out << ",";
 		out << "\n\t\t{ \"node\": " << i->first;
 		if(i->second.get<0>() != 0)
-			out << ", \"dx\": " << f.f(n++);
+			out << ", \"dx\": " << f.d(n++);
 		if(i->second.get<1>() != 0)
-			out << ", \"dy\": " << f.f(n++);
+			out << ", \"dy\": " << f.d(n++);
 		if(i->second.get<2>() != 0)
-			out << ", \"dz\": " << f.f(n++);
+			out << ", \"dz\": " << f.d(n++);
 		out << "}";
 	}
 
@@ -1078,30 +1080,66 @@ void Analysis::integration_points()
 	ipwpl[Element::EF_TETRAHEDRON][1] = ips;
 
 	// Tetrahedron family, degree 2
-	ips.clear();
-	ips.push_back(tuple<fem::point,double>(fem::point(0.58541019662496845446,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
-	ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.58541019662496845446,0.13819660112501051518),1.0/(6*4)));
-	ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.58541019662496845446),1.0/(6*4)));
-	ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
-	ipwpl[Element::EF_TETRAHEDRON][2] = ips;
-						
+	{
+		ips.clear();
+
+		ips.push_back(tuple<fem::point,double>(fem::point(0.58541019662496845446,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
+		ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.58541019662496845446,0.13819660112501051518),1.0/(6*4)));
+		ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.58541019662496845446),1.0/(6*4)));
+		ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
+
+		ipwpl[Element::EF_TETRAHEDRON][2] = ips;
+	}
+
 	// Tetrahedron family, degree 3
-	ips.clear();
-	ips.push_back(tuple<fem::point,double>(fem::point(0, 0, 0), 1.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ipwpl[Element::EF_TETRAHEDRON][3] = ips;
-						
-	// Tetrahedron family, degree 3
-	ips.clear();
-	double g[3];
-	double w[2];
-	g[0]=0.09273525031089122640232391373703060;
+	{
+		ips.clear();
+		/*
+		ips.push_back(tuple<fem::point,double>(fem::point(0, 0, 0), 1.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		*/
+
+		/*
+		   If [j<=0,info={{g1,g1,g1,g1},w1}; info[[1,i]]=1-3*g1];
+		   If [j> 0,info={{g2,g2,g2,g2},w2}; info[[1,j]]=1-3*g2]];
+		 */
+
+		double g[2];
+		double w[2];
+
+		g[0]=(55-3*sqrt(17)+sqrt(1022-134*sqrt(17)))/196;
+		g[1]=(55-3*sqrt(17)-sqrt(1022-134*sqrt(17)))/196;
+
+		w[0]= (1.0/8 + sqrt((1715161837-406006699*sqrt(17))/23101)/3120)/6.0;
+		w[1]= (1.0/8 - sqrt((1715161837-406006699*sqrt(17))/23101)/3120) /6.0;
+
+		// 1 to 4
+		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[0], g[0], g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], 1-3*g[0], g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], 1-3*g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], g[0]), w[0] ));
+
+		// 5 to 8
+		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[1], g[1], g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], 1-3*g[1], g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], 1-3*g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], g[1]), w[1] ));
+
+		ipwpl[Element::EF_TETRAHEDRON][3] = ips;
+	}
+
+	// Tetrahedron family, degree 4
+	{
+		ips.clear();
+		double g[3];
+		double w[2];
+		g[0]=0.09273525031089122640232391373703060;
 	g[1]=0.31088591926330060979734573376345783;
 	g[2]=0.45449629587435035050811947372066056;
 
@@ -1126,10 +1164,46 @@ void Analysis::integration_points()
 	ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
 	ips.push_back(tuple<fem::point,double>(fem::point(g[3], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
 	ipwpl[Element::EF_TETRAHEDRON][4] = ips;
+	}
+
+	// Tetrahedron family, degree 5
+	{
+		ips.clear();
+		double g[3];
+		double w[2];
+
+		g[0]=(7-sqrt(15))/34; 	g[1]=7/17-g[0]; 	g[2]=(10-2*sqrt(15))/40;
+		w[0]=(2665+14*sqrt(15))/37800;	w[1]=(2665-14*sqrt(15))/37800;
+
+		// 1 to 4
+		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[0], g[0], g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], 1-3*g[0], g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], 1-3*g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], g[0]), w[0] ));
+
+		// 5 to 8
+		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[1], g[1], g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], 1-3*g[1], g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], 1-3*g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], g[1] ), w[1] ));
+
+		// 9 to 14
+		ips.push_back(tuple<fem::point,double>(fem::point(0.5-g[2], 0.5 - g[2], g[2] ), 10.0/189));
+		ips.push_back(tuple<fem::point,double>(fem::point(0.5-g[2], g[2], 0.5-g[2] ), 10.0/189));
+		ips.push_back(tuple<fem::point,double>(fem::point(0.5-g[2], g[2], g[2] ), 10.0/189));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[2], 0.5-g[2], 0.5-g[2] ), 10.0/189));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[2], 0.5-g[2], g[2] ), 10.0/189));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[2], g[2], 0.5-g[2] ), 10.0/189));
+
+		// 15
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/4, 1.0/4, 1.0/4 ), 16.0/135));
+
+		ipwpl[Element::EF_TETRAHEDRON][5] = ips;
+	}
 
 
-	// Hexahedron family, degree 1 to 5
-	for(int d = 1; d < 6; d++)
+	// Hexahedron family, degree 1 to 7
+	for(int d = 1; d < 8; d++)
 	{
 		ips.clear();
 		double x[d], w[d];	// for the Gauss-Legendre integration points and weights

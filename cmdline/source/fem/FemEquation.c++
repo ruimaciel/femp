@@ -30,10 +30,64 @@ namespace fem
 		lu_factorize(k,pm); // LU factorized
 
 		//inplace_solve(k,f,lower_tag());
+		
 		d = boost::numeric::ublas::solve(k,f, lower_tag() );
-
+		/*
+		d = boost::numeric::ublas::solve(k,d, unit_upper_tag() );
+		*/
 
 		return ERR_OK;
+	}
+
+
+	enum FemEquation::Error FemEquation::my_plain_gauss_solve()
+	{
+		using namespace std;
+		cout << "my plain gauss" << endl;
+		assert(k.size1() == k.size2());
+		double factor;
+
+		// Gauss factorization
+		d = f;
+		for(size_t diag = 0; diag < k.size1(); diag++)
+		{
+			// reduce current line to 1 in diagonal
+			factor = k(diag,diag);
+
+			// normalize the current leading row
+			for(size_t j = diag; j < k.size2(); j++)
+			{
+				k(diag,j) /= factor;
+			}
+			d(diag) /= factor;
+
+			// subtract from all the others
+			//TODO finish this
+			for(size_t i = diag+1; i < k.size1(); i++)
+			{
+				factor = k(i,diag);
+				//for(size_t j = diag; j < k.size2(); j++)
+				for(size_t j = 0; j < k.size2(); j++)
+				{
+					k(i,j) -= factor*k(diag,j);
+				}
+				d(i) -= factor*d(diag);
+			}
+		}
+
+		// back substitution
+		for(size_t j = k.size1()-1; j > 0 ; j--)
+		{
+			for(size_t i = 0; i < j; i++)
+			{
+				d(i) -= k(i,j)*d(j);
+				cout << "[" << i << ", " << j << "] ";
+			}
+			cout << endl;
+		}
+		
+		cout << k << endl;
+		cout << d << endl;
 	}
 
 

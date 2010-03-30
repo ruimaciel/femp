@@ -26,6 +26,8 @@ struct FemEquation
 
 	enum Error solve();
 
+	enum Error my_plain_gauss_solve();
+
 	/** solving the equation through the conjugate gradiant method
 	@param e	acceptable margin of error
 	**/

@@ -3,33 +3,31 @@ action	non-terminal	production
 2			::= "--version"
 3			::= <set option> <set option follow>
 	
-4	<set option>	::= <set IPs> 
-6			::= "--output-equation"	<G output equation assign> <end field>
+5	<set option>	::= "--ips" ":" <set IPs follow>
+6			::= "--output-equation"	":" <G output equation assign> <end field>
 
-5	<set option follow>	::= <set option> <set option follow>
+7	<set option follow>	::= <set option> <set option follow>
 100				::= <epsilon>
-	
-7	<set IPs>	::= "--ips" ":" <set IPs follow>
 	
 8	<set IPs follow>	::= "stiffness" <EOA> <IPs first assignment> <G IPs stiffness assign> <end field> <IPs follow stiffness assignment>
 9				::= "domain" <EOA> <IPs first assignment> <G IPs domain assign> <end field> <IPs follow domain assignment>
 	
 10	<IPs first assignment>	::= <element type> ":" <integer>
 	
-11	<G IPs stiffness assign>	::= 
+17	<G IPs stiffness assign>	::= 
 
-12	<IPs follow stiffness assignment>	::= <IPs first assignment> <G IPs stiffness assign> <end field>
-4						::= <set IPs>
+18	<IPs follow stiffness assignment>	::= <IPs first assignment> <G IPs stiffness assign> <end field>
+5						::= <set IPs>
 6						::= "--output-equation" <G output equation assign> <end field>
 
-17	<G IPs domain assign>	::= 
+19	<G IPs domain assign>	::= 
 
-19	<IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>
-4					::= <set IPs>
+20	<IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>
+5					::= <set IPs>
 6					::= "--output-equation" <G output equation assign> <end field>
 
 
-30	<G output equation assign>	::= 
+42	<G output equation assign>	::= 
 
 99	<end field>	::=	<EOA>
 100	<epsilon>	::= 

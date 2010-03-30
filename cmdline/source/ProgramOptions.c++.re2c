@@ -56,38 +56,36 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 	table[SN_START][S_IPS] 		= 3;
 	table[SN_START][S_OUTPUT_FEM_EQUATION]	= 3;
 
-	table[SN_SET_OPTION][S_IPS]	= 4;
+	table[SN_SET_OPTION][S_IPS]	= 5;
 	table[SN_SET_OPTION][S_OUTPUT_FEM_EQUATION]	= 6;
 
-	table[SN_SET_OPTION_FOLLOW][S_IPS]	= 5;	
-	table[SN_SET_OPTION_FOLLOW][S_OUTPUT_FEM_EQUATION]	= 5;	
+	table[SN_SET_OPTION_FOLLOW][S_IPS]	= 7;	
+	table[SN_SET_OPTION_FOLLOW][S_OUTPUT_FEM_EQUATION]	= 7;	
 	table[SN_SET_OPTION_FOLLOW][S_EOL]	= 100;
 
-	table[SN_SET_IPS][S_IPS]	= 7;
-	
 	table[SN_SET_IPS_FOLLOW][S_IPS_STIFFNESS]	= 8;
 	table[SN_SET_IPS_FOLLOW][S_IPS_DOMAIN]		= 9;
 
 	table[SN_IPS_FIRST_ASSIGN][S_FE_ELEMENT]	=10;
 
-	table[SG_IPS_STIFFNESS_ASSIGN][S_EOA]	= 11;
-	table[SG_IPS_STIFFNESS_ASSIGN][S_EOL]	= 11;
+	table[SG_IPS_STIFFNESS_ASSIGN][S_EOA]	= 17;
+	table[SG_IPS_STIFFNESS_ASSIGN][S_EOL]	= 17;
 
-	table[SG_IPS_DOMAIN_ASSIGN][S_EOA]	= 17;
-	table[SG_IPS_DOMAIN_ASSIGN][S_EOL]	= 17;
+	table[SG_IPS_DOMAIN_ASSIGN][S_EOA]	= 19;
+	table[SG_IPS_DOMAIN_ASSIGN][S_EOL]	= 19;
 
-	table[SN_IPS_FOLLOW_S_ASSIGN][S_FE_ELEMENT]	= 12;
+	table[SN_IPS_FOLLOW_S_ASSIGN][S_FE_ELEMENT]	= 18;
 	table[SN_IPS_FOLLOW_S_ASSIGN][S_EOL]	= 100;	
-	table[SN_IPS_FOLLOW_S_ASSIGN][S_IPS]	= 4;
+	table[SN_IPS_FOLLOW_S_ASSIGN][S_IPS]	= 5;
 	table[SN_IPS_FOLLOW_S_ASSIGN][S_OUTPUT_FEM_EQUATION]	= 6;
 
-	table[SN_IPS_FOLLOW_D_ASSIGN][S_FE_ELEMENT] = 19;
+	table[SN_IPS_FOLLOW_D_ASSIGN][S_FE_ELEMENT] = 20;
 	table[SN_IPS_FOLLOW_D_ASSIGN][S_EOL]	= 100;	
-	table[SN_IPS_FOLLOW_D_ASSIGN][S_IPS]	= 4;
+	table[SN_IPS_FOLLOW_D_ASSIGN][S_IPS]	= 5;
 	table[SN_IPS_FOLLOW_D_ASSIGN][S_OUTPUT_FEM_EQUATION]	= 6;
 
-	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOA] = 30;
-	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOL] = 30;
+	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOA] = 42;
+	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOL] = 42;
 
 	table[SN_END_FIELD][S_EOA] = 99;
 	table[SN_END_FIELD][S_EOL] = 100;
@@ -129,15 +127,12 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 					opt = OPT_RUN;
 					break;
 
-				case 4:	// <set option>	::= <set IPs> 
+				case 5:	// <set option>	::= "--ips" ":" <set IPs follow>
 					ss.pop();
-					ss.push(SN_SET_IPS);
-					break;
 
-				case 5:	// <set option follow>	::= <set option> <set option follow> 
-					ss.pop();
-					ss.push(SN_SET_OPTION_FOLLOW);
-					ss.push(SN_SET_OPTION);
+					ss.push(SN_SET_IPS_FOLLOW);	// <set IPs follow>
+					ss.push(S_SUBARG_SEPARATOR);	// ":"
+					ss.push(S_IPS);			// "--ips"
 					break;
 
 				case 6: // <set option follow>	::= "--output-equation"	<G output equation assign>
@@ -147,12 +142,10 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 					ss.push(S_OUTPUT_FEM_EQUATION);
 					break;
 
-				case 7:	// <set IPs>	::= "--ips" ":" <set IPs follow>
+				case 7:	// <set option follow>	::= <set option> <set option follow> 
 					ss.pop();
-
-					ss.push(SN_SET_IPS_FOLLOW);	// <set IPs follow>
-					ss.push(S_SUBARG_SEPARATOR);	// ":"
-					ss.push(S_IPS);			// "--ips"
+					ss.push(SN_SET_OPTION_FOLLOW);
+					ss.push(SN_SET_OPTION);
 					break;
 
 				case 8:	// <set IPs follow>	::= "stiffness" <EOA> <IPs first assignment> <IPs follow assignment>
@@ -185,7 +178,7 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 					ss.push(S_FE_ELEMENT);
 					break;
 
-				case 11: //<G IPs stiffness assign> ::=
+				case 17: //<G IPs stiffness assign> ::=
 					ss.pop();
 
 					//TODO assign
@@ -193,28 +186,28 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 					analysis.setDegree(element_type, integer);
 					break;
 
-				case 12: // <IPs follow stiffness assignment>	::= <IPs first assignment> <G IPs stiffness assign> <end field>
+				case 18: // <IPs follow stiffness assignment>	::= <IPs first assignment> <G IPs stiffness assign> <end field>
 					ss.pop();
 					ss.push(SN_END_FIELD);
 					ss.push(SG_IPS_STIFFNESS_ASSIGN);
 					ss.push(SN_IPS_FIRST_ASSIGN);
 					break;
 
-				case 17: //<G IPs domain assign> ::= 
+				case 19: //<G IPs domain assign> ::= 
 					ss.pop();
 
 					// assign a new IP degree to the element
 					analysis.setDDegree(element_type, integer);
 					break;
 
-				case 19: // <IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>
+				case 20: // <IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>
 					ss.pop();
 					ss.push(SN_END_FIELD);
 					ss.push(SG_IPS_DOMAIN_ASSIGN);
 					ss.push(SN_IPS_FIRST_ASSIGN);
 					break;
 
-				case 30: // <G output equation assign>	::= 
+				case 42: // <G output equation assign>	::= 
 					ss.pop();
 
 					// set 

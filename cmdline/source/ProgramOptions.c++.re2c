@@ -13,6 +13,8 @@ ProgramOptions::ProgramOptions()
 	//TODO set default options
 	digits10 = std::numeric_limits<double>::digits10;
 	output_fem = false;	// don't output the FEM equation along with the displacements
+
+	solver = OPT_S_GAUSS;	// the default solver
 }
 
 
@@ -55,37 +57,52 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 	table[SN_START][S_VERSION]	= 2;	
 	table[SN_START][S_IPS] 		= 3;
 	table[SN_START][S_OUTPUT_FEM_EQUATION]	= 3;
+	table[SN_START][S_SOLVER]	= 3;
 
 	table[SN_SET_OPTION][S_IPS]	= 5;
 	table[SN_SET_OPTION][S_OUTPUT_FEM_EQUATION]	= 6;
+	table[SN_SET_OPTION][S_SOLVER]	= 7;
 
-	table[SN_SET_OPTION_FOLLOW][S_IPS]	= 7;	
-	table[SN_SET_OPTION_FOLLOW][S_OUTPUT_FEM_EQUATION]	= 7;	
+	table[SN_SET_OPTION_FOLLOW][S_IPS]	= 37;	
+	table[SN_SET_OPTION_FOLLOW][S_OUTPUT_FEM_EQUATION]	= 37;	
 	table[SN_SET_OPTION_FOLLOW][S_EOL]	= 100;
 
-	table[SN_SET_IPS_FOLLOW][S_IPS_STIFFNESS]	= 8;
-	table[SN_SET_IPS_FOLLOW][S_IPS_DOMAIN]		= 9;
+	table[SN_SET_IPS_FOLLOW][S_IPS_STIFFNESS]	= 38;
+	table[SN_SET_IPS_FOLLOW][S_IPS_DOMAIN]		= 39;
 
-	table[SN_IPS_FIRST_ASSIGN][S_FE_ELEMENT]	=10;
+	table[SN_IPS_FIRST_ASSIGN][S_FE_ELEMENT]	=40;
 
-	table[SG_IPS_STIFFNESS_ASSIGN][S_EOA]	= 17;
-	table[SG_IPS_STIFFNESS_ASSIGN][S_EOL]	= 17;
+	table[SG_IPS_STIFFNESS_ASSIGN][S_EOA]	= 50;
+	table[SG_IPS_STIFFNESS_ASSIGN][S_EOL]	= 50;
 
-	table[SG_IPS_DOMAIN_ASSIGN][S_EOA]	= 19;
-	table[SG_IPS_DOMAIN_ASSIGN][S_EOL]	= 19;
+	table[SG_IPS_DOMAIN_ASSIGN][S_EOA]	= 52;
+	table[SG_IPS_DOMAIN_ASSIGN][S_EOL]	= 52;
 
-	table[SN_IPS_FOLLOW_S_ASSIGN][S_FE_ELEMENT]	= 18;
+	table[SN_IPS_FOLLOW_S_ASSIGN][S_FE_ELEMENT]	= 51;
 	table[SN_IPS_FOLLOW_S_ASSIGN][S_EOL]	= 100;	
 	table[SN_IPS_FOLLOW_S_ASSIGN][S_IPS]	= 5;
 	table[SN_IPS_FOLLOW_S_ASSIGN][S_OUTPUT_FEM_EQUATION]	= 6;
+	table[SN_IPS_FOLLOW_S_ASSIGN][S_SOLVER]	= 7;
 
-	table[SN_IPS_FOLLOW_D_ASSIGN][S_FE_ELEMENT] = 20;
+	table[SN_IPS_FOLLOW_D_ASSIGN][S_FE_ELEMENT] = 53;
 	table[SN_IPS_FOLLOW_D_ASSIGN][S_EOL]	= 100;	
 	table[SN_IPS_FOLLOW_D_ASSIGN][S_IPS]	= 5;
 	table[SN_IPS_FOLLOW_D_ASSIGN][S_OUTPUT_FEM_EQUATION]	= 6;
+	table[SN_IPS_FOLLOW_D_ASSIGN][S_SOLVER]	= 7;
 
-	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOA] = 42;
-	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOL] = 42;
+	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOA] = 60;
+	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOL] = 60;
+
+	table[SN_SET_SOLVER_FOLLOW][S_CHOLESKY] = 70;
+	table[SN_SET_SOLVER_FOLLOW][S_CG] = 71;
+	table[SN_SET_SOLVER_FOLLOW][S_GAUSS] = 72;
+
+	table[SG_SET_CHOLESKY][S_EOA] = 75;
+	table[SG_SET_CHOLESKY][S_EOL] = 75;
+	table[SG_SET_CG][S_EOA] = 76;
+	table[SG_SET_CG][S_EOL] = 76;
+	table[SG_SET_GAUSS][S_EOA] = 77;
+	table[SG_SET_GAUSS][S_EOL] = 77;
 
 	table[SN_END_FIELD][S_EOA] = 99;
 	table[SN_END_FIELD][S_EOL] = 100;
@@ -142,13 +159,20 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 					ss.push(S_OUTPUT_FEM_EQUATION);
 					break;
 
-				case 7:	// <set option follow>	::= <set option> <set option follow> 
+				case 7:	// <set option> ::= "--solver" ":" <set solver follow>
+					ss.pop();
+					ss.push(SN_SET_SOLVER_FOLLOW);
+					ss.push(S_SUBARG_SEPARATOR);
+					ss.push(S_SOLVER);
+					break;
+
+				case 37:	// <set option follow>	::= <set option> <set option follow> 
 					ss.pop();
 					ss.push(SN_SET_OPTION_FOLLOW);
 					ss.push(SN_SET_OPTION);
 					break;
 
-				case 8:	// <set IPs follow>	::= "stiffness" <EOA> <IPs first assignment> <IPs follow assignment>
+				case 38:	// <set IPs follow>	::= "stiffness" <EOA> <IPs first assignment> <IPs follow assignment>
 					ss.pop();
 
 					ss.push(SN_IPS_FOLLOW_S_ASSIGN);
@@ -159,7 +183,7 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 					ss.push(S_IPS_STIFFNESS);
 					break;
 
-				case 9:	// <set IPs follow>	::= "domain" <EOA> <IPs first assignment> <G IPs domain assign>
+				case 39:	// <set IPs follow>	::= "domain" <EOA> <IPs first assignment> <G IPs domain assign>
 					ss.pop();
 
 					ss.push(SN_IPS_FOLLOW_D_ASSIGN);
@@ -170,7 +194,7 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 					ss.push(S_IPS_DOMAIN);
 					break;
 
-				case 10: // <IPs first assignment> ::= <element type> ":" <integer> 
+				case 40: // <IPs first assignment> ::= <element type> ":" <integer> 
 					ss.pop();
 
 					ss.push(S_INTEGER);	
@@ -178,7 +202,7 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 					ss.push(S_FE_ELEMENT);
 					break;
 
-				case 17: //<G IPs stiffness assign> ::=
+				case 50: //<G IPs stiffness assign> ::=
 					ss.pop();
 
 					//TODO assign
@@ -186,32 +210,74 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 					analysis.setDegree(element_type, integer);
 					break;
 
-				case 18: // <IPs follow stiffness assignment>	::= <IPs first assignment> <G IPs stiffness assign> <end field>
+				case 51: // <IPs follow stiffness assignment>	::= <IPs first assignment> <G IPs stiffness assign> <end field>
 					ss.pop();
 					ss.push(SN_END_FIELD);
 					ss.push(SG_IPS_STIFFNESS_ASSIGN);
 					ss.push(SN_IPS_FIRST_ASSIGN);
 					break;
 
-				case 19: //<G IPs domain assign> ::= 
+				case 52: //<G IPs domain assign> ::= 
 					ss.pop();
 
 					// assign a new IP degree to the element
 					analysis.setDDegree(element_type, integer);
 					break;
 
-				case 20: // <IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>
+				case 53: // <IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>
 					ss.pop();
 					ss.push(SN_END_FIELD);
 					ss.push(SG_IPS_DOMAIN_ASSIGN);
 					ss.push(SN_IPS_FIRST_ASSIGN);
 					break;
 
-				case 42: // <G output equation assign>	::= 
+				case 60: // <G output equation assign>	::= 
 					ss.pop();
 
 					// set 
 					output_fem = true;
+					break;
+
+				case 70: // <set solver follow>	::= "cholesky" <G set cholesky solver> <end field>
+					ss.pop();
+
+					ss.push(SN_END_FIELD);
+					ss.push(SG_SET_CHOLESKY);
+					ss.push(S_CHOLESKY);
+					break;
+
+				case 71: // <set solver follow>	::= "cg" <G set cg solver> <end field>
+					ss.pop();
+
+					ss.push(SN_END_FIELD);
+					ss.push(SG_SET_CG);
+					ss.push(S_CG);
+					break;
+
+				case 72: // <set solver follow>	::= "gauss" <G set gauss solver> <end field>
+					ss.pop();
+
+					ss.push(SN_END_FIELD);
+					ss.push(SG_SET_GAUSS);
+					ss.push(S_GAUSS);
+					break;
+
+				case 75: // <G set cholesky solver>	::=
+					ss.pop();
+
+					solver = OPT_S_CHOLESKY;
+					break;
+
+				case 76: // <G set cg solver>	::=
+					ss.pop();
+
+					solver = OPT_S_CG;
+					break;
+
+				case 77: // <G set gauss solver>	::=
+					ss.pop();
+
+					solver = OPT_S_GAUSS;
 					break;
 
 				case 99:	// <end field>
@@ -265,6 +331,7 @@ enum ProgramOptions::Symbol ProgramOptions::lexer(int argc, char **argv, int sta
 	"stiffness"	{ return S_IPS_STIFFNESS;	}
 	"domain"	{ return S_IPS_DOMAIN;	}
 	"--output-equation"	{ return S_OUTPUT_FEM_EQUATION; }
+	"--solver"	{ return S_SOLVER; }
 
         "line2"                 { element_type = fem::Element::FE_LINE2;	return S_FE_ELEMENT;}
         "triangle3"             { element_type = fem::Element::FE_TRIANGLE3;	return S_FE_ELEMENT;}
@@ -296,6 +363,10 @@ enum ProgramOptions::Symbol ProgramOptions::lexer(int argc, char **argv, int sta
         "tetrahedron20"         { element_type = fem::Element::FE_TETRAHEDRON20;	return S_FE_ELEMENT;}
         "tetrahedron35"         { element_type = fem::Element::FE_TETRAHEDRON35;	return S_FE_ELEMENT;}
         "tetrahedron56"         { element_type = fem::Element::FE_TETRAHEDRON56;	return S_FE_ELEMENT;}
+
+	"cholesky"		{ return S_CHOLESKY; }
+	"cg"			{ return S_CG; }
+	"gauss"			{ return S_GAUSS; }
 
 	":"		{ return S_SUBARG_SEPARATOR; }
 	"\000"		{ argn++; if(argn < argc) { p = q = token =  &argv[argn][0]; return S_EOA;} else { p = token = q = NULL; return S_EOL; } }

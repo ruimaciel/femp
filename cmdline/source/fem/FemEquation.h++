@@ -26,7 +26,15 @@ struct FemEquation
 
 	enum Error solve();
 
+	/*
+	Without pivoting
+	*/
 	enum Error my_plain_gauss_solve();
+
+	/*
+	With partial pivoting
+	*/
+	enum Error my_gauss_solve();
 
 	/** solving the equation through the conjugate gradiant method
 	@param e	acceptable margin of error

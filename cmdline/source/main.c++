@@ -84,7 +84,30 @@ int main(int argc, char **argv)
 
 					// run the analysis
 				analysis.build_fem_equation(model, model.load_pattern_list[0]);
-				analysis.solve();
+
+					// solve the equation
+				switch(options.solver)
+				{
+					/*
+					//TODO implement these
+					case ProgramOptions::OPT_S_CHOLESKY:
+						analysis.solve_cholesky();
+						break;
+					 */
+
+					case ProgramOptions::OPT_S_CG:
+						analysis.solve_conjugate_gradient(1e-8);
+						break;
+
+					case ProgramOptions::OPT_S_GAUSS:
+						analysis.solve_gauss();
+						break;
+
+					default:
+						cerr << "error: asked for a solver which isn't implemented" << endl;
+						return 1;
+						break;
+				}
 				// analysis.run(model, model.load_pattern_list[0]);
 
 				// output results

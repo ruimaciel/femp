@@ -78,9 +78,10 @@ class Analysis
 		enum Error run(Model &model, const LoadPattern &lp);
 
 
-		enum Error solve();
-
-
+		// solvers
+		enum Error solve_cholesky();
+		enum Error solve_conjugate_gradient(float e);
+		enum Error solve_gauss();
 
 		/** 
 		given an element and a position in local coordinates, it generates a list with the nodal weights for the shape function for each interpolation point in local coordinates

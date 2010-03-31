@@ -13,6 +13,11 @@ struct ProgramOptions
 	// program options
 	std::string input_file;	// the name of a file that will be read to input a model
 	int digits10;	// default precision
+	enum OPT_SOLVER { 
+		OPT_S_CHOLESKY, // Cholesky solver
+		OPT_S_CG, 	// conjugate gradient solver
+		OPT_S_GAUSS	// gauss elimination solver
+		} solver;
 	bool output_fem;	// outputs the FEM equation along with the displacements
 
 	std::map<enum fem::Element::Type, int> degree;	// stiffness matrix integration point degree for a particular element
@@ -53,6 +58,7 @@ struct ProgramOptions
 			S_IPS_STIFFNESS,	// integration points for stiffness
 			S_IPS_DOMAIN,	// integration points for domain
 			S_OUTPUT_FEM_EQUATION,	// output FEM equation along with displacements
+			S_SOLVER,		// specify what equation solver to use
 
 			S_FE_ELEMENT,	// generic element
 
@@ -104,6 +110,9 @@ struct ProgramOptions
 			SN_IPS_FOLLOW2_S_ASSIGN,	// <IPs follow2 stiffness assignment>
 			SN_IPS_FOLLOW_D_ASSIGN,		// <IPs follow domain assignment>
 			SN_IPS_FOLLOW2_D_ASSIGN,	// <IPs follow2 domain assignment>
+			SN_SET_SOLVER_FOLLOW,		// <set solver follow>
+
+			S_CHOLESKY, S_CG, S_GAUSS,	// the different linear system of equations solvers
 
 			SN_END_FIELD,	// <end field>
 			SN_EOS,	// <EO?>
@@ -112,6 +121,8 @@ struct ProgramOptions
 			SG_IPS_STIFFNESS_ASSIGN, 	// <G IPs stiffness assign>
 			SG_IPS_DOMAIN_ASSIGN, 	// <G IPs domain assign>
 			SG_OUTPUT_EQUATION_ASSIGN,	// <G output equation assign>
+
+			SG_SET_CHOLESKY, SG_SET_CG, SG_SET_GAUSS,	// set the different linear system of equations solvers
 
 			S_UNKNOWN	// to sign off an error
 		} symbol;

@@ -375,12 +375,112 @@ enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
 }
 
 
-enum Analysis::Error Analysis::solve()
+enum Analysis::Error Analysis::solve_cholesky()
 {
- 	using namespace std;
-	//TODO finish
-	// f.solve();
-	f.my_plain_gauss_solve();
+}
+
+
+enum Analysis::Error Analysis::solve_conjugate_gradient(float e)
+{
+	using namespace std;
+
+	boost::numeric::ublas::compressed_vector<double> r1;
+	boost::numeric::ublas::compressed_vector<double> r2;
+	boost::numeric::ublas::compressed_vector<double> p;
+	double alpha;
+	double beta;
+	size_t iter = 0;
+
+	r1.resize(f.f.size());
+	f.d.resize(f.f.size());
+
+
+	// initialize the vector
+	for(size_t i = 0; i < f.f.size(); i++)
+	{
+		f.d[i] = 1;
+	}
+
+	r1 = f.f - prod(f.k,f.d);
+
+	p = r1;
+
+	r2 = r1;
+
+	do
+	{
+		iter++;
+		alpha = inner_prod(p,r1) / inner_prod(p,prod(f.k,p));
+		f.d = f.d + alpha*p;
+		r2 = r1 - alpha*prod(f.k,p);
+		beta = inner_prod(r2,r2)/inner_prod(r1,r1);
+
+		p = r2 + beta*p;
+
+		r1 = r2;
+
+		/*
+		   std::cout << "alpha: " << alpha << std::endl;
+		   std::cout << "f.d: \n" << f.d << std::endl;
+		   std::cout << "r: \n" << r2 << std::endl;
+		 */
+
+	} while ( norm_2(r2) > e*norm_2(f.f));
+	cout << "iterations: " << iter << endl;
+	std::cout << "f.d: \n" << f.d << std::endl;
+
+	return ERR_OK;	
+}
+
+
+enum Analysis::Error Analysis::solve_gauss()
+{
+	//TODO implement partial pivoting
+
+	using namespace std;
+
+	assert(f.k.size1() == f.k.size2());
+	double factor;
+
+	// Gauss factorization
+	f.d = f.f;
+	for(size_t diag = 0; diag < f.k.size1(); diag++)
+	{
+		// reduce current line to 1 in diagonal
+		factor = f.k(diag,diag);
+
+		// normalize the current leading row
+		for(size_t j = diag; j < f.k.size2(); j++)
+		{
+			f.k(diag,j) /= factor;
+		}
+		f.d(diag) /= factor;
+
+		// subtract from all the others
+		for(size_t i = diag+1; i < f.k.size1(); i++)
+		{
+			factor = f.k(i,diag);
+			//for(size_t j = diag; j < f.k.size2(); j++)
+			for(size_t j = 0; j < f.k.size2(); j++)
+			{
+				f.k(i,j) -= factor*f.k(diag,j);
+			}
+			f.d(i) -= factor*f.d(diag);
+		}
+	}
+
+	// back substitution
+	for(size_t j = f.k.size1()-1; j > 0 ; j--)
+	{
+		for(size_t i = 0; i < j; i++)
+		{
+			f.d(i) -= f.k(i,j)*f.d(j);
+		}
+		cout << endl;
+	}
+
+	// all went well
+	return ERR_OK;
 }
 
 

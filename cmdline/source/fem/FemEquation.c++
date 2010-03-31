@@ -43,7 +43,7 @@ namespace fem
 	enum FemEquation::Error FemEquation::my_plain_gauss_solve()
 	{
 		using namespace std;
-		cout << "my plain gauss" << endl;
+	
 		assert(k.size1() == k.size2());
 		double factor;
 
@@ -81,13 +81,22 @@ namespace fem
 			for(size_t i = 0; i < j; i++)
 			{
 				d(i) -= k(i,j)*d(j);
-				cout << "[" << i << ", " << j << "] ";
 			}
 			cout << endl;
 		}
-		
-		cout << k << endl;
-		cout << d << endl;
+
+		// all went well
+		return ERR_OK;
+	}
+
+
+	enum FemEquation::Error FemEquation::my_gauss_solve()
+	{
+		using namespace std;
+		//TODO finisht this
+
+		// all went well
+		return ERR_OK;
 	}
 
 
@@ -130,9 +139,11 @@ namespace fem
 
 			r1 = r2;
 
+			/*
 			std::cout << "alpha: " << alpha << std::endl;
 			std::cout << "d: \n" << d << std::endl;
 			std::cout << "r: \n" << r2 << std::endl;
+			*/
 
 		} while ( norm_2(r2) > e*norm_2(f));
 		cout << "iterations: " << iter << endl;

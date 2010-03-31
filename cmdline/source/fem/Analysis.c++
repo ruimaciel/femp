@@ -47,7 +47,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		// set up the temporary variables for the elementary matrix and vector
 	symmetric_matrix<double, upper> k_elem;
 	//TODO replace mapped_vector with vector
-	mapped_vector<double> f_elem;
+	boost::numeric::ublas::vector<double> f_elem;
 	matrix<double> B;
 	matrix<double> Bt;
 
@@ -441,6 +441,7 @@ enum Analysis::Error Analysis::solve_gauss()
 
 	assert(f.k.size1() == f.k.size2());
 	double factor;
+	size_t row[f.k.size1()];	// for the pivoting
 
 	// Gauss factorization
 	f.d = f.f;
@@ -476,12 +477,81 @@ enum Analysis::Error Analysis::solve_gauss()
 		{
 			f.d(i) -= f.k(i,j)*f.d(j);
 		}
-		cout << endl;
+		// cout << endl;
 	}
 
 	// all went well
 	return ERR_OK;
 }
+
+
+enum Analysis::Error Analysis::solve_gauss_pivot()
+{
+	//TODO implement partial pivoting
+
+	using namespace std;
+
+	assert(f.k.size1() == f.k.size2());
+	double factor;
+	size_t row[f.k.size1()];	// for the pivoting
+	size_t temp;	// temporary pivot
+
+	// initialize the row pivoting map
+	for(size_t i = 0; i < f.k.size1(); i++)
+		row[i] = i;
+
+	// Gauss factorization
+	f.d = f.f;
+	for(size_t diag = 0; diag < f.k.size1(); diag++)
+	{
+		// choose pivot
+		for(size_t i = diag+1; i < f.k.size1(); i++)
+		{
+			if(abs(f.k(row[i],diag)) > abs(f.k(row[diag],diag)) )
+			{
+				temp = row[i];
+				row[i] = row[diag];
+				row[diag] = temp;
+			}
+		}
+
+		// reduce current line to 1 in diagonal
+		factor = f.k(row[diag],diag);
+
+		// normalize the current leading row
+		for(size_t j = diag; j < f.k.size2(); j++)
+		{
+			f.k(row[diag],j) /= factor;
+		}
+		f.d(row[diag]) /= factor;
+
+		// subtract from all the others
+		for(size_t i = diag+1; i < f.k.size1(); i++)
+		{
+			factor = f.k(row[i],diag);
+			//for(size_t j = diag; j < f.k.size2(); j++)
+			for(size_t j = 0; j < f.k.size2(); j++)
+			{
+				f.k(row[i],j) -= factor*f.k(row[diag],j);
+			}
+			f.d(i) -= factor*f.d(diag);
+		}
+	}
+
+	// back substitution
+	for(size_t j = f.k.size1()-1; j > 0 ; j--)
+	{
+		for(size_t i = 0; i < j; i++)
+		{
+			f.d(row[i]) -= f.k(row[i],j)*f.d(row[j]);
+		}
+		// cout << endl;
+	}
+
+	// all went well
+	return ERR_OK;
+}
+
 
 
 void Analysis::output(std::ostream &out, bool equation)

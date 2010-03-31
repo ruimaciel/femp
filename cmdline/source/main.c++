@@ -100,7 +100,8 @@ int main(int argc, char **argv)
 						break;
 
 					case ProgramOptions::OPT_S_GAUSS:
-						analysis.solve_gauss();
+						//analysis.solve_gauss();
+						analysis.solve_gauss_pivot();
 						break;
 
 					default:

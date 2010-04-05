@@ -501,7 +501,6 @@ enum Analysis::Error Analysis::solve_gauss_pivot()
 		row[i] = i;
 
 	// Gauss factorization
-	f.d = f.f;
 	for(size_t diag = 0; diag < f.k.size1(); diag++)
 	{
 		// choose pivot
@@ -509,6 +508,7 @@ enum Analysis::Error Analysis::solve_gauss_pivot()
 		{
 			if(abs(f.k(row[i],diag)) > abs(f.k(row[diag],diag)) )
 			{
+				// cout << "pivot change: diag " << row[diag] << " for row " << row[i] << endl;
 				temp = row[i];
 				row[i] = row[diag];
 				row[diag] = temp;
@@ -528,7 +528,7 @@ enum Analysis::Error Analysis::solve_gauss_pivot()
 		{
 			f.k(row[diag],j) /= factor;
 		}
-		f.d(row[diag]) /= factor;
+		f.f(row[diag]) /= factor;
 
 		// subtract from all the others
 		for(size_t i = diag+1; i < f.k.size1(); i++)
@@ -539,7 +539,7 @@ enum Analysis::Error Analysis::solve_gauss_pivot()
 			{
 				f.k(row[i],j) -= factor*f.k(row[diag],j);
 			}
-			f.d(i) -= factor*f.d(diag);
+			f.f(row[i]) -= factor*f.f(row[diag]);
 		}
 	}
 
@@ -548,10 +548,15 @@ enum Analysis::Error Analysis::solve_gauss_pivot()
 	{
 		for(size_t i = 0; i < j; i++)
 		{
-			f.d(row[i]) -= f.k(row[i],j)*f.d(row[j]);
+			f.f(row[i]) -= f.k(row[i],j)*f.f(row[j]);
 		}
 		// cout << endl;
 	}
+
+	// rearrange the tweaked pivots
+	//TODO find a better way
+	for(size_t i = 0; i < f.f.size(); i++)
+		f.d(i) = f.f(row[i]);
 
 	// all went well
 	return ERR_OK;

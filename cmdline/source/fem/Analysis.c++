@@ -515,6 +515,11 @@ enum Analysis::Error Analysis::solve_gauss_pivot()
 			}
 		}
 
+		// check if matrix is singular
+		//TODO check if this is a decent test
+		if( abs(f.k(row[diag],diag)) < 1e-16)
+			return ERR_SINGULAR_MATRIX;
+
 		// reduce current line to 1 in diagonal
 		factor = f.k(row[diag],diag);
 

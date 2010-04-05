@@ -117,7 +117,8 @@ class Analysis
 		void setDDegree(Element::Type &type, int &d);
 
 
-		void output(std::ostream &out, bool equation);
+		void output_fem_equation(std::ostream &out);
+		void output_displacements(std::ostream &out);
 
 	private:
 		/**

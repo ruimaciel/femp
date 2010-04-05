@@ -48,6 +48,8 @@ int main(int argc, char **argv)
 
 		case ProgramOptions::OPT_RUN:	// run the model
 			{
+					// start JSON output
+				cout << "{\n";
 
 				//TODO import a model from a file
 				FILE *file;	// a pointer to the object controlling the file stream
@@ -84,22 +86,26 @@ int main(int argc, char **argv)
 
 					// run the analysis
 				analysis.build_fem_equation(model, model.load_pattern_list[0]);
+					
+					// if asked then output FEM equation
+				if(options.output_fem)
+					analysis.output_fem_equation(cout);
 
 					// solve the equation
 				switch(options.solver)
 				{
-					/*
-					//TODO implement these
 					case ProgramOptions::OPT_S_CHOLESKY:
+						//TODO output a meaningful field from the function's return value
 						analysis.solve_cholesky();
 						break;
-					 */
 
 					case ProgramOptions::OPT_S_CG:
-						analysis.solve_conjugate_gradient(1e-8);
+						//TODO output a meaningful field from the function's return value
+						analysis.solve_conjugate_gradient(1e-16);
 						break;
 
 					case ProgramOptions::OPT_S_GAUSS:
+						//TODO output a meaningful field from the function's return value
 						//analysis.solve_gauss();
 						analysis.solve_gauss_pivot();
 						break;
@@ -109,10 +115,12 @@ int main(int argc, char **argv)
 						return 1;
 						break;
 				}
-				// analysis.run(model, model.load_pattern_list[0]);
 
-				// output results
-				analysis.output(cout,options.output_fem);
+				// output displacements field
+				analysis.output_displacements(cout);
+
+				// finish JSON output
+				cout << "}\n";
 			}
 			break;
 

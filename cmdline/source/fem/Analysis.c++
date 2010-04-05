@@ -554,48 +554,47 @@ enum Analysis::Error Analysis::solve_gauss_pivot()
 
 
 
-void Analysis::output(std::ostream &out, bool equation)
+void Analysis::output_fem_equation(std::ostream &out)
+{
+	out << "\t\"fem equation\" : {\n";
+
+		// output stiffness matrix
+	out << "\t\t\"stiffness matrix\" : [\n";
+	for(size_t i = 0; i < f.k.size1(); i++)
+	{
+		out << "\t\t\t[";
+		for(size_t j = 0; j < f.k.size2(); j++)
+		{
+			if(j != 0)
+				out << ",";
+			out << "\t" << f.k(i,j);
+		}
+		out << "]";
+		if(i + 1 < f.k.size1())
+			out << ",";
+		out << "\n";
+	}
+	out << "\t\t],\n";
+
+		// output force vector
+	out << "\t\t\"force vector\" : [\n";
+	for(size_t i = 0; i < f.f.size(); i++)
+	{
+		out << "\t\t\t";
+		out << f.f(i);
+		if(i +1 < f.f.size() )
+			out << ",";
+		out << "\n";
+	}
+	out << "\t\t]\n";
+
+	out << "\t},\n";
+}
+
+
+void Analysis::output_displacements(std::ostream &out)
 {
 	using namespace std;
-
-	out << "{\n";
-
-		// output FEM equation
-	if(equation)
-	{
-		out << "\t\"fem equation\" : {\n";
-
-		out << "\t\t\"stiffness matrix\" : [\n";
-		// output matrix
-		for(size_t i = 0; i < f.k.size1(); i++)
-		{
-			out << "\t\t\t[";
-			for(size_t j = 0; j < f.k.size2(); j++)
-			{
-				if(j != 0)
-					out << ",";
-				out << "\t" << f.k(i,j);
-			}
-			out << "]";
-			if(i + 1 < f.k.size1())
-				out << ",";
-			out << "\n";
-		}
-		out << "\t\t],\n";
-
-		out << "\t\t\"force vector\" : [\n";
-		// output vector
-		for(size_t i = 0; i < f.f.size(); i++)
-		{
-			out << "\t\t\t";
-			out << f.f(i);
-			if(i +1 < f.f.size() )
-				out << ",";
-			out << "\n";
-		}
-		out << "\t\t]\n";
-		out << "\t},\n";
-	}
 
 		// output displacements field
 	out << "\t\"displacement\": [";
@@ -618,7 +617,6 @@ void Analysis::output(std::ostream &out, bool equation)
 	}
 
 	out << "\n\t]\n";
-	out << "}\n";
 }
 
 
@@ -1509,7 +1507,6 @@ inline void Analysis::add_elementary_stiffness_to_global(const boost::numeric::u
 			}
 		}
 	}
-
 }
 
 

@@ -111,6 +111,7 @@ int main(int argc, char **argv)
 						break;
 
 					default:
+						// this bit is only reached if a new solver is added to the command line options and this part is yet to be updated
 						cerr << "error: asked for a solver which isn't implemented" << endl;
 						return 1;
 						break;

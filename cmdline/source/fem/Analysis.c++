@@ -377,6 +377,61 @@ enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
 
 enum Analysis::Error Analysis::solve_cholesky()
 {
+	double s;
+	for(size_t j = 0; j < f.k.size2(); j++)
+	{
+		for(size_t i = 0; i < f.k.size1(); i++)
+		{
+			s = f.k(i,j);
+			for(size_t m = 0; m < j; m++)
+			{
+				s -= f.k(i,m)*f.k(j,m);
+			}
+
+			if(i == j)
+			{
+				if(s > 0)
+				{
+					f.k(j,j) = sqrt(s);
+				}
+				else
+					return ERR_SINGULAR_MATRIX;
+			}
+			else
+			{
+				f.k(i,j) = s/f.k(j,j);
+			}
+		}
+	}
+
+	// solve Ly = b
+	for (size_t i = 0; i < f.k.size1(); i++)
+	{
+		for (size_t j = 0; j < i; j++)
+		{
+			f.f(i) -= f.k(i, j) * f.f(j);
+		}
+		f.f(i) /= f.k(i, i);
+	}
+
+	// Backward solve L'x = y
+	for (size_t i = f.k.size1() - 1; i > 0; i--)
+	{
+		for (size_t j = i + 1; j < f.k.size2(); j++)
+		{
+			f.f(i) -= f.k(j, i) * f.f(j);
+		}
+		f.f(i) /= f.k(i, i);
+	}
+	for (size_t j = 1; j < f.k.size2(); j++)
+	{
+		f.f(0) -= f.k(j, 0) * f.f(j);
+	}
+	f.f(0) /= f.k(0, 0);
+
+	f.d = f.f;
+
+	return ERR_OK;
 }
 
 
@@ -425,9 +480,9 @@ enum Analysis::Error Analysis::solve_conjugate_gradient(float e)
 	} while ( norm_2(r2) > e*norm_2(f.f));
 
 	/*
-	std::cout << "iterations: " << iter << endl;
-	std::cout << "f.d: \n" << f.d << std::endl;
-	*/
+	   std::cout << "iterations: " << iter << endl;
+	   std::cout << "f.d: \n" << f.d << std::endl;
+	 */
 
 	return ERR_OK;	
 }
@@ -568,7 +623,7 @@ void Analysis::output_fem_equation(std::ostream &out)
 {
 	out << "\t\"fem equation\" : {\n";
 
-		// output stiffness matrix
+	// output stiffness matrix
 	out << "\t\t\"stiffness matrix\" : [\n";
 	for(size_t i = 0; i < f.k.size1(); i++)
 	{
@@ -586,7 +641,7 @@ void Analysis::output_fem_equation(std::ostream &out)
 	}
 	out << "\t\t],\n";
 
-		// output force vector
+	// output force vector
 	out << "\t\t\"force vector\" : [\n";
 	for(size_t i = 0; i < f.f.size(); i++)
 	{
@@ -606,7 +661,7 @@ void Analysis::output_displacements(std::ostream &out)
 {
 	using namespace std;
 
-		// output displacements field
+	// output displacements field
 	out << "\t\"displacement\": [";
 	size_t n = 0;
 	for(map<size_t, boost::tuple<size_t,size_t,size_t> >::const_iterator i = lm.begin(); i != lm.end(); i++)
@@ -664,7 +719,7 @@ void Analysis::gauleg(double x[], double w[], int n)
 }
 
 
-std::vector<double> 
+	std::vector<double> 
 Analysis::shape_function(const Element::Type type, const fem::point &point)
 {
 	using namespace boost;

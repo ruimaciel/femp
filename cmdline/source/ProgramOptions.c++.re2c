@@ -65,6 +65,7 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 
 	table[SN_SET_OPTION_FOLLOW][S_IPS]	= 37;	
 	table[SN_SET_OPTION_FOLLOW][S_OUTPUT_FEM_EQUATION]	= 37;	
+	table[SN_SET_OPTION_FOLLOW][S_SOLVER]	= 37;	
 	table[SN_SET_OPTION_FOLLOW][S_EOL]	= 100;
 
 	table[SN_SET_IPS_FOLLOW][S_IPS_STIFFNESS]	= 38;

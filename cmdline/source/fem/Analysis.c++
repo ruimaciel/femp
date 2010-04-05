@@ -394,25 +394,22 @@ enum Analysis::Error Analysis::solve_conjugate_gradient(float e)
 	r1.resize(f.f.size());
 	f.d.resize(f.f.size());
 
-
 	// initialize the vector
 	for(size_t i = 0; i < f.f.size(); i++)
 	{
 		f.d[i] = 1;
 	}
 
-	r1 = f.f - prod(f.k,f.d);
-
+	r1 = f.f - prec_prod(f.k,f.d);
 	p = r1;
-
 	r2 = r1;
 
 	do
 	{
 		iter++;
-		alpha = inner_prod(p,r1) / inner_prod(p,prod(f.k,p));
+		alpha = inner_prod(p,r1) / inner_prod(p,prec_prod(f.k,p));
 		f.d = f.d + alpha*p;
-		r2 = r1 - alpha*prod(f.k,p);
+		r2 = r1 - alpha*prec_prod(f.k,p);
 		beta = inner_prod(r2,r2)/inner_prod(r1,r1);
 
 		p = r2 + beta*p;
@@ -426,8 +423,11 @@ enum Analysis::Error Analysis::solve_conjugate_gradient(float e)
 		 */
 
 	} while ( norm_2(r2) > e*norm_2(f.f));
-	cout << "iterations: " << iter << endl;
+
+	/*
+	std::cout << "iterations: " << iter << endl;
 	std::cout << "f.d: \n" << f.d << std::endl;
+	*/
 
 	return ERR_OK;	
 }

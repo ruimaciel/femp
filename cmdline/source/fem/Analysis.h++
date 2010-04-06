@@ -73,13 +73,6 @@ class Analysis
 		double det3by3(const boost::numeric::ublas::matrix<double> &M);
 
 
-		/** runs the analysis based on a given load pattern
-		@param lp	the load pattern
-		@return 
-		**/
-		enum Error run(Model &model, const LoadPattern &lp);
-
-
 		// linear system of equation solvers
 		enum Error solve_cholesky();
 		enum Error solve_conjugate_gradient(float e);

@@ -419,27 +419,6 @@ double Analysis::det3by3(const boost::numeric::ublas::matrix<double> &M)
 }
 
 
-enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
-{
-	//TODO remove this method
-	using namespace std;
-
-		// build the location matrix, for the degrees of freedom
-	make_location_matrix(model);
-	
-		//this is a nasty hack to test the code. To be removed.
-	//TODO return a good return code
-	build_fem_equation(model, lp, true);
-
-		// solve the equation system
-	// f.solve();
-	// f.CGsolve(10e-5);
-
-
-	return ERR_OK;
-}
-
-
 enum Analysis::Error Analysis::solve_cholesky()
 {
 	double s;

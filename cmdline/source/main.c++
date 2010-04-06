@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 
 					case ProgramOptions::OPT_S_CG:
 						//TODO output a meaningful field from the function's return value
-						analysis.solve_conjugate_gradient(1e-16);
+						analysis.solve_conjugate_gradient(1e-5);
 						break;
 
 					case ProgramOptions::OPT_S_GAUSS:

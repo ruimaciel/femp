@@ -22,8 +22,10 @@ namespace fem
 		using namespace boost::numeric::ublas;
 
 		// weed out singular systems
+		/*
 		if(f.nnz() == 0)
 			return ERR_SINGULAR;
+		*/
 
 		permutation_matrix<> pm(k.size1());	// k will be symmetric
 		

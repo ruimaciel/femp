@@ -110,7 +110,7 @@ void NewProjectWizardPage3::getFileFromDialog(void)
 {
 	 QFileDialog dialog(this);
 	 dialog.setFileMode(QFileDialog::ExistingFile);
-	 dialog.setNameFilter(tr("*.msh"));
+	 dialog.setNameFilter(tr("MSH file (*.msh)"));
 	 if(dialog.exec() == QDialog::Accepted)
 	 {
 	 	// a file was chosen

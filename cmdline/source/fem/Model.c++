@@ -205,7 +205,7 @@ enum Model::Error Model::import_json(FILE *file)
 	cursor.push(root);
 	state.push(0);		// starting state
 
-#define ERROR()	{std::cout << "State " << state.top() << std::endl; goto error;}
+#define ERROR()	{std::cout << "Model::import_json() State " << state.top() << std::endl; goto error;}
 #define CURSOR_PUSH(TYPE) { if(cursor.top()->child == NULL) ERROR(); if (cursor.top()->child->type != TYPE) ERROR(); cursor.push(cursor.top()->child);}
 #define CURSOR_VERIFY_TEXT(TEXT)	{if(cursor.top()->text == NULL) ERROR(); if(strcmp(cursor.top()->text, TEXT) != 0) ERROR();}
 #define CURSOR_NEXT()	{if(cursor.top()->next == NULL) ERROR(); cursor.top() = cursor.top()->next;}

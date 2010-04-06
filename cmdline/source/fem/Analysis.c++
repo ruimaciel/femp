@@ -71,7 +71,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		{ \
 			if(pi % (component.size()/10+1) == 0) \
 			{ \
-				cout << pi / (component.size()/10+1)  << ", "; \
+				cout << "," << pi / (component.size()/10+1)+1; \
 				cout.flush(); \
 			} \
 			pi++; \
@@ -80,7 +80,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	if(verbose)
 	{
 		pi = 0;
-		cout << "\t\"stiffness matrix progress\": [";	
+		cout << "\t\"stiffness matrix progress\": [0";	
 		cout.flush();
 	}
 	for(std::vector<Element>::iterator element = model.element_list.begin(); element != model.element_list.end(); element++)
@@ -184,7 +184,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		add_elementary_stiffness_to_global(k_elem, f, lm, *element);
 	}
 	if(verbose)
-		cout << "10]," << endl;
+		cout << "]," << endl;
 
 
 		// now set up the equivalent forces vector
@@ -192,7 +192,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	if(verbose)
 	{
 		pi = 0;
-		cout << "\t\"domain loads progress\": [";	
+		cout << "\t\"domain loads progress\": [0";	
 		cout.flush();
 	}
 	for(std::map<size_t,fem::DomainLoad>::const_iterator domain_load = lp.domain_loads.begin(); domain_load != lp.domain_loads.end(); domain_load++)
@@ -273,14 +273,14 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		}
 	}
 	if(verbose)
-		cout << "10]," << endl;
+		cout << "]," << endl;
 
 		// integrate the surface loads
 	//TODO finish this
 	if(verbose)
 	{
 		pi = 0;
-		cout << "\t\"surface loads progress\": [";	
+		cout << "\t\"surface loads progress\": [0";
 		cout.flush();
 	}
 	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
@@ -338,13 +338,13 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		// TODO add contribution
 	}
 	if(verbose)
-		cout << "10]," << endl;
+		cout << "]," << endl;
 
 	// set nodal forces
 	if(verbose)
 	{
 		pi = 0;
-		cout << "\t\"nodal loads progress\": [";	
+		cout << "\t\"nodal loads progress\": [0";
 		cout.flush();
 	}
 	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
@@ -364,7 +364,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			f.f[lm[n].get<2>()-1] += nodal_load->second.z();
 	}
 	if(verbose)
-		cout << "10]," << endl;
+		cout << "]," << endl;
 
 	// fem equation is set.
 	return ERR_OK;

@@ -30,6 +30,9 @@ NewProjectWizard::NewProjectWizard(Document *doc, QWidget *parent)
 	pageLast = new NewProjectWizardPageLast;
 	addPage(pageLast);
 	*/
+
+	//TODO crude hack
+	doc->setProjectType(Document::TYPE_SOLID3D);
 }
 
 

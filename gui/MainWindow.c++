@@ -74,8 +74,7 @@ void MainWindow::newProject()
 	}
 
 	/*
-	Now the "new project" wizard will create a new project directory.
-	Then it will call loadProject() to load the newly created project.
+	The NewProjectWizard dialog will fill up a given document object through the steps
 	*/
 	NewProjectWizard np(&document, this);
 	switch(np.exec())

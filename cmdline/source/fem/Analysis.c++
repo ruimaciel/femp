@@ -23,7 +23,7 @@ Analysis::~Analysis()
 }
 
 
-enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPattern &lp)
+enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPattern &lp, bool verbose)
 {
 	using namespace std;
 	using namespace boost::numeric::ublas;
@@ -40,6 +40,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	make_location_matrix(model);
 				
 		// declare variables
+	size_t pi = 0;	// progress indicator
 	double detJ = 0;
 	matrix<double>	J(3,3), invJ(3,3);
 	std::vector< symmetric_matrix<double, upper> > D_list;
@@ -65,8 +66,28 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	}
 
 		// generate stiffness matrix by cycling through all elements in the model
+		//TODO fix progress indicator
+#define UPDATE_PROGRESS(component) if(verbose) \
+		{ \
+			if(pi % (component.size()/10+1) == 0) \
+			{ \
+				cout << pi / (component.size()/10+1)  << ", "; \
+				cout.flush(); \
+			} \
+			pi++; \
+		} 
+
+	if(verbose)
+	{
+		pi = 0;
+		cout << "\t\"stiffness matrix progress\": [";	
+		cout.flush();
+	}
 	for(std::vector<Element>::iterator element = model.element_list.begin(); element != model.element_list.end(); element++)
 	{
+			// output
+		UPDATE_PROGRESS(model.element_list);
+
 			// get the number of expected nodes used by the current element type
 		nnodes = element->node_number();
 
@@ -152,12 +173,23 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			// add elementary stiffness matrix to the global stiffness matrix 
 		add_elementary_stiffness_to_global(k_elem, f, lm, *element);
 	}
+	if(verbose)
+		cout << "10]," << endl;
 
 
 		// now set up the equivalent forces vector
 	// set nodal force contribution made by the domain loads
+	if(verbose)
+	{
+		pi = 0;
+		cout << "\t\"domain loads progress\": [";	
+		cout.flush();
+	}
 	for(std::map<size_t,fem::DomainLoad>::const_iterator domain_load = lp.domain_loads.begin(); domain_load != lp.domain_loads.end(); domain_load++)
 	{
+		// output progress message
+		UPDATE_PROGRESS(lp.domain_loads);
+
 		fem::Element *element;
 		element = &model.element_list[domain_load->first];
 		nnodes = element->node_number();
@@ -230,11 +262,22 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			}
 		}
 	}
+	if(verbose)
+		cout << "10]," << endl;
 
 		// integrate the surface loads
 	//TODO finish this
+	if(verbose)
+	{
+		pi = 0;
+		cout << "\t\"surface loads progress\": [";	
+		cout.flush();
+	}
 	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
 	{
+			// output progress message
+		UPDATE_PROGRESS(lp.surface_loads);
+
 		//TODO
 		nnodes = surface_load->node_number();
 
@@ -284,11 +327,21 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 
 		// TODO add contribution
 	}
-
+	if(verbose)
+		cout << "10]," << endl;
 
 	// set nodal forces
+	if(verbose)
+	{
+		pi = 0;
+		cout << "\t\"nodal loads progress\": [";	
+		cout.flush();
+	}
 	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
 	{
+			// output progress message
+		UPDATE_PROGRESS(lp.nodal_loads);
+
 		size_t n;
 		n = nodal_load->first;
 
@@ -300,7 +353,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		if(lm[n].get<2>() != 0)
 			f.f[lm[n].get<2>()-1] += nodal_load->second.z();
 	}
-
+	if(verbose)
+		cout << "10]," << endl;
 
 	// fem equation is set.
 	return ERR_OK;
@@ -357,6 +411,7 @@ double Analysis::det3by3(const boost::numeric::ublas::matrix<double> &M)
 
 enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
 {
+	//TODO remove this method
 	using namespace std;
 
 		// build the location matrix, for the degrees of freedom
@@ -364,7 +419,7 @@ enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
 	
 		//this is a nasty hack to test the code. To be removed.
 	//TODO return a good return code
-	build_fem_equation(model, lp);
+	build_fem_equation(model, lp, true);
 
 		// solve the equation system
 	// f.solve();
@@ -667,13 +722,17 @@ void Analysis::output_displacements(std::ostream &out)
 	// output displacements field
 	out << "\t\"displacement\": [";
 	size_t n = 0;
+	bool first = true;
 	for(map<size_t, boost::tuple<size_t,size_t,size_t> >::const_iterator i = lm.begin(); i != lm.end(); i++)
 	{
 		if( (i->second.get<0>() == 0)&& (i->second.get<1>() == 0) &&  (i->second.get<1>() == 0) )
 			continue;
 
-		if(i != lm.begin())
+		if(!first)
 			out << ",";
+		else
+			first = false;
+
 		out << "\n\t\t{ \"node\": " << i->first;
 		if(i->second.get<0>() != 0)
 			out << ", \"dx\": " << f.d(n++);

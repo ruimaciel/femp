@@ -54,9 +54,10 @@ class Analysis
 		The struct FemEquation objects must already be resized to handle the model and initialized
 		@param f	a struct FemEquation object that will be used to store the FEM equation
 		@param lp	the load pattern
+		@param verbose	true to output progress messages
 		@return an error
 		**/
-		enum Error build_fem_equation(Model &model, const LoadPattern &lp);
+		enum Error build_fem_equation(Model &model, const LoadPattern &lp, bool verbose);
 
 
 		/*

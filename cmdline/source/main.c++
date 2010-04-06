@@ -86,7 +86,11 @@ int main(int argc, char **argv)
 
 					// run the analysis
 				//TODO support command line arguments
-				analysis.build_fem_equation(model, model.load_pattern_list[0], true);
+				if( analysis.build_fem_equation(model, model.load_pattern_list[0], true) != Analysis::ERR_OK)
+				{
+					// some error occurred
+					return 1;
+				}
 					
 					// if asked then output FEM equation
 				if(options.output_fem)

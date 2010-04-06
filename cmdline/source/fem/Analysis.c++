@@ -125,6 +125,16 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			}
 
 			detJ = det3by3(J);
+				// return error if we stumble on a negative determinant
+			if(detJ <= 0)
+			{
+				cout << "],\n";	// close the stiffness array in order to open an error message and still preserve a valid JSON document
+				cout << "\t\"error\": \"stumbled on a negative determinant on element " << distance(model.element_list.begin(), element) << "\"\n";
+				cout << "}\n";
+				// quit
+				return ERR_NEGATIVE_DETERMINANT;
+			}
+
 			invJ = invert3by3(J,detJ);
 
 				// Set up the B matrix

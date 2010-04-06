@@ -1,52 +1,40 @@
 {
-	"fem":
-	{	
+	"fem": {
 		"version": "1.0",
 		"type": "3D solid"
 	},
-
 	"materials": [
-		{"type":"linear elastic", "label": "A400", "E":2e+09,"nu":0, "fy": 2e+07}
+	{"type":"linear elastic", "label": "A400", "E":2e+09,"nu":0, "fy": 2e+07}	],
+"nodes":[
+	[1,[0,0,0]],
+	[2,[1,0,0]],
+	[3,[0,1,0]],
+	[4,[0,0,1]]
+	],
+"elements":[
+	{"type":"tetrahedron4", "nodes":[1,2,3,4], "material": 0}
 	],
 
-	"nodes":[
-			[1,[0, 0, 0]],
-			[2,[1, 0, 0]],
-			[3,[0, 1, 0]],
-			[4,[0, 0, 1]]
-		],
-
-	"elements":[
-			{"type":"tetrahedron4", "nodes":[1,2,3,4], "material": 0}
-		],
-
 	"node restrictions": [
-			{ "node":2, "dx":true, "dy":true, "dz":true},
-			{ "node":3, "dx":true, "dy":true, "dz":true},
-			{ "node":4, "dx":true, "dz":true},
-		],
+		{ "node":1, "dx":true, "dy":true, "dz":true},
+		{ "node":2, "dx":true, "dy":true, "dz":true},
+		{ "node":4, "dx":true, "dy":true, "dz":true}
+	],
 
 	"load patterns":[
 		{	
 			"label": "First test pattern",
-
 			"nodal loads":[
 				{"node":1, "force":[3, 2, 0]},
 				{"node":3, "force":[6, 4, 1]}
 			],
-
-			"node displacements":[
-				{"node":1, "dx": 1},
-				{"node":2, "dy": 1, "dz": 2}
-			],
-
 			"domain loads":[
 				{"element":0, "force": [1,1,1]}
 			],
-
 			"surface loads":[
-				{"type": "triangle3", "nodes": [1, 2, 3], "forces": [ [1, 0, 0], [1, 0, 0], [1, 0, 0]] }
+				{"type": "triangle3", "nodes": [1,2,3], "forces": [[1,0,0],[1,0,0],[1,0,0]]}
 			]
 		}
 	]
+
 }

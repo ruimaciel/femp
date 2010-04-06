@@ -1488,7 +1488,7 @@ enum Document::Error Document::save()
 			out << "\n\t";
 		switch (it->type) {
 			case fem::Material::MAT_LINEAR_ELASTIC:
-				out << "{\"type\":" << "\"linear elastic\", \"label\": \"" << it->label << "\", \"E\":" << it->E << ",\"nu\":" << it-> nu << ", \"fy\": " << it->fy << "}";
+				out << "\t{\"type\":" << "\"linear elastic\", \"label\": \"" << it->label << "\", \"E\":" << it->E << ",\"nu\":" << it-> nu << ", \"fy\": " << it->fy << "}";
 				break;
 
 			default:
@@ -1496,30 +1496,30 @@ enum Document::Error Document::save()
 				break;
 		}
 	}
-	out << "\t],\n";
+	out << "\n\t],\n";
 
 	// dump the nodes list
-	out << "\"nodes\":[";
+	out << "\t\"nodes\":[";
 	for (std::map < size_t, fem::Node >::iterator it = model.node_list.begin(); it != model.node_list.end(); it++) 
 	{
 		if (it != model.node_list.begin())
 			out << ",\n\t";
 		else
 			out << "\n\t";
-		out << "[" << it->first << ",[" << it-> second.data[0] << "," << it->second.data[1] << "," << it-> second.data[2] << "]]";
+		out << "\t[" << it->first << ",[" << it-> second.data[0] << "," << it->second.data[1] << "," << it-> second.data[2] << "]]";
 
 	}
 	out << "\n\t],\n";
 
 	// dump the elements list
-	out << "\"elements\":[";
+	out << "\t\"elements\":[";
 	int             material = 0;
 	for (std::vector < fem::Element >::iterator it = model.element_list.begin(); it != model.element_list.end(); it++)
 	{
 		if (it != model.element_list.begin())
-			out << ",\n\t";
+			out << ",\n\t\t";
 		else
-			out << "\n\t";
+			out << "\n\t\t";
 		out << "{\"type\":";
 		// get the name of the element
 		switch (it->type) 
@@ -1608,20 +1608,21 @@ enum Document::Error Document::save()
 			if (it != model.load_pattern_list.begin())
 				out << ",";
 			out << "\n\t\t{";
-			out << "\t\"label\": \"" << it->label << "\"";
+			out << "\n\t\t\t";
+			out << "\"label\": \"" << it->label << "\"";
 			// take care of the nodal loads
 			if (!it->nodal_loads.empty()) {
-				out << ",\n\t\t";
-				out << "\"nodal loads\":[";
+				out << ",\n\t\t\t";
+				out << "\"nodal loads\":[\n";
 				for (std::map < size_t, fem::NodalLoad >::iterator n = it->nodal_loads.begin(); n != it->nodal_loads.end(); n++)
 				{
 					if (n != it->nodal_loads.begin())
-						out << ",";
-					out << "\n\t\t\t{";
+						out << ",\n";
+					out << "\t\t\t\t{";
 					out << "\"node\":" << n->first;
 					out << ", \"force\":" << "[" << n->second.force.  x() << ", " << n->second.force.  y() << ", " << n->second.force.z() << "]}";
 				}
-				out << "\n\t\t]";
+				out << "\n\t\t\t]\n";
 			}
 
 			/*

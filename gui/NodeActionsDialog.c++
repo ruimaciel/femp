@@ -16,7 +16,7 @@ NodeActionsDialog::NodeActionsDialog(fem::Model &model, QWidget *parent)
 	// fill the load pattern combo box
 	for(size_t i = 0; i < model.load_pattern_list.size(); i++)
 	{
-		this->comboBoxLoadPattern->insertItem(i, model.load_pattern_list[i].label);
+		this->comboBoxLoadPattern->insertItem(i, QString::fromStdString(model.load_pattern_list[i].label));
 	}
 }
 

@@ -31,7 +31,7 @@ bool NewMaterialDialog::isDuplicate(QString name)
 {
 	for(std::vector<fem::Material>::iterator i = model->material_list.begin(); i != model->material_list.end(); i++)
 	{
-		if(i->label == name)
+		if(i->label == name.toStdString())
 			return true;
 	}
 
@@ -68,7 +68,7 @@ void NewMaterialDialog::addNewMaterial()
 	fem::Material new_material;
 
 	new_material.type = fem::Material::MAT_LINEAR_ELASTIC;
-	new_material.label = lineEditMaterialName->text();
+	new_material.label = lineEditMaterialName->text().toStdString();
 	new_material.E = lineEditYoung->text().toDouble();
 	new_material.nu = lineEditPoisson->text().toDouble();
 

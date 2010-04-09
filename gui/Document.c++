@@ -3,6 +3,8 @@
 #include <QTextStream>
 
 #include <stack>
+#include <string>
+#include <iostream>
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
@@ -1292,7 +1294,7 @@ enum Document::Error Document::load()
 				DECHO();
 
 				text = cursor.top()->text;
-				surface_load.node_reference.push_back(text.toULongLong());
+				surface_load.nodes.push_back(text.toULongLong());
 
 				state.pop();
 				break;
@@ -1302,7 +1304,7 @@ enum Document::Error Document::load()
 				CURSOR_NEXT_TEST(JSON_NUMBER);
 
 				text = cursor.top()->text;
-				surface_load.node_reference.push_back(text.toULongLong());
+				surface_load.nodes.push_back(text.toULongLong());
 
 				state.pop();
 				break;
@@ -1444,6 +1446,8 @@ unknown_error:		// some programming error happened
 
 enum Document::Error Document::save()
 {
+	//TODO drop support for Qt's text stream objects in favour of standard containers
+
 	QFile           file;
 	// TODO check version
 
@@ -1488,7 +1492,7 @@ enum Document::Error Document::save()
 			out << "\n\t";
 		switch (it->type) {
 			case fem::Material::MAT_LINEAR_ELASTIC:
-				out << "\t{\"type\":" << "\"linear elastic\", \"label\": \"" << it->label << "\", \"E\":" << it->E << ",\"nu\":" << it-> nu << ", \"fy\": " << it->fy << "}";
+				out << "\t{\"type\":" << "\"linear elastic\", \"label\": \"" << QString::fromStdString(it->label) << "\", \"E\":" << it->E << ",\"nu\":" << it-> nu << ", \"fy\": " << it->fy << "}";
 				break;
 
 			default:
@@ -1609,7 +1613,7 @@ enum Document::Error Document::save()
 				out << ",";
 			out << "\n\t\t{";
 			out << "\n\t\t\t";
-			out << "\"label\": \"" << it->label << "\"";
+			out << "\"label\": \"" << QString::fromStdString(it->label) << "\"";
 			// take care of the nodal loads
 			if (!it->nodal_loads.empty()) {
 				out << ",\n\t\t\t";
@@ -1703,9 +1707,9 @@ enum Document::Error Document::save()
 					out << ", ";
 
 					out << "\"nodes\": [";
-					for(std::vector<size_t>::iterator i = n->node_reference.begin(); i != n->node_reference.end(); i++)
+					for(std::vector<size_t>::iterator i = n->nodes.begin(); i != n->nodes.end(); i++)
 					{
-						if (i != n->node_reference.begin())
+						if (i != n->nodes.begin())
 							out << ",";
 						out << *i;
 					}

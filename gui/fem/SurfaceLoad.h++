@@ -11,10 +11,9 @@ namespace fem
 {
 
 class SurfaceLoad
+	: public Element
 {
 	public:
-		Element::Type	type;
-		std::vector<size_t>	node_reference;	// nodes that define the surface
 		std::vector<fem::point>	surface_forces;	// forces acting in each node, used to interpolate the surface load
 
 	public:

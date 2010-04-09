@@ -2,7 +2,6 @@
 
 
 
-
 namespace fem
 {
 
@@ -24,7 +23,7 @@ Analysis::~Analysis()
 }
 
 
-enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquation &f, const LoadPattern &lp)
+enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPattern &lp, bool verbose)
 {
 	using namespace std;
 	using namespace boost::numeric::ublas;
@@ -33,25 +32,31 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 	if(model.element_list.empty() )
 		return ERR_NO_ELEMENTS;
 
-	// at this point the model is considered to be OK.
-	//TODO resize the global stiffness matrix and nodal forces vector
+		// initialize the FemEquation object
+	f.k.clear();
 	f.f.clear();
-	f.f.resize(model.node_list.size()*3);	// remove this after implementing a decent resize code
+
+		// generate the location matrix
+	make_location_matrix(model);
 				
 		// declare variables
-	// std::vector<boost::tuple<fem::point, double> > ipwpl;	// integration points/weights pair list
+	size_t pi = 0;	// progress indicator
 	double detJ = 0;
 	matrix<double>	J(3,3), invJ(3,3);
 	std::vector< symmetric_matrix<double, upper> > D_list;
 
 		// set up the temporary variables for the elementary matrix and vector
 	symmetric_matrix<double, upper> k_elem;
-	mapped_vector<double> f_elem;
+	//TODO replace mapped_vector with vector
+	boost::numeric::ublas::vector<double> f_elem;
 	matrix<double> B;
 	matrix<double> Bt;
-	boost::tuple< std::vector<double>, std::vector<double>, std::vector<double>,std::vector<double> > sf;	// tuple: sf, dNdcsi, dNdeta, dNdzeta
+
+		//TODO get a separate function to return the shape function
+	std::vector<double>	sf;	// shape function
+	boost::tuple< std::vector<double>, std::vector<double>,std::vector<double> > sfd;	// tuple: dNdcsi, dNdeta, dNdzeta
 	int nnodes;	// number of nodes
-	std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;	// the location matrix
+	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
 
 
 		//build a list of constitutive matrices
@@ -60,49 +65,57 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 		D_list.push_back(material->generateD());
 	}
 
-		// build the location matrix, for the degrees of freedom
+		// generate stiffness matrix by cycling through all elements in the model
+		//TODO fix progress indicator
+#define UPDATE_PROGRESS(component) if(verbose) \
+		{ \
+			if(pi % (component.size()/10+1) == 0) \
+			{ \
+				cout << "," << pi / (component.size()/10+1)+1; \
+				cout.flush(); \
+			} \
+			pi++; \
+		} 
+
+	if(verbose)
 	{
-		boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  temp;
-		temp = make_location_matrix(model);
-		lm =  temp.get<0>();
-
-			// resize the global stiffness matrix and global force vector, don't preserve
-		f.k.resize(temp.get<1>(), temp.get<1>(), false);
-		f.f.resize(temp.get<1>(), false);
+		pi = 0;
+		cout << "\t\"stiffness matrix progress\": [0";	
+		cout.flush();
 	}
-
-	// generate stiffness matrix by cycling through all elements in the model
 	for(std::vector<Element>::iterator element = model.element_list.begin(); element != model.element_list.end(); element++)
 	{
-		// get the number of expected nodes used by the current element type
+			// output
+		UPDATE_PROGRESS(model.element_list);
+
+			// get the number of expected nodes used by the current element type
 		nnodes = element->node_number();
 
-		// resize the elementary matrices to fit the new node size
+			// resize the elementary matrices to fit the new node size
 		k_elem.resize(nnodes*3,nnodes*3,false);
 		f_elem.resize(nnodes*3,false);
 		B.resize(6,3*nnodes,false);
 		Bt.resize(3*nnodes,6,false);
 
-		// initialize variables
+			// initialize variables
 		k_elem.clear();
 		f_elem.clear();
 		B.clear();
 
-		// build the element stiffness matrix: cycle through the number of integration points
+			// build the element stiffness matrix: cycle through the number of integration points
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][degree[element->type]].begin(); i != ipwpl[element->family()][degree[element->type]].end(); i++)
 		{
 #define X(N) model.node_list[element->nodes[N]].x()
 #define Y(N) model.node_list[element->nodes[N]].y()
 #define Z(N) model.node_list[element->nodes[N]].z()
-#define dNdcsi(N) sf.get<1>()[n]
-#define dNdeta(N) sf.get<2>()[n]
-#define dNdzeta(N) sf.get<3>()[n]
+#define dNdcsi(N) sfd.get<0>()[n]
+#define dNdeta(N) sfd.get<1>()[n]
+#define dNdzeta(N) sfd.get<2>()[n]
 
-			// get the shape function and it's partial derivatives for this integration point
-			sf = this->sf(element->type, i->get<0>());
-			std::vector<double> test = sf.get<0>();
+				// get the shape function and it's partial derivatives for this integration point
+			sfd = this->shape_function_derivatives(element->type, i->get<0>() );
 
-			// generate the jacobian
+				// generate the jacobian
 			J.clear();
 			for(int n = 0; n < nnodes; n++)
 			{
@@ -112,13 +125,22 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 			}
 
 			detJ = det3by3(J);
+				// return error if we stumble on a negative determinant
+			if(detJ <= 0)
+			{
+				cout << "],\n";	// close the stiffness array in order to open an error message and still preserve a valid JSON document
+				cout << "\t\"error\": \"stumbled on a negative determinant on element " << distance(model.element_list.begin(), element) << "\"\n";
+				cout << "}\n";
+				// quit
+				return ERR_NEGATIVE_DETERMINANT;
+			}
+
 			invJ = invert3by3(J,detJ);
 
-			// Set up the B matrix
+				// Set up the B matrix
 			for(int n = 0; n < nnodes; n++)
 			{
 				// set the variables
-
 				// set the partial derivatives
 #undef X
 #undef Y
@@ -156,54 +178,180 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 			temp = prod(temp,B);
 			temp *= detJ*i->get<1>();
 			k_elem += temp;	// adding up the full result
-
-
-			// check if there is a domain load associated with this element
-
-			// integrate the domain loads, if it is defined
-			// get the current element's index
-			size_t element_index = distance(model.element_list.begin(), element);
-			//TODO check why ::iterator doesn't compile
-			std::map<size_t,DomainLoad>::const_iterator dli;	// domain load iterator
-
-			dli = lp.domain_loads.find(element_index);
-			if(dli != lp.domain_loads.end())
-			{
-				for(int n = 0; n < nnodes; n++)
-				{
-#define N(n) sf.get<0>()[n]
-#define W    i->get<1>()
-					//TODO implement domain nodes
-					f_elem(3*n) += N(n)*dli->second.force.x()*detJ*W;
-					f_elem(3*n+1) += N(n)*dli->second.force.y()*detJ*W;
-					f_elem(3*n+2) += N(n)*dli->second.force.z()*detJ*W;
-#undef W
-#undef N
-				}
-			}
-
-			//std::cout << B << std::endl;
 		}
 
-		//output
-		std::cout << k_elem << std::endl;
-		// add to the global stiffness matrix, 
-		add_elementary_to_global(k_elem, f_elem, f, lm, *element);
-
+			// add elementary stiffness matrix to the global stiffness matrix 
+		add_elementary_stiffness_to_global(k_elem, f, lm, *element);
 	}
+	if(verbose)
+		cout << "]," << endl;
 
 
-	// now set up the equivalent forces vector
-
+		// now set up the equivalent forces vector
 	// set nodal force contribution made by the domain loads
+	if(verbose)
+	{
+		pi = 0;
+		cout << "\t\"domain loads progress\": [0";	
+		cout.flush();
+	}
 	for(std::map<size_t,fem::DomainLoad>::const_iterator domain_load = lp.domain_loads.begin(); domain_load != lp.domain_loads.end(); domain_load++)
 	{
-	}
+		// output progress message
+		UPDATE_PROGRESS(lp.domain_loads);
 
+		fem::Element *element;
+		element = &model.element_list[domain_load->first];
+		nnodes = element->node_number();
+
+		f_elem.resize(nnodes*3, false);
+
+		// as the distribution is linear across the domain then degree 1 is enough
+		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][ddegree[element->type]].begin(); i != ipwpl[element->family()][ddegree[element->type]].end(); i++)
+		{
+				// build the Jacobian
+			sf = shape_function(element->type, i->get<0>() );
+			sfd = shape_function_derivatives(element->type, i->get<0>() );
+
+				// generate the jacobian
+			J.clear();
+#define X(N)	model.node_list[element->nodes[N]].x()
+#define Y(N)	model.node_list[element->nodes[N]].y()
+#define Z(N)	model.node_list[element->nodes[N]].z()
+#define dNdcsi(N) sfd.get<0>()[n]
+#define dNdeta(N) sfd.get<1>()[n]
+#define dNdzeta(N) sfd.get<2>()[n]
+			for(int n = 0; n < nnodes; n++)
+			{
+				J(0,0) += dNdcsi(n)*X(n);	J(0,1) += dNdcsi(n)*Y(n);	J(0,2) += dNdcsi(n)*Z(n);
+				J(1,0) += dNdeta(n)*X(n);	J(1,1) += dNdeta(n)*Y(n);	J(1,2) += dNdeta(n)*Z(n);
+				J(2,0) += dNdzeta(n)*X(n);	J(2,1) += dNdzeta(n)*Y(n);	J(2,2) += dNdzeta(n)*Z(n);
+			}
+#undef dNdcsi
+#undef dNdeta
+#undef dNdzeta
+
+			detJ = det3by3(J);
+
+			// and now the f_elem
+			for(int n = 0; n < nnodes; n++)
+			{
+#define N(n) sf[n]
+#define b(COORD) domain_load->second.force.COORD()
+#define W    i->get<1>()
+				f_elem(3*n) += N(n)*b(x)*detJ*W;
+				f_elem(3*n+1) += N(n)*b(y)*detJ*W;
+				f_elem(3*n+2) += N(n)*b(z)*detJ*W;
+#undef N
+#undef b
+#undef W
+			}
+		}
+#undef X
+#undef Y
+#undef Z
+
+			//add the domain load's f_elem contribution to f.f
+		for(size_t i = 0; i < model.element_list[domain_load->first].nodes.size(); i++)
+		{
+			dof = lm.find(model.element_list[domain_load->first].nodes[i]);
+			if(dof == lm.end())
+				continue;	// no degrees of freedom on this node
+			else
+			{
+				size_t n;
+				n = dof->second.get<0>();
+				if(n != 0)
+					f.f(n-1) += f_elem(3*i);
+				n = dof->second.get<1>();
+				if(n != 0)
+					f.f(n-1) += f_elem(3*i+1);
+				n = dof->second.get<2>();
+				if(n != 0)
+					f.f(n-1) += f_elem(3*i+2);
+			}
+		}
+	}
+	if(verbose)
+		cout << "]," << endl;
+
+		// integrate the surface loads
+	//TODO finish this
+	if(verbose)
+	{
+		pi = 0;
+		cout << "\t\"surface loads progress\": [0";
+		cout.flush();
+	}
+	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
+	{
+			// output progress message
+		UPDATE_PROGRESS(lp.surface_loads);
+
+		//TODO
+		nnodes = surface_load->node_number();
+
+		f_elem.resize(nnodes*3, false);
+
+		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[surface_load->family()][degree[surface_load->type]].begin(); i != ipwpl[surface_load->family()][degree[surface_load->type]].end(); i++)
+		{
+				// get shape function and shape function derivatives in this integration point's coordinate
+			sf = shape_function(surface_load->type, i->get<0>() );
+			sfd = shape_function_derivatives(surface_load->type, i->get<0>() );
+
+				// calculate the Jacobian
+			J.clear();
+#define X(N)	model.node_list[surface_load->nodes[N]].x()
+#define Y(N)	model.node_list[surface_load->nodes[N]].y()
+#define Z(N)	model.node_list[surface_load->nodes[N]].z()
+#define dNdcsi(N) sfd.get<0>()[n]
+#define dNdeta(N) sfd.get<1>()[n]
+			for(int n = 0; n < nnodes; n++)
+			{
+				J(1,0) += dNdcsi(n)*X(n);	J(1,1) += dNdcsi(n)*Y(n);
+				J(2,0) += dNdeta(n)*X(n);	J(2,1) += dNdeta(n)*Y(n);
+			}
+#undef dNdcsi
+#undef dNdeta
+
+			detJ = J(1,0)*J(2,1) - J(1,1)*J(2,0);
+
+#define N(n) sf[n]
+#define b(COORD) domain_load->second.force.COORD()
+#define W    i->get<1>()
+				// calculate q(csi, eta, zeta)
+			fem::point q;
+			for(int j = 0; j < nnodes; i++)
+			{
+				q += N(j)*surface_load->surface_forces[j];
+			}
+
+			for(int n = 0; n < nnodes; n++)
+			{
+
+				f_elem(3*n  ) += N(n)*q.x()*detJ*W;
+				f_elem(3*n+1) += N(n)*q.y()*detJ*W;
+				f_elem(3*n+2) += N(n)*q.z()*detJ*W;
+			}
+		}
+
+		// TODO add contribution
+	}
+	if(verbose)
+		cout << "]," << endl;
 
 	// set nodal forces
+	if(verbose)
+	{
+		pi = 0;
+		cout << "\t\"nodal loads progress\": [0";
+		cout.flush();
+	}
 	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
 	{
+			// output progress message
+		UPDATE_PROGRESS(lp.nodal_loads);
+
 		size_t n;
 		n = nodal_load->first;
 
@@ -215,7 +363,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, struct FemEquati
 		if(lm[n].get<2>() != 0)
 			f.f[lm[n].get<2>()-1] += nodal_load->second.z();
 	}
-
+	if(verbose)
+		cout << "]," << endl;
 
 	// fem equation is set.
 	return ERR_OK;
@@ -270,36 +419,317 @@ double Analysis::det3by3(const boost::numeric::ublas::matrix<double> &M)
 }
 
 
-enum Analysis::Error Analysis::run(Model &model, const LoadPattern &lp)
+enum Analysis::Error Analysis::solve_cholesky()
+{
+	double s;
+	for(size_t j = 0; j < f.k.size2(); j++)
+	{
+		for(size_t i = 0; i < f.k.size1(); i++)
+		{
+			s = f.k(i,j);
+			for(size_t m = 0; m < j; m++)
+			{
+				s -= f.k(i,m)*f.k(j,m);
+			}
+
+			if(i == j)
+			{
+				if(s > 0)
+				{
+					f.k(j,j) = sqrt(s);
+				}
+				else
+					return ERR_SINGULAR_MATRIX;
+			}
+			else
+			{
+				f.k(i,j) = s/f.k(j,j);
+			}
+		}
+	}
+
+	// solve Ly = b
+	for (size_t i = 0; i < f.k.size1(); i++)
+	{
+		for (size_t j = 0; j < i; j++)
+		{
+			f.f(i) -= f.k(i, j) * f.f(j);
+		}
+		f.f(i) /= f.k(i, i);
+	}
+
+	// Backward solve L'x = y
+	for (size_t i = f.k.size1() - 1; i > 0; i--)
+	{
+		for (size_t j = i + 1; j < f.k.size2(); j++)
+		{
+			f.f(i) -= f.k(j, i) * f.f(j);
+		}
+		f.f(i) /= f.k(i, i);
+	}
+	for (size_t j = 1; j < f.k.size2(); j++)
+	{
+		f.f(0) -= f.k(j, 0) * f.f(j);
+	}
+	f.f(0) /= f.k(0, 0);
+
+	f.d = f.f;
+
+	return ERR_OK;
+}
+
+
+enum Analysis::Error Analysis::solve_conjugate_gradient(float e)
 {
 	using namespace std;
 
-	//TODO finish this
-	struct FemEquation f;
+	boost::numeric::ublas::compressed_vector<double> r1;
+	boost::numeric::ublas::compressed_vector<double> r2;
+	boost::numeric::ublas::compressed_vector<double> p;
+	double alpha;
+	double beta;
+	// size_t iter = 0;
 
-	//this is a nasty hack to test the code. To be removed.
-	//TODO return a good return code
-	build_fem_equation(model,f, lp);
+	r1.resize(f.f.size());
+	f.d.resize(f.f.size());
 
-	//TODO remove testing code
-	std::cout << "testing stiffness matrix" << std::endl;
-	std::cout << f.k << std::endl;
-	std::cout << "testing force vector" << std::endl;
-	std::cout << f.f << std::endl;
+	// initialize the vector
+	/*
+	for(size_t i = 0; i < f.f.size(); i++)
+	{
+		f.d[i] = 1;
+	}
+	*/
+	f.d = f.f;
 
-	if(f.f.nnz() == 0)
-		return ERR_SINGULAR_MATRIX; 
+	r1 = f.f - prec_prod(f.k,f.d);
+	p = r1;
+	r2 = r1;
 
-	cout << "nnz: " << f.f.nnz() << endl;
+	do
+	{
+		//iter++;
+		alpha = inner_prod(r1,r1) / inner_prod(p,prec_prod(f.k,p));
+		f.d = f.d + alpha*p;
+		r2 = r1 - alpha*prec_prod(f.k,p);
+		beta = inner_prod(r2,r2)/inner_prod(r1,r1);
 
-	// solve the equation system
-	f.solve();
-	// f.CGsolve(10e-5);
+		p = r2 + beta*p;
 
-	std::cout << "testing displacement vector" << std::endl;
-	std::cout << f.f << std::endl;
+		r1 = r2;
 
+		/*
+		   std::cout << "alpha: " << alpha << std::endl;
+		   std::cout << "f.d: \n" << f.d << std::endl;
+		   std::cout << "r: \n" << r2 << std::endl;
+		 */
+
+	} while ( norm_2(r2) > e);
+
+	/*
+	   std::cout << "iterations: " << iter << endl;
+	   std::cout << "f.d: \n" << f.d << std::endl;
+	 */
+
+	return ERR_OK;	
+}
+
+
+enum Analysis::Error Analysis::solve_gauss()
+{
+	using namespace std;
+
+	assert(f.k.size1() == f.k.size2());
+	double factor;
+
+	// Gauss factorization
+	f.d = f.f;
+	for(size_t diag = 0; diag < f.k.size1(); diag++)
+	{
+		// reduce current line to 1 in diagonal
+		factor = f.k(diag,diag);
+
+		// normalize the current leading row
+		for(size_t j = diag; j < f.k.size2(); j++)
+		{
+			f.k(diag,j) /= factor;
+		}
+		f.d(diag) /= factor;
+
+		// subtract from all the others
+		for(size_t i = diag+1; i < f.k.size1(); i++)
+		{
+			factor = f.k(i,diag);
+			//for(size_t j = diag; j < f.k.size2(); j++)
+			for(size_t j = 0; j < f.k.size2(); j++)
+			{
+				f.k(i,j) -= factor*f.k(diag,j);
+			}
+			f.d(i) -= factor*f.d(diag);
+		}
+	}
+
+	// back substitution
+	for(size_t j = f.k.size1()-1; j > 0 ; j--)
+	{
+		for(size_t i = 0; i < j; i++)
+		{
+			f.d(i) -= f.k(i,j)*f.d(j);
+		}
+		// cout << endl;
+	}
+
+	// all went well
 	return ERR_OK;
+}
+
+
+enum Analysis::Error Analysis::solve_gauss_pivot()
+{
+	//TODO implement partial pivoting
+
+	using namespace std;
+
+	assert(f.k.size1() == f.k.size2());
+	double factor;
+	size_t row[f.k.size1()];	// for the pivoting
+	size_t temp;	// temporary pivot
+
+	// initialize the row pivoting map
+	for(size_t i = 0; i < f.k.size1(); i++)
+		row[i] = i;
+
+	// Gauss factorization
+	for(size_t diag = 0; diag < f.k.size1(); diag++)
+	{
+		// choose pivot
+		for(size_t i = diag+1; i < f.k.size1(); i++)
+		{
+			if(abs(f.k(row[i],diag)) > abs(f.k(row[diag],diag)) )
+			{
+				// cout << "pivot change: diag " << row[diag] << " for row " << row[i] << endl;
+				temp = row[i];
+				row[i] = row[diag];
+				row[diag] = temp;
+			}
+		}
+
+		// check if matrix is singular
+		//TODO check if this is a decent test
+		if( abs(f.k(row[diag],diag)) < 1e-16)
+			return ERR_SINGULAR_MATRIX;
+
+		// reduce current line to 1 in diagonal
+		factor = f.k(row[diag],diag);
+
+		// normalize the current leading row
+		for(size_t j = diag; j < f.k.size2(); j++)
+		{
+			f.k(row[diag],j) /= factor;
+		}
+		f.f(row[diag]) /= factor;
+
+		// subtract from all the others
+		for(size_t i = diag+1; i < f.k.size1(); i++)
+		{
+			factor = f.k(row[i],diag);
+			//for(size_t j = diag; j < f.k.size2(); j++)
+			for(size_t j = 0; j < f.k.size2(); j++)
+			{
+				f.k(row[i],j) -= factor*f.k(row[diag],j);
+			}
+			f.f(row[i]) -= factor*f.f(row[diag]);
+		}
+	}
+
+	// back substitution
+	for(size_t j = f.k.size1()-1; j > 0 ; j--)
+	{
+		for(size_t i = 0; i < j; i++)
+		{
+			f.f(row[i]) -= f.k(row[i],j)*f.f(row[j]);
+		}
+		// cout << endl;
+	}
+
+	// rearrange the tweaked pivots
+	//TODO find a better way
+	for(size_t i = 0; i < f.f.size(); i++)
+		f.d(i) = f.f(row[i]);
+
+	// all went well
+	return ERR_OK;
+}
+
+
+
+void Analysis::output_fem_equation(std::ostream &out)
+{
+	out << "\t\"fem equation\" : {\n";
+
+	// output stiffness matrix
+	out << "\t\t\"stiffness matrix\" : [\n";
+	for(size_t i = 0; i < f.k.size1(); i++)
+	{
+		out << "\t\t\t[";
+		for(size_t j = 0; j < f.k.size2(); j++)
+		{
+			if(j != 0)
+				out << ",";
+			out << "\t" << f.k(i,j);
+		}
+		out << "]";
+		if(i + 1 < f.k.size1())
+			out << ",";
+		out << "\n";
+	}
+	out << "\t\t],\n";
+
+	// output force vector
+	out << "\t\t\"force vector\" : [\n";
+	for(size_t i = 0; i < f.f.size(); i++)
+	{
+		out << "\t\t\t";
+		out << f.f(i);
+		if(i +1 < f.f.size() )
+			out << ",";
+		out << "\n";
+	}
+	out << "\t\t]\n";
+
+	out << "\t},\n";
+}
+
+
+void Analysis::output_displacements(std::ostream &out)
+{
+	using namespace std;
+
+	// output displacements field
+	out << "\t\"displacement\": [";
+	size_t n = 0;
+	bool first = true;
+	for(map<size_t, boost::tuple<size_t,size_t,size_t> >::const_iterator i = lm.begin(); i != lm.end(); i++)
+	{
+		if( (i->second.get<0>() == 0)&& (i->second.get<1>() == 0) &&  (i->second.get<1>() == 0) )
+			continue;
+
+		if(!first)
+			out << ",";
+		else
+			first = false;
+
+		out << "\n\t\t{ \"node\": " << i->first;
+		if(i->second.get<0>() != 0)
+			out << ", \"dx\": " << f.d(n++);
+		if(i->second.get<1>() != 0)
+			out << ", \"dy\": " << f.d(n++);
+		if(i->second.get<2>() != 0)
+			out << ", \"dz\": " << f.d(n++);
+		out << "}";
+	}
+
+	out << "\n\t]\n";
 }
 
 
@@ -337,12 +767,13 @@ void Analysis::gauleg(double x[], double w[], int n)
 }
 
 
-boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double> > Analysis::sf(const Element::Type type, const fem::point &point)
+	std::vector<double> 
+Analysis::shape_function(const Element::Type type, const fem::point &point)
 {
 	using namespace boost;
 	using namespace std;
-	tuple<vector<double>, vector<double>, vector<double>, vector<double> > sfd;	// shape function derivatives tuple
-	vector<double> sf, dNdcsi, dNdeta, dNdzeta;	// shape function derivatives weights 
+
+	vector<double> sf;	// shape function derivatives weights 
 
 	// declare a set of macros to make the code more readable
 #define csi point.data[0]
@@ -352,13 +783,233 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 	// let's fill in the vectors
 	switch(type)
 	{
+		//TODO FE_TRIANGLEs
+
+		case Element::FE_QUADRANGLE4:
+			sf.resize(4);
+			sf[0] = (1-csi)*(1-eta)/4;
+			sf[1] = (1+csi)*(1-eta)/4;
+			sf[2] = (1+csi)*(1+eta)/4;
+			sf[3] = (1-csi)*(1+eta)/4;
+			break;
+
+		case Element::FE_QUADRANGLE9:
+			sf.resize(9);
+			sf[0] = (csi-1)*csi*(eta-1)*eta/4;
+			sf[1] = csi*(csi+1)*(eta-1)*eta/4;
+			sf[2] = csi*(csi+1)*eta*(eta+1)/4;
+			sf[3] = (csi-1)*csi*eta*(eta+1)/4;
+			sf[4] = (1-csi)*(csi+1)*(eta-1)*eta/2;
+			sf[5] = csi*(csi+1)*(1-eta)*(eta+1)/2;
+			sf[6] = (1-csi)*(csi+1)*eta*(eta+1)/2;
+			sf[7] = (csi-1)*csi*(1-eta)*(eta+1)/2;
+			break;
+
 		case Element::FE_TETRAHEDRON4:
 			sf.resize(4);
 			sf[0] = 1-csi-eta-zeta;
 			sf[1] = csi;
 			sf[2] = eta;
 			sf[3] = zeta;
+			break;
 
+		
+		case Element::FE_TETRAHEDRON10:
+			{
+				double L[4];
+				L[0] = 1-csi-eta-zeta;
+				L[1] = csi;
+				L[2] = eta;
+				L[3] = zeta;
+			
+				sf.resize(10);
+				sf[0] = (2*L[0]-1)*L[0];
+				sf[1] = (2*L[1]-1)*L[1];
+				sf[2] = (2*L[2]-1)*L[2];
+				sf[3] = (2*L[3]-1)*L[3];
+				sf[4] = 4*L[0]*L[1];
+				sf[5] = 4*L[1]*L[2];
+				sf[6] = 4*L[0]*L[2];
+				sf[7] = 4*L[0]*L[3];
+				sf[8] = 4*L[2]*L[3];
+				sf[9] = 4*L[1]*L[3];
+			}
+			break;
+
+		case Element::FE_TETRAHEDRON20:
+			{
+				double L[4];
+				L[0] = 1-csi-eta-zeta;
+				L[1] = csi;
+				L[2] = eta;
+				L[3] = zeta;
+			
+				sf.resize(10);
+				sf[0] = (2*L[0]-1)*L[0];
+				sf[1] = (2*L[1]-1)*L[1];
+				sf[2] = (2*L[2]-1)*L[2];
+				sf[3] = (2*L[3]-1)*L[3];
+				sf[4] = 4*L[0]*L[1];
+				sf[5] = 4*L[1]*L[2];
+				sf[6] = 4*L[0]*L[2];
+				sf[7] = 4*L[0]*L[3];
+				sf[8] = 4*L[2]*L[3];
+				sf[9] = 4*L[1]*L[3];
+				sf[10] = (2*L[0]-1)*L[0];
+				sf[11] = (2*L[1]-1)*L[1];
+				sf[12] = (2*L[2]-1)*L[2];
+				sf[13] = (2*L[3]-1)*L[3];
+				sf[14] = 4*L[0]*L[1];
+				sf[15] = 4*L[1]*L[2];
+				sf[16] = 4*L[0]*L[2];
+				sf[17] = 4*L[0]*L[3];
+				sf[18] = 4*L[2]*L[3];
+				sf[19] = 4*L[1]*L[3];
+			}
+			break;
+
+		case Element::FE_HEXAHEDRON8:
+			sf.resize(8);
+			sf[0] = (1-csi)*(1-eta)*(1-zeta)/8;
+			sf[1] = (csi+1)*(1-eta)*(1-zeta)/8;
+			sf[2] = (csi+1)*(eta+1)*(1-zeta)/8;
+			sf[3] = (1-csi)*(eta+1)*(1-zeta)/8;
+			sf[4] = (1-csi)*(1-eta)*(zeta+1)/8;
+			sf[5] = (csi+1)*(1-eta)*(zeta+1)/8;
+			sf[6] = (csi+1)*(eta+1)*(zeta+1)/8;
+			sf[7] = (1-csi)*(eta+1)*(zeta+1)/8;
+			break;
+
+		case Element::FE_HEXAHEDRON27:
+			// sf
+			sf.resize(27);
+			sf[ 0] = (csi-1)*csi*(eta-1)*eta*(zeta-1)*zeta/8;
+			sf[ 1] = csi*(csi+1)*(eta-1)*eta*(zeta-1)*zeta/8;
+			sf[ 2] = csi*(csi+1)*eta*(eta+1)*(zeta-1)*zeta/8;
+			sf[ 3] = (csi-1)*csi*eta*(eta+1)*(zeta-1)*zeta/8;
+			sf[ 4] = (csi-1)*csi*(eta-1)*eta*zeta*(zeta+1)/8;
+			sf[ 5] = csi*(csi+1)*(eta-1)*eta*zeta*(zeta+1)/8;
+			sf[ 6] = csi*(csi+1)*eta*(eta+1)*zeta*(zeta+1)/8;
+			sf[ 7] = (csi-1)*csi*eta*(eta+1)*zeta*(zeta+1)/8;
+			sf[ 8] = -(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)*zeta/4;
+			sf[ 9] = -(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
+			sf[10] = -(csi-1)*csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
+			sf[11] = -csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
+			sf[12] = -csi*(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
+			sf[13] = -(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)*zeta/4;
+			sf[14] = -csi*(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
+			sf[15] = -(csi-1)*csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
+			sf[16] = -(csi-1)*(csi+1)*(eta-1)*eta*zeta*(zeta+1)/4;
+			sf[17] = -(csi-1)*csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
+			sf[18] = -csi*(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
+			sf[19] = -(csi-1)*(csi+1)*eta*(eta+1)*zeta*(zeta+1)/4;
+			sf[20] = (csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2;
+			sf[21] = (csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2;
+			sf[22] = (csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
+			sf[23] = csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
+			sf[24] = (csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2;
+			sf[25] = (csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2;
+			sf[26] = -(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1);
+			break;
+
+		case Element::FE_PRISM6:
+			double L[3];
+			L[0] = 1-csi-eta;
+			L[1] = csi;
+			L[2] = eta;
+
+			sf.resize(6);
+			sf[ 0] = L[0]*(1-zeta)/2.0;
+			sf[ 1] = L[1]*(1-zeta)/2.0;
+			sf[ 2] = L[2]*(1-zeta)/2.0;
+			sf[ 3] = L[0]*(1+zeta)/2.0;
+			sf[ 4] = L[1]*(1+zeta)/2.0;
+			sf[ 5] = L[2]*(1+zeta)/2.0;
+			break;
+
+		default:
+			//TODO this part should never be reached
+			assert(false);
+			break;
+	}
+#undef csi
+#undef eta
+#undef zeta
+
+	return sf;
+}
+
+
+boost::tuple<std::vector<double>, std::vector<double>, std::vector<double> > Analysis::shape_function_derivatives(const Element::Type type, const fem::point &point)
+{
+	using namespace boost;
+	using namespace std;
+	tuple<vector<double>, vector<double>, vector<double> > sfd;	// shape function derivatives tuple
+	vector<double> dNdcsi, dNdeta, dNdzeta;	// shape function derivatives weights 
+
+	// declare a set of macros to make the code more readable
+#define csi point.data[0]
+#define eta point.data[1]
+#define zeta point.data[2]
+
+	// let's fill in the vectors
+	switch(type)
+	{
+		//TODO FE_TRIANGLEs
+
+		case Element::FE_QUADRANGLE4:
+			dNdcsi.resize(4);
+			dNdcsi[0] = (eta-1)/4;
+			dNdcsi[1] = (1-eta)/4;
+			dNdcsi[2] = (1+eta)/4;
+			dNdcsi[3] = (-1-eta)/4;
+
+			dNdeta.resize(4);
+			dNdeta[0] = (csi-1)/4;
+			dNdeta[1] = (-1-csi)/4;
+			dNdeta[2] = (1+csi)/4;
+			dNdeta[3] = (1-csi)/4;
+
+			dNdzeta.resize(4);
+			dNdzeta[0] = 0;
+			dNdzeta[1] = 0;
+			dNdzeta[2] = 0;
+			dNdzeta[3] = 0;
+			break;
+
+		case Element::FE_QUADRANGLE9:
+			dNdcsi.resize(9);
+			dNdcsi[0] = csi*(eta-1)*eta/4+(csi-1)*(eta-1)*eta/4;
+			dNdcsi[1] = (csi+1)*(eta-1)*eta/4+csi*(eta-1)*eta/4;
+			dNdcsi[2] = (csi+1)*eta*(eta+1)/4+csi*eta*(eta+1)/4;
+			dNdcsi[3] = csi*eta*(eta+1)/4+(csi-1)*eta*(eta+1)/4;
+			dNdcsi[4] = (1-csi)*(eta-1)*eta/2-(csi+1)*(eta-1)*eta/2;
+			dNdcsi[5] = (csi+1)*(1-eta)*(eta+1)/2+csi*(1-eta)*(eta+1)/2;
+			dNdcsi[6] = (1-csi)*eta*(eta+1)/2-(csi+1)*eta*(eta+1)/2;
+			dNdcsi[7] = csi*(1-eta)*(eta+1)/2+(csi-1)*(1-eta)*(eta+1)/2;
+
+			dNdeta.resize(9);
+			dNdeta[0] = (csi-1)*csi*(2*eta-1)/4;
+			dNdeta[1] = csi*(csi+1)*(2*eta-1)/4;
+			dNdeta[2] = csi*(csi+1)*(2*eta+1)/4;
+			dNdeta[3] =  (csi-1)*csi*(2*eta+1)/4;
+			dNdeta[4] = -(csi-1)*(csi+1)*(2*eta-1)/2;
+			dNdeta[5] = -csi*(csi+1)*eta;
+			dNdeta[6] =  -(csi-1)*(csi+1)*(2*eta+1)/2;
+			dNdeta[7] = -(csi-1)*csi*eta;
+
+			dNdzeta.resize(9);
+			dNdzeta[0] = 0;
+			dNdzeta[1] = 0;
+			dNdzeta[2] = 0;
+			dNdzeta[3] = 0;
+			dNdzeta[4] = 0;
+			dNdzeta[5] = 0;
+			dNdzeta[6] = 0;
+			dNdzeta[7] = 0;
+			break;
+
+		case Element::FE_TETRAHEDRON4:
 			dNdcsi.resize(4);
 			dNdcsi[0] = -1;
 			dNdcsi[1] = 1;
@@ -387,18 +1038,6 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 				L[2] = eta;
 				L[3] = zeta;
 			
-				sf.resize(10);
-				sf[0] = (2*L[0]-1)*L[0];
-				sf[1] = (2*L[1]-1)*L[1];
-				sf[2] = (2*L[2]-1)*L[2];
-				sf[3] = (2*L[3]-1)*L[3];
-				sf[4] = 4*L[0]*L[1];
-				sf[5] = 4*L[1]*L[2];
-				sf[6] = 4*L[0]*L[2];
-				sf[7] = 4*L[0]*L[3];
-				sf[8] = 4*L[2]*L[3];
-				sf[9] = 4*L[1]*L[3];
-
 				dNdcsi.resize(10);
 				dNdcsi[0] = -4*L[0]+1;
 				dNdcsi[1] = 4*L[1]-1;
@@ -487,16 +1126,6 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 			*/
 
 		case Element::FE_HEXAHEDRON8:
-			sf.resize(8);
-			sf[0] = (1-csi)*(1-eta)*(1-zeta)/8;
-			sf[1] = (csi+1)*(1-eta)*(1-zeta)/8;
-			sf[2] = (csi+1)*(eta+1)*(1-zeta)/8;
-			sf[3] = (1-csi)*(eta+1)*(1-zeta)/8;
-			sf[4] = (1-csi)*(1-eta)*(zeta+1)/8;
-			sf[5] = (csi+1)*(1-eta)*(zeta+1)/8;
-			sf[6] = (csi+1)*(eta+1)*(zeta+1)/8;
-			sf[7] = (1-csi)*(eta+1)*(zeta+1)/8;
-
 			// dNdcsi
 			dNdcsi.resize(8);
 			dNdcsi[ 0] = -(1-eta)*(1-zeta)/8;
@@ -532,36 +1161,6 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 			break;
 
 		case Element::FE_HEXAHEDRON27:
-			// sf
-			sf.resize(27);
-			sf[ 0] = (csi-1)*csi*(eta-1)*eta*(zeta-1)*zeta/8;
-			sf[ 1] = csi*(csi+1)*(eta-1)*eta*(zeta-1)*zeta/8;
-			sf[ 2] = csi*(csi+1)*eta*(eta+1)*(zeta-1)*zeta/8;
-			sf[ 3] = (csi-1)*csi*eta*(eta+1)*(zeta-1)*zeta/8;
-			sf[ 4] = (csi-1)*csi*(eta-1)*eta*zeta*(zeta+1)/8;
-			sf[ 5] = csi*(csi+1)*(eta-1)*eta*zeta*(zeta+1)/8;
-			sf[ 6] = csi*(csi+1)*eta*(eta+1)*zeta*(zeta+1)/8;
-			sf[ 7] = (csi-1)*csi*eta*(eta+1)*zeta*(zeta+1)/8;
-			sf[ 8] = -(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)*zeta/4;
-			sf[ 9] = -(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
-			sf[10] = -(csi-1)*csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
-			sf[11] = -csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
-			sf[12] = -csi*(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
-			sf[13] = -(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)*zeta/4;
-			sf[14] = -csi*(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
-			sf[15] = -(csi-1)*csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
-			sf[16] = -(csi-1)*(csi+1)*(eta-1)*eta*zeta*(zeta+1)/4;
-			sf[17] = -(csi-1)*csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
-			sf[18] = -csi*(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
-			sf[19] = -(csi-1)*(csi+1)*eta*(eta+1)*zeta*(zeta+1)/4;
-			sf[20] = (csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2;
-			sf[21] = (csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2;
-			sf[22] = (csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
-			sf[23] = csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
-			sf[24] = (csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2;
-			sf[25] = (csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2;
-			sf[26] = -(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1);
-
 			// dNdcsi
 			dNdcsi.resize(27);
 			dNdcsi[ 0] = csi*(eta-1)*eta*(zeta-1)*zeta/8+(csi-1)*(eta-1)*eta*(zeta-1)*zeta/8;
@@ -659,14 +1258,6 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 				L[1] = csi;
 				L[2] = eta;
 
-				sf.resize(6);
-				sf[ 0] = L[0]*(1-zeta)/2.0;
-				sf[ 1] = L[1]*(1-zeta)/2.0;
-				sf[ 2] = L[2]*(1-zeta)/2.0;
-				sf[ 3] = L[0]*(1+zeta)/2.0;
-				sf[ 4] = L[1]*(1+zeta)/2.0;
-				sf[ 5] = L[2]*(1+zeta)/2.0;
-
 				dNdcsi.resize(6);
 				dNdcsi[ 0] = -(1-zeta)/2.0;
 				dNdcsi[ 1] =  (1-zeta)/2.0;
@@ -702,54 +1293,60 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double>, std:
 #undef zeta
 
 	// let's fill in the tuple
-	sfd.get<0>() = sf;
-	sfd.get<1>() = dNdcsi;
-	sfd.get<2>() = dNdeta;
-	sfd.get<3>() = dNdzeta;
+	sfd.get<0>() = dNdcsi;
+	sfd.get<1>() = dNdeta;
+	sfd.get<2>() = dNdzeta;
 	return sfd;
 }
 
 
-void Analysis::setDegree(Element::Type &type, int d)
+void Analysis::setDegree(Element::Type &type, int &d)
 {
 	degree[type] = d;
 }
 
 
+void Analysis::setDDegree(Element::Type &type, int &d)
+{
+	ddegree[type] = d;
+}
+
+
 void Analysis::setDefaultIntegrationDegrees()
 {
-	//TODO tweak integration points
-	degree[Element::FE_TRIANGLE3] = 1;
-	degree[Element::FE_TRIANGLE6] = 1;
-	degree[Element::FE_TRIANGLE10] = 1;
-	degree[Element::FE_TRIANGLE15] = 1;
+	//TODO tweak integration points	
+	// the degree for the stiffness matrix	// and the degree for the domain loads
+	degree[Element::FE_TRIANGLE3 ] = 1;	ddegree[Element::FE_TRIANGLE3 ] = 1;
+	degree[Element::FE_TRIANGLE6 ] = 1;	ddegree[Element::FE_TRIANGLE6 ] = 1;
+	degree[Element::FE_TRIANGLE10] = 1;	ddegree[Element::FE_TRIANGLE10] = 1;
+	degree[Element::FE_TRIANGLE15] = 1;	ddegree[Element::FE_TRIANGLE15] = 1;
 
-	degree[Element::FE_QUADRANGLE4] = 1;
-	degree[Element::FE_QUADRANGLE8] = 1;
-	degree[Element::FE_QUADRANGLE9] = 1;
+	degree[Element::FE_QUADRANGLE4] = 1;	ddegree[Element::FE_QUADRANGLE4] = 1;
+	degree[Element::FE_QUADRANGLE8] = 1;	ddegree[Element::FE_QUADRANGLE8] = 1;
+	degree[Element::FE_QUADRANGLE9] = 1;	ddegree[Element::FE_QUADRANGLE9] = 1;
 
-	degree[Element::FE_TETRAHEDRON4] = 4;
-	degree[Element::FE_TETRAHEDRON10] = 4;
-	degree[Element::FE_TETRAHEDRON20] = 4;
-	degree[Element::FE_TETRAHEDRON35] = 4;
-	degree[Element::FE_TETRAHEDRON56] = 4;
+	degree[Element::FE_TETRAHEDRON4 ] = 4;	ddegree[Element::FE_TETRAHEDRON4 ] = 1;
+	degree[Element::FE_TETRAHEDRON10] = 4;	ddegree[Element::FE_TETRAHEDRON10] = 2;
+	degree[Element::FE_TETRAHEDRON20] = 4;	ddegree[Element::FE_TETRAHEDRON20] = 3;
+	degree[Element::FE_TETRAHEDRON35] = 4;	ddegree[Element::FE_TETRAHEDRON35] = 4;
+	degree[Element::FE_TETRAHEDRON56] = 4;	ddegree[Element::FE_TETRAHEDRON56] = 5;
 
-	degree[Element::FE_HEXAHEDRON8] = 4;
-	degree[Element::FE_HEXAHEDRON20] = 4;
-	degree[Element::FE_HEXAHEDRON27] = 4;
+	degree[Element::FE_HEXAHEDRON8 ] = 4;	ddegree[Element::FE_HEXAHEDRON8 ] = 1;
+	degree[Element::FE_HEXAHEDRON20] = 4;	ddegree[Element::FE_HEXAHEDRON20] = 2;
+	degree[Element::FE_HEXAHEDRON27] = 4;	ddegree[Element::FE_HEXAHEDRON27] = 3;
 
-	degree[Element::FE_PRISM6] = 4;
-	degree[Element::FE_PRISM15] = 4;
-	degree[Element::FE_PRISM18] = 4;
+	degree[Element::FE_PRISM6 ] = 4;	ddegree[Element::FE_PRISM6 ] = 4;
+	degree[Element::FE_PRISM15] = 4;	ddegree[Element::FE_PRISM15] = 4;
+	degree[Element::FE_PRISM18] = 4;	ddegree[Element::FE_PRISM18] = 4;
 
-	degree[Element::FE_PYRAMID5] = 4;
-	degree[Element::FE_PYRAMID14] = 4;
-	degree[Element::FE_PYRAMID13] = 4;
+	degree[Element::FE_PYRAMID5 ] = 4;	ddegree[Element::FE_PYRAMID5 ] = 4;
+	degree[Element::FE_PYRAMID14] = 4;	ddegree[Element::FE_PYRAMID14] = 4;
+	degree[Element::FE_PYRAMID13] = 4;	ddegree[Element::FE_PYRAMID13] = 4;
 
-	degree[Element::FE_ITRIANGLE9] = 1;
-	degree[Element::FE_ITRIANGLE12] = 1;
-	degree[Element::FE_ITRIANGLE15] = 1;
-	degree[Element::FE_TRIANGLE21] = 1;
+	degree[Element::FE_ITRIANGLE9 ] = 1;	ddegree[Element::FE_ITRIANGLE9 ] = 1;
+	degree[Element::FE_ITRIANGLE12] = 1;	ddegree[Element::FE_ITRIANGLE12] = 1;
+	degree[Element::FE_ITRIANGLE15] = 1;	ddegree[Element::FE_ITRIANGLE15] = 1;
+	degree[Element::FE_TRIANGLE21 ] = 1;	ddegree[Element::FE_TRIANGLE21 ] = 1;
 }
 
 
@@ -759,32 +1356,71 @@ void Analysis::integration_points()
 	std::vector<tuple<fem::point, double> > ips;
 
 	// Tetrahedron family, degree 1
+	ips.clear();
 	ips.push_back(tuple<fem::point,double>(fem::point(0.25,0.25,0.25), 1.0/6.0));
 	ipwpl[Element::EF_TETRAHEDRON][1] = ips;
 
 	// Tetrahedron family, degree 2
-	ips.push_back(tuple<fem::point,double>(fem::point(0.58541019662496845446,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
-	ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.58541019662496845446,0.13819660112501051518),1.0/(6*4)));
-	ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.58541019662496845446),1.0/(6*4)));
-	ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
+	{
+		ips.clear();
 
-	ipwpl[Element::EF_TETRAHEDRON][2] = ips;
-						
+		ips.push_back(tuple<fem::point,double>(fem::point(0.58541019662496845446,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
+		ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.58541019662496845446,0.13819660112501051518),1.0/(6*4)));
+		ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.58541019662496845446),1.0/(6*4)));
+		ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
+
+		ipwpl[Element::EF_TETRAHEDRON][2] = ips;
+	}
+
 	// Tetrahedron family, degree 3
-	ips.push_back(tuple<fem::point,double>(fem::point(0, 0, 0), 1.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-	ipwpl[Element::EF_TETRAHEDRON][3] = ips;
-						
-	// Tetrahedron family, degree 3
-	double g[3];
-	double w[2];
-	g[0]=0.09273525031089122640232391373703060;
+	{
+		ips.clear();
+		/*
+		ips.push_back(tuple<fem::point,double>(fem::point(0, 0, 0), 1.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
+		*/
+
+		/*
+		   If [j<=0,info={{g1,g1,g1,g1},w1}; info[[1,i]]=1-3*g1];
+		   If [j> 0,info={{g2,g2,g2,g2},w2}; info[[1,j]]=1-3*g2]];
+		 */
+
+		double g[2];
+		double w[2];
+
+		g[0]=(55-3*sqrt(17)+sqrt(1022-134*sqrt(17)))/196;
+		g[1]=(55-3*sqrt(17)-sqrt(1022-134*sqrt(17)))/196;
+
+		w[0]= (1.0/8 + sqrt((1715161837-406006699*sqrt(17))/23101)/3120)/6.0;
+		w[1]= (1.0/8 - sqrt((1715161837-406006699*sqrt(17))/23101)/3120) /6.0;
+
+		// 1 to 4
+		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[0], g[0], g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], 1-3*g[0], g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], 1-3*g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], g[0]), w[0] ));
+
+		// 5 to 8
+		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[1], g[1], g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], 1-3*g[1], g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], 1-3*g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], g[1]), w[1] ));
+
+		ipwpl[Element::EF_TETRAHEDRON][3] = ips;
+	}
+
+	// Tetrahedron family, degree 4
+	{
+		ips.clear();
+		double g[3];
+		double w[2];
+		g[0]=0.09273525031089122640232391373703060;
 	g[1]=0.31088591926330060979734573376345783;
 	g[2]=0.45449629587435035050811947372066056;
 
@@ -809,11 +1445,48 @@ void Analysis::integration_points()
 	ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
 	ips.push_back(tuple<fem::point,double>(fem::point(g[3], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
 	ipwpl[Element::EF_TETRAHEDRON][4] = ips;
+	}
 
-
-	// Hexahedron family, degree 1 to 5
-	for(int d = 1; d < 6; d++)
+	// Tetrahedron family, degree 5
 	{
+		ips.clear();
+		double g[3];
+		double w[2];
+
+		g[0]=(7-sqrt(15))/34; 	g[1]=7/17-g[0]; 	g[2]=(10-2*sqrt(15))/40;
+		w[0]=(2665+14*sqrt(15))/37800;	w[1]=(2665-14*sqrt(15))/37800;
+
+		// 1 to 4
+		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[0], g[0], g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], 1-3*g[0], g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], 1-3*g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], g[0]), w[0] ));
+
+		// 5 to 8
+		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[1], g[1], g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], 1-3*g[1], g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], 1-3*g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], g[1] ), w[1] ));
+
+		// 9 to 14
+		ips.push_back(tuple<fem::point,double>(fem::point(0.5-g[2], 0.5 - g[2], g[2] ), 10.0/189));
+		ips.push_back(tuple<fem::point,double>(fem::point(0.5-g[2], g[2], 0.5-g[2] ), 10.0/189));
+		ips.push_back(tuple<fem::point,double>(fem::point(0.5-g[2], g[2], g[2] ), 10.0/189));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[2], 0.5-g[2], 0.5-g[2] ), 10.0/189));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[2], 0.5-g[2], g[2] ), 10.0/189));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[2], g[2], 0.5-g[2] ), 10.0/189));
+
+		// 15
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/4, 1.0/4, 1.0/4 ), 16.0/135));
+
+		ipwpl[Element::EF_TETRAHEDRON][5] = ips;
+	}
+
+
+	// Hexahedron family, degree 1 to 7
+	for(int d = 1; d < 8; d++)
+	{
+		ips.clear();
 		double x[d], w[d];	// for the Gauss-Legendre integration points and weights
 		// get the Gauss-Legendre integration points and weights
 		gauleg(x,w,d);
@@ -833,10 +1506,13 @@ void Analysis::integration_points()
 	}
 
 
-	//prisms
+	//Prism, degree 1
+	ips.clear();
 	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3,0), 1*2/2));
 	ipwpl[Element::EF_PRISM][1] = ips;
 
+	//Prism, degree 2
+	ips.clear();
 	ips.push_back(tuple<fem::point,double>(fem::point(2.0/3,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
 	ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,2.0/3,-1.0/sqrt(3)), (1.0/3)*1/2));
 	ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
@@ -849,15 +1525,14 @@ void Analysis::integration_points()
 }
 
 
-boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  Analysis::make_location_matrix(Model &model)
+void
+Analysis::make_location_matrix(Model &model)
 {
-	std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;	// the location matrix
 	size_t dof = 1;	// degree of freedom count, the 0 value is interpreted as a prescribed movement
 
 	// iterate through the node list
 	for(std::map<size_t, fem::Node>::iterator i = model.node_list.begin(); i != model.node_list.end(); i++)
 	{
-
 		if(model.node_restrictions_list.find(i->first) == model.node_restrictions_list.end())
 		{
 			// there are no node restrictions set for this node
@@ -867,31 +1542,34 @@ boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>  Ana
 		}
 		else
 		{
-			// there are some node restrictions set for this node
+				// there are some node restrictions set for this node
 			if(model.node_restrictions_list[i->first].dx() == false)
 				lm[i->first].get<0>() = dof++;
+			else
+				lm[i->first].get<0>() = 0;
+
 			if(model.node_restrictions_list[i->first].dy() == false)
 				lm[i->first].get<1>() = dof++;
+			else
+				lm[i->first].get<1>() = 0;
+
 			if(model.node_restrictions_list[i->first].dz() == false)
 				lm[i->first].get<2>() = dof++;
+			else
+				lm[i->first].get<2>() = 0;
 		}
-
-		//TEST CODE: REMOVE
-		// std::cout << "Node " << i->first << ": x[" << lm[i->first].get<0>() << "], y[" << lm[i->first].get<1>() << "], z[" << lm[i->first].get<2>() << "]" << std::endl;
 	}
 
 	dof--;	// avoid the off by one error in resizing K_g and f_g
 
-	for(std::map<size_t, boost::tuple<size_t,size_t,size_t> >::iterator i = lm.begin(); i != lm.end(); i++)
-	{
-		std::cout << "node: " << i->first << "\tdof[" << i->second.get<0>() << ", " << i->second.get<1>() << ", " << i->second.get<2>() << "]" << std::endl;
-	}
-
-	return  boost::tuple<std::map<size_t, boost::tuple<size_t,size_t,size_t> >, size_t>(lm,dof);
+		// resize the FEM equation
+	f.k.resize(dof,dof, false);
+	f.f.resize(dof, false);
+	f.d.resize(dof, false);
 }
 
 
-inline void Analysis::add_elementary_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, const boost::numeric::ublas::mapped_vector<double> &f_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
+inline void Analysis::add_elementary_stiffness_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
 {
 	using namespace std;	//TODO remove cleanup code
 
@@ -927,38 +1605,27 @@ inline void Analysis::add_elementary_to_global(const boost::numeric::ublas::symm
 			jd[1] = jdof->second.get<1>();
 			jd[2] = jdof->second.get<2>();
 
-			//now let's cycle this node's stiffness sub-matrix
-			// get the degrees of freedom for this node
-			cout << "begin node [" << i << "," << j << "]" << endl;
+				//now let's cycle this node's stiffness sub-matrix
+				// get the degrees of freedom for this node
 			for(int u = 0; u < 3; u++)
 			{
 				// add the remaining elements
 				for(int v = 0; v < 3; v++)
 				{
-					//cout << "id[u]: " << id[u] << ", jd[v]: " << jd[v] << endl;
 					if( (id[u] != 0) && (jd[v] != 0) )
 					{
-						std::cout << "k_elem[" << 3*i+u << ", " << 3*j+v << "] => K[" << id[u]-1 << ", " << jd[v]-1 << "] += " << k_elem(3*i+u, 3*j+v) << std::endl;
 						f.k(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
 					}
 				}
 			}
-			cout << "end node [" << i << "," << j << "]" << endl;
-		}
-
-		// and now let's process f_elem
-		for(int u = 0; u < 3; u++)
-		{
-			if(id[u] != 0)
-			{
-				f.f(id[u]-1) += f_elem(3*i+u);
-			}
 		}
 	}
-
 }
 
 
+enum Analysis::Error Analysis::run(Model &model, LoadPattern &lp)
+{
+}
 
 }
 

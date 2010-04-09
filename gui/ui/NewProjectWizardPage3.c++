@@ -41,7 +41,7 @@ void NewProjectWizardPage3::loadMaterialsCombo()
 {
 	for(std::vector<fem::Material>::iterator i = document->model.material_list.begin(); i != document->model.material_list.end(); i++)
 	{
-		comboBoxMaterialsList->addItem(i->label);
+		comboBoxMaterialsList->addItem(QString::fromStdString(i->label));
 	}
 }
 

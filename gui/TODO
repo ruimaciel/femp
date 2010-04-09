@@ -12,4 +12,5 @@
 - seleccionar o tipo de elementos a importar
 - não interpretar matrix singular como erro
 - roda do rato para fazer zoom ao modelo
-- acabar editor de materiais
+
+- passar rotinas de resolução de sistemas de equações para fora da classe

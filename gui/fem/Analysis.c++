@@ -10,7 +10,7 @@ namespace fem
 Analysis::Analysis()
 {
 	// build all lists of integration points/weights pairs
-	integration_points();
+	build_integration_points();
 	setDefaultIntegrationDegrees();
 }
 
@@ -38,12 +38,13 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	if(model.element_list.empty() )
 		return ERR_NO_ELEMENTS;
 
-		// initialize the FemEquation object
-	k.clear();
-	f.clear();
-
 		// generate the location matrix
 	make_location_matrix(model);
+
+		// initialize the FEM equation objects
+	k.clear();
+	f.clear();
+	d.clear();
 				
 		// declare variables
 	size_t pi = 0;	// progress indicator
@@ -346,6 +347,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	if(verbose)
 		cout << "]," << endl;
 
+	cout << f << endl;
+
 	// set nodal forces
 	if(verbose)
 	{
@@ -371,7 +374,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	}
 	if(verbose)
 		cout << "]," << endl;
-
+	
+	cout << f << endl;
 	// fem equation is set.
 	return ERR_OK;
 }
@@ -1064,7 +1068,7 @@ void Analysis::setDefaultIntegrationDegrees()
 }
 
 
-void Analysis::integration_points()
+void Analysis::build_integration_points()
 {
 	using namespace boost;
 	std::vector<tuple<fem::point, double> > ips;
@@ -1334,13 +1338,6 @@ inline void Analysis::add_elementary_stiffness_to_global(const boost::numeric::u
 			}
 		}
 	}
-}
-
-
-enum Analysis::Error Analysis::run(Model &model, LoadPattern &lp)
-{
-	//TODO implement this
-	return ERR_OK;
 }
 
 

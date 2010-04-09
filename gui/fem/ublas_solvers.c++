@@ -243,6 +243,7 @@ bool solve_gauss( boost::numeric::ublas::compressed_matrix<double> &A, boost::nu
 	// rearrange the tweaked pivots
 	//TODO find a better way
 	boost::numeric::ublas::vector<double> d;
+	d.resize(b.size());
 	for(size_t i = 0; i < b.size(); i++)
 		d(i) = b(row[i]);
 	b = d;

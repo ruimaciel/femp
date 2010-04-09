@@ -23,7 +23,9 @@
 #include "parsers/json.h"
 
 #include "fem/NodeRestrictions.h++"
+
 #include "fem/Analysis.h++"
+#include "fem/LinearAnalysis.h++"
 
 
 
@@ -567,7 +569,8 @@ void MainWindow::runAnalysis()
 
 	//TODO finish this
 	//TODO consider options for integration points
-	fem::Analysis analysis;
+	// fem::Analysis analysis;
+	fem::LinearAnalysis analysis;
 
 	//TODO for testing purposes only. remove
 	analysis.run(document.model, document.model.load_pattern_list[0]);

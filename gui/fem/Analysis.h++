@@ -31,7 +31,7 @@ class Analysis
 			ERR_NEGATIVE_DETERMINANT
 		};
 
-	private:
+	protected:
 		std::map<enum Element::ElementFamily, std::map<int, std::vector<boost::tuple<fem::point, double> > > > ipwpl;	// integration points/weights pair list
 		std::map<enum Element::Type, int> degree;	// stiffness matrix integration point degree for a particular element
 		std::map<enum Element::Type, int> ddegree;	// domain load integration point degree for a particular element
@@ -67,7 +67,7 @@ class Analysis
 		@param lp	the load pattern
 		@return an error
 		**/
-		virtual enum Error run(Model &model, LoadPattern &lp);
+		virtual enum Error run(Model &model, LoadPattern &lp) = 0;
 
 
 		/** 
@@ -106,7 +106,7 @@ class Analysis
 		void output_fem_equation(std::ostream &out);
 		void output_displacements(std::ostream &out);
 
-	private:
+	protected:
 		/**
 		Set the default values for the intended integration degrees for all supported elements
 		**/
@@ -125,9 +125,10 @@ class Analysis
 
 
 		/**
-		Pre-builds all lists of integration points 
+		Pre-builds all lists of integration point/weight pairs for all supported elements
 		**/
-		void integration_points();
+		void build_integration_points();
+
 
 		/**
 		Builds the location matrix, a map between the node number and a 3-tuple holding the degree of freedom reference numbers for each degree of freedom, and resizes the temp FemEquation object

@@ -18,7 +18,6 @@
 #include "Material.h++"
 #include "NodeRestrictions.h++"
 #include "LoadPattern.h++"
-#include "FemEquation.h++"
 
 
 namespace fem

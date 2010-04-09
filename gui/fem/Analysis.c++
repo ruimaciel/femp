@@ -15,6 +15,10 @@ Analysis::Analysis()
 
 Analysis::Analysis(const Analysis &copied)
 {
+	// copy the FEM equation
+	this->k = copied.k;
+	this->f = copied.f;
+	this->d = copied.d;
 }
 
 
@@ -33,8 +37,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		return ERR_NO_ELEMENTS;
 
 		// initialize the FemEquation object
-	f.k.clear();
-	f.f.clear();
+	k.clear();
+	f.clear();
 
 		// generate the location matrix
 	make_location_matrix(model);
@@ -181,7 +185,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		}
 
 			// add elementary stiffness matrix to the global stiffness matrix 
-		add_elementary_stiffness_to_global(k_elem, f, lm, *element);
+		add_elementary_stiffness_to_global(k_elem, lm, *element);
 	}
 	if(verbose)
 		cout << "]," << endl;
@@ -251,7 +255,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 #undef Y
 #undef Z
 
-			//add the domain load's f_elem contribution to f.f
+			//add the domain load's f_elem contribution to f
 		for(size_t i = 0; i < model.element_list[domain_load->first].nodes.size(); i++)
 		{
 			dof = lm.find(model.element_list[domain_load->first].nodes[i]);
@@ -262,13 +266,13 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 				size_t n;
 				n = dof->second.get<0>();
 				if(n != 0)
-					f.f(n-1) += f_elem(3*i);
+					f(n-1) += f_elem(3*i);
 				n = dof->second.get<1>();
 				if(n != 0)
-					f.f(n-1) += f_elem(3*i+1);
+					f(n-1) += f_elem(3*i+1);
 				n = dof->second.get<2>();
 				if(n != 0)
-					f.f(n-1) += f_elem(3*i+2);
+					f(n-1) += f_elem(3*i+2);
 			}
 		}
 	}
@@ -357,11 +361,11 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 
 		// set the nodal loads
 		if(lm[n].get<0>() != 0)
-			f.f[lm[n].get<0>()-1] += nodal_load->second.x();
+			f[lm[n].get<0>()-1] += nodal_load->second.x();
 		if(lm[n].get<1>() != 0)
-			f.f[lm[n].get<1>()-1] += nodal_load->second.y();
+			f[lm[n].get<1>()-1] += nodal_load->second.y();
 		if(lm[n].get<2>() != 0)
-			f.f[lm[n].get<2>()-1] += nodal_load->second.z();
+			f[lm[n].get<2>()-1] += nodal_load->second.z();
 	}
 	if(verbose)
 		cout << "]," << endl;
@@ -422,58 +426,58 @@ double Analysis::det3by3(const boost::numeric::ublas::matrix<double> &M)
 enum Analysis::Error Analysis::solve_cholesky()
 {
 	double s;
-	for(size_t j = 0; j < f.k.size2(); j++)
+	for(size_t j = 0; j < k.size2(); j++)
 	{
-		for(size_t i = 0; i < f.k.size1(); i++)
+		for(size_t i = 0; i < k.size1(); i++)
 		{
-			s = f.k(i,j);
+			s = k(i,j);
 			for(size_t m = 0; m < j; m++)
 			{
-				s -= f.k(i,m)*f.k(j,m);
+				s -= k(i,m)*k(j,m);
 			}
 
 			if(i == j)
 			{
 				if(s > 0)
 				{
-					f.k(j,j) = sqrt(s);
+					k(j,j) = sqrt(s);
 				}
 				else
 					return ERR_SINGULAR_MATRIX;
 			}
 			else
 			{
-				f.k(i,j) = s/f.k(j,j);
+				k(i,j) = s/k(j,j);
 			}
 		}
 	}
 
 	// solve Ly = b
-	for (size_t i = 0; i < f.k.size1(); i++)
+	for (size_t i = 0; i < k.size1(); i++)
 	{
 		for (size_t j = 0; j < i; j++)
 		{
-			f.f(i) -= f.k(i, j) * f.f(j);
+			f(i) -= k(i, j) * f(j);
 		}
-		f.f(i) /= f.k(i, i);
+		f(i) /= k(i, i);
 	}
 
 	// Backward solve L'x = y
-	for (size_t i = f.k.size1() - 1; i > 0; i--)
+	for (size_t i = k.size1() - 1; i > 0; i--)
 	{
-		for (size_t j = i + 1; j < f.k.size2(); j++)
+		for (size_t j = i + 1; j < k.size2(); j++)
 		{
-			f.f(i) -= f.k(j, i) * f.f(j);
+			f(i) -= k(j, i) * f(j);
 		}
-		f.f(i) /= f.k(i, i);
+		f(i) /= k(i, i);
 	}
-	for (size_t j = 1; j < f.k.size2(); j++)
+	for (size_t j = 1; j < k.size2(); j++)
 	{
-		f.f(0) -= f.k(j, 0) * f.f(j);
+		f(0) -= k(j, 0) * f(j);
 	}
-	f.f(0) /= f.k(0, 0);
+	f(0) /= k(0, 0);
 
-	f.d = f.f;
+	d = f;
 
 	return ERR_OK;
 }
@@ -490,28 +494,28 @@ enum Analysis::Error Analysis::solve_conjugate_gradient(float e)
 	double beta;
 	// size_t iter = 0;
 
-	r1.resize(f.f.size());
-	f.d.resize(f.f.size());
+	r1.resize(f.size());
+	d.resize(f.size());
 
 	// initialize the vector
 	/*
-	for(size_t i = 0; i < f.f.size(); i++)
+	for(size_t i = 0; i < f.size(); i++)
 	{
-		f.d[i] = 1;
+		d[i] = 1;
 	}
 	*/
-	f.d = f.f;
+	d = f;
 
-	r1 = f.f - prec_prod(f.k,f.d);
+	r1 = f - prec_prod(k,d);
 	p = r1;
 	r2 = r1;
 
 	do
 	{
 		//iter++;
-		alpha = inner_prod(r1,r1) / inner_prod(p,prec_prod(f.k,p));
-		f.d = f.d + alpha*p;
-		r2 = r1 - alpha*prec_prod(f.k,p);
+		alpha = inner_prod(r1,r1) / inner_prod(p,prec_prod(k,p));
+		d = d + alpha*p;
+		r2 = r1 - alpha*prec_prod(k,p);
 		beta = inner_prod(r2,r2)/inner_prod(r1,r1);
 
 		p = r2 + beta*p;
@@ -520,7 +524,7 @@ enum Analysis::Error Analysis::solve_conjugate_gradient(float e)
 
 		/*
 		   std::cout << "alpha: " << alpha << std::endl;
-		   std::cout << "f.d: \n" << f.d << std::endl;
+		   std::cout << "d: \n" << d << std::endl;
 		   std::cout << "r: \n" << r2 << std::endl;
 		 */
 
@@ -528,7 +532,7 @@ enum Analysis::Error Analysis::solve_conjugate_gradient(float e)
 
 	/*
 	   std::cout << "iterations: " << iter << endl;
-	   std::cout << "f.d: \n" << f.d << std::endl;
+	   std::cout << "d: \n" << d << std::endl;
 	 */
 
 	return ERR_OK;	
@@ -539,42 +543,42 @@ enum Analysis::Error Analysis::solve_gauss()
 {
 	using namespace std;
 
-	assert(f.k.size1() == f.k.size2());
+	assert(k.size1() == k.size2());
 	double factor;
 
 	// Gauss factorization
-	f.d = f.f;
-	for(size_t diag = 0; diag < f.k.size1(); diag++)
+	d = f;
+	for(size_t diag = 0; diag < k.size1(); diag++)
 	{
 		// reduce current line to 1 in diagonal
-		factor = f.k(diag,diag);
+		factor = k(diag,diag);
 
 		// normalize the current leading row
-		for(size_t j = diag; j < f.k.size2(); j++)
+		for(size_t j = diag; j < k.size2(); j++)
 		{
-			f.k(diag,j) /= factor;
+			k(diag,j) /= factor;
 		}
-		f.d(diag) /= factor;
+		d(diag) /= factor;
 
 		// subtract from all the others
-		for(size_t i = diag+1; i < f.k.size1(); i++)
+		for(size_t i = diag+1; i < k.size1(); i++)
 		{
-			factor = f.k(i,diag);
-			//for(size_t j = diag; j < f.k.size2(); j++)
-			for(size_t j = 0; j < f.k.size2(); j++)
+			factor = k(i,diag);
+			//for(size_t j = diag; j < k.size2(); j++)
+			for(size_t j = 0; j < k.size2(); j++)
 			{
-				f.k(i,j) -= factor*f.k(diag,j);
+				k(i,j) -= factor*k(diag,j);
 			}
-			f.d(i) -= factor*f.d(diag);
+			d(i) -= factor*d(diag);
 		}
 	}
 
 	// back substitution
-	for(size_t j = f.k.size1()-1; j > 0 ; j--)
+	for(size_t j = k.size1()-1; j > 0 ; j--)
 	{
 		for(size_t i = 0; i < j; i++)
 		{
-			f.d(i) -= f.k(i,j)*f.d(j);
+			d(i) -= k(i,j)*d(j);
 		}
 		// cout << endl;
 	}
@@ -590,22 +594,22 @@ enum Analysis::Error Analysis::solve_gauss_pivot()
 
 	using namespace std;
 
-	assert(f.k.size1() == f.k.size2());
+	assert(k.size1() == k.size2());
 	double factor;
-	size_t row[f.k.size1()];	// for the pivoting
+	size_t row[k.size1()];	// for the pivoting
 	size_t temp;	// temporary pivot
 
 	// initialize the row pivoting map
-	for(size_t i = 0; i < f.k.size1(); i++)
+	for(size_t i = 0; i < k.size1(); i++)
 		row[i] = i;
 
 	// Gauss factorization
-	for(size_t diag = 0; diag < f.k.size1(); diag++)
+	for(size_t diag = 0; diag < k.size1(); diag++)
 	{
 		// choose pivot
-		for(size_t i = diag+1; i < f.k.size1(); i++)
+		for(size_t i = diag+1; i < k.size1(); i++)
 		{
-			if(abs(f.k(row[i],diag)) > abs(f.k(row[diag],diag)) )
+			if(abs(k(row[i],diag)) > abs(k(row[diag],diag)) )
 			{
 				// cout << "pivot change: diag " << row[diag] << " for row " << row[i] << endl;
 				temp = row[i];
@@ -616,46 +620,46 @@ enum Analysis::Error Analysis::solve_gauss_pivot()
 
 		// check if matrix is singular
 		//TODO check if this is a decent test
-		if( abs(f.k(row[diag],diag)) < 1e-16)
+		if( abs(k(row[diag],diag)) < 1e-16)
 			return ERR_SINGULAR_MATRIX;
 
 		// reduce current line to 1 in diagonal
-		factor = f.k(row[diag],diag);
+		factor = k(row[diag],diag);
 
 		// normalize the current leading row
-		for(size_t j = diag; j < f.k.size2(); j++)
+		for(size_t j = diag; j < k.size2(); j++)
 		{
-			f.k(row[diag],j) /= factor;
+			k(row[diag],j) /= factor;
 		}
-		f.f(row[diag]) /= factor;
+		f(row[diag]) /= factor;
 
 		// subtract from all the others
-		for(size_t i = diag+1; i < f.k.size1(); i++)
+		for(size_t i = diag+1; i < k.size1(); i++)
 		{
-			factor = f.k(row[i],diag);
-			//for(size_t j = diag; j < f.k.size2(); j++)
-			for(size_t j = 0; j < f.k.size2(); j++)
+			factor = k(row[i],diag);
+			//for(size_t j = diag; j < k.size2(); j++)
+			for(size_t j = 0; j < k.size2(); j++)
 			{
-				f.k(row[i],j) -= factor*f.k(row[diag],j);
+				k(row[i],j) -= factor*k(row[diag],j);
 			}
-			f.f(row[i]) -= factor*f.f(row[diag]);
+			f(row[i]) -= factor*f(row[diag]);
 		}
 	}
 
 	// back substitution
-	for(size_t j = f.k.size1()-1; j > 0 ; j--)
+	for(size_t j = k.size1()-1; j > 0 ; j--)
 	{
 		for(size_t i = 0; i < j; i++)
 		{
-			f.f(row[i]) -= f.k(row[i],j)*f.f(row[j]);
+			f(row[i]) -= k(row[i],j)*f(row[j]);
 		}
 		// cout << endl;
 	}
 
 	// rearrange the tweaked pivots
 	//TODO find a better way
-	for(size_t i = 0; i < f.f.size(); i++)
-		f.d(i) = f.f(row[i]);
+	for(size_t i = 0; i < f.size(); i++)
+		d(i) = f(row[i]);
 
 	// all went well
 	return ERR_OK;
@@ -669,17 +673,17 @@ void Analysis::output_fem_equation(std::ostream &out)
 
 	// output stiffness matrix
 	out << "\t\t\"stiffness matrix\" : [\n";
-	for(size_t i = 0; i < f.k.size1(); i++)
+	for(size_t i = 0; i < k.size1(); i++)
 	{
 		out << "\t\t\t[";
-		for(size_t j = 0; j < f.k.size2(); j++)
+		for(size_t j = 0; j < k.size2(); j++)
 		{
 			if(j != 0)
 				out << ",";
-			out << "\t" << f.k(i,j);
+			out << "\t" << k(i,j);
 		}
 		out << "]";
-		if(i + 1 < f.k.size1())
+		if(i + 1 < k.size1())
 			out << ",";
 		out << "\n";
 	}
@@ -687,11 +691,11 @@ void Analysis::output_fem_equation(std::ostream &out)
 
 	// output force vector
 	out << "\t\t\"force vector\" : [\n";
-	for(size_t i = 0; i < f.f.size(); i++)
+	for(size_t i = 0; i < f.size(); i++)
 	{
 		out << "\t\t\t";
-		out << f.f(i);
-		if(i +1 < f.f.size() )
+		out << f(i);
+		if(i +1 < f.size() )
 			out << ",";
 		out << "\n";
 	}
@@ -721,11 +725,11 @@ void Analysis::output_displacements(std::ostream &out)
 
 		out << "\n\t\t{ \"node\": " << i->first;
 		if(i->second.get<0>() != 0)
-			out << ", \"dx\": " << f.d(n++);
+			out << ", \"dx\": " << d(n++);
 		if(i->second.get<1>() != 0)
-			out << ", \"dy\": " << f.d(n++);
+			out << ", \"dy\": " << d(n++);
 		if(i->second.get<2>() != 0)
-			out << ", \"dz\": " << f.d(n++);
+			out << ", \"dz\": " << d(n++);
 		out << "}";
 	}
 
@@ -1563,13 +1567,13 @@ Analysis::make_location_matrix(Model &model)
 	dof--;	// avoid the off by one error in resizing K_g and f_g
 
 		// resize the FEM equation
-	f.k.resize(dof,dof, false);
-	f.f.resize(dof, false);
-	f.d.resize(dof, false);
+	k.resize(dof,dof, false);
+	f.resize(dof, false);
+	d.resize(dof, false);
 }
 
 
-inline void Analysis::add_elementary_stiffness_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
+inline void Analysis::add_elementary_stiffness_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
 {
 	using namespace std;	//TODO remove cleanup code
 
@@ -1614,7 +1618,7 @@ inline void Analysis::add_elementary_stiffness_to_global(const boost::numeric::u
 				{
 					if( (id[u] != 0) && (jd[v] != 0) )
 					{
-						f.k(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
+						k(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
 					}
 				}
 			}
@@ -1625,7 +1629,10 @@ inline void Analysis::add_elementary_stiffness_to_global(const boost::numeric::u
 
 enum Analysis::Error Analysis::run(Model &model, LoadPattern &lp)
 {
+	//TODO implement this
+	return ERR_OK;
 }
+
 
 }
 

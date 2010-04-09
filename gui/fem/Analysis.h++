@@ -2,6 +2,7 @@
 #define ANALYSIS_HPP
 
 #include <boost/numeric/ublas/symmetric.hpp>
+#include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/vector_sparse.hpp>
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -10,7 +11,6 @@
 
 #include "Model.h++"
 #include "Element.h++"
-#include "FemEquation.h++"
 #include "LoadPattern.h++"
 
 
@@ -42,7 +42,10 @@ class Analysis
 		std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;
 
 			// the FEM equation
-		FemEquation f;
+		// FemEquation f;
+		boost::numeric::ublas::compressed_matrix<double> k;
+		boost::numeric::ublas::vector<double> f;
+		boost::numeric::ublas::vector<double> d;
 
 
 	public:
@@ -53,7 +56,7 @@ class Analysis
 
 		/** sets up a FEM equation according to the info contained in the instance of this class
 		The struct FemEquation objects must already be resized to handle the model and initialized
-		@param f	a struct FemEquation object that will be used to store the FEM equation
+		@param model	a reference to a fem::Model object
 		@param lp	the load pattern
 		@param verbose	true to output progress messages
 		@return an error
@@ -61,7 +64,12 @@ class Analysis
 		enum Error build_fem_equation(Model &model, const LoadPattern &lp, bool verbose);
 
 
-		enum Error run(Model &model, LoadPattern &lp);
+		/** runs the analysis
+		@param model	a reference to a fem::Model object
+		@param lp	the load pattern
+		@return an error
+		**/
+		virtual enum Error run(Model &model, LoadPattern &lp);
 
 
 		/*
@@ -157,7 +165,7 @@ class Analysis
 		@param element	reference to the element
 		**/
 		//void add_elementary_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, const boost::numeric::ublas::mapped_vector<double> &f_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element);
-		void add_elementary_stiffness_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, FemEquation &f, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element);
+		void add_elementary_stiffness_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element);
 
 
 };

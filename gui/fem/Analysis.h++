@@ -28,9 +28,7 @@ class Analysis
 			ERR_NODE_RESTRICTIONS_NODE_REFERENCE,	// an invalid node reference has been made
 			ERR_INVALID_MATERIAL_REFERENCE,
 			ERR_INVALID_NODE_REFERENCE,
-			ERR_NEGATIVE_DETERMINANT,
-
-			ERR_SINGULAR_MATRIX
+			ERR_NEGATIVE_DETERMINANT
 		};
 
 	private:
@@ -72,24 +70,6 @@ class Analysis
 		virtual enum Error run(Model &model, LoadPattern &lp);
 
 
-		/*
-		return the inverse of a 3 by 3 matrix
-		*/
-		inline boost::numeric::ublas::matrix<double> invert3by3(const boost::numeric::ublas::matrix<double> &M, double det);
-
-
-		/*
-		return the determinant of a 3 by 3 matrix
-		*/
-		double det3by3(const boost::numeric::ublas::matrix<double> &M);
-
-
-		// linear system of equation solvers
-		enum Error solve_cholesky();
-		enum Error solve_conjugate_gradient(float e);
-		enum Error solve_gauss();
-		enum Error solve_gauss_pivot();
-
 		/** 
 		given an element and a position in local coordinates, it generates a list with the nodal weights for the shape function for each interpolation point in local coordinates
 		@param type	the element type
@@ -125,7 +105,6 @@ class Analysis
 
 		void output_fem_equation(std::ostream &out);
 		void output_displacements(std::ostream &out);
-
 
 	private:
 		/**

@@ -81,7 +81,8 @@ class GLWidget : public QGLWidget
 		Document *document;
 
 		float node_scale;	// the scale used by the nodes, reset when a window resizes
-		float scale;
+		float zoom;		// drawing zoom, used to zoom
+		float aspect_ratio;	// window aspect ratio
 
 		ViewportColors *colors;	// color definitions
 		bool perspective;	// true if perspective, false if ortogonal

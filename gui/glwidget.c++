@@ -20,6 +20,7 @@ GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 	//TODO set state from program option
 
 	setNodeRadiusScale(20);	// default node radius, scaled
+	zoom = 0.0f;	// initialize the zoom, 2^zoom
 	
 	// initialize the dangling pointers
 	document = NULL;
@@ -119,6 +120,7 @@ void GLWidget::setPosition(int x, int y)
 	qWarning("pos: %f, %f, %f",camera.pos.x(), camera.pos.y(), camera.pos.z());
 	updateGL();
 }
+
 
 void GLWidget::initializeGL()
 {
@@ -260,21 +262,21 @@ void GLWidget::paintArrow(const fem::point &p, const fem::point &direction)
 
 void GLWidget::resizeGL(int width, int height)
 {
-	scale = qMin(width, height);
+	aspect_ratio = qMin(width, height);
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
 	if(perspective)
-		gluPerspective(45.0, (float)width/(float)height, 0.1, 1000);
+		gluPerspective(45.0/pow(2,zoom), (float)width/(float)height, 0.1, 1000);
 	else
-		glOrtho(-(width*2)/(scale), (width*2)/(scale), -height*2/(scale), +height*2/(scale), 0.1, 1000.0);
+		glOrtho(-(width*2)/(aspect_ratio*pow(2,zoom)), (width*2)/(aspect_ratio*pow(2,zoom)), -height*2/(aspect_ratio*pow(2,zoom)), +height*2/(aspect_ratio*pow(2,zoom)), 0.1, 1000.0);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
 	// generate display lists
-	generateDisplayLists();	// put in place to preserve the scale of certain drawing components
+	generateDisplayLists();	// put in place to preserve the aspect_ratio of certain drawing components
 }
 
 
@@ -603,8 +605,11 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 
 void GLWidget::wheelEvent(QWheelEvent *event)
 {
-	camera.pos.inc_x(event->delta()/800.0f);
-	updateGL();
+	//camera.pos.inc_x(event->delta()/800.0f);
+	zoom += event->delta()/1000.0f;
+	qWarning("zoom: %f, %f",zoom, pow(2,zoom));
+	this->resizeGL(this->width(), this->height());
+	this->updateGL();
 	event->accept();
 }
 
@@ -643,7 +648,7 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 	glPushMatrix();
 	glTranslated(node.data[0],node.data[1],node.data[2]);
 	
-	glScalef(node_scale/scale, node_scale/scale, node_scale/scale);
+	glScalef(node_scale/aspect_ratio, node_scale/aspect_ratio, node_scale/aspect_ratio);
 
 	//TODO find a better rendering for the nodes
 	glBegin(GL_LINES);
@@ -1138,7 +1143,7 @@ void GLWidget::selectModelObjects(const fem::point &near,const fem::point &far)
 		z2z1 = far.data[2]-near.data[2];
 		a = x2x1*x2x1 + y2y1*y2y1 + z2z1*z2z1;
 		b = 2*(x2x1*(near.data[0]-i->second.data[0]) + y2y1*(near.data[1] - i->second.data[1]) + z2z1*(near.data[2]-i->second.data[2]));
-		c = i->second.data[0]*i->second.data[0] + i->second.data[1]*i->second.data[1] + i->second.data[2]*i->second.data[2] + near.data[0]*near.data[0]+ near.data[1]*near.data[1] + near.data[2]*near.data[2] - 2*(i->second.data[0]*near.data[0]+i->second.data[1]*near.data[1]+i->second.data[2]*near.data[2]) - node_scale*node_scale/(scale*scale);
+		c = i->second.data[0]*i->second.data[0] + i->second.data[1]*i->second.data[1] + i->second.data[2]*i->second.data[2] + near.data[0]*near.data[0]+ near.data[1]*near.data[1] + near.data[2]*near.data[2] - 2*(i->second.data[0]*near.data[0]+i->second.data[1]*near.data[1]+i->second.data[2]*near.data[2]) - node_scale*node_scale/(aspect_ratio*aspect_ratio);
 		if(b*b - 4*a*c > 0)
 		{
 			//distance_map[i->first] = (i->second-near).norm(); // get distances

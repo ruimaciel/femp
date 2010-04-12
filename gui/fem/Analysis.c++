@@ -479,16 +479,6 @@ std::map<size_t, Node> Analysis::displacements_map()
 		df[i->first] = node;
 	}
 
-	
-	/*
-	//TODO test code: remove
-	for(std::map<size_t, fem::Node>::iterator i = df.begin(); i != df.end(); i++)
-	{
-		//qWarning("DoF %zd: [%f, %f, %f]",i->first, i->second.x(), i->second.y(), i->second.z());
-		cout << "DoF: " << i->first << " [" << i->second.x() << ", " <<  i->second.y() << ", " << i->second.z() << "]" << endl;
-	}
-	*/
-
 	return df;
 }
 

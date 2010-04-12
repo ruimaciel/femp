@@ -25,7 +25,7 @@ private:
 
 	QMdiArea	* mdiArea;
 	QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport
-	GLWidget 	* glWidget;
+	GLWidget 	* glWidget;	//TODO this pointer isn't necessary. consider removing it
 
 	// the toolbars
 	QToolBar *visibilityToolBar;

@@ -24,10 +24,11 @@ enum LinearAnalysis::Error LinearAnalysis::run(Model &model, LoadPattern &lp)
 {
 	using namespace std;
 
-	build_fem_equation(model, model.load_pattern_list[0], true);
+	build_fem_equation(model, lp, true);
 
 	//TODO implement a choice of solver
-	solve_gauss(k, f);
+	if(solve_gauss(k, f) == false)
+		return ERR_SINGULAR_MATRIX;
 
 	return ERR_OK;
 }

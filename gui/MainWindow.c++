@@ -18,6 +18,7 @@
 #include "NodeActionsDialog.h++"
 #include "DisplayOptionsDialog.h++"
 #include "ui/MaterialsEditorDialog.h++"
+#include "glDisplacementsWidget.h++"
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
@@ -33,9 +34,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
 	ui.setupUi(this);
 
+	// set the MDI area widget as the window's central widget
 	mdiArea = new QMdiArea;
 	setCentralWidget(mdiArea);	// this main window has a Multiple Document Interface
 	//mdiArea->setViewMode(QMdiArea::TabbedView);
+
 	window_gl_viewport = NULL;	// no windows on startup
 
 	// Load global options from the options files
@@ -561,6 +564,8 @@ void MainWindow::setElementDisplay()
 
 void MainWindow::runAnalysis()
 {
+	using namespace std;
+
 	emit setMessage("Model analysis: started");
 	QString message;
 	QTime time;
@@ -577,6 +582,30 @@ void MainWindow::runAnalysis()
 
 	message.sprintf("Model analysis: finished after %d ms", time.elapsed());
 
+	// create subwindows
+	GLDisplacementsWidget *glDisplacementsWidget;
+	std::map<size_t, fem::Node> dm = analysis.displacements_map();
+	glDisplacementsWidget = new GLDisplacementsWidget(dm, this);
+	glDisplacementsWidget->setModel(&document.model);
+	glDisplacementsWidget->setColors(&colors);
+
+	double radius;
+	options.getOption("viewport.nodes.radius",radius,20);
+	glDisplacementsWidget->setNodeRadiusScale(radius);
+	glDisplacementsWidget->setFocusPolicy(Qt::StrongFocus);
+	glDisplacementsWidget->display_options.setDefaultOptions();
+	connect(this,SIGNAL(togglePerspective()), glDisplacementsWidget, SLOT(togglePerspective()));
+
+	// create new MDI window for the displacements
+	QMdiSubWindow *subWindow;
+	subWindow = new QMdiSubWindow;
+	subWindow->setWidget(glDisplacementsWidget);
+	subWindow->setAttribute(Qt::WA_DeleteOnClose);
+	subWindow->setWindowTitle("Displacements");
+
+	mdiArea->addSubWindow(subWindow);
+	glDisplacementsWidget->show();
+	
 	emit setMessage(message);
 }
 

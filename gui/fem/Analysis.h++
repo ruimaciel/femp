@@ -106,6 +106,11 @@ class Analysis
 		void output_fem_equation(std::ostream &out);
 		void output_displacements(std::ostream &out);
 
+		/**
+		Returns a map of all nodes which had any relative displacement
+		**/
+		std::map<size_t, Node> displacements_map();
+
 	protected:
 		/**
 		Set the default values for the intended integration degrees for all supported elements

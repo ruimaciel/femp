@@ -451,6 +451,48 @@ void Analysis::output_displacements(std::ostream &out)
 }
 
 
+std::map<size_t, Node> Analysis::displacements_map()
+{
+	using namespace std;
+
+	map<size_t, Node> df;	// displacements field
+	size_t n = 0;
+	Node node;
+
+	for(map<size_t, boost::tuple<size_t,size_t,size_t> >::const_iterator i = lm.begin(); i != lm.end(); i++)
+	{
+		node.zero();
+
+		// don't add a map if no DoF exists
+		if(  (i->second.get<0>() == 0) && (i->second.get<1>() == 0) && (i->second.get<2>() == 0))
+			continue;
+
+		// assign the displacements
+		if(i->second.get<0>() != 0)
+			node.data[0] = f(n++);
+		if(i->second.get<1>() != 0)
+			node.data[1] = f(n++);
+		if(i->second.get<2>() != 0)
+			node.data[2] = f(n++);
+
+		// add the displacement field to the map
+		df[i->first] = node;
+	}
+
+	
+	/*
+	//TODO test code: remove
+	for(std::map<size_t, fem::Node>::iterator i = df.begin(); i != df.end(); i++)
+	{
+		//qWarning("DoF %zd: [%f, %f, %f]",i->first, i->second.x(), i->second.y(), i->second.z());
+		cout << "DoF: " << i->first << " [" << i->second.x() << ", " <<  i->second.y() << ", " << i->second.z() << "]" << endl;
+	}
+	*/
+
+	return df;
+}
+
+
 void Analysis::gauleg(double x[], double w[], int n)
 {
 	int m,j,i;

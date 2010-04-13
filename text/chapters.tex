@@ -1,0 +1,2347 @@
+%
+\chapter{A forma geral do Problema de Valores na Fronteira}
+\label{chap: O caso geral}
+
+%
+\section{Considera\c{c}\~{o}es iniciais}\label{sec: chap 1 Consideracoes iniciais}
+%
+\subsection{Uma vis\~{a}o sobre a solu\c{c}\~{a}o de sistemas de equa\c{c}\~{o}es diferenciais}\label{subsec: chap 1
+Uma visao sobre a solucao de sistemas de equacoes diferenciais}
+%
+Durante s\'{e}culos a solu\c{c}\~{a}o de muitos dos problemas que ocorrem em engenharia passava invariavelmente pelo recurso a m\'{e}todos experimentais e ao conhecimento emp\'{\i}rico. A necessidade de resolver problemas cada vez mais complexos num per\'{\i}odo de tempo razo\'{a}vel e a procura por entender as leis pelas quais a natureza se rege parecia incompat\'{\i}vel com a constru\c{c}\~{a}o de modelos, medi\c{c}\~{a}o de resultados e sua extrapola\c{c}\~{a}o para diferentes condi\c{c}\~{o}es.
+
+A procura de caminhos alternativos \`{a} solu\c{c}\~{a}o de problemas nos mais diversos campos da ci\^{e}ncia e tecnologia levou \`{a} formula\c{c}\~{a}o dos mesmos em termos de sistemas de equa\c{c}\~{o}es diferenciais \`{a}s derivadas parciais com condi\c{c}\~{o}es de fronteira apropriadas. Devido \`{a} sua complexidade, apenas em casos muito simples a sua solu\c{c}\~{a}o exacta pode ser encontrada.
+
+A solu\c{c}\~{a}o num\'{e}rica destes problemas tem atra\'{\i}do a aten\c{c}\~{a}o de investigadores ao longo do tempo. A avalia\c{c}\~{a}o do n\'{u}mero irracional $\pi$ (pi) \'{e} um caso paradigm\'{a}tico~\citep{Berggren:04a}. A possibilidade de usar m\'{e}todos num\'{e}ricos para obter solu\c{c}\~{o}es aproximadas -- com uma precis\~{a}o razo\'{a}vel -- de sistemas de equa\c{c}\~{o}es diferenciais \`{a}s derivadas parciais foi o caminho naturalmente escolhido.
+
+Several alternatives have been advocated. In a very brief manner, we
+could start by mentioning the replacement of the differential
+operators of the problem by their finite counterparts, followed by
+the solution of the resulting algebraic system of equations. The
+method appears to have been proposed by Runge in the beginning of
+the XX century to solve torsional problems and was labeled as the
+Finite Difference (FD) method, see~\citet[][see appendix, footnote
+on page 515]{Timoshenko:70a}. It presented for the first time the
+idea of introducing a net of points over the domain and, eventually,
+its surroundings.
+
+The next steps were apparently~\citep{Thomee:01a,Zienkiewicz:04a}
+taken by Rayleigh, Ritz and Galerkin, who used variational calculus
+and a linear combination of a set of global functions to find an
+approximation of the exact solution. The applications were still
+limited to simple domains due the difficulties in finding the
+appropriate sets of global functions. The work of
+Trefftz~\citep[see][where the original work is reviewed and an
+English translation from the original German version is
+provided]{Maunder:03a} was a prelude to the Courant seminal paper~\citep{Courant:43a}, where linear \emph{net-triangles} are
+employed to solve a torsion problem. Here the points appear
+connected by lines, forming a subdivision of the domain. In the
+appendix of this landmark paper the concept of refinement by
+increasing the number of triangles is already present and, in the
+last paragraph, the terminology \emph{element} is coined for the
+first time:
+\begin{quote}
+Of course, one must not expect good local results from a method
+using so few elements.
+\end{quote}
+A generalization of this work was accomplished by~\citet{Turner:56a}
+under the designation of the \quotationmarks{Direct Stiffness
+Method}, where three types of elements are presented. About the same
+time Argyris introduced a unified approach for both the force and
+the displacement methods and considered rectangular flat elements of
+constant thickness~\citep{Argyris:60a}. The terminology
+\quotationmarks{finite element} was coined by \citet{Clough:60a}.
+The theoretical grounds for a general convergence criterion was put
+forth by~\citet{Oliveira:68a}.
+
+Accounts on the early history of the Finite Element Method (FEM) can
+be found in the works
+of~\citet{Clough:80a,Williamson:80a,Clough:90a,Wilson:93a,Gupta:96a,Felippa:01a,Clough:01a,Clough:04a}
+and~\citet{Samuelsson:06a}.
+
+The \emph{divide-and-conquer} strategy achieved an astonishing
+success, being used nowadays in uncountable fields in innumerable
+versions. It starts by \emph{dividing} the domain of the problem
+into subdomains. The associated cost will depend mainly on the
+number and type of subdomains required and the dimension and
+geometry of the problems domain. In order to \emph{conquer} it is
+necessary to reunite the subdomains to recover the original problem.
+The success of this task depends, to a great extend, on the
+governing laws but, in general, errors are introduced at this level.
+After the solution of the problem is found it is usual to resort to
+some kind of visualization to be able to deal with the amount of
+data extracted from the analysis. It is also usual practice to
+perform some type of \emph{smoothing} procedure, as a remedy for the
+lack of derivative's continuity of the subdomains.
+
+Although having different origins, the Finite Difference method
+directly approximating the Partial Differential Equations  and the
+Boundary Conditions -- usually resorting to a truncated Taylor
+expansion -- while the Finite Element Method approximates its
+solution, it can be shown that the former is a particular case of
+the latter~\citep{Zienkiewicz:05a} using discontinuous local
+approximations with a collocation weighting. A variant having common
+features of both approaches is the the Finite Volume Methods
+(FVM's)~\citep{Chorin:68a,Patankar:72a,Raithby:76a}, mostly used in
+the solution of the parabolic equations arising in, \emph{e.~g.},
+heat transfer and fluid mechanics. Although initially derived as a
+subclass of the Finite Difference method, these \quotationmarks{are
+simply another kind of finite element form in which subdomain
+collocation is used}~\citep{Zienkiewicz:05c}.
+
+An alternative path is given by the use of the Least Squares concept
+to the solution of the Partial Differential Equations. Here the
+minimization of the weighted sum of the squared interior and
+boundary residuals is performed. Several variants were devised by
+using either continuous or discrete approaches and global or local
+versions. Moreover, interior and boundary methods can be generated
+by appropriate selection of the approximation. The similarities with
+some mixed Finite Element Methods can easily be traced. These
+methods have been applied to solve linear, nonlinear, eigenvalue and
+initial value problems in countless domains, like atomic physics,
+elasticity, electromagnetic fields, fluid flow and heat transfer. A
+comprehensive survey on the use of Least Squares methods for solving
+Partial Differential Equations was presented by~\citet{Eason:76a}.
+%
+\subsection{On the limitations of the traditional numerical tools}\label{subsec: chap 1
+On the limitations of the present numerical tools}
+%
+The Finite Difference method is -- at least in its basic form --
+restricted to handle domains with a simple geometry. Moreover, the
+approximation in between the nodes is poorly described. Hence,
+nowadays there is a reduced interest in its application to
+structural analysis problems. The Finite Difference method is mostly
+used in Computational Fluid Dynamics (CFD) nowadays.
+
+Most of the Finite Element Method limitations are associated with
+the \emph{mesh}. We start by mentioning those associated with the
+element and then depart for the mesh itself.
+
+The formulation of Finite Elements is constrained in several
+variables. These are basically the required continuity degree on the
+boundary\footnote{The continuity on the element's domain is not
+usually a problem, as polynomials are $C^\infty$.}, which is
+dictated by the weak form of the problem, the space dimension, $d$,
+the element shape, the need to include all the existing monomials
+for a certain maximum degree and to lay out all the nodes within the
+element in an \emph{isotropic} fashion. In general, it is not
+possible to satisfy all these requirements at the same time. It is
+usual to drop some of the monomials in a balanced way, in order to
+accommodate the desired number of nodes. Consequently, the
+approximations may no longer fulfil the interelementar continuity
+requirements and extra expedients have to be used, like mapped
+elements. The introduction of a change of coordinates will
+eventually make harder the evaluation of the weak form, as (i) the
+intervening derivatives can no longer be expressed explicitly and
+(ii) by the appearance of non-polynomial terms. The former problem
+can satisfactorily be handled using the implicit function theorem,
+although severe restrictions on the elements shape arise. The latter
+leads naturally to the numerical evaluation of the integrals.
+
+Despite the years of efforts put in the development of powerful mesh
+generators, the step between the solid model supplied by a Computer
+Aided Design (CAD) software and the Finite Element Method mesh is
+still a burdensome operation and, sometimes, source of errors and
+uncertainties. The question is especially involved in the generation
+of meshes for complex domains in the three-dimensional space with
+arbitrary shaped elements. The automatic generation may lead to
+undesirable large aspect ratio of some of the elements causing,
+\emph{e.~g.}, the appearance of \emph{slivers}, \emph{needles} and
+\emph{caps}, affecting the condition number of the stiffness matrix
+and the convergence rate of the model. In large-scale computations
+-- even for linear analysis -- the mesh generation can be more of a
+time-consuming task than the formation and solution of the final
+system of equations. To make it harder, sometimes it becomes
+necessary to repeat this operation countless times during the
+analysis due, \emph{e.~g.}, to
+\begin{mydescription}
+  \item[continuous changes in the domain geometry --] as the simulation of a impact with
+  penetration; flow across a barrier; explosion followed by
+  fragmentation or crack propagation;
+  \item[mesh distortion --] in large deformation problems the
+  ratio of the dimensions of the elements can change so drastically
+  that -- ultimately -- can lead to the failure of
+  the whole analysis;
+  \item[localized high gradients --] where the need to adapt the mesh
+  to the problem at hand leads naturally to an $h$-adaptive type of remeshing.
+\end{mydescription}
+Another frequent situation where the limitations inherited from the
+mesh are evident is the difficulty in setting up shape functions
+with continuity higher than zero in multiple dimensions. This
+problem arises in, \emph{e.~g.}, the simulation of Deoxyribonucleic
+Acid (DNA) strings and nanoscale materials. In the particular case
+of the structural analysis there are two obvious situations were
+this problem is specially severe: generating reliable plate/shell
+elements and the development of stress function based finite
+elements~\citep{Sarigul:89a}.
+
+The use of Least Squares is intrinsically associated to a basic
+numerical difficulty, namely the ill-conditioning of the normal
+system of equations. In principle, this problem can be overcome by
+using appropriate scaling or by abandoning the traditional
+elimination algorithms on behalf of more refined linear least
+squares codes, based on the Gram-Schmidt orthonormalization or the
+Householder transformation. Other inconvenience is the higher order
+continuity demanded by the weighted sum of the squared residuals
+functional in the use of local approximations, when comparing with
+the standard Galerkin argument.
+%
+\section{Nota\c{c}\~{a}o}
+\label{chap 1: sec Notacao}
+%
+Ao longo do texto letras latinas ou gregas min\'{u}sculas ($a, b,
+\ldots \alpha, \beta, \ldots$) denotam quantidades escalares, letras latinas ou gregas min\'{u}sculas em negrito ($\bs{a}, \bs{b}, \ldots
+\bs{\alpha}, \bs{\beta}, \ldots$) denotam vectores, letras latinas ou gregas mai\'{u}sculas ($\bs{A}, \bs{B}, \ldots$) denotam
+tensores de segunda ordem, letras caligr\'{a}ficas latinas
+($\bs{\mathcal{A}}, \bs{\mathcal{B}}, \ldots$) denotam tensores de terceira ordem e letras mai\'{u}sculas latinas em blackboard it\'{a}lico ($\mathbbmbxsl{A}, \mathbbmbxsl{B}, \ldots$) denotam tensores de quarta ordem no espa\c{c}o euclidiano tridimensional.
+
+Para efeitos de implementa\c{c}\~{a}o as entidades definidas anteriormente s\~{a}o transformadas em matrizes. Estas s\~{a}o denotadas por letras latinas a negrito na posi\c{c}\~{a}o vertical ($\mathbf{A}, \mathbf{B}, \ldots
+\mathbf{a}, \mathbf{b}\ldots$).
+
+Conven\c{c}\~{a}o de soma em \'{\i}ndices repetidos \'{e} adoptada em todo o texto, com \'{\i}ndices gregos em it\'{a}lico a variarem de 1 a 2 e \'{\i}ndices latinos em it\'{a}lico a variarem de 1 a 3.
+
+Al\'{e}m disso, \quotationmarks{$\cdot$} e \quotationmarks{$:$} representam o produto interno de vectores e tensores de ordem superior a um, respectivamente, \quotationmarks{$\times$} denota o produto vectorial
+e \quotationmarks{$\otimes$} representa o produto tensorial.
+
+$\delta_{ij}$ é o símbolo de Kronecker.
+%
+\section{Equações relevantes}
+%
+Considere-se um corpo que ocupa um domínio genérico, aqui designado por $V$, no espaço de dimensão $d\in \{1,2,3\}$. A sua fronteira, $S$, pode ser parametrizada a partir de um espaço de dimensão $(d-1)$ e pode ser decomposta nas parcelas cinemática, $S_u$ e estática, $S_t$, sendo $S=S_t \cup S_u$, $\emptyset=S_t \cap S_u$. Por simplicidade, condições do tipo misto, em que se impõe uma combinação linear de grandezas estáticas e cinemáticas, não são aqui tratadas. É habitual designar as condições de fronteira cinemática, estática e mista por Dirichlet, Neumann e Robin, respectivamente.
+
+Qualquer problema de mecânica dos sólidos ou das estruturas pode ser expresso através de um conjunto de equações -- no domínio, $V$, e na fronteira, $S$, -- que regem o seu comportamento.
+
+No domínio do problema em análise, $V$, estas equações, nas hipóteses da linearidade física e geométrica e no caso de aplicação quasi-estática da solicitação, podem ser escritas na forma
+\begin{subequations}\label{eq: chap geral equacoes dominio}
+\begin{align}
+\bs{\partial}^{*}\,\bs{\sigma}+\overline{\mathbf{b}}=&\mathbf{0} \label{eq: chap geral equacoes dominio equilibrio} \\
+\bs{\sigma}=&\mathbbmbxsl{D}\,\bs{\epsilon}+\bs{\sigma}_0  \label{eq: chap geral equacoes dominio relacao constitutiva rigidez} \\
+\bs{\epsilon}=&\bs{\partial}\, \mathbf{u}  \label{eq: chap geral equacoes dominio compatibilidade}
+\end{align}
+\end{subequations}
+onde $\bs{\partial}^{*}$ é o operador diferencial de equilíbrio, $\bs{\sigma}$ \'{e} um vector que agrupa as tens\~{o}es generalizadas, $\overline{\mathbf{b}}$ \'{e} o vector das for\c{c}as de massa generalizadas,  $\mathbbmbxsl{D}$ \'{e} um operador constitutivo de rigidez generalizado, $\bs{\sigma}_0$ \'{e} um vector que agrupa as tens\~{o}es generalizadas iniciais,  $\bs{\epsilon}$ \'{e} o vector que reúne as deforma\c{c}\~{o}es generalizadas, $\bs{\partial}$ é o operador diferencial de compatibilidade e $\bs{u}$ \'{e} o campo de deslocamentos generalizados.
+
+Os operadores $\bs{\partial}^{*}$ e $\bs{\partial}$ são auto-adjuntos.
+
+Em alternativa ao formato de rigidez expresso pela expressão~\eqref{eq: chap geral equacoes dominio relacao constitutiva rigidez}, a relação constitutiva pode ser expressa no formato de flexibilidade
+\begin{equation}\label{eq: chap geral equacoes dominio relacao constitutiva flexibilidade}
+\bs{\epsilon}=\mathbf{F}\,\bs{\sigma}+\bs{\epsilon}_0
+\end{equation}
+onde $\mathbf{F}=\mathbf{D}^{-1}$ é um operador constitutivo de flexibilidade generalizado e $\bs{\epsilon}_0=-\mathbf{F}\,\bs{\sigma}_0$ \'{e} um vector que agrupa as deformações generalizadas iniciais.
+
+As equações a satisfazer na fronteira, $S$, podem, em certos casos, ser escritas na forma\footnote{Por exemplo, estas equações necessitam de ser generalizadas em determinadas teorias estruturais (vigas e lajes finas) ou na presença de apoios inclinados. No entanto, vai utilizar-se a forma acima indicada por ser simples e suficientemente geral.}:
+\begin{subequations}\label{eq: chap geral equacoes fronteira}
+\begin{align}
+\mathbf{t}=&\overline{\mathbf{t}}\qquad\text{em $S_t$} \label{eq: chap geral equacoes fronteira estatica} \\
+\mathbf{u}=&\overline{\mathbf{u}}\qquad\text{em $S_u$} \label{eq: chap geral equacoes fronteira cinematica}
+\end{align}
+\end{subequations}
+em que  $\mathbf{t}=\mathbf{N}^*\, \bs{\sigma}$ é um vector que armazena as tracções generalizadas, $\mathbf{N}^*$ é a projecção na fronteira estática de $\bs{\partial}^{*}$, $\overline{\mathbf{t}}$ é um vector que armazena as tracções generalizadas prescritas na fronteira estática e $\overline{\mathbf{u}}$ é um vector que reúne os deslocamentos generalizados prescritos na fronteira cinem\'{a}tica.
+
+
+\begin{figure}
+\centering
+% black and white version
+\begin{tikzpicture}[node distance=10mm,terminal/.style={
+% The shape:
+rounded rectangle,
+minimum size=10mm,
+% The rest
+very thick,draw=black,
+color=black,
+%top color=white,bottom color=black!20,
+font=\large
+},
+nonterminal/.style={
+% The shape:
+rectangle,
+% The size:
+minimum size=20mm,
+% The border:
+very thick,
+draw=black, % 50% red and 50% black,
+% and that mixed with 50% white
+% The filling:
+%top color=white, % a shading that is white at the top...
+%bottom color=red!50!black!20, % and something else at the bottom
+% Font
+font=\large\itshape
+},
+semseta/.style={-,shorten <=1pt,>=stealth',thick},
+comseta/.style={-> ,shorten >=1pt,>=stealth',thick}]
+\node (sol) [nonterminal] {\shortstack[c]{For\c{c}as\\[10pt]
+$
+\overline{\mathbf{b}}
+$}};
+\node (eq) [terminal, above=of sol] {\shortstack[c]{\\[10pt]\textbf{Equil\'{\i}brio}\\[10pt]
+$
+\bs{\partial}^{*}\,\bs{\sigma}+\overline{\mathbf{b}}=\mathbf{0}
+$\\[10pt]}};
+\node (es) [nonterminal, above=of eq] {\shortstack[c]{Esfor\c{c}os\\[10pt]
+$
+\bs{\sigma}
+$}};
+\node (elast) [terminal, right=of es] {\shortstack[c]{\\[10pt]\textbf{Elasticidade}\\[10pt]
+$\bs{\sigma}=\mathbf{D}\,\bs{\epsilon}+\bs{\sigma}_0$
+%\\[10pt]$\bs{\epsilon}=\mathbf{F}\,\bs{\sigma}+\bs{\epsilon}_0$
+\\[10pt]}};
+\node (def) [nonterminal, right=of elast] {\shortstack[c]{Deforma\c{c}\~{o}es\\[10pt]
+$
+\bs{\epsilon}
+$\\[10pt]}};
+\node (comp) [terminal, below=of def] {\shortstack[c]{\\[10pt]\textbf{Compatibilidade}\\[10pt]
+$
+\bs{\epsilon}=\bs{\partial}\, \mathbf{u}
+$\\[10pt]}};
+\node (desl) [nonterminal, below=of comp] {\shortstack[c]{Deslocamentos\\[10pt]
+$
+\mathbf{u}
+$}};
+\path (sol) edge[semseta] (eq);
+\path (eq) edge[semseta] (es);
+\path (es) edge[semseta] (elast);
+\path (elast) edge[semseta] (def);
+\path (def) edge[semseta] (comp);
+\path (comp) edge[semseta] (desl);
+\end{tikzpicture}
+\caption{Esquema geral.} \label{}
+\end{figure}
+%
+\cleardoublepage
+%
+\chapter{Elasticidade tridimensional}
+\label{chap: Elasticidade tridimensional}
+%
+\section{Relações fundamentais}
+\label{chap: }
+%
+\subsection{Equações de equilíbrio}
+\label{chap: }
+%
+No caso da elasticidade tridimensional as equações de equilíbrio no domínio, $V$, podem ser escritas na forma
+\begin{equation}\label{eq: chap Elasticidade tridimensional equilibrio dominio indicial}
+\sigma_{ij,i}+\overline{f}_j=0
+\end{equation}
+onde $\sigma_{ij}$ são as componentes do tensor das tensões e $\overline{f}_j$ são as componentes das forças de massa.
+
+As equações de equilíbrio na fronteira estática, $S_t$, são
+\begin{equation}\label{eq: chap }
+\sigma_{ij}\,n_{i}=\overline{t}_{j}
+\end{equation}
+onde $n_{i}$ são as componentes da normal unitária exterior e $\overline{t}_{j}$ são as componentes das tracções aplicadas na fronteira estática.
+
+
+Estas expressões podem ser escritas na forma geral definida pelas equações~\eqref{eq: chap geral equacoes dominio} e~\eqref{eq: chap geral equacoes fronteira} definindo os seguintes vectores que agrupam as tensões, as forças de massa e as tracções na fronteira
+\begin{equation}\label{eq: chap }
+\bs{\sigma}=\left\{
+\begin{matrix}
+\sigma_{11}\\
+\sigma_{22}\\
+\sigma_{33}\\
+\sigma_{12}\\
+\sigma_{13}\\
+\sigma_{23}
+\end{matrix}\right\},
+\quad
+\overline{\mathbf{b}}=\left\{
+\begin{matrix}
+\overline{b}_{1}\\
+\overline{b}_{2}\\
+\overline{b}_{3}
+\end{matrix}\right\},
+\quad
+\overline{\mathbf{t}}=\left\{
+\begin{matrix}
+\overline{t}_{1}\\
+\overline{t}_{2}\\
+\overline{t}_{3}
+\end{matrix}\right\}.
+\end{equation}
+e as matrizes de operadores diferenciais e normais na fronteira estática
+\begin{equation}\label{eq: chap }
+\bs{\partial}^{*}=\left[
+\begin{matrix}
+\partial_1 & 0 & 0 & \partial_2 & \partial_3 & 0 \\
+0 & \partial_2 & 0 & \partial_1 & 0 & \partial_3 \\
+0 & 0 & \partial_3 & 0 & \partial_1 & \partial_2
+\end{matrix}\right],
+\quad
+\mathbf{N}^{*}=\left[
+\begin{matrix}
+n_1 & 0 & 0 & n_2 & n_3 & 0 \\
+0 & n_2 & 0 & n_1 & 0 & n_3 \\
+0 & 0 & n_3 & 0 & n_1 & n_2
+\end{matrix}\right].
+\end{equation}
+
+
+
+%
+\subsection{Equações de compatibilidade}
+\label{chap: }
+%
+
+As equações de compatibilidade no domínio, $V$, são
+\begin{equation}\label{eq: chap Elasticidade tridimensional compatibilidade dominio indicial}
+\epsilon_{ij}=\frac{1}{2}\left(u_{i,j}+u_{j,i}\right)
+\end{equation}
+onde $\epsilon_{ij}$ são as componentes do tensor das deformações e $u_{i}$ são as componentes do campo de deslocamentos.
+
+As equações de compatibilidade na fronteira cinemática, $S_u$, são
+\begin{equation}\label{eq: chap }
+u_i= \overline{u}_i
+\end{equation}
+onde $\overline{u}_i$ são as componentes prescritas do campo de deslocamentos na fronteira cinemática.
+
+Definindo a distorção através de $\gamma_{ij}=2\,\epsilon_{ij}$, para $i\neq j$, tem-se,
+\begin{equation}\label{eq: chap }
+\quad
+\bs{\epsilon}=\left\{
+\begin{matrix}
+\epsilon_{11}\\
+\epsilon_{22}\\
+\epsilon_{33}\\
+\gamma_{12}\\
+\gamma_{13}\\
+\gamma_{23}
+\end{matrix}\right\},
+\quad
+\mathbf{u}=\left\{
+\begin{matrix}
+u_{1}\\
+u_{2}\\
+u_{3}
+\end{matrix}\right\},
+\quad
+\overline{\mathbf{u}}=\left\{
+\begin{matrix}
+\overline{u}_{1}\\
+\overline{u}_{2}\\
+\overline{u}_{3}
+\end{matrix}\right\}.
+\end{equation}
+
+\begin{equation}\label{eq: chap }
+\bs{\partial}=\left[
+\begin{matrix}
+\partial_1 & 0 & 0 \\
+0 & \partial_2 & 0 \\
+0 & 0 & \partial_3 \\
+\partial_2 & \partial_1 & 0 \\
+\partial_3 & 0 & \partial_1 \\
+0 & \partial_3 & \partial_2
+\end{matrix}\right]
+\end{equation}
+
+
+
+%
+\subsection{Relação constitutivas}
+\label{chap: }
+%
+
+No caso de um material elástico linear, homogéneo e isotrópico, a relação constitutiva pode escrever-se no formato de rigidez
+\begin{equation}\label{eq: chap }
+\sigma_{ij}=\frac{E}{1+\nu}\,\left(\epsilon_{ij}+ \frac{\nu}{1-2\,\nu}\,\epsilon_{kk}\,\delta_{ij}\right) -\frac{E\,\alpha\,\Delta T}{1-2\,\nu}\,\delta_{ij}
+\end{equation}
+onde foram introduzidas as constantes elásticas do material, nomeadamente o \emph{módulo de elasticidade}, $E$, e o \emph{coeficiente de Poisson}, $\nu$.
+
+Esta expressão podem ser convenientemente escrita em forma matricial. Neste caso, os operadores intervenientes assumem a forma
+\begin{align}\label{eq: chap }
+\mathbf{D}=&\frac{E}{(1+\nu)(1-2\nu)}\left[
+\begin{matrix}
+1-\nu & \nu & \nu & 0 & 0 & 0\\
+\nu & 1-\nu & \nu & 0 & 0 & 0\\
+\nu & \nu & 1-\nu & 0 & 0 & 0\\
+0 & 0 & 0 & \frac{1-2\,\nu}{2} & 0 & 0\\
+0 & 0 & 0 & 0 & \frac{1-2\,\nu}{2} & 0\\
+0 & 0 & 0 & 0 & 0 & \frac{1-2\,\nu}{2}
+\end{matrix}\right],\\
+\bs{\sigma}_0=&-\frac{E\,\alpha \, \Delta T}{1-2\,\nu}
+\left[
+\begin{matrix}
+1 \\
+1 \\
+1 \\
+0 \\
+0 \\
+0
+\end{matrix}\right]
+\end{align}
+
+No formato de flexibilidade ter-se-ia
+\begin{equation}\label{eq: chap }
+\epsilon_{ij}=\frac{1+\nu}{E}\,\sigma_{ij}- \frac{\nu}{E}\,\sigma_{kk}\,\delta_{ij} +\alpha\,\Delta T\,\delta_{ij}
+\end{equation}
+ou seja
+\begin{equation}\label{eq: chap }
+\mathbf{F}=\frac{1}{E}\left[
+\begin{matrix}
+1 & -\nu & -\nu & 0 & 0 & 0\\
+-\nu & 1 & -\nu & 0 & 0 & 0\\
+-\nu & -\nu & 1 & 0 & 0 & 0\\
+0 & 0 & 0 & 2(1+\nu) & 0 & 0\\
+0 & 0 & 0 & 0 & 2(1+\nu) & 0\\
+0 & 0 & 0 & 0 & 0 & 2(1+\nu)
+\end{matrix}\right],
+\quad
+\bs{\epsilon}_0=\alpha \, \Delta T
+\left[
+\begin{matrix}
+1 \\
+1 \\
+1 \\
+0 \\
+0 \\
+0
+\end{matrix}\right]
+\end{equation}
+
+%
+\subsection{O problema complementar}
+\label{chap: }
+%
+O problema da elasticidade tridimensional foi formulado de tal modo que seria trivial substituir as deformações compatíveis com o campo de deslocamentos na relação constitutiva e as tensões daí resultantes nas equações de equilíbrio. Obter-se-ia assim o sistema de equações governativas (de equilíbrio) em que as variáveis do problema são campos de deslocamentos. É habitual denominar este conjunto de equações por \emph{equações de Navier-Lamé}.
+
+O problema pode ser formulado de uma forma inteiramente complementar, em que as equações governativas são equações de compatibilidade em função de campos de tensões. É habitual denominar este conjunto de equações por \emph{equações de Beltrami-Mitchell}.
+
+Este problema complementar não será aqui descrito, mas importa observar as correspondentes equações de compatibilidade que lhe correspondem.
+
+As equações~\eqref{eq: chap Elasticidade tridimensional compatibilidade dominio indicial} permitem determinar, dado um campo de deslocamentos, o tensor das deformações. Mas será sempre possível que, dado um tensor de deformações, encontrar um campo de deslocamentos que lhe corresponda? Note-se que temos seis componentes independentes do tensor de deformações e três componentes para o campo de deslocamentos. Assim, as deformações devem satisfazer três \emph{condições de integrabilidade} entre si. Estas condições podem ser escritas na forma
+\begin{equation}\label{}
+  \epsilon_{ij,kl}+\epsilon_{kl,ij}-\epsilon_{ik,lj}-\epsilon_{jl,ik}=0
+\end{equation}
+Notando que todos os índices são livres, tem-se $3^4=81$ equações. De todas estas equações, apenas seis são distintas entre si:
+\begin{subequations}\label{eq: chap Elasticidade tridimensional integrability}
+\begin{align}
+  2\,\epsilon_{12,12}-\epsilon_{11,22}-\epsilon_{22,11}=&0 \label{eq: chap Elasticidade tridimensional integrability 1}\\
+  2\,\epsilon_{31,31}-\epsilon_{33,11}-\epsilon_{11,33}=&0 \label{eq: chap Elasticidade tridimensional integrability 2}\\
+  2\,\epsilon_{23,23}-\epsilon_{22,33}-\epsilon_{33,22}=&0 \label{eq: chap Elasticidade tridimensional integrability 3}\\
+  \epsilon_{11,23}-\epsilon_{23,11}-\epsilon_{12,13}-\epsilon_{13,12}=&0 \label{eq: chap Elasticidade tridimensional integrability 4}\\
+  \epsilon_{22,31}-\epsilon_{31,22}-\epsilon_{23,21}-\epsilon_{21,23}=&0 \label{eq: chap Elasticidade tridimensional integrability 5}\\
+  \epsilon_{33,12}-\epsilon_{12,33}-\epsilon_{31,32}-\epsilon_{32,31}=&0 \label{eq: chap Elasticidade tridimensional integrability 6}
+\end{align}
+\end{subequations}
+Destas seis equações distintas, pode mostrar-se que apenas três são independentes, como se referiu anteriormente. No entanto, a forma mais simples de verificar se um dado campo de deformações é integrável é verificar se estas seis equações são satisfeitas.
+
+%
+\cleardoublepage
+%
+\chapter{Elasticidade bidimensional}
+\label{chap: Elasticidade bidimensional}
+%
+A redução do número de dimensões implica apenas, em relação às equações da elasticidade tridimensional, mudanças na relação de elasticidade. As restantes equações são idênticas, apenas se usando as relevantes.
+%
+\section{Relações fundamentais}
+\label{chap: }
+%
+
+%
+\subsection{Equações de equilíbrio}
+\label{chap: }
+%
+
+
+As tensões e deformações generalizadas são
+\begin{equation}\label{eq: chap }
+\bs{\sigma}=\left\{
+\begin{matrix}
+\sigma_{11}\\
+\sigma_{22}\\
+\sigma_{12}
+\end{matrix}\right\},
+\quad
+\overline{\mathbf{b}}=\left\{
+\begin{matrix}
+\overline{b}_{1}\\
+\overline{b}_{2}
+\end{matrix}\right\},
+\quad
+\overline{\mathbf{t}}=\left\{
+\begin{matrix}
+\overline{t}_{1}\\
+\overline{t}_{2}
+\end{matrix}\right\}.
+\end{equation}
+
+\begin{equation}\label{eq: chap }
+\bs{\partial}^{*}=\left[
+\begin{matrix}
+\partial_1 & 0  & \partial_2 \\
+0 & \partial_2  & \partial_1
+\end{matrix}\right],
+\quad
+\mathbf{N}^{*}=\left[
+\begin{matrix}
+n_1 & 0 & n_2 \\
+0 & n_2 & n_1
+\end{matrix}\right].
+\end{equation}
+
+
+
+%
+\subsection{Equações de compatibilidade}
+\label{chap: }
+%
+
+
+\begin{equation}\label{eq: chap }
+\quad
+\bs{\epsilon}=\left\{
+\begin{matrix}
+\epsilon_{11}\\
+\epsilon_{22}\\
+\gamma_{12}
+\end{matrix}\right\},
+\quad
+\mathbf{u}=\left\{
+\begin{matrix}
+u_{1}\\
+u_{2}
+\end{matrix}\right\},
+\quad
+\overline{\mathbf{u}}=\left\{
+\begin{matrix}
+\overline{u}_{1}\\
+\overline{u}_{2}
+\end{matrix}\right\}.
+\end{equation}
+
+\begin{equation}\label{eq: chap }
+\bs{\partial}=\left[
+\begin{matrix}
+\partial_1 & 0 \\
+0 & \partial_2 \\
+\partial_2 & \partial_1
+\end{matrix}\right]
+\end{equation}
+
+%
+\subsection{Relação constitutivas}
+\label{chap: }
+%
+
+
+O \emph{estado plano de deformação} é obtido através da imposição de $\gamma_{13}=\gamma_{23}=\epsilon_{33}=0$ na relação da elasticidade tridimensional, respectivamente.
+
+Resulta assim
+\begin{align*}
+\sigma_{13}=& 0\\
+\sigma_{23}=& 0\\
+\sigma_{33}=& \frac{E\,\nu}{(1+\nu)(1-2\,\nu)}\,\epsilon_{\alpha \alpha}- \frac{E\,\alpha\,\Delta T}{1-2\,\nu}
+\end{align*}
+o que conduz a
+\begin{equation}\label{}
+    \sigma_{\alpha \beta}=\frac{E}{1+\nu}\,\left(\epsilon_{\alpha \beta}+
+    \frac{\nu}{1-2\,\nu}\,\epsilon_{\gamma \gamma}\,\delta_{\alpha \beta}\right)-
+     \frac{E\,\alpha\,\Delta T}{1-2\,\nu}\,\delta_{\alpha \beta}
+\end{equation}
+
+ou
+
+\begin{equation}\label{eq: chap }
+\mathbf{D}=\frac{E}{(1+\nu)(1-2\nu)}\left[
+\begin{matrix}
+1-\nu & \nu & 0\\
+\nu & 1-\nu & 0\\
+0 & 0 & \frac{1-2\,\nu}{2}
+\end{matrix}\right],
+\quad
+\bs{\sigma}_0=-\frac{E\,\alpha \, \Delta T}{1-2\,\nu}
+\left[
+\begin{matrix}
+1 \\
+1 \\
+0
+\end{matrix}\right]
+\end{equation}
+
+No formato de flexibilidade, ter-se-ia
+\begin{equation}\label{}
+    \epsilon_{\alpha \beta}=\frac{1+\nu}{E}\,\left(\sigma_{\alpha \beta}-
+    \nu\,\sigma_{\gamma \gamma}\,\delta_{\alpha \beta}\right)+
+     (1+\,\nu)\,\alpha\,\Delta T\,\delta_{\alpha \beta}
+\end{equation}
+ou seja
+\begin{equation}\label{eq: chap }
+\mathbf{F}=\frac{1+\nu}{E}\left[
+\begin{matrix}
+1-\nu & -\nu & 0 \\
+-\nu & 1-\nu & 0 \\
+0 & 0 & 2
+\end{matrix}\right],
+\quad
+\bs{\epsilon}_0=(1+\nu)\,\alpha \, \Delta T
+\left[
+\begin{matrix}
+1 \\
+1 \\
+0
+\end{matrix}\right]
+\end{equation}
+
+
+O \emph{estado plano de tensão} é obtido através da imposição de $\sigma_{13}=\sigma_{23}=\sigma_{33}=0$ na relação da elasticidade tridimensional. Resulta então
+
+\begin{align*}
+\gamma_{13}=& 0\\
+\gamma_{23}=& 0\\
+\epsilon_{33}=& -\frac{\nu}{E}\,\sigma_{\alpha \alpha}+\alpha \, \Delta T
+\end{align*}
+
+o que conduz a
+\begin{equation}\label{}
+    \sigma_{\alpha \beta}=\frac{E}{1+\nu}\,\left(\epsilon_{\alpha \beta}+
+    \frac{\nu}{1-\nu}\,\epsilon_{\gamma \gamma}\,\delta_{\alpha \beta}\right)-
+     \frac{E\,\alpha\,\Delta T}{1-\nu}\,\delta_{\alpha \beta}
+\end{equation}
+
+ou
+
+\begin{equation}\label{eq: chap }
+\mathbf{D}=\frac{E}{1-\nu^2}\left[
+\begin{matrix}
+1 & \nu & 0\\
+\nu & 1 & 0\\
+0 & 0 & \frac{1-\nu}{2}
+\end{matrix}\right],
+\quad
+\bs{\sigma}_0=-\frac{E\,\alpha \, \Delta T}{1-\nu}
+\left[
+\begin{matrix}
+1 \\
+1 \\
+0
+\end{matrix}\right]
+\end{equation}
+
+No formato de flexibilidade, ter-se-ia
+\begin{equation}\label{}
+    \epsilon_{\alpha \beta}=\frac{1+\nu}{E}\,\left(\sigma_{\alpha \beta}-
+    \frac{\nu}{1-\nu}\,\sigma_{\gamma \gamma}\,\delta_{\alpha \beta}\right)+
+     \alpha\,\Delta T\,\delta_{\alpha \beta}
+\end{equation}
+ou seja
+\begin{equation}\label{eq: chap }
+\mathbf{F}=\frac{1}{E}\left[
+\begin{matrix}
+1 & -\nu & 0 \\
+-\nu & 1 & 0 \\
+0 & 0 & 2\,(1+\nu)
+\end{matrix}\right],
+\quad
+\bs{\epsilon}_0=\alpha \, \Delta T
+\left[
+\begin{matrix}
+1 \\
+1 \\
+0
+\end{matrix}\right]
+\end{equation}
+%
+\cleardoublepage
+%
+\chapter{Lajes}
+\label{chap: }
+%
+Neste capítulo são descritas as teorias lineares de lajes moderadamente espessas e finas, habitualmente designadas por teorias de Reissner-Mindlin e Kirchhoff, respectivamente, no contexto das teorias estruturais de peças laminares.
+
+A teoria de lajes moderadamente espessas é exposta primeiro, sendo a teoria de lajes finas apresentada como um caso particular da anterior.
+%
+\section{Laje moderadamente espessa}
+\label{chap: }
+%
+Considere-se um corpo $V$ com a forma particular de uma peça \emph{laminar} plana\footnote{De acordo com~\cite{LNEC:66}, uma estrutura laminar é aquela em que uma das dimensões é muito menor que as restantes}. Este pode ser descrita através de
+\begin{equation*}%\label{}
+V=\left\{(x_1,x_2,x_3)\in \mathbb{R}^3 | (x_1,x_2)\in \Omega \subset \mathbb{R}^2,  x_3 \in \left[-\frac{h}{2},\frac{h}{2} \right]\right\}
+\end{equation*}
+onde $h$ é a espessura da laje e $\Omega$ designa o \emph{plano médio}. A fronteira do plano médio é indicada por $\Gamma$.
+
+O \emph{campo de deslocamentos} do contínuo tridimensional é relacionado com grandezas definidas sobre o plano médio da lajes. Estas grandezas constituem o \emph{campo de deslocamentos generalizados} da laje. No caso da laje moderadamente espessa este campo é formado pelo deslocamento transversal do plano médio, $w(x_1, x_2)$, e pelas rotações, $\theta_1$ e $\theta_2$.
+
+A relação entre os deslocamentos do contínuo e os seus análogos generalizados é dada por
+\begin{subequations}\label{eq: chap lajes u continuo}
+\begin{align}
+u_{\alpha}(x_1,x_2,x_3)=&x_3\,\theta_{\alpha}(x_1,x_2), \label{eq: chap lajes u alpha}\\
+u_3(x_2,x_2,x_3)=&w(x_1,x_2). \label{eq: chap lajes u 3}
+\end{align}
+\end{subequations}
+onde $\theta_{\alpha}$ são as componentes do \emph{vector rotação}.
+
+Note-se que, de acordo com a definição~\eqref{eq: chap lajes u continuo} a rotação $\theta_1(x_1,x_2)$ é um vector segundo $\bs{e}_2$ e rotação $\theta_2(x_1,x_2)$ é um vector segundo $-\bs{e}_1$. Esta notação simplifica consideravelmente os operadores de equilíbrio e compatibilidade, pelo que será a utilizada doravante.
+
+Substituindo o campo de deslocamentos~\eqref{eq: chap lajes u continuo} nas condições de compatibilidade do contínuo tridimensional~\eqref{eq: chap Elasticidade tridimensional compatibilidade dominio indicial} obtém-se o tensor de deformações na laje
+\begin{subequations}
+\begin{align}
+\epsilon_{\alpha \beta}=&x_3\,\frac{1}{2}\left(\theta_{\alpha,\beta} + \theta_{\beta,\alpha}\right) \label{eq: chap lajes epsilon alpha beta}\\
+\epsilon_{\alpha 3}=&\frac{1}{2}\left( w_{,\alpha}+\theta_{\alpha} \right) \label{eq: chap lajes epsilon alpha 3}\\
+\epsilon_{33}=&0 \label{eq: chap lajes epsilon 33}
+\end{align}
+\end{subequations}
+
+O anulamento da componente $\epsilon_{33}$ é uma consequência directa da hipótese da inextensibilidade das fibras perpendiculares ao plano médio implicitamente admitida na equação~\eqref{eq: chap lajes u 3}.
+
+É conveniente introduzir agora medidas de deformação generalizadas, \emph{i. e.}, medidas definidas sobre o plano médio da laje. Estas têm a vantagem de permitir caracterizar totalmente o tensor das deformações em qualquer ponto da laje com base unicamente em informação definida sobre o plano médio, baixando assim a dimensão do problema a resolver para duas dimensões. Na verdade, para as componentes $\epsilon_{\alpha 3}$ este procedimento é redundante, visto que estas deformações são independentes de $x_3$, ver expressão~\eqref{eq: chap lajes epsilon alpha 3}. Assim, para estas duas componentes, utiliza-se como deformação generalizadas as próprias deformações do contínuo. Para simplificar a notação utilizar-se-á a distorção, definida por $\gamma_{\alpha 3}=2\epsilon_{\alpha 3}$. Quanto às deformações que dependem (linearmente) da distância ao plano médio, introduz-se as grandezas
+\begin{equation}\label{eq: chap lajes epsilon alpha beta = x3 chi alpha beta}
+\epsilon_{\alpha \beta}=x_3\,\chi_{\alpha \beta}
+\end{equation}
+Estas três grandezas, que caracterizam totalmente o estado de deformação das fibras contidas em planos paralelos ao folheto médio, são as componentes do \emph{tensor das curvaturas}. As duas primeiras representam curvaturas de flexão e a terceira é a curvatura de torção.
+
+Assim, as equações de compatibilidade da laje podem ser escritas na forma
+\begin{subequations}
+\begin{align}
+\chi_{\alpha \beta}=&\frac{1}{2}\left(\theta_{\alpha, \beta}+\theta_{\beta,\alpha}\right) \label{eq: chap lajes chi alpha beta = theta alpha, beta} \\
+\gamma_{\alpha 3}=&w_{,\alpha}+\theta_{\alpha} \label{eq: chap lajes gamma alpha 3 = w,alpha + theta alpha}
+\end{align}
+\end{subequations}
+
+As equações de equilíbrio consistentes com a cinemática admitida podem ser extraídas a partir do argumento
+\begin{equation}
+\int_{V} \sigma_{ij}\, \epsilon_{ij} \ud V=\int_{V} f_{i}\, u_{i} \ud V+\int_{S} \overline{t}_{i} u_{i} \ud S
+\end{equation}
+Tendo em consideração~\eqref{eq: chap lajes epsilon 33} tem-se,
+\begin{equation}
+\int_{V} \left(
+\sigma_{\alpha \beta}\,\epsilon_{\alpha \beta}+\sigma_{\alpha 3}\,\gamma_{\alpha 3}
+\right)
+\ud V=\int_{V} f_i \, u_i \ud V+\int_{S} \overline{t}_i \, u_i \ud S
+\end{equation}
+
+Substituindo as definições do campo de deslocamentos e de deformações tem-se,
+\begin{equation}\label{eq: chap lajes ptv indicial inicial}
+\int_{V} \left(
+x_3\, \sigma_{\alpha \beta}\,\chi_{\alpha \beta}+\sigma_{\alpha 3}\,
+\gamma_{\alpha 3}
+\right)
+\ud V=\int_{V} \left(x_3\,f_{\alpha}\,\theta_{\alpha}+f_3\,w \right) \ud V+\int_{S} \left(x_3\,\overline{t}_{\alpha}\,\theta_{\alpha}+\overline{t}_3\,w \right) \ud S
+\end{equation}
+Tendo em consideração que, para a geometria de uma peça laminar plana, se pode escrever
+\begin{subequations}
+\begin{align}
+\int_{V} f(x_1, x_2, x_3) \ud V =& \int_{\Omega}  \int_{-\frac{h}{2}}^{\frac{h}{2}} f(x_1, x_2, x_3) \ud x_3 \ud \Omega \\
+\begin{split}
+\int_{S} f(x_1, x_2, x_3) \ud S = &\int_{\Omega^+}  f(x_1, x_2, \frac{h}{2}) \ud \Omega^+\int_{\Omega^-}  f(x_1, x_2, -\frac{h}{2}) \ud \Omega^- +\\
+&+\int_{\Gamma} \int_{-\frac{h}{2}}^{\frac{h}{2}} f(x_1, x_2, x_3) \ud x_3 \ud \Gamma
+\end{split}
+\end{align}
+\end{subequations}
+segue-se
+\begin{multline}
+\int_{\Omega} \left(\int_{-\frac{h}{2}}^{\frac{h}{2}}
+x_3\, \sigma_{\alpha \beta}\ud x_ 3\,\chi_{\alpha \beta}+\int_{-\frac{h}{2}}^{\frac{h}{2}} \sigma_{\alpha 3} \ud x_3
+\gamma_{\alpha 3}
+\right)
+\ud \Omega=\\
+=\int_{\Omega} \left(\int_{-\frac{h}{2}}^{\frac{h}{2}}x_3\,f_{\alpha}\ud x_3\,\theta_{\alpha}+\int_{-\frac{h}{2}}^{\frac{h}{2}}f_3\ud x_3 \,w \right) \ud \Omega+\\
++\int_{\Omega^+}  \left(\frac{h}{2}\,\overline{t}_{\alpha}\theta_{\alpha}+\overline{t}_3\,w\right)  \ud \Omega^+\int_{\Omega^-}   \left(-\frac{h}{2}\,\overline{t}_{\alpha}\theta_{\alpha}+\overline{t}_3\,w\right) \ud \Omega^- +\\
++\int_{\Gamma} \int_{-\frac{h}{2}}^{\frac{h}{2}}  \left(x_3 \,\overline{t}_{\alpha}\theta_{\alpha}+\overline{t}_3\,w\right) \ud x_3 \ud \Gamma
+\end{multline}
+
+A partir desta equação torna-se claro quais as tensões e cargas generalizadas que são conjugadas das deformações e deslocamentos generalizados definidos anteriormente. Assim, define-se o \emph{vector dos esforços transversos} e o \emph{tensor de momentos}
+\begin{subequations}\label{eq: chap lajes def m alpha beta e v alpha}
+\begin{align}
+v_{\alpha 3}=& \int_{-\frac{h}{2}}^{\frac{h}{2}}
+\sigma_{\alpha 3}\ud x_ 3 \label{eq: chap lajes def m alpha beta}\\
+m_{\alpha \beta}=& \int_{-\frac{h}{2}}^{\frac{h}{2}}
+x_3\, \sigma_{\alpha \beta}\ud x_ 3\label{eq: chap lajes def v alpha}
+\end{align}
+\end{subequations}
+como as tensões generalizadas (esforços) desta teoria de lajes. As cargas generalizadas, definidas sobre o plano médio, são
+\begin{subequations}
+\begin{align}
+\overline{p}=& \int_{-\frac{h}{2}}^{\frac{h}{2}}
+f_3 \ud x_ 3+ \int_{\Omega^+} \overline{t}_{3} \ud \Omega^+\int_{\Omega^-}   \overline{t}_{3} \ud \Omega^-
+\\
+\overline{m}_{\alpha}=& \int_{-\frac{h}{2}}^{\frac{h}{2}}
+x_3\, f_{\alpha} \ud x_ 3+ \int_{\Omega^+} \frac{h}{2}\,\overline{t}_{\alpha} \ud \Omega^+\int_{\Omega^-} \left(-\frac{h}{2}\right)\,\overline{t}_{\alpha} \ud \Omega^-\end{align}
+\end{subequations}
+onde $\overline{p}$ é a \emph{carga aplicada no domínio} e $\overline{m}_{\alpha}$ é a componente $\alpha$ do \emph{vector dos momentos aplicados no domínio}. Esta componente actua segundo a direcção $\vectorialp{\bs{e}_3}{\bs{e}_{\alpha}}=\varepsilon_{3\alpha i}\,\bs{e}_i$.
+
+As cargas que actuam nas superfícies laterais da laje, reduzidas à fronteira $\Gamma=\partial \Omega$, são
+\begin{subequations}
+\begin{align}
+\overline{p}^{\Gamma}=& \int_{-\frac{h}{2}}^{\frac{h}{2}}
+\overline{t}_{3} \ud x_3
+\\
+\overline{m}_{\alpha}^{\Gamma}=& \int_{-\frac{h}{2}}^{\frac{h}{2}}
+x_3\, \overline{t}_{\alpha} \ud x_3
+\end{align}
+\end{subequations}
+onde $\overline{p}^{\Gamma}$ é a \emph{carga aplicada na fronteira} e $\overline{m}^{\Gamma}_{\alpha}$ é a componente $\alpha$ do \emph{vector dos momentos aplicados na fronteira}. Esta componente actua segundo a mesma direcção de $\overline{m}_{\alpha}$.
+
+Assim a equação~\eqref{eq: chap lajes ptv indicial inicial} é reescrita na forma
+\begin{equation}\label{eq: chap lajes PTV RM}
+\int_{\Omega} \left(m_{\alpha \beta}\, \chi_{\alpha \beta} +v_{\alpha}\, \gamma_{\alpha 3}\right) \ud \Omega= \int_{\Omega} \left( \overline{m}_{\alpha}\,\theta_{\alpha}+\overline{p}\,w \right) \ud \Omega +\int_{\Gamma} \left(\overline{m}^{\Gamma}_{\alpha}\,\theta_{\alpha} +\overline{p}^{\Gamma}\,w \right)\ud \Gamma
+\end{equation}
+
+Substituindo as definições das deformações generalizadas tem-se
+\begin{multline}
+\int_{\Omega} \left( \frac{1}{2} m_{\alpha \beta}\,\left(\theta_{\alpha, \beta}+\theta_{\beta,\alpha}\right) +v_{\alpha}\, \left( w_{,\alpha}+\theta_{\alpha}\right)\right) \ud \Omega= \\
+=\int_{\Omega} \left( \overline{m}_{\alpha}\,\theta_{\alpha}+\overline{p}\,w \right) \ud \Omega +\int_{\Gamma} \left(\overline{m}^{\Gamma}_{\alpha}\,\theta_{\alpha} +\overline{p}^{\Gamma}_{\alpha}\,w \right)\ud \Gamma
+\end{multline}
+O primeiro membro desta expressão pode ser integrado por partes. Tirando partido da simetria do tensor dos momentos, tem-se
+\begin{multline}
+\int_{\Omega} m_{\alpha \beta}\, \left(\theta_{\alpha, \beta}+\theta_{\beta,\alpha}\right) \ud \Omega= \int_{\Omega} \left( m_{\alpha \beta}\,\theta_{\alpha, \beta}+ m_{\alpha \beta}\,\theta_{\beta,\alpha}\right) \ud \Omega=\\
+=\int_{\Gamma} \left( m_{\alpha \beta}\,\theta_{\alpha}\,n_{\beta}+ m_{\alpha \beta}\,\theta_{\beta}\,n_{\alpha}\right) \ud \Gamma -\int_{\Omega} \left( m_{\alpha \beta,\beta}\,\theta_{\alpha}+ m_{\alpha \beta,\alpha}\,\theta_{\beta}\right) \ud \Omega=\\
+=\int_{\Gamma} \left( m_{\alpha \beta}\,\theta_{\alpha}\,n_{\beta}+ m_{ \beta \alpha}\,\theta_{\beta}\,n_{\alpha}\right) \ud \Gamma -\int_{\Omega} \left( m_{\alpha \beta,\beta}\,\theta_{\alpha}+ m_{\beta \alpha,\alpha}\,\theta_{\beta}\right) \ud \Omega=\\
+=\int_{\Gamma} \left( m_{\alpha \beta}\,\theta_{\alpha}\,n_{\beta}+ m_{ \alpha\beta}\,\theta_{\alpha}\,n_{\beta}\right) \ud \Gamma -\int_{\Omega} \left( m_{\alpha \beta,\beta}\,\theta_{\alpha}+ m_{ \alpha \beta ,\beta}\,\theta_{\alpha}\right) \ud \Omega=\\
+=2\int_{\Gamma} m_{\alpha \beta}\,n_{\beta}\,\theta_{\alpha} \ud \Gamma -2\int_{\Omega}  m_{\alpha \beta,\beta}\,\theta_{\alpha} \ud \Omega
+\end{multline}
+e
+\begin{equation}
+\int_{\Omega} v_{\alpha}\, w_{,\alpha} \ud \Omega=\int_{\Gamma} v_{\alpha} \, n_{\alpha}\, w \ud \Gamma-\int_{\Omega} v_{\alpha,\alpha}\, w \ud \Omega
+\end{equation}
+onde $n_{\alpha}$ são as componentes do vector da normal exterior ao domínio, $\Omega$.
+
+
+Assim, vem
+\begin{multline}
+\int_{\Gamma} \left(m_{\alpha \beta}\,n_{\beta}\,\theta_{\alpha}+v_{\alpha}\, n_{\alpha}\, w \right) \ud \Gamma -\int_{\Omega} \left( m_{\alpha \beta,\beta}\,\theta_{\alpha}+v_{\alpha,\alpha}\, w-v_{\alpha}\, \theta_{\alpha}\right) \ud \Omega=\\
+=\int_{\Omega} \left( \overline{m}_{\alpha}\,\theta_{\alpha}+\overline{p}\,w \right) \ud \Omega +\int_{\Gamma} \left(\overline{m}^{\Gamma}_{\alpha}\,\theta_{\alpha} +\overline{p}^{\Gamma}\,w \right)\ud \Gamma
+\end{multline}
+ou seja,
+\begin{multline}
+\int_{\Gamma} \left(\left(m_{\alpha \beta}\,n_{\beta}-\overline{m}^{\Gamma}_{\alpha}  \right) \,\theta_{\alpha}+\left(v_{\alpha} \, n_{\alpha}-\overline{p}^{\Gamma} \right)\, w\right) \ud \Gamma -\\
+-\int_{\Omega} \left(\left( m_{\alpha \beta,\beta}-v_{\alpha}+\overline{m}_{\alpha}\right)\,\theta_{\alpha}+\left(v_{\alpha,\alpha} +\overline{p}\right)\, w\right) \ud \Omega=0
+\end{multline}
+
+As três equações de equilíbrio na fronteira estática, $\Gamma_t$, são então
+\begin{subequations}
+\begin{align}
+v_{\alpha} \, n_{\alpha}-\overline{p}^{\Gamma}=&0 \label{eq: chap lajes eq fronteira v indicial}\\
+m_{\alpha \beta}\,n_{\beta}-\overline{m}^{\Gamma}_{\alpha}=&0 \label{eq: chap lajes eq fronteira m indicial}
+\end{align} \label{eq: chap lajes eq fronteira indicial}
+\end{subequations}
+
+Em lugar de definir as condições de fronteira~\eqref{eq: chap lajes eq fronteira indicial} no referencial global é usual fazê-lo num referencial local. Este referencial é definido em cada ponto da fronteira através do vector normal exterior, $\bs{n}=n_{\alpha}\,\bs{e}_{\alpha}$, e do vector tangencial, $\bs{t}=t_{\alpha}\,\bs{e}_{\alpha}$. Este último é gerado tendo em consideração que $\vectorialp{\bs{n}}{\bs{t}}=\bs{e}_3$, ou seja, $\bs{t}=\vectorialp{\bs{e}_3}{\bs{n}}$. Assim, $t_1=-n_2$ e $t_2=n_1$.
+
+Em lugar das componentes do vector momento no referencial global, dadas por $m_{\alpha}=m_{\alpha \beta}\,n_{\beta}$, podem então ser usadas as componentes \emph{normal}, $m_{nn}$, e \emph{tangencial}, $m_{nt}$, do vector momento. Estas são obtidas projectando o vector momento segundo as direcções $\bs{n}$ e $\bs{t}$, ou seja,
+\begin{subequations}
+\begin{align}
+m_{nn}=&m_{\alpha}\,n_{\alpha} =m_{\alpha \beta}\,n_{\beta}\,n_{\alpha}\\
+m_{nt}=&m_{\alpha}\,t_{\alpha} =m_{\alpha \beta}\,n_{\beta}\,t_{\alpha}
+\end{align}
+\end{subequations}
+Em função das componentes do vector normal exterior, $\bs{n}$, tem-se
+\begin{subequations}
+\begin{align}
+m_{nn}=&m_{11}\,n_{1}^2+m_{22}\,n_{2}^2+2\,m_{12}\,n_{1}\,n_{2}\\
+m_{nt}=&\left(m_{22}-m_{11}\right)\,n_{1}\,n_{2}+m_{12}\left(n_{1}^2-n_{2}^2\right)
+\end{align}
+\end{subequations}
+
+A mesma decomposição é utilizada para o vector dos momentos aplicados, escrevendo-se \begin{subequations}
+\begin{align}
+\overline{m}^{\Gamma}_n=&\overline{m}^{\Gamma}_{\alpha}\,n_{\alpha} \\
+\overline{m}^{\Gamma}_t=&\overline{m}^{\Gamma}_{\alpha}\,t_{\alpha}
+\end{align}
+\end{subequations}
+
+Quanto ao esforço transverso, é habitual definir a quantidade $v_n=v_{\alpha} \, n_{\alpha}$ como o \emph{esforço transverso normal}.
+
+Assim, tem-se
+\begin{subequations}
+\begin{align}
+v_{n}-\overline{p}^{\Gamma}=&0  \label{eq: chap lajes eq fronteira vn}\\
+m_{nn}-\overline{m}^{\Gamma}_n=&0 \label{eq: chap lajes eq fronteira mnn}\\
+m_{nt}-\overline{m}^{\Gamma}_t=&0 \label{eq: chap lajes eq fronteira mnt}
+\end{align}
+\end{subequations}
+
+Evidentemente, as equações~\eqref{eq: chap lajes eq fronteira mnn} e~\eqref{eq: chap lajes eq fronteira mnt} podem ser obtidas a partir de~\eqref{eq: chap lajes eq fronteira m indicial} multiplicando ambos os termos por $n_{\alpha}$ e $t_{\alpha}$.
+
+As três equações de compatibilidade na fronteira cinemática, $\Gamma_u$, são então
+\begin{subequations}
+\begin{align}
+w-\overline{w}=&0 \\
+\theta_{\alpha}-\overline{\theta}_{\alpha}=&0
+\end{align}
+\end{subequations}
+
+As três equações de equilíbrio no domínio, $\Omega$, são então
+\begin{subequations}
+\begin{align}
+v_{\alpha,\alpha} +\overline{p}=&0\\
+m_{\alpha \beta,\beta}-v_{\alpha}+\overline{m}_{\alpha}=&0
+\end{align}
+\end{subequations}
+
+A imposição de um estado plano de tensão na direcção perpendicular ao plano médio, $\sigma_{33}=0$, na relação constitutiva do contínuo tridimensional conduz a
+\begin{subequations}\label{eq: chap lajes rel const para sigma alpha beta e sigma alpha 3}
+\begin{align}
+    \sigma_{\alpha \beta}=&\frac{E}{1+\nu}\,\left(\epsilon_{\alpha \beta}+
+    \frac{\nu}{1-\nu}\,\epsilon_{\gamma \gamma}\,\delta_{\alpha \beta}\right)-
+     \frac{E\,\alpha\,\Delta T}{1-\nu}\,\delta_{\alpha \beta} \label{eq: chap lajes rel const para sigma alpha beta}\\
+     \sigma_{\alpha 3}=& G\,\gamma_{\alpha 3} \label{eq: chap lajes rel const para sigma alpha 3}
+\end{align}
+\end{subequations}
+Note-se que as tensões tangenciais são independentes da hipótese do estado plano de tensão.
+
+Até este ponto não não foi efectuada nenhuma hipótese sobre a forma como varia a temperatura na laje. Obviamente que só faz sentido considerar variações de temperatura antissimétricas em relação ao plano médio. No que se segue assume-se que a temperatura varia linearmente na espessura da laje e que a diferença entre o valor da fibra inferior e o valor na fibra superior é $\overline{\Delta T}$, \emph{i. e.},
+\begin{equation}\label{}
+    \Delta T(x_3)=x_3\,\frac{\overline{\Delta T}}{h}
+\end{equation}
+
+Substituindo as relações de compatibilidade~\eqref{eq: chap lajes epsilon alpha beta = x3 chi alpha beta} na relação constitutiva~\eqref{eq: chap lajes rel const para sigma alpha beta} e depois o resultado na definição do tensor de momentos~\eqref{eq: chap lajes def m alpha beta} e tendo em conta que
+\begin{equation}\label{}
+    \int_{-\frac{h}{2}}^{\frac{h}{2}} x_3^2\ud x_3 =\frac{h^3}{12}
+\end{equation}
+obtém-se
+\begin{equation}\label{}
+    m_{\alpha \beta}= \frac{E\,h^3}{12\,(1+\nu)}\,\left(\chi_{\alpha \beta}+ \frac{\nu}{1-\nu}\,\chi_{\gamma \gamma}\,\delta_{\alpha \beta}\right)-
+     \frac{E\,h^2\,\alpha\,\overline{\Delta T}}{12\,(1-\nu)}\,\delta_{\alpha \beta}
+\end{equation}
+
+Substituindo a relação constitutiva~\eqref{eq: chap lajes rel const para sigma alpha 3} na definição dos esforços transversos~\eqref{eq: chap lajes def v alpha} obtém-se
+\begin{equation}\label{}
+    v_{\alpha 3}= G\,h\,\gamma_{\alpha 3}
+\end{equation}
+No entanto, para ter em conta a distribuição não uniforme das tensões tangenciais é comum introduzir factores de corte $\kappa$ na relação constitutiva obtida, ficando
+\begin{equation}\label{}
+    v_{\alpha 3}= \kappa\,G\,h\,\gamma_{\alpha 3}
+\end{equation}
+
+Tendo-se três campos de deslocamentos generalizados (deslocamento transversal e rotações do plano médio) e cinco campos de deformações generalizadas (curvaturas e distorções do plano médio), dados os campo de deformações generalizadas nem sempre será possível integrá-los e obter campos de deslocamentos generalizados. O número de condições terá de ser exactamente igual à diferença entre o número de deformações generalizadas (cinco) e o número de campos de deslocamentos generalizados (três), logo serão duas. Estas condições podem ser encontradas de várias formas. Por consistência com o restante texto, elas são aqui deduzidas a partir dos seus equivalentes do contínuo.
+
+Substituindo~\eqref{eq: chap lajes epsilon alpha beta = x3 chi alpha beta} nas condições de integrabilidade obtém-se naturalmente seis equações. Das condições \eqref{eq: chap Elasticidade tridimensional integrability 2}, \eqref{eq: chap Elasticidade tridimensional integrability 3} e \eqref{eq: chap Elasticidade tridimensional integrability 6} resulta a identidade trivial. De \eqref{eq: chap Elasticidade tridimensional integrability 1} resulta
+\begin{equation}\label{}
+    z\,\left(2\,\chi_{12,12}-\chi_{11,22}-\chi_{22,11}\right)=0
+\end{equation}
+Note-se que esta equação no plano médio também se reduz à identidade trivial.
+
+Finalmente, das condições \eqref{eq: chap Elasticidade tridimensional integrability 4} e \eqref{eq: chap Elasticidade tridimensional integrability 5} obtém-se
+\begin{subequations}\label{eq: chap lajes integrabilidade das deformacoes em laje espessa}
+\begin{align}
+\chi_{11,2}-\chi_{12,1}+\frac{1}{2}\,\gamma_{23,11}-\frac{1}{2}\,\gamma_{13,12}&=0 \\
+\chi_{22,1}-\chi_{12,2}+\frac{1}{2}\,\gamma_{13,22}-\frac{1}{2}\,\gamma_{23,12}&=0
+\end{align}
+\end{subequations}
+
+
+
+Os operadores associados a esta teoria de laje são identificados em seguida
+
+As tensões generalizadas são
+\begin{equation}\label{eq: chap }
+\bs{\sigma}=\left\{
+\begin{matrix}
+m_{11}\\
+m_{22}\\
+m_{12}\\
+v_{1}\\
+v_{2}
+\end{matrix}\right\},
+\quad
+\overline{\mathbf{b}}=\left\{
+\begin{matrix}
+\overline{p}\\
+\overline{m}_{1}\\
+\overline{m}_{2}
+\end{matrix}\right\},
+\quad
+\overline{\mathbf{t}}=\left\{
+\begin{matrix}
+\overline{p}^{\Gamma}\\
+\overline{m}^{\Gamma}_{1}\\
+\overline{t}^{\Gamma}_{2}
+\end{matrix}\right\}.
+\end{equation}
+
+\begin{equation}\label{eq: chap }
+\bs{\partial}^{*}=\left[
+\begin{matrix}
+0 & 0 & 0 & \partial_1 & \partial_2\\
+\partial_1 & 0 & \partial_2 & -1 &  0\\
+0 & \partial_2 & \partial_1 &  0 & -1
+\end{matrix}\right],
+\quad
+\mathbf{N}^{*}=\left[
+\begin{matrix}
+0 & 0 & 0 & n_1 & n_2\\
+n_1 & 0 & n_2 & 0 & 0 \\
+0 & n_2 & n_1 & 0 & 0
+\end{matrix}\right].
+\end{equation}
+
+Note-se que as condições de fronteira estática estão escritas no referencial global, e não no referencial local.
+
+As deformações generalizadas são
+\begin{equation}\label{eq: chap }
+\quad
+\bs{\epsilon}=\left\{
+\begin{matrix}
+\chi_{11}\\
+\chi_{22}\\
+2\,\chi_{12}\\
+\gamma_{13}\\
+\gamma_{23}
+\end{matrix}\right\},
+\quad
+\mathbf{u}=\left\{
+\begin{matrix}
+w\\
+\theta_{1}\\
+\theta_{2}
+\end{matrix}\right\},
+\quad
+\overline{\mathbf{u}}=\left\{
+\begin{matrix}
+\overline{w}\\
+\overline{\theta}_{1}\\
+\overline{\theta}_{2}
+\end{matrix}\right\}.
+\end{equation}
+
+\begin{equation}\label{eq: chap }
+\bs{\partial}=\left[
+\begin{matrix}
+0 & \partial_1 & 0 \\
+0 & 0 & \partial_2 \\
+0 & \partial_2 & \partial_1\\
+\partial_1 & 1 & 0\\
+\partial_2 & 0 & 1
+\end{matrix}\right]
+\end{equation}
+
+O operador constitutivo generalizado é:
+\begin{equation}\label{eq: chap }
+\mathbf{D}=\left[
+\begin{matrix}
+D_f & \nu\,D_f & 0 & 0 & 0\\
+\nu\,D_f & D_f & 0 & 0 & 0\\
+0 & 0 & \frac{1-\nu}{2}\,D_f & 0 & 0\\
+0 & 0 & 0 & D_c & 0 \\
+0 & 0 & 0 & 0 & D_c
+\end{matrix}\right],
+\quad
+\bs{\sigma}_0=-D_f \frac{(1+\nu)\,\alpha \, \overline{\Delta T}}{h}
+\left[
+\begin{matrix}
+1 \\
+1 \\
+0 \\
+0 \\
+0
+\end{matrix}\right]
+\end{equation}
+onde $D_f=\frac{E\,h^3}{12(1-\nu^2)}$ é a rigidez de flexão e $D_c=\kappa\,G\,h$ é a rigidez de corte da laje.
+
+
+
+%
+\section{Laje fina}
+\label{chap: }
+%
+A teoria de lajes finas, também designada por teoria de Kirchhoff, pode ser obtida através da teoria de lajes moderadamente espessas através da imposição $\gamma_{\alpha 3}=0$. Neste caso, a rotação pode ser expressa em função do campo de deslocamentos transversal, pois
+\begin{equation}\label{}
+    \gamma_{\alpha 3}=w_{,\alpha}+\theta_{\alpha}\Leftrightarrow \theta_{\alpha}=-w_{,\alpha}
+\end{equation}
+
+Então~, o tensor das curvaturas é dado por
+\begin{equation}\label{eq: chap lajes chi alpha beta = - w, alpha beta}
+\chi_{\alpha \beta}=\frac{1}{2}\left(\theta_{\alpha, \beta}+\theta_{\beta,\alpha}\right) \Leftrightarrow \chi_{\alpha \beta}=\frac{1}{2}\left(-w_{,\alpha \beta}-w_{,\beta \alpha}\right) \Leftrightarrow \chi_{\alpha \beta}=-w_{,\alpha \beta}
+\end{equation}
+
+Tendo em consideração a hipótese anterior, a equação~\eqref{eq: chap lajes PTV RM} pode ser desenvolvida. O primeiro termo fica
+\begin{multline}
+\int_{\Omega} \left(m_{\alpha \beta}\, \chi_{\alpha \beta} +v_{\alpha}\, \gamma_{\alpha 3}\right) \ud \Omega=-\int_{\Omega} m_{\alpha \beta}\,w_{,\alpha \beta}  \ud \Omega\\
+=-\int_{\Gamma} m_{\alpha \beta}\,n_{\alpha}\,w_{,\beta}  \ud \Gamma+\int_{\Omega} m_{\alpha \beta,\alpha}\,w_{, \beta}  \ud \Omega\\
+=-\int_{\Gamma} m_{\alpha \beta}\,n_{\alpha}\,w_{,\beta}  \ud \Gamma+\int_{\Gamma} m_{\alpha \beta,\alpha}\,n_{\beta}\,w  \ud \Gamma-\int_{\Omega} m_{\alpha \beta,\alpha \beta}\,w  \ud \Omega\\
+=-\int_{\Gamma} m_{\beta}\,w_{,\beta}  \ud \Gamma+\int_{\Gamma} v_{\beta}\,n_{\beta}\,w  \ud \Gamma-\int_{\Omega} m_{\alpha \beta,\alpha \beta}\,w  \ud \Omega\\
+=-\int_{\Gamma} m_{\beta}\,w_{,\beta}  \ud \Gamma+\int_{\Gamma} v_{n}\,w  \ud \Gamma-\int_{\Omega} m_{\alpha \beta,\alpha \beta}\,w  \ud \Omega
+\end{multline}
+Tendo em conta que $w_{,\alpha}=w_{,n}\,n_{\alpha}+w_{,t}\,t_{\alpha}$, o primeiro termo do segundo membro da expressão anterior pode ser expandido na forma
+\begin{multline}
+\int_{\Gamma} m_{\beta}\,w_{,\beta}  \ud \Gamma= \int_{\Gamma} m_{\beta}\,\left(w_{,n}\,n_{\beta}+w_{,t}\,t_{\beta}\right)  \ud \Gamma
+=\int_{\Gamma} \left(m_{\beta}\,n_{\beta}\,w_{,n}+m_{\beta}\,t_{\beta}\,w_{,t} \right)  \ud \Gamma\\
+=\int_{\Gamma} \left(m_{nn}\,w_{,n}+m_{nt}\,w_{,t}\right)  \ud \Gamma
+=\int_{\Gamma} \left(m_{nn}\,w_{,n} + \left(m_{nt}\,w\right)_{,t}  - m_{nt,t}\,w \right) \ud \Gamma\\
+=\int_{\Gamma} \left(m_{nn}\,w_{,n}-m_{nt,t}\,w\right)  \ud \Gamma-
+\sum_{i=1}^{n} \jump{m_{nt}\, w}_i
+\end{multline}
+onde $n$ é o número de pontos angulosos na fronteira exterior da laje. No apêndice~\ref{appendix: integracao de funcoes descontinuas} é dada uma interpretação para a fórmula de integração
+\begin{equation}
+\int_{\Gamma} \left(m_{nt}\,w\right)_{,t} \ud \Gamma=-\sum_{i=1}^{n}\jump{m_{nt}\,w}_i
+\end{equation}
+
+
+O segundo termo pode ser escrito na forma
+\begin{multline}
+ \int_{\Omega} \left( \overline{m}_{\alpha}\,\theta_{\alpha}+\overline{p}\,w \right) \ud \Omega +\int_{\Gamma} \left(\overline{m}^{\Gamma}_{\alpha}\,\theta_{\alpha} +\overline{p}^{\Gamma}\,w \right)\ud \Gamma\\
+=\int_{\Omega} \left(- \overline{m}_{\alpha}\,w_{,\alpha}+\overline{p}\,w \right) \ud \Omega +\int_{\Gamma} \left(-\overline{m}^{\Gamma}_{\alpha}\,w_{\alpha} +\overline{p}^{\Gamma}\,w \right)\ud \Gamma\\
+=\int_{\Omega} \left(- \overline{m}_{\alpha}\,w_{,\alpha}+\overline{p}\,w \right) \ud \Omega +\int_{\Gamma} \left(-\overline{m}^{\Gamma}_{\alpha}\,\left(w_{,n}\,n_{\alpha}+w_{,t}\,t_{\alpha}\right) +\overline{p}^{\Gamma}\,w \right)\ud \Gamma\\
+ = \int_{\Omega} \left(- \overline{m}_{\alpha}\, w_{,\alpha}+\overline{p}\,w \right) \ud \Omega +\int_{\Gamma} \left(-\overline{m}^{\Gamma}_{nn}\,w_{,n}- \overline{m}^{\Gamma}_{nt}\,w_{,t} +\overline{p}^{\Gamma}\,w \right)\ud \Gamma
+\end{multline}
+Tendo em conta que
+\begin{align}
+\int_{\Omega} \overline{m}_{\alpha}\, w_{,\alpha}\ud \Omega =&\int_{\Gamma} \overline{m}_{\alpha}\, n_{\alpha}\,w \ud \Gamma-\int_{\Omega} \overline{m}_{\alpha,\alpha}\, w\ud \Omega=\int_{\Gamma} \overline{m}_{nn}\,w \ud \Gamma-\int_{\Omega} \overline{m}_{\alpha,\alpha}\, w\ud \Omega \\
+\int_{\Gamma} \overline{m}_{nt}^\Gamma\, w_{,t}\ud \Gamma=&\int_{\Gamma} \left(\overline{m}_{nt}^\Gamma\, w\right)_{,t}\ud \Gamma-\int_{\Gamma} \overline{m}^\Gamma_{nt,t}\, w\ud \Gamma=-\sum_{i=1}^{n}
+\jump{\overline{m}_{nt}^\Gamma\, w}_i-\int_{\Gamma} \overline{m}^\Gamma_{nt,t}\, w\ud \Gamma
+\end{align}
+vem
+\begin{multline}
+ \int_{\Omega} \left( \overline{m}_{\alpha}\,\theta_{\alpha}+\overline{p}\,w \right) \ud \Omega +\int_{\Gamma} \left(\overline{m}^{\Gamma}_{\alpha}\,\theta_{\alpha} +\overline{p}^{\Gamma}\,w \right)\ud \Gamma=\int_{\Omega} \left(\overline{m}_{\alpha,\alpha}\, w+\overline{p}\,w \right)\ud \Omega\\+
+ \int_{\Gamma} \left(-\overline{m}_{nn}\,w-\overline{m}^{\Gamma}_{nn}\,w_{,n}+ \overline{m}^{\Gamma}_{nt,t}\,w +\overline{p}^{\Gamma}\,w \right) \ud \Gamma+\sum_{i=1}^{n}
+\jump{\overline{m}_{nt}^\Gamma\, w}_i
+\end{multline}
+
+Juntando estes resultados tem-se, finalmente,
+\begin{multline}
+-\int_{\Gamma} \left(m_{nn}\,w_{,n}-m_{nt,t}\,w\right)  \ud \Gamma+
+\sum_{i=1}^{n} \jump{m_{nt}\, w}_i+\int_{\Gamma} v_{n}\,w  \ud \Gamma-\int_{\Omega} m_{\alpha \beta,\alpha \beta}\,w  \ud \Omega=\\
+\int_{\Omega} \left(\overline{m}_{\alpha,\alpha}\, w+\overline{p}\,w \right)\ud \Omega+
+\int_{\Gamma} \left(-\overline{m}_{nn}\,w-\overline{m}^{\Gamma}_{nn}\,w_{,n}+ \overline{m}^{\Gamma}_{nt,t}\,w +\overline{p}^{\Gamma}\,w \right) \ud \Gamma+\sum_{i=1}^{n}
+\jump{\overline{m}^\Gamma_{nt}\, w}_i
+\end{multline}
+ou seja
+\begin{multline}\label{eq: chap lajes finas ptv}
+\int_{\Omega} \left(m_{\alpha \beta,\alpha \beta}+\overline{p}+\overline{m}_{\alpha,\alpha} \right)\,w \ud \Omega-\int_{\Gamma} \left(v_{n}+m_{nt,t}- \left(\overline{m}^{\Gamma}_{nt,t}+ \overline{p}^{\Gamma}-\overline{m}_{nn}\right) \right)\,w  \ud \Gamma\\
+-\int_{\Gamma} \left(m_{nn}-\overline{m}^{\Gamma}_{nn}\right)\,(-w_{,n})  \ud \Gamma-\sum_{i=1}^{n}
+\jump{\left(m_{nt}-\overline{m}^\Gamma_{nt}\right)\, w}_i=0
+\end{multline}
+O termo $(-w_{,n})$ surge propositadamente com o sinal negativo para evidenciar a grandeza cinemática conjugada de $m_{nn}$. Note-se que $m_{nn}$ e $w_{,n}$ têm a mesma direcção mas sentidos opostos.
+
+Introduzindo o \emph{esforço transverso efectivo normal}, $r_n$, e a \emph{carga efectiva normal}, $\overline{r}^{\Gamma}_n$,
+\begin{subequations}\label{eq: chap lajes def rn e overbar rn}
+\begin{align}
+r_n=&v_{n}+m_{nt,t} \label{eq: chap lajes def rn}\\
+\overline{r}^{\Gamma}_n=&\overline{p}^{\Gamma}+\overline{m}^{\Gamma}_{nt,t}-\overline{m}_{nn} \label{eq: chap lajes overbar rn}
+\end{align}
+\end{subequations}
+A interpretação física da expressão~\eqref{eq: chap lajes def rn} é fornecida por~\citep[artigo 646, página 190]{Kelvin:12b}. Os dois primeiros termos de~\eqref{eq: chap lajes overbar rn} têm idêntica interpretação, mas em lugar de esforços internos, trata-se agora de resultantes de tensões e de momentos de tensões aplicadas na face lateral da laje. Quanto ao último termo, $-\overline{m}_{nn}$, trata-se do efeito dos momentos aplicados no domínio da laje sobre a fronteira.
+
+A expressão~\eqref{eq: chap lajes finas ptv} pode agora escrever-se na forma
+\begin{multline}
+\int_{\Omega} \left(m_{\alpha \beta,\alpha \beta}+\overline{p}+\overline{m}_{\alpha,\alpha} \right)\,w \ud \Omega-\int_{\Gamma} \left(r_{n}- \overline{r}^{\Gamma}_n \right)\,w  \ud \Gamma\\
+-\int_{\Gamma} \left(m_{nn}-\overline{m}^{\Gamma}_{nn}\right)\,(-w_{,n})  \ud \Gamma-\sum_{i=1}^{n}
+\jump{m_{nt}-\overline{m}^\Gamma_{nt}}_i\, w_i=0
+\end{multline}
+
+Defina-se as descontinuidade no momento normal tangencial e no momento normal tangencial aplicado, no ponto anguloso $i$, através de
+\begin{align}\label{eq: chap}
+\jump{m_{nt}}_i=&P_i\\
+\jump{\overline{m}^\Gamma_{nt}}_i=&\overline{P}^\Gamma_i
+\end{align}
+Note-se que estas descontinuidades, quer se refiram aos esforços ou às cargas aplicadas, tratam-se de forças concentradas nos pontos angulosos.
+
+As três equações de equilíbrio na fronteira estática, $\Gamma_t$, são então
+\begin{subequations}
+\begin{align}
+r_{n}-\overline{r}^{\Gamma}_{n}=&0 \label{}\\
+m_{nn}-\overline{m}^{\Gamma}_{nn}=&0 \label{}\\
+P_i-\overline{P}_i=&0
+\end{align} \label{}
+\end{subequations}
+
+As três equações de compatibilidade na fronteira cinemática, $\Gamma_u$, são então
+\begin{subequations}
+\begin{align}
+w-\overline{w}=&0 \\
+w_{,n}-\overline{w}_{,n}=&0\\
+w_i-\overline{w}_i=&0
+\end{align}
+\end{subequations}
+
+Note-se a total complementaridade entre estes dois conjuntos de equações.
+
+A (única) equação de equilíbrio no domínio, $\Omega$, é então
+\begin{equation}
+m_{\alpha \beta,\alpha \beta}+\overline{p}+\overline{m}_{\alpha,\alpha}
+\end{equation}
+%ou seja
+%\begin{equation}
+%m_{11,11}+2\,m_{12,12}+m_{22,22}+\overline{p}+\overline{m}_{1,1}+\overline{m}_{2,2}=0
+%\end{equation}
+
+As principais diferenças entre estas condições de fronteira e as presentes no caso da laje moderadamente espessa são:
+\begin{enumerate}[(i)]
+\item ao contrário das três condições de fronteira a satisfazer ao longo de cada bordo na teoria de lajes moderadamente espessas, surgem apenas duas condições de fronteira ao longo de cada bordo e uma condição a satisfazer em cada ponto anguloso;
+%
+\item nas lajes moderadamente espessas as condições de fronteira associadas a momentos podiam ser escritas no referencial global ou num referencial associado ao lado. Nas lajes finas essa opção deixa de existir, tendo o momento que ser decomposto nas suas componentes normal e tangencial;
+%
+\item a componente tangencial do momento no bordo não é associada a qualquer valor prescrito, sendo antes a sua variação ao longo do bordo associada às forças aplicadas ao longo do bordo, perpendicularmente ao plano da laje.
+\end{enumerate}
+
+Tendo-se um único campo de deslocamentos generalizados (deslocamento transversal do plano médio) e três campos de deformações generalizadas (as três curvaturas do plano médio), dados  campos de curvaturas nem sempre será possível integrá-los e obter um campo de deslocamentos transversal. O número de condições terá de ser exactamente igual à diferença entre o número de deformações generalizadas (três) e o número de campos de deslocamentos generalizados (um), logo serão duas. Estas condições podem ser encontradas anulando as componentes de distorção nas condições análogas da laje moderadamente espessa. Assim, impondo $\gamma_{\alpha 3}$ em~\eqref{eq: chap lajes integrabilidade das deformacoes em laje espessa} obtém-se
+\begin{subequations}\label{eq: chap lajes integrabilidade das curvaturas em laje fina}
+\begin{align}
+\chi_{11,2}=&\chi_{12,1} \\
+\chi_{22,1}=&\chi_{12,1}
+\end{align}
+\end{subequations}
+
+Uma demonstração rigorosa destas condições pode ser encontrada em~\cite{Veubeke:67a}.
+
+Ao contrário da teoria de lajes moderadamente espessa, a teoria de lajes finas não pode ser colocada na forma geral apresentada no capítulo~\ref{chap: O caso geral}. Este facto deve-se a
+\begin{enumerate}[(i)]
+\item as condições de fronteira não são definidas apenas em ao longo da linha que define a fronteira do plano médio, mas sim também nos pontos angulosos;
+%
+\item as condições de fronteira cinemáticas não são expressas apenas em termos do deslocamento generalizado, mas também da sua derivada (neste caso, a normal);
+%
+\item as condições de fronteira estáticas não são expressas apenas em termos das componentes do vector normal e das tensões generalizadas, mas também das suas derivadas.
+\end{enumerate}
+
+
+Em resumo, as equações obtidas são:
+
+\begin{equation*}
+    \frac{\partial^2 m_{xx}}{\partial x^2}+\frac{\partial^2 m_{yy}}{\partial y^2}+2\frac{\partial^2 m_{xy}}{\partial x\partial y}+q+\frac{\partial m^{\mathit{\Omega}}_{x}}{\partial x}+\frac{\partial m^{\mathit{\Omega}}_{y}}{\partial y}=0
+\end{equation*}
+
+
+
+\begin{align*}
+%\frac{\partial^2 m_{xx}}{\partial x^2}+\frac{\partial^2 m_{yy}}{\partial y^2}+2\frac{\partial^2 m_{xy}}{\partial x\partial y}+q+\frac{\partial m^{\mathit{\Omega}}_{x}}{\partial x}+\frac{\partial m^{\mathit{\Omega}}_{y}}{\partial y}=0 &&
+\begin{aligned}
+w=& \overline{w}&r_n=&\overline{r}_n-n_x\, m^{\mathit{\Omega}}_{x}-n_y\, m^{\mathit{\Omega}}_{y}\\
+-\frac{\partial w}{\partial n}=& \overline{\frac{\partial w}{\partial n}}&m_{nn}=& \overline{m}_{nn}\\
+\left(w- \overline{w}\right)_i=&0&\jump{m_{nt}-\overline{m}_{nt}}_i=&0
+\end{aligned}
+% &&
+%\begin{aligned}
+%r_n=&\overline{r}_n\\
+%m_{nn}=& \overline{m}_{nn}\\
+%\jump{m_{nt}-\overline{m}_{nt}}_i=&0
+%\end{aligned}
+%&&
+%\begin{aligned}
+%r_{x}=&\frac{\partial m_{xx}}{\partial x}+2\frac{\partial m_{xy}}{\partial y}\\
+%r_{y}=&\frac{\partial m_{yy}}{\partial y}+2\frac{\partial m_{xy}}{\partial x}
+%\end{aligned}
+\end{align*}
+
+\begin{align*}
+\begin{aligned}
+\frac{\partial}{\partial n}=&n_{x} \frac{\partial}{\partial x} +n_{y} \frac{\partial}{\partial y}\\
+\frac{\partial}{\partial t}=&-n_{y} \frac{\partial}{\partial x} +n_{x} \frac{\partial}{\partial y}
+\end{aligned}
+&& \begin{aligned}
+v_{n}=&n_{x}\,v_{x}+n_{y}\,v_{y}\\
+r_{n}=&v_{n}+\frac{\partial m_{nt}}{\partial t} \\
+\end{aligned} &&
+\begin{aligned}
+m_{nn}=&n_{x}^{2}\, m_{xx}+n_{y}^{2}\, m_{yy}+2\,n_{x}\, n_{y}\, m_{xy}\\
+m_{nt}=&-n_{x}\, n_{y}\, (m_{xx}-m_{yy})+ m_{xy}(n_{x}^{2}-n_{y}^{2})\\
+\end{aligned}
+\end{align*}
+
+\begin{align*}
+\begin{aligned}
+m_{xx}=&D_{f}\left(\left(\chi_{xx}-\frac{\alpha\,\overline{\Delta T}}{h}\right)
++\nu\left(\chi_{yy}-\frac{\alpha\,\overline{\Delta T}}{h}\right)\right)\\
+m_{yy}=&D_{f}\left(\nu \left(\chi_{xx}-\frac{\alpha\,\overline{\Delta T}}{h}\right)+\left(\chi_{yy}-\frac{\alpha\,\overline{\Delta T}}{h}\right)\right)\\
+m_{xy}=&G\frac{h^3}{12}\left(2\,\chi_{xy}\right)
+\end{aligned}&&
+\left(D_{f}=\frac{E h^3}{12(1-\nu^2)}\right)
+&&
+\begin{aligned}
+\chi_{xx}=&-\frac{\partial^2 w}{\partial x^2}\\
+\chi_{yy}=&-\frac{\partial^2 w}{\partial y^2}\\
+2\chi_{xy}=&-2\frac{\partial^2 w}{\partial x \partial y}
+\end{aligned}
+\end{align*}
+
+
+%
+\section{Soluções exactas de lajes finas}
+\label{chap: }
+%
+
+%
+\subsection{Laje triangular simplesmente apoiada}
+\label{chap: }
+%
+No caso de uma laje em forma de um triângulo equilátero, simplesmente apoiada em todo o seu contorno e submetida a uma carga uniforme, a solução exacta pode ser escrita de forma explícita, ver~\citet[página 313]{Timoshenko:59a}.
+
+\begin{figure}
+    \centering
+    \psfrag{x}[Br][Br]{\small $x$}%
+    \psfrag{y}[Br][Br]{\small $y$}%
+    \psfrag{2a3}[Bc][Bc]{\colorbox{white}{$\frac{2}{3}\,a$}}%
+    \psfrag{a3}[Bc][Bc]{\colorbox{white}{$\frac{1}{3}\,a$}}%
+    \psfrag{2as3}[Bc][Bc]{\colorbox{white}{$\frac{2}{\sqrt{3}}\,a$}}%
+    %
+    \includegraphics[width=5cm]{graphs/triangular_plate.eps}
+    %
+    \caption{Laje em forma de um triângulo equilátero.}
+    \label{Laje em forma de um triangulo equilatero}
+\end{figure}
+
+
+Neste caso é expressa através do polinómio:
+\begin{equation}\label{eq: chap }
+w(x,y)=\frac{q}{64\, a\, D_f}\left(\frac{4}{27}\,a^3-a \left(x^2+y^2\right)+x^3-3\, x\, y^2\right)\left(\frac{4}{9}\,a^2-x^2-y^2\right).
+\end{equation}
+
+A partir das equações de compatibilidade, o vector das curvaturas é dado por
+\begin{equation}\label{eq: chap }
+\bs{\chi}(x,y)=\left\{
+\begin{matrix}
+\frac{q (a+3\, x) \left(8\, a^2-42\, a x+45\, x^2-27\, y^2\right)}{432\, a\,
+   D_f}\\
+\frac{q (a+3\, x) \left(8\, a^2-6\, a x-9 \left(x^2+9\,
+   y^2\right)\right)}{432\, a\, D_f}\\
+-\frac{q\, y \left(-2\, a^2+6\, a x+9 \left(x^2+y^2\right)\right)}{24\, a
+   D_f}
+\end{matrix}
+\right\}.
+\end{equation}
+
+As relações constitutivas permitem avaliar o vector dos momentos, resultando
+\begin{equation}\label{eq: chap }
+\bs{m}(x,y)=\left\{
+\begin{matrix}
+\frac{q\, (a+3 x) \left(8\, a^2 \,(\nu +1)-6 \,a\, x\, (\nu +7)-9\, \left(x^2\,
+   (\nu -5)+3\, y^2 (3 \nu +1)\right)\right)}{432\, a}\\
+\frac{q \,(a+3 x) \left(8\, a^2 (\nu +1)-6\, a \,(7\, x \nu +x)+9\, \left(x^2
+   \,(5 \nu -1)-3\, y^2 \,(\nu +3)\right)\right)}{432\, a}\\
+\frac{q \,y\, (\nu -1) \left(-2 \,a^2+6\, a\, x+9\,
+   \left(x^2+y^2\right)\right)}{48\, a}
+\end{matrix}
+\right\}.
+\end{equation}
+
+Recorrendo às equações de equilíbrio da laje espessa os esforços transversos podem ser obtidos, advindo
+\begin{equation}\label{eq: chap }
+\bs{v}(x,y)=\left\{
+\begin{matrix}
+-\frac{q\, \left(2\, a\, x-3 x^2+3\, y^2\right)}{4\, a}\\
+-\frac{q \,y \,(a+3\, x)}{2\, a}
+\end{matrix}
+\right\}.
+\end{equation}
+
+O deslocamento máximo ocorre precisamente sobre a origem do referencial, ver figura~\ref{Laje em forma de um triangulo equilatero}, e é dado por
+\begin{equation}\label{eq: chap }
+w(0,0)=\frac{1}{972}\frac{q\,a^4}{D_f}.
+\end{equation}
+
+A energia de deformação pode ser obtida através da equação ???. Neste caso,
+\begin{align*}\label{eq: chap }
+U=&\frac{1}{2}\,\int_{\Omega} \bs{\chi}^T\,\bs{m}\ud \Omega\\
+=&\frac{1}{2}\,\int_{-\frac{1}{3}\,a}^{\frac{2}{3}\,a}\int_{\frac{1}{\sqrt{3}}\left(x-2\,\frac{a}{3}\right)} ^{-\frac{1}{\sqrt{3}}\left(x-2\,\frac{a}{3}\right)} \frac{1}{\left(1-\nu^2\right)\,D_f}\left( m_{xx}^2+m_{yy}^2-2\,\nu\,m_{xx}\,m_{yy}+2\,(1+\nu)\,m_{xy} \right) \ud y \ud x\\
+=&\frac{1}{5040\,\sqrt{3}}\frac{q\,a^6}{D_f}
+\end{align*}
+
+
+%
+\section{Elementos finitos de lajes finas}
+\label{chap: }
+%
+Em geral, apenas o campo de deslocamentos $w(x_1,x_2)$ é aproximado. Neste caso, para o elemento genérico $(e)$ tem-se
+\begin{equation*}
+\mathbf{u}^{(\text{e})}(x_1,x_2)=\bs{\Psi}^{(\text{e})}(x_1,x_2)\, \mathbf{d}^{(\text{e})}
+\end{equation*}
+
+O vector de curvaturas, $\bs{\chi}^{(\text{e})}(x_1,x_2)$, é dado por
+\begin{equation*}
+\bs{\chi}^{(\text{e})}(x_1,x_2)=\mathbf{B}^{(\text{e})}(x_1,x_2)\, \mathbf{d}^{(\text{e})}
+\end{equation*}
+onde
+\begin{equation*}
+\mathbf{B}^{(\text{e})}(x_1,x_2)=\textbf{A}\, \bs{\Psi}^{(\text{e})}(x_1,x_2)
+\end{equation*}
+
+O vector dos momentos, $\textbf{m}^{(\text{e})}(x_1,x_2)$, é dado por
+\begin{equation*}
+\textbf{m}^{(\text{e})}(x_1,x_2)=\mathbf{D}^{(\text{e})}\left( \mathbf{B}^{(\text{e})}(x_1,x_2) \, \mathbf{d}^{(\text{e})}-\bs{\chi}^{(\text{e})}_0(x_1,x_2)\right)
+\end{equation*}
+onde $\bs{\chi}^{(\text{e})}_0(x_1,x_2)$ é o vector das curvaturas iniciais devido a, \emph{e. g.}, variações de temperatura diferenciais, pré-esforço, retracção do material ou erro geométrico de fabrico.
+
+No caso estático, a equação elementar do método dos elementos finitos escreve-se na forma
+\begin{equation*}
+\mathbf{K}^{(\text{e})}\, \mathbf{d}^{(\text{e})}=\mathbf{f}^{(\text{e})}
+\end{equation*}
+onde
+\begin{align*}
+\begin{split}
+\mathbf{K}^{(\text{e})}=&\int_{\mathit{\Omega^{(\text{e})}}} \mathbf{B}^{(\text{e})T}(x_1,x_2)\,  \mathbf{D}^{(\text{e})}(x_1,x_2)\, \mathbf{B}^{(\text{e})}(x_1,x_2)\ud \mathit{\Omega^{(\text{e})}}\\ &\qquad+
+\int_{\mathit{\Omega^{(\text{e})}_{s}}} \bs{\Psi}^{(\text{e})T}(x_1,x_2)\,  \mathbf{K}_s^{(\text{e})}(x_1,x_2)\, \bs{\Psi}^{(\text{e})}(x_1,x_2)\ud \mathit{\Omega^{(\text{e})}}\\
+%
+&\qquad+\int_{\mathit{\Gamma^{(\text{e})}_{s}}} \bs{\Psi}^{(\text{e})T}(x_1,x_2)\,  \mathbf{K}_s^{(\text{e})}(x_1,x_2)\, \bs{\Psi}^{(\text{e})}(x_1,x_2)\ud \mathit{\Gamma^{(\text{e})}_{s}}\\
+&\qquad+\sum_{i=1}^{n_{s}} \bs{\Psi}^{(\text{e})T}(x_{i},y_{i})  \, \mathbf{K}_s^{(\text{e})}(x_{1i},x_{2i})\, \bs{\Psi}^{(\text{e})}(x_{1i},x_{2i})
+\end{split}\\
+\begin{split}
+\mathbf{f}^{(\text{e})} =&\int_{\mathit{\Omega^{(\text{e})}}} \bs{\Psi}^{(\text{e})T}(x_1,x_2)\,q(x_1,x_2)
+\ud \mathit{\Omega^{(\text{e})}}\\
+&\qquad+\int_{\mathit{\Gamma}^{(\text{e})}_{t}} \left( \bs{\Psi}^{(\text{e})T}(x_1,x_2)\, \overline{r}_n- \frac{\partial\,\bs{\Psi}^{(\text{e})T}(x_1,x_2)}{\partial\, n}\, \overline{m}_{nn}\right)
+\ud \mathit{\Gamma}^{(\text{e})}_{t}\\
+&\qquad+\int_{\mathit{\Omega^{(\text{e})}}} \mathbf{B}^{(\text{e})T}(x_1,x_2)\,
+\mathbf{D}^{(\text{e})}(x_1,x_2)\,\bs{\chi}_{0}(x_1,x_2)
+\ud \mathit{\Omega^{(\text{e})}}
+\end{split}
+\end{align*}
+onde $\mathbf{K}_s^{(\text{e})}(x_1,x_2)$ representa a fundação elástica no domínio ou na fronteira, $q(x_1,x_2)$ é a carga aplicada no domínio, $\overline{r}_n$ é a carga efectiva normal e $\overline{m}_{nn}$ é o momento normal aplicado.
+
+Após a assemblagem de todas as matrizes elementares, obtém-se o sistema global
+\begin{equation*}
+\mathbf{K}\, \mathbf{d}=\mathbf{f}
+\end{equation*}
+
+
+A determinação das frequências de vibração, $\omega$, de uma laje é resolvido através da resolução do problema de valores e vectores próprios
+\begin{equation*}
+\left(\mathbf{K}-\omega^2\,\mathbf{M}\right)\, \mathbf{d}=\mathbf{0}
+\end{equation*}
+onde $\mathbf{M}$ é a matriz de massa da laje. Esta é obtida através do espalhamento das matrizes de massa elementares, dadas por
+\begin{multline*}
+\mathbf{M}^{(\text{e})}=\int_{\mathit{\Omega^{(\text{e})}}} \left[ I_0\, \bs{\Psi}^{(\text{e})T}(x_1,x_2)\,   \bs{\Psi}^{(\text{e})}(x_1,x_2)\right.\\
+\left.+I_2\,\left(
+\frac{\partial\,\bs{\Psi}^{(\text{e})T}(x_1,x_2)}{\partial\,x_1}\, \frac{\partial\,\bs{\Psi}^{(\text{e})}(x_1,x_2)}{\partial\,x_1} +\frac{\partial\,\bs{\Psi}^{(\text{e})T}(x_1,x_2)}{\partial\,x_2}\, \frac{\partial\,\bs{\Psi}^{(\text{e})T}(x_1,x_2)}{\partial\,x_2}\right)\right]
+\ud \mathit{\Omega^{(\text{e})}}
+\end{multline*}
+onde
+\begin{align*}
+I_{0}=& \rho\,h\\
+I_{2}=& \rho\,\frac{h^3}{12}
+\end{align*}
+
+A solução exacta para o caso da laje rectangular $a\times b$ simplesmente apoiada em toda a sua fronteira é dada por
+\begin{equation*}
+\omega_{mn}=\frac{\pi^2}{b^2}\,\sqrt{\frac{D_f}{\widetilde{I}_0}}\left(m^2\frac{b^2}{a^2}+n^2\right)
+\end{equation*}
+onde $\widetilde{I}_0=I_0+I_2\left[\left(\frac{m\,\pi}{a}\right)^2+ \left(\frac{n\,\pi}{b}\right)^2\right]$.
+
+Os modos de vibração são dados por
+\begin{equation*}
+w(x_1,x_2)=W_{mn}\,\sin\left(\frac{m\,\pi\, x_1}{a}\right)\,\sin\left(\frac{n\,\pi\, x_2}{b}\right)
+\end{equation*}
+onde $W_{mn}$ é uma constante arbitrária.
+
+No caso de uma laje em consola de comprimento $L$ e $\nu=0$ as primeiras  frequências de vibração associadas exclusivamente aos modos de flexão são dadas pela solução da equação (não-linear)
+\begin{equation*}
+\cos\left(a\,L\right)=-\frac{1}{\cosh\left(a\,L\right)}
+\end{equation*}
+onde
+\begin{equation*}
+a^4=\frac{\omega^2\,m}{D_f}.
+\end{equation*}
+Assim, a frequência associada ao modo de flexão $n$ é dada por
+\begin{equation*}
+\omega_n=\left(a\,L\right)^2_n\, \sqrt{\frac{D_f}{m\,L^4}},\qquad n=1,2,3,\ldots
+\end{equation*}
+
+Na tabela~\ref{tab: chap lajes freq consola} encontram-se os cinco primeiros valores da quantidade $a\,L$, associados às cinco primeiras frequências.
+\begin{table}
+\centering
+\begin{tabular}{c r @{,} l}
+$n$ & \multicolumn{2}{c}{$(a\,L)_n$}\\ \hline
+1 & $1$&$87510406871196$\\
+2 & $4$&$69409113297417$\\
+3 & $7$&$85475743823761$\\
+4 & $10$&$99554073487546$\\
+5 & $14$&$13716839104647$\\
+\end{tabular}
+\caption{Frequências de vibração associadas a flexão em laje em consola.} \label{tab: chap lajes freq consola}
+\end{table}
+Os modos de vibração são dados por
+\begin{equation*}
+w(x_1)=A\,\left(\cos \left( a\,x\right)-\cosh \left( a\,x\right)- \frac{\cos \left( a\,L\right)+\cosh \left( a\,L\right)}{\sin \left( a\,L\right)+\sinh \left( a\,L\right)}\,\left( \sin \left( a\,x\right)-\sinh \left( a\,x\right)\right) \right)
+\end{equation*}
+onde $A$ é uma constante arbitrária.
+
+A determinação das cargas de bifurcação, $\lambda$, de uma laje é resolvido através da resolução do problema de valores e vectores próprios
+\begin{equation*}
+\left(\mathbf{K}-\lambda\,\mathbf{G}\right)\, \mathbf{d}=\mathbf{0}
+\end{equation*}
+onde $\mathbf{G}$ é a matriz de estabilidade da laje. Esta é obtida através do espalhamento das matrizes de estabilidade elementares, dadas por
+\begin{multline*}
+\mathbf{G}^{(\text{e})}=\int_{\mathit{\Omega^{(\text{e})}}} \left[ \overline{n}_{11}\, \frac{\partial\,\bs{\Psi}^{(\text{e})T}(x_1,x_2)}{\partial\,x_1}\, \frac{\partial\,\bs{\Psi}^{(\text{e})}(x_1,x_2)}{\partial\,x_1} +
+\overline{n}_{22}\, \frac{\partial\,\bs{\Psi}^{(\text{e})T}(x_1,x_2)}{\partial\,x_2}\, \frac{\partial\,\bs{\Psi}^{(\text{e})}(x_1,x_2)}{\partial\,x_2}\right.\\
+\left.+\overline{n}_{12}\,
+\left(
+\frac{\partial\,\bs{\Psi}^{(\text{e})T}(x_1,x_2)}{\partial\,x_1}\, \frac{\partial\,\bs{\Psi}^{(\text{e})}(x_1,x_2)}{\partial\,x_2} +\frac{\partial\,\bs{\Psi}^{(\text{e})T}(x_1,x_2)}{\partial\,x_2}\, \frac{\partial\,\bs{\Psi}^{(\text{e})}(x_1,x_2)}{\partial\,x_1}\right)\right]
+\ud \mathit{\Omega^{(\text{e})}}
+\end{multline*}
+onde $\overline{n}_{11}$, $\overline{n}_{22}$ e $\overline{n}_{12}$ são as forças (por unidade de comprimento) aplicadas no plano da laje.
+
+As forças que provocam a instabilidade da laje, $n_{11}$, $n_{22}$ e $n_{12}$, são obtidas a partir de
+\begin{equation*}%\label{}
+\lambda=\frac{n_{11}}{\overline{n}_{11}}=\frac{n_{22}}{\overline{n}_{22}}=\frac{n_{12}}{\overline{n}_{12}}
+\end{equation*}
+
+A solução exacta para o caso da laje rectangular $a\times b$ simplesmente apoiada em toda a sua fronteira, submetida à acção $\overline{n}_{11}=-1$, $\overline{n}_{22}=-1$ e $\overline{n}_{12}=0$ é dada por
+\begin{equation*}
+\lambda_{mn}=\frac{\pi^2\,D_f}{b^2}\,\left(m^2\frac{b^2}{a^2}+n^2\right)
+\end{equation*}
+
+Os modos de instabilidade são dados por
+\begin{equation*}
+w(x_1,x_2)=W_{mn}\,\sin\left(\frac{m\,\pi\, x_1}{a}\right)\,\sin\left(\frac{n\,\pi\, x_2}{b}\right)
+\end{equation*}
+onde $W_{mn}$ é uma constante arbitrária.
+
+Definindo as matrizes
+\begin{align*}
+\textbf{M}^{(\text{e})}_{00}=& \int_{\mathit{\Omega^{(\text{e})}}}  \bs{\Psi}^{(\text{e})T}(x_1,x_2)\,   \bs{\Psi}^{(\text{e})}(x_1,x_2)
+\ud \mathit{\Omega^{(\text{e})}} \\
+\textbf{M}^{(\text{e})}_{11}=& \int_{\mathit{\Omega^{(\text{e})}}}  \frac{\partial\,\bs{\Psi}^{(\text{e})T}(x_1,x_2)}{\partial\,x_1}
+\ud \mathit{\Omega^{(\text{e})}} \\
+\textbf{M}^{(\text{e})}_{22}=& \int_{\mathit{\Omega^{(\text{e})}}}  \frac{\partial\,\bs{\Psi}^{(\text{e})T}(x_1,x_2)}{\partial\,x_2}
+\ud \mathit{\Omega^{(\text{e})}} \\
+\textbf{M}^{(\text{e})}_{12}=& \int_{\mathit{\Omega^{(\text{e})}}}  \left(
+\frac{\partial\,\bs{\Psi}^{(\text{e})T}(x_1,x_2)}{\partial\,x_1}\, \frac{\partial\,\bs{\Psi}^{(\text{e})}(x_1,x_2)}{\partial\,x_2} +\frac{\partial\,\bs{\Psi}^{(\text{e})T}(x_1,x_2)}{\partial\,x_2}\, \frac{\partial\,\bs{\Psi}^{(\text{e})}(x_1,x_2)}{\partial\,x_1}\right)
+\ud \mathit{\Omega^{(\text{e})}}
+\end{align*}
+pode escrever-se
+\begin{align*}
+\textbf{M}=&I_{0}\,\textbf{M}_{00}+I_{2}\,\left(\textbf{M}_{11}+\textbf{M}_{22}\right)\\
+\textbf{G}=&\overline{n}_{11}\,\textbf{M}_{11}+\overline{n}_{22}\,\textbf{M}_{22}+ \overline{n}_{12}\,\textbf{M}_{12}\\
+\end{align*}
+%
+\cleardoublepage
+%
+\appendix
+%
+\chapter{Sobre a integração de funções descontínuas}\label{appendix: integracao de funcoes descontinuas}
+%
+Considere-se a uma função $f(x_1,x_2)$ com $k=1,2,\ldots,n$ descontinuidades definida sobre uma linha, $\Gamma$. Esta linha é parametrizada através da variável $s$. As descontinuidades ocorrem para os valores $\{s_1, s_2, \ldots ,s_{n} \}$ de $s$. Considere-se a divisão de $\Gamma$ em $(n+1)$ linhas onde $f$ é contínua. Neste caso $\Gamma_1$ é parametrizada por $s_0\leq s\leq s_1$, e assim sucessivamente. Então,
+\begin{multline}
+\int_{\Gamma} \frac{\partial}{\partial t} f \ud \Gamma=\int_{\Gamma_1} \frac{\partial}{\partial t} f \ud \Gamma_1+\int_{\Gamma_2} \frac{\partial}{\partial t} f \ud \Gamma_2+\ldots+\int_{\Gamma_{n+1}} \frac{\partial}{\partial t} f \ud \Gamma_{n+1}\\
+=\left.f\right|^{s_1}_{s_0}+\left.f\right|^{s_2}_{s_1}+\ldots+ \left.f\right|^{s_{n+1}}_{s_n}=\left.f\right|^{s_{n+1}}_{s_0}-\sum_{k=1}^{n}\jump{f}_k
+\end{multline}
+onde $\frac{\partial}{\partial t}=\dotp{\nabla f}{\bs{t}}$ é a derivada direccional tangencial ao longo do vector unitário $\bs{t}$.
+
+Caso $\Gamma$ seja uma linha fechada, $f_{s_0}=f_{s_{n+1}}$ e
+\begin{equation}
+\int_{\Gamma} \frac{\partial}{\partial t} f \ud \Gamma=-\sum_{k=1}^{n}\jump{f}_k
+\end{equation}
+%
+\cleardoublepage
+%
+\chapter{Derivadas de funções definidas implicitamente}
+\label{appendix: on implicit derivatives}
+%
+A utilização de elementos isoparamétricos é essencial para o desenvolvimento de elementos finitos por duas razões fundamentais: (i) a definição de funções de forma compatíveis e (ii) a utilização de domínios de integração uniformes para os vários tipos de elementos, independentemente da configuração que esses elementos realmente possuem.
+
+No entanto, como o operador de compatibilidade (interveniente na definição da matriz de rigidez) contém sempre derivadas em relação às coordenadas globais, é necessário exprimir essas derivadas em função das suas análogas nos eixos naturais, onde está definido o elemento mestre.
+
+Nesta secção essas expressões são derivadas. No caso dos domínios 1D e 2D, para além das derivadas parciais de primeira ordem, são obtidas também as derivadas de segunda e terceira ordem. Estas vão ser úteis quando as teorias de vigas e lajes finas forem implementadas\footnote{Note-se de o esforço transverso em vigas e lajes finas é avaliado através das equações de equilíbrio. Neste caso, o esforço transverso será dado por derivadas de terceira ordem do campo de deslocamentos transversal.}.
+
+
+%
+\section{1D}
+\label{sec: appendix on implicit derivatives: 1D}
+%
+Considere-se a equação $x=f(\xi)$. Esta equação expressa a coordenada real, $x$, em função da coordenada local, $\xi$, e, em geral, é não linear e não pode ser invertida explicitamente, isto é, não é possível encontrar a função $r(x)$ tal que $\xi=r(x)$. Diz-se então que $\xi=r(x)$ encontra-se definida implicitamente.
+
+É habitual nos textos sobre Elementos Finitos não distinguir a coordenada $x$ da função $f(\xi)$ que lhe dá origem, aparecendo usualmente, $x=x(\xi)$. Opta-se nesta secção por fazer esta distinção nas deduções das derivadas que se seguem, escrevendo-se os resultados finais na notação simplificada. Este comentário também se aplica à variável $\xi$ e à função $r(x)$.
+
+No entanto, será eventualmente necessário avaliar derivadas de funções definidas no referencial local em ordem à coordenada global, $x$, como por exemplo $\frac{\ud w(\xi)}{\ud x}$. Utilizando a derivada da função composta e assumindo que $x=f(\xi)$ pode ser invertida na forma $\xi=r(x)$ numa certa vizinhança em torno do ponto $\xi$ tem-se,
+\begin{equation*}%\label{}
+\frac{\ud w(r(x))}{\ud x}=\frac{\ud w}{\ud r}\frac{\ud r}{\ud x}.
+\end{equation*}
+
+A avaliação da derivada $\frac{\ud r}{\ud x}$ não é imediata, pois, em geral, a função $r(x)$ não está disponível. No entanto, esta pode ser avaliada através de:
+\begin{equation*}%\label{}
+x-f(r(x))=0 \Leftrightarrow \frac{\ud }{\ud x}(x-f(r(x)))=0 \Leftrightarrow 1-\frac{\ud f}{\ud x}=0
+\Leftrightarrow 1-\frac{\ud f}{\ud r}\frac{\ud r}{\ud x}=0 \Leftrightarrow
+\frac{\ud f}{\ud r}\frac{\ud r}{\ud x}=1,
+\end{equation*}
+ou, simplificadamente,
+\begin{equation*}%\label{}
+\frac{\ud x}{\ud \xi}\frac{\ud \xi}{\ud x}=1.
+\end{equation*}
+O primeiro termo do primeiro membro desta equação é habitualmente designado por \emph{Jacobiano da transformação}, $J$.
+
+Assim,
+\begin{equation}\label{chap: appendix on implicit derivatives d xi/d x}
+\frac{\ud \xi}{\ud x}=\frac{1}{\frac{\ud x}{\ud \xi}}.
+\end{equation}
+
+Assim, usando $x=f(\xi)$, a derivada pretendida é dada por
+\begin{equation*}%\label{}
+\frac{\ud w(\xi)}{\ud x}=\frac{\ud w}{\ud \xi}\frac{1}{\frac{\ud x}{\ud \xi}}.
+\end{equation*}
+
+Salienta-se que a expressão~\eqref{chap: appendix on implicit derivatives d xi/d x} apenas é válida para funções que definam $\xi$ implicitamente na forma $x=f(\xi)$. Por exemplo, se a definição de $\xi$ fosse efectuada na forma geral $f(x,\xi)=0$, então obter-se-ia em lugar de~\eqref{chap: appendix on implicit derivatives d xi/d x}
+\begin{equation}\label{chap: appendix on implicit derivatives d xi/d x general}
+\frac{\ud \xi}{\ud x}=-\frac{\frac{\ud f}{\ud x}}{\frac{\ud x}{\ud \xi}}.
+\end{equation}
+
+De forma inteiramente análoga, a derivada de segunda ordem, $\frac{\ud^2 w(r(x))}{\ud x^2}$, é dada por
+\begin{equation*}%\label{}
+\frac{\ud^2 w(r(x))}{\ud x^2}=\frac{\ud }{\ud x}\left(\frac{\ud w}{\ud x}\right)=\frac{\ud }{\ud x}\left(\frac{\ud w}{\ud r}\frac{\ud r}{\ud x}\right)=\frac{\ud^2 w}{\ud r^2}\left(\frac{\ud r}{\ud x}\right)^2+\frac{\ud w}{\ud r}\frac{\ud^2 r}{\ud x^2}.
+\end{equation*}
+
+Usando o mesmo raciocínio, tem-se
+\begin{multline}%\label{}
+x-f(r(x))=0 \Leftrightarrow \frac{\ud^2 }{\ud x^2}(x-f(r(x)))=0 \Leftrightarrow \frac{\ud^2 f}{\ud x^2}=0 \Leftrightarrow \frac{\ud }{\ud x}\left( \frac{\ud f}{\ud r}\frac{\ud r}{\ud x}\right)=0 \Leftrightarrow\\ \Leftrightarrow
+\frac{\ud^2 f}{\ud r^2}\left(\frac{\ud r}{\ud x}\right)^2+\frac{\ud f}{\ud r}\frac{\ud^2 r}{\ud x^2}=0\Leftrightarrow \frac{\ud^2 r}{\ud x^2}=-\frac{\frac{\ud^2 f}{\ud r^2}\left(\frac{\ud r}{\ud x}\right)^2}{\frac{\ud f}{\ud r}}\Leftrightarrow \frac{\ud^2 r}{\ud x^2}=-\frac{\frac{\ud^2 f}{\ud r^2}}{\left(\frac{\ud f}{\ud r}\right)^3},
+\end{multline}
+ou seja,
+\begin{equation*}%\label{}
+\frac{\ud^2 \xi}{\ud x^2}=-\frac{\frac{\ud^2 x}{\ud \xi^2}}{\left(\frac{\ud x}{\ud \xi}\right)^3},
+\end{equation*}
+
+No caso da derivada de terceira ordem, $\frac{\ud^3 w(r(x))}{\ud x^3}$, tem-se
+\begin{multline*}%\label{}
+\frac{\ud^3 w(r(x))}{\ud x^3}=\frac{\ud }{\ud x}\left(\frac{\ud^2 w}{\ud x^2}\right)=\frac{\ud }{\ud x}\left(\frac{\ud^2 w}{\ud r^2}\left(\frac{\ud r}{\ud x}\right)^2+\frac{\ud w}{\ud r}\frac{\ud^2 r}{\ud x^2}\right)=\\
+=\frac{\ud^3 w}{\ud r^3}\left(\frac{\ud r}{\ud x}\right)^3+\frac{\ud^2 w}{\ud r^2}\left(2\,\frac{\ud r}{\ud x}\frac{\ud^2 r}{\ud x^2}\right)+
+\frac{\ud^2 w}{\ud r^2}\frac{\ud r}{\ud x}\frac{\ud^2 r}{\ud x^2}
++\frac{\ud w}{\ud r}\frac{\ud^3 r}{\ud x^3}=\\
+=\frac{\ud^3 w}{\ud r^3}\left(\frac{\ud r}{\ud x}\right)^3+3\,
+\frac{\ud^2 w}{\ud r^2}\frac{\ud r}{\ud x}\frac{\ud^2 r}{\ud x^2}
++\frac{\ud w}{\ud r}\frac{\ud^3 r}{\ud x^3}.
+\end{multline*}
+
+Então,
+\begin{multline}%\label{}
+x-f(r(x))=0 \Leftrightarrow \frac{\ud^3 }{\ud x^3}(x-f(r(x)))=0 \Leftrightarrow \frac{\ud^3 f}{\ud x^3}=0 \Leftrightarrow \\ \Leftrightarrow\frac{\ud }{\ud x}\left(
+\frac{\ud^2 f}{\ud r^2}\left(\frac{\ud r}{\ud x}\right)^2+\frac{\ud f}{\ud r}\frac{\ud^2 r}{\ud x^2}\right)=0 \Leftrightarrow
+\frac{\ud^3 f}{\ud r^3}\left(\frac{\ud r}{\ud x}\right)^3+3\,
+\frac{\ud^2 f}{\ud r^2}\frac{\ud r}{\ud x}\frac{\ud^2 r}{\ud x^2}
++\frac{\ud f}{\ud r}\frac{\ud^3 r}{\ud x^3}\\ \Leftrightarrow
+\frac{\ud^3 r}{\ud x^3}=-\frac{\frac{\ud^3 f}{\ud r^3}\left(\frac{\ud r}{\ud x}\right)^3+3\,
+\frac{\ud^2 f}{\ud r^2}\frac{\ud r}{\ud x}\frac{\ud^2 r}{\ud x^2}
+}{\frac{\ud f}{\ud r}}\Leftrightarrow
+\frac{\ud^3 r}{\ud x^3}=-\frac{\frac{\ud^3 f}{\ud r^3}-3\,\left(
+\frac{\ud^2 f}{\ud r^2}\right)^2\frac{1}{ \frac{\ud f}{\ud r}  }
+}{\left(\frac{\ud f}{\ud r}\right)^4}
+\end{multline}
+ou seja,
+\begin{equation*}%\label{}
+\frac{\ud^3 \xi}{\ud x^3}=-\frac{\frac{\ud^3 x}{\ud \xi^3}-3\,\left(
+\frac{\ud^2 x}{\ud \xi^2}\right)^2\frac{1}{ \frac{\ud x}{\ud \xi}  }
+}{\left(\frac{\ud x}{\ud \xi}\right)^4}.
+\end{equation*}
+
+
+%
+\section{2D}
+\label{sec: appendix on implicit derivatives: 2D}
+%
+A generalização para o caso bidimensional leva à consideração das equações
+\begin{equation}\label{eq: appendix on implicit derivatives: transformation 2D}
+\left\{\begin{aligned}
+x&=f(\xi,\eta)\\
+y&=g(\xi,\eta)
+\end{aligned}
+\right.
+\end{equation}
+que definem de forma implícita
+\begin{equation}
+\left\{\begin{aligned}
+\xi &=r(x,y)\\
+\eta &=s(x,y)
+\end{aligned}
+\right.
+\end{equation}
+
+As primeiras derivadas de uma função $w(\xi,\eta)$ em ordem aos eixos globais leva a
+\begin{equation*}
+\left\{\begin{aligned}
+\frac{\partial w}{\partial x}&=\frac{\partial w}{\partial \xi}\frac{\partial \xi}{\partial x}+\frac{\partial w}{\partial \eta}\frac{\partial \eta}{\partial x}\\
+\frac{\partial w}{\partial y}&=\frac{\partial w}{\partial \xi}\frac{\partial \xi}{\partial y}+\frac{\partial w}{\partial \eta}\frac{\partial \eta}{\partial y}
+\end{aligned}
+\right.
+\end{equation*}
+ou, na forma matricial,
+\begin{equation*}\label{eq: 2d derivatives matrix}
+\left\{
+\begin{matrix}
+\frac{\partial w}{\partial x}\\
+\frac{\partial w}{\partial y}
+\end{matrix}
+\right\}=
+\left[
+\begin{matrix}
+\frac{\partial \xi}{\partial x} & \frac{\partial \eta}{\partial x}\\
+\frac{\partial \xi}{\partial y} & \frac{\partial \eta}{\partial y}\\
+\end{matrix}
+\right]
+\left\{
+\begin{matrix}
+\frac{\partial w}{\partial \xi}\\
+\frac{\partial w}{\partial \eta}
+\end{matrix}
+\right\}
+\end{equation*}
+
+Interessa pois, neste caso, avaliar as derivadas parciais contidas no operador matricial que mapeia as derivadas parciais da função $w(\xi,\eta)$ em ordem às coordenadas locais para as análogas em ordem às coordenadas globais.
+
+Seguindo o mesmo procedimento que no caso unidimensional, tem-se
+\begin{equation*}
+\left\{\begin{aligned}
+x-f(r(x,y),s(x,y))=&0\\
+y-g(r(x,y),s(x,y))=&0
+\end{aligned}
+\right.
+\Leftrightarrow
+\left\{\begin{aligned}
+\frac{\partial }{\partial x}\left(x-f\right) =&0\\
+\frac{\partial }{\partial x}\left(y-g\right) =&0
+\end{aligned}
+\right.
+\Leftrightarrow
+\left\{\begin{aligned}
+1-\frac{\partial f}{\partial r}\frac{\partial r}{\partial x}-\frac{\partial f}{\partial s}\frac{\partial s}{\partial x} =&0\\
+0-\frac{\partial g}{\partial r}\frac{\partial r}{\partial x}-\frac{\partial g}{\partial s}\frac{\partial s}{\partial x} =&0
+\end{aligned}
+\right.
+\end{equation*}
+Assim, na forma matricial, tem-se
+\begin{equation*}
+\left[
+\begin{matrix}
+\frac{\partial f}{\partial r} & \frac{\partial f}{\partial s}\\
+\frac{\partial g}{\partial r} & \frac{\partial g}{\partial s}
+\end{matrix}
+\right]\left\{
+\begin{matrix}
+\frac{\partial r}{\partial x}\\
+\frac{\partial s}{\partial x}
+\end{matrix}
+\right\}=
+\left\{
+\begin{matrix}
+1\\
+0
+\end{matrix}
+\right\}.
+\end{equation*}
+A matriz interveniente no primeiro membro desta equação é designada por \emph{matriz Jacobiana da transformação} e é designada por $\bs{J}$. Chama-se ao seu determinante o \emph{Jacobiano da transformação}, $J=\det(\bs{J})$, ou seja, em notação simplificada,
+\begin{equation}\label{chap: appendix on implicit derivatives: det J 2D}
+J=\det\left(
+\left[
+\begin{matrix}
+\frac{\partial x}{\partial \xi} & \frac{\partial x}{\partial \eta}\\
+\frac{\partial y}{\partial \xi} & \frac{\partial y}{\partial \eta}
+\end{matrix}
+\right]\right)=\frac{\partial x}{\partial \xi}\frac{\partial y}{\partial \eta}-\frac{\partial x}{\partial \eta}\frac{\partial y}{\partial \xi}.
+\end{equation}
+
+
+Resolvendo o sistema de equações acima indicado\footnote{A inversa de uma matriz com dimensões $(2,2)$ é dada por
+\begin{equation*}
+\left[
+\begin{matrix}
+a & b\\
+c & d
+\end{matrix}
+\right]^{-1}=
+\frac{1}{a\,d-b\,c}
+\left[
+\begin{matrix}
+d & -b\\
+-c & a
+\end{matrix}
+\right].
+\end{equation*}
+}
+tem-se
+\begin{equation*}
+\left\{
+\begin{matrix}
+\frac{\partial \xi}{\partial x}\\
+\frac{\partial \eta}{\partial x}
+\end{matrix}
+\right\}=
+\frac{1}{J}
+\left\{
+\begin{matrix}
+\frac{\partial y}{\partial \eta}\\
+-\frac{\partial y}{\partial \xi}
+\end{matrix}
+\right\}
+\end{equation*}
+
+De igual modo,
+\begin{equation*}
+\left\{\begin{aligned}
+x-f(r(x,y),s(x,y))=&0\\
+y-g(r(x,y),s(x,y))=&0
+\end{aligned}
+\right.
+\Leftrightarrow
+\left\{\begin{aligned}
+\frac{\partial }{\partial y}\left(x-f\right) =&0\\
+\frac{\partial }{\partial y}\left(y-g\right) =&0
+\end{aligned}
+\right.
+\Leftrightarrow
+\left\{\begin{aligned}
+0-\frac{\partial f}{\partial r}\frac{\partial r}{\partial y}-\frac{\partial f}{\partial s}\frac{\partial s}{\partial y} =&0\\
+1-\frac{\partial g}{\partial r}\frac{\partial r}{\partial y}-\frac{\partial g}{\partial s}\frac{\partial s}{\partial y} =&0
+\end{aligned}
+\right.
+\end{equation*}
+Assim, na forma matricial, tem-se
+\begin{equation*}
+\left[
+\begin{matrix}
+\frac{\partial f}{\partial r} & \frac{\partial f}{\partial s}\\
+\frac{\partial g}{\partial r} & \frac{\partial g}{\partial s}
+\end{matrix}
+\right]\left\{
+\begin{matrix}
+\frac{\partial r}{\partial y}\\
+\frac{\partial s}{\partial y}
+\end{matrix}
+\right\}=
+\left\{
+\begin{matrix}
+0\\
+1
+\end{matrix}
+\right\}.
+\end{equation*}
+Assim
+\begin{equation*}
+\left\{
+\begin{matrix}
+\frac{\partial \xi}{\partial y}\\
+\frac{\partial \eta}{\partial y}
+\end{matrix}
+\right\}=
+\frac{1}{J}
+\left\{
+\begin{matrix}
+-\frac{\partial x}{\partial \eta}\\
+\frac{\partial x}{\partial \xi}
+\end{matrix}
+\right\}.
+\end{equation*}
+
+Em resumo, as derivadas requeridas, reunidas na matriz interveniente no segundo membro da equação~\eqref{eq: 2d derivatives matrix}, são dadas pela inversa da matriz Jacobiana, ou seja,
+\begin{equation*}
+\left[
+\begin{matrix}
+\frac{\partial \xi}{\partial x} & \frac{\partial \xi}{\partial y}\\
+\frac{\partial \eta}{\partial x} & \frac{\partial \eta}{\partial y}
+\end{matrix}
+\right]=\frac{1}{J}
+\left[
+\begin{matrix}
+\frac{\partial y}{\partial \eta} & -\frac{\partial x}{\partial \eta}\\
+-\frac{\partial y}{\partial \xi} & \frac{\partial x}{\partial \xi}
+\end{matrix}
+\right].
+\end{equation*}
+
+As derivada de segunda ordem, como por exemplo $\frac{\partial^2 w(r(x,y),s(x,y))}{\partial x^2}$, podem ser deduzidas na forma
+\begin{multline*}%\label{}
+\frac{\partial^2 w(r(x,y),s(x,y))}{\partial x^2}=\frac{\partial }{\partial x}\left(\frac{\partial w }{\partial x}\right)=\frac{\partial }{\partial x}\left(\frac{\partial w}{\partial \xi}\frac{\partial \xi}{\partial x}+\frac{\partial w}{\partial \eta}\frac{\partial \eta}{\partial x}\right)=\\
+%
+=\left(\frac{\partial^2 w}{\partial \xi^2}\frac{\partial \xi}{\partial x}+\frac{\partial^2 w}{\partial \xi \partial \eta}\frac{\partial \eta}{\partial x}\right)\frac{\partial \xi}{\partial x}+\frac{\partial w}{\partial \xi}\frac{\partial^2 \xi}{\partial x^2}+
+\left(\frac{\partial^2 w}{\partial \xi \partial \eta}\frac{\partial \xi}{\partial x}+\frac{\partial^2 w}{\partial \eta^2}\frac{\partial \eta}{\partial x}\right)\frac{\partial \eta}{\partial x}+\frac{\partial w}{\partial \eta}\frac{\partial^2 \eta}{\partial x^2}=\\
+%
+=\frac{\partial w}{\partial \xi}\frac{\partial^2 \xi}{\partial x^2}+\frac{\partial w}{\partial \eta}\frac{\partial^2 \eta}{\partial x^2}+\frac{\partial^2 w}{\partial \xi^2}\left(\frac{\partial \xi}{\partial x}\right)^2+2 \frac{\partial^2 w}{\partial \xi \partial \eta}\frac{\partial \eta}{\partial x}\frac{\partial \xi}{\partial x}+\frac{\partial^2 w}{\partial \eta^2}\left(\frac{\partial^2 \eta}{\partial x}\right)^2.
+\end{multline*}
+
+De modo idêntico, as restantes derivadas foram avaliadas. Os resultados obtidos, apresentados de forma matricial, são:
+\begin{equation*}
+\left\{
+\begin{matrix}
+\frac{\partial^2 w}{\partial x^2}\\
+\frac{\partial^2 w}{\partial x \partial y}\\
+\frac{\partial^2 w}{\partial y^2}
+\end{matrix}
+\right\}=
+\left[
+\begin{matrix}
+\frac{\partial^2 \xi}{\partial x^2} & \frac{\partial^2 \eta}{\partial x^2} & \left(\frac{\partial \xi}{\partial x}\right)^2 & 2\,\frac{\partial \xi}{\partial x}\frac{\partial \eta}{\partial x}& \left(\frac{\partial^2 \eta}{\partial x^2}\right)^2\\
+%
+\frac{\partial^2 \xi}{\partial x \partial y} & \frac{\partial^2 \eta}{\partial x \partial y} & \frac{\partial \xi}{\partial x}\frac{\partial \xi}{\partial y} & \frac{\partial \xi}{\partial x}\frac{\partial \eta}{\partial y}+\frac{\partial \xi}{\partial y}\frac{\partial \eta}{\partial x} &\frac{\partial \eta}{\partial x}\frac{\partial \eta}{\partial y}\\
+%
+\frac{\partial^2 \xi}{\partial y^2} & \frac{\partial^2 \eta}{\partial y^2} & \left(\frac{\partial \xi}{\partial y}\right)^2 & 2\,\frac{\partial \xi}{\partial y}\frac{\partial \eta}{\partial y}& \left(\frac{\partial^2 \eta}{\partial y^2}\right)^2
+\end{matrix}
+\right]
+\left\{
+\begin{matrix}
+\frac{\partial^2 w}{\partial \xi^2}\\
+\frac{\partial^2 w}{\partial \xi \partial \eta}\\
+\frac{\partial^2 w}{\partial \eta^2}
+\end{matrix}
+\right\}.
+\end{equation*}
+
+As derivadas de primeira ordem presentes nesta expressão já foram avaliadas anteriormente. Resta então avaliar as de segunda ordem. Na notação utilizada anteriormente, procura-se agora $\frac{\partial^2 r}{\partial x^2}$, $\frac{\partial^2 r}{\partial x \partial y}$, $\frac{\partial^2 r}{\partial y^2}$, $\frac{\partial^2 s}{\partial x^2}$, $\frac{\partial^2 s}{\partial x \partial y}$ e $\frac{\partial^2 s}{\partial y^2}$.
+
+Os passos a seguir são semelhantes aos seguidos anteriormente, sendo que a transformação~\eqref{eq: appendix on implicit derivatives: transformation 2D} é agora derivada duas vezes. Por exemplo, derivando duas vezes em ordem a $x$ obtém-se
+\begin{equation*}
+\left[
+\begin{matrix}
+\frac{\partial f}{\partial r} & \frac{\partial f}{\partial s}\\
+\frac{\partial g}{\partial r} & \frac{\partial g}{\partial s}
+\end{matrix}
+\right]\left\{
+\begin{matrix}
+\frac{\partial^2 r}{\partial x^2}\\
+\frac{\partial^2 s}{\partial x^2}
+\end{matrix}
+\right\}=-
+\left\{
+\begin{matrix}
+\frac{\partial^2 f}{\partial r^2}\left(\frac{\partial r}{\partial x}\right)^2+2\,\frac{\partial^2 f}{\partial r\partial s}\frac{\partial r}{\partial x}\frac{\partial s}{\partial x}+\frac{\partial^2 f}{\partial s^2}\left(\frac{\partial s}{\partial x}\right)^2\\
+%
+\frac{\partial^2 g}{\partial r^2}\left(\frac{\partial r}{\partial x}\right)^2+2\,\frac{\partial^2 g}{\partial r\partial s}\frac{\partial r}{\partial x}\frac{\partial s}{\partial x}+\frac{\partial^2 g}{\partial s^2}\left(\frac{\partial s}{\partial x}\right)^2
+\end{matrix}
+\right\}.
+\end{equation*}
+Assim, a obtenção das derivadas de segunda ordem requer a inversão da matriz jacobiana da transformação (já avaliada anteriormente). O resultado é, então,
+\begin{equation*}
+\left\{
+\begin{matrix}
+\frac{\partial^2 \xi}{\partial x^2}\\
+\frac{\partial^2 \eta}{\partial x^2}
+\end{matrix}
+\right\}=
+\frac{1}{J}
+\left[
+\begin{matrix}
+\frac{\partial y}{\partial \eta} & -\frac{\partial x}{\partial \eta}\\
+-\frac{\partial y}{\partial \xi} & \frac{\partial x}{\partial \xi}
+\end{matrix}
+\right]
+\left\{
+\begin{matrix}
+-\frac{\partial^2 x}{\partial \xi^2}\left(\frac{\partial y}{\partial \eta}\right)^2+2\,\frac{\partial^2 x}{\partial \xi\partial \eta}\frac{\partial y}{\partial \xi}\frac{\partial y}{\partial \eta}-\frac{\partial^2 x}{\partial \eta^2}\left(\frac{\partial y}{\partial \xi}\right)^2\\
+%
+-\frac{\partial^2 y}{\partial \xi^2}\left(\frac{\partial y}{\partial \eta}\right)^2+2\,\frac{\partial^2 y}{\partial \xi\partial \eta}\frac{\partial y}{\partial \xi}\frac{\partial y}{\partial \eta}-\frac{\partial^2 y}{\partial \eta^2}\left(\frac{\partial y}{\partial \xi}\right)^2
+\end{matrix}
+\right\}
+\end{equation*}
+onde $J$ é definido pela expressão~\eqref{chap: appendix on implicit derivatives: det J 2D}.
+
+Os restantes resultados são
+\begin{equation*}
+\left\{
+\begin{matrix}
+\frac{\partial^2 \xi}{\partial x \partial y}\\
+\frac{\partial^2 \eta}{\partial x \partial y}
+\end{matrix}
+\right\}=
+\frac{1}{J}
+\left[
+\begin{matrix}
+\frac{\partial y}{\partial \eta} & -\frac{\partial x}{\partial \eta}\\
+-\frac{\partial y}{\partial \xi} & \frac{\partial x}{\partial \xi}
+\end{matrix}
+\right]
+\left\{
+\begin{matrix}
+\frac{\partial^2 x}{\partial \xi^2}\frac{\partial y}{\partial \eta}
+\frac{\partial x}{\partial \eta}-\frac{\partial^2 x}{\partial \xi\partial \eta}
+\left(\frac{\partial y}{\partial \xi}\frac{\partial x}{\partial \eta}+\frac{\partial y}{\partial \eta}\frac{\partial x}{\partial \xi}\right)+\frac{\partial^2 x}{\partial \eta^2}\frac{\partial y}{\partial \xi}\frac{\partial x}{\partial \xi}\\
+%
+\frac{\partial^2 y}{\partial \xi^2}\frac{\partial y}{\partial \eta}
+\frac{\partial x}{\partial \eta}-\frac{\partial^2 y}{\partial \xi\partial \eta}
+\left(\frac{\partial y}{\partial \xi}\frac{\partial x}{\partial \eta}+\frac{\partial y}{\partial \eta}\frac{\partial x}{\partial \xi}\right)+\frac{\partial^2 y}{\partial \eta^2}\frac{\partial y}{\partial \xi}\frac{\partial x}{\partial \xi}
+\end{matrix}
+\right\}
+\end{equation*}
+e
+\begin{equation*}
+\left\{
+\begin{matrix}
+\frac{\partial^2 \xi}{\partial y^2}\\
+\frac{\partial^2 \eta}{\partial y^2}
+\end{matrix}
+\right\}=
+\frac{1}{J}
+\left[
+\begin{matrix}
+\frac{\partial y}{\partial \eta} & -\frac{\partial x}{\partial \eta}\\
+-\frac{\partial y}{\partial \xi} & \frac{\partial x}{\partial \xi}
+\end{matrix}
+\right]
+\left\{
+\begin{matrix}
+-\frac{\partial^2 x}{\partial \xi^2}\left(\frac{\partial x}{\partial \eta}\right)^2+2\,\frac{\partial^2 x}{\partial \xi\partial \eta}\frac{\partial x}{\partial \xi}\frac{\partial x}{\partial \eta}-\frac{\partial^2 x}{\partial \eta^2}\left(\frac{\partial x}{\partial \xi}\right)^2\\
+%
+-\frac{\partial^2 y}{\partial \xi^2}\left(\frac{\partial x}{\partial \eta}\right)^2+2\,\frac{\partial^2 y}{\partial \xi\partial \eta}\frac{\partial x}{\partial \xi}\frac{\partial x}{\partial \eta}-\frac{\partial^2 y}{\partial \eta^2}\left(\frac{\partial x}{\partial \xi}\right)^2
+\end{matrix}
+\right\}.
+\end{equation*}
+%
+\section{3D}
+\label{sec: appendix on implicit derivatives: 3D}
+%
+Para os problemas abordados no presente texto não é necessário, para o caso tridimensional, a obtenção de derivadas de funções definidas implicitamente superiores à primeira ordem. Assim, estas expressões não serão aqui derivadas.
+
+A generalização para o caso tridimensional leva à consideração das equações
+\begin{equation*}
+\left\{\begin{aligned}
+x&=f(\xi,\eta,\zeta)\\
+y&=g(\xi,\eta,\zeta)\\
+z&=h(\xi,\eta,\zeta)
+\end{aligned}
+\right.
+\end{equation*}
+que definem de forma implícita
+\begin{equation*}
+\left\{\begin{aligned}
+\xi &=r(x,y,z)\\
+\eta &=s(x,y,z)\\
+\zeta &=t(x,y,z)
+\end{aligned}
+\right.
+\end{equation*}
+
+As primeiras derivadas de uma função $w(\xi,\eta,\zeta)$ em ordem aos eixos globais leva a
+\begin{equation*}
+\left\{\begin{aligned}
+\frac{\partial w}{\partial x}&=\frac{\partial w}{\partial \xi}\frac{\partial \xi}{\partial x}+\frac{\partial w}{\partial \eta}\frac{\partial \eta}{\partial x}+\frac{\partial w}{\partial \zeta}\frac{\partial \zeta}{\partial x}\\
+\frac{\partial w}{\partial y}&=\frac{\partial w}{\partial \xi}\frac{\partial \xi}{\partial y}+\frac{\partial w}{\partial \eta}\frac{\partial \eta}{\partial y}+\frac{\partial w}{\partial \zeta}\frac{\partial \zeta}{\partial y}\\
+\frac{\partial w}{\partial z}&=\frac{\partial w}{\partial \xi}\frac{\partial \xi}{\partial z}+\frac{\partial w}{\partial \eta}\frac{\partial \eta}{\partial z}+\frac{\partial w}{\partial \zeta}\frac{\partial \zeta}{\partial z}
+\end{aligned}
+\right.
+\end{equation*}
+ou, na forma matricial,
+\begin{equation*}%\label{}
+\left\{
+\begin{matrix}
+\frac{\partial w}{\partial x}\\
+\frac{\partial w}{\partial y}\\
+\frac{\partial w}{\partial z}
+\end{matrix}
+\right\}=
+\left[
+\begin{matrix}
+\frac{\partial \xi}{\partial x} & \frac{\partial \eta}{\partial x} & \frac{\partial \zeta}{\partial x}\\
+\frac{\partial \xi}{\partial y} & \frac{\partial \eta}{\partial y} & \frac{\partial \zeta}{\partial y}\\
+\frac{\partial \xi}{\partial z} & \frac{\partial \eta}{\partial z} & \frac{\partial \zeta}{\partial z}
+\end{matrix}
+\right]
+\left\{
+\begin{matrix}
+\frac{\partial w}{\partial \xi}\\
+\frac{\partial w}{\partial \eta}\\
+\frac{\partial w}{\partial \zeta}
+\end{matrix}
+\right\}
+\end{equation*}
+
+Seguindo um procedimento inteiramente análogo ao levado a cabo para o caso bidimensional obviamente que se obtém\footnote{A inversa de uma matriz com dimensões $(3,3)$ é dada por
+\begin{equation*}%\label{}
+\left[
+\begin{matrix}
+a&b&c\\
+d&e&f\\
+g&h&i
+\end{matrix}
+\right]^{-1}=
+\left[
+\begin{matrix}
+e\,i-f\,h&c\,h - b\,i& b\,f-c\,e\\
+f\,g - d\,i& a\,i-c\,g &c\,d - a\,f\\
+ d\,h-e\,g&b\,g - a\,h& a\,e-b\,d
+\end{matrix}
+\right]
+\end{equation*}
+onde $J=-c\,e\,g + b\,f\,g + c\,d\,h - a\,f\,h - b\,d\,i + a\,e\,i$.}
+\begin{equation*}
+\left[
+\begin{matrix}
+\frac{\partial \xi}{\partial x} & \frac{\partial \eta}{\partial x} & \frac{\partial \zeta}{\partial x}\\
+\frac{\partial \xi}{\partial y} & \frac{\partial \eta}{\partial y} & \frac{\partial \zeta}{\partial y}\\
+\frac{\partial \xi}{\partial z} & \frac{\partial \eta}{\partial z} & \frac{\partial \zeta}{\partial z}
+\end{matrix}
+\right]
+=
+\left[
+\begin{matrix}
+\frac{\partial x}{\partial \xi} & \frac{\partial x}{\partial \eta} & \frac{\partial x}{\partial \zeta}\\
+\frac{\partial y}{\partial \xi} & \frac{\partial y}{\partial \eta} & \frac{\partial y}{\partial \zeta}\\
+\frac{\partial z}{\partial \xi} & \frac{\partial z}{\partial \eta} & \frac{\partial z}{\partial \zeta}
+\end{matrix}
+\right]^{-1}.
+\end{equation*}
+%
+\cleardoublepage
+%
+\chapter{Integrais em domínios 1D, 2D e 3D. Integrais de linha e de superfície.}
+\label{chap: }
+%
+%
+\section{Integra\c{c}\~{a}o num\'{e}rica atrav\'{e}s da regra de quadratura de Gauss-Legendre}
+\label{chap ???: sec Integracao numerica atraves da regra de quadratura de Gauss-Legendre}
+%
+A equa\c{c}\~{a}o do m\'{e}todo dos elementos finitos ao n\'{\i}vel elementar pode ser escrita na forma
+\begin{equation}\label{eq: Kd=F}
+\mathbf{K}^{(\text{e})} \mathbf{d}^{(\text{e})}=\mathbf{F}^{(\text{e})}
+\end{equation}
+onde $\mathbf{K}^{(\text{e})}$ \'{e} a matriz de rigidez elementar e $\mathbf{F}^{(\text{e})}$ \'{e} o vector de for\c{c}as nodais equivalentes elementar. Estes s\~{a}o dados respectivamente por
+\begin{subequations}\label{eq: def K e def F}
+\begin{align}
+\mathbf{K}^{(\text{e})}&=\int_{\mathit{\Omega^{(\text{e})}}} \mathbf{B}^{(\text{e})T}  \mathbf{D}^{(\text{e})} \mathbf{B}^{(\text{e})}\ud \mathit{\Omega^{(\text{e})}} +
+\int_{\mathit{\Omega^{(\text{e})}}} \bs{\Psi}^{(\text{e})T}  \mathbf{K}_s^{(\text{e})} \bs{\Psi}^{(\text{e})}\ud \mathit{\Omega^{(\text{e})}},\\
+%
+\mathbf{F}^{(\text{e})} &=\int_{\mathit{\Omega^{(\text{e})}}} \bs{\Psi}^{(\text{e})T} \mathbf{f}
+\ud \mathit{\Omega^{(\text{e})}}+\int_{\mathit{\Gamma}^{(\text{e})}_{t}} \bs{\Psi}^{(\text{e})T} \overline{\mathbf{t}}
+\ud \mathit{\Gamma}^{(\text{e})}_{t}+\int_{\mathit{\Omega^{(\text{e})}}} \mathbf{B}^{(\text{e})T}
+\mathbf{D}^{(\text{e})}\bs{\epsilon}_{0}
+\ud \mathit{\Omega^{(\text{e})}}.
+\end{align}
+\end{subequations}
+%
+Como se depreende das defini\c{c}\~{o}es presentes em~\eqref{eq: def K e def F}, a determina\c{c}\~{a}o destas grandezas implica, em geral\footnote{Em certos casos a avalia\c{c}\~{a}o dos integrais \'{e} trivial devido \`{a} simplicidade das fun\c{c}\~{o}es integrandas.}, a avalia\c{c}\~{a}o de integrais no dom\'{\i}nio, $\mathit{\Omega}^{(\text{e})}$, e na fronteira est\'{a}tica, $\mathit{\Gamma_t}^{(\text{e})}$, dos elementos. No entanto, apenas em alguns casos particulares estas podem ser avaliados explicitamente.
+
+Em geral, as fun\c{c}\~{o}es de aproxima\c{c}\~{a}o do campo de deslocamentos de um elemento gen\'{e}rico $(e)$, $\mathbf{\Psi}^{(e)}(\mathbf{x})$, n\~{a}o podem ser geradas no referencial global, mas apenas num referencial convencional (o elemento mestre) em fun\c{c}\~{a}o de coordenadas naturais, $\bs{\xi}$. Consequentemente, as fun\c{c}\~{o}es integrandas em~\eqref{eq: def K e def F} tamb\'{e}m estar\~{a}o nesse sistema de coordenadas. Assim, a integra\c{c}\~{a}o tamb\'{e}m tem de ser efectuada em coordenadas naturais. Este facto n\~{a}o \'{e} uma desvantagem pois, desta forma, os limites de integra\c{c}\~{a}o s\~{a}o sempre iguais para cada tipo de elemento, independentemente da real configura\c{c}\~{a}o do elemento.
+
+Para reescrever os termos da equa\c{c}\~{a}o do MEF em coordenadas naturais utiliza-se uma transforma\c{c}\~{a}o de coordenadas adequada a cada tipo de dom\'{\i}nio.
+
+Neste texto apenas são descritas transformações para domínios quadrados em 2D e
+hexaédricos em 3D. Outros domínios podem ser relevantes. No caso 2D, domínios triangulares são muitas vezes utilizados. No caso 3D tem-se os tetraedros e prismas.
+
+%
+\section{O caso 1D}
+%
+Integra\c{c}\~{o}es em dom\'{\i}nios unidimensionais surgem naturalmente na avalia\c{c}\~{a}o dos termos de domínio da equa\c{c}\~{a}o do MEF em elementos unidimensionais (barras) ou na fronteira est\'{a}tica e/ou mista em dom\'{\i}nios bidimensionais. Ambos podem ser expressos no dom\'{\i}nio convencional $[-1, 1]$ na forma gen\'{e}rica
+\begin{equation}\label{eq: appendix integration 1D transformation}
+    \int_{\mathit{\Omega}} f(\mathbf{x}) \, d{\mathit{\Omega}} =\int_{-1}^{1}f(\mathbf{x}(\xi)) \,J(\xi) \, d\xi,
+\end{equation}
+onde $J(\xi)$ \'{e} o jacobiano da transforma\c{c}\~{a}o adequado ao integral de linha em quest\~{a}o. Por exemplo, no caso de uma barra recta parametrizada através de $x(\xi)$ tem-se
+\begin{equation}\label{eq: J 1D}
+J(\xi)=\left(\frac{\ud x(\xi)}{\ud \xi}\right)^{-1},
+\end{equation}
+No caso de um domínio $2D$, a integração ao longo do lado parametrizado através de $x(\xi,1)$ e $y(\xi,1)$ o jacobiano é dado por
+\begin{equation}
+J(\xi)=\left.\sqrt{\left(\frac{\partial x}{\partial \xi}\right)^2+\left(\frac{\partial y}{\partial \xi}\right)^2}\right|_{\eta=1}
+\end{equation}
+
+A expressão~\eqref{eq: appendix integration 1D transformation} pode, em geral, ser avaliado explicitamente ou numericamente. Seja $g(\xi)=f(\mathbf{x}(\xi)) \,J(\xi)$ a fun\c{c}\~{a}o integranda relevante. Apenas em casos particulares esta fun\c{c}\~{a}o \'{e} um polin\'{o}mio. Dependendo da geometria do problema, expressão da solicita\c{c}\~{a}o ou caracter\'{\i}sticas el\'{a}sticas da fundação, a primitiva de $g(\xi)$ pode ou não existir.
+
+A regra de quadratura de Gauss-Legendre permite avaliar exactamente integrais de funções polinomiais através da combinação linear dos valores da função integranda em $n$ pontos particulares, denominados \emph{pontos de Gauss}. Os coeficientes da combinação são os \emph{pesos de Gauss}. Esta regra integra exactamente polin\'{o}mios de grau $(2\,n-1)$ recorrendo a $n$ pontos de integração e pode ser expressa através de
+\begin{equation}\label{eq: 1D int Gauss}
+    \int_{-1}^{1}g(\xi) \, d\xi \approx \sum_{i=1}^{n} g(\xi_i) \, w_i.
+\end{equation}
+
+A dedu\c{c}\~{a}o das regras de Gauss, \emph{i. e.} conjuntos de abcissas e pesos, pode ser facilmente efectuada. Admita-se que $f(\xi)$ \'{e} linear, \emph{i. e.}, $f(\xi)=a+b\, \xi$. Impondo que esta fun\c{c}\~{a}o seja integrada exactamente com um \'{u}nico ponto de integra\c{c}\~{a}o obt\'{e}m-se
+\begin{equation}\label{eq: }
+\int_{-1}^{1} f(\xi)\, \ud \xi=f(\xi_1)\,w_1.
+\end{equation}
+Segue-se ent\~{a}o que
+\begin{equation}\label{eq: }
+2\,a+0\,b=w_1\,a+w_1\,\xi_1\,b,
+\end{equation}
+pelo que uma solu\c{c}\~{a}o possível\footnote{Note-se que a solução não é única. Por exemplo, $\xi_1=1$ e $w_1=\frac{2\,a}{a+b}$ é igualmente válida, mas (i) não é tão simples e (ii) não é simétrica.} \'{e} $\xi_1=0$ e $w_1=2$.
+
+
+Seja agora $f(\xi)$ uma fun\c{c}\~{a}o c\'{u}bica, \emph{i.e.}, $f(\xi)=a+b\, \xi+c\, \xi^2+d\, \xi^3$. Impondo que esta fun\c{c}\~{a}o seja integrada exactamente com dois pontos de integra\c{c}\~{a}o obt\'{e}m-se
+\begin{equation}\label{eq: }
+\int_{-1}^{1} f(\xi)\, \ud \xi=f(\xi_1)\,w_1+f(\xi_2)\,w_2.
+\end{equation}
+Segue-se ent\~{a}o que
+\begin{equation}\label{eq: }
+2\,a+0\,b+\frac{2}{3}\,c+0\,d=(w_1+w_2)\,a+(w_1\,\xi_1+w_2\,\xi_2)\,b+(w_1\,\xi_1^2+w_2\,\xi_2^2)\,c
++(w_1\,\xi_1^3+w_2\,\xi_2^3)\,d.
+\end{equation}
+Igualando os coeficientes multiplicativos nos dois membros da equa\c{c}\~{a}o obt\'{e}m-se um sistema de quatro equa\c{c}\~{o}es n\~{a}o lineares nas inc\'{o}gnitas $\xi_1$, $\xi_2$, $w_1$ e $w_2$. A solu\c{c}\~{a}o deste \'{e} $\xi_1=-\frac{\sqrt{3}}{3}$, $\xi_2=\frac{\sqrt{3}}{3}$, $w_1=1$ e $w_2=1$.
+
+Esta forma de avaliar regras é didáctica, mas extremamente ineficiente para graus mais elevados.
+
+As primeiras cinco regras de integra\c{c}\~{a}o apresentam-se na tabela seguinte.
+\begin{center}
+\begin{tabular}{@{} c c c @{}}
+ \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  N\'{u}mero de pontos, $n$ & Abcissa, $\xi_i$ & Peso, $w_i$ \\[5pt] \hline
+  1 & 0 & $2$ \\[5pt] \hline
+  %
+  2 & $\pm \sqrt{1/3}$  & $1$ \\[5pt] \hline
+  %
+  \multirow{2}{*}{3} & $0$ & $8/9$ \\[5pt]
+                     & $\pm \sqrt{3/5}$  & $5/9$ \\[5pt] \hline
+  %
+  \multirow{2}{*}{4} & $\pm \sqrt{\left(3-2 \sqrt{6/5} \right)/7}$ & $\frac{18+\sqrt{30}}{36}$ \\[5pt]
+  %
+  & $\pm\sqrt{\left(3+2\sqrt{6/5}\right)/7}$ & $\frac{18-\sqrt{30}}{36}$\\[5pt] \hline
+  %
+  \multirow{3}{*}{5} & $0$  & $\frac{128}{225}$ \\[5pt]
+   & $\pm \frac{1}{3}\sqrt{5-2\sqrt{10/7}}$ & $\frac{322+13\sqrt{70}}{900}$ \\[5pt]
+   & $\pm \frac{1}{3}\sqrt{5+2\sqrt{10/7}}$ & $\frac{322-13\sqrt{70}}{900}$ \\[5pt]
+  \hline
+\end{tabular}
+\end{center}
+
+Numericamente, com uma precis\~{a}o de 20 algarismos significativos, tem-se os valores apresentados na tabela seguinte.
+
+\begin{center}
+\begin{tabular}{@{} c c c @{}}
+ \hline
+  % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+  N\'{u}mero de pontos, $n$ & Abcissa, $\xi_i$ & Peso, $w_i$ \\[5pt] \hline
+  1 & 0 & $2$ \\[5pt] \hline
+  %
+  2 & $\pm 0,57735026918962576451$  & $1$ \\[5pt] \hline
+  %
+  \multirow{2}{*}{3} & $0$ & $0,88888888888888888889$ \\[5pt]
+                     & $\pm 0,77459666924148337704$  & $0,55555555555555555556$ \\[5pt] \hline
+  %
+  \multirow{2}{*}{4} & $\pm 0,33998104358485626480$ & $0,65214515486254614263$ \\[5pt]
+  %
+  & $\pm 0,86113631159405257522$ & $0,34785484513745385737$\\[5pt] \hline
+  %
+  \multirow{3}{*}{5} & $0$  & $0,56888888888888888889$ \\[5pt]
+   & $\pm 0,53846931010568309104$ & $0,47862867049936646804$ \\[5pt]
+   & $\pm 0,90617984593866399280$ & $0,23692688505618908751$ \\[5pt]
+  \hline
+\end{tabular}
+\end{center}
+
+%
+\section{O caso 2D}
+%
+Este tipo de integrais surgem associados a integrações em domínios bidimensionais ou integrações em fronteiras de problemas tridimensionais.
+
+De forma inteiramente an\'{a}loga, no caso bidimensional pode efectuar-se uma transforma\c{c}\~{a}o de coordenadas do dom\'{\i}nio $\Omega$ para um dom\'{\i}nio convencional $[-1, 1]\times [-1, 1]$. Neste caso, o integral de superfície pode ser expresso através de
+\begin{equation}\label{eq: 2D transformation}
+    \int_{\Omega} f(\mathbf{x}) \, d{\Omega} =\int_{-1}^{1} \int_{-1}^{1} f(\mathbf{x}(\bs{\xi})) \,J(\bs{\xi}) \ud\xi \ud \eta,
+\end{equation}
+onde $J(\bs{\xi})$ \'{e} o jacobiano da transforma\c{c}\~{a}o adequado.
+
+No caso de se tratar do integral num domínio bidimensional, então
+\begin{equation}\label{}
+   J(\xi,\eta)=\frac{\partial x}{\partial \xi}\frac{\partial y}{\partial \eta}-\frac{\partial x}{\partial \eta}\frac{\partial y}{\partial \xi}
+\end{equation}
+
+Caso se trate de uma fronteira de um domínio tridimensional parametrizada através de $x(\xi,\eta,1)$, $y(\xi,\eta,1)$ e $z(\xi,\eta,1)$, então
+\begin{equation}\label{}
+   J(\xi,\eta,1)=\left.\sqrt{\left(\frac{\partial y}{\partial \xi}\frac{\partial z}{\partial \eta}-\frac{\partial y}{\partial \eta}\frac{\partial z}{\partial \xi}\right)^2+\left(-\frac{\partial x}{\partial \xi}\frac{\partial z}{\partial \eta}-\frac{\partial x}{\partial \eta}\frac{\partial z}{\partial \xi}\right)^2+\left(\frac{\partial x}{\partial \xi}\frac{\partial y}{\partial \eta}-\frac{\partial x}{\partial \eta}\frac{\partial y}{\partial \xi}\right)^2}\right|_{\zeta=1}
+\end{equation}
+
+O integral resultante pode, novamente, ser avaliado numericamente atrav\'{e}s da regra de quadratura de Gauss-Legendre. Recorrendo a $n_{\xi}\times n_{\eta}$ pontos, e designando por $g(\bs{\xi})$ a fun\c{c}\~{a}o integranda, pode escrever-se
+\begin{equation}\label{eq: 1D int Gauss}
+    \int_{-1}^{1}\int_{-1}^{1}g(\xi,\eta) \ud\xi \ud \eta \approx \sum_{i=1}^{n_{\xi}} \sum_{j=1}^{n_{\eta}} g(\xi_i,\eta_j) \, w_i\, w_j.
+\end{equation}
+
+
+%
+\section{O caso 3D}
+%
+Este tipo de integrais surgem associados a integrações em domínios tridimensionais.
+
+Tal como anteriormente, pode efectuar-se uma transforma\c{c}\~{a}o de coordenadas do dom\'{\i}nio $\Omega$ para um dom\'{\i}nio convencional $[-1, 1]\times [-1, 1]\times [-1, 1]$. Neste caso,
+\begin{equation}\label{eq: 2D transformation}
+    \int_{\Omega} f(\textbf{x}) \, d{\Omega} =\int_{-1}^{1} \int_{-1}^{1} \int_{-1}^{1} f(\textbf{x}(\bs{\xi})) \,J(\bs{\xi}) \ud\xi \ud \eta \ud \zeta,
+\end{equation}
+onde $J(\bs{\xi})$ \'{e} o jacobiano da transforma\c{c}\~{a}o
+\begin{equation}\label{}
+   J(\xi,\eta,\zeta)=\det\left(
+   \left[
+\begin{matrix}
+\frac{\partial x}{\partial \xi} & \frac{\partial x}{\partial \eta} & \frac{\partial x}{\partial \zeta}\\
+\frac{\partial y}{\partial \xi} & \frac{\partial y}{\partial \eta} & \frac{\partial y}{\partial \zeta}\\
+\frac{\partial z}{\partial \xi} & \frac{\partial z}{\partial \eta} & \frac{\partial z}{\partial \zeta}
+\end{matrix}
+\right]\right).
+\end{equation}
+
+O integral resultante pode, novamente, ser avaliado numericamente atrav\'{e}s da regra de quadratura de Gauss-Legendre. Recorrendo a $n_{\xi}\times n_{\eta}\times n_{\zeta}$ pontos, e designando por $g(\bs{\xi})$ a fun\c{c}\~{a}o integranda, pode escrever-se
+\begin{equation}\label{eq: 1D int Gauss}
+    \int_{-1}^{1} \int_{-1}^{1} \int_{-1}^{1}g(\xi,\eta,\zeta) \ud\xi \ud \eta \ud \zeta \approx \sum_{i=1}^{n_{\xi}} \sum_{j=1}^{n_{\eta}} \sum_{k=1}^{n_{\zeta}} g(\xi_i,\eta_j,\zeta_k) \, w_i\, w_j\, w_k.
+\end{equation}
+
+
+
+
+%
+%\cite{Argyris:60a,Argyris:66a,Argyris:68a,Argyris:68b,Argyris:68c,Argyris:68d,
+%Argyris:68e,Argyris:68f,Argyris:69a,Argyris:69b,Argyris:69c,Argyris:69d,Argyris:69e,
+%Argyris:69g,Argyris:70a,Argyris:70b,Argyris:70c,Argyris:72a,Argyris:72b,Argyris:72c,
+%Argyris:74a,Argyris:75a,Argyris:78a,Argyris:78b,Argyris:78c,
+%Argyris:79a,Argyris:81a,Argyris:81b,Argyris:81c,Argyris:82a,Argyris:82b,Argyris:84a,
+%Argyris:93a,Argyris:94a,Argyris:94b,Argyris:95a,Argyris:98a,Argyris:98b,Argyris:00a}

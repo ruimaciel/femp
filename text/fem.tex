@@ -1,0 +1,228 @@
+\documentclass[a4paper,11pt,twoside,onecolumn,openright,final,oldfontcommands]{memoir} % final / draft
+
+\usepackage[portuges]{babel}% portuguese  portuges
+%\addto\captionsportuges{\renewcommand{\contentsname}{\'{I}ndice}}% alternative to %\renewcommand{\contentsname}{\'{I}ndice} inside document
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath,amsfonts,amstext,amssymb,amsthm} % Utilidades matematicas
+\usepackage[]{graphics} % option: draft
+
+\usepackage{subfig}% subfigure
+\usepackage{caption}
+%\usepackage{keyval}
+
+\usepackage{rotating}
+
+\usepackage{stmaryrd}% brackets in jump function
+
+%\usepackage{psfrag} % [scanall] option to include \tex commands in the eps files
+\usepackage{color}
+%\usepackage{bbm}
+%\usepackage[Symbol]{upgreek}%Euler Symbol Symbolsmallscale
+
+\usepackage{kbordermatrix}
+
+% \usepackage{tikz}
+% \usetikzlibrary{shapes.misc,positioning,arrows}
+
+
+\usepackage{arydshln}% array dash line
+\setlength{\dashlinedash}{3pt} %for the length of each dash segment in a dash line
+\setlength{\dashlinegap}{3pt} %controls the amount of each gap between dash segments
+
+
+%\usepackage{bm,upgreek}
+%\makeatletter
+%\newcommand{\bfgreek}[1]{\bm{\@nameuse{up#1}}}
+%\makeatother
+
+% norma portuguesa ... indent first word
+\usepackage{indentfirst}
+
+% Translineacao de palavras com particulas
+% para funcionar inserir "- no ponto, como em foi"-se
+% \defineshorthand{"-}{\nobreak\hskip0pt\discretionary{-}{-}{-}\nobreak\hskip0pt}
+
+
+
+%\usepackage{calrsfs} % change \mathcal fonts
+%\usepackage{calligra}
+
+% \usepackage{mathrsfs}  use as $\mathscr{ABCDEF}$
+%
+ \makeatletter
+\providecommand*{\DisemulatePackage}[1]{%
+  \@namelet{ver@#1.\@pkgextension}\relax}
+\makeatother \DisemulatePackage{index}
+
+\usepackage{multirow}
+
+\renewcommand{\citeindexfile}{authors}
+\makeindex[\citeindexfile]
+\usepackage{natbib}
+\citeindextrue
+%
+\makeindex
+\bibpunct{(}{)}{,}{a}{,}{,}
+
+
+
+\usepackage{longtable}
+%\usepackage{dpfloat}
+%\usepackage{ifthen}
+%\usepackage{afterpage}
+
+%\DeclareFontFamily{T1}{calligra}{}
+%\DeclareFontShape{T1}{calligra}{m}{n}{<->s*[1.3]callig15}{}
+
+\usepackage{fancybox}
+
+
+%\DeclareRobustCommand\renewcommand\ss{\fontfamily{calligra}\fontencoding{T1}\selectfont}
+%\newcommand\textcalligra[1]{\begingroup\renewcommand\ss{\symbol{255}\kern-.22em}\fontfamily{calligra}\fontencoding{T1}\selectfont#1\endgroup}
+
+\DeclareMathAlphabet{\mathbbmsl}{U}{bbm}{m}{sl}
+\DeclareMathAlphabet{\mathbbmbxsl}{U}{bbm}{bx}{sl}
+
+%vertical
+\setlength{\voffset}{-0.5cm} \setlength{\topmargin}{0cm}
+\setlength{\headheight}{6mm} \setlength{\headsep}{1cm}
+\setlength{\textheight}{23cm} \setlength{\footskip}{0.8cm}
+
+%horizontal
+\setlength{\hoffset}{-1in} \setlength{\marginparwidth}{0cm}
+\setlength{\evensidemargin}{2.5cm} \setlength{\textwidth}{15cm}
+\setlength{\marginparsep}{0cm} \setlength{\oddsidemargin}{3.0cm}
+
+
+
+% quote marks
+%\newcommand{\quotationmarks}[1]{``#1''}
+
+% upright div
+%\newcommand{\udiv}{\mathrm{div} \,}
+%\newcommand{\udiag}{\mathrm{diag} }
+%\newcommand{\usym}{\text{sym}}
+
+% upright d
+%\newcommand{\ud}{\,\mathrm{d}}
+% \renewcommand{\bs}[1]{\boldsymbol{#1}}
+%\newcommand{\bs}[1]{\boldsymbol{#1}}
+
+%\newcommand{\abs}[1]{\lvert#1\rvert}
+%\newcommand{\norm}[1]{\lVert#1\rVert}
+%\newcommand{\rank}[1]{\text{rank}\left(#1\right)}
+%\newcommand{\jump}[1]{\left\llbracket #1 \right \rrbracket}
+%\newcommand{\degree}{\ensuremath{^\circ}}
+
+
+% Definitions of products
+%\newcommand{\tensorialp}[2]{#1\otimes#2}
+%\newcommand{\vectorialp}[2]{#1\times#2}
+%\newcommand{\dotp}[2]{#1\cdot#2}
+%\newcommand{\scalarp}[2]{#1 : #2}
+
+%\newcommand{\sen}{\text{sen}}
+
+\setlength{\defaultaddspace}{5pt} % distance for table spacing
+
+%\theoremstyle{remark}
+%\newtheorem{rem}{Remark}[section]
+
+\newenvironment{mydescription}%
+{\begin{list}%
+{}%
+{\renewcommand{\makelabel}[1]{\textbf{\emph{##1}}}}}%
+{\end{list}}
+
+
+%
+% Numerate until subsections
+\maxsecnumdepth{subsection}
+%
+% write until subsections in ToC
+\maxtocdepth{subsection}
+%
+
+%\definecolor{mygrey}{gray}{0.6}
+\pagestyle{companion}
+
+%
+% Here starts the document
+%
+\begin{document}
+%
+%\renewcommand{\contentsname}{\\'{I}Índice} % it must go here, after \begin{document} command
+%
+\frontmatter % for starting numbering i, ii, iii, iv,... and no numbering of sectional units
+%
+\include{frontmatter}
+%
+%\movetooddpage
+\setcounter{page}{1}
+%
+\tableofcontents
+%
+\movetooddpage
+%
+\listoffigures
+%
+\movetooddpage
+%
+\listoftables
+%
+\movetooddpage
+%
+%\include{symbols}
+%
+%\movetooddpage
+%
+%\include{abbreviations}
+%
+%\movetooddpage
+%
+\mainmatter
+
+\include{1-intro}
+\cleardoublepage
+
+\include{2-problema}
+\cleardoublepage
+                                                                                                                                                                                               
+\include{3-mef}
+\cleardoublepage
+                                                                                                                                                                                                    
+\include{4-discretizar}
+\cleardoublepage
+                                                                                                                                                                                            
+\include{5-implementar}
+\cleardoublepage
+                                                                                                                                                                                            
+\include{6-exemplo}
+\cleardoublepage
+                                                                                                                                                                                                
+\include{7-concluir}
+\cleardoublepage
+ 
+
+%\movetooddpage
+%
+% References
+%
+%GATHER{bibdata.bib}
+\bibliography{bibdata}
+\bibliographystyle{bibliotiago}
+%
+% Citation index
+%
+%\renewcommand{\indexname}{Citations index}
+%\printindex[\citeindexfile]
+%
+% Subject index
+%
+%\renewcommand{\indexname}{Subject index}
+%\printindex
+%
+\end{document}

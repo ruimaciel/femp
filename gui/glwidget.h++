@@ -25,7 +25,6 @@ class GLWidget : public QGLWidget
 		void setNodeRadiusScale(float r)	{ node_scale = r; }
 
 	public Q_SLOTS:
-		void togglePerspective();
 		void setXRotation(int angle);
 		void setYRotation(int angle);
 		void setZRotation(int angle);
@@ -85,7 +84,7 @@ class GLWidget : public QGLWidget
 		float aspect_ratio;	// window aspect ratio
 
 		ViewportColors *colors;	// color definitions
-		bool perspective;	// true if perspective, false if ortogonal
+		// bool perspective;	// true if perspective, false if ortogonal
 
 		// display list indices
 		GLuint dl_nodes;

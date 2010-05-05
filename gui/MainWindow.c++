@@ -312,7 +312,6 @@ void MainWindow::createActions()
 	 connect(ui.actionClose, SIGNAL(triggered()), this, SLOT(closeProject()));
 	 connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
 	 connect(ui.actionImportMesh, SIGNAL(triggered()), this, SLOT(importMesh()));
-	 connect(ui.actionTogglePerspective, SIGNAL(triggered()), this, SIGNAL(togglePerspective()));
 	 connect(ui.actionNodeRestraints, SIGNAL(triggered()), this, SLOT(setNodeRestraints()));
 	 connect(ui.actionNodeActions, SIGNAL(triggered()), this, SLOT(setNodeActions()));
 	 connect(ui.actionRun, SIGNAL(triggered()), this, SLOT(runAnalysis()));
@@ -594,7 +593,6 @@ void MainWindow::runAnalysis()
 	glDisplacementsWidget->setNodeRadiusScale(radius);
 	glDisplacementsWidget->setFocusPolicy(Qt::StrongFocus);
 	glDisplacementsWidget->display_options.setDefaultOptions();
-	connect(this,SIGNAL(togglePerspective()), glDisplacementsWidget, SLOT(togglePerspective()));
 
 	// create new MDI window for the displacements
 	QMdiSubWindow *subWindow;
@@ -654,7 +652,6 @@ void MainWindow::setUserInterfaceAsOpened()
 	glWidget->setNodeRadiusScale(radius);
 	glWidget->setFocusPolicy(Qt::StrongFocus);
 	glWidget->display_options.setDefaultOptions();
-	connect(this,SIGNAL(togglePerspective()), glWidget, SLOT(togglePerspective()));
 	
 	window_gl_viewport = new QMdiSubWindow(mdiArea);
 	window_gl_viewport->setWidget(glWidget);

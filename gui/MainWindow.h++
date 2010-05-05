@@ -74,8 +74,6 @@ public Q_SLOTS:
 	void getError(QString);
 
 Q_SIGNALS:
-	void togglePerspective();	// toggles between orthographic and projection
-
 	void setMessage(QString);
 	void setWarning(QString);
 	void setError(QString);

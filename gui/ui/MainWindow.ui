@@ -73,7 +73,6 @@
      <addaction name="actionDisplayNodes"/>
     </widget>
     <addaction name="actionCommand_line"/>
-    <addaction name="actionTogglePerspective"/>
     <addaction name="actionViewActions"/>
     <addaction name="menuModel"/>
    </widget>

@@ -36,8 +36,7 @@ Document::~Document()
 }
 
 
-void
-                Document::clear()
+void Document::clear()
 {
     unsaved = false;
     if (file_name != NULL) {
@@ -46,6 +45,9 @@ void
     }
     document_type = TYPE_NONE;
     model.clear();
+
+	// clear selected nodes list
+    selected_nodes.clear();
 }
 
 

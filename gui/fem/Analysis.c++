@@ -1,5 +1,7 @@
 #include "Analysis.h++"
 
+#include <Eigen/Sparse>
+
 #include "ublas_solvers.h++"
 
 
@@ -42,9 +44,9 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	make_location_matrix(model);
 
 		// initialize the FEM equation objects
-	k.clear();
-	f.clear();
-	d.clear();
+	k.setZero();
+	f.setZero();
+	d.setZero();
 				
 		// declare variables
 	size_t pi = 0;	// progress indicator
@@ -387,17 +389,17 @@ void Analysis::output_fem_equation(std::ostream &out)
 
 	// output stiffness matrix
 	out << "\t\t\"stiffness matrix\" : [\n";
-	for(size_t i = 0; i < k.size1(); i++)
+	for(int i = 0; i < k.rows(); i++)
 	{
 		out << "\t\t\t[";
-		for(size_t j = 0; j < k.size2(); j++)
+		for(int j = 0; j < k.cols(); j++)
 		{
 			if(j != 0)
 				out << ",";
-			out << "\t" << k(i,j);
+			out << "\t" << k.coeff(i,j);
 		}
 		out << "]";
-		if(i + 1 < k.size1())
+		if(i + 1 < k.rows())
 			out << ",";
 		out << "\n";
 	}
@@ -405,11 +407,11 @@ void Analysis::output_fem_equation(std::ostream &out)
 
 	// output force vector
 	out << "\t\t\"force vector\" : [\n";
-	for(size_t i = 0; i < f.size(); i++)
+	for(int i = 0; i < f.rows(); i++)
 	{
 		out << "\t\t\t";
-		out << f(i);
-		if(i +1 < f.size() )
+		out << f.coeff(i);
+		if(i +1 < f.rows() )
 			out << ",";
 		out << "\n";
 	}
@@ -469,11 +471,11 @@ std::map<size_t, Node> Analysis::displacements_map()
 
 		// assign the displacements
 		if(i->second.get<0>() != 0)
-			node.data[0] = f(n++);
+			node.data[0] = d(n++);
 		if(i->second.get<1>() != 0)
-			node.data[1] = f(n++);
+			node.data[1] = d(n++);
 		if(i->second.get<2>() != 0)
-			node.data[2] = f(n++);
+			node.data[2] = d(n++);
 
 		// add the displacement field to the map
 		df[i->first] = node;
@@ -1313,9 +1315,14 @@ Analysis::make_location_matrix(Model &model)
 	dof--;	// avoid the off by one error in resizing K_g and f_g
 
 		// resize the FEM equation
+	/*
 	k.resize(dof,dof, false);
 	f.resize(dof, false);
 	d.resize(dof, false);
+	*/
+	k.resize(dof,dof);
+	f.resize(dof);
+	d.resize(dof);
 }
 
 
@@ -1364,7 +1371,7 @@ inline void Analysis::add_elementary_stiffness_to_global(const boost::numeric::u
 				{
 					if( (id[u] != 0) && (jd[v] != 0) )
 					{
-						k(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
+						k.coeffRef(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
 					}
 				}
 			}

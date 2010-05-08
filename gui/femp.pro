@@ -6,6 +6,7 @@ QMAKE_CXXFLAGS_DEBUG +=-O0
 QT += opengl
 QMAKE_EXT_CPP += c++
 
+INCLUDEPATH += /usr/include/eigen2
 LIBS += -ll -ly -lboost_math_c99-mt
 
 HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.h++ NewProjectWizard.h++ \

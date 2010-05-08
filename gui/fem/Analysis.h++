@@ -7,6 +7,8 @@
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/tuple/tuple.hpp>
 
+#include <Eigen/Sparse>
+
 #include <map>
 
 #include "Model.h++"
@@ -42,9 +44,9 @@ class Analysis
 
 			// the FEM equation
 		// FemEquation f;
-		boost::numeric::ublas::compressed_matrix<double> k;
-		boost::numeric::ublas::vector<double> f;
-		boost::numeric::ublas::vector<double> d;
+		Eigen::DynamicSparseMatrix<double,Eigen::RowMajor> k;
+		Eigen::Matrix<double,Eigen::Dynamic,1> f;
+		Eigen::Matrix<double,Eigen::Dynamic,1> d;
 
 
 	public:

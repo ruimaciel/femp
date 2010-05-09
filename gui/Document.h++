@@ -5,6 +5,7 @@
 #include <string>
 
 #include "fem/Model.h++"
+#include "ModelSelection.h++"
 
 
 class Document
@@ -30,7 +31,8 @@ class Document
 
 
 		// data structures for storing selected objects
-		std::map<size_t,bool> selected_nodes;
+		// std::map<size_t,bool> selected_nodes;
+		ModelSelection model_selection;	// list of which model elements have been selected
 
 	public:
 		Document();

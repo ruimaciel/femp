@@ -483,12 +483,18 @@ void MainWindow::importMesh()
 	
 void MainWindow::setNodeRestraints()
 {
+	assert(mdiArea != NULL);
+
+	// check if active window supports node restraints
+	//TODO implement this
+
 	NodeRestrainsDialog nd;
 	if(nd.exec() == QDialog::Accepted)
 	{
+		// get list of node restraints from active window
 		fem::NodeRestrictions nr;
 		int r = nd.getRestraints();
-		for(std::map<size_t,bool>::iterator it = document.selected_nodes.begin(); it != document.selected_nodes.end(); it++)
+		for(std::map<size_t,bool>::iterator it = document.model_selection.nodes.begin(); it != document.model_selection.nodes.end(); it++)
 		{
 			if(it->second == true)
 			{
@@ -512,7 +518,7 @@ void MainWindow::setNodeActions()
 	NodeActionsDialog na(document.model, this);
 	if(na.exec() == QDialog::Accepted)
 	{
-		for(std::map<size_t,bool>::iterator it = document.selected_nodes.begin(); it != document.selected_nodes.end(); it++)
+		for(std::map<size_t,bool>::iterator it = document.model_selection.nodes.begin(); it != document.model_selection.nodes.end(); it++)
 		{
 		if(it->second == true)
 		{

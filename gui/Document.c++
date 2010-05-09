@@ -46,8 +46,8 @@ void Document::clear()
     document_type = TYPE_NONE;
     model.clear();
 
-	// clear selected nodes list
-    selected_nodes.clear();
+	// clear all selections
+    model_selection.deselectAll();
 }
 
 
@@ -1784,17 +1784,18 @@ enum Document::Error Document::importMesh(QString file_name)
 
 void Document::selectNode(const size_t & node)
 {
-	selected_nodes[node] = true;
+	model_selection.selectNode(node);
+
 }
 
 
 void Document::deselectNode(const size_t & node)
 {
-	selected_nodes.erase(node);
+	model_selection.deselectNode(node);
 }
 
 
 void Document::deselectAll()
 {
-	selected_nodes.clear();
+	model_selection.deselectAll();
 }

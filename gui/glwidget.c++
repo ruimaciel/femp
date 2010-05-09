@@ -11,6 +11,8 @@
 
 GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 {
+	//TODO update the UI according to the active MDI subwindow
+
 	makeCurrent();
 
 	// initialize the camera
@@ -614,7 +616,7 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 	switch( event->key() )
 	{
 		case Qt::Key_Escape:
-			document->deselectAll();
+			document->model_selection.deselectAll();
 			generateNodesDisplayList();
 			updateGL();
 			break;
@@ -655,7 +657,8 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 	glEnd();
 
 	// paint the nodal sphere
-	if(document->selected_nodes[label])
+	//if(document->selected_nodes[label])
+	if(document->model_selection.isNodeSelected(label))
 		glColor3f(1.0f,0,0);
 	else
 		glColor3fv(colors->node);
@@ -1138,7 +1141,7 @@ void GLWidget::selectModelObjects(const fem::point &near,const fem::point &far)
 		if(b*b - 4*a*c > 0)
 		{
 			//distance_map[i->first] = (i->second-near).norm(); // get distances
-			document->selectNode(i->first);
+			document->model_selection.selectNode(i->first);
 		}
 	}
 	// select the nearest hit

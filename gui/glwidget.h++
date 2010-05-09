@@ -8,6 +8,8 @@
 #include "ViewportColors.h++"
 #include "Camera.h++"
 #include "DisplayOptions.h++"
+#include "ModelSelection.h++"
+#include "MdiWindowProperties.h++"
 
 
 class GLWidget : public QGLWidget
@@ -77,14 +79,13 @@ class GLWidget : public QGLWidget
 		QPoint lastPos;
 		QColor qtPurple;
 
-		Document *document;
+		Document *document;	// pointer to a valid instance of a document object
 
 		float node_scale;	// the scale used by the nodes, reset when a window resizes
 		float zoom;		// drawing zoom, used to zoom
 		float aspect_ratio;	// window aspect ratio
 
 		ViewportColors *colors;	// color definitions
-		// bool perspective;	// true if perspective, false if ortogonal
 
 		// display list indices
 		GLuint dl_nodes;

@@ -164,6 +164,10 @@ int Element::node_number() const
 			return 8;
 			break;
 
+		case FE_HEXAHEDRON20:
+			return 20;
+			break;
+
 		case FE_HEXAHEDRON27:
 			return 27;
 			break;

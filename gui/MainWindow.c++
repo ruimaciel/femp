@@ -579,7 +579,6 @@ void MainWindow::runAnalysis()
 
 	//TODO finish this
 	//TODO consider options for integration points
-	// fem::Analysis analysis;
 	fem::LinearAnalysis analysis;
 
 	//TODO for testing purposes only. remove

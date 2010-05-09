@@ -278,7 +278,6 @@ enum Model::Error Model::import_json(FILE *file)
 
 				//TODO support more types 
 				CURSOR_VERIFY_TEXT("3D solid");	// header label must be
-				// this->document_type = TYPE_SOLID3D;
 
 					// reposition the cursor
 				cursor.pop();
@@ -1101,8 +1100,6 @@ enum Model::Error Model::import_json(FILE *file)
 
 				CURSOR_NEXT_TEST(JSON_STRING);
 
-
-				// CURSOR_VERIFY_TEXT("node");
 				//TODO add support for node displacements
 				state.pop();
 				break;
@@ -1484,9 +1481,6 @@ enum Model::Error Model::import_json(FILE *file)
 				DECHO();
 				//TODO
 				this->pushLoadPattern(load_pattern);
-
-				// cursor.pop();	// JSON_OBJECT -> "force" JSON_ARRAY
-				// cursor.pop();	// -> JSON_OBJECT "force"
 
 				// Test the FIRST
 				if(cursor.top()->next == NULL)

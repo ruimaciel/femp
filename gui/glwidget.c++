@@ -30,9 +30,6 @@ GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
 
 	qtPurple = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0);
 
-	// starts off with perspective
-	// perspective = true;
-
 	// assign display lists
 	dl_nodes = glGenLists(1);
 	dl_faces = glGenLists(1);

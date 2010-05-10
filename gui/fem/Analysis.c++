@@ -53,7 +53,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		// declare variables
 	size_t pi = 0;	// progress indicator
 	double detJ = 0;
-	//matrix<double>	J(3,3), invJ(3,3);
 	Matrix3d J, invJ;
 	std::vector< symmetric_matrix<double, upper> > D_list;
 
@@ -136,8 +135,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 				J(2,0) += dNdzeta(n)*X(n);	J(2,1) += dNdzeta(n)*Y(n);	J(2,2) += dNdzeta(n)*Z(n);
 			}
 
-			cout << "J\n" << J << endl;
-
 			detJ = J.determinant();
 
 				// return error if we stumble on a negative determinant
@@ -150,7 +147,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 				return ERR_NEGATIVE_DETERMINANT;
 			}
 
-			cout << "J\n" << J << endl;
 			J.computeInverse(&invJ);
 
 				// Set up the B matrix
@@ -247,7 +243,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 #undef dNdeta
 #undef dNdzeta
 
-			//detJ = fem::det3by3(J);
 			detJ = J.determinant();
 
 			// and now the f_elem
@@ -385,7 +380,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	if(verbose)
 		cout << "]," << endl;
 	
-	cout << f << endl;
 	// fem equation is set.
 	return ERR_OK;
 }

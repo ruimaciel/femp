@@ -3,7 +3,6 @@
 #include <iostream>
 #include <Eigen/Sparse>
 
-#include "ublas_solvers.h++"
 
 
 namespace fem

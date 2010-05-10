@@ -7,7 +7,7 @@ QT += opengl
 QMAKE_EXT_CPP += c++
 
 INCLUDEPATH += /usr/include/eigen2
-LIBS += -ll -ly -lboost_math_c99-mt
+LIBS += -ll -ly
 
 HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.h++ NewProjectWizard.h++ \
 	ModelSelection.h++ \
@@ -19,8 +19,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h \
 	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
 	ui/NewMaterialDialog.h++ ui/MaterialsEditorDialog.h++\
-	fem/Analysis.h++ fem/LinearAnalysis.h++ \
-	fem/ublas_solvers.h++
+	fem/Analysis.h++ fem/LinearAnalysis.h++ 
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
 	ModelSelection.c++ \
@@ -32,8 +31,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c \
 	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++ \
 	ui/NewMaterialDialog.c++ ui/MaterialsEditorDialog.c++\
-	fem/Analysis.c++ fem/LinearAnalysis.c++ \
-	fem/ublas_solvers.c++
+	fem/Analysis.c++ fem/LinearAnalysis.c++ 
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 	ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPage3.ui  ui/NewProjectWizardPageLast.ui \

@@ -6,9 +6,6 @@
 #include <map>
 #include <vector>
 
-#include <boost/numeric/ublas/symmetric.hpp>
-#include <boost/numeric/ublas/vector_sparse.hpp>
-#include <boost/numeric/ublas/io.hpp>
 #include <boost/tuple/tuple.hpp>
 
 #include "../parsers/json.h"

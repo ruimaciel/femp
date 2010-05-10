@@ -3,9 +3,6 @@
 #include <Eigen/Sparse>
 #include <Eigen/LU>
 
-#include "ublas_solvers.h++"
-
-
 
 namespace fem
 {
@@ -35,7 +32,6 @@ Analysis::~Analysis()
 enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPattern &lp, bool verbose)
 {
 	using namespace std;
-	using namespace boost::numeric::ublas;
 	using namespace Eigen;
 
 	// perform sanity checks on the model
@@ -53,15 +49,16 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		// declare variables
 	size_t pi = 0;	// progress indicator
 	double detJ = 0;
+
 	Matrix3d J, invJ;
-	std::vector< symmetric_matrix<double, upper> > D_list;
+	std::vector< Eigen::Matrix<double,6,6> > D_list;
 
 		// set up the temporary variables for the elementary matrix and vector
-	symmetric_matrix<double, upper> k_elem;
-	//TODO replace mapped_vector with vector
-	boost::numeric::ublas::vector<double> f_elem;
-	matrix<double> B;
-	matrix<double> Bt;
+	//symmetric_matrix<double, upper> k_elem;
+	Matrix<double,Dynamic, Dynamic> k_elem;
+	Matrix<double,Dynamic,1> f_elem;
+	Matrix<double,Dynamic,Dynamic> B;
+	Matrix<double,Dynamic,Dynamic> Bt;
 
 		//TODO get a separate function to return the shape function
 	std::vector<double>	sf;	// shape function
@@ -103,15 +100,15 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		nnodes = element->node_number();
 
 			// resize the elementary matrices to fit the new node size
-		k_elem.resize(nnodes*3,nnodes*3,false);
-		f_elem.resize(nnodes*3,false);
-		B.resize(6,3*nnodes,false);
-		Bt.resize(3*nnodes,6,false);
+		k_elem.resize(nnodes*3,nnodes*3);
+		f_elem.resize(nnodes*3);
+		B.resize(6,3*nnodes);
+		Bt.resize(3*nnodes,6);
 
 			// initialize variables
-		k_elem.clear();
-		f_elem.clear();
-		B.clear();
+		k_elem.setZero();
+		f_elem.setZero();
+		B.setZero();
 
 			// build the element stiffness matrix: cycle through the number of integration points
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][degree[element->type]].begin(); i != ipwpl[element->family()][degree[element->type]].end(); i++)
@@ -181,15 +178,19 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 
 			// having done the legwork, let's build up the elementary stiffness matrix and equivalent nodal force vector
 
-			Bt = trans(B);
-			symmetric_matrix<double> D = D_list[element->material];
+			Bt = B.transpose();
+			//symmetric_matrix<double> D = D_list[element->material];
+			Eigen::Matrix<double,6,6> D = D_list[element->material];
 
+			/*
 			matrix<double> temp;
 			// and now, k_elem = sum(Bt*D*B*detJ*i->second);
 			temp = prod(Bt,D);
 			temp = prod(temp,B);
 			temp *= detJ*i->get<1>();
 			k_elem += temp;	// adding up the full result
+			*/
+			k_elem += Bt*D*B*detJ*i->get<1>();
 		}
 
 			// add elementary stiffness matrix to the global stiffness matrix 
@@ -1419,12 +1420,12 @@ Analysis::make_location_matrix(Model &model)
 }
 
 
-inline void Analysis::add_elementary_stiffness_to_global(const boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
+inline void Analysis::add_elementary_stiffness_to_global(const Eigen::Matrix<double,Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element)
 {
 	using namespace std;	//TODO remove cleanup code
 
-	assert(k_elem.size1() == element.nodes.size()*3);
-	assert(k_elem.size2() == element.nodes.size()*3);
+	assert((size_t)k_elem.rows() == element.nodes.size()*3);
+	assert((size_t)k_elem.cols() == element.nodes.size()*3);
 
 	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator idof, jdof;	// degrees of freedom for the line and column 
 	size_t id[3], jd[3]; // boost::tuple, being a template, doesn't accept non-const parameters.  This is a way to sidestep it

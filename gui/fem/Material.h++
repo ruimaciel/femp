@@ -1,9 +1,8 @@
 #ifndef MATERIAL_HPP
 #define MATERIAL_HPP
 
-// #include <QString>
 #include <string>
-#include <boost/numeric/ublas/symmetric.hpp>
+#include <Eigen/Core>
 
 namespace fem
 {
@@ -31,7 +30,7 @@ class Material {
 		Generates a constitutive matrix
 		@return	a matrix type
 		**/
-		boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper>  generateD();
+		Eigen::Matrix<double,6,6> generateD();
 };
 
 

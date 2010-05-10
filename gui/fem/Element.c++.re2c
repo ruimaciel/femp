@@ -55,6 +55,13 @@ enum Element::Error Element::set(Type type, std::vector<size_t> nodes)
 			}
 			break;
 
+		case FE_HEXAHEDRON20:
+			if(nodes.size() != 20)
+			{
+				return ERR_NODE_NUMBER;
+			}
+			break;
+
 		case FE_HEXAHEDRON27:
 			if(nodes.size() != 27)
 			{

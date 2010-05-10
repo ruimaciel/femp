@@ -39,8 +39,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	setCentralWidget(mdiArea);	// this main window has a Multiple Document Interface
 	//mdiArea->setViewMode(QMdiArea::TabbedView);
 
-	window_gl_viewport = NULL;	// no windows on startup
-
 	// Load global options from the options files
 	this->loadOptions();
 
@@ -532,6 +530,7 @@ void MainWindow::setNodeActions()
 
 void MainWindow::setDisplayOptions()
 {
+	//TODO make this generic
 	DisplayOptionsDialog da(document.model, this);
 	if(da.exec() == QDialog::Accepted)
 	{
@@ -558,6 +557,7 @@ void MainWindow::editMaterials()
 
 void MainWindow::setElementDisplay()
 {
+	//TODO make this rely on the active window
 	if(glWidget != NULL)
 	{
 		glWidget->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
@@ -599,14 +599,13 @@ void MainWindow::runAnalysis()
 	glDisplacementsWidget->setFocusPolicy(Qt::StrongFocus);
 	glDisplacementsWidget->display_options.setDefaultOptions();
 
-	// create new MDI window for the displacements
+	// create new MDI window for the displacements widget
 	QMdiSubWindow *subWindow;
-	subWindow = new QMdiSubWindow;
+	subWindow = new QMdiSubWindow(mdiArea);
 	subWindow->setWidget(glDisplacementsWidget);
 	subWindow->setAttribute(Qt::WA_DeleteOnClose);
 	subWindow->setWindowTitle("Displacements");
 
-	mdiArea->addSubWindow(subWindow);
 	glDisplacementsWidget->show();
 	
 	emit setMessage(message);
@@ -658,11 +657,15 @@ void MainWindow::setUserInterfaceAsOpened()
 	glWidget->setFocusPolicy(Qt::StrongFocus);
 	glWidget->display_options.setDefaultOptions();
 	
+	// create the model's MDI window
+	QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport
+
 	window_gl_viewport = new QMdiSubWindow(mdiArea);
 	window_gl_viewport->setWidget(glWidget);
 	window_gl_viewport->setAttribute(Qt::WA_DeleteOnClose);
 	window_gl_viewport->setWindowTitle(tr("model viewport"));
 	window_gl_viewport->showMaximized();
+
 	//mdiArea->addSubWindow(window_gl_viewport);
 	// enable the "close"
 
@@ -688,13 +691,6 @@ void MainWindow::setUserInterfaceAsClosed()
 	ui.actionEditMaterials->setDisabled(true);
 
 	// close all MDI windows
-	if(window_gl_viewport != NULL)
-	{
-		//TODO free glWidget?
-		mdiArea->removeSubWindow(window_gl_viewport);
-		delete window_gl_viewport; 
-		window_gl_viewport = NULL;
-	}
 	mdiArea->closeAllSubWindows();
 
 	// handle the toolbars

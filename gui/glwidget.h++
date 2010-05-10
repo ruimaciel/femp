@@ -12,7 +12,8 @@
 #include "MdiWindowProperties.h++"
 
 
-class GLWidget : public QGLWidget
+class GLWidget 
+	: public QGLWidget, MdiWindowProperties
 {
 	Q_OBJECT
 

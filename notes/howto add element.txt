@@ -1,0 +1,11 @@
+- define node numbering
+- add shape function and shape function derivative
+- add support for the element in the MSH format
+- add code to Document::load() and Document::save()
+- add support for rendering the program
+	- write shape function in [0,1]x[0x1] coordinates
+	- write code to render surface (i.e., renderQuad8())
+	- add code to write elements from surfaces in glWidget::paintElement()
+	- new viewport color
+- add support for the element in Element:set()
+

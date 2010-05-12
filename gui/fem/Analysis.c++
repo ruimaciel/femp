@@ -353,8 +353,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	if(verbose)
 		cout << "]," << endl;
 
-	cout << f << endl;
-
 	// set nodal forces
 	if(verbose)
 	{
@@ -380,6 +378,9 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	}
 	if(verbose)
 		cout << "]," << endl;
+
+	//DEBUG
+	cout << "K[" << k.rows() << ", " << k.cols() << "]" << endl;
 	
 	// fem equation is set.
 	return ERR_OK;
@@ -488,6 +489,16 @@ std::map<size_t, Node> Analysis::displacements_map()
 }
 
 
+/*******************************************************************************
+Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
+(Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and
+B.P. Flannery
+*******************************************************************************/
+/*******************************************************************************
+Given n, this
+routine returns arrays x[1..n] and w[1..n] of length n, containing the abscissas
+and weights of the Gauss-Legendre n-point quadrature formula.
+*******************************************************************************/
 void Analysis::gauleg(double x[], double w[], int n)
 {
 	int m,j,i;
@@ -1172,22 +1183,22 @@ void Analysis::setDefaultIntegrationDegrees()
 	degree[Element::FE_QUADRANGLE9] = 1;	ddegree[Element::FE_QUADRANGLE9] = 1;
 
 	degree[Element::FE_TETRAHEDRON4 ] = 4;	ddegree[Element::FE_TETRAHEDRON4 ] = 1;
-	degree[Element::FE_TETRAHEDRON10] = 4;	ddegree[Element::FE_TETRAHEDRON10] = 2;
-	degree[Element::FE_TETRAHEDRON20] = 4;	ddegree[Element::FE_TETRAHEDRON20] = 3;
-	degree[Element::FE_TETRAHEDRON35] = 4;	ddegree[Element::FE_TETRAHEDRON35] = 4;
-	degree[Element::FE_TETRAHEDRON56] = 4;	ddegree[Element::FE_TETRAHEDRON56] = 5;
+	degree[Element::FE_TETRAHEDRON10] = 4;	ddegree[Element::FE_TETRAHEDRON10] = 1;
+	degree[Element::FE_TETRAHEDRON20] = 4;	ddegree[Element::FE_TETRAHEDRON20] = 1;
+	degree[Element::FE_TETRAHEDRON35] = 4;	ddegree[Element::FE_TETRAHEDRON35] = 1;
+	degree[Element::FE_TETRAHEDRON56] = 4;	ddegree[Element::FE_TETRAHEDRON56] = 1;
 
 	degree[Element::FE_HEXAHEDRON8 ] = 4;	ddegree[Element::FE_HEXAHEDRON8 ] = 1;
-	degree[Element::FE_HEXAHEDRON20] = 4;	ddegree[Element::FE_HEXAHEDRON20] = 2;
-	degree[Element::FE_HEXAHEDRON27] = 4;	ddegree[Element::FE_HEXAHEDRON27] = 3;
+	degree[Element::FE_HEXAHEDRON20] = 4;	ddegree[Element::FE_HEXAHEDRON20] = 1;
+	degree[Element::FE_HEXAHEDRON27] = 4;	ddegree[Element::FE_HEXAHEDRON27] = 1;
 
-	degree[Element::FE_PRISM6 ] = 4;	ddegree[Element::FE_PRISM6 ] = 4;
-	degree[Element::FE_PRISM15] = 4;	ddegree[Element::FE_PRISM15] = 4;
-	degree[Element::FE_PRISM18] = 4;	ddegree[Element::FE_PRISM18] = 4;
+	degree[Element::FE_PRISM6 ] = 4;	ddegree[Element::FE_PRISM6 ] = 1;
+	degree[Element::FE_PRISM15] = 4;	ddegree[Element::FE_PRISM15] = 1;
+	degree[Element::FE_PRISM18] = 4;	ddegree[Element::FE_PRISM18] = 1;
 
-	degree[Element::FE_PYRAMID5 ] = 4;	ddegree[Element::FE_PYRAMID5 ] = 4;
-	degree[Element::FE_PYRAMID14] = 4;	ddegree[Element::FE_PYRAMID14] = 4;
-	degree[Element::FE_PYRAMID13] = 4;	ddegree[Element::FE_PYRAMID13] = 4;
+	degree[Element::FE_PYRAMID5 ] = 4;	ddegree[Element::FE_PYRAMID5 ] = 1;
+	degree[Element::FE_PYRAMID14] = 4;	ddegree[Element::FE_PYRAMID14] = 1;
+	degree[Element::FE_PYRAMID13] = 4;	ddegree[Element::FE_PYRAMID13] = 1;
 
 	degree[Element::FE_ITRIANGLE9 ] = 1;	ddegree[Element::FE_ITRIANGLE9 ] = 1;
 	degree[Element::FE_ITRIANGLE12] = 1;	ddegree[Element::FE_ITRIANGLE12] = 1;
@@ -1267,30 +1278,30 @@ void Analysis::build_integration_points()
 		double g[3];
 		double w[2];
 		g[0]=0.09273525031089122640232391373703060;
-	g[1]=0.31088591926330060979734573376345783;
-	g[2]=0.45449629587435035050811947372066056;
+		g[1]=0.31088591926330060979734573376345783;
+		g[2]=0.45449629587435035050811947372066056;
 
-	w[0] = (-1+6*g[1]*(2+g[1]*(-7+8*g[1]))+14*g[2]-60*g[1]*(3+4*g[1]* (-3+4*g[1]))*g[2]+4*(-7+30*g[1]*(3+4*g[1]*(-3+4*g[1])))*g[2]*g[2])/ (120*(g[0]-g[1])*(g[1]*(-3+8*g[1])+6*g[2]+8*g[1]*(-3+4*g[1])*g[2]-4* (3+4*g[1]*(-3+4*g[1]))*g[2]*g[2]+8*g[0]*g[0]*(1+12*g[1]* (-1+2*g[1])+4*g[2]-8*g[2]*g[2])+g[0]*(-3-96*g[1]*g[1]+24*g[2]*(-1+2*g[2])+ g[1]*(44+32*(1-2*g[2])*g[2]))));
-	w[1] = (-1-20*(1+12*g[0]*(2*g[0]-1))*w[0]+20*g[2]*(2*g[2]-1)*(4*w[0]-1))/ (20*(1+12*g[1]*(2*g[1]-1)+4*g[2]-8*g[2]*g[2]));
+		w[0] = (-1+6*g[1]*(2+g[1]*(-7+8*g[1]))+14*g[2]-60*g[1]*(3+4*g[1]* (-3+4*g[1]))*g[2]+4*(-7+30*g[1]*(3+4*g[1]*(-3+4*g[1])))*g[2]*g[2])/ (120*(g[0]-g[1])*(g[1]*(-3+8*g[1])+6*g[2]+8*g[1]*(-3+4*g[1])*g[2]-4* (3+4*g[1]*(-3+4*g[1]))*g[2]*g[2]+8*g[0]*g[0]*(1+12*g[1]* (-1+2*g[1])+4*g[2]-8*g[2]*g[2])+g[0]*(-3-96*g[1]*g[1]+24*g[2]*(-1+2*g[2])+ g[1]*(44+32*(1-2*g[2])*g[2]))));
+		w[1] = (-1-20*(1+12*g[0]*(2*g[0]-1))*w[0]+20*g[2]*(2*g[2]-1)*(4*w[0]-1))/ (20*(1+12*g[1]*(2*g[1]-1)+4*g[2]-8*g[2]*g[2]));
 
-	// 1 to 4
-	ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[0], g[0], g[0]), w[0] ));
-	ips.push_back(tuple<fem::point,double>(fem::point(g[0], 1-3*g[0], g[0]), w[0] ));
-	ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], 1-3*g[0]), w[0] ));
-	ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], g[0]), w[0] ));
-	// 5 to 8
-	ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[1], g[1], g[1]), w[1] ));
-	ips.push_back(tuple<fem::point,double>(fem::point(g[1], 1-3*g[1], g[1]), w[1] ));
-	ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], 1-3*g[1]), w[1] ));
-	ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], g[1]), w[1] ));
-	// 9 to 14
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-	ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-	ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-	ips.push_back(tuple<fem::point,double>(fem::point(g[3], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-	ipwpl[Element::EF_TETRAHEDRON][4] = ips;
+		// 1 to 4
+		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[0], g[0], g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], 1-3*g[0], g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], 1-3*g[0]), w[0] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], g[0]), w[0] ));
+		// 5 to 8
+		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[1], g[1], g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], 1-3*g[1], g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], 1-3*g[1]), w[1] ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], g[1]), w[1] ));
+		// 9 to 14
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[3], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
+		ipwpl[Element::EF_TETRAHEDRON][4] = ips;
 	}
 
 	// Tetrahedron family, degree 5
@@ -1329,7 +1340,7 @@ void Analysis::build_integration_points()
 	}
 
 
-	// Hexahedron family, degree 1 to 7
+	// Hexahedron family, integration points 1 to 7
 	for(int d = 1; d < 8; d++)
 	{
 		ips.clear();

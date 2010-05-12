@@ -11,6 +11,8 @@
 #include "Element.h++"
 #include "LoadPattern.h++"
 
+#include "ProcessedModel.h++"
+
 
 namespace fem
 {
@@ -66,7 +68,7 @@ class Analysis
 		@param lp	the load pattern
 		@return an error
 		**/
-		virtual enum Error run(Model &model, LoadPattern &lp) = 0;
+		virtual enum Error run(Model &model, LoadPattern &lp, ProcessedModel &p) = 0;
 
 
 		/** 

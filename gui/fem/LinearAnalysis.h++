@@ -14,7 +14,7 @@ class LinearAnalysis: public Analysis
 		LinearAnalysis();
 		~LinearAnalysis();
 
-		enum Error run(Model &model, LoadPattern &lp);
+		enum Error run(Model &model, LoadPattern &lp, ProcessedModel &p);
 };
 
 

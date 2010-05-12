@@ -8,11 +8,21 @@
 
 #include "fem/point.h++"
 #include "glDisplacementsWidget.h++"
+#include "ProcessedModel.h++"
 
 
-GLDisplacementsWidget::GLDisplacementsWidget( std::map<size_t, fem::Node> new_displacements_map, QWidget *parent) 
+GLDisplacementsWidget::GLDisplacementsWidget( Document *document, ProcessedModel *processed_model, QWidget *parent) 
 	: QGLWidget(parent)
 {
+	// perform sanity checks 
+	assert(document != NULL);
+	assert(processed_model != NULL);
+
+	// initialize the dangling pointers
+	this->document = document;
+	this->processed_model = processed_model;
+	this->colors = NULL;
+	
 	// set the MdiWindowProperties object
 	this->window_type = MdiWindowProperties::MWP_Displacements;
 
@@ -28,10 +38,6 @@ GLDisplacementsWidget::GLDisplacementsWidget( std::map<size_t, fem::Node> new_di
 	setNodeRadiusScale(20);	// default node radius, scaled
 	zoom = 0.0f;	// initialize the zoom, 2^zoom
 	
-	// initialize the dangling pointers
-	model = NULL;
-	colors = NULL;
-
 	qtPurple = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0);
 
 	// assign display lists
@@ -40,7 +46,6 @@ GLDisplacementsWidget::GLDisplacementsWidget( std::map<size_t, fem::Node> new_di
 	dl_wireframe = glGenLists(1);
 
 	// assign displacements map
-	this->displacements_map = new_displacements_map;
 
 	//TODO make this tweakable
 	this->displacements_scale = 1e8;
@@ -65,16 +70,6 @@ QSize GLDisplacementsWidget::minimumSizeHint() const
 QSize GLDisplacementsWidget::sizeHint() const
 {
 	return QSize(600, 400);
-}
-
-
-/*
-Sets which fem::Model object this widget will render
-*/
-void GLDisplacementsWidget::setModel(fem::Model *model)
-{
-	assert(model != NULL);
-	this->model = model;
 }
 
 
@@ -127,12 +122,12 @@ void GLDisplacementsWidget::initializeGL()
 {
 	// set the camera position according to the nodal center
 	double pos[3] = {0};
-	for(std::map<size_t, fem::Node>::iterator it = model->node_list.begin(); it != model->node_list.end(); it++)
+	for(std::map<size_t, fem::Node>::iterator it = document->model.node_list.begin(); it != document->model.node_list.end(); it++)
 	{
 		pos[0] -= it->second.x();
 		pos[1] -= it->second.y();
 		pos[2] -= it->second.z();
-		camera.setPosition(pos[0]/model->node_list.size(),pos[1]/model->node_list.size(),pos[2]/model->node_list.size());
+		camera.setPosition(pos[0]/document->model.node_list.size(),pos[1]/document->model.node_list.size(),pos[2]/document->model.node_list.size());
 	}
 
 	// handle opengl
@@ -182,6 +177,7 @@ void GLDisplacementsWidget::initializeGL()
 
 void GLDisplacementsWidget::paintGL()
 {
+	assert(document != NULL);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -190,7 +186,7 @@ void GLDisplacementsWidget::paintGL()
 	camera.reposition();	
 
 	// render all nodes
-	if(model)
+	if(document)
 	{
 		// Render the nodes
 		if( display_options.nodes )
@@ -220,7 +216,7 @@ void GLDisplacementsWidget::paintGL()
 				for(std::map<size_t,fem::NodalLoad>::iterator i = display_options.load_pattern->nodal_loads.begin(); i != display_options.load_pattern->nodal_loads.end(); i++)
 				{
 					//TODO draw an arrow
-					paintArrow(model->node_list[i->first], i->second.force.director());
+					paintArrow(document->model.node_list[i->first], i->second.force.director());
 				}
 			}
 
@@ -242,7 +238,7 @@ void GLDisplacementsWidget::paintGL()
 				for(std::map<size_t,fem::NodalDisplacement>::iterator i = display_options.load_pattern->nodal_displacements.begin(); i != display_options.load_pattern->nodal_displacements.end(); i++)
 				{
 					//TODO draw an arrow
-					paintArrow(model->node_list[i->first], i->second.displacement.director());
+					paintArrow(document->model.node_list[i->first], i->second.displacement.director());
 				}
 			}
 		}
@@ -611,7 +607,7 @@ void GLDisplacementsWidget::generateDisplayLists()
 	// the faces
 	glNewList( dl_faces, GL_COMPILE);
 	std::vector<fem::Element>::iterator ei;	// element iterator
-	for(ei = model->element_list.begin(); ei != model->element_list.end(); ei++)
+	for(ei = document->model.element_list.begin(); ei != document->model.element_list.end(); ei++)
 	{
 		paintElement(*ei);
 	}
@@ -620,7 +616,7 @@ void GLDisplacementsWidget::generateDisplayLists()
 
 	// and now the wireframe
 	glNewList( dl_wireframe, GL_COMPILE);
-	for(ei = model->element_list.begin(); ei != model->element_list.end(); ei++)
+	for(ei = document->model.element_list.begin(); ei != document->model.element_list.end(); ei++)
 	{
 		paintWireframe(*ei);
 	}
@@ -632,7 +628,7 @@ void GLDisplacementsWidget::generateNodesDisplayList()
 {
 	glNewList( dl_nodes, GL_COMPILE);
 	std::map<size_t,fem::Node>::iterator ni;	// node iterator
-	for(ni = model->node_list.begin(); ni != model->node_list.end(); ni++)
+	for(ni = document->model.node_list.begin(); ni != document->model.node_list.end(); ni++)
 	{
 		paintNode(ni->first, ni->second);
 	}
@@ -729,8 +725,8 @@ void GLDisplacementsWidget::paintNode(size_t label, const fem::Node node)
 
 	// get the current DoF
 	std::map<size_t, fem::Node>::iterator dof;
-	dof = displacements_map.find(label);
-	if(dof == displacements_map.end()) 
+	dof = processed_model->displacements_map.find(label);
+	if(dof == processed_model->displacements_map.end()) 
 		glTranslated(node.data[0],node.data[1],node.data[2]);
 	else
 	{
@@ -761,9 +757,9 @@ void GLDisplacementsWidget::paintNode(size_t label, const fem::Node node)
 	gluSphere(p,1,8,8);
 
 	// paint restrictions, if there are any
-	if(model->node_restrictions_list.find(label) != model->node_restrictions_list.end())
+	if(document->model.node_restrictions_list.find(label) != document->model.node_restrictions_list.end())
 	{
-		if(model->node_restrictions_list[label].dx())
+		if(document->model.node_restrictions_list[label].dx())
 		{
 			glBegin(GL_TRIANGLES);
 			glNormal3f(1.4142f, 0, 1.4142f);
@@ -796,7 +792,7 @@ void GLDisplacementsWidget::paintNode(size_t label, const fem::Node node)
 			glVertex3i(-2, 2, 2);
 			glEnd();
 		}
-		if(model->node_restrictions_list[label].dy())
+		if(document->model.node_restrictions_list[label].dy())
 		{
 			// render the pyramid
 			glBegin(GL_TRIANGLES);
@@ -830,7 +826,7 @@ void GLDisplacementsWidget::paintNode(size_t label, const fem::Node node)
 			glVertex3i( 2,-2,-2);
 			glEnd();
 		}
-		if(model->node_restrictions_list[label].dz())
+		if(document->model.node_restrictions_list[label].dz())
 		{
 			glRotatef(-90,1,0,0);
 			// render the pyramid
@@ -886,17 +882,17 @@ void GLDisplacementsWidget::paintElement(const fem::Element &element)
 				// set the node list
 				for(int i = 0; i < 4; i++)
 				{
-					dof = displacements_map.find(element.nodes[i]);
-					if(dof == displacements_map.end()) 
-						nl.push_back(model->node_list.find(element.nodes[i])->second);
+					dof = processed_model->displacements_map.find(element.nodes[i]);
+					if(dof == processed_model->displacements_map.end()) 
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second);
 					else
-						nl.push_back(model->node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
 				}
 				/*
-				nl.push_back(model->node_list.find(element.nodes[0])->second);
-				nl.push_back(model->node_list.find(element.nodes[1])->second);
-				nl.push_back(model->node_list.find(element.nodes[2])->second);
-				nl.push_back(model->node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
 				*/
 
 				// render the surfaces
@@ -922,23 +918,23 @@ void GLDisplacementsWidget::paintElement(const fem::Element &element)
 				// set the node list
 				for(int i = 0; i < 10; i++)
 				{
-					dof = displacements_map.find(element.nodes[i]);
-					if(dof == displacements_map.end()) 
-						nl.push_back(model->node_list.find(element.nodes[i])->second);
+					dof = processed_model->displacements_map.find(element.nodes[i]);
+					if(dof == processed_model->displacements_map.end()) 
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second);
 					else
-						nl.push_back(model->node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
 				}
 				/*
-				nl.push_back(model->node_list.find(element.nodes[0])->second);
-				nl.push_back(model->node_list.find(element.nodes[1])->second);
-				nl.push_back(model->node_list.find(element.nodes[2])->second);
-				nl.push_back(model->node_list.find(element.nodes[3])->second);
-				nl.push_back(model->node_list.find(element.nodes[4])->second);
-				nl.push_back(model->node_list.find(element.nodes[5])->second);
-				nl.push_back(model->node_list.find(element.nodes[6])->second);
-				nl.push_back(model->node_list.find(element.nodes[7])->second);
-				nl.push_back(model->node_list.find(element.nodes[8])->second);
-				nl.push_back(model->node_list.find(element.nodes[9])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[6])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[7])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[8])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[9])->second);
 				*/
 
 				// render the surfaces
@@ -970,23 +966,12 @@ void GLDisplacementsWidget::paintElement(const fem::Element &element)
 				}
 				for(int i = 0; i < 8; i++)
 				{
-					dof = displacements_map.find(element.nodes[i]);
-					if(dof == displacements_map.end()) 
-						nl.push_back(model->node_list.find(element.nodes[i])->second);
+					dof = processed_model->displacements_map.find(element.nodes[i]);
+					if(dof == processed_model->displacements_map.end()) 
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second);
 					else
-						nl.push_back(model->node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
 				}
-
-				/*
-				nl.push_back(model->node_list.find(element.nodes[0])->second);
-				nl.push_back(model->node_list.find(element.nodes[1])->second);
-				nl.push_back(model->node_list.find(element.nodes[2])->second);
-				nl.push_back(model->node_list.find(element.nodes[3])->second);
-				nl.push_back(model->node_list.find(element.nodes[4])->second);
-				nl.push_back(model->node_list.find(element.nodes[5])->second);
-				nl.push_back(model->node_list.find(element.nodes[6])->second);
-				nl.push_back(model->node_list.find(element.nodes[7])->second);
-				*/
 
 				// set the color
 				glColor3fv(colors->hexahedron8);
@@ -1013,11 +998,11 @@ void GLDisplacementsWidget::paintElement(const fem::Element &element)
 				// build the node temp list
 				for(int i = 0; i < 20; i++)
 				{
-					dof = displacements_map.find(element.nodes[i]);
-					if(dof == displacements_map.end()) 
-						nl.push_back(model->node_list.find(element.nodes[i])->second);
+					dof = processed_model->displacements_map.find(element.nodes[i]);
+					if(dof == processed_model->displacements_map.end()) 
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second);
 					else
-						nl.push_back(model->node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
 				}
 
 				// set the color
@@ -1045,17 +1030,17 @@ void GLDisplacementsWidget::paintElement(const fem::Element &element)
 				// build the node temp list
 				for(int i = 0; i < 27; i++)
 				{
-					dof = displacements_map.find(element.nodes[i]);
-					if(dof == displacements_map.end()) 
-						nl.push_back(model->node_list.find(element.nodes[i])->second);
+					dof = processed_model->displacements_map.find(element.nodes[i]);
+					if(dof == processed_model->displacements_map.end()) 
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second);
 					else
-						nl.push_back(model->node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
 				}
 
 				/*
 				for(int i = 0; i < 27; i++)
 				{
-					nl.push_back(model->node_list.find(element.nodes[i])->second);
+					nl.push_back(document->model.node_list.find(element.nodes[i])->second);
 				}
 				*/
 
@@ -1076,22 +1061,12 @@ void GLDisplacementsWidget::paintElement(const fem::Element &element)
 				// build the node temp list
 				for(int i = 0; i < 6; i++)
 				{
-					dof = displacements_map.find(element.nodes[i]);
-					if(dof == displacements_map.end()) 
-						nl.push_back(model->node_list.find(element.nodes[i])->second);
+					dof = processed_model->displacements_map.find(element.nodes[i]);
+					if(dof == processed_model->displacements_map.end()) 
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second);
 					else
-						nl.push_back(model->node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
 				}
-
-				/*
-				// set the node list
-				nl.push_back(model->node_list.find(element.nodes[0])->second);
-				nl.push_back(model->node_list.find(element.nodes[1])->second);
-				nl.push_back(model->node_list.find(element.nodes[2])->second);
-				nl.push_back(model->node_list.find(element.nodes[3])->second);
-				nl.push_back(model->node_list.find(element.nodes[4])->second);
-				nl.push_back(model->node_list.find(element.nodes[5])->second);
-				*/
 
 				// render the surfaces
 				// set the color
@@ -1134,10 +1109,10 @@ void GLDisplacementsWidget::paintWireframe(const fem::Element &element)
 		case fem::Element::FE_TETRAHEDRON4:
 			{
 				// set the node list
-				nl.push_back(model->node_list.find(element.nodes[0])->second);
-				nl.push_back(model->node_list.find(element.nodes[1])->second);
-				nl.push_back(model->node_list.find(element.nodes[2])->second);
-				nl.push_back(model->node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
 				// render the wireframe
 				//TODO set color
 				glColor3fv(colors->wireframe);	
@@ -1159,16 +1134,16 @@ void GLDisplacementsWidget::paintWireframe(const fem::Element &element)
 		case fem::Element::FE_TETRAHEDRON10:
 			{
 				// set the node list
-				nl.push_back(model->node_list.find(element.nodes[0])->second);
-				nl.push_back(model->node_list.find(element.nodes[1])->second);
-				nl.push_back(model->node_list.find(element.nodes[2])->second);
-				nl.push_back(model->node_list.find(element.nodes[3])->second);
-				nl.push_back(model->node_list.find(element.nodes[4])->second);
-				nl.push_back(model->node_list.find(element.nodes[5])->second);
-				nl.push_back(model->node_list.find(element.nodes[6])->second);
-				nl.push_back(model->node_list.find(element.nodes[7])->second);
-				nl.push_back(model->node_list.find(element.nodes[8])->second);
-				nl.push_back(model->node_list.find(element.nodes[9])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[6])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[7])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[8])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[9])->second);
 
 
 				// render the wireframe
@@ -1193,14 +1168,14 @@ void GLDisplacementsWidget::paintWireframe(const fem::Element &element)
 					//TODO remove element
 					return;
 				}
-				nl.push_back(model->node_list.find(element.nodes[0])->second);
-				nl.push_back(model->node_list.find(element.nodes[1])->second);
-				nl.push_back(model->node_list.find(element.nodes[2])->second);
-				nl.push_back(model->node_list.find(element.nodes[3])->second);
-				nl.push_back(model->node_list.find(element.nodes[4])->second);
-				nl.push_back(model->node_list.find(element.nodes[5])->second);
-				nl.push_back(model->node_list.find(element.nodes[6])->second);
-				nl.push_back(model->node_list.find(element.nodes[7])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[6])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[7])->second);
 				// set the color
 				glColor3fv(colors->wireframe);	// TODO change this
 
@@ -1242,7 +1217,7 @@ void GLDisplacementsWidget::paintWireframe(const fem::Element &element)
 				// build the node temp list
 				for(int i = 0; i < 27; i++)
 				{
-					nl.push_back(model->node_list.find(element.nodes[i])->second);
+					nl.push_back(document->model.node_list.find(element.nodes[i])->second);
 				}
 
 				// set the color
@@ -1271,12 +1246,12 @@ void GLDisplacementsWidget::paintWireframe(const fem::Element &element)
 		case fem::Element::FE_PRISM6:
 			{
 				// set the node list
-				nl.push_back(model->node_list.find(element.nodes[0])->second);
-				nl.push_back(model->node_list.find(element.nodes[1])->second);
-				nl.push_back(model->node_list.find(element.nodes[2])->second);
-				nl.push_back(model->node_list.find(element.nodes[3])->second);
-				nl.push_back(model->node_list.find(element.nodes[4])->second);
-				nl.push_back(model->node_list.find(element.nodes[5])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
 
 				// render the wireframe
 				//TODO set color
@@ -1312,7 +1287,7 @@ void GLDisplacementsWidget::selectModelObjects(const fem::point &near,const fem:
 	std::map<size_t,float> distance_map;
 
 	// get 
-	for(std::map<size_t,fem::Node>::iterator i = model->node_list.begin(); i != model->node_list.end(); i++)
+	for(std::map<size_t,fem::Node>::iterator i = document->model.node_list.begin(); i != document->model.node_list.end(); i++)
 	{
 		x2x1 = far.data[0]-near.data[0];
 		y2y1 = far.data[1]-near.data[1];

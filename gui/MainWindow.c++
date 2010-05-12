@@ -642,15 +642,19 @@ void MainWindow::runAnalysis()
 	fem::LinearAnalysis analysis;
 
 	//TODO for testing purposes only. remove
-	analysis.run(document.model, document.model.load_pattern_list[0]);
+	document.processed_model.push_back(ProcessedModel());
+
+	analysis.run(document.model, document.model.load_pattern_list[0], document.processed_model.back());
 
 	message.sprintf("Model analysis: finished after %d ms", time.elapsed());
 
+	// create the ProcessedModel object
+
 	// create subwindows
 	GLDisplacementsWidget *glDisplacementsWidget;
-	std::map<size_t, fem::Node> dm = analysis.displacements_map();
-	glDisplacementsWidget = new GLDisplacementsWidget(dm, this);
-	glDisplacementsWidget->setModel(&document.model);
+	std::map<size_t, fem::Node> dm = analysis.displacements_map();	//TODO pass the displacements_map to the ProcessedModel object
+
+	glDisplacementsWidget = new GLDisplacementsWidget(&document, &document.processed_model.back(), this);
 	glDisplacementsWidget->setColors(&colors);
 
 	double radius;

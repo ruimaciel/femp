@@ -20,7 +20,7 @@ LinearAnalysis::~LinearAnalysis()
 }
 
 
-enum LinearAnalysis::Error LinearAnalysis::run(Model &model, LoadPattern &lp)
+enum LinearAnalysis::Error LinearAnalysis::run(Model &model, LoadPattern &lp, ProcessedModel &p)
 {
 	using namespace std;
 	using namespace Eigen;
@@ -30,6 +30,12 @@ enum LinearAnalysis::Error LinearAnalysis::run(Model &model, LoadPattern &lp)
 	//TODO implement a choice of solver
 	d = f;
 	SparseLLT<DynamicSparseMatrix<double,RowMajor>,Cholmod>(k).solveInPlace(d);
+
+	// set the equation
+	p.k = k;
+	p.f = f;
+	p.d = d;
+	p.displacements_map = this->displacements_map();
 
 	return ERR_OK;
 }

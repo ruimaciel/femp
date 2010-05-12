@@ -31,8 +31,8 @@ Document::Document(const Document & copied)
 
 Document::~Document()
 {
-    if (file_name != NULL)
-	delete          file_name;
+	if (file_name != NULL)
+		delete file_name;
 }
 
 

@@ -3,9 +3,11 @@
 
 #include <QDir>	// for the project path
 #include <string>
+#include <list>
 
 #include "fem/Model.h++"
 #include "ModelSelection.h++"
+#include "ProcessedModel.h++"
 
 
 class Document
@@ -23,11 +25,12 @@ class Document
 
 	private:
 		bool unsaved;	// true if this document suffered changes that are saveable
-		Type document_type;
+		Type document_type;	// specifies the model type
 
 	public:
 		QString *file_name;	// path for the project's directory
 		fem::Model model;	// the FEM model
+		std::list<ProcessedModel> processed_model;	// list of all processed models
 
 
 		// data structures for storing selected objects

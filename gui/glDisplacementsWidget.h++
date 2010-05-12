@@ -6,7 +6,7 @@
 
 #include <map>
 
-#include "fem/Model.h++"
+#include "Document.h++"
 #include "fem/Node.h++"
 #include "ViewportColors.h++"
 #include "Camera.h++"
@@ -21,12 +21,11 @@ class GLDisplacementsWidget
 	Q_OBJECT
 
 	public:
-		GLDisplacementsWidget( std::map<size_t, fem::Node> new_displacements_map, QWidget *parent = 0);
+		GLDisplacementsWidget( Document *document, ProcessedModel *, QWidget *parent = 0);
 		~GLDisplacementsWidget();
 
 		QSize minimumSizeHint() const;
 		QSize sizeHint() const;
-		void setModel(fem::Model *);	// sets a reference to a document object
 		void setColors(ViewportColors *colors);
 		void setNodeRadiusScale(float r)	{ node_scale = r; }
 
@@ -84,7 +83,8 @@ class GLDisplacementsWidget
 		QPoint lastPos;
 		QColor qtPurple;
 
-		fem::Model *model;
+		Document *document;
+		ProcessedModel *processed_model;
 
 		float node_scale;	// the scale used by the nodes, reset when a window resizes
 		float zoom;		// drawing zoom, used to zoom

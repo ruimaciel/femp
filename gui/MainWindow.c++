@@ -303,6 +303,17 @@ void MainWindow::quit()
 
 void MainWindow::createActions()
 {
+	// create actions
+	actionViewportXY = new QAction("XY", this);
+	actionViewportYZ = new QAction("YZ", this);
+	actionViewportXZ = new QAction("XZ", this);
+	actionViewportIso = new QAction("iso", this);
+
+	// connect the actions
+	connect(actionViewportXY,	SIGNAL(triggered()),	this,	SLOT(setViewportXY()));
+	connect(actionViewportYZ,	SIGNAL(triggered()),	this,	SLOT(setViewportYZ()));
+	connect(actionViewportXZ,	SIGNAL(triggered()),	this,	SLOT(setViewportXZ()));
+	connect(actionViewportIso,	SIGNAL(triggered()),	this,	SLOT(setViewportIso()));
 	 connect(ui.actionNew, 	SIGNAL(triggered()), this, SLOT(newProject()));
 	 connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openProject()));
 	 connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveProject()));
@@ -323,11 +334,18 @@ void MainWindow::createActions()
 
 void MainWindow::createToolBars()
 {
+	// build the visibility toolbar
 	visibilityToolBar = addToolBar(tr("Visibility"));
 	visibilityToolBar->addAction(ui.actionDisplayNodes);
 	visibilityToolBar->addAction(ui.actionDisplaySurfaces);
 	visibilityToolBar->addAction(ui.actionDisplayWireframe);
-	//TODO add actions
+
+	// build the viewport toolbar
+	viewportToolBar = addToolBar(tr("Viewport"));
+	viewportToolBar->addAction(actionViewportXY);
+	viewportToolBar->addAction(actionViewportYZ);
+	viewportToolBar->addAction(actionViewportXZ);
+	viewportToolBar->addAction(actionViewportIso);
 }
 
 
@@ -335,6 +353,7 @@ void MainWindow::destroyToolBars()
 {
 	//TODO free memory
 	removeToolBar(visibilityToolBar);
+	removeToolBar(viewportToolBar);
 }
 
 
@@ -630,6 +649,160 @@ void MainWindow::getError(QString message)
 }
 
 
+void MainWindow::setViewportXY()
+{
+	//TODO check if current MDI window supports this feature
+	if(mdiArea->activeSubWindow() != NULL)
+	{
+		// mdiArea has an active subwindow
+		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(mdiArea->activeSubWindow()->widget());
+
+		if(mwp == NULL)
+		{
+			qWarning("no can do");
+			return;
+		}
+
+		// set the new viewport according to the MDI subwindow's widget type
+		switch(mwp->window_type)
+		{
+			case MdiWindowProperties::MWP_Model:
+				{
+					qWarning("MWP_Model");
+					GLWidget *w = static_cast<GLWidget *>(mwp);
+
+					// set the position
+					w->setXRotation(0);
+					w->setYRotation(0);
+					w->setZRotation(0);
+				}
+				break;
+
+			case MdiWindowProperties::MWP_Displacements:
+				{
+					qWarning("MWP_Displacements");
+					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
+
+					// set the position
+					w->setXRotation(0);
+					w->setYRotation(0);
+					w->setZRotation(0);
+				}
+				break;
+
+			default:
+				qWarning("void MainWindow::setViewportXY(): unsupported case");
+				break;
+		}
+	}
+}
+
+
+void MainWindow::setViewportYZ()
+{
+	//TODO check if current MDI window supports this feature
+	if(mdiArea->activeSubWindow() != NULL)
+	{
+		// mdiArea has an active subwindow
+		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(mdiArea->activeSubWindow()->widget());
+
+		if(mwp == NULL)
+		{
+			qWarning("MainWindow::setViewportYZ(): casting to MdiWindowProperties has failed");
+			return;
+		}
+
+		// set the new viewport according to the MDI subwindow's widget type
+		switch(mwp->window_type)
+		{
+			case MdiWindowProperties::MWP_Model:
+				{
+					qWarning("MWP_Model");
+					GLWidget *w = static_cast<GLWidget *>(mwp);
+
+					// set the position
+					w->setXRotation(0);
+					w->setYRotation(270);
+					w->setZRotation(0);
+				}
+				break;
+
+			case MdiWindowProperties::MWP_Displacements:
+				{
+					qWarning("MWP_Displacements");
+					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
+
+					// set the position
+					w->setXRotation(0);
+					w->setYRotation(270);
+					w->setZRotation(0);
+				}
+				break;
+
+			default:
+				qWarning("void MainWindow::setViewportXY(): unsupported case");
+				break;
+		}
+	}
+}
+
+
+void MainWindow::setViewportXZ()
+{
+	//TODO check if current MDI window supports this feature
+	if(mdiArea->activeSubWindow() != NULL)
+	{
+		// mdiArea has an active subwindow
+		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(mdiArea->activeSubWindow()->widget());
+
+		if(mwp == NULL)
+		{
+			qWarning("MainWindow::setViewportXZ(): casting to MdiWindowProperties has failed");
+			return;
+		}
+
+		// set the new viewport according to the MDI subwindow's widget type
+		switch(mwp->window_type)
+		{
+			case MdiWindowProperties::MWP_Model:
+				{
+					qWarning("MWP_Model");
+					GLWidget *w = static_cast<GLWidget *>(mwp);
+
+					// set the view angle
+					w->setXRotation(90);
+					w->setYRotation(0);
+					w->setZRotation(0);
+				}
+				break;
+
+			case MdiWindowProperties::MWP_Displacements:
+				{
+					qWarning("MWP_Displacements");
+					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
+
+					// set the view angle
+					w->setXRotation(90);
+					w->setYRotation(0);
+					w->setZRotation(0);
+				}
+				break;
+
+			default:
+				qWarning("void MainWindow::setViewportXZ(): unsupported case");
+				break;
+		}
+	}
+}
+
+
+void MainWindow::setViewportIso()
+{
+	qWarning("MainWindow::setViewportIso(): needs to be implemented");
+}
+
+
+
 void MainWindow::setUserInterfaceAsOpened()	
 {
 	// set the menus
@@ -656,7 +829,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	glWidget->setNodeRadiusScale(radius);
 	glWidget->setFocusPolicy(Qt::StrongFocus);
 	glWidget->display_options.setDefaultOptions();
-	
+
 	// create the model's MDI window
 	QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport
 

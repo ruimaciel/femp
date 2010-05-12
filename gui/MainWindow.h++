@@ -36,6 +36,12 @@ private:
 	Document document;	// the FEM document
 	ViewportColors colors;	// the elements' viewport colors
 
+	QAction *actionViewportXY;	// places the camera displaying the XY plane
+	QAction *actionViewportYZ;	// places the camera displaying the XY plane
+	QAction *actionViewportXZ;	// places the camera displaying the XZ plane
+	QAction *actionViewportIso;	// places the camera on an isometric view angle
+
+
 
 public Q_SLOTS:
 	/* starts off a brand new FEM project */
@@ -71,6 +77,12 @@ public Q_SLOTS:
 	void getMessage(QString);
 	void getWarning(QString);
 	void getError(QString);
+
+	// set the viewport in the current MDI window
+	void setViewportXY();
+	void setViewportYZ();
+	void setViewportXZ();
+	void setViewportIso();
 
 Q_SIGNALS:
 	void setMessage(QString);

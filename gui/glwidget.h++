@@ -13,7 +13,7 @@
 
 
 class GLWidget 
-	: public QGLWidget, MdiWindowProperties
+	: public QGLWidget, public MdiWindowProperties
 {
 	Q_OBJECT
 

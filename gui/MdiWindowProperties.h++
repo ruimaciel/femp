@@ -9,7 +9,9 @@ class MdiWindowProperties
 {
 	//TODO implement method to deal with program options changes, such as foreground color
 
-	enum Type { MWP_Model, MWP_Displacements } type;
+	public:
+		enum WindowType { MWP_Model, MWP_Displacements } window_type;
+
 	public:
 		MdiWindowProperties();
 		~MdiWindowProperties();

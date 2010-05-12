@@ -13,6 +13,10 @@
 GLDisplacementsWidget::GLDisplacementsWidget( std::map<size_t, fem::Node> new_displacements_map, QWidget *parent) 
 	: QGLWidget(parent)
 {
+	// set the MdiWindowProperties object
+	this->window_type = MdiWindowProperties::MWP_Displacements;
+
+	// get on with the rest of the constructor
 	makeCurrent();
 
 	// initialize the camera

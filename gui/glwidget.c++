@@ -9,8 +9,12 @@
 #include "fem/point.h++"
 #include "glwidget.h++"
 
-GLWidget::GLWidget(QWidget *parent): QGLWidget(parent)
+GLWidget::GLWidget(QWidget *parent)
+	: QGLWidget(parent)
 {
+	// set the MdiWindowProperties object
+	this->window_type = MdiWindowProperties::MWP_Model;
+
 	//TODO update the UI according to the active MDI subwindow
 
 	makeCurrent();

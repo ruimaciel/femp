@@ -11,9 +11,12 @@
 #include "ViewportColors.h++"
 #include "Camera.h++"
 #include "DisplayOptions.h++"
+#include "MdiWindowProperties.h++"
 
 
-class GLDisplacementsWidget : public QGLWidget
+
+class GLDisplacementsWidget 
+	: public QGLWidget, public MdiWindowProperties
 {
 	Q_OBJECT
 

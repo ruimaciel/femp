@@ -3,6 +3,7 @@ femp
 gui/build/*
 moc_*
 gui/ui/ui_*
+gui/ui/src
 lex.msh_yy.*
 msh.tab.*
 .*

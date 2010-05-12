@@ -1,5 +1,5 @@
-#ifndef GLWIDGET_HPP
-#define GLWIDGET_HPP
+#ifndef GL_MODEL_WIDGET_HPP
+#define GL_MODEL_WIDGET_HPP
 
 #include <QGLWidget>
 #include <QWheelEvent>
@@ -12,14 +12,17 @@
 #include "MdiWindowProperties.h++"
 
 
-class GLWidget 
+/*
+OpenGL widget that lets the user see and edit the model
+*/
+class GLModelWidget 
 	: public QGLWidget, public MdiWindowProperties
 {
 	Q_OBJECT
 
 	public:
-		GLWidget(QWidget *parent = 0);
-		~GLWidget();
+		GLModelWidget(QWidget *parent = 0);
+		~GLModelWidget();
 
 		QSize minimumSizeHint() const;
 		QSize sizeHint() const;

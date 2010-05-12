@@ -6,7 +6,7 @@
 
 #include "CommandLineDockWidget.h++"
 #include "ProgramOptions.h++"
-#include "glwidget.h++"
+#include "ViewportColors.h++"
 
 #include "Document.h++"
 
@@ -24,7 +24,6 @@ private:
 	CommandLineDockWidget *commandLineDockWidget;
 
 	QMdiArea	* mdiArea;
-	GLWidget 	* glWidget;	//TODO this pointer isn't necessary. consider removing it
 
 	// the toolbars
 	QToolBar *visibilityToolBar;

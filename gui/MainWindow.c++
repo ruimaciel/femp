@@ -18,6 +18,8 @@
 #include "NodeActionsDialog.h++"
 #include "DisplayOptionsDialog.h++"
 #include "ui/MaterialsEditorDialog.h++"
+
+#include "glModelWidget.h++"
 #include "glDisplacementsWidget.h++"
 
 #include "fem_msh.h++"
@@ -550,6 +552,7 @@ void MainWindow::setNodeActions()
 void MainWindow::setDisplayOptions()
 {
 	//TODO make this generic
+	/*
 	DisplayOptionsDialog da(document.model, this);
 	if(da.exec() == QDialog::Accepted)
 	{
@@ -563,6 +566,7 @@ void MainWindow::setDisplayOptions()
 		glWidget->display_options.domain_forces = da.renderDomainForces();
 		glWidget->display_options.nodal_displacements = da.renderNodalDisplacements();
 	}
+	*/
 }
 
 
@@ -577,11 +581,48 @@ void MainWindow::editMaterials()
 void MainWindow::setElementDisplay()
 {
 	//TODO make this rely on the active window
-	if(glWidget != NULL)
+	if(mdiArea->activeSubWindow() != NULL)
 	{
-		glWidget->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
-		glWidget->display_options.surfaces	= this->ui.actionDisplaySurfaces->isChecked()?1:0;
-		glWidget->display_options.wireframe	= this->ui.actionDisplayWireframe->isChecked()?1:0;
+		// mdiArea has an active subwindow
+		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(mdiArea->activeSubWindow()->widget());
+
+		if(mwp == NULL)
+		{
+			qWarning("no can do");
+			return;
+		}
+
+		// set the new viewport according to the MDI subwindow's widget type
+		switch(mwp->window_type)
+		{
+			case MdiWindowProperties::MWP_Model:
+				{
+					qWarning("MWP_Model");
+					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
+
+					// set the position
+					w->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
+					w->display_options.surfaces	= this->ui.actionDisplaySurfaces->isChecked()?1:0;
+					w->display_options.wireframe	= this->ui.actionDisplayWireframe->isChecked()?1:0;
+				}
+				break;
+
+			case MdiWindowProperties::MWP_Displacements:
+				{
+					qWarning("MWP_Displacements");
+					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
+
+					// set the position
+					w->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
+					w->display_options.surfaces	= this->ui.actionDisplaySurfaces->isChecked()?1:0;
+					w->display_options.wireframe	= this->ui.actionDisplayWireframe->isChecked()?1:0;
+				}
+				break;
+
+			default:
+				qWarning("void MainWindow::setElementDisplay(): unsupported case");
+				break;
+		}
 	}
 }
 
@@ -669,7 +710,7 @@ void MainWindow::setViewportXY()
 			case MdiWindowProperties::MWP_Model:
 				{
 					qWarning("MWP_Model");
-					GLWidget *w = static_cast<GLWidget *>(mwp);
+					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
 
 					// set the position
 					w->setXRotation(0);
@@ -718,7 +759,7 @@ void MainWindow::setViewportYZ()
 			case MdiWindowProperties::MWP_Model:
 				{
 					qWarning("MWP_Model");
-					GLWidget *w = static_cast<GLWidget *>(mwp);
+					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
 
 					// set the position
 					w->setXRotation(0);
@@ -767,7 +808,7 @@ void MainWindow::setViewportXZ()
 			case MdiWindowProperties::MWP_Model:
 				{
 					qWarning("MWP_Model");
-					GLWidget *w = static_cast<GLWidget *>(mwp);
+					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
 
 					// set the view angle
 					w->setXRotation(90);
@@ -821,7 +862,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	ui.actionDisplayWireframe->setChecked(true);
 
 	// open all relevant MDI windows
-	glWidget = new GLWidget(this);
+	GLModelWidget *glWidget = new GLModelWidget(this);
 	glWidget->setDocument(&document);
 	glWidget->setColors(&colors);
 	double radius;

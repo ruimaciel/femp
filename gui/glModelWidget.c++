@@ -7,9 +7,10 @@
 #include <algorithm>
 
 #include "fem/point.h++"
-#include "glwidget.h++"
+#include "glModelWidget.h++"
 
-GLWidget::GLWidget(QWidget *parent)
+
+GLModelWidget::GLModelWidget(QWidget *parent)
 	: QGLWidget(parent)
 {
 	// set the MdiWindowProperties object
@@ -41,7 +42,7 @@ GLWidget::GLWidget(QWidget *parent)
 }
 
 
-GLWidget::~GLWidget()
+GLModelWidget::~GLModelWidget()
 {
 	//TODO add cleanup code
 	glDeleteLists(dl_nodes,1);
@@ -50,13 +51,13 @@ GLWidget::~GLWidget()
 }
 
 
-QSize GLWidget::minimumSizeHint() const
+QSize GLModelWidget::minimumSizeHint() const
 {
 	return QSize(50, 50);
 }
 
 
-QSize GLWidget::sizeHint() const
+QSize GLModelWidget::sizeHint() const
 {
 	return QSize(600, 400);
 }
@@ -65,21 +66,21 @@ QSize GLWidget::sizeHint() const
 /*
 Sets which fem::Model object this widget will render
 */
-void GLWidget::setDocument(Document *document)
+void GLModelWidget::setDocument(Document *document)
 {
 	assert(document != NULL);
 	this->document = document;
 }
 
 
-void GLWidget::setColors(ViewportColors *colors)
+void GLModelWidget::setColors(ViewportColors *colors)
 {
 	assert(colors != NULL);
 	this->colors = colors;
 }
 
 
-void GLWidget::setXRotation(int angle)
+void GLModelWidget::setXRotation(int angle)
 {
 	normalizeAngle(&angle);
 	camera.rotation.data[0] = angle;
@@ -88,7 +89,7 @@ void GLWidget::setXRotation(int angle)
 }
 
 
-void GLWidget::setYRotation(int angle)
+void GLModelWidget::setYRotation(int angle)
 {
 	normalizeAngle(&angle);
 	camera.rotation.data[1] = angle;
@@ -97,7 +98,7 @@ void GLWidget::setYRotation(int angle)
 }
 
 
-void GLWidget::setZRotation(int angle)
+void GLModelWidget::setZRotation(int angle)
 {
 	normalizeAngle(&angle);
 	camera.rotation.data[2] = angle;
@@ -106,7 +107,7 @@ void GLWidget::setZRotation(int angle)
 }
 
 
-void GLWidget::setPosition(int x, int y)
+void GLModelWidget::setPosition(int x, int y)
 {
 	//TODO implement this
 	camera.pos.x(-x);
@@ -117,7 +118,7 @@ void GLWidget::setPosition(int x, int y)
 }
 
 
-void GLWidget::initializeGL()
+void GLModelWidget::initializeGL()
 {
 	// set the camera position according to the nodal center
 	double pos[3] = {0};
@@ -174,7 +175,7 @@ void GLWidget::initializeGL()
 }
 
 
-void GLWidget::paintGL()
+void GLModelWidget::paintGL()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -245,7 +246,7 @@ void GLWidget::paintGL()
 }
 
 
-void GLWidget::paintArrow(const fem::point &p, const fem::point &direction)
+void GLModelWidget::paintArrow(const fem::point &p, const fem::point &direction)
 {
 	// draw line
 	glBegin(GL_LINES);
@@ -255,7 +256,7 @@ void GLWidget::paintArrow(const fem::point &p, const fem::point &direction)
 }
 
 
-void GLWidget::resizeGL(int width, int height)
+void GLModelWidget::resizeGL(int width, int height)
 {
 	aspect_ratio = qMin(width, height);
 	glViewport(0, 0, width, height);
@@ -278,7 +279,7 @@ void GLWidget::resizeGL(int width, int height)
 }
 
 
-inline void GLWidget::renderLine3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions)
+inline void GLModelWidget::renderLine3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions)
 {
 	glBegin(GL_LINE_STRIP); 
 	for(int i = 0; i <= partitions; i++) 
@@ -290,7 +291,7 @@ inline void GLWidget::renderLine3(const fem::point &p1, const fem::point &p2, co
 }
 
 
-inline void GLWidget::renderQuad4(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, int partitions)
+inline void GLModelWidget::renderQuad4(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, int partitions)
 {
 	// defining temporary structures for points and normal vectors
 	fem::point p_upper_row[partitions+1];
@@ -360,7 +361,7 @@ inline void GLWidget::renderQuad4(const fem::point &p1, const fem::point &p2,con
 	} 
 }
 
-inline void GLWidget::renderQuad8(const fem::point &p1, const fem::point &p2, const fem::point &p3, const fem::point &p4,const fem::point &p5, const fem::point &p6, const fem::point &p7, const fem::point &p8, int partitions)
+inline void GLModelWidget::renderQuad8(const fem::point &p1, const fem::point &p2, const fem::point &p3, const fem::point &p4,const fem::point &p5, const fem::point &p6, const fem::point &p7, const fem::point &p8, int partitions)
 {
 /*
 	^ y
@@ -445,7 +446,7 @@ inline void GLWidget::renderQuad8(const fem::point &p1, const fem::point &p2, co
 }
 
 
-inline void GLWidget::renderQuad9(const fem::point &p1, const fem::point &p2, const fem::point &p3, const fem::point &p4,const fem::point &p5, const fem::point &p6, const fem::point &p7, const fem::point &p8, const fem::point &p9, int partitions)
+inline void GLModelWidget::renderQuad9(const fem::point &p1, const fem::point &p2, const fem::point &p3, const fem::point &p4,const fem::point &p5, const fem::point &p6, const fem::point &p7, const fem::point &p8, const fem::point &p9, int partitions)
 {
 	// defining temporary structures for points and normal vectors
 	fem::point p_upper_row[partitions+1];
@@ -515,7 +516,7 @@ inline void GLWidget::renderQuad9(const fem::point &p1, const fem::point &p2, co
 }
 
 
-inline void GLWidget::renderTriangle3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions)
+inline void GLModelWidget::renderTriangle3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions)
 {
 	partitions = 1;	// just to shut up the warning
 	fem::point temp;
@@ -529,7 +530,7 @@ inline void GLWidget::renderTriangle3(const fem::point &p1, const fem::point &p2
 }
 
 
-inline void GLWidget::renderTriangle6(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, const fem::point &p5, const fem::point &p6, int partitions)
+inline void GLModelWidget::renderTriangle6(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, const fem::point &p5, const fem::point &p6, int partitions)
 {
 	// defining temporary structures for points and normal vectors
 	fem::point p_upper_row[partitions+1];
@@ -603,7 +604,7 @@ inline void GLWidget::renderTriangle6(const fem::point &p1, const fem::point &p2
 }
 
 
-void GLWidget::generateDisplayLists()
+void GLModelWidget::generateDisplayLists()
 {
 	// generate nodes display list
 	generateNodesDisplayList();
@@ -628,7 +629,7 @@ void GLWidget::generateDisplayLists()
 }
 
 
-void GLWidget::generateNodesDisplayList()
+void GLModelWidget::generateNodesDisplayList()
 {
 	glNewList( dl_nodes, GL_COMPILE);
 	std::map<size_t,fem::Node>::iterator ni;	// node iterator
@@ -640,7 +641,7 @@ void GLWidget::generateNodesDisplayList()
 }
 
 
-void GLWidget::mousePressEvent(QMouseEvent *event)
+void GLModelWidget::mousePressEvent(QMouseEvent *event)
 {
 	lastPos = event->pos();
 
@@ -667,7 +668,7 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 }
 
 
-void GLWidget::mouseMoveEvent(QMouseEvent *event)
+void GLModelWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	int dx = event->x() - lastPos.x();
 	int dy = event->y() - lastPos.y();
@@ -685,7 +686,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 }
 
 
-void GLWidget::wheelEvent(QWheelEvent *event)
+void GLModelWidget::wheelEvent(QWheelEvent *event)
 {
 	//camera.pos.inc_x(event->delta()/800.0f);
 	zoom += event->delta()/1000.0f;
@@ -696,7 +697,7 @@ void GLWidget::wheelEvent(QWheelEvent *event)
 }
 
 
-void GLWidget::keyPressEvent(QKeyEvent *event)
+void GLModelWidget::keyPressEvent(QKeyEvent *event)
 {
 	switch( event->key() )
 	{
@@ -712,7 +713,7 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 }
 
 
-void GLWidget::normalizeAngle(int *angle)
+void GLModelWidget::normalizeAngle(int *angle)
 {
 	while (*angle < 0)
 		*angle += 360 * 16;
@@ -721,7 +722,7 @@ void GLWidget::normalizeAngle(int *angle)
 }
 
 
-void GLWidget::paintNode(size_t label, const fem::Node node)
+void GLModelWidget::paintNode(size_t label, const fem::Node node)
 {
 	glPushMatrix();
 	glTranslated(node.data[0],node.data[1],node.data[2]);
@@ -863,7 +864,7 @@ void GLWidget::paintNode(size_t label, const fem::Node node)
 }
 
 
-void GLWidget::paintElement(const fem::Element &element)
+void GLModelWidget::paintElement(const fem::Element &element)
 {
 	std::map<size_t, fem::Node>::iterator n;
 	std::vector<fem::point> nl;	// node list
@@ -1052,7 +1053,7 @@ void GLWidget::paintElement(const fem::Element &element)
 }
 
 
-void GLWidget::paintWireframe(const fem::Element &element)
+void GLModelWidget::paintWireframe(const fem::Element &element)
 {
 	std::map<size_t, fem::Node>::iterator n;
 	std::vector<fem::point> nl;	// node list
@@ -1234,7 +1235,7 @@ void GLWidget::paintWireframe(const fem::Element &element)
 }
 
 
-void GLWidget::selectModelObjects(const fem::point &near,const fem::point &far)
+void GLModelWidget::selectModelObjects(const fem::point &near,const fem::point &far)
 {
 	// test nodes
 	float a, b, c;

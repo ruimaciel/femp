@@ -83,6 +83,10 @@ public Q_SLOTS:
 	void setViewportXZ();
 	void setViewportIso();
 
+	// set MDI subwindow configuration
+	void setTiledWindows();
+	void setCascadeWindows();
+
 Q_SIGNALS:
 	void setMessage(QString);
 	void setWarning(QString);

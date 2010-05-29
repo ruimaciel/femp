@@ -51,6 +51,8 @@
     <property name="title">
      <string>Window</string>
     </property>
+    <addaction name="actionWindowTile"/>
+    <addaction name="actionWindowCascade"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -285,6 +287,16 @@
    </property>
    <property name="text">
     <string>Materials</string>
+   </property>
+  </action>
+  <action name="actionWindowTile">
+   <property name="text">
+    <string>Tile</string>
+   </property>
+  </action>
+  <action name="actionWindowCascade">
+   <property name="text">
+    <string>Cascade</string>
    </property>
   </action>
  </widget>

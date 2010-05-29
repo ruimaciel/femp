@@ -331,6 +331,9 @@ void MainWindow::createActions()
 	 connect(ui.actionDisplayNodes, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
 	 connect(ui.actionDisplaySurfaces, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
 	 connect(ui.actionDisplayWireframe, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
+	
+	connect(ui.actionWindowTile, SIGNAL(triggered()), this, SLOT(setTiledWindows()));
+	connect(ui.actionWindowCascade, SIGNAL(triggered()), this, SLOT(setCascadeWindows()));
 }
 
 
@@ -846,6 +849,17 @@ void MainWindow::setViewportIso()
 	qWarning("MainWindow::setViewportIso(): needs to be implemented");
 }
 
+
+void MainWindow::setTiledWindows()
+{
+	mdiArea->tileSubWindows();
+}
+
+
+void MainWindow::setCascadeWindows()
+{
+	mdiArea->cascadeSubWindows();
+}
 
 
 void MainWindow::setUserInterfaceAsOpened()	

@@ -1,22 +1,20 @@
 #ifndef GLDISPLACEMENTSWIDGET_HPP
 #define GLDISPLACEMENTSWIDGET_HPP
 
-#include <QGLWidget>
 #include <QWheelEvent>
 
 #include <map>
 
-#include "Document.h++"
+#include "glBaseWidget.h++"
 #include "fem/Node.h++"
-#include "ViewportColors.h++"
-#include "Camera.h++"
-#include "DisplayOptions.h++"
 #include "MdiWindowProperties.h++"
 
 
-
+/*
+OpenGL widget that renders the model in a deformed position
+*/
 class GLDisplacementsWidget 
-	: public QGLWidget, public MdiWindowProperties
+	: public GLBaseWidget, public MdiWindowProperties
 {
 	Q_OBJECT
 
@@ -24,27 +22,10 @@ class GLDisplacementsWidget
 		GLDisplacementsWidget( Document *document, ProcessedModel *, QWidget *parent = 0);
 		~GLDisplacementsWidget();
 
-		QSize minimumSizeHint() const;
-		QSize sizeHint() const;
-		void setColors(ViewportColors *colors);
 		void setNodeRadiusScale(float r)	{ node_scale = r; }
 
-	public Q_SLOTS:
-		void setXRotation(int angle);
-		void setYRotation(int angle);
-		void setZRotation(int angle);
-		void setPosition(int x, int y);
-
-	Q_SIGNALS:
-		void xRotationChanged(int angle);
-		void yRotationChanged(int angle);
-		void zRotationChanged(int angle);
-
 	protected:
-		void initializeGL();
 		void paintGL();
-		inline void paintArrow(const fem::point &p, const fem::point &direction);
-		void resizeGL(int width, int height);
 
 		// surface rendering methods
 		void renderLine3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions = 10);
@@ -63,12 +44,7 @@ class GLDisplacementsWidget
 		void wheelEvent(QWheelEvent *event);
 		void keyPressEvent(QKeyEvent *event);
 
-	public:
-		DisplayOptions display_options;	// options list to be used by the render routine
-
 	private:
-		void normalizeAngle(int *angle);
-
 		// methods to render FEM elements
 		void paintNode(size_t label, const fem::Node);
 		void paintElement(const fem::Element &element);
@@ -78,24 +54,9 @@ class GLDisplacementsWidget
 		void selectModelObjects(const fem::point &,const fem::point &);
 		void deselectAllModelObjects();
 
-		Camera camera;	// transition to a camera class
-
 		QPoint lastPos;
-		QColor qtPurple;
 
-		Document *document;
 		ProcessedModel *processed_model;
-
-		float node_scale;	// the scale used by the nodes, reset when a window resizes
-		float zoom;		// drawing zoom, used to zoom
-		float aspect_ratio;	// window aspect ratio
-
-		ViewportColors *colors;	// color definitions
-
-		// display list indices
-		GLuint dl_nodes;
-		GLuint dl_faces;
-		GLuint dl_wireframe;
 
 		// displacements
 		std::map<size_t, fem::Node>	displacements_map;	// maps the relative displacement of each DoF

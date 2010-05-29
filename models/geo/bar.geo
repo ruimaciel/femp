@@ -1,39 +1,25 @@
-b = 2;
-h = 4;
-l = 20;
+b = 0.5;
+h = 1;
+l = 5;
 
-Point(1) = {-l/2, -h/2, -b/2, 1e+22};
-Point(2) = {l/2, -h/2, -b/2, 1e+22};
-Point(3) = {-l/2, h/2, -b/2, 1e+22};
-Point(4) = {l/2, h/2, -b/2, 1e+22};
-Point(5) = {l/2, h/2, b/2, 1e+22};
-Point(6) = {l/2, -h/2, b/2, 1e+22};
-Point(10) = {-l/2, -h/2, b/2, 1e+22};
-Point(14) = {-l/2, h/2, b/2, 1e+22};
+Point(1) = {	-b/2,	 -h/2, -l/2, 1e+22};
+Point(2) = {	 b/2,	 -h/2, -l/2, 1e+22};
+Point(3) = {	 b/2,	  h/2, -l/2, 1e+22};
+Point(4) = {	-b/2,	  h/2, -l/2, 1e+22};
 
-Line(1) = {2, 1};
-Line(2) = {1, 3};
+Line(1) = {1, 2};
+Line(2) = {2, 3};
 Line(3) = {3, 4};
-Line(4) = {4, 2};
-Line(8) = {5, 6};
-Line(9) = {6, 10};
-Line(10) = {10, 14};
-Line(11) = {14, 5};
-Line(13) = {4, 5};
-Line(14) = {2, 6};
-Line(18) = {1, 10};
-Line(22) = {3, 14};
-Line Loop(6) = {4, 1, 2, 3};
+Line(4) = {4, 1};
+
+Line Loop(6) = {1, 2, 3, 4};
 Plane Surface(6) = {6};
-Line Loop(15) = {4, 14, -8, -13};
-Ruled Surface(15) = {15};
-Line Loop(19) = {1, 18, -9, -14};
-Ruled Surface(19) = {19};
-Line Loop(23) = {2, 22, -10, -18};
-Ruled Surface(23) = {23};
-Line Loop(27) = {3, 13, -11, -22};
-Ruled Surface(27) = {27};
-Line Loop(28) = {8, 9, 10, 11};
-Plane Surface(28) = {28};
-Surface Loop(1) = {6, 28, 15, 19, 23, 27};
-Volume(1) = {1};
+
+Transfinite Line{1:4} = 5;
+Transfinite Surface{6} = {1, 2, 3, 4};
+
+Recombine Surface{6};
+
+Extrude {0, 0, l} {
+  Surface{6}; Layers{16}; Recombine;
+}

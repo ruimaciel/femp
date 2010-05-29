@@ -1,11 +1,14 @@
 {"fem":
-	{	"version": "1.0",
-	"type": "unknown"
+	{	
+		"version": "1.0",
+		"type": "3D solid"
 	},
-"materials": [
-	{"type":"linear elastic", "label": "A400", "E":1,"nu":0, "fy": 2e+07}
+
+	"materials": [
+		{"type":"linear elastic", "label": "A400", "E":1,"nu":0, "fy": 2e+07}
 	],
-"nodes":[
+
+	"nodes":[
 	[1,[0, 0, 0]],
 	[2,[1, 0, 0]],
 	[3,[0, 1, 0]],
@@ -13,24 +16,26 @@
 	[5,[1, 0, 2]],
 	[6,[0, 2, 2]]
 	],
-"elements":[
-	{"type":"prism6", "nodes":[1,2,3,4,5,6], "material": 0}
+
+	"elements":[
+		{"type":"prism6", "nodes":[1,2,3,4,5,6], "material": 0}
 	],
-"node restrictions": [
+
+	"node restrictions": [
 		{ "node":1, "dx":true, "dy":true, "dz":true},
 	],
-"load patterns":[
-		{	"label": "First test pattern",
-		"nodal loads":[
-			{"node":1, "force":[3, 2, 0]}
-		],
-		"node displacements":[
-			{"node":1, "displacement":[0, 0, 0]}
-		],
-		"domain loads":[
-			{"element":0, "force": [1,1,1]}
+
+	"load patterns":[
+		{	
+			"label": "First test pattern",
+
+			"nodal loads":[ 
+				{"node":1, "force":[3, 2, 0]}
+			],
+
+			"domain loads":[
+				{"element":0, "force": [1,1,1]}
 			]
 		}
-	],
-"combinations":[	]
+	]
 }

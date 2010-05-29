@@ -3,6 +3,7 @@ b = 0.046;
 t_w = 0.0038;
 t_f = 0.0052;
 r = 0.005;
+l = 2.0;
 
 Point(1) = {-b/2, 0, 0};
 Point(2) = {-b/2, t_f, 0};
@@ -53,6 +54,13 @@ Circle(16) = {12, 20, 11};
 Line Loop(17) = {12, 1, 2, 3, 14, 4, 16, 5, 6, 7, 8, 9, -15, 10, -13, 11};
 
 Plane Surface(18) = {17};
-Extrude {0, 0, 1} {
-  Surface{18};
+
+Transfinite Line{1:16} = 5;
+
+Transfinite Surface{18};
+
+Recombine Surface{18};
+
+Extrude {0, 0, l} {
+  Surface{18}; Layers{5}; Recombine;
 }

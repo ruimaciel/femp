@@ -195,9 +195,9 @@
 		{
 			"label": "Default",
 			"nodal loads":[
-				{"node":24, "force":[0, 100, 0]},
-				{"node":59, "force":[0, 100, 0]},
-				{"node":112, "force":[0, 100, 0]}
+				{"node":24, "force":[0, 10000, 0]},
+				{"node":59, "force":[0, 10000, 0]},
+				{"node":112, "force":[0, 10000, 0]}
 			]
 		}
 	]

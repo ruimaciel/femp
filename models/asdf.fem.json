@@ -1,10 +1,11 @@
 {"fem":
 	{	"version": "1.0",
-	"type": "3D solid"
+		"type": "3D solid"
 	},
-"materials": [
-	{"type":"linear elastic", "label": "A400", "E":2e+11,"nu":0.2, "fy": 2e+07},
-	{"type":"linear elastic", "label": "C30/37", "E":3.3e+10,"nu":0.2, "fy": 2e+07}	],
+	"materials": [
+		{"type":"linear elastic", "label": "A400", "E":2e+11,"nu":0.2, "fy": 2e+07},
+		{"type":"linear elastic", "label": "C30/37", "E":3.3e+10,"nu":0.2, "fy": 2e+07}	
+	],
 
 "nodes":[
 	[1,[-1,0,0]],

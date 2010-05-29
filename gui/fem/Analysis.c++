@@ -179,17 +179,10 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			// having done the legwork, let's build up the elementary stiffness matrix and equivalent nodal force vector
 
 			Bt = B.transpose();
-			//symmetric_matrix<double> D = D_list[element->material];
+	
 			Eigen::Matrix<double,6,6> D = D_list[element->material];
 
-			/*
-			matrix<double> temp;
-			// and now, k_elem = sum(Bt*D*B*detJ*i->second);
-			temp = prod(Bt,D);
-			temp = prod(temp,B);
-			temp *= detJ*i->get<1>();
-			k_elem += temp;	// adding up the full result
-			*/
+			// add this integration point's contribution
 			k_elem += Bt*D*B*detJ*i->get<1>();
 		}
 
@@ -217,7 +210,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		element = &model.element_list[domain_load->first];
 		nnodes = element->node_number();
 
-		f_elem.resize(nnodes*3, false);
+		f_elem.resize(nnodes*3);
 
 		// as the distribution is linear across the domain then degree 1 is enough
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][ddegree[element->type]].begin(); i != ipwpl[element->family()][ddegree[element->type]].end(); i++)
@@ -304,7 +297,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		//TODO
 		nnodes = surface_load->node_number();
 
-		f_elem.resize(nnodes*3, false);
+		f_elem.resize(nnodes*3);
 
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[surface_load->family()][degree[surface_load->type]].begin(); i != ipwpl[surface_load->family()][degree[surface_load->type]].end(); i++)
 		{

@@ -27,6 +27,7 @@ enum LinearAnalysis::Error LinearAnalysis::run(Model &model, LoadPattern &lp, Pr
 
 	build_fem_equation(model, lp, true);
 
+
 	//TODO implement a choice of solver
 	d = f;
 	SparseLLT<DynamicSparseMatrix<double,RowMajor>,Cholmod>(k).solveInPlace(d);
@@ -36,6 +37,10 @@ enum LinearAnalysis::Error LinearAnalysis::run(Model &model, LoadPattern &lp, Pr
 	p.f = f;
 	p.d = d;
 	p.displacements_map = this->displacements_map();
+
+	// calculate U
+	cout << "Strain energy: " << (d.transpose()*p.k*d)(0,0) << endl;
+
 
 	return ERR_OK;
 }

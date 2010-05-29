@@ -3,6 +3,7 @@
 
 #include <boost/tuple/tuple.hpp>
 
+#include <Eigen/Core>
 #include <Eigen/Sparse>
 
 #include <map>

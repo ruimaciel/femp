@@ -21,6 +21,9 @@ class ProcessedModel
 		Eigen::Matrix<double,Eigen::Dynamic,1> f;
 		Eigen::Matrix<double,Eigen::Dynamic,1> d;
 
+		// energy
+		double U;
+
 	public:
 		ProcessedModel();
 		~ProcessedModel();

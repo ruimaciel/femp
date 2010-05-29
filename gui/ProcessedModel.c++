@@ -3,6 +3,7 @@
 
 ProcessedModel::ProcessedModel()
 {
+	U = 0;
 }
 
 

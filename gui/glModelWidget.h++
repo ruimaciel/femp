@@ -18,7 +18,7 @@ class GLModelWidget
 	Q_OBJECT
 
 	public:
-		GLModelWidget(QWidget *parent = 0);
+		GLModelWidget(Document *document, QWidget *parent = 0);
 		~GLModelWidget();
 
 		void setNodeRadiusScale(float r)	{ node_scale = r; }

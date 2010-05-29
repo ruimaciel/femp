@@ -16,7 +16,7 @@ class GLBaseWidget
 	Q_OBJECT
 
 	public:
-		GLBaseWidget(QWidget *parent = 0);
+		GLBaseWidget(Document *document, QWidget *parent = 0);
 		~GLBaseWidget();
 
 		void setDocument(Document *);	// sets a reference to a document object

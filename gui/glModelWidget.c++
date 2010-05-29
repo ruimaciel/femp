@@ -10,9 +10,10 @@
 #include "glModelWidget.h++"
 
 
-GLModelWidget::GLModelWidget(QWidget *parent)
-	: GLBaseWidget(parent)
+GLModelWidget::GLModelWidget(Document *document, QWidget *parent)
+	: GLBaseWidget(document, parent)
 {
+	assert(document != NULL);
 	// set the MdiWindowProperties object
 	this->window_type = MdiWindowProperties::MWP_Model;
 
@@ -30,7 +31,6 @@ GLModelWidget::GLModelWidget(QWidget *parent)
 	zoom = 0.0f;	// initialize the zoom, 2^zoom
 	
 	// initialize the dangling pointers
-	document = NULL;
 	colors = NULL;
 
 	qtPurple = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0);

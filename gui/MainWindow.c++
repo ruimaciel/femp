@@ -866,8 +866,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	ui.actionDisplayWireframe->setChecked(true);
 
 	// open all relevant MDI windows
-	GLModelWidget *glWidget = new GLModelWidget(this);
-	glWidget->setDocument(&document);
+	GLModelWidget *glWidget = new GLModelWidget(&document, this);
 	glWidget->setColors(&colors);
 	double radius;
 	options.getOption("viewport.nodes.radius",radius,20);

@@ -8,11 +8,12 @@
 
 #include "fem/point.h++"
 #include "glDisplacementsWidget.h++"
+#include "ui/DialogScale.h++"
 #include "ProcessedModel.h++"
 
 
 GLDisplacementsWidget::GLDisplacementsWidget( Document *document, ProcessedModel *processed_model, QWidget *parent) 
-	: GLBaseWidget(parent)
+	: GLBaseWidget(document, parent)
 {
 	// perform sanity checks 
 	assert(document != NULL);
@@ -44,7 +45,8 @@ GLDisplacementsWidget::GLDisplacementsWidget( Document *document, ProcessedModel
 	// assign displacements map
 
 	//TODO make this tweakable
-	this->displacements_scale = 1e8;
+	//this->displacements_scale = 1e8;
+	this->displacements_scale = 1;
 }
 
 
@@ -552,11 +554,28 @@ void GLDisplacementsWidget::keyPressEvent(QKeyEvent *event)
 	switch( event->key() )
 	{
 		case Qt::Key_Escape:
-			/*
-			document->deselectAll();
-			generateNodesDisplayList();
-			*/
 			updateGL();
+			break;
+
+		case Qt::Key_S:	// change the displacements scale
+			{
+				DialogScale ds(displacements_scale, this);
+				switch(ds.exec())
+				{
+					case QDialog::Accepted:
+						displacements_scale = ds.scale();
+
+						// regenerate the display lists
+						generateDisplayLists();
+
+						//update the scene
+						updateGL();
+						break;
+
+					default:
+						break;
+				}
+			}
 			break;
 
 		default:
@@ -576,7 +595,6 @@ void GLDisplacementsWidget::paintNode(size_t label, const fem::Node node)
 		glTranslated(node.data[0],node.data[1],node.data[2]);
 	else
 	{
-		// qWarning("output %zd: [%f,%f,%f]",label, dof->second.data[0]*displacements_scale, dof->second.data[1]*displacements_scale, dof->second.data[2]*displacements_scale);
 		glTranslated(node.data[0]+dof->second.data[0]*displacements_scale, node.data[1]+dof->second.data[1]*displacements_scale, node.data[2]+dof->second.data[2]*displacements_scale);
 	}
 	

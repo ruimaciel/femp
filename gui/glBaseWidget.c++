@@ -1,7 +1,7 @@
 #include "glBaseWidget.h++"
 
 
-GLBaseWidget::GLBaseWidget(QWidget *parent)
+GLBaseWidget::GLBaseWidget(Document *document, QWidget *parent)
 	: QGLWidget(parent)
 {
 	// initialize the dangling pointers

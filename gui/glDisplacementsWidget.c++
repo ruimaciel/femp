@@ -96,11 +96,16 @@ void GLDisplacementsWidget::paintGL()
 			// render the nodal forces
 			if(display_options.nodal_forces)
 			{
+				std::map<size_t, fem::Node>::iterator dof;
 				// set the color
 				for(std::map<size_t,fem::NodalLoad>::iterator i = display_options.load_pattern->nodal_loads.begin(); i != display_options.load_pattern->nodal_loads.end(); i++)
 				{
+					dof = processed_model->displacements_map.find(i->first);
 					//TODO draw an arrow
-					paintArrow(document->model.node_list[i->first], i->second.force.director());
+					if(dof == processed_model->displacements_map.end()) 
+						paintArrow(document->model.node_list[i->first], i->second.force.director());
+					else
+						paintArrow(dof->second*displacements_scale+ document->model.node_list[i->first], i->second.force.director());
 				}
 			}
 

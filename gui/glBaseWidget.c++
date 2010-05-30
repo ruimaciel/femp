@@ -12,12 +12,10 @@ GLBaseWidget::GLBaseWidget(Document *document, QWidget *parent)
 	// set this widget's load pattern pointer
 	if(document->model.load_pattern_list.empty())
 	{
-		qWarning("GLBaseWidget::GLBaseWidget(): load pattern empty");
 		display_options.load_pattern = NULL;
 	}
 	else
 	{
-		qWarning("GLBaseWidget::GLBaseWidget(): load pattern not empty");
 		// set the first load pattern
 		display_options.load_pattern = &document->model.load_pattern_list.front();
 	}

@@ -85,11 +85,9 @@ void GLModelWidget::paintGL()
 		// render all optional information, if it's enabled
 		if(display_options.load_pattern != NULL)
 		{
-			qWarning("void GLModelWidget::paintGL(): load pattern not null");
 			// render the nodal forces
 			if(display_options.nodal_forces)
 			{
-				qWarning("void GLModelWidget::paintGL(): nodal forces");
 				// set the color
 				for(std::map<size_t,fem::NodalLoad>::iterator i = display_options.load_pattern->nodal_loads.begin(); i != display_options.load_pattern->nodal_loads.end(); i++)
 				{

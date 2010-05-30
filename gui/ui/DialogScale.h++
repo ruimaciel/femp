@@ -19,6 +19,10 @@ class DialogScale
 		~DialogScale();
 
 		double scale();
+	
+	protected slots:
+		void updateSpinBox(int );
+		void updateSlider(double);
 };
 
 #endif

@@ -185,6 +185,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			// add this integration point's contribution
 			k_elem += Bt*D*B*detJ*i->get<1>();
 		}
+		cout << "k elem: " << k_elem << endl;
 
 			// add elementary stiffness matrix to the global stiffness matrix 
 		add_elementary_stiffness_to_global(k_elem, lm, *element);
@@ -238,6 +239,14 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 #undef dNdzeta
 
 			detJ = J.determinant();
+			if(detJ <= 0)
+			{
+				cout << "],\n";	// close the stiffness array in order to open an error message and still preserve a valid JSON document
+				cout << "\t\"error\": \"stumbled on a negative determinant on element " << domain_load->first << "\"\n";
+				cout << "}\n";
+				// quit
+				return ERR_NEGATIVE_DETERMINANT;
+			}
 
 			// and now the f_elem
 			for(int n = 0; n < nnodes; n++)
@@ -265,8 +274,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 				continue;	// no degrees of freedom on this node
 			else
 			{
-				size_t n;
-				n = dof->second.get<0>();
+				size_t n = dof->second.get<0>();
 				if(n != 0)
 					f(n-1) += f_elem(3*i);
 				n = dof->second.get<1>();
@@ -321,6 +329,15 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 #undef dNdeta
 
 			detJ = J(1,0)*J(2,1) - J(1,1)*J(2,0);
+			if(detJ <= 0)
+			{
+				cout << "],\n";	// close the stiffness array in order to open an error message and still preserve a valid JSON document
+				cout << "\t\"error\": \"stumbled on a negative determinant on surface " << "\"\n";
+				cout << "}\n";
+				// quit
+				return ERR_NEGATIVE_DETERMINANT;
+			}
+
 
 #define N(n) sf[n]
 #define b(COORD) domain_load->second.force.COORD()
@@ -373,7 +390,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		cout << "]," << endl;
 
 	//DEBUG
-	cout << "K[" << k.rows() << ", " << k.cols() << "]" << endl;
+	//cout << "K[" << k.rows() << ", " << k.cols() << "]" << endl;
 	
 	// fem equation is set.
 	return ERR_OK;
@@ -1205,10 +1222,92 @@ void Analysis::build_integration_points()
 	using namespace boost;
 	std::vector<tuple<fem::point, double> > ips;
 
+	// triangle family, level 1
+	{
+		//TODO needs testing
+		ips.clear();
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3,1.0/3), 1.0));
+		ipwpl[Element::EF_TRIANGLE][1] = ips;
+	}
+
+	// triangle family, level 2: 3 points, degree 2
+	{
+		//TODO needs testing
+		ips.clear();
+		ips.push_back(tuple<fem::point,double>(fem::point(	2.0/3,	1.0/6,	1.0/6), 1.0/3));
+		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	2.0/3,	1.0/6), 1.0/3));
+		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	1.0/6,	2.0/3), 1.0/3));
+		ipwpl[Element::EF_TRIANGLE][2] = ips;
+	}
+
+	// triangle family, level 3: 6 points, degree 4
+	{
+		//TODO needs testing
+		ips.clear();
+		double g1=(8-sqrt(10.0)+sqrt(38.0-44.0*sqrt(2.0/5)))/18;
+		double g2=(8-sqrt(10.0)-sqrt(38.0-44.0*sqrt(2.0/5)))/18;
+
+		ips.push_back(tuple<fem::point,double>(fem::point(1-2*g1, g1, g1), (620+sqrt(213125-53320*sqrt(10)))/3720) );
+		ips.push_back(tuple<fem::point,double>(fem::point(g1, 1-2*g1, g1), (620+sqrt(213125-53320*sqrt(10)))/3720) );
+		ips.push_back(tuple<fem::point,double>(fem::point(g1, g1, 1-2*g1), (620+sqrt(213125-53320*sqrt(10)))/3720) );
+
+		ips.push_back(tuple<fem::point,double>(fem::point(1-2*g2, g2, g2), (620-sqrt(213125-53320*sqrt(10)))/3720) );
+		ips.push_back(tuple<fem::point,double>(fem::point(g2, 1-2*g2, g2), (620-sqrt(213125-53320*sqrt(10)))/3720) );
+		ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 1-2*g2), (620-sqrt(213125-53320*sqrt(10)))/3720) );
+
+		ipwpl[Element::EF_TRIANGLE][3] = ips;
+	}
+
+	// triangle family, level 4: 7  points, degree 5
+	{
+		//TODO needs testing
+		ips.clear();
+	
+		double g1=(6.0-sqrt(15))/21; 
+		double g2=(6.0+sqrt(15))/21;
+
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g1, g1, g1), (155.0-sqrt(15))/1200));
+		ips.push_back(tuple<fem::point,double>(fem::point(g1, 1.0-2*g1, g1), (155.0-sqrt(15))/1200));
+		ips.push_back(tuple<fem::point,double>(fem::point(g1, g1, 1.0-2*g1), (155.0-sqrt(15))/1200));
+
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g2, g2, g2), (155.0+sqrt(15))/1200));
+		ips.push_back(tuple<fem::point,double>(fem::point(g2, 1.0-2*g2, g2), (155.0+sqrt(15))/1200));
+		ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 1.0-2*g2), (155.0+sqrt(15))/1200));
+
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3), 9.0/40));
+
+		ipwpl[Element::EF_TRIANGLE][4] = ips;
+	}
+
+
+	// Quadrilateral family
+	{
+		for(int d = 1; d < 6; d++)
+		{
+			ips.clear();
+			double x[d], w[d];	// for the Gauss-Legendre integration points and weights
+			// get the Gauss-Legendre integration points and weights
+			gauleg(x,w,d);
+
+			// and now generate a list with those points
+			for(int i = 0; i < d; i++)
+			{
+				for(int j = 0; j < d; j++)
+				{
+					ips.push_back(tuple<fem::point,double>(fem::point(x[i],x[j],0), w[i]*w[j]));
+				}
+			}
+			ipwpl[Element::EF_QUADRILATERAL][d] = ips;
+		}
+	}
+
+
 	// Tetrahedron family, degree 1
-	ips.clear();
-	ips.push_back(tuple<fem::point,double>(fem::point(0.25,0.25,0.25), 1.0/6.0));
-	ipwpl[Element::EF_TETRAHEDRON][1] = ips;
+	{
+		ips.clear();
+		ips.push_back(tuple<fem::point,double>(fem::point(0.25,0.25,0.25), 1.0/6.0));
+		ipwpl[Element::EF_TETRAHEDRON][1] = ips;
+	}
 
 	// Tetrahedron family, degree 2
 	{
@@ -1356,20 +1455,45 @@ void Analysis::build_integration_points()
 	}
 
 
-	//Prism, degree 1
-	ips.clear();
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3,0), 1*2/2));
-	ipwpl[Element::EF_PRISM][1] = ips;
+	//Prism, level 1
+	{
+		//TODO test this
+		ips.clear();
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3,0), 1.0*2/2));
+		ipwpl[Element::EF_PRISM][1] = ips;
+	}
 
-	//Prism, degree 2
-	ips.clear();
-	ips.push_back(tuple<fem::point,double>(fem::point(2.0/3,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,2.0/3,-1.0/sqrt(3)), (1.0/3)*1/2));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
-	ips.push_back(tuple<fem::point,double>(fem::point(2.0/3,1.0/6, 1.0/sqrt(3)), (1.0/3)*1/2));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,2.0/3, 1.0/sqrt(3)), (1.0/3)*1/2));
-	ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,1.0/6, 1.0/sqrt(3)), (1.0/3)*1/2));
-	ipwpl[Element::EF_PRISM][2] = ips;
+	//Prism, level 2
+	{
+		//TODO test this
+		ips.clear();
+		ips.push_back(tuple<fem::point,double>(fem::point(2.0/3,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,2.0/3,-1.0/sqrt(3)), (1.0/3)*1/2));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
+		ips.push_back(tuple<fem::point,double>(fem::point(2.0/3,1.0/6, 1.0/sqrt(3)), (1.0/3)*1/2));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,2.0/3, 1.0/sqrt(3)), (1.0/3)*1/2));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,1.0/6, 1.0/sqrt(3)), (1.0/3)*1/2));
+		ipwpl[Element::EF_PRISM][2] = ips;
+	}
+
+	//Prism, level 3
+	for(int d = 3; d < 5; d++)
+	{
+		//TODO test this
+		ips.clear();
+		double x[d], w[d];	// for the Gauss-Legendre integration points and weights
+		// get the Gauss-Legendre integration points and weights
+		gauleg(x,w,d);
+
+		for(std::vector<tuple<fem::point, double> >::iterator i = ipwpl[Element::EF_TRIANGLE][3].begin(); i != ipwpl[Element::EF_TRIANGLE][3].end(); i++)
+		{
+			for(int j = 0; j < d; j++)
+			{
+				ips.push_back(tuple<fem::point,double>(fem::point(i->get<0>().x(),i->get<0>().y(), x[j]), i->get<1>()*w[j]));
+			}
+		}
+		ipwpl[Element::EF_PRISM][d] = ips;
+	}
 
 	//TODO finish the rest
 }

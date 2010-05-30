@@ -2,6 +2,8 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
+#include <QComboBox>
+
 #include "ui/ui_MainWindow.h"
 
 #include "CommandLineDockWidget.h++"
@@ -28,6 +30,9 @@ private:
 	// the toolbars
 	QToolBar *visibilityToolBar;
 	QToolBar *viewportToolBar;
+	QToolBar *actionsToolBar;
+
+	QComboBox *comboActionsLoadPattern;	// a combo box that is inserted in the Actions toolbar to select the load pattern
 
 	ProgramOptions 	options;	// the global program options
 	bool 	hasUnsavedChanges;	// true if the document has unsaved changes
@@ -64,6 +69,7 @@ public Q_SLOTS:
 	Sets DisplayOption's options refering to the element visualization
 	**/
 	void setElementDisplay();
+	void setNodeForcesDisplay();
 
 	/**
 	runs the analysis on the current model
@@ -86,6 +92,9 @@ public Q_SLOTS:
 	// set MDI subwindow configuration
 	void setTiledWindows();
 	void setCascadeWindows();
+
+	// updates the UI according to the currently active MDI subwindow
+	void updateUiFromActiveMdiSubWindow(QMdiSubWindow *);
 
 Q_SIGNALS:
 	void setMessage(QString);

@@ -3,6 +3,7 @@
 
 DisplayOptions::DisplayOptions()
 {
+	load_pattern = NULL;
 	setDefaultOptions();
 }
 
@@ -14,7 +15,6 @@ DisplayOptions::~DisplayOptions()
 
 void DisplayOptions::setDefaultOptions()
 {
-	load_pattern = NULL;
 	nodes = 1;
 	surfaces = 1;
 	wireframe = 1;

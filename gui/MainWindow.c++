@@ -6,6 +6,7 @@
 #include <QTime>
 #include <QTranslator>
 #include <QToolBar>
+#include <QString>
 
 #include <string>
 #include <fstream>
@@ -49,14 +50,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 
 	// initialize the toolbars
-	visibilityToolBar = NULL;
-	viewportToolBar = NULL;
+	visibilityToolBar	= NULL;
+	viewportToolBar	= NULL;
+	actionsToolBar	= NULL;
+	comboActionsLoadPattern	= NULL;
 
 	// initialize the Docks
 	commandLineDockWidget = new CommandLineDockWidget(this);
 	connect(this, SIGNAL(setMessage(QString)), commandLineDockWidget, SLOT(getMessage(QString)));
 	connect(this, SIGNAL(setWarning(QString)), commandLineDockWidget, SLOT(getWarning(QString)));
 	connect(this, SIGNAL(setError(QString)), commandLineDockWidget, SLOT(getError(QString)));
+
+	// set the MainWindow connections
+	connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(updateUiFromActiveMdiSubWindow(QMdiSubWindow*)));
 
 	// create actions and connect signals to slots
 	this->createActions();
@@ -316,24 +322,26 @@ void MainWindow::createActions()
 	connect(actionViewportYZ,	SIGNAL(triggered()),	this,	SLOT(setViewportYZ()));
 	connect(actionViewportXZ,	SIGNAL(triggered()),	this,	SLOT(setViewportXZ()));
 	connect(actionViewportIso,	SIGNAL(triggered()),	this,	SLOT(setViewportIso()));
-	 connect(ui.actionNew, 	SIGNAL(triggered()), this, SLOT(newProject()));
-	 connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openProject()));
-	 connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveProject()));
-	 connect(ui.actionSaveAs, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
-	 connect(ui.actionClose, SIGNAL(triggered()), this, SLOT(closeProject()));
-	 connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
-	 connect(ui.actionImportMesh, SIGNAL(triggered()), this, SLOT(importMesh()));
-	 connect(ui.actionNodeRestraints, SIGNAL(triggered()), this, SLOT(setNodeRestraints()));
-	 connect(ui.actionNodeActions, SIGNAL(triggered()), this, SLOT(setNodeActions()));
-	 connect(ui.actionRun, SIGNAL(triggered()), this, SLOT(runAnalysis()));
-	 connect(ui.actionViewActions, SIGNAL(triggered()), this, SLOT(setDisplayOptions()));
-	 connect(ui.actionEditMaterials, SIGNAL(triggered()),	this,	SLOT(editMaterials()));
-	 connect(ui.actionDisplayNodes, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
-	 connect(ui.actionDisplaySurfaces, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
-	 connect(ui.actionDisplayWireframe, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
-	
+	connect(ui.actionNew, 	SIGNAL(triggered()), this, SLOT(newProject()));
+	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openProject()));
+	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveProject()));
+	connect(ui.actionSaveAs, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
+	connect(ui.actionClose, SIGNAL(triggered()), this, SLOT(closeProject()));
+	connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
+	connect(ui.actionImportMesh, SIGNAL(triggered()), this, SLOT(importMesh()));
+	connect(ui.actionNodeRestraints, SIGNAL(triggered()), this, SLOT(setNodeRestraints()));
+	connect(ui.actionNodeActions, SIGNAL(triggered()), this, SLOT(setNodeActions()));
+	connect(ui.actionRun, SIGNAL(triggered()), this, SLOT(runAnalysis()));
+	connect(ui.actionViewActions, SIGNAL(triggered()), this, SLOT(setDisplayOptions()));
+	connect(ui.actionEditMaterials, SIGNAL(triggered()),	this,	SLOT(editMaterials()));
+	connect(ui.actionDisplayNodes, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
+	connect(ui.actionDisplaySurfaces, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
+	connect(ui.actionDisplayWireframe, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
+
 	connect(ui.actionWindowTile, SIGNAL(triggered()), this, SLOT(setTiledWindows()));
 	connect(ui.actionWindowCascade, SIGNAL(triggered()), this, SLOT(setCascadeWindows()));
+
+	connect(ui.actionShowNodalForces,	SIGNAL(triggered()),	this,	SLOT(setNodeForcesDisplay()));
 }
 
 
@@ -351,14 +359,57 @@ void MainWindow::createToolBars()
 	viewportToolBar->addAction(actionViewportYZ);
 	viewportToolBar->addAction(actionViewportXZ);
 	viewportToolBar->addAction(actionViewportIso);
+
+	// build the actions toolbar
+	//TODO finish this
+	actionsToolBar = addToolBar(tr("Display actions"));
+
+	comboActionsLoadPattern = new QComboBox;
+	// fill the combo box with load patterns
+	if(document.model.load_pattern_list.empty())
+	{
+		comboActionsLoadPattern->addItem(tr("no load cases"));
+		comboActionsLoadPattern->setDisabled(true);
+	}
+	else
+	{
+		// fill the combo box with all the load patterns which were already defined
+		for(std::vector<fem::LoadPattern>::iterator i = document.model.load_pattern_list.begin(); i != document.model.load_pattern_list.end(); i++)
+		{
+			comboActionsLoadPattern->addItem(QString::fromStdString(i->label));
+		}
+	}
+	// add the rest of the toolbar buttons
+	actionsToolBar->addWidget(comboActionsLoadPattern);
+	actionsToolBar->addAction(ui.actionShowNodalDisplacements);
+	actionsToolBar->addAction(ui.actionShowNodalForces);
+	actionsToolBar->addAction(ui.actionShowSurfaceForces);
+	actionsToolBar->addAction(ui.actionShowDomainForces);
 }
 
 
 void MainWindow::destroyToolBars()
 {
-	//TODO free memory
-	removeToolBar(visibilityToolBar);
-	removeToolBar(viewportToolBar);
+	//deletes all toolbars
+	if(visibilityToolBar)
+	{
+		removeToolBar(visibilityToolBar); 
+		delete visibilityToolBar;
+		visibilityToolBar = NULL;
+	}
+	if(viewportToolBar)
+	{
+		removeToolBar(viewportToolBar); 
+		delete viewportToolBar;
+		viewportToolBar = NULL;
+	}
+	if(actionsToolBar)
+	{
+		//TODO delete the load pattern combo box?
+		removeToolBar(actionsToolBar); 
+		delete actionsToolBar;
+		actionsToolBar = NULL;
+	}
 }
 
 
@@ -409,33 +460,33 @@ void MainWindow::loadOptions()
 		options.importFile(is);
 		is.close();
 	}
-	
+
 	// set color options
 	{
-	std::vector<double> temp;
-	if(options.getOption("viewport.nodes.color",temp, std::vector<double>())) 
-	{ 
-		if(temp.size() == 3) 
+		std::vector<double> temp;
+		if(options.getOption("viewport.nodes.color",temp, std::vector<double>())) 
 		{ 
-			colors.node[0] = temp[0]; 
-			colors.node[1] = temp[1]; 
-			colors.node[2] = temp[2]; 
+			if(temp.size() == 3) 
+			{ 
+				colors.node[0] = temp[0]; 
+				colors.node[1] = temp[1]; 
+				colors.node[2] = temp[2]; 
+			} 
 		} 
-	} 
 
-	if(options.getOption("viewport.wireframe.color",temp, std::vector<double>())) 
-	{ 
-		if(temp.size() == 3) 
+		if(options.getOption("viewport.wireframe.color",temp, std::vector<double>())) 
 		{ 
-			colors.wireframe[0] = temp[0]; 
-			colors.wireframe[1] = temp[1]; 
-			colors.wireframe[2] = temp[2]; 
+			if(temp.size() == 3) 
+			{ 
+				colors.wireframe[0] = temp[0]; 
+				colors.wireframe[1] = temp[1]; 
+				colors.wireframe[2] = temp[2]; 
+			} 
 		} 
-	} 
 
 
-	// set up a helper function
-	#define SET_ELEMENT_COLOR(ELEMENT) { \
+		// set up a helper function
+#define SET_ELEMENT_COLOR(ELEMENT) { \
 	if(options.getOption("viewport.elements."#ELEMENT".color",temp, std::vector<double>())) \
 	{ \
 		if(temp.size() == 3) \
@@ -446,28 +497,28 @@ void MainWindow::loadOptions()
 		} \
 	} }
 
-	// let's set the element colors
-	SET_ELEMENT_COLOR(tetrahedron4);
-	SET_ELEMENT_COLOR(tetrahedron10);
-	SET_ELEMENT_COLOR(hexahedron8);
-	SET_ELEMENT_COLOR(hexahedron27);
+		// let's set the element colors
+		SET_ELEMENT_COLOR(tetrahedron4);
+		SET_ELEMENT_COLOR(tetrahedron10);
+		SET_ELEMENT_COLOR(hexahedron8);
+		SET_ELEMENT_COLOR(hexahedron27);
 
-	#undef SET_ELEMENT_COLOR
+#undef SET_ELEMENT_COLOR
 
-	//TODO add code for the force arrows custom color code
+		//TODO add code for the force arrows custom color code
 	}
 }
 
 
 /*
-Imports a mesh from a mesh document 
-*/
+   Imports a mesh from a mesh document 
+ */
 void MainWindow::importMesh()
 {
 	QStringList files;
 	QFile mesh_file;
 	QFileDialog dialog(this);
-	
+
 	// setup the file dialog
 	dialog.setFileMode(QFileDialog::ExistingFile);
 	dialog.setNameFilter(tr("Mesh files (*.msh)"));
@@ -502,7 +553,7 @@ void MainWindow::importMesh()
 	hasUnsavedChanges = true;
 }
 
-	
+
 void MainWindow::setNodeRestraints()
 {
 	assert(mdiArea != NULL);
@@ -542,11 +593,11 @@ void MainWindow::setNodeActions()
 	{
 		for(std::map<size_t,bool>::iterator it = document.model_selection.nodes.begin(); it != document.model_selection.nodes.end(); it++)
 		{
-		if(it->second == true)
-		{
-			document.model.load_pattern_list[na.getLoadPattern()].addNodalLoad(it->first, na.getForce());
-			document.model.load_pattern_list[na.getLoadPattern()].addNodalDisplacement(it->first, na.getDisplacement());
-		}
+			if(it->second == true)
+			{
+				document.model.load_pattern_list[na.getLoadPattern()].addNodalLoad(it->first, na.getForce());
+				document.model.load_pattern_list[na.getLoadPattern()].addNodalDisplacement(it->first, na.getDisplacement());
+			}
 		}
 	}
 }
@@ -556,20 +607,20 @@ void MainWindow::setDisplayOptions()
 {
 	//TODO make this generic
 	/*
-	DisplayOptionsDialog da(document.model, this);
-	if(da.exec() == QDialog::Accepted)
-	{
-		// set the LoadPattern pointer
-		size_t n = da.getLoadPatternIndex();
-		glWidget->display_options.load_pattern = &document.model.load_pattern_list[n];
+	   DisplayOptionsDialog da(document.model, this);
+	   if(da.exec() == QDialog::Accepted)
+	   {
+	// set the LoadPattern pointer
+	size_t n = da.getLoadPatternIndex();
+	glWidget->display_options.load_pattern = &document.model.load_pattern_list[n];
 
-		// set the other visualization options
-		glWidget->display_options.nodal_forces = da.renderNodalForces();
-		glWidget->display_options.surface_forces = da.renderSurfaceForces();
-		glWidget->display_options.domain_forces = da.renderDomainForces();
-		glWidget->display_options.nodal_displacements = da.renderNodalDisplacements();
+	// set the other visualization options
+	glWidget->display_options.nodal_forces = da.renderNodalForces();
+	glWidget->display_options.surface_forces = da.renderSurfaceForces();
+	glWidget->display_options.domain_forces = da.renderDomainForces();
+	glWidget->display_options.nodal_displacements = da.renderNodalDisplacements();
 	}
-	*/
+	 */
 }
 
 
@@ -630,6 +681,49 @@ void MainWindow::setElementDisplay()
 }
 
 
+void MainWindow::setNodeForcesDisplay()
+{
+	//TODO make this rely on the active window
+	if(mdiArea->activeSubWindow() != NULL)
+	{
+		// mdiArea has an active subwindow
+		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(mdiArea->activeSubWindow()->widget());
+
+		if(mwp == NULL)
+		{
+			qWarning("MainWindow::setNodeForcesDisplay(): no can do");
+			return;
+		}
+
+		// set the new viewport according to the MDI subwindow's widget type
+		switch(mwp->window_type)
+		{
+			case MdiWindowProperties::MWP_Model:
+				{
+					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
+
+					// set the position
+					w->display_options.nodal_forces 	= this->ui.actionShowNodalForces->isChecked()?1:0;
+				}
+				break;
+
+			case MdiWindowProperties::MWP_Displacements:
+				{
+					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
+
+					// set the position
+					w->display_options.nodal_forces 	= this->ui.actionShowNodalForces->isChecked()?1:0;
+				}
+				break;
+
+			default:
+				qWarning("void MainWindow::setNodeForcesDisplay(): unsupported case");
+				break;
+		}
+	}
+}
+
+
 void MainWindow::runAnalysis()
 {
 	using namespace std;
@@ -674,7 +768,7 @@ void MainWindow::runAnalysis()
 	subWindow->setWindowTitle("Displacements");
 
 	glDisplacementsWidget->show();
-	
+
 	emit setMessage(message);
 }
 
@@ -859,6 +953,80 @@ void MainWindow::setTiledWindows()
 void MainWindow::setCascadeWindows()
 {
 	mdiArea->cascadeSubWindows();
+}
+
+
+void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)
+{
+	// qWarning("void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)");
+
+	//TODO finish this
+	if(subwindow == NULL)
+	{
+		// there are no active windows in the workspace
+		//TODO finish this
+	}
+	else
+	{
+		// update the UI accordingly
+		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(subwindow->widget());
+
+		if(mwp == NULL)
+		{
+			qWarning("void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow): failed to access the window's MdiWindoProperties");
+			return;
+		}
+
+		// set the new viewport according to the MDI subwindow's widget type
+		switch(mwp->window_type)
+		{
+			case MdiWindowProperties::MWP_Model:
+				{
+					//qWarning("MWP_Model");
+					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
+
+					// update the UI according to this window's options
+					this->ui.actionDisplayNodes->setChecked(w->display_options.nodes);
+					this->ui.actionDisplaySurfaces->setChecked(w->display_options.surfaces);
+					this->ui.actionDisplayWireframe->setChecked(w->display_options.wireframe);
+
+					// change combo box
+					//TODO set the combo box to the current load pattern
+					this->ui.actionShowNodalDisplacements->setChecked(w->display_options.nodal_displacements);
+					this->ui.actionShowNodalForces->setChecked(w->display_options.nodal_forces);
+					this->ui.actionShowSurfaceForces->setChecked(w->display_options.surface_forces);
+					this->ui.actionShowDomainForces->setChecked(w->display_options.domain_forces);
+
+					//TODO finish this
+				}
+				break;
+
+			case MdiWindowProperties::MWP_Displacements:
+				{
+					//qWarning("MWP_Displacements");
+					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
+
+					// set the position
+					this->ui.actionDisplayNodes->setChecked(w->display_options.nodes);
+					this->ui.actionDisplaySurfaces->setChecked(w->display_options.surfaces);
+					this->ui.actionDisplayWireframe->setChecked(w->display_options.wireframe);
+
+					// change combo box
+					//TODO set the combo box to the current load pattern
+					this->ui.actionShowNodalDisplacements->setChecked(w->display_options.nodal_displacements);
+					this->ui.actionShowNodalForces->setChecked(w->display_options.nodal_forces);
+					this->ui.actionShowSurfaceForces->setChecked(w->display_options.surface_forces);
+					this->ui.actionShowDomainForces->setChecked(w->display_options.domain_forces);
+
+					//TODO finish this
+				}
+				break;
+
+			default:
+				qWarning("void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow): unsupported state");
+				break;
+		}
+	}
 }
 
 

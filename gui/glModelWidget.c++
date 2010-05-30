@@ -85,9 +85,11 @@ void GLModelWidget::paintGL()
 		// render all optional information, if it's enabled
 		if(display_options.load_pattern != NULL)
 		{
+			qWarning("void GLModelWidget::paintGL(): load pattern not null");
 			// render the nodal forces
 			if(display_options.nodal_forces)
 			{
+				qWarning("void GLModelWidget::paintGL(): nodal forces");
 				// set the color
 				for(std::map<size_t,fem::NodalLoad>::iterator i = display_options.load_pattern->nodal_loads.begin(); i != display_options.load_pattern->nodal_loads.end(); i++)
 				{
@@ -100,12 +102,14 @@ void GLModelWidget::paintGL()
 			if(display_options.surface_forces)
 			{
 				//TODO implement this
+				qWarning("void GLModelWidget::paintGL(): surface forces aren't implemented");
 			}
 
 			// render the domain forces
 			if(display_options.domain_forces)
 			{
 				//TODO implement this
+				qWarning("void GLModelWidget::paintGL(): domain forces aren't implemented");
 			}
 
 			// and finally render the nodal displacements 
@@ -118,6 +122,8 @@ void GLModelWidget::paintGL()
 				}
 			}
 		}
+		else
+			qWarning("void GLModelWidget::paintGL(): load pattern null");
 	}
 
 }

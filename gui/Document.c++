@@ -12,8 +12,8 @@
 
 Document::Document()
 {
-    unsaved = false;
-    file_name = NULL;
+	unsaved = false;
+	file_name = NULL;
 }
 
 

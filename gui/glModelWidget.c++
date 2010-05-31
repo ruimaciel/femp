@@ -1054,19 +1054,56 @@ void GLModelWidget::paintWireframe(const fem::Element &element)
 				glColor3fv(colors->wireframe);	
 
 				//TODO set wireframe
+				glBegin(GL_LINE_STRIP);
+				glVertex3dv(nl[0].data);
+				glVertex3dv(nl[1].data);
+				glVertex3dv(nl[2].data);
+				glVertex3dv(nl[0].data);
+
+				glVertex3dv(nl[3].data);
+				glVertex3dv(nl[4].data);
+				glVertex3dv(nl[5].data);
+				glVertex3dv(nl[3].data);
+				glEnd();
+
+				glBegin(GL_LINES);
+				glVertex3dv(nl[1].data);
+				glVertex3dv(nl[4].data);
+				glVertex3dv(nl[2].data);
+				glVertex3dv(nl[5].data);
+				glEnd();
+			}
+			break;
+
+		case fem::Element::FE_PRISM18:
+			{
+				qWarning("void GLModelWidget::paintWireframe(const fem::Element &element): must implement Element::FE_PRISM18");
 				/*
+				// set the node list
+				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
+				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
+
+				// render the wireframe
+				//TODO set color
+				glColor3fv(colors->wireframe);	
+
+				//TODO set wireframe
 				   renderLine3(nl[0], nl[7], nl[3]);
 				   renderLine3(nl[3], nl[9], nl[1]);
 				   renderLine3(nl[1], nl[4], nl[0]);
 				   renderLine3(nl[0], nl[6], nl[2]);
 				   renderLine3(nl[2], nl[5], nl[1]);
 				   renderLine3(nl[2], nl[8], nl[3]);
-				 */
+				  */
 			}
 			break;
 
 		default:
-			//qWarning("error: unknown element type: %d", element.type);
+			qWarning("void GLModelWidget::paintWireframe(const fem::Element &element): unknown element type: %d", element.type);
 			break;
 	}
 	glPopMatrix();

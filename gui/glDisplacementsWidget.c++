@@ -970,6 +970,7 @@ void GLDisplacementsWidget::paintWireframe(const fem::Element &element)
 	std::map<size_t, fem::Node>::iterator n;
 	std::vector<fem::point> nl;	// node list
 	fem::point p;
+	std::map<size_t, fem::Node>::iterator dof;
 	glDisable(GL_LIGHTING); 
 	glPushMatrix();
 
@@ -1115,31 +1116,53 @@ void GLDisplacementsWidget::paintWireframe(const fem::Element &element)
 		case fem::Element::FE_PRISM6:
 			{
 				// set the node list
+
+				for(int i = 0; i < 6; i++)
+				{
+					dof = this->processed_model->displacements_map.find(element.nodes[i]);
+					//TODO draw an arrow
+					if(dof == this->processed_model->displacements_map.end()) 
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second);
+					else
+						nl.push_back(dof->second*displacements_scale + document->model.node_list.find(element.nodes[i])->second);
+				}
+				/*
 				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
+				*/
 
 				// render the wireframe
 				//TODO set color
 				glColor3fv(colors->wireframe);	
 
 				//TODO set wireframe
-				/*
-				   renderLine3(nl[0], nl[7], nl[3]);
-				   renderLine3(nl[3], nl[9], nl[1]);
-				   renderLine3(nl[1], nl[4], nl[0]);
-				   renderLine3(nl[0], nl[6], nl[2]);
-				   renderLine3(nl[2], nl[5], nl[1]);
-				   renderLine3(nl[2], nl[8], nl[3]);
-				 */
+				glBegin(GL_LINE_STRIP);
+				glVertex3dv(nl[0].data);
+				glVertex3dv(nl[1].data);
+				glVertex3dv(nl[2].data);
+				glVertex3dv(nl[0].data);
+
+				glVertex3dv(nl[3].data);
+				glVertex3dv(nl[4].data);
+				glVertex3dv(nl[5].data);
+				glVertex3dv(nl[3].data);
+				glEnd();
+
+				glBegin(GL_LINES);
+				glVertex3dv(nl[1].data);
+				glVertex3dv(nl[4].data);
+				glVertex3dv(nl[2].data);
+				glVertex3dv(nl[5].data);
+				glEnd();
 			}
 			break;
 
 		default:
-			//qWarning("error: unknown element type: %d", element.type);
+			qWarning("void GLDisplacementsWidget::paintWireframe(const fem::Element &element): unknown element type: %d", element.type);
 			break;
 	}
 	glPopMatrix();

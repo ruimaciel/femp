@@ -51,14 +51,8 @@
 
 	"load patterns":[
 		{	"label": "First test pattern",
-		"nodal loads":[
-			{"node":3, "force":[0, 1, 0]},
-			{"node":4, "force":[0, 1, 0]},
-			{"node":7, "force":[0, 1, 0]},
-			{"node":8, "force":[0, 1, 0]}
-		],
 		"domain loads":[
-			{"element":0, "force": [0,1,0]}
+			{"element":0, "force": [0,100,0]}
 			]
 		}
 	]

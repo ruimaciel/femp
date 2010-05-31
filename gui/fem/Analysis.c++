@@ -212,6 +212,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		nnodes = element->node_number();
 
 		f_elem.resize(nnodes*3);
+		f_elem.setZero();
 
 		// as the distribution is linear across the domain then degree 1 is enough
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][ddegree[element->type]].begin(); i != ipwpl[element->family()][ddegree[element->type]].end(); i++)
@@ -297,6 +298,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		cout << "\t\"surface loads progress\": [0";
 		cout.flush();
 	}
+	cout << "\nSurface loads: " << lp.surface_loads.size() << endl;
 	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
 	{
 			// output progress message
@@ -306,6 +308,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		nnodes = surface_load->node_number();
 
 		f_elem.resize(nnodes*3);
+		f_elem.setZero();
+		cout << "\nf_elem original:\n" << f_elem << endl;
 
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[surface_load->family()][degree[surface_load->type]].begin(); i != ipwpl[surface_load->family()][degree[surface_load->type]].end(); i++)
 		{
@@ -320,15 +324,17 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 #define Z(N)	model.node_list[surface_load->nodes[N]].z()
 #define dNdcsi(N) sfd.get<0>()[n]
 #define dNdeta(N) sfd.get<1>()[n]
+			J(0,0) = 1;	J(1,0) = 1;	J(2,0) = 1;
 			for(int n = 0; n < nnodes; n++)
 			{
-				J(1,0) += dNdcsi(n)*X(n);	J(1,1) += dNdcsi(n)*Y(n);
-				J(2,0) += dNdeta(n)*X(n);	J(2,1) += dNdeta(n)*Y(n);
+				J(0,1) += dNdcsi(n)*X(n);	J(1,1) += dNdcsi(n)*Y(n);	J(2,1) += dNdcsi(n)*Z(n);
+				J(0,2) += dNdeta(n)*X(n);	J(1,2) += dNdeta(n)*Y(n);	J(2,2) += dNdeta(n)*Z(n);
 			}
+			cout << "\nJ matrix:\n" << J << endl;
 #undef dNdcsi
 #undef dNdeta
 
-			detJ = J(1,0)*J(2,1) - J(1,1)*J(2,0);
+			detJ = J.determinant();
 			if(detJ <= 0)
 			{
 				cout << "],\n";	// close the stiffness array in order to open an error message and still preserve a valid JSON document
@@ -344,10 +350,11 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 #define W    i->get<1>()
 				// calculate q(csi, eta, zeta)
 			fem::point q;
-			for(int j = 0; j < nnodes; i++)
+			for(int j = 0; j < nnodes; j++)
 			{
 				q += N(j)*surface_load->surface_forces[j];
 			}
+			cout << "\nq: " << q << endl;
 
 			for(int n = 0; n < nnodes; n++)
 			{
@@ -357,8 +364,28 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 				f_elem(3*n+2) += N(n)*q.z()*detJ*W;
 			}
 		}
+		cout << "\nf_elem:\n" << f_elem << endl;
 
-		// TODO add contribution
+			//add the surface load's f_elem contribution to f
+		//for(size_t i = 0; i < model.element_list[domain_load->first].nodes.size(); i++)
+		for(int i = 0; i < nnodes; i++)
+		{
+			dof = lm.find(surface_load->nodes[i]);
+			if(dof == lm.end())
+				continue;	// no degrees of freedom on this node
+			else
+			{
+				size_t n = dof->second.get<0>();
+				if(n != 0)
+					f(n-1) += f_elem(3*i);
+				n = dof->second.get<1>();
+				if(n != 0)
+					f(n-1) += f_elem(3*i+1);
+				n = dof->second.get<2>();
+				if(n != 0)
+					f(n-1) += f_elem(3*i+2);
+			}
+		}
 	}
 	if(verbose)
 		cout << "]," << endl;

@@ -874,7 +874,7 @@ enum Document::Error Document::load()
 
 					state.pop();
 
-					state.push(39);	// DomainLoads
+					state.push(40);	// DomainLoads
 				} 
 				else if (strcmp(cursor.top()->text, "surface loads") == 0) 
 				{
@@ -884,7 +884,7 @@ enum Document::Error Document::load()
 
 					state.pop();
 
-					state.push(35);	// SurfaceLoads
+					state.push(44);	// SurfaceLoads
 				} 
 				else 
 				{

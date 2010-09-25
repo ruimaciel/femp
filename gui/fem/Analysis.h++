@@ -14,12 +14,27 @@
 
 #include "ProcessedModel.h++"
 
+#include "elements/Quadrangle4.h++"
+#include "elements/Quadrangle8.h++"
+#include "elements/Quadrangle9.h++"
+#include "elements/Hexahedron8.h++"
+#include "elements/Hexahedron20.h++"
+#include "elements/Hexahedron27.h++"
+
 
 namespace fem
 {
 
 class Analysis
 {
+	private:
+		Quadrangle4<double> 	quad4;
+		Quadrangle8<double> 	quad8;
+		Quadrangle9<double> 	quad9;
+		Hexahedron8<double> 	hexa8;
+		Hexahedron20<double> 	hexa20;
+		Hexahedron27<double> 	hexa27;
+
 	public:
 		enum Error {	ERR_OK = 0,	// no error
 			ERR_NO_ELEMENTS,
@@ -152,6 +167,12 @@ class Analysis
 		@param element	reference to the element
 		**/
 		void add_elementary_stiffness_to_global(const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element);
+
+
+		const std::vector<double> & getN( const Element::Type &type, const point & p);
+		const std::vector<double> & getdNdcsi( const Element::Type &type, const point & p);
+		const std::vector<double> & getdNdeta( const Element::Type &type, const point & p);
+		const std::vector<double> & getdNdzeta( const Element::Type &type, const point & p);
 
 
 };

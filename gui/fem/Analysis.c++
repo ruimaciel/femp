@@ -218,8 +218,13 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][ddegree[element->type]].begin(); i != ipwpl[element->family()][ddegree[element->type]].end(); i++)
 		{
 				// build the Jacobian
-			sf = shape_function(element->type, i->get<0>() );
-			sfd = shape_function_derivatives(element->type, i->get<0>() );
+			//sf = shape_function(element->type, i->get<0>() );
+			//sfd = shape_function_derivatives(element->type, i->get<0>() );
+			//TODO rewrite this
+			sf = getN(element->type, i->get<0>());
+			sfd.get<0> = getdNdcsi(element->type, i->get<0>());
+			sfd.get<1> = getdNdeta(element->type, i->get<1>());
+			sfd.get<2> = getdNdzeta(element->type, i->get<2>());
 
 				// generate the jacobian
 			J.setZero();
@@ -588,6 +593,30 @@ Analysis::shape_function(const Element::Type type, const fem::point &point)
 	{
 		//TODO FE_TRIANGLEs
 
+		case Element::FE_TRIANGLE3:
+			sf.resize(3);
+			sf[0] = 1-csi-eta;
+			sf[1] = csi;
+			sf[2] = eta;
+			break;
+
+		case Element::FE_TRIANGLE6:
+			{
+			double L[3];
+			L[0] = 1-csi-eta;
+			L[1] = csi;
+			L[2] = eta;
+
+			sf.resize(6);
+			sf[0] = (2*L[0]-1)*L[0];
+			sf[1] = (2*L[1]-1)*L[1];
+			sf[2] = (2*L[2]-1)*L[2];
+			sf[3] = 4*L[0]*L[1];
+			sf[4] = 4*L[1]*L[2];
+			sf[5] = 4*L[0]*L[2];
+			}
+			break;
+
 		case Element::FE_QUADRANGLE4:
 			sf.resize(4);
 			sf[0] = (1-csi)*(1-eta)/4;
@@ -782,6 +811,37 @@ boost::tuple<std::vector<double>, std::vector<double>, std::vector<double> > Ana
 	switch(type)
 	{
 		//TODO FE_TRIANGLEs
+		case Element::FE_TRIANGLE3:
+			dNdcsi.resize(3);
+			dNdcsi[0] = -1;
+			dNdcsi[1] = 1;
+			dNdcsi[2] = 0;
+
+			dNdeta.resize(3);
+			dNdeta[0] = -1;
+			dNdeta[1] = 0;
+			dNdeta[2] = 1;
+			break;
+
+		/*
+		//TODO finish this
+		case Element::FE_TRIANGLE6:
+			{
+			double L[3];
+			L[0] = 1-csi-eta;
+			L[1] = csi;
+			L[2] = eta;
+
+			sf.resize(6);
+			sf[0] = (2*L[0]-1)*L[0];
+			sf[1] = (2*L[1]-1)*L[1];
+			sf[2] = (2*L[2]-1)*L[2];
+			sf[3] = 4*L[0]*L[1];
+			sf[4] = 4*L[1]*L[2];
+			sf[5] = 4*L[0]*L[2];
+			}
+			break;
+			*/
 
 		case Element::FE_QUADRANGLE4:
 			dNdcsi.resize(4);
@@ -1625,6 +1685,140 @@ inline void Analysis::add_elementary_stiffness_to_global(const Eigen::Matrix<dou
 				}
 			}
 		}
+	}
+}
+
+
+const std::vector<double> & Analysis::getN( const Element::Type &type, const point & p)
+{
+	switch(type)
+	{
+		case Element::FE_QUADRANGLE4:
+			return this->quad4.setN(p);
+			break;
+
+		case Element::FE_QUADRANGLE8:
+			return this->quad8.setN(p);
+			break;
+
+		case Element::FE_QUADRANGLE9:
+			return this->quad9.setN(p);
+			break;
+
+		case Element::FE_HEXAHEDRON8:
+			return this->hexa8.setN(p);
+			break;
+
+		case Element::FE_HEXAHEDRON20:
+			return this->hexa20.setN(p);
+			break;
+
+		case Element::FE_HEXAHEDRON27:
+			return this->hexa27.setN(p);
+			break;
+
+		//TODO add remaining elements
+	}
+}
+
+
+
+const std::vector<double> & Analysis::getdNdcsi( const Element::Type &type, const point & p)
+{
+	switch(type)
+	{
+		case Element::FE_QUADRANGLE4:
+			return this->quad4.setdNdcsi(p);
+			break;
+
+		case Element::FE_QUADRANGLE8:
+			return this->quad8.setdNdcsi(p);
+			break;
+
+		case Element::FE_QUADRANGLE9:
+			return this->quad9.setdNdcsi(p);
+			break;
+
+		case Element::FE_HEXAHEDRON8:
+			return this->hexa8.setdNdcsi(p);
+			break;
+
+		case Element::FE_HEXAHEDRON20:
+			return this->hexa20.setdNdcsi(p);
+			break;
+
+		case Element::FE_HEXAHEDRON27:
+			return this->hexa27.setdNdcsi(p);
+			break;
+
+		//TODO add remaining elements
+	}
+}
+
+
+
+const std::vector<double> & Analysis::getdNdeta( const Element::Type &type, const point & p)
+{
+	switch(type)
+	{
+		case Element::FE_QUADRANGLE4:
+			return this->quad4.setdNdeta(p);
+			break;
+
+		case Element::FE_QUADRANGLE8:
+			return this->quad8.setdNdeta(p);
+			break;
+
+		case Element::FE_QUADRANGLE9:
+			return this->quad9.setdNdeta(p);
+			break;
+
+		case Element::FE_HEXAHEDRON8:
+			return this->hexa8.setdNdeta(p);
+			break;
+
+		case Element::FE_HEXAHEDRON20:
+			return this->hexa20.setdNdeta(p);
+			break;
+
+		case Element::FE_HEXAHEDRON27:
+			return this->hexa27.setdNdeta(p);
+			break;
+
+		//TODO add remaining elements
+	}
+}
+
+
+const std::vector<double> & Analysis::getdNdzeta( const Element::Type &type, const point & p)
+{
+	switch(type)
+	{
+		case Element::FE_QUADRANGLE4:
+			return this->quad4.setdNdzeta(p);
+			break;
+
+		case Element::FE_QUADRANGLE8:
+			return this->quad8.setdNdzeta(p);
+			break;
+
+		case Element::FE_QUADRANGLE9:
+			return this->quad9.setdNdzeta(p);
+			break;
+
+		case Element::FE_HEXAHEDRON8:
+			return this->hexa8.setdNdzeta(p);
+			break;
+
+		case Element::FE_HEXAHEDRON20:
+			return this->hexa20.setdNdzeta(p);
+			break;
+
+		case Element::FE_HEXAHEDRON27:
+			return this->hexa27.setdNdzeta(p);
+			break;
+
+		//TODO add remaining elements
 	}
 }
 

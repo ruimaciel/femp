@@ -3,7 +3,6 @@
 - import only the elements which are supported, filter out all other cruft
 - separate designation for the element type supported by the program and those supported by the document format
 
-- acabar funções de forma (fellipa)
 
 - certificar que antes da importação da malha há materiais definidos
 - ao importar a malha, escolher o material a atribuir
@@ -15,3 +14,7 @@
 - MdiArea::subWindowActivate() implica actualizar UI 
 - apontar DisplayOptions::load_pattern para o objecto LoadPattern referido pela toolbar
 - wireframe nos prisms
+- passar a definição de elemento para classes à parte
+- abandonar flex/bison ao escrever um analisador sintático LL para o formato MSH 
+
+- acabar funções de forma (fellipa)

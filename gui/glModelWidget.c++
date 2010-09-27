@@ -53,6 +53,8 @@ GLModelWidget::~GLModelWidget()
 
 void GLModelWidget::paintGL()
 {
+	mylog.setPrefix("GLModelWidget::paintGL()");
+
 	assert(document != NULL);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -100,14 +102,14 @@ void GLModelWidget::paintGL()
 			if(display_options.surface_forces)
 			{
 				//TODO implement this
-				qWarning("void GLModelWidget::paintGL(): surface forces aren't implemented");
+				mylog.message("surface forces aren't implemented");
 			}
 
 			// render the domain forces
 			if(display_options.domain_forces)
 			{
 				//TODO implement this
-				qWarning("void GLModelWidget::paintGL(): domain forces aren't implemented");
+				mylog.message("domain forces aren't implemented");
 			}
 
 			// and finally render the nodal displacements 
@@ -121,9 +123,12 @@ void GLModelWidget::paintGL()
 			}
 		}
 		else
-			qWarning("void GLModelWidget::paintGL(): load pattern null");
+		{
+			mylog.message("load pattern null");
+		}
 	}
 
+	mylog.clearPrefix();
 }
 
 
@@ -705,6 +710,8 @@ void GLModelWidget::paintNode(size_t label, const fem::Node node)
 
 void GLModelWidget::paintElement(const fem::Element &element)
 {
+	mylog.setPrefix("GLModelWidget::paintElement(const fem::Element &element)");
+
 	std::map<size_t, fem::Node>::iterator n;
 	std::vector<fem::point> nl;	// node list
 	fem::point p;
@@ -886,14 +893,24 @@ void GLModelWidget::paintElement(const fem::Element &element)
 
 		default:
 			//qWarning("error: unknown element type: %d", element.type);
+			{
+				//TODO implement varargs
+				QString m;
+				m.sprintf("error: unknown element type: %d", element.type);
+				mylog.message(m);
+			}
 			break;
 	}
 	glPopMatrix();
+
+	mylog.clearPrefix();
 }
 
 
 void GLModelWidget::paintWireframe(const fem::Element &element)
 {
+	mylog.setPrefix("GLModelWidget::paintWireframe(const fem::Element &element)");
+
 	std::map<size_t, fem::Node>::iterator n;
 	std::vector<fem::point> nl;	// node list
 	fem::point p;
@@ -1077,7 +1094,7 @@ void GLModelWidget::paintWireframe(const fem::Element &element)
 
 		case fem::Element::FE_PRISM18:
 			{
-				qWarning("void GLModelWidget::paintWireframe(const fem::Element &element): must implement Element::FE_PRISM18");
+				mylog.message("must implement Element::FE_PRISM18");
 				/*
 				// set the node list
 				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
@@ -1103,11 +1120,17 @@ void GLModelWidget::paintWireframe(const fem::Element &element)
 			break;
 
 		default:
-			qWarning("void GLModelWidget::paintWireframe(const fem::Element &element): unknown element type: %d", element.type);
+			{
+				QString m;
+				m.sprintf("unknown element type: %d", element.type);
+				mylog.message(m);
+			}
 			break;
 	}
 	glPopMatrix();
 	glEnable(GL_LIGHTING);
+
+	mylog.clearPrefix();
 }
 
 

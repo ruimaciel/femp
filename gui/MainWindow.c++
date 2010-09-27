@@ -14,6 +14,8 @@
 #include <string>
 #include <stdlib.h>	// getenv()
 
+#include "Logs.h++"	// declare the global message loggers
+
 #include "NewProjectWizard.h++"
 #include "NodeRestrainsDialog.h++"
 #include "NodeActionsDialog.h++"
@@ -63,6 +65,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 	// set the MainWindow connections
 	connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(updateUiFromActiveMdiSubWindow(QMdiSubWindow*)));
+	connect(&mylog,	SIGNAL(newMessage(QString)),	commandLineDockWidget, SLOT(getMessage(QString)));
 
 	// create actions and connect signals to slots
 	this->createActions();
@@ -163,6 +166,8 @@ void MainWindow::openProject()
 
 void MainWindow::saveProject()
 {
+	mylog.setPrefix("MainWindow::saveProject()");
+	
 	if(document.file_name == NULL)
 	{
 		QFileDialog dialog(this);
@@ -192,12 +197,12 @@ void MainWindow::saveProject()
 			msgBox.setDefaultButton(QMessageBox::No);
 			if(msgBox.exec() == QMessageBox::No)
 			{
-				qWarning("rejected");
+				mylog.message("rejected");
 				delete document.file_name;
 				document.file_name = NULL;
 				return;
 			}
-				qWarning("accepted");
+				mylog.message("accepted");
 		}
 
 		// set a new file name for this file
@@ -205,12 +210,14 @@ void MainWindow::saveProject()
 	}
 	document.save();
 	hasUnsavedChanges = false;
+
+	mylog.clearPrefix();
 }
 
 
 void MainWindow::saveProjectAs()
 {
-	qWarning("MainWindow::saveProjectAs() not yet implemented");
+	mylog.message("MainWindow::saveProjectAs() not yet implemented");
 
 	QFileDialog dialog(this);
 	QStringList sl;
@@ -515,6 +522,8 @@ void MainWindow::loadOptions()
  */
 void MainWindow::importMesh()
 {
+	mylog.setPrefix("MainWindow::importMesh()");
+
 	QStringList files;
 	QFile mesh_file;
 	QFileDialog dialog(this);
@@ -531,7 +540,10 @@ void MainWindow::importMesh()
 		mesh_file.setFileName(files[0]);
 		if(!mesh_file.open(QIODevice::ReadOnly | QIODevice::Text) )
 		{	// failed to open file
-			qWarning("unable to open file %s",qPrintable(mesh_file.fileName()));
+			//TODO implement variadic method to emulate printf()
+			//mylog.message("unable to open file %s" + qPrintable(mesh_file.fileName()));
+			mylog.message("unable to open file");
+
 			QMessageBox msgBox(this);
 			msgBox.setIcon(QMessageBox::Warning);
 			msgBox.setWindowTitle("Error");
@@ -551,6 +563,8 @@ void MainWindow::importMesh()
 	}
 	// now this document has unsaved changes
 	hasUnsavedChanges = true;
+	
+	mylog.clearPrefix();
 }
 
 
@@ -587,7 +601,8 @@ void MainWindow::setNodeRestraints()
 
 void MainWindow::setNodeActions()
 {
-	qWarning("dude");
+	mylog.setPrefix("MainWindow::setNodeActions()");
+
 	NodeActionsDialog na(document.model, this);
 	if(na.exec() == QDialog::Accepted)
 	{
@@ -600,6 +615,8 @@ void MainWindow::setNodeActions()
 			}
 		}
 	}
+
+	mylog.clearPrefix();
 }
 
 
@@ -634,6 +651,7 @@ void MainWindow::editMaterials()
 
 void MainWindow::setElementDisplay()
 {
+	mylog.setPrefix("MainWindow::setElementDisplay()");
 	//TODO make this rely on the active window
 	if(mdiArea->activeSubWindow() != NULL)
 	{
@@ -642,7 +660,7 @@ void MainWindow::setElementDisplay()
 
 		if(mwp == NULL)
 		{
-			qWarning("no can do");
+			mylog.message("no can do");
 			return;
 		}
 
@@ -651,7 +669,7 @@ void MainWindow::setElementDisplay()
 		{
 			case MdiWindowProperties::MWP_Model:
 				{
-					qWarning("MWP_Model");
+					mylog.message("MWP_Model");
 					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
 
 					// set the position
@@ -663,7 +681,7 @@ void MainWindow::setElementDisplay()
 
 			case MdiWindowProperties::MWP_Displacements:
 				{
-					qWarning("MWP_Displacements");
+					mylog.message("MWP_Displacements");
 					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
 
 					// set the position
@@ -674,10 +692,12 @@ void MainWindow::setElementDisplay()
 				break;
 
 			default:
-				qWarning("void MainWindow::setElementDisplay(): unsupported case");
+				mylog.message("void MainWindow::setElementDisplay(): unsupported case");
 				break;
 		}
 	}
+
+	mylog.clearPrefix();
 }
 
 
@@ -691,7 +711,7 @@ void MainWindow::setNodeForcesDisplay()
 
 		if(mwp == NULL)
 		{
-			qWarning("MainWindow::setNodeForcesDisplay(): no can do");
+			mylog.message("MainWindow::setNodeForcesDisplay(): no can do");
 			return;
 		}
 
@@ -717,7 +737,7 @@ void MainWindow::setNodeForcesDisplay()
 				break;
 
 			default:
-				qWarning("void MainWindow::setNodeForcesDisplay(): unsupported case");
+				mylog.message("void MainWindow::setNodeForcesDisplay(): unsupported case");
 				break;
 		}
 	}
@@ -726,9 +746,13 @@ void MainWindow::setNodeForcesDisplay()
 
 void MainWindow::runAnalysis()
 {
+	mylog.setPrefix("MainWindow::runAnalysis()");
+
 	using namespace std;
 
-	emit setMessage("Model analysis: started");
+	//emit setMessage("Model analysis: started");
+	mylog.message("Model analysis: started");
+
 	QString message;
 	QTime time;
 
@@ -744,6 +768,8 @@ void MainWindow::runAnalysis()
 	analysis.run(document.model, document.model.load_pattern_list[0], document.processed_model.back());
 
 	message.sprintf("Model analysis: finished after %d ms", time.elapsed());
+	//TODO implement variadic function
+	mylog.message(message);
 
 	// create the ProcessedModel object
 
@@ -769,7 +795,9 @@ void MainWindow::runAnalysis()
 
 	glDisplacementsWidget->show();
 
-	emit setMessage(message);
+	//emit setMessage(message);
+
+	mylog.clearPrefix();
 }
 
 
@@ -801,7 +829,7 @@ void MainWindow::setViewportXY()
 
 		if(mwp == NULL)
 		{
-			qWarning("no can do");
+			mylog.message("no can do");
 			return;
 		}
 
@@ -810,7 +838,7 @@ void MainWindow::setViewportXY()
 		{
 			case MdiWindowProperties::MWP_Model:
 				{
-					qWarning("MWP_Model");
+					mylog.message("MWP_Model");
 					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
 
 					// set the position
@@ -822,7 +850,7 @@ void MainWindow::setViewportXY()
 
 			case MdiWindowProperties::MWP_Displacements:
 				{
-					qWarning("MWP_Displacements");
+					mylog.message("MWP_Displacements");
 					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
 
 					// set the position
@@ -833,7 +861,7 @@ void MainWindow::setViewportXY()
 				break;
 
 			default:
-				qWarning("void MainWindow::setViewportXY(): unsupported case");
+				mylog.message("void MainWindow::setViewportXY(): unsupported case");
 				break;
 		}
 	}
@@ -850,7 +878,7 @@ void MainWindow::setViewportYZ()
 
 		if(mwp == NULL)
 		{
-			qWarning("MainWindow::setViewportYZ(): casting to MdiWindowProperties has failed");
+			mylog.message("MainWindow::setViewportYZ(): casting to MdiWindowProperties has failed");
 			return;
 		}
 
@@ -859,7 +887,7 @@ void MainWindow::setViewportYZ()
 		{
 			case MdiWindowProperties::MWP_Model:
 				{
-					qWarning("MWP_Model");
+					mylog.message("MWP_Model");
 					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
 
 					// set the position
@@ -871,7 +899,7 @@ void MainWindow::setViewportYZ()
 
 			case MdiWindowProperties::MWP_Displacements:
 				{
-					qWarning("MWP_Displacements");
+					mylog.message("MWP_Displacements");
 					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
 
 					// set the position
@@ -882,7 +910,7 @@ void MainWindow::setViewportYZ()
 				break;
 
 			default:
-				qWarning("void MainWindow::setViewportXY(): unsupported case");
+				mylog.message("void MainWindow::setViewportXY(): unsupported case");
 				break;
 		}
 	}
@@ -899,7 +927,7 @@ void MainWindow::setViewportXZ()
 
 		if(mwp == NULL)
 		{
-			qWarning("MainWindow::setViewportXZ(): casting to MdiWindowProperties has failed");
+			mylog.message("MainWindow::setViewportXZ(): casting to MdiWindowProperties has failed");
 			return;
 		}
 
@@ -908,7 +936,7 @@ void MainWindow::setViewportXZ()
 		{
 			case MdiWindowProperties::MWP_Model:
 				{
-					qWarning("MWP_Model");
+					mylog.message("MWP_Model");
 					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
 
 					// set the view angle
@@ -920,7 +948,7 @@ void MainWindow::setViewportXZ()
 
 			case MdiWindowProperties::MWP_Displacements:
 				{
-					qWarning("MWP_Displacements");
+					mylog.message("MWP_Displacements");
 					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
 
 					// set the view angle
@@ -931,7 +959,7 @@ void MainWindow::setViewportXZ()
 				break;
 
 			default:
-				qWarning("void MainWindow::setViewportXZ(): unsupported case");
+				mylog.message("void MainWindow::setViewportXZ(): unsupported case");
 				break;
 		}
 	}
@@ -940,7 +968,9 @@ void MainWindow::setViewportXZ()
 
 void MainWindow::setViewportIso()
 {
-	qWarning("MainWindow::setViewportIso(): needs to be implemented");
+	mylog.setPrefix("MainWindow::setViewportIso()");
+	mylog.message("MainWindow::setViewportIso(): needs to be implemented");
+	mylog.clearPrefix();
 }
 
 
@@ -958,7 +988,7 @@ void MainWindow::setCascadeWindows()
 
 void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)
 {
-	// qWarning("void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)");
+	mylog.setPrefix("MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)");
 
 	//TODO finish this
 	if(subwindow == NULL)
@@ -973,7 +1003,7 @@ void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)
 
 		if(mwp == NULL)
 		{
-			qWarning("void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow): failed to access the window's MdiWindoProperties");
+			mylog.message("void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow): failed to access the window's MdiWindoProperties");
 			return;
 		}
 
@@ -982,7 +1012,7 @@ void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)
 		{
 			case MdiWindowProperties::MWP_Model:
 				{
-					//qWarning("MWP_Model");
+					//mylog.message("MWP_Model");
 					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
 
 					// update the UI according to this window's options
@@ -1003,7 +1033,7 @@ void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)
 
 			case MdiWindowProperties::MWP_Displacements:
 				{
-					//qWarning("MWP_Displacements");
+					//mylog.message("MWP_Displacements");
 					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
 
 					// set the position
@@ -1023,15 +1053,18 @@ void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)
 				break;
 
 			default:
-				qWarning("void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow): unsupported state");
+				mylog.message("void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow): unsupported state");
 				break;
 		}
 	}
+	mylog.clearPrefix();
 }
 
 
-void MainWindow::setUserInterfaceAsOpened()	
+void MainWindow::setUserInterfaceAsOpened()
 {
+	mylog.setPrefix("MainWindow::setUserInterfaceAsOpened()");
+
 	// set the menus
 	ui.menuProject->setEnabled(true);
 	ui.menuView->setEnabled(true);
@@ -1073,6 +1106,8 @@ void MainWindow::setUserInterfaceAsOpened()
 
 	// set the docks
 	this->addDockWidget(static_cast<Qt::DockWidgetArea>(8), commandLineDockWidget);
+
+	mylog.clearPrefix();
 }
 
 

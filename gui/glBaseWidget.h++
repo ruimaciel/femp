@@ -4,6 +4,8 @@
 
 #include <QGLWidget>
 
+#include "Logs.h++"
+
 #include "Document.h++"
 #include "Camera.h++"
 #include "ViewportColors.h++"

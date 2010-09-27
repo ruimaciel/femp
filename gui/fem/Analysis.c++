@@ -77,27 +77,10 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	}
 
 		// generate stiffness matrix by cycling through all elements in the model
-		//TODO fix progress indicator
-#define UPDATE_PROGRESS(component) if(verbose) \
-		{ \
-			if(pi % (component.size()/10+1) == 0) \
-			{ \
-				cout << "," << pi / (component.size()/10+1)+1; \
-				cout.flush(); \
-			} \
-			pi++; \
-		} 
 
-	if(verbose)
-	{
-		pi = 0;
-		cout << "\t\"stiffness matrix progress\": [0";	
-		cout.flush();
-	}
 	for(std::vector<Element>::iterator element = model.element_list.begin(); element != model.element_list.end(); element++)
 	{
 			// output
-		UPDATE_PROGRESS(model.element_list);
 
 			// get the number of expected nodes used by the current element type
 		nnodes = element->node_number();
@@ -192,23 +175,11 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			// add elementary stiffness matrix to the global stiffness matrix 
 		add_elementary_stiffness_to_global(k_elem, lm, *element);
 	}
-	if(verbose)
-		cout << "]," << endl;
-
 
 		// now set up the equivalent forces vector
 	// set nodal force contribution made by the domain loads
-	if(verbose)
-	{
-		pi = 0;
-		cout << "\t\"domain loads progress\": [0";	
-		cout.flush();
-	}
 	for(std::map<size_t,fem::DomainLoad>::const_iterator domain_load = lp.domain_loads.begin(); domain_load != lp.domain_loads.end(); domain_load++)
 	{
-		// output progress message
-		UPDATE_PROGRESS(lp.domain_loads);
-
 		fem::Element *element;
 		element = &model.element_list[domain_load->first];
 		nnodes = element->node_number();
@@ -286,23 +257,12 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			}
 		}
 	}
-	if(verbose)
-		cout << "]," << endl;
 
 		// integrate the surface loads
 	//TODO finish this
-	if(verbose)
-	{
-		pi = 0;
-		cout << "\t\"surface loads progress\": [0";
-		cout.flush();
-	}
 	cout << "\nSurface loads: " << lp.surface_loads.size() << endl;
 	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
 	{
-			// output progress message
-		UPDATE_PROGRESS(lp.surface_loads);
-
 		//TODO
 		nnodes = surface_load->node_number();
 
@@ -383,21 +343,10 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			}
 		}
 	}
-	if(verbose)
-		cout << "]," << endl;
 
 	// set nodal forces
-	if(verbose)
-	{
-		pi = 0;
-		cout << "\t\"nodal loads progress\": [0";
-		cout.flush();
-	}
 	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
 	{
-			// output progress message
-		UPDATE_PROGRESS(lp.nodal_loads);
-
 		size_t n;
 		n = nodal_load->first;
 
@@ -409,8 +358,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		if(lm[n].get<2>() != 0)
 			f[lm[n].get<2>()-1] += nodal_load->second.z();
 	}
-	if(verbose)
-		cout << "]," << endl;
 
 	//DEBUG
 	//cout << "K[" << k.rows() << ", " << k.cols() << "]" << endl;

@@ -1,6 +1,7 @@
 #include "glBaseWidget.h++"
 
 
+
 GLBaseWidget::GLBaseWidget(Document *document, QWidget *parent)
 	: QGLWidget(parent)
 {
@@ -169,12 +170,18 @@ void GLBaseWidget::setZRotation(int angle)
 
 void GLBaseWidget::setPosition(int x, int y)
 {
+	mylog.setPrefix("GLBaseWidget::setPosition(int x, int y)");
 	//TODO implement this
 	camera.pos.x(-x);
 	camera.pos.y(-y);
 	//camera.pos.z(amount/100.0f);
-	qWarning("pos: %f, %f, %f",camera.pos.x(), camera.pos.y(), camera.pos.z());
+	//qWarning("pos: %f, %f, %f",camera.pos.x(), camera.pos.y(), camera.pos.z());
+	QString m;
+	mylog.message(m.sprintf("pos: %f, %f, %f",camera.pos.x(), camera.pos.y(), camera.pos.z()));
+
 	updateGL();
+
+	mylog.clearPrefix();
 }
 
 

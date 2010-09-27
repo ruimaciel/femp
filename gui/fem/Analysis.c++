@@ -3,6 +3,8 @@
 #include <Eigen/Sparse>
 #include <Eigen/LU>
 
+#include "../Logs.h++"
+
 
 namespace fem
 {
@@ -31,6 +33,8 @@ Analysis::~Analysis()
 
 enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPattern &lp, bool verbose)
 {
+	mylog.setPrefix("Analysis::build_fem_equation()");
+
 	using namespace std;
 	using namespace Eigen;
 
@@ -78,6 +82,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 
 		// generate stiffness matrix by cycling through all elements in the model
 
+	mylog.message("Beginning stiffness matrix");
 	for(std::vector<Element>::iterator element = model.element_list.begin(); element != model.element_list.end(); element++)
 	{
 			// output
@@ -96,7 +101,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		f_elem.setZero();
 		B.setZero();
 
-		std::cout << "Beginning element stiffness" << std::endl;
+		mylog.message("Beginning element stiffness");
 
 			// build the element stiffness matrix: cycle through the number of integration points
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][degree[element->type]].begin(); i != ipwpl[element->family()][degree[element->type]].end(); i++)
@@ -126,10 +131,10 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 				// return error if we stumble on a negative determinant
 			if(detJ <= 0)
 			{
-				cout << "],\n";	// close the stiffness array in order to open an error message and still preserve a valid JSON document
-				cout << "\t\"error\": \"stumbled on a negative determinant on element " << distance(model.element_list.begin(), element) << "\"\n";
-				cout << "}\n";
-				// quit
+				QString m;
+				m.sprintf("stumbled on a negative determinant on element %ld", distance(model.element_list.begin(), element));
+				mylog.message(m);
+				
 				return ERR_NEGATIVE_DETERMINANT;
 			}
 
@@ -212,9 +217,10 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			detJ = J.determinant();
 			if(detJ <= 0)
 			{
-				cout << "],\n";	// close the stiffness array in order to open an error message and still preserve a valid JSON document
-				cout << "\t\"error\": \"stumbled on a negative determinant on element " << domain_load->first << "\"\n";
-				cout << "}\n";
+				QString m;
+				m.sprintf("stumbled on a negative determinant on element %ld", domain_load->first);
+				mylog.message(m);
+
 				// quit
 				return ERR_NEGATIVE_DETERMINANT;
 			}
@@ -260,7 +266,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 
 		// integrate the surface loads
 	//TODO finish this
-	cout << "\nSurface loads: " << lp.surface_loads.size() << endl;
+	mylog.message("Surface loads");
+
 	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
 	{
 		//TODO
@@ -268,7 +275,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 
 		f_elem.resize(nnodes*3);
 		f_elem.setZero();
-		cout << "\nf_elem original:\n" << f_elem << endl;
 
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[surface_load->family()][degree[surface_load->type]].begin(); i != ipwpl[surface_load->family()][degree[surface_load->type]].end(); i++)
 		{
@@ -293,9 +299,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			detJ = J.determinant();
 			if(detJ <= 0)
 			{
-				cout << "],\n";	// close the stiffness array in order to open an error message and still preserve a valid JSON document
-				cout << "\t\"error\": \"stumbled on a negative determinant on surface " << "\"\n";
-				cout << "}\n";
+				mylog.message("stumbled on a negative determinant on the surface load");
+
 				// quit
 				return ERR_NEGATIVE_DETERMINANT;
 			}
@@ -310,7 +315,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			{
 				q += N(j)*surface_load->surface_forces[j];
 			}
-			cout << "\nq: " << q << endl;
+			
+			//cout << "\nq: " << q << endl;
 
 			for(int n = 0; n < nnodes; n++)
 			{
@@ -345,6 +351,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	}
 
 	// set nodal forces
+	mylog.message("Nodal loads");
 	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
 	{
 		size_t n;
@@ -362,6 +369,10 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	//DEBUG
 	//cout << "K[" << k.rows() << ", " << k.cols() << "]" << endl;
 	
+	mylog.message("Finished building FEM equation");
+
+	mylog.clearPrefix();
+
 	// fem equation is set.
 	return ERR_OK;
 }

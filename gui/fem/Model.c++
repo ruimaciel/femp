@@ -61,8 +61,8 @@ void Model::pushElement(fem::Element::Type type, std::vector<size_t> nodes)
 {
 	fem::Element e;
 	e.set(type,nodes);
-	e.material = default_material;
-	this->element_list.push_back(e);
+
+	this->pushElement(e);
 }
 
 

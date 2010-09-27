@@ -62,7 +62,10 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 
 		//TODO get a separate function to return the shape function
 	std::vector<double>	sf;	// shape function
-	boost::tuple< std::vector<double>, std::vector<double>,std::vector<double> > sfd;	// tuple: dNdcsi, dNdeta, dNdzeta
+	std::vector<double>	dNdcsi;
+	std::vector<double>	dNdeta;
+	std::vector<double>	dNdzeta;
+
 	int nnodes;	// number of nodes
 	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
 
@@ -110,27 +113,30 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		f_elem.setZero();
 		B.setZero();
 
+		std::cout << "Beginning element stiffness" << std::endl;
+
 			// build the element stiffness matrix: cycle through the number of integration points
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][degree[element->type]].begin(); i != ipwpl[element->family()][degree[element->type]].end(); i++)
 		{
 #define X(N) model.node_list[element->nodes[N]].x()
 #define Y(N) model.node_list[element->nodes[N]].y()
 #define Z(N) model.node_list[element->nodes[N]].z()
-#define dNdcsi(N) sfd.get<0>()[n]
-#define dNdeta(N) sfd.get<1>()[n]
-#define dNdzeta(N) sfd.get<2>()[n]
 
 				// get the shape function and it's partial derivatives for this integration point
-			sfd = this->shape_function_derivatives(element->type, i->get<0>() );
+			dNdcsi = getdNdcsi(element->type, i->get<0>() );
+			dNdeta = getdNdeta(element->type, i->get<0>() );
+			dNdzeta = getdNdzeta(element->type, i->get<0>() );
 
 				// generate the jacobian
 			J.setZero();
 			for(int n = 0; n < nnodes; n++)
 			{
-				J(0,0) += dNdcsi(n)*X(n);	J(0,1) += dNdcsi(n)*Y(n);	J(0,2) += dNdcsi(n)*Z(n);
-				J(1,0) += dNdeta(n)*X(n);	J(1,1) += dNdeta(n)*Y(n);	J(1,2) += dNdeta(n)*Z(n);
-				J(2,0) += dNdzeta(n)*X(n);	J(2,1) += dNdzeta(n)*Y(n);	J(2,2) += dNdzeta(n)*Z(n);
+				J(0,0) += dNdcsi[n]*X(n);	J(0,1) += dNdcsi[n]*Y(n);	J(0,2) += dNdcsi[n]*Z(n);
+				J(1,0) += dNdeta[n]*X(n);	J(1,1) += dNdeta[n]*Y(n);	J(1,2) += dNdeta[n]*Z(n);
+				J(2,0) += dNdzeta[n]*X(n);	J(2,1) += dNdzeta[n]*Y(n);	J(2,2) += dNdzeta[n]*Z(n);
 			}
+
+			std::cout << "J:\n" << J << "\n" << endl;
 
 			detJ = J.determinant();
 
@@ -154,9 +160,9 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 #undef X
 #undef Y
 #undef Z
-#define dNdx invJ(0,0)*dNdcsi(n) + invJ(0,1)*dNdeta(n) + invJ(0,2)*dNdzeta(n)
-#define dNdy invJ(1,0)*dNdcsi(n) + invJ(1,1)*dNdeta(n) + invJ(1,2)*dNdzeta(n)
-#define dNdz invJ(2,0)*dNdcsi(n) + invJ(2,1)*dNdeta(n) + invJ(2,2)*dNdzeta(n)
+#define dNdx invJ(0,0)*dNdcsi[n] + invJ(0,1)*dNdeta[n] + invJ(0,2)*dNdzeta[n]
+#define dNdy invJ(1,0)*dNdcsi[n] + invJ(1,1)*dNdeta[n] + invJ(1,2)*dNdzeta[n]
+#define dNdz invJ(2,0)*dNdcsi[n] + invJ(2,1)*dNdeta[n] + invJ(2,2)*dNdzeta[n]
 
 				// set the current node portion of the B matrix
 				B(0,3*n)	= dNdx;
@@ -170,10 +176,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 #undef dNdx
 #undef dNdy
 #undef dNdz
-
-#undef dNdcsi
-#undef dNdeta
-#undef dNdzeta
 			}
 
 			// having done the legwork, let's build up the elementary stiffness matrix and equivalent nodal force vector
@@ -218,31 +220,23 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][ddegree[element->type]].begin(); i != ipwpl[element->family()][ddegree[element->type]].end(); i++)
 		{
 				// build the Jacobian
-			//sf = shape_function(element->type, i->get<0>() );
-			//sfd = shape_function_derivatives(element->type, i->get<0>() );
 			//TODO rewrite this
 			sf = getN(element->type, i->get<0>());
-			sfd.get<0> = getdNdcsi(element->type, i->get<0>());
-			sfd.get<1> = getdNdeta(element->type, i->get<1>());
-			sfd.get<2> = getdNdzeta(element->type, i->get<2>());
+			dNdcsi = getdNdcsi(element->type, i->get<0>() );
+			dNdeta = getdNdeta(element->type, i->get<0>() );
+			dNdzeta = getdNdzeta(element->type, i->get<0>() );
 
 				// generate the jacobian
 			J.setZero();
 #define X(N)	model.node_list[element->nodes[N]].x()
 #define Y(N)	model.node_list[element->nodes[N]].y()
 #define Z(N)	model.node_list[element->nodes[N]].z()
-#define dNdcsi(N) sfd.get<0>()[n]
-#define dNdeta(N) sfd.get<1>()[n]
-#define dNdzeta(N) sfd.get<2>()[n]
 			for(int n = 0; n < nnodes; n++)
 			{
-				J(0,0) += dNdcsi(n)*X(n);	J(0,1) += dNdcsi(n)*Y(n);	J(0,2) += dNdcsi(n)*Z(n);
-				J(1,0) += dNdeta(n)*X(n);	J(1,1) += dNdeta(n)*Y(n);	J(1,2) += dNdeta(n)*Z(n);
-				J(2,0) += dNdzeta(n)*X(n);	J(2,1) += dNdzeta(n)*Y(n);	J(2,2) += dNdzeta(n)*Z(n);
+				J(0,0) += dNdcsi[n]*X(n);	J(0,1) += dNdcsi[n]*Y(n);	J(0,2) += dNdcsi[n]*Z(n);
+				J(1,0) += dNdeta[n]*X(n);	J(1,1) += dNdeta[n]*Y(n);	J(1,2) += dNdeta[n]*Z(n);
+				J(2,0) += dNdzeta[n]*X(n);	J(2,1) += dNdzeta[n]*Y(n);	J(2,2) += dNdzeta[n]*Z(n);
 			}
-#undef dNdcsi
-#undef dNdeta
-#undef dNdzeta
 
 			detJ = J.determinant();
 			if(detJ <= 0)
@@ -319,25 +313,22 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[surface_load->family()][degree[surface_load->type]].begin(); i != ipwpl[surface_load->family()][degree[surface_load->type]].end(); i++)
 		{
 				// get shape function and shape function derivatives in this integration point's coordinate
-			sf = shape_function(surface_load->type, i->get<0>() );
-			sfd = shape_function_derivatives(surface_load->type, i->get<0>() );
+			sf = getN(surface_load->type, i->get<0>() );
+			dNdcsi = getdNdcsi(surface_load->type, i->get<0>() );
+			dNdeta = getdNdeta(surface_load->type, i->get<0>() );
 
 				// calculate the Jacobian
 			J.setZero();
 #define X(N)	model.node_list[surface_load->nodes[N]].x()
 #define Y(N)	model.node_list[surface_load->nodes[N]].y()
 #define Z(N)	model.node_list[surface_load->nodes[N]].z()
-#define dNdcsi(N) sfd.get<0>()[n]
-#define dNdeta(N) sfd.get<1>()[n]
 			J(0,0) = 1;	J(1,0) = 1;	J(2,0) = 1;
 			for(int n = 0; n < nnodes; n++)
 			{
-				J(0,1) += dNdcsi(n)*X(n);	J(1,1) += dNdcsi(n)*Y(n);	J(2,1) += dNdcsi(n)*Z(n);
-				J(0,2) += dNdeta(n)*X(n);	J(1,2) += dNdeta(n)*Y(n);	J(2,2) += dNdeta(n)*Z(n);
+				J(0,1) += dNdcsi[n]*X(n);	J(1,1) += dNdcsi[n]*Y(n);	J(2,1) += dNdcsi[n]*Z(n);
+				J(0,2) += dNdeta[n]*X(n);	J(1,2) += dNdeta[n]*Y(n);	J(2,2) += dNdeta[n]*Z(n);
 			}
 			cout << "\nJ matrix:\n" << J << endl;
-#undef dNdcsi
-#undef dNdeta
 
 			detJ = J.determinant();
 			if(detJ <= 0)
@@ -572,685 +563,6 @@ void Analysis::gauleg(double x[], double w[], int n)
 		w[i-1]=2.0/((1.0-z*z)*pp*pp); /* Compute the weight             */
 		w[n-i]=w[i-1];                 /* and its symmetric counterpart. */
 	}
-}
-
-
-	std::vector<double> 
-Analysis::shape_function(const Element::Type type, const fem::point &point)
-{
-	using namespace boost;
-	using namespace std;
-
-	vector<double> sf;	// shape function derivatives weights 
-
-	// declare a set of macros to make the code more readable
-#define csi point.data[0]
-#define eta point.data[1]
-#define zeta point.data[2]
-
-	// let's fill in the vectors
-	switch(type)
-	{
-		//TODO FE_TRIANGLEs
-
-		case Element::FE_TRIANGLE3:
-			sf.resize(3);
-			sf[0] = 1-csi-eta;
-			sf[1] = csi;
-			sf[2] = eta;
-			break;
-
-		case Element::FE_TRIANGLE6:
-			{
-			double L[3];
-			L[0] = 1-csi-eta;
-			L[1] = csi;
-			L[2] = eta;
-
-			sf.resize(6);
-			sf[0] = (2*L[0]-1)*L[0];
-			sf[1] = (2*L[1]-1)*L[1];
-			sf[2] = (2*L[2]-1)*L[2];
-			sf[3] = 4*L[0]*L[1];
-			sf[4] = 4*L[1]*L[2];
-			sf[5] = 4*L[0]*L[2];
-			}
-			break;
-
-		case Element::FE_QUADRANGLE4:
-			sf.resize(4);
-			sf[0] = (1-csi)*(1-eta)/4;
-			sf[1] = (1+csi)*(1-eta)/4;
-			sf[2] = (1+csi)*(1+eta)/4;
-			sf[3] = (1-csi)*(1+eta)/4;
-			break;
-
-		case Element::FE_QUADRANGLE9:
-			sf.resize(9);
-			sf[0] = (csi-1)*csi*(eta-1)*eta/4;
-			sf[1] = csi*(csi+1)*(eta-1)*eta/4;
-			sf[2] = csi*(csi+1)*eta*(eta+1)/4;
-			sf[3] = (csi-1)*csi*eta*(eta+1)/4;
-			sf[4] = (1-csi)*(csi+1)*(eta-1)*eta/2;
-			sf[5] = csi*(csi+1)*(1-eta)*(eta+1)/2;
-			sf[6] = (1-csi)*(csi+1)*eta*(eta+1)/2;
-			sf[7] = (csi-1)*csi*(1-eta)*(eta+1)/2;
-			break;
-
-		case Element::FE_TETRAHEDRON4:
-			sf.resize(4);
-			sf[0] = 1-csi-eta-zeta;
-			sf[1] = csi;
-			sf[2] = eta;
-			sf[3] = zeta;
-			break;
-
-		
-		case Element::FE_TETRAHEDRON10:
-			{
-				double L[4];
-				L[0] = 1-csi-eta-zeta;
-				L[1] = csi;
-				L[2] = eta;
-				L[3] = zeta;
-			
-				sf.resize(10);
-				sf[0] = (2*L[0]-1)*L[0];
-				sf[1] = (2*L[1]-1)*L[1];
-				sf[2] = (2*L[2]-1)*L[2];
-				sf[3] = (2*L[3]-1)*L[3];
-				sf[4] = 4*L[0]*L[1];
-				sf[5] = 4*L[1]*L[2];
-				sf[6] = 4*L[0]*L[2];
-				sf[7] = 4*L[0]*L[3];
-				sf[8] = 4*L[2]*L[3];
-				sf[9] = 4*L[1]*L[3];
-			}
-			break;
-
-		case Element::FE_TETRAHEDRON20:
-			{
-				double L[4];
-				L[0] = 1-csi-eta-zeta;
-				L[1] = csi;
-				L[2] = eta;
-				L[3] = zeta;
-			
-				sf.resize(10);
-				sf[0] = (2*L[0]-1)*L[0];
-				sf[1] = (2*L[1]-1)*L[1];
-				sf[2] = (2*L[2]-1)*L[2];
-				sf[3] = (2*L[3]-1)*L[3];
-				sf[4] = 4*L[0]*L[1];
-				sf[5] = 4*L[1]*L[2];
-				sf[6] = 4*L[0]*L[2];
-				sf[7] = 4*L[0]*L[3];
-				sf[8] = 4*L[2]*L[3];
-				sf[9] = 4*L[1]*L[3];
-				sf[10] = (2*L[0]-1)*L[0];
-				sf[11] = (2*L[1]-1)*L[1];
-				sf[12] = (2*L[2]-1)*L[2];
-				sf[13] = (2*L[3]-1)*L[3];
-				sf[14] = 4*L[0]*L[1];
-				sf[15] = 4*L[1]*L[2];
-				sf[16] = 4*L[0]*L[2];
-				sf[17] = 4*L[0]*L[3];
-				sf[18] = 4*L[2]*L[3];
-				sf[19] = 4*L[1]*L[3];
-			}
-			break;
-
-		case Element::FE_HEXAHEDRON8:
-			sf.resize(8);
-			sf[0] = (1-csi)*(1-eta)*(1-zeta)/8;
-			sf[1] = (csi+1)*(1-eta)*(1-zeta)/8;
-			sf[2] = (csi+1)*(eta+1)*(1-zeta)/8;
-			sf[3] = (1-csi)*(eta+1)*(1-zeta)/8;
-			sf[4] = (1-csi)*(1-eta)*(zeta+1)/8;
-			sf[5] = (csi+1)*(1-eta)*(zeta+1)/8;
-			sf[6] = (csi+1)*(eta+1)*(zeta+1)/8;
-			sf[7] = (1-csi)*(eta+1)*(zeta+1)/8;
-			break;
-
-		case Element::FE_HEXAHEDRON20:
-			sf[ 0] = (1-csi)*(1-eta)*(1-zeta)*(-zeta-eta-csi-2)/8;
-			sf[ 1] = (csi+1)*(1-eta)*(1-zeta)*(-zeta-eta+csi-2)/8;
-			sf[ 2] = (csi+1)*(eta+1)*(1-zeta)*(-zeta+eta+csi-2)/8;
-			sf[ 3] = (1-csi)*(eta+1)*(1-zeta)*(-zeta+eta-csi-2)/8;
-			sf[ 4] = (1-csi)*(1-eta)*(zeta+1)*(zeta-eta-csi-2)/8;
-			sf[ 5] = (csi+1)*(1-eta)*(zeta+1)*(zeta-eta+csi-2)/8;
-			sf[ 6] = (csi+1)*(eta+1)*(zeta+1)*(zeta+eta+csi-2)/8;
-			sf[ 7] = (1-csi)*(eta+1)*(zeta+1)*(zeta+eta-csi-2)/8;
-			sf[ 8] = (1-csi*csi)*(1-eta)*(1-zeta)/4;
-			sf[ 9] = (1-csi)*(1-eta*eta)*(1-zeta)/4;
-			sf[10] = (1-csi)*(1-eta)*(1-zeta*zeta)/4;
-			sf[11] = (csi+1)*(1-eta*eta)*(1-zeta)/4;
-			sf[12] = (csi+1)*(1-eta)*(1-zeta*zeta)/4;
-			sf[13] = (1-csi*csi)*(eta+1)*(1-zeta)/4;
-			sf[14] = (csi+1)*(eta+1)*(1-zeta*zeta)/4;
-			sf[15] = (1-csi)*(eta+1)*(1-zeta*zeta)/4;
-			sf[16] = (1-csi*csi)*(1-eta)*(zeta+1)/4;
-			sf[17] = (1-csi)*(1-eta*eta)*(zeta+1)/4;
-			sf[18] = (csi+1)*(1-eta*eta)*(zeta+1)/4;
-			sf[19] = (1-csi*csi)*(eta+1)*(zeta+1)/4;
-			break;
-
-		case Element::FE_HEXAHEDRON27:
-			// sf
-			sf.resize(27);
-			sf[ 0] = (csi-1)*csi*(eta-1)*eta*(zeta-1)*zeta/8;
-			sf[ 1] = csi*(csi+1)*(eta-1)*eta*(zeta-1)*zeta/8;
-			sf[ 2] = csi*(csi+1)*eta*(eta+1)*(zeta-1)*zeta/8;
-			sf[ 3] = (csi-1)*csi*eta*(eta+1)*(zeta-1)*zeta/8;
-			sf[ 4] = (csi-1)*csi*(eta-1)*eta*zeta*(zeta+1)/8;
-			sf[ 5] = csi*(csi+1)*(eta-1)*eta*zeta*(zeta+1)/8;
-			sf[ 6] = csi*(csi+1)*eta*(eta+1)*zeta*(zeta+1)/8;
-			sf[ 7] = (csi-1)*csi*eta*(eta+1)*zeta*(zeta+1)/8;
-			sf[ 8] = -(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)*zeta/4;
-			sf[ 9] = -(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
-			sf[10] = -(csi-1)*csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
-			sf[11] = -csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
-			sf[12] = -csi*(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
-			sf[13] = -(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)*zeta/4;
-			sf[14] = -csi*(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
-			sf[15] = -(csi-1)*csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
-			sf[16] = -(csi-1)*(csi+1)*(eta-1)*eta*zeta*(zeta+1)/4;
-			sf[17] = -(csi-1)*csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
-			sf[18] = -csi*(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
-			sf[19] = -(csi-1)*(csi+1)*eta*(eta+1)*zeta*(zeta+1)/4;
-			sf[20] = (csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2;
-			sf[21] = (csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2;
-			sf[22] = (csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
-			sf[23] = csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
-			sf[24] = (csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2;
-			sf[25] = (csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2;
-			sf[26] = -(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1);
-			break;
-
-		case Element::FE_PRISM6:
-			double L[3];
-			L[0] = 1-csi-eta;
-			L[1] = csi;
-			L[2] = eta;
-
-			sf.resize(6);
-			sf[ 0] = L[0]*(1-zeta)/2.0;
-			sf[ 1] = L[1]*(1-zeta)/2.0;
-			sf[ 2] = L[2]*(1-zeta)/2.0;
-			sf[ 3] = L[0]*(1+zeta)/2.0;
-			sf[ 4] = L[1]*(1+zeta)/2.0;
-			sf[ 5] = L[2]*(1+zeta)/2.0;
-			break;
-
-		default:
-			//TODO this part should never be reached
-			assert(false);
-			break;
-	}
-#undef csi
-#undef eta
-#undef zeta
-
-	return sf;
-}
-
-
-boost::tuple<std::vector<double>, std::vector<double>, std::vector<double> > Analysis::shape_function_derivatives(const Element::Type type, const fem::point &point)
-{
-	using namespace boost;
-	using namespace std;
-	tuple<vector<double>, vector<double>, vector<double> > sfd;	// shape function derivatives tuple
-	vector<double> dNdcsi, dNdeta, dNdzeta;	// shape function derivatives weights 
-
-	// declare a set of macros to make the code more readable
-#define csi point.data[0]
-#define eta point.data[1]
-#define zeta point.data[2]
-
-	// let's fill in the vectors
-	switch(type)
-	{
-		//TODO FE_TRIANGLEs
-		case Element::FE_TRIANGLE3:
-			dNdcsi.resize(3);
-			dNdcsi[0] = -1;
-			dNdcsi[1] = 1;
-			dNdcsi[2] = 0;
-
-			dNdeta.resize(3);
-			dNdeta[0] = -1;
-			dNdeta[1] = 0;
-			dNdeta[2] = 1;
-			break;
-
-		/*
-		//TODO finish this
-		case Element::FE_TRIANGLE6:
-			{
-			double L[3];
-			L[0] = 1-csi-eta;
-			L[1] = csi;
-			L[2] = eta;
-
-			sf.resize(6);
-			sf[0] = (2*L[0]-1)*L[0];
-			sf[1] = (2*L[1]-1)*L[1];
-			sf[2] = (2*L[2]-1)*L[2];
-			sf[3] = 4*L[0]*L[1];
-			sf[4] = 4*L[1]*L[2];
-			sf[5] = 4*L[0]*L[2];
-			}
-			break;
-			*/
-
-		case Element::FE_QUADRANGLE4:
-			dNdcsi.resize(4);
-			dNdcsi[0] = (eta-1)/4;
-			dNdcsi[1] = (1-eta)/4;
-			dNdcsi[2] = (1+eta)/4;
-			dNdcsi[3] = (-1-eta)/4;
-
-			dNdeta.resize(4);
-			dNdeta[0] = (csi-1)/4;
-			dNdeta[1] = (-1-csi)/4;
-			dNdeta[2] = (1+csi)/4;
-			dNdeta[3] = (1-csi)/4;
-
-			dNdzeta.resize(4);
-			dNdzeta[0] = 0;
-			dNdzeta[1] = 0;
-			dNdzeta[2] = 0;
-			dNdzeta[3] = 0;
-			break;
-
-		case Element::FE_QUADRANGLE9:
-			dNdcsi.resize(9);
-			dNdcsi[0] = csi*(eta-1)*eta/4+(csi-1)*(eta-1)*eta/4;
-			dNdcsi[1] = (csi+1)*(eta-1)*eta/4+csi*(eta-1)*eta/4;
-			dNdcsi[2] = (csi+1)*eta*(eta+1)/4+csi*eta*(eta+1)/4;
-			dNdcsi[3] = csi*eta*(eta+1)/4+(csi-1)*eta*(eta+1)/4;
-			dNdcsi[4] = (1-csi)*(eta-1)*eta/2-(csi+1)*(eta-1)*eta/2;
-			dNdcsi[5] = (csi+1)*(1-eta)*(eta+1)/2+csi*(1-eta)*(eta+1)/2;
-			dNdcsi[6] = (1-csi)*eta*(eta+1)/2-(csi+1)*eta*(eta+1)/2;
-			dNdcsi[7] = csi*(1-eta)*(eta+1)/2+(csi-1)*(1-eta)*(eta+1)/2;
-
-			dNdeta.resize(9);
-			dNdeta[0] = (csi-1)*csi*(2*eta-1)/4;
-			dNdeta[1] = csi*(csi+1)*(2*eta-1)/4;
-			dNdeta[2] = csi*(csi+1)*(2*eta+1)/4;
-			dNdeta[3] =  (csi-1)*csi*(2*eta+1)/4;
-			dNdeta[4] = -(csi-1)*(csi+1)*(2*eta-1)/2;
-			dNdeta[5] = -csi*(csi+1)*eta;
-			dNdeta[6] =  -(csi-1)*(csi+1)*(2*eta+1)/2;
-			dNdeta[7] = -(csi-1)*csi*eta;
-
-			dNdzeta.resize(9);
-			dNdzeta[0] = 0;
-			dNdzeta[1] = 0;
-			dNdzeta[2] = 0;
-			dNdzeta[3] = 0;
-			dNdzeta[4] = 0;
-			dNdzeta[5] = 0;
-			dNdzeta[6] = 0;
-			dNdzeta[7] = 0;
-			break;
-
-		case Element::FE_TETRAHEDRON4:
-			dNdcsi.resize(4);
-			dNdcsi[0] = -1;
-			dNdcsi[1] = 1;
-			dNdcsi[2] = 0;
-			dNdcsi[3] = 0;
-
-			dNdeta.resize(4);
-			dNdeta[0] = -1;
-			dNdeta[1] = 0;
-			dNdeta[2] = 1;
-			dNdeta[3] = 0;
-
-			dNdzeta.resize(4);
-			dNdzeta[0] = -1;
-			dNdzeta[1] = 0;
-			dNdzeta[2] = 0;
-			dNdzeta[3] = 1;
-			break;
-
-		
-		case Element::FE_TETRAHEDRON10:
-			{
-				double L[4];
-				L[0] = 1-csi-eta-zeta;
-				L[1] = csi;
-				L[2] = eta;
-				L[3] = zeta;
-			
-				dNdcsi.resize(10);
-				dNdcsi[0] = -4*L[0]+1;
-				dNdcsi[1] = 4*L[1]-1;
-				dNdcsi[2] = 0;
-				dNdcsi[3] = 0;
-				dNdcsi[4] = 4*(-L[1]+L[0]);
-				dNdcsi[5] = 4*L[2];
-				dNdcsi[6] = -4*L[2];
-				dNdcsi[7] = -4*L[3];
-				dNdcsi[8] = 0;
-				dNdcsi[9] = 4*L[3];
-
-				dNdeta.resize(10);
-				dNdeta[0] = -4*L[0]+1;
-				dNdeta[1] = 0;
-				dNdeta[2] = 4*L[2]-1;
-				dNdeta[3] = 0;
-				dNdeta[4] = -4*L[1];
-				dNdeta[5] = 4*L[1];
-				dNdeta[6] = 4*(-L[2]+L[0]);
-				dNdeta[7] = -4*L[3];
-				dNdeta[8] = 4*L[3];
-				dNdeta[9] = 0;
-
-				dNdzeta.resize(10);
-				dNdzeta[0] = -4*L[0]+1;
-				dNdzeta[1] = 0;
-				dNdzeta[2] = 0;
-				dNdzeta[3] = 4*L[3]-1;
-				dNdzeta[4] = -4*L[1];
-				dNdzeta[5] = 0;
-				dNdzeta[6] = -4*L[2];
-				dNdzeta[7] = 4*(-L[3]+L[0]);
-				dNdzeta[8] = 4*L[2];
-				dNdzeta[9] = 4*L[1];
-			}
-			break;
-
-		/*
-		case Element::FE_TETRAHEDRON20:
-			{
-				//TODO finish this
-				double L[4];
-				L[0] = 1-csi-eta-zeta;
-				L[1] = csi;
-				L[2] = eta;
-				L[3] = zeta;
-			
-				sf.resize(10);
-				sf[0] = (2*L[0]-1)*L[0];
-				sf[1] = (2*L[1]-1)*L[1];
-				sf[2] = (2*L[2]-1)*L[2];
-				sf[3] = (2*L[3]-1)*L[3];
-				sf[4] = 4*L[0]*L[1];
-				sf[5] = 4*L[1]*L[2];
-				sf[6] = 4*L[0]*L[2];
-				sf[7] = 4*L[0]*L[3];
-				sf[8] = 4*L[2]*L[3];
-				sf[9] = 4*L[1]*L[3];
-				sf[10] = (2*L[0]-1)*L[0];
-				sf[11] = (2*L[1]-1)*L[1];
-				sf[12] = (2*L[2]-1)*L[2];
-				sf[13] = (2*L[3]-1)*L[3];
-				sf[14] = 4*L[0]*L[1];
-				sf[15] = 4*L[1]*L[2];
-				sf[16] = 4*L[0]*L[2];
-				sf[17] = 4*L[0]*L[3];
-				sf[18] = 4*L[2]*L[3];
-				sf[19] = 4*L[1]*L[3];
-
-				dNdcsi.resize(10);
-				dNdcsi[0] = -4*L[0]+1;
-				dNdcsi[1] = 4*L[1]-1;
-				dNdcsi[2] = 0;
-				dNdcsi[3] = 0;
-				dNdcsi[4] = 4*(-L[1]+L[0]);
-				dNdcsi[5] = 4*L[2];
-				dNdcsi[6] = -4*L[2];
-				dNdcsi[7] = -4*L[3];
-				dNdcsi[8] = 0;
-				dNdcsi[9] = 4*L[3];
-
-
-			}
-			break;
-			*/
-
-		case Element::FE_HEXAHEDRON8:
-			// dNdcsi
-			dNdcsi.resize(8);
-			dNdcsi[ 0] = -(1-eta)*(1-zeta)/8;
-			dNdcsi[ 1] = (1-eta)*(1-zeta)/8;
-			dNdcsi[ 2] = (eta+1)*(1-zeta)/8;
-			dNdcsi[ 3] = -(eta+1)*(1-zeta)/8;
-			dNdcsi[ 4] = -(1-eta)*(zeta+1)/8;
-			dNdcsi[ 5] = (1-eta)*(zeta+1)/8;
-			dNdcsi[ 6] = (eta+1)*(zeta+1)/8;
-			dNdcsi[ 7] = -(eta+1)*(zeta+1)/8;
-
-			// dNdeta
-			dNdeta.resize(8);
-			dNdeta[ 0] = -(1-csi)*(1-zeta)/8;
-			dNdeta[ 1] = -(csi+1)*(1-zeta)/8;
-			dNdeta[ 2] = (csi+1)*(1-zeta)/8;
-			dNdeta[ 3] = (1-csi)*(1-zeta)/8;
-			dNdeta[ 4] = -(1-csi)*(zeta+1)/8;
-			dNdeta[ 5] = -(csi+1)*(zeta+1)/8;
-			dNdeta[ 6] = (csi+1)*(zeta+1)/8;
-			dNdeta[ 7] = (1-csi)*(zeta+1)/8;
-
-			// dNdzeta
-			dNdzeta.resize(8);
-			dNdzeta[ 0] = -(1-csi)*(1-eta)/8;
-			dNdzeta[ 1] = -(csi+1)*(1-eta)/8;
-			dNdzeta[ 2] = -(csi+1)*(eta+1)/8;
-			dNdzeta[ 3] = -(1-csi)*(eta+1)/8;
-			dNdzeta[ 4] = (1-csi)*(1-eta)/8;
-			dNdzeta[ 5] = (csi+1)*(1-eta)/8;
-			dNdzeta[ 6] = (csi+1)*(eta+1)/8;
-			dNdzeta[ 7] = (1-csi)*(eta+1)/8;
-			break;
-
-		case Element::FE_HEXAHEDRON20:
-			dNdcsi.resize(20);
-			dNdcsi[ 0] = (eta-1)*(zeta-1)*(zeta+eta+2*csi+1)/8;
-			dNdcsi[ 1] = -(eta-1)*(zeta-1)*(zeta+eta-2*csi+1)/8;
-			dNdcsi[ 2] = (eta+1)*(zeta-1)*(zeta-eta-2*csi+1)/8;
-			dNdcsi[ 3] = -(eta+1)*(zeta-1)*(zeta-eta+2*csi+1)/8;
-			dNdcsi[ 4] = (eta-1)*(zeta+1)*(zeta-eta-2*csi-1)/8;
-			dNdcsi[ 5] = -(eta-1)*(zeta+1)*(zeta-eta+2*csi-1)/8;
-			dNdcsi[ 6] = (eta+1)*(zeta+1)*(zeta+eta+2*csi-1)/8;
-			dNdcsi[ 7] = -(eta+1)*(zeta+1)*(zeta+eta-2*csi-1)/8;
-			dNdcsi[ 8] = -csi*(1-eta)*(1-zeta)/2;
-			dNdcsi[ 9] = -(1-eta*eta)*(1-zeta)/4;
-			dNdcsi[10] = -(1-eta)*(1-zeta*zeta)/4;
-			dNdcsi[11] = (1-eta*eta)*(1-zeta)/4;
-			dNdcsi[12] = (1-eta)*(1-zeta*zeta)/4;
-			dNdcsi[13] = -csi*(eta+1)*(1-zeta)/2;
-			dNdcsi[14] = (eta+1)*(1-zeta*zeta)/4;
-			dNdcsi[15] = -(eta+1)*(1-zeta*zeta)/4;
-			dNdcsi[16] = -csi*(1-eta)*(zeta+1)/2;
-			dNdcsi[17] = -(1-eta*eta)*(zeta+1)/4;
-			dNdcsi[18] = (1-eta*eta)*(zeta+1)/4;
-			dNdcsi[19] = -csi*(eta+1)*(zeta+1)/2;
-
-			dNdeta.resize(20);
-			dNdeta[ 0] = (csi-1)*(zeta-1)*(zeta+2*eta+csi+1)/8;
-			dNdeta[ 1] = (csi+1)*(1-zeta)*(zeta+2*eta-csi+1)/8;
-			dNdeta[ 2] = (csi+1)*(zeta-1)*(zeta-2*eta-csi+1)/8;
-			dNdeta[ 3] = (csi-1)*(1-zeta)*(zeta-2*eta+csi+1)/8;
-			dNdeta[ 4] = (csi-1)*(zeta+1)*(zeta-2*eta-csi-1)/8;
-			dNdeta[ 5] = -(csi+1)*(zeta+1)*(zeta-2*eta+csi-1)/8;
-			dNdeta[ 6] = (csi+1)*(zeta+1)*(zeta+2*eta+csi-1)/8;
-			dNdeta[ 7] = (1-csi)*(zeta+1)*(zeta+2*eta-csi-1)/8;
-			dNdeta[ 8] = (1-csi*csi)*(zeta-1)/4;
-			dNdeta[ 9] = (1-csi)*eta*(zeta-1)/2;
-			dNdeta[10] = (csi-1)*(1-zeta*zeta)/4;
-			dNdeta[11] = (csi+1)*eta*(zeta-1)/2;
-			dNdeta[12] = (csi+1)*(zeta*zeta-1)/4;
-			dNdeta[13] = (1-csi*csi)*(1-zeta)/4;
-			dNdeta[14] = (csi+1)*(1-zeta*zeta)/4;
-			dNdeta[15] = (1-csi)*(1-zeta*zeta)/4;
-			dNdeta[16] = (csi*csi-1)*(zeta+1)/4;
-			dNdeta[17] = (csi-1)*eta*(zeta+1)/2;
-			dNdeta[18] = -(csi+1)*eta*(zeta+1)/2;
-			dNdeta[19] = (1-csi*csi)*(zeta+1)/4;
-
-			dNdzeta.resize(20);
-			dNdzeta[ 0] = (csi-1)*(eta-1)*(2*zeta+eta+csi+1)/8;
-			dNdzeta[ 1] = -(csi+1)*(eta-1)*(2*zeta+eta-csi+1)/8;
-			dNdzeta[ 2] = (csi+1)*(eta+1)*(2*zeta-eta-csi+1)/8;
-			dNdzeta[ 3] = -(csi-1)*(eta+1)*(2*zeta-eta+csi+1)/8;
-			dNdzeta[ 4] = (csi-1)*(eta-1)*(2*zeta-eta-csi-1)/8;
-			dNdzeta[ 5] = -(csi+1)*(eta-1)*(2*zeta-eta+csi-1)/8;
-			dNdzeta[ 6] = (csi+1)*(eta+1)*(2*zeta+eta+csi-1)/8;
-			dNdzeta[ 7] = -(csi-1)*(eta+1)*(2*zeta+eta-csi-1)/8;
-			dNdzeta[ 8] = -(1-csi*csi)*(1-eta)/4;
-			dNdzeta[ 9] = -(1-csi)*(1-eta*eta)/4;
-			dNdzeta[10] = -(1-csi)*(1-eta)*zeta/2;
-			dNdzeta[11] = -(csi+1)*(1-eta*eta)/4;
-			dNdzeta[12] = -(csi+1)*(1-eta)*zeta/2;
-			dNdzeta[13] = -(1-csi*csi)*(eta+1)/4;
-			dNdzeta[14] = -(csi+1)*(eta+1)*zeta/2;
-			dNdzeta[15] = -(1-csi)*(eta+1)*zeta/2;
-			dNdzeta[16] = (1-csi*csi)*(1-eta)/4;
-			dNdzeta[17] = (1-csi)*(1-eta*eta)/4;
-			dNdzeta[18] = (csi+1)*(1-eta*eta)/4;
-			dNdzeta[19] = (1-csi*csi)*(eta+1)/4;
-			break;
-
-		case Element::FE_HEXAHEDRON27:
-			// dNdcsi
-			dNdcsi.resize(27);
-			dNdcsi[ 0] = csi*(eta-1)*eta*(zeta-1)*zeta/8+(csi-1)*(eta-1)*eta*(zeta-1)*zeta/8;
-			dNdcsi[ 1] = (csi+1)*(eta-1)*eta*(zeta-1)*zeta/8+csi*(eta-1)*eta*(zeta-1)*zeta/8;
-			dNdcsi[ 2] = (csi+1)*eta*(eta+1)*(zeta-1)*zeta/8+csi*eta*(eta+1)*(zeta-1)*zeta/8;
-			dNdcsi[ 3] = csi*eta*(eta+1)*(zeta-1)*zeta/8+(csi-1)*eta*(eta+1)*(zeta-1)*zeta/8;
-			dNdcsi[ 4] = csi*(eta-1)*eta*zeta*(zeta+1)/8+(csi-1)*(eta-1)*eta*zeta*(zeta+1)/8;
-			dNdcsi[ 5] = (csi+1)*(eta-1)*eta*zeta*(zeta+1)/8+csi*(eta-1)*eta*zeta*(zeta+1)/8;
-			dNdcsi[ 6] = (csi+1)*eta*(eta+1)*zeta*(zeta+1)/8+csi*eta*(eta+1)*zeta*(zeta+1)/8;
-			dNdcsi[ 7] = csi*eta*(eta+1)*zeta*(zeta+1)/8+(csi-1)*eta*(eta+1)*zeta*(zeta+1)/8;
-			dNdcsi[ 8] = -(csi+1)*(eta-1)*eta*(zeta-1)*zeta/4-(csi-1)*(eta-1)*eta*(zeta-1)*zeta/4;
-			dNdcsi[ 9] = -csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4-(csi-1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
-			dNdcsi[10] = -csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4-(csi-1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
-			dNdcsi[11] = -(csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/4-csi*(eta-1)*(eta+1)*(zeta-1)*zeta/4;
-			dNdcsi[12] = -(csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/4-csi*(eta-1)*eta*(zeta-1)*(zeta+1)/4;
-			dNdcsi[13] = -(csi+1)*eta*(eta+1)*(zeta-1)*zeta/4-(csi-1)*eta*(eta+1)*(zeta-1)*zeta/4;
-			dNdcsi[14] = -(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4-csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
-			dNdcsi[15] = -csi*eta*(eta+1)*(zeta-1)*(zeta+1)/4-(csi-1)*eta*(eta+1)*(zeta-1)*(zeta+1)/4;
-			dNdcsi[16] = -(csi+1)*(eta-1)*eta*zeta*(zeta+1)/4-(csi-1)*(eta-1)*eta*zeta*(zeta+1)/4;
-			dNdcsi[17] = -csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4-(csi-1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
-			dNdcsi[18] = -(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/4-csi*(eta-1)*(eta+1)*zeta*(zeta+1)/4;
-			dNdcsi[19] = -(csi+1)*eta*(eta+1)*zeta*(zeta+1)/4-(csi-1)*eta*(eta+1)*zeta*(zeta+1)/4;
-			dNdcsi[20] = (csi+1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2+(csi-1)*(eta-1)*(eta+1)*(zeta-1)*zeta/2;
-			dNdcsi[21] = (csi+1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2+(csi-1)*(eta-1)*eta*(zeta-1)*(zeta+1)/2;
-			dNdcsi[22] = csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
-			dNdcsi[23] = (csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2+csi*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)/2;
-			dNdcsi[24] = (csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2;
-			dNdcsi[25] = (csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2+(csi-1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2;
-			dNdcsi[26] = -(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1)-(csi-1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1);
-
-			// dNdeta
-			dNdeta.resize(27);
-			dNdeta[ 0] = (csi-1)*csi*eta*(zeta-1)*zeta/8+(csi-1)*csi*(eta-1)*(zeta-1)*zeta/8;
-			dNdeta[ 1] = csi*(csi+1)*eta*(zeta-1)*zeta/8+csi*(csi+1)*(eta-1)*(zeta-1)*zeta/8;
-			dNdeta[ 2] =  csi*(csi+1)*(eta+1)*(zeta-1)*zeta/8+csi*(csi+1)*eta*(zeta-1)*zeta/8;
-			dNdeta[ 3] = (csi-1)*csi*(eta+1)*(zeta-1)*zeta/8+(csi-1)*csi*eta*(zeta-1)*zeta/8;
-			dNdeta[ 4] =  (csi-1)*csi*eta*zeta*(zeta+1)/8+(csi-1)*csi*(eta-1)*zeta*(zeta+1)/8;
-			dNdeta[ 5] = csi*(csi+1)*eta*zeta*(zeta+1)/8+csi*(csi+1)*(eta-1)*zeta*(zeta+1)/8;
-			dNdeta[ 6] =  csi*(csi+1)*(eta+1)*zeta*(zeta+1)/8+csi*(csi+1)*eta*zeta*(zeta+1)/8;
-			dNdeta[ 7] = (csi-1)*csi*(eta+1)*zeta*(zeta+1)/8+(csi-1)*csi*eta*zeta*(zeta+1)/8;
-			dNdeta[ 8] =  -(csi-1)*(csi+1)*eta*(zeta-1)*zeta/4-(csi-1)*(csi+1)*(eta-1)*(zeta-1)*zeta/4;
-			dNdeta[ 9] = -(csi-1)*csi*(eta+1)*(zeta-1)*zeta/4-(csi-1)*csi*(eta-1)*(zeta-1)*zeta/4;
-			dNdeta[10] =  -(csi-1)*csi*eta*(zeta-1)*(zeta+1)/4-(csi-1)*csi*(eta-1)*(zeta-1)*(zeta+1)/4;
-			dNdeta[11] = -csi*(csi+1)*(eta+1)*(zeta-1)*zeta/4-csi*(csi+1)*(eta-1)*(zeta-1)*zeta/4;
-			dNdeta[12] =  -csi*(csi+1)*eta*(zeta-1)*(zeta+1)/4-csi*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/4;
-			dNdeta[13] = -(csi-1)*(csi+1)*(eta+1)*(zeta-1)*zeta/4-(csi-1)*(csi+1)*eta*(zeta-1)*zeta/4;
-			dNdeta[14] =  -csi*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/4-csi*(csi+1)*eta*(zeta-1)*(zeta+1)/4;
-			dNdeta[15] = -(csi-1)*csi*(eta+1)*(zeta-1)*(zeta+1)/4-(csi-1)*csi*eta*(zeta-1)*(zeta+1)/4;
-			dNdeta[16] =  -(csi-1)*(csi+1)*eta*zeta*(zeta+1)/4-(csi-1)*(csi+1)*(eta-1)*zeta*(zeta+1)/4;
-			dNdeta[17] = -(csi-1)*csi*(eta+1)*zeta*(zeta+1)/4-(csi-1)*csi*(eta-1)*zeta*(zeta+1)/4;
-			dNdeta[18] =  -csi*(csi+1)*(eta+1)*zeta*(zeta+1)/4-csi*(csi+1)*(eta-1)*zeta*(zeta+1)/4;
-			dNdeta[19] = -(csi-1)*(csi+1)*(eta+1)*zeta*(zeta+1)/4-(csi-1)*(csi+1)*eta*zeta*(zeta+1)/4;
-			dNdeta[20] =  (csi-1)*(csi+1)*(eta+1)*(zeta-1)*zeta/2+(csi-1)*(csi+1)*(eta-1)*(zeta-1)*zeta/2;
-			dNdeta[21] =  (csi-1)*(csi+1)*eta*(zeta-1)*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/2;
-			dNdeta[22] =  (csi-1)*csi*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*csi*(eta-1)*(zeta-1)*(zeta+1)/2;
-			dNdeta[23] =  csi*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/2+csi*(csi+1)*(eta-1)*(zeta-1)*(zeta+1)/2;
-			dNdeta[24] =  (csi-1)*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*(csi+1)*eta*(zeta-1)*(zeta+1)/2;
-			dNdeta[25] =  (csi-1)*(csi+1)*(eta+1)*zeta*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*zeta*(zeta+1)/2;
-			dNdeta[26] =  -(csi-1)*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)-(csi-1)*(csi+1)*(eta-1)*(zeta-1)*(zeta+1);
-
-			// dNdzeta
-			dNdzeta.resize(27);
-			dNdzeta[ 0] = (csi-1)*csi*(eta-1)*eta*zeta/8+(csi-1)*csi*(eta-1)*eta*(zeta-1)/8;
-			dNdzeta[ 1] = csi*(csi+1)*(eta-1)*eta*zeta/8+csi*(csi+1)*(eta-1)*eta*(zeta-1)/8;
-			dNdzeta[ 2] =  csi*(csi+1)*eta*(eta+1)*zeta/8+csi*(csi+1)*eta*(eta+1)*(zeta-1)/8;
-			dNdzeta[ 3] = (csi-1)*csi*eta*(eta+1)*zeta/8+(csi-1)*csi*eta*(eta+1)*(zeta-1)/8;
-			dNdzeta[ 4] =  (csi-1)*csi*(eta-1)*eta*(zeta+1)/8+(csi-1)*csi*(eta-1)*eta*zeta/8;
-			dNdzeta[ 5] = csi*(csi+1)*(eta-1)*eta*(zeta+1)/8+csi*(csi+1)*(eta-1)*eta*zeta/8;
-			dNdzeta[ 6] =  csi*(csi+1)*eta*(eta+1)*(zeta+1)/8+csi*(csi+1)*eta*(eta+1)*zeta/8;
-			dNdzeta[ 7] = (csi-1)*csi*eta*(eta+1)*(zeta+1)/8+(csi-1)*csi*eta*(eta+1)*zeta/8;
-			dNdzeta[ 8] =  -(csi-1)*(csi+1)*(eta-1)*eta*zeta/4-(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)/4;
-			dNdzeta[ 9] = -(csi-1)*csi*(eta-1)*(eta+1)*zeta/4-(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)/4;
-			dNdzeta[10] =  -(csi-1)*csi*(eta-1)*eta*(zeta+1)/4-(csi-1)*csi*(eta-1)*eta*(zeta-1)/4;
-			dNdzeta[11] = -csi*(csi+1)*(eta-1)*(eta+1)*zeta/4-csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/4;
-			dNdzeta[12] =  -csi*(csi+1)*(eta-1)*eta*(zeta+1)/4-csi*(csi+1)*(eta-1)*eta*(zeta-1)/4;
-			dNdzeta[13] = -(csi-1)*(csi+1)*eta*(eta+1)*zeta/4-(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)/4;
-			dNdzeta[14] =  -csi*(csi+1)*eta*(eta+1)*(zeta+1)/4-csi*(csi+1)*eta*(eta+1)*(zeta-1)/4;
-			dNdzeta[15] = -(csi-1)*csi*eta*(eta+1)*(zeta+1)/4-(csi-1)*csi*eta*(eta+1)*(zeta-1)/4;
-			dNdzeta[16] =  -(csi-1)*(csi+1)*(eta-1)*eta*(zeta+1)/4-(csi-1)*(csi+1)*(eta-1)*eta*zeta/4;
-			dNdzeta[17] = -(csi-1)*csi*(eta-1)*(eta+1)*(zeta+1)/4-(csi-1)*csi*(eta-1)*(eta+1)*zeta/4;
-			dNdzeta[18] =  -csi*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/4-csi*(csi+1)*(eta-1)*(eta+1)*zeta/4;
-			dNdzeta[19] = -(csi-1)*(csi+1)*eta*(eta+1)*(zeta+1)/4-(csi-1)*(csi+1)*eta*(eta+1)*zeta/4;
-			dNdzeta[20] =  (csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta/2+(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/2;
-			dNdzeta[21] =  (csi-1)*(csi+1)*(eta-1)*eta*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*eta*(zeta-1)/2;
-			dNdzeta[22] = (csi-1)*csi*(eta-1)*(eta+1)*(zeta+1)/2+(csi-1)*csi*(eta-1)*(eta+1)*(zeta-1)/2;
-			dNdzeta[23] =  csi*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/2+csi*(csi+1)*(eta-1)*(eta+1)*(zeta-1)/2;
-			dNdzeta[24] = (csi-1)*(csi+1)*eta*(eta+1)*(zeta+1)/2+(csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)/2;
-			dNdzeta[25] =  (csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta/2;
-			dNdzeta[26] =  -(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta+1)-(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1);
-				break;
-
-		case Element::FE_PRISM6:
-				double L[3];
-				L[0] = 1-csi-eta;
-				L[1] = csi;
-				L[2] = eta;
-
-				dNdcsi.resize(6);
-				dNdcsi[ 0] = -(1-zeta)/2.0;
-				dNdcsi[ 1] =  (1-zeta)/2.0;
-				dNdcsi[ 2] = 0;
-				dNdcsi[ 3] = -(1+zeta)/2.0;
-				dNdcsi[ 4] =  (1+zeta)/2.0;
-				dNdcsi[ 5] = 0;
-
-				dNdeta.resize(6);
-				dNdeta[ 0] = -(1-zeta)/2.0;
-				dNdeta[ 1] = 0;
-				dNdeta[ 2] = (1-zeta)/2.0;
-				dNdeta[ 3] = -(1+zeta)/2.0;
-				dNdeta[ 4] = 0;
-				dNdeta[ 5] = (1+zeta)/2.0;
-
-				dNdzeta.resize(6);
-				dNdzeta[ 0] = -L[0]/2.0;
-				dNdzeta[ 1] = -L[1]/2.0;
-				dNdzeta[ 2] = -L[2]/2.0;
-				dNdzeta[ 3] = L[0]/2.0;
-				dNdzeta[ 4] = L[1]/2.0;
-				dNdzeta[ 5] = L[2]/2.0;
-				break;
-
-		default:
-			//TODO this part should never be reached
-			assert(false);
-			break;
-	}
-#undef csi
-#undef eta
-#undef zeta
-
-	// let's fill in the tuple
-	sfd.get<0>() = dNdcsi;
-	sfd.get<1>() = dNdeta;
-	sfd.get<2>() = dNdzeta;
-	return sfd;
 }
 
 
@@ -1693,6 +1005,18 @@ const std::vector<double> & Analysis::getN( const Element::Type &type, const poi
 {
 	switch(type)
 	{
+		case Element::FE_TRIANGLE3:
+			return this->tri3.setN(p);
+			break;
+
+		case Element::FE_TRIANGLE6:
+			return this->tri6.setN(p);
+			break;
+
+		case Element::FE_TRIANGLE10:
+			return this->tri10.setN(p);
+			break;
+
 		case Element::FE_QUADRANGLE4:
 			return this->quad4.setN(p);
 			break;
@@ -1703,6 +1027,14 @@ const std::vector<double> & Analysis::getN( const Element::Type &type, const poi
 
 		case Element::FE_QUADRANGLE9:
 			return this->quad9.setN(p);
+			break;
+
+		case Element::FE_TETRAHEDRON4:
+			return this->tetra4.setN(p);
+			break;
+
+		case Element::FE_TETRAHEDRON10:
+			return this->tetra10.setN(p);
 			break;
 
 		case Element::FE_HEXAHEDRON8:
@@ -1727,6 +1059,18 @@ const std::vector<double> & Analysis::getdNdcsi( const Element::Type &type, cons
 {
 	switch(type)
 	{
+		case Element::FE_TRIANGLE3:
+			return this->tri3.setdNdcsi(p);
+			break;
+
+		case Element::FE_TRIANGLE6:
+			return this->tri6.setdNdcsi(p);
+			break;
+
+		case Element::FE_TRIANGLE10:
+			return this->tri10.setdNdcsi(p);
+			break;
+
 		case Element::FE_QUADRANGLE4:
 			return this->quad4.setdNdcsi(p);
 			break;
@@ -1737,6 +1081,14 @@ const std::vector<double> & Analysis::getdNdcsi( const Element::Type &type, cons
 
 		case Element::FE_QUADRANGLE9:
 			return this->quad9.setdNdcsi(p);
+			break;
+
+		case Element::FE_TETRAHEDRON4:
+			return this->tetra4.setdNdcsi(p);
+			break;
+
+		case Element::FE_TETRAHEDRON10:
+			return this->tetra10.setdNdcsi(p);
 			break;
 
 		case Element::FE_HEXAHEDRON8:
@@ -1761,6 +1113,18 @@ const std::vector<double> & Analysis::getdNdeta( const Element::Type &type, cons
 {
 	switch(type)
 	{
+		case Element::FE_TRIANGLE3:
+			return this->tri3.setdNdeta(p);
+			break;
+
+		case Element::FE_TRIANGLE6:
+			return this->tri6.setdNdeta(p);
+			break;
+
+		case Element::FE_TRIANGLE10:
+			return this->tri10.setdNdeta(p);
+			break;
+
 		case Element::FE_QUADRANGLE4:
 			return this->quad4.setdNdeta(p);
 			break;
@@ -1771,6 +1135,14 @@ const std::vector<double> & Analysis::getdNdeta( const Element::Type &type, cons
 
 		case Element::FE_QUADRANGLE9:
 			return this->quad9.setdNdeta(p);
+			break;
+
+		case Element::FE_TETRAHEDRON4:
+			return this->tetra4.setdNdeta(p);
+			break;
+
+		case Element::FE_TETRAHEDRON10:
+			return this->tetra10.setdNdeta(p);
 			break;
 
 		case Element::FE_HEXAHEDRON8:
@@ -1794,6 +1166,18 @@ const std::vector<double> & Analysis::getdNdzeta( const Element::Type &type, con
 {
 	switch(type)
 	{
+		case Element::FE_TRIANGLE3:
+			return this->tri3.setdNdzeta(p);
+			break;
+
+		case Element::FE_TRIANGLE6:
+			return this->tri6.setdNdzeta(p);
+			break;
+
+		case Element::FE_TRIANGLE10:
+			return this->tri10.setdNdzeta(p);
+			break;
+
 		case Element::FE_QUADRANGLE4:
 			return this->quad4.setdNdzeta(p);
 			break;
@@ -1804,6 +1188,14 @@ const std::vector<double> & Analysis::getdNdzeta( const Element::Type &type, con
 
 		case Element::FE_QUADRANGLE9:
 			return this->quad9.setdNdzeta(p);
+			break;
+
+		case Element::FE_TETRAHEDRON4:
+			return this->tetra4.setdNdzeta(p);
+			break;
+
+		case Element::FE_TETRAHEDRON10:
+			return this->tetra10.setdNdzeta(p);
 			break;
 
 		case Element::FE_HEXAHEDRON8:

@@ -14,9 +14,14 @@
 
 #include "ProcessedModel.h++"
 
+#include "elements/Triangle3.h++"
+#include "elements/Triangle6.h++"
+#include "elements/Triangle10.h++"
 #include "elements/Quadrangle4.h++"
 #include "elements/Quadrangle8.h++"
 #include "elements/Quadrangle9.h++"
+#include "elements/Tetrahedron4.h++"
+#include "elements/Tetrahedron10.h++"
 #include "elements/Hexahedron8.h++"
 #include "elements/Hexahedron20.h++"
 #include "elements/Hexahedron27.h++"
@@ -28,9 +33,14 @@ namespace fem
 class Analysis
 {
 	private:
+		Triangle3<double>	tri3;
+		Triangle6<double>	tri6;
+		Triangle10<double>	tri10;
 		Quadrangle4<double> 	quad4;
 		Quadrangle8<double> 	quad8;
 		Quadrangle9<double> 	quad9;
+		Tetrahedron4<double>	tetra4;
+		Tetrahedron10<double>	tetra10;
 		Hexahedron8<double> 	hexa8;
 		Hexahedron20<double> 	hexa20;
 		Hexahedron27<double> 	hexa27;
@@ -85,24 +95,6 @@ class Analysis
 		@return an error
 		**/
 		virtual enum Error run(Model &model, LoadPattern &lp, ProcessedModel &p) = 0;
-
-
-		/** 
-		given an element and a position in local coordinates, it generates a list with the nodal weights for the shape function for each interpolation point in local coordinates
-		@param type	the element type
-		@param point	local coordinates
-		@return a boost::tuple consisting of three vector<double> storing each node's interpolation weights
-		**/
-		std::vector<double> shape_function(const Element::Type type, const fem::point &point);
-
-
-		/** 
-		given an element and a position in local coordinates, it generates a list with the nodal weights for the derivatives of the shape function for each interpolation point in local coordinates
-		@param type	the element type
-		@param point	local coordinates
-		@return a boost::tuple consisting of three vector<double> storing each node's interpolation weights
-		**/
-		boost::tuple<std::vector<double>, std::vector<double>, std::vector<double> > shape_function_derivatives(const Element::Type type, const fem::point &point);
 
 
 		/**

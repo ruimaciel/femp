@@ -16,8 +16,10 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	ui/NewProjectWizardPage1.h++ ui/NewProjectWizardPage2.h++ ui/NewProjectWizardPage3.h++ ui/NewProjectWizardPageLast.h++ \
 	fem/Model.h++ fem/Node.h++ fem/Element.h++ fem/Material.h++ fem/LoadPattern.h++ fem/NodalLoad.h++ fem/NodalDisplacement.h++ fem/point.h++ fem/NodeRestrictions.h++ \
 	fem/DomainLoad.h++ fem/SurfaceLoad.h++\
+	fem/elements/Triangle3.h++ fem/elements/Triangle6.h++ fem/elements/Triangle10.h++ \
 	fem/elements/Quadrangle4.h++ fem/elements/Quadrangle8.h++ fem/elements/Quadrangle9.h++ \
 	fem/elements/Hexahedron8.h++ fem/elements/Hexahedron20.h++ fem/elements/Hexahedron27.h++ \
+	fem/elements/Tetrahedron4.h++ fem/elements/Tetrahedron10.h++ \
 	Camera.h++ glBaseWidget.h++ glModelWidget.h++ glDisplacementsWidget.h++ ViewportColors.h++ DisplayOptions.h++\
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h \

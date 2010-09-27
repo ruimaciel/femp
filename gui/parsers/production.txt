@@ -1,0 +1,67 @@
+; Syntax specification for the MSH ASCII file format, described in ABNF
+; following RFC 5234
+; http://tools.ietf.org/html/rfc5234
+
+<nninteger>	= "0" / %x31-39 *%x30-39		; non-negative integer
+<integer>	= <nninteger> / ["-"]%x31-39 *%x30-39	; integer
+<decimal>	= <integer> "." 1*%30-39
+
+<document>	= <doc_v2.0> / <doc_v2.1>
+
+<doc_v2.1>	= <mesh_format> <nodes> <elements>
+
+<mesh_format>	= "$MeshFormat" <EOL> "2.1" "0" <data-size> <EOL> "$EndMeshFormat" <EOL>
+
+<nodes>		= "$Nodes" <EOL> <number-of-nodes> <EOL> *<node> "$EndNodes" <EOL>
+
+<number-of-nodes>	= <nninteger>
+
+<node>		= <node-number> <x-coord> <y-coord> <z-coord> <EOL>
+
+<node-number>	= <nninteger>
+
+<x-coord>	= <decimal>
+<y-coord>	= <decimal>
+<z-coord>	= <decimal>
+
+<elements>	= "$Elements" <EOL> <number-of-elements> <EOL> *<element> "$EndElement" <EOL>
+
+<number-of-elements>	= <nninteger>
+
+<element>	=  <elm-number> "1"	<tags>	2<node-ref> 		;2-node line.
+<element>	=/ <elm-number> "2"	<tags>	3<node-ref>		;3-node triangle.
+<element>	=/ <elm-number> "3"	<tags>	4<node-ref>		;4-node quadrangle.
+<element>	=/ <elm-number> "4"	<tags>	4<node-ref>		;4-node tetrahedron.
+<element>	=/ <elm-number> "5"	<tags>	8<node-ref>		;8-node hexahedron.
+<element>	=/ <elm-number> "6"	<tags>	6<node-ref>		;6-node prism.
+<element>	=/ <elm-number> "7"	<tags>	5<node-ref>		;5-node pyramid.
+<element>	=/ <elm-number> "8"	<tags>	3<node-ref>		;3-node second order line 
+<element>	=/ <elm-number> "9"	<tags>	6<node-ref>		;6-node second order triangle
+<element>	=/ <elm-number> "10"	<tags>	9<node-ref>		;9-node second order quadrangle
+<element>	=/ <elm-number> "11"	<tags>	10<node-ref>		;10-node second order tetrahedron
+<element>	=/ <elm-number> "12"	<tags>	27<node-ref>		;27-node second order hexahedron
+<element>	=/ <elm-number> "13"	<tags>	18<node-ref>		;18-node second order prism 
+<element>	=/ <elm-number> "14"	<tags>	14<node-ref>		;14-node second order pyramid 
+<element>	=/ <elm-number> "15"	<tags>	1<node-ref>		;1-node point.
+<element>	=/ <elm-number> "16"	<tags>	8<node-ref>		;8-node second order quadrangle
+<element>	=/ <elm-number> "17"	<tags>	20<node-ref>		;20-node second order hexahedron
+<element>	=/ <elm-number> "18"	<tags>	15<node-ref>		;15-node second order prism
+<element>	=/ <elm-number> "19"	<tags>	13<node-ref>		;13-node second order pyramid
+<element>	=/ <elm-number> "20"	<tags>	9<node-ref>		;9-node third order incomplete triangle
+<element>	=/ <elm-number> "21"	<tags>	10<node-ref>		;10-node third order triangle
+<element>	=/ <elm-number> "22"	<tags>	12<node-ref>		;12-node fourth order incomplete triangle
+<element>	=/ <elm-number> "23"	<tags>	15<node-ref>		;15-node fourth order triangle
+<element>	=/ <elm-number> "24"	<tags>	15<node-ref>		;15-node fifth order incomplete triangle
+<element>	=/ <elm-number> "25"	<tags>	21<node-ref>		;21-node fifth order complete triangle 
+<element>	=/ <elm-number> "26"	<tags>	4<node-ref>		;4-node third order edge 
+<element>	=/ <elm-number> "27"	<tags>	5<node-ref>		;5-node fourth order edge
+<element>	=/ <elm-number> "28"	<tags>	6<node-ref>		;6-node fifth order edge
+<element>	=/ <elm-number> "29"	<tags>	20<node-ref>		;20-node third order tetrahedron
+<element>	=/ <elm-number> "30"	<tags>	35<node-ref>		;35-node fourth order tetrahedron
+<element>	=/ <elm-number> "31"	<tags>	56<node-ref>		;56-node fifth order tetrahedron
+
+<tags>	=  "0"
+<tags>	=/ "1" 1<tag>
+<tags>	=/ "2" 2<tag>
+<tags>	=/ "3" 3<tag>
+<tags>	=/ "4" 4<tag>

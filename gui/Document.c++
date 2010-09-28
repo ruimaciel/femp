@@ -1401,12 +1401,12 @@ enum Document::Error Document::load()
 				//TODO
 				model.pushLoadPattern(load_pattern);
 
-				cursor.pop();	// JSON_OBJECT -> "force" JSON_ARRAY
-				cursor.pop();	// -> JSON_OBJECT "force"
-
 				// Test the FIRST
 				if(cursor.top()->next == NULL)
 				{
+					cursor.pop();	// JSON_OBJECT -> "force" JSON_ARRAY
+					cursor.pop();	// -> JSON_OBJECT "force"
+
 					state.pop();
 				}
 				else

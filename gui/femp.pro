@@ -27,7 +27,8 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	ui/NewMaterialDialog.h++ ui/MaterialsEditorDialog.h++\
 	fem/Analysis.h++ fem/LinearAnalysis.h++ \
 	ui/DialogScale.h++ \
-	MessageLogger.h++ Logs.h++
+	MessageLogger.h++ Logs.h++ \
+	fem/Surface.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
 	ProcessedModel.c++ \
@@ -43,7 +44,8 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	ui/NewMaterialDialog.c++ ui/MaterialsEditorDialog.c++\
 	fem/Analysis.c++ fem/LinearAnalysis.c++ \
 	ui/DialogScale.c++ \
-	MessageLogger.c++
+	MessageLogger.c++ \
+	fem/Surface.c++
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 	ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPage3.ui  ui/NewProjectWizardPageLast.ui \

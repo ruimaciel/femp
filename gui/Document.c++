@@ -1426,6 +1426,19 @@ enum Document::Error Document::load()
 		}
 	}
 
+	//TODO test surfaces
+	std::cout << "surfaces list: " << model.surface_list.size() << " elements" << std::endl;
+	for(std::list<fem::Surface>::iterator i = model.surface_list.begin(); i != model.surface_list.end(); i++)
+	{
+		std::cout << "surface " << std::distance(model.surface_list.begin(), i) << ":";
+		if(i->internal()) 
+			std::cout << "internal" << std::endl;
+		else 
+			std::cout << "external" << std::endl;
+		
+	}
+	std::cout << "finished surfaces list" << std::endl;
+
 	unsaved = false;
 	return ERR_OK;
 

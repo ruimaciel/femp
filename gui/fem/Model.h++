@@ -5,6 +5,7 @@
 
 #include <map>
 #include <vector>
+#include <list>
 
 #include <boost/tuple/tuple.hpp>
 
@@ -15,6 +16,7 @@
 #include "Material.h++"
 #include "NodeRestrictions.h++"
 #include "LoadPattern.h++"
+#include "Surface.h++"
 
 
 namespace fem
@@ -43,6 +45,7 @@ class Model {
 		std::vector<Material> 	material_list;
 		std::map<size_t, NodeRestrictions>	node_restrictions_list;	// the node restrictions aren't stored in the Node class in order to save up memory
 		std::vector<LoadPattern>	load_pattern_list;
+		std::list<Surface>	surface_list;
 
 	public:
 		Model();
@@ -56,8 +59,18 @@ class Model {
 		void setNode(size_t ref, fem::point p);
 
 		void setDefaultMaterial(int material)	{ default_material = material; }
-		void pushElement(fem::Element);
-		void pushElement(fem::Element::Type type, std::vector<size_t> nodes);
+		Model::Error pushElement(fem::Element);
+		Model::Error pushElement(fem::Element::Type type, std::vector<size_t> nodes);
+
+		/**
+		Pushes a new element
+		@param type	surface type
+		@param nodes	the set of nodes which define this surface
+		@param element_reference	the reference number of the element this surface belongs to
+		@param surface_number	the element's surface number that corresponds to this surface
+		@return		ERR_OK if all went well, ERR_NODE_NUMBER if the number of nodes is incompatible with the surface type
+		**/
+		enum Error pushSurface(Element::Type type, std::vector<size_t> &nodes, const size_t element_reference, const size_t surface_number);
 
 		/** Specifies new node restrictions affecting a node
 		@param node	a reference for a node contained in node_list

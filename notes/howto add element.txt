@@ -1,7 +1,14 @@
-- define node numbering
-- add shape function and shape function derivative
+- define node numbering for the new element
+
+- create new class derived from fem/elements/BaseElement.h++
+	- add shape function and shape function derivative
+	- set list of integration points/weight pairs
+- add new class object to fem/Analysis.h++
+
 - add support for the element in the MSH format
 - add code to Document::load() and Document::save()
+- add code in Model::pushElement() to add the new element's surfaces to the surface list
+- add code in Element::set()
 - add support for rendering the program
 	- write shape function in [0,1]x[0x1] coordinates
 	- write code to render surface (i.e., renderQuad8())

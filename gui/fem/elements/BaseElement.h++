@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <math.h>
+#include <boost/tuple/tuple.hpp>
 
 #include "../point.h++"
 
@@ -17,6 +18,9 @@ namespace fem
 template <typename T>
 struct BaseElement
 {
+	protected:
+		std::map<int, std::vector<boost::tuple<fem::point, T> > > ipwpl;	// integration points/weights pair list
+
 	public:
 		std::vector<T>	N;
 		std::vector<T>	dNdcsi;
@@ -37,7 +41,26 @@ struct BaseElement
 		virtual std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0) = 0;
 
 	public:
+		/**
+		  Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
+		  (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and
+		  B.P. Flannery
+		@param x	array of T, stores the abcissa of the integration point
+		@param w	array of T, stores the weights of the integration points
+		@param n	the number of Gauss points
+		*/
 		void gauleg (T x[], T w[], int n);
+
+		/**
+		Returns a list of
+		**/
+		//std::vector<boost::tuple<fem::point, T> > ipwp(int degree);
+
+	protected:
+		/*
+		Generates the lists of integration points/weights for this type of element
+		*/
+		virtual void generateQuadratureData() = 0;
 };
 
 

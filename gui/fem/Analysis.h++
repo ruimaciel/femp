@@ -25,6 +25,7 @@
 #include "elements/Hexahedron8.h++"
 #include "elements/Hexahedron20.h++"
 #include "elements/Hexahedron27.h++"
+#include "elements/Prism6.h++"
 
 
 namespace fem
@@ -44,6 +45,7 @@ class Analysis
 		Hexahedron8<double> 	hexa8;
 		Hexahedron20<double> 	hexa20;
 		Hexahedron27<double> 	hexa27;
+		Prism6<double>		prism6;
 
 	public:
 		enum Error {	ERR_OK = 0,	// no error

@@ -4,6 +4,9 @@
 	- add shape function and shape function derivative
 	- set list of integration points/weight pairs
 - add new class object to fem/Analysis.h++
+	- add header file
+	- add object
+	- add setN, setdNd(csi/eta/zeta)
 
 - add support for the element in the MSH format
 - add code to Document::load() and Document::save()
@@ -14,5 +17,4 @@
 	- write code to render surface (i.e., renderQuad8())
 	- add code to write elements from surfaces in glWidget::paintElement()
 	- new viewport color
-- add support for the element in Element:set()
 

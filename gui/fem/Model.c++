@@ -321,12 +321,46 @@ Model::Error Model::pushElement(fem::Element e)
 			pushSurface(Element::FE_QUADRANGLE9, nodes, element_list.size() -1, 5);
 			break;
 
-			/*
 			//TODO implement the remaining surfaces
 		case Element::FE_PRISM6:
-			return 6;
-			break;
+			nodes.resize(4);
+			// face 1: quadrangle with the coplanar XX
+			nodes[0] = e.nodes[0];
+			nodes[1] = e.nodes[3];
+			nodes[2] = e.nodes[4];
+			nodes[3] = e.nodes[1];
+			pushSurface(Element::FE_QUADRANGLE4, nodes, element_list.size() -1, 0);
+
+			// face 2: quadrangle with the coplanar YY
+			nodes[0] = e.nodes[3];
+			nodes[1] = e.nodes[0];
+			nodes[2] = e.nodes[2];
+			nodes[3] = e.nodes[5];
+			pushSurface(Element::FE_QUADRANGLE4, nodes, element_list.size() -1, 1);
+
+			// face 3: quadrangle with the diagonal
+			nodes[0] = e.nodes[1];
+			nodes[1] = e.nodes[4];
+			nodes[2] = e.nodes[5];
+			nodes[3] = e.nodes[2];
+			pushSurface(Element::FE_QUADRANGLE4, nodes, element_list.size() -1, 3);
+			/*
+			prism faces: 3 quadrangles, 2 triangles 
 			*/
+			// face 5: near triangle
+			nodes.resize(3);
+			nodes[0] = e.nodes[0];
+			nodes[1] = e.nodes[1];
+			nodes[2] = e.nodes[2];
+			pushSurface(Element::FE_TRIANGLE3, nodes, element_list.size() -1, 4);
+
+			// face 6: far triangle
+			nodes[0] = e.nodes[0];
+			nodes[1] = e.nodes[1];
+			nodes[2] = e.nodes[2];
+			pushSurface(Element::FE_TRIANGLE3, nodes, element_list.size() -1, 5);
+
+			break;
 
 		default:
 			std::cerr << "Element::node_number(): unsupported element" << std::endl;

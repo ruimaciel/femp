@@ -1007,6 +1007,10 @@ const std::vector<double> & Analysis::getN( const Element::Type &type, const poi
 			return this->hexa27.setN(p);
 			break;
 
+		case Element::FE_PRISM6:
+			return this->prism6.setN(p);
+			break;
+
 		//TODO add remaining elements
 	}
 }
@@ -1059,6 +1063,10 @@ const std::vector<double> & Analysis::getdNdcsi( const Element::Type &type, cons
 
 		case Element::FE_HEXAHEDRON27:
 			return this->hexa27.setdNdcsi(p);
+			break;
+
+		case Element::FE_PRISM6:
+			return this->prism6.setdNdcsi(p);
 			break;
 
 		//TODO add remaining elements
@@ -1115,6 +1123,10 @@ const std::vector<double> & Analysis::getdNdeta( const Element::Type &type, cons
 			return this->hexa27.setdNdeta(p);
 			break;
 
+		case Element::FE_PRISM6:
+			return this->prism6.setdNdeta(p);
+			break;
+
 		//TODO add remaining elements
 	}
 }
@@ -1166,6 +1178,10 @@ const std::vector<double> & Analysis::getdNdzeta( const Element::Type &type, con
 
 		case Element::FE_HEXAHEDRON27:
 			return this->hexa27.setdNdzeta(p);
+			break;
+
+		case Element::FE_PRISM6:
+			return this->prism6.setdNdzeta(p);
 			break;
 
 		//TODO add remaining elements

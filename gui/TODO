@@ -13,8 +13,6 @@
 
 - MdiArea::subWindowActivate() implica actualizar UI 
 - apontar DisplayOptions::load_pattern para o objecto LoadPattern referido pela toolbar
-- wireframe nos prisms
-- passar a definição de elemento para classes à parte
 - abandonar flex/bison ao escrever um analisador sintático LL para o formato MSH 
 
 - acabar funções de forma (fellipa)

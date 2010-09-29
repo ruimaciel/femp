@@ -21,6 +21,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem/elements/Hexahedron8.h++ fem/elements/Hexahedron20.h++ fem/elements/Hexahedron27.h++ \
 	fem/elements/Tetrahedron4.h++ fem/elements/Tetrahedron10.h++ \
 	fem/elements/Prism6.h++ \
+	fem/elements/Prism18.h++ \
 	Camera.h++ glBaseWidget.h++ glModelWidget.h++ glDisplacementsWidget.h++ ViewportColors.h++ DisplayOptions.h++\
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h \

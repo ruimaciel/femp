@@ -76,6 +76,20 @@ enum Element::Error Element::set(Type type, std::vector<size_t> nodes)
 			}
 			break;
 
+		case FE_PRISM15:
+			if(nodes.size() != 15)
+			{
+				return ERR_NODE_NUMBER;
+			}
+			break;
+
+		case FE_PRISM18:
+			if(nodes.size() != 18)
+			{
+				return ERR_NODE_NUMBER;
+			}
+			break;
+
 		default:
 			std::cerr << "error: unsupported type" << std::endl;
 			return ERR_INVALID_TYPE;

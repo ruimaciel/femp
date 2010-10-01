@@ -62,6 +62,9 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	Matrix<double,Dynamic,1> f_elem;
 	Matrix<double,Dynamic,Dynamic> B;
 	Matrix<double,Dynamic,Dynamic> Bt;
+	Matrix<double,6,6> D = model.material_list[0].generateD();
+
+	size_t material_index = 0;
 
 		//TODO get a separate function to return the shape function
 	std::vector<double>	sf;	// shape function
@@ -72,12 +75,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	int nnodes;	// number of nodes
 	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
 
-
-		//build a list of constitutive matrices
-	for(std::vector<Material>::iterator material = model.material_list.begin(); material != model.material_list.end(); material++)
-	{
-		D_list.push_back(material->generateD());
-	}
 
 		// generate stiffness matrix by cycling through all elements in the model
 
@@ -169,7 +166,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 
 			Bt = B.transpose();
 	
-			Eigen::Matrix<double,6,6> D = D_list[element->material];
+			if(material_index != element->material)
+				D = model.material_list[element->material].generateD();
 
 			// add this integration point's contribution
 			k_elem += Bt*D*B*detJ*i->get<1>();
@@ -816,7 +814,7 @@ void Analysis::build_integration_points()
 		//TODO needs testing
 		ips.clear();
 		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3, 0), 0.5*2));
-		this->ipwpl[1] = ips;
+		this->ipwpl[Element::EF_PRISM][1] = ips;
 	}
 
 	// triangle family, level 2: (tri degree 2 * line gauss degree 2)
@@ -831,12 +829,12 @@ void Analysis::build_integration_points()
 		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	2.0/3,	1.0/sqrt(3) ), 1.0/6));
 		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	1.0/6,	1.0/sqrt(3) ), 1.0/6));
 
-		this->ipwpl[2] = ips;
+		this->ipwpl[Element::EF_PRISM][2] = ips;
 	}
 
 	// triangle family, level 3: ( tri degree 4 * line Gauss degree 5)
 	{
-		T x[3], w[3];	// for the Gauss-Legendre integration points and weights
+		double x[3], w[3];	// for the Gauss-Legendre integration points and weights
 		// get the Gauss-Legendre integration points and weights
 		gauleg(x,w,3);
 
@@ -856,12 +854,12 @@ void Analysis::build_integration_points()
 			ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 	x[i]), (620-sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
 		}
 
-		this->ipwpl[3] = ips;
+		this->ipwpl[Element::EF_PRISM][3] = ips;
 	}
 
 	// triangle family, level 4: 7  points, degree 5
 	{
-		T x[3], w[3];	// for the Gauss-Legendre integration points and weights
+		double x[3], w[3];	// for the Gauss-Legendre integration points and weights
 		// get the Gauss-Legendre integration points and weights
 		gauleg(x,w,3);
 
@@ -884,11 +882,8 @@ void Analysis::build_integration_points()
 		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, x[i]), 9.0*w[i]/(2*40)));
 		}
 
-		this->ipwpl[4] = ips;
+		this->ipwpl[Element::EF_PRISM][4] = ips;
 	}
-}
-
-	//TODO finish the rest
 }
 
 
@@ -1047,6 +1042,10 @@ const std::vector<double> & Analysis::getN( const Element::Type &type, const poi
 			return this->prism6.setN(p);
 			break;
 
+		case Element::FE_PRISM15:
+			return this->prism15.setN(p);
+			break;
+
 		case Element::FE_PRISM18:
 			return this->prism18.setN(p);
 			break;
@@ -1107,6 +1106,10 @@ const std::vector<double> & Analysis::getdNdcsi( const Element::Type &type, cons
 
 		case Element::FE_PRISM6:
 			return this->prism6.setdNdcsi(p);
+			break;
+
+		case Element::FE_PRISM15:
+			return this->prism15.setdNdcsi(p);
 			break;
 
 		case Element::FE_PRISM18:
@@ -1171,6 +1174,10 @@ const std::vector<double> & Analysis::getdNdeta( const Element::Type &type, cons
 			return this->prism6.setdNdeta(p);
 			break;
 
+		case Element::FE_PRISM15:
+			return this->prism15.setdNdeta(p);
+			break;
+
 		case Element::FE_PRISM18:
 			return this->prism18.setdNdeta(p);
 			break;
@@ -1231,6 +1238,10 @@ const std::vector<double> & Analysis::getdNdzeta( const Element::Type &type, con
 
 		case Element::FE_PRISM6:
 			return this->prism6.setdNdzeta(p);
+			break;
+
+		case Element::FE_PRISM15:
+			return this->prism15.setdNdzeta(p);
 			break;
 
 		case Element::FE_PRISM18:

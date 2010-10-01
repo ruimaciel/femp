@@ -26,6 +26,7 @@
 #include "elements/Hexahedron20.h++"
 #include "elements/Hexahedron27.h++"
 #include "elements/Prism6.h++"
+#include "elements/Prism15.h++"
 #include "elements/Prism18.h++"
 
 
@@ -47,6 +48,7 @@ class Analysis
 		Hexahedron20<double> 	hexa20;
 		Hexahedron27<double> 	hexa27;
 		Prism6<double>		prism6;
+		Prism15<double>		prism15;
 		Prism18<double>		prism18;
 
 	public:

@@ -51,7 +51,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	d.setZero();
 				
 		// declare variables
-	size_t pi = 0;	// progress indicator
 	double detJ = 0;
 
 	Matrix3d J, invJ;
@@ -812,45 +811,82 @@ void Analysis::build_integration_points()
 	}
 
 
-	//Prism, level 1
+	// Prism family, level 1 (tri degree 1 * line Gauss degree 1)
 	{
-		//TODO test this
+		//TODO needs testing
 		ips.clear();
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3,0), 1.0*2/2));
-		ipwpl[Element::EF_PRISM][1] = ips;
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3, 0), 0.5*2));
+		this->ipwpl[1] = ips;
 	}
 
-	//Prism, level 2
+	// triangle family, level 2: (tri degree 2 * line gauss degree 2)
 	{
-		//TODO test this
+		//TODO needs testing
 		ips.clear();
-		ips.push_back(tuple<fem::point,double>(fem::point(2.0/3,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,2.0/3,-1.0/sqrt(3)), (1.0/3)*1/2));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,1.0/6,-1.0/sqrt(3)), (1.0/3)*1/2));
-		ips.push_back(tuple<fem::point,double>(fem::point(2.0/3,1.0/6, 1.0/sqrt(3)), (1.0/3)*1/2));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,2.0/3, 1.0/sqrt(3)), (1.0/3)*1/2));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/6,1.0/6, 1.0/sqrt(3)), (1.0/3)*1/2));
-		ipwpl[Element::EF_PRISM][2] = ips;
+		ips.push_back(tuple<fem::point,double>(fem::point(	2.0/3,	1.0/6,	-1.0/sqrt(3) ), 1.0/6));
+		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	2.0/3,	-1.0/sqrt(3) ), 1.0/6));
+		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	1.0/6,	-1.0/sqrt(3) ), 1.0/6));
+
+		ips.push_back(tuple<fem::point,double>(fem::point(	2.0/3,	1.0/6,	1.0/sqrt(3) ), 1.0/6));
+		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	2.0/3,	1.0/sqrt(3) ), 1.0/6));
+		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	1.0/6,	1.0/sqrt(3) ), 1.0/6));
+
+		this->ipwpl[2] = ips;
 	}
 
-	//Prism, level 3
-	for(int d = 3; d < 5; d++)
+	// triangle family, level 3: ( tri degree 4 * line Gauss degree 5)
 	{
-		//TODO test this
-		ips.clear();
-		double x[d], w[d];	// for the Gauss-Legendre integration points and weights
+		T x[3], w[3];	// for the Gauss-Legendre integration points and weights
 		// get the Gauss-Legendre integration points and weights
-		gauleg(x,w,d);
+		gauleg(x,w,3);
 
-		for(std::vector<tuple<fem::point, double> >::iterator i = ipwpl[Element::EF_TRIANGLE][3].begin(); i != ipwpl[Element::EF_TRIANGLE][3].end(); i++)
+		//TODO needs testing
+		ips.clear();
+		double g1=(8-sqrt(10.0)+sqrt(38.0-44.0*sqrt(2.0/5)))/18;
+		double g2=(8-sqrt(10.0)-sqrt(38.0-44.0*sqrt(2.0/5)))/18;
+
+		for(int i = 0; i < 3; i++)
 		{
-			for(int j = 0; j < d; j++)
-			{
-				ips.push_back(tuple<fem::point,double>(fem::point(i->get<0>().x(),i->get<0>().y(), x[j]), i->get<1>()*w[j]));
-			}
+			ips.push_back(tuple<fem::point,double>(fem::point(1-2*g1, g1,	x[i]), (620+sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
+			ips.push_back(tuple<fem::point,double>(fem::point(g1, 1-2*g1,	x[i]), (620+sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
+			ips.push_back(tuple<fem::point,double>(fem::point(g1, g1,	x[i]), (620+sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
+
+			ips.push_back(tuple<fem::point,double>(fem::point(1-2*g2, g2, 	x[i]), (620-sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
+			ips.push_back(tuple<fem::point,double>(fem::point(g2, 1-2*g2, 	x[i]), (620-sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
+			ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 	x[i]), (620-sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
 		}
-		ipwpl[Element::EF_PRISM][d] = ips;
+
+		this->ipwpl[3] = ips;
 	}
+
+	// triangle family, level 4: 7  points, degree 5
+	{
+		T x[3], w[3];	// for the Gauss-Legendre integration points and weights
+		// get the Gauss-Legendre integration points and weights
+		gauleg(x,w,3);
+
+		//TODO needs testing
+		ips.clear();
+	
+		double g1=(6.0-sqrt(15))/21; 
+		double g2=(6.0+sqrt(15))/21;
+
+		for(int i = 0; i < 3; i++)
+		{
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g1, g1,	x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
+		ips.push_back(tuple<fem::point,double>(fem::point(g1, 1.0-2*g1, x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
+		ips.push_back(tuple<fem::point,double>(fem::point(g1, g1, 	x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
+
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g2, g2, x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
+		ips.push_back(tuple<fem::point,double>(fem::point(g2, 1.0-2*g2, x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
+		ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 	x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
+
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, x[i]), 9.0*w[i]/(2*40)));
+		}
+
+		this->ipwpl[4] = ips;
+	}
+}
 
 	//TODO finish the rest
 }
@@ -1074,7 +1110,7 @@ const std::vector<double> & Analysis::getdNdcsi( const Element::Type &type, cons
 			break;
 
 		case Element::FE_PRISM18:
-			return this->prism1188.setdNdcsi(p);
+			return this->prism18.setdNdcsi(p);
 			break;
 
 		//TODO add remaining elements

@@ -58,7 +58,7 @@ std::vector<T> & Triangle10<T>::setN(const point &p)
 
 
 template<typename T>
-std::vector<T> & Triangle10<T>::setN(const T &csi, const T &eta, const T &zeta)
+std::vector<T> & Triangle10<T>::setN(const T &csi, const T &eta, const T &)
 {
 	//TODO test this
 	this->N[0] = 4.5*(-eta-csi+1.0/3)*(-eta-csi+2.0/3)*(-eta-csi+1);

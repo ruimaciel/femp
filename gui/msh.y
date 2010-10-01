@@ -283,10 +283,12 @@ ElementLine:	INTEGER EL_LINE2 Tags INTEGER INTEGER '\n'	{
 	*/
 	}
 	|	INTEGER EL_QUADRANGLE8 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
+	/*
 	temp.clear(); temp.reserve(8);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	temp.push_back($9), temp.push_back($10), temp.push_back($11);
 	model.pushElement(fem::Element::FE_QUADRANGLE8, temp); 
+	*/
 	}
 	|	INTEGER EL_HEXAHEDRON20 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
 	temp.clear(); temp.reserve(20);

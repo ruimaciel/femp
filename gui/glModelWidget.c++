@@ -571,7 +571,7 @@ void GLModelWidget::paintNode(size_t label, const fem::Node node)
 	glPushMatrix();
 	glTranslated(node.data[0],node.data[1],node.data[2]);
 	
-	glScalef(node_scale/aspect_ratio, node_scale/aspect_ratio, node_scale/aspect_ratio);
+	glScalef(node_scale/(aspect_ratio*pow(2,zoom)), node_scale/(aspect_ratio*pow(2,zoom)), node_scale/(aspect_ratio*pow(2,zoom)));
 
 	//TODO find a better rendering for the nodes
 	glBegin(GL_LINES);

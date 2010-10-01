@@ -12,6 +12,8 @@
 - add code to Document::load() and Document::save()
 - add code in Model::pushElement() to add the new element's surfaces to the surface list
 - add code in Element::set()
+	- add code in Element::set()
+	- add code in Element::node_number()
 - add support for rendering the program
 	- write shape function in [0,1]x[0x1] coordinates
 	- write code to render surface (i.e., renderQuad8())

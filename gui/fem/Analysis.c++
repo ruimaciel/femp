@@ -546,19 +546,19 @@ void Analysis::setDefaultIntegrationDegrees()
 	degree[Element::FE_QUADRANGLE8] = 1;	ddegree[Element::FE_QUADRANGLE8] = 1;
 	degree[Element::FE_QUADRANGLE9] = 1;	ddegree[Element::FE_QUADRANGLE9] = 1;
 
-	degree[Element::FE_TETRAHEDRON4 ] = 4;	ddegree[Element::FE_TETRAHEDRON4 ] = 1;
-	degree[Element::FE_TETRAHEDRON10] = 4;	ddegree[Element::FE_TETRAHEDRON10] = 1;
-	degree[Element::FE_TETRAHEDRON20] = 4;	ddegree[Element::FE_TETRAHEDRON20] = 1;
+	degree[Element::FE_TETRAHEDRON4 ] = 1;	ddegree[Element::FE_TETRAHEDRON4 ] = 1;
+	degree[Element::FE_TETRAHEDRON10] = 2;	ddegree[Element::FE_TETRAHEDRON10] = 2;
+	degree[Element::FE_TETRAHEDRON20] = 4;	ddegree[Element::FE_TETRAHEDRON20] = 3;
 	degree[Element::FE_TETRAHEDRON35] = 4;	ddegree[Element::FE_TETRAHEDRON35] = 1;
 	degree[Element::FE_TETRAHEDRON56] = 4;	ddegree[Element::FE_TETRAHEDRON56] = 1;
 
-	degree[Element::FE_HEXAHEDRON8 ] = 4;	ddegree[Element::FE_HEXAHEDRON8 ] = 1;
-	degree[Element::FE_HEXAHEDRON20] = 4;	ddegree[Element::FE_HEXAHEDRON20] = 1;
-	degree[Element::FE_HEXAHEDRON27] = 4;	ddegree[Element::FE_HEXAHEDRON27] = 1;
+	degree[Element::FE_HEXAHEDRON8 ] = 2;	ddegree[Element::FE_HEXAHEDRON8 ] = 1;
+	degree[Element::FE_HEXAHEDRON20] = 3;	ddegree[Element::FE_HEXAHEDRON20] = 2;
+	degree[Element::FE_HEXAHEDRON27] = 3;	ddegree[Element::FE_HEXAHEDRON27] = 2;
 
-	degree[Element::FE_PRISM6 ] = 4;	ddegree[Element::FE_PRISM6 ] = 1;
-	degree[Element::FE_PRISM15] = 4;	ddegree[Element::FE_PRISM15] = 1;
-	degree[Element::FE_PRISM18] = 4;	ddegree[Element::FE_PRISM18] = 1;
+	degree[Element::FE_PRISM6 ] = 2;	ddegree[Element::FE_PRISM6 ] = 1;
+	degree[Element::FE_PRISM15] = 4;	ddegree[Element::FE_PRISM15] = 2;
+	degree[Element::FE_PRISM18] = 4;	ddegree[Element::FE_PRISM18] = 2;
 
 	degree[Element::FE_PYRAMID5 ] = 4;	ddegree[Element::FE_PYRAMID5 ] = 1;
 	degree[Element::FE_PYRAMID14] = 4;	ddegree[Element::FE_PYRAMID14] = 1;
@@ -786,8 +786,8 @@ void Analysis::build_integration_points()
 	}
 
 
-	// Hexahedron family, integration points 1 to 7
-	for(int d = 1; d < 8; d++)
+	// Hexahedron family, integration points 1 to 5
+	for(int d = 1; d < 5; d++)
 	{
 		ips.clear();
 		double x[d], w[d];	// for the Gauss-Legendre integration points and weights

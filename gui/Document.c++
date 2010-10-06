@@ -533,6 +533,47 @@ enum Document::Error Document::load()
 						state.push(21);	// ElementFirstNode
 						break;
 
+					case fem::Element::FE_PRISM15:
+						element.type = fem::Element::FE_PRISM15;
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(21);	// ElementFirstNode
+						break;
+
+					case fem::Element::FE_PRISM18:
+						element.type = fem::Element::FE_PRISM18;
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(22);	// ElementNode
+						state.push(21);	// ElementFirstNode
+						break;
+
 					default:
 						std::cout << "unsupported element: " << state.
 							top() << std::endl;
@@ -1565,6 +1606,14 @@ enum Document::Error Document::save()
 
 			case fem::Element::FE_PRISM6:
 				out << "\"prism6\", ";
+				break;
+
+			case fem::Element::FE_PRISM15:
+				out << "\"prism15\", ";
+				break;
+
+			case fem::Element::FE_PRISM18:
+				out << "\"prism18\", ";
 				break;
 
 			default:

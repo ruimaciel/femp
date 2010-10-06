@@ -1,7 +1,7 @@
 // Gmsh project created on Fri Nov 27 12:05:08 2009
 b = 1;
 h = 1;
-l = 2;
+l = 1;
 Point(1) = {	-b/2,	-h/2, -l/2};
 Point(2) = {	 b/2,	-h/2, -l/2};
 Point(3) = {	 b/2,	 h/2, -l/2};

@@ -27,6 +27,11 @@ enum LinearAnalysis::Error LinearAnalysis::run(Model &model, LoadPattern &lp, Pr
 
 	build_fem_equation(model, lp, true);
 
+	cout << "matrix:" << endl;
+	cout << k << endl;
+	cout << "vector:" << endl;
+	cout << f << endl;
+
 	//TODO implement a choice of solver
 	d = f;
 	//cout << "k pre:\n" << k << endl;

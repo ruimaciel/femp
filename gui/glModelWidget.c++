@@ -891,6 +891,65 @@ void GLModelWidget::paintElement(const fem::Element &element)
 			}
 			break;
 
+		case fem::Element::FE_PRISM15:
+			{
+				// set the node list
+				for(int i = 0; i < 15; i++)
+				{
+					nl.push_back(document->model.node_list.find(element.nodes[i])->second);
+				}
+
+				// render the surfaces
+				// set the color
+				glColor3fv(colors->prism6);
+
+				if(element.nodes.size() != 15)
+				{
+					qWarning("error: invalid number of nodes for a FE_PRISM15. it's %zd", element.nodes.size());
+					//TODO remove element
+					return;
+				}
+
+				//TODO check surface orientation
+				renderTriangle6(nl[2], nl[1], nl[0], nl[9], nl[6], nl[7]);
+				renderTriangle6(nl[4], nl[5], nl[3], nl[14], nl[13], nl[12]);
+				renderQuad8(nl[3], nl[8], nl[0], nl[12], nl[6],  nl[4], nl[10], nl[1]);
+/*
+				renderQuad4(nl[5], nl[2], nl[3], nl[0]);
+				renderQuad4(nl[4], nl[1], nl[5], nl[2]);
+*/
+			}
+			break;
+
+		case fem::Element::FE_PRISM18:
+			{
+				// set the node list
+				for(int i = 0; i < 18; i++)
+				{
+					nl.push_back(document->model.node_list.find(element.nodes[i])->second);
+				}
+
+				// render the surfaces
+				// set the color
+				glColor3fv(colors->prism6);
+
+				if(element.nodes.size() != 18)
+				{
+					qWarning("error: invalid number of nodes for a FE_PRISM18. it's %zd", element.nodes.size());
+					//TODO remove element
+					return;
+				}
+
+				//TODO check surface orientation
+				renderTriangle6(nl[2], nl[1], nl[0], nl[9], nl[6], nl[7]);
+				renderTriangle6(nl[4], nl[5], nl[3], nl[14], nl[13], nl[12]);
+/*
+				renderQuad8(nl[3], nl[8], nl[0], nl[12], nl[6],  nl[4], nl[10], nl[1]);
+				renderQuad4(nl[5], nl[2], nl[3], nl[0]);
+				renderQuad4(nl[4], nl[1], nl[5], nl[2]);
+*/
+			}
+			break;
 		default:
 			//qWarning("error: unknown element type: %d", element.type);
 			{

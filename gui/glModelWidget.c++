@@ -714,6 +714,7 @@ void GLModelWidget::paintElement(const fem::Element &element)
 
 	std::map<size_t, fem::Node>::iterator n;
 	std::vector<fem::point> nl;	// node list
+
 	fem::point p;
 	glPushMatrix();
 	switch(element.type)
@@ -747,16 +748,10 @@ void GLModelWidget::paintElement(const fem::Element &element)
 		case fem::Element::FE_TETRAHEDRON10:
 			{
 				// set the node list
-				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[6])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[7])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[8])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[9])->second);
+				for(int i = 0; i < 10; i++)
+				{
+					nl.push_back(document->model.node_list.find(element.nodes[i])->second);
+				}
 
 				// render the surfaces
 				// set the color
@@ -785,6 +780,12 @@ void GLModelWidget::paintElement(const fem::Element &element)
 					//TODO remove element
 					return;
 				}
+
+				for(int i = 0; i < 8; i++)
+				{
+					nl.push_back(document->model.node_list.find(element.nodes[i])->second);
+				}
+
 				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
 				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
@@ -914,10 +915,8 @@ void GLModelWidget::paintElement(const fem::Element &element)
 				renderTriangle6(nl[2], nl[1], nl[0], nl[9], nl[6], nl[7]);
 				renderTriangle6(nl[4], nl[5], nl[3], nl[14], nl[13], nl[12]);
 				renderQuad8(nl[3], nl[8], nl[0], nl[12], nl[6],  nl[4], nl[10], nl[1]);
-/*
-				renderQuad4(nl[5], nl[2], nl[3], nl[0]);
-				renderQuad4(nl[4], nl[1], nl[5], nl[2]);
-*/
+				renderQuad8(nl[5], nl[11], nl[2], nl[13], nl[7], nl[3], nl[8], nl[0]);
+				renderQuad8(nl[4], nl[10], nl[1], nl[14], nl[9], nl[5], nl[11], nl[2]);
 			}
 			break;
 
@@ -943,11 +942,10 @@ void GLModelWidget::paintElement(const fem::Element &element)
 				//TODO check surface orientation
 				renderTriangle6(nl[2], nl[1], nl[0], nl[9], nl[6], nl[7]);
 				renderTriangle6(nl[4], nl[5], nl[3], nl[14], nl[13], nl[12]);
-/*
-				renderQuad8(nl[3], nl[8], nl[0], nl[12], nl[6],  nl[4], nl[10], nl[1]);
-				renderQuad4(nl[5], nl[2], nl[3], nl[0]);
-				renderQuad4(nl[4], nl[1], nl[5], nl[2]);
-*/
+
+				renderQuad9(nl[3], nl[8], nl[0], nl[12], nl[15], nl[6],  nl[4], nl[10], nl[1]);
+				renderQuad9(nl[5], nl[11], nl[2], nl[13], nl[16], nl[7], nl[3], nl[8], nl[0]);
+				renderQuad9(nl[4], nl[10], nl[1], nl[14], nl[17], nl[9], nl[5], nl[11], nl[2]);
 			}
 			break;
 		default:

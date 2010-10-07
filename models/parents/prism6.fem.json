@@ -29,7 +29,8 @@
 		{
 			"label": "First test pattern",
 			"nodal loads":[
-				{"node":1, "force":[3, 2, 0]}
+				{"node":1, "force":[3, 2, 0]},
+				{"node":3, "force":[10, 10, 0]}
 			]
 		}
 	]

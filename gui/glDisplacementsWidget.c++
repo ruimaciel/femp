@@ -739,6 +739,8 @@ void GLDisplacementsWidget::paintNode(size_t label, const fem::Node node)
 
 void GLDisplacementsWidget::paintElement(const fem::Element &element)
 {
+	mylog.setPrefix("GLDisplacementsWidget::paintElement(const fem::Element &element)");
+
 	std::map<size_t, fem::Node>::iterator n;
 	std::vector<fem::point> nl;	// node list
 	std::map<size_t, fem::Node>::iterator dof;
@@ -757,12 +759,6 @@ void GLDisplacementsWidget::paintElement(const fem::Element &element)
 					else
 						nl.push_back(document->model.node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
 				}
-				/*
-				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
-				*/
 
 				// render the surfaces
 				// set the color
@@ -793,18 +789,6 @@ void GLDisplacementsWidget::paintElement(const fem::Element &element)
 					else
 						nl.push_back(document->model.node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
 				}
-				/*
-				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[6])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[7])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[8])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[9])->second);
-				*/
 
 				// render the surfaces
 				// set the color
@@ -833,6 +817,7 @@ void GLDisplacementsWidget::paintElement(const fem::Element &element)
 					//TODO remove element
 					return;
 				}
+
 				for(int i = 0; i < 8; i++)
 				{
 					dof = processed_model->displacements_map.find(element.nodes[i]);
@@ -906,13 +891,6 @@ void GLDisplacementsWidget::paintElement(const fem::Element &element)
 						nl.push_back(document->model.node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
 				}
 
-				/*
-				for(int i = 0; i < 27; i++)
-				{
-					nl.push_back(document->model.node_list.find(element.nodes[i])->second);
-				}
-				*/
-
 				// set the color
 				glColor3fv(colors->hexahedron8);
 
@@ -984,10 +962,41 @@ void GLDisplacementsWidget::paintElement(const fem::Element &element)
 				renderTriangle6(nl[2], nl[1], nl[0], nl[9], nl[6], nl[7]);
 				renderTriangle6(nl[4], nl[5], nl[3], nl[14], nl[13], nl[12]);
 				renderQuad8(nl[3], nl[8], nl[0], nl[12], nl[6],  nl[4], nl[10], nl[1]);
-/*
-				renderQuad4(nl[5], nl[2], nl[3], nl[0]);
-				renderQuad4(nl[4], nl[1], nl[5], nl[2]);
-*/
+				renderQuad8(nl[5], nl[11], nl[2], nl[13], nl[7], nl[3], nl[8], nl[0]);
+				renderQuad8(nl[4], nl[10], nl[1], nl[14], nl[9], nl[5], nl[11], nl[2]);
+			}
+			break;
+
+		case fem::Element::FE_PRISM18:
+			{
+				// set the node list
+				for(int i = 0; i < 18; i++)
+				{
+					dof = processed_model->displacements_map.find(element.nodes[i]);
+					if(dof == processed_model->displacements_map.end()) 
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second);
+					else
+						nl.push_back(document->model.node_list.find(element.nodes[i])->second + dof->second*displacements_scale);
+				}
+
+				// render the surfaces
+				// set the color
+				glColor3fv(colors->prism6);
+
+				if(element.nodes.size() != 18)
+				{
+					qWarning("error: invalid number of nodes for a FE_PRISM18. it's %zd", element.nodes.size());
+					//TODO remove element
+					return;
+				}
+
+				//TODO check surface orientation
+				renderTriangle6(nl[2], nl[1], nl[0], nl[9], nl[6], nl[7]);
+				renderTriangle6(nl[4], nl[5], nl[3], nl[14], nl[13], nl[12]);
+
+				renderQuad9(nl[3], nl[8], nl[0], nl[12], nl[15], nl[6],  nl[4], nl[10], nl[1]);
+				renderQuad9(nl[5], nl[11], nl[2], nl[13], nl[16], nl[7], nl[3], nl[8], nl[0]);
+				renderQuad9(nl[4], nl[10], nl[1], nl[14], nl[17], nl[9], nl[5], nl[11], nl[2]);
 			}
 			break;
 

@@ -1,5 +1,7 @@
 #include "Analysis.h++"
 
+#include "../lalib/Matrix.h++"
+#include "../lalib/Vector.h++"
 #include <Eigen/Sparse>
 #include <Eigen/LU>
 
@@ -20,7 +22,7 @@ Analysis::Analysis()
 Analysis::Analysis(const Analysis &copied)
 {
 	// copy the FEM equation
-	this->k = copied.k;
+	this->K = copied.K;
 	this->f = copied.f;
 	this->d = copied.d;
 }
@@ -46,9 +48,11 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	make_location_matrix(model);
 
 		// initialize the FEM equation objects
+	/*
 	k.setZero();
 	f.setZero();
 	d.setZero();
+	*/
 				
 		// declare variables
 	double detJ = 0;
@@ -120,7 +124,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 				J(2,0) += dNdzeta[n]*X(n);	J(2,1) += dNdzeta[n]*Y(n);	J(2,2) += dNdzeta[n]*Z(n);
 			}
 
-			std::cout << "J:\n" << J << "\n" << endl;
+			//std::cout << "J:\n" << J << "\n" << endl;
 
 			detJ = J.determinant();
 
@@ -172,7 +176,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			// add this integration point's contribution
 			k_elem += Bt*D*B*detJ*i->get<1>();
 		}
-		cout << "k elem: " << k_elem << endl;
+		//cout << "k elem: " << k_elem << endl;
 
 			// add elementary stiffness matrix to the global stiffness matrix 
 		add_elementary_stiffness_to_global(k_elem, lm, *element);
@@ -291,7 +295,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 				J(0,1) += dNdcsi[n]*X(n);	J(1,1) += dNdcsi[n]*Y(n);	J(2,1) += dNdcsi[n]*Z(n);
 				J(0,2) += dNdeta[n]*X(n);	J(1,2) += dNdeta[n]*Y(n);	J(2,2) += dNdeta[n]*Z(n);
 			}
-			cout << "\nJ matrix:\n" << J << endl;
+			//cout << "\nJ matrix:\n" << J << endl;
 
 			detJ = J.determinant();
 			if(detJ <= 0)
@@ -323,7 +327,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 				f_elem(3*n+2) += N(n)*q.z()*detJ*W;
 			}
 		}
-		cout << "\nf_elem:\n" << f_elem << endl;
+		//cout << "\nf_elem:\n" << f_elem << endl;
 
 			//add the surface load's f_elem contribution to f
 		//for(size_t i = 0; i < model.element_list[domain_load->first].nodes.size(); i++)
@@ -356,11 +360,11 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 
 		// set the nodal loads
 		if(lm[n].get<0>() != 0)
-			f[lm[n].get<0>()-1] += nodal_load->second.x();
+			f(lm[n].get<0>()-1) += nodal_load->second.x();
 		if(lm[n].get<1>() != 0)
-			f[lm[n].get<1>()-1] += nodal_load->second.y();
+			f(lm[n].get<1>()-1) += nodal_load->second.y();
 		if(lm[n].get<2>() != 0)
-			f[lm[n].get<2>()-1] += nodal_load->second.z();
+			f(lm[n].get<2>()-1) += nodal_load->second.z();
 	}
 
 	//DEBUG
@@ -381,17 +385,17 @@ void Analysis::output_fem_equation(std::ostream &out)
 
 	// output stiffness matrix
 	out << "\t\t\"stiffness matrix\" : [\n";
-	for(int i = 0; i < k.rows(); i++)
+	for(int i = 0; i < K.rows(); i++)
 	{
 		out << "\t\t\t[";
-		for(int j = 0; j < k.cols(); j++)
+		for(int j = 0; j < K.columns(); j++)
 		{
 			if(j != 0)
 				out << ",";
-			out << "\t" << k.coeff(i,j);
+			out << "\t" << K.value(i,j);
 		}
 		out << "]";
-		if(i + 1 < k.rows())
+		if(i + 1 < K.rows())
 			out << ",";
 		out << "\n";
 	}
@@ -399,11 +403,11 @@ void Analysis::output_fem_equation(std::ostream &out)
 
 	// output force vector
 	out << "\t\t\"force vector\" : [\n";
-	for(int i = 0; i < f.rows(); i++)
+	for(int i = 0; i < f.size(); i++)
 	{
 		out << "\t\t\t";
-		out << f.coeff(i);
-		if(i +1 < f.rows() )
+		out << f.value(i);
+		if(i +1 < f.size() )
 			out << ",";
 		out << "\n";
 	}
@@ -930,7 +934,7 @@ Analysis::make_location_matrix(Model &model)
 	f.resize(dof, false);
 	d.resize(dof, false);
 	*/
-	k.resize(dof,dof);
+	K.resize(dof,dof);
 	f.resize(dof);
 	d.resize(dof);
 }
@@ -981,7 +985,7 @@ inline void Analysis::add_elementary_stiffness_to_global(const Eigen::Matrix<dou
 				{
 					if( (id[u] != 0) && (jd[v] != 0) )
 					{
-						k.coeffRef(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
+						K(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
 					}
 				}
 			}

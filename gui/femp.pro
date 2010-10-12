@@ -30,7 +30,8 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem/Analysis.h++ fem/LinearAnalysis.h++ \
 	ui/DialogScale.h++ \
 	MessageLogger.h++ Logs.h++ \
-	fem/Surface.h++
+	fem/Surface.h++ \
+	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
 	ProcessedModel.c++ \

@@ -1,7 +1,11 @@
 #include "LinearAnalysis.h++"
 
 #include <iostream>
-#include <Eigen/Sparse>
+
+#include "../lalib/Matrix.h++"
+#include "../lalib/Vector.h++"
+#include "../lalib/solvers/CG.h++"
+#include "../lalib/solvers/Cholesky.h++"
 
 
 
@@ -27,26 +31,45 @@ enum LinearAnalysis::Error LinearAnalysis::run(Model &model, LoadPattern &lp, Pr
 
 	build_fem_equation(model, lp, true);
 
+	/*
 	cout << "matrix:" << endl;
-	cout << k << endl;
+	cout << K << endl;
 	cout << "vector:" << endl;
 	cout << f << endl;
+	*/
 
 	//TODO implement a choice of solver
-	d = f;
+	d = (float)0.0*f;
+	lalib::Matrix<float,lalib::SparseCRS> my_k;
+	lalib::Matrix<float,lalib::LowerTriangular> L;
+
+	assign(my_k, K);
+
+	/*
+	if(lalib::cg(my_k,d,f,(float)1e-10) != lalib::OK)
+	{
+		cout << "did not converged" << endl;
+	}
+	*/
+
+	lalib::cholesky(my_k,d,f,L);
+
 	//cout << "k pre:\n" << k << endl;
-	SparseLLT<DynamicSparseMatrix<double,RowMajor>,Cholmod>(k).solveInPlace(d);
+	//SparseLLT<DynamicSparseMatrix<double,RowMajor>,Cholmod>(k).solveInPlace(d);
+
 	//cout << "k pos:\n" << k << endl;
 
 	// set the equation
-	p.k = k;
+	p.k = my_k;
 	p.f = f;
 	p.d = d;
 	p.displacements_map = this->displacements_map();
 
 	cout << p.d << endl;
 	// calculate U
-	cout << "Strain energy: " << (d.transpose()*p.k*d)(0,0) << endl;
+	lalib::Vector<float> d1 = d;
+	d1 = p.k*d;
+	cout << "Strain energy: " << dot(d,d1) << endl;
 
 
 	return ERR_OK;

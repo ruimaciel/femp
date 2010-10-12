@@ -3,6 +3,8 @@
 
 #include <boost/tuple/tuple.hpp>
 
+#include "../lalib/Matrix.h++"
+#include "../lalib/Vector.h++"
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 
@@ -74,9 +76,14 @@ class Analysis
 
 			// the FEM equation
 		// FemEquation f;
+		/*
 		Eigen::DynamicSparseMatrix<double,Eigen::RowMajor> k;
 		Eigen::Matrix<double,Eigen::Dynamic,1> f;
 		Eigen::Matrix<double,Eigen::Dynamic,1> d;
+		*/
+		lalib::Matrix<float,lalib::SparseDOK> K;
+		lalib::Vector<float> f;
+		lalib::Vector<float> d;
 
 
 	public:

@@ -16,3 +16,5 @@
 - abandonar flex/bison ao escrever um analisador sintático LL para o formato MSH 
 
 - acabar funções de forma (fellipa)
+
+- refactorizar código de glModelWidget e glDisplacementsWidget, implementar padrão de estados

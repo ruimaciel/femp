@@ -763,7 +763,8 @@ void MainWindow::runAnalysis()
 	fem::LinearAnalysis analysis;
 
 	//TODO for testing purposes only. remove
-	document.processed_model.push_back(ProcessedModel());
+	ProcessedModel p;
+	document.processed_model.push_back(p);
 
 	analysis.run(document.model, document.model.load_pattern_list[0], document.processed_model.back());
 

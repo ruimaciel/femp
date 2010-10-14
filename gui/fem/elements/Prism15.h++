@@ -96,6 +96,7 @@ std::vector<T> & Prism15<T>::setdNdcsi(const T &csi, const T &eta, const T &zeta
 	//TODO test this
 	// this->dNdcsi
 
+	/*
 	this->dNdcsi[0] = -((-1 + zeta)*(-2 + 4*csi + 4*eta + zeta))/2.0;
 	this->dNdcsi[1] =  ((-1 + zeta)*(2 - 4*csi + zeta))/2.0;
 	this->dNdcsi[2] = 0;
@@ -111,6 +112,22 @@ std::vector<T> & Prism15<T>::setdNdcsi(const T &csi, const T &eta, const T &zeta
 	this->dNdcsi[12] = -2*(-1 + 2*csi + eta)*(1 + zeta);
 	this->dNdcsi[13] = -2*eta*(1 + zeta);
 	this->dNdcsi[14] =  2*eta*(1 + zeta);
+	*/
+	this->dNdcsi[0] = -(zeta-1)*(zeta+2*(eta+csi))/2-(eta+csi-1)*(zeta-1);
+	this->dNdcsi[1] = (zeta-1)*(zeta-2*csi+2)/2-csi*(zeta-1);
+	this->dNdcsi[2] = 0;
+	this->dNdcsi[3] = (eta+csi-1)*(zeta+1)-(zeta+1)*(zeta-2*(eta+csi))/2;
+	this->dNdcsi[4] = (zeta+1)*(zeta+2*csi-2)/2+csi*(zeta+1);
+	this->dNdcsi[5] = 0;
+	this->dNdcsi[6] =  2*(eta+csi-1)*(zeta-1)+2*csi*(zeta-1);
+	this->dNdcsi[7] = 2*eta*(zeta-1);
+	this->dNdcsi[8] = zeta*zeta-1;
+	this->dNdcsi[9] = -2*eta*(zeta-1);
+	this->dNdcsi[10] = 1-zeta*zeta;
+	this->dNdcsi[11] = 0;
+	this->dNdcsi[12] = -2*(eta+csi-1)*(zeta+1)-2*csi*(zeta+1);
+	this->dNdcsi[13] = -2*eta*(zeta+1);
+	this->dNdcsi[14] = 2*eta*(zeta+1);
 
 	return this->dNdcsi;
 }
@@ -129,6 +146,7 @@ std::vector<T> & Prism15<T>::setdNdeta(const T &csi, const T &eta, const T &zeta
 	//TODO test this
 	// this->dNdeta
 
+	/*
 	this->dNdeta[0] = -((-1 + zeta)*(-2 + 4*csi + 4*eta + zeta))/2.0;
 	this->dNdeta[1] = 0;
 	this->dNdeta[2] =  ((-1 + zeta)*(2 - 4*eta + zeta))/2.0;
@@ -144,6 +162,22 @@ std::vector<T> & Prism15<T>::setdNdeta(const T &csi, const T &eta, const T &zeta
 	this->dNdeta[12] = -2*csi*(1 + zeta);
 	this->dNdeta[13] = -2*(-1 + csi + 2*eta)*(1 + zeta);
 	this->dNdeta[14] =  2*csi*(1 + zeta);
+	*/
+	this->dNdeta[0] = -(zeta-1)*(zeta+2*(eta+csi))/2-(eta+csi-1)*(zeta-1);
+	this->dNdeta[1] = 0;
+	this->dNdeta[2] = (zeta-1)*(zeta-2*eta+2)/2-eta*(zeta-1);
+	this->dNdeta[3] = (eta+csi-1)*(zeta+1)-(zeta+1)*(zeta-2*(eta+csi))/2;
+	this->dNdeta[4] = 0;
+	this->dNdeta[5] = (zeta+1)*(zeta+2*eta-2)/2+eta*(zeta+1);
+	this->dNdeta[6] =  2*csi*(zeta-1);
+	this->dNdeta[7] = 2*(eta+csi-1)*(zeta-1)+2*eta*(zeta-1);
+	this->dNdeta[8] = zeta*zeta-1;
+	this->dNdeta[9] = -2*csi*(zeta-1);
+	this->dNdeta[10] = 0;
+	this->dNdeta[11] = 1-zeta*zeta;
+	this->dNdeta[12] = -2*csi*(zeta+1);
+	this->dNdeta[13] = -2*(eta+csi-1)*(zeta+1)-2*eta*(zeta+1);
+	this->dNdeta[14] = 2*csi*(zeta+1);
 	
 	return this->dNdeta;
 }
@@ -162,6 +196,7 @@ std::vector<T> & Prism15<T>::setdNdzeta(const T &csi, const T &eta, const T &zet
 	//TODO test this
 	// this->dNdzeta
 
+	/*
 	this->dNdzeta[0] = -((-1 + csi + eta)*(-1 + 2*csi + 2*eta + 2*zeta))/2.0;
 	this->dNdzeta[1] =  (csi*(1 - 2*csi + 2*zeta))/2.0;
 	this->dNdzeta[2] = (eta*(1 - 2*eta + 2*zeta))/2.0;
@@ -176,6 +211,22 @@ std::vector<T> & Prism15<T>::setdNdzeta(const T &csi, const T &eta, const T &zet
 	this->dNdzeta[11] = -2*eta*zeta;
 	this->dNdzeta[12] = -2*csi*(-1 + csi + eta);
 	this->dNdzeta[13] = -2*eta*(-1 + csi + eta);
+	this->dNdzeta[14] = 2*csi*eta;
+	*/
+	this->dNdzeta[0] = -(eta+csi-1)*(zeta+2*(eta+csi))/2-(eta+csi-1)*(zeta-1)/2;
+	this->dNdzeta[1] = csi*(zeta-2*csi+2)/2+csi*(zeta-1)/2;
+	this->dNdzeta[2] = eta*(zeta-2*eta+2)/2+eta*(zeta-1)/2;
+	this->dNdzeta[3] = -(eta+csi-1)*(zeta-2*(eta+csi))/2-(eta+csi-1)*(zeta+1)/2;
+	this->dNdzeta[4] =  csi*(zeta+2*csi-2)/2+csi*(zeta+1)/2;
+	this->dNdzeta[5] = eta*(zeta+2*eta-2)/2+eta*(zeta+1)/2;
+	this->dNdzeta[6] = 2*csi*(eta+csi-1);
+	this->dNdzeta[7] = 2*eta*(eta+csi-1);
+	this->dNdzeta[8] = 2*(eta+csi-1)*zeta;
+	this->dNdzeta[9] = -2*csi*eta;
+	this->dNdzeta[10] = -2*csi*zeta;
+	this->dNdzeta[11] = -2*eta*zeta;
+	this->dNdzeta[12] = -2*csi*(eta+csi-1);
+	this->dNdzeta[13] =  -2*eta*(eta+csi-1);
 	this->dNdzeta[14] = 2*csi*eta;
 
 	return this->dNdzeta;

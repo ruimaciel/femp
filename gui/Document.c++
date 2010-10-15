@@ -1566,7 +1566,7 @@ enum Document::Error Document::save()
 			out << ",\n\t";
 		else
 			out << "\n\t";
-		out << "\t[" << it->first << ",[" << it-> second.data[0] << "," << it->second.data[1] << "," << it-> second.data[2] << "]]";
+		out << "\t[\t" << it->first << ",[\t" << it-> second.data[0] << ",\t" << it->second.data[1] << ",\t" << it-> second.data[2] << "\t]]";
 
 	}
 	out << "\n\t],\n";

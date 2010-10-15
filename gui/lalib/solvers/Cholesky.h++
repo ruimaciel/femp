@@ -15,6 +15,9 @@ namespace lalib
 template<typename scalar, template<typename> class MatrixStoragePolicy, template<typename> class LMatrixStoragePolicy, template<typename> class VectorStoragePolicy>
 ReturnCode cholesky(Matrix<scalar, MatrixStoragePolicy> &A, Vector<scalar, VectorStoragePolicy> &x, Vector<scalar, VectorStoragePolicy> &b, Matrix<scalar, LMatrixStoragePolicy> &L)
 {
+	assert(A.rows() == A.columns());
+	assert(A.columns() == b.size());
+
 	using namespace std;
 
 	scalar s;
@@ -42,6 +45,7 @@ ReturnCode cholesky(Matrix<scalar, MatrixStoragePolicy> &A, Vector<scalar, Vecto
 			{
 				L(i,j) = s/L(j,j);
 			}
+			s = L(i,j);	// debug purposes
 		}
 	}
 

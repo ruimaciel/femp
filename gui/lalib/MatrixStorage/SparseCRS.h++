@@ -127,7 +127,6 @@ scalar & SparseCRS<scalar>::operator() (const size_t row, const size_t column)
 	// the first element in this row has a greater column index than the one being referenced
 	if(data.column_index[data.row_pointer[row]] > column)
 	{
-		cout << "> column" << endl;
 		vector<size_t>::iterator col = data.column_index.begin();
 		advance(col,data.row_pointer[row]);
 		data.column_index.insert(col,column);

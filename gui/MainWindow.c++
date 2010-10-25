@@ -766,7 +766,19 @@ void MainWindow::runAnalysis()
 	ProcessedModel p;
 	document.processed_model.push_back(p);
 
-	analysis.run(document.model, document.model.load_pattern_list[0], document.processed_model.back());
+	switch( analysis.run(document.model, document.model.load_pattern_list[0], document.processed_model.back()) )
+	{
+		case fem::Analysis::ERR_OK:
+			// things are good
+			break;
+
+		default:
+			QMessageBox::critical(this, tr("Error"), tr("there was a problem running the model"));
+			mylog.message("there was a problem running the model");
+			mylog.clearPrefix();
+			return;
+			break;
+	}
 
 	message.sprintf("Model analysis: finished after %d ms", time.elapsed());
 	//TODO implement variadic function

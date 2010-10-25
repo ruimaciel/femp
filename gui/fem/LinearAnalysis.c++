@@ -48,7 +48,6 @@ enum LinearAnalysis::Error LinearAnalysis::run(Model &model, LoadPattern &lp, Pr
 	assign(my_k, K);
 
 
-	/*
 	if(lalib::cg(my_k,d,f,(float)1e-10) != lalib::OK)
 	{
 		cout << "did not converged" << endl;
@@ -56,7 +55,7 @@ enum LinearAnalysis::Error LinearAnalysis::run(Model &model, LoadPattern &lp, Pr
 	}
 	// */
 
-	lalib::cholesky(my_k,d,f,L);
+	// lalib::cholesky(my_k,d,f,L);
 
 	ofstream file;
 	file.open("fem.oct");

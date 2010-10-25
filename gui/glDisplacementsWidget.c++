@@ -1162,6 +1162,11 @@ void GLDisplacementsWidget::paintWireframe(const fem::Element &element)
 
 				for(int i = 0; i < 6; i++)
 				{
+					nl.push_back(document->model.node_list.find(element.nodes[i])->second);
+				}
+				/*
+				for(int i = 0; i < 6; i++)
+				{
 					dof = this->processed_model->displacements_map.find(element.nodes[i]);
 					//TODO draw an arrow
 					if(dof == this->processed_model->displacements_map.end()) 
@@ -1169,13 +1174,6 @@ void GLDisplacementsWidget::paintWireframe(const fem::Element &element)
 					else
 						nl.push_back(dof->second*displacements_scale + document->model.node_list.find(element.nodes[i])->second);
 				}
-				/*
-				nl.push_back(document->model.node_list.find(element.nodes[0])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[1])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[2])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[3])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[4])->second);
-				nl.push_back(document->model.node_list.find(element.nodes[5])->second);
 				*/
 
 				// render the wireframe

@@ -7,6 +7,8 @@
 
 #include "../Logs.h++"
 
+#include "elements/BaseElement.h++"
+
 
 namespace fem
 {
@@ -14,7 +16,6 @@ namespace fem
 Analysis::Analysis()
 {
 	// build all lists of integration points/weights pairs
-	build_integration_points();
 	setDefaultIntegrationDegrees();
 }
 
@@ -33,7 +34,7 @@ Analysis::~Analysis()
 }
 
 
-enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPattern &lp, bool verbose)
+enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPattern &lp)
 {
 	mylog.setPrefix("Analysis::build_fem_equation()");
 
@@ -47,13 +48,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		// generate the location matrix
 	make_location_matrix(model);
 
-		// initialize the FEM equation objects
-	/*
-	k.setZero();
-	f.setZero();
-	d.setZero();
-	*/
-				
 		// declare variables
 	double detJ = 0;
 
@@ -61,7 +55,6 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 	std::vector< Eigen::Matrix<double,6,6> > D_list;
 
 		// set up the temporary variables for the elementary matrix and vector
-	//symmetric_matrix<double, upper> k_elem;
 	Matrix<double,Dynamic, Dynamic> k_elem;
 	Matrix<double,Dynamic,1> f_elem;
 	Matrix<double,Dynamic,Dynamic> B;
@@ -70,25 +63,59 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 
 	size_t material_index = 0;
 
-		//TODO get a separate function to return the shape function
-	std::vector<double>	sf;	// shape function
-	std::vector<double>	dNdcsi;
-	std::vector<double>	dNdeta;
-	std::vector<double>	dNdzeta;
+	BaseElement<double> *element = NULL;	// points to the current element class
 
 	int nnodes;	// number of nodes
 	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
 
 
 		// generate stiffness matrix by cycling through all elements in the model
-
 	mylog.message("Beginning stiffness matrix");
-	for(std::vector<Element>::iterator element = model.element_list.begin(); element != model.element_list.end(); element++)
+	for(std::vector<Element>::iterator element_iterator = model.element_list.begin(); element_iterator != model.element_list.end(); element_iterator++)
 	{
-			// output
+			// sets the current element routines
+		switch(element_iterator->type)
+		{
+			case Element::FE_TETRAHEDRON4:
+				element = &tetra4;
+				break;
 
-			// get the number of expected nodes used by the current element type
-		nnodes = element->node_number();
+			case Element::FE_TETRAHEDRON10:
+				element = &tetra10;
+				break;
+
+			case Element::FE_HEXAHEDRON8:
+				element = &hexa8;
+				break;
+
+			case Element::FE_HEXAHEDRON20:
+				element = &hexa20;
+				break;
+
+			case Element::FE_HEXAHEDRON27:
+				element = &hexa27;
+				break;
+
+			case Element::FE_PRISM6:
+				element = &prism6;
+				break;
+
+			case Element::FE_PRISM15:
+				element = &prism15;
+				break;
+
+			case Element::FE_PRISM18:
+				element = &prism18;
+				break;
+
+			default:
+				mylog.message("unsupported element");
+				return ERR_UNSUPPORTED_ELEMENT;
+				break;
+		}
+
+			// get the number of expected nodes used by the current element_iterator type
+		nnodes = element_iterator->node_number();
 
 			// resize the elementary matrices to fit the new node size
 		k_elem.resize(nnodes*3,nnodes*3);
@@ -101,27 +128,29 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		f_elem.setZero();
 		B.setZero();
 
-		mylog.message("Beginning element stiffness");
-
-			// build the element stiffness matrix: cycle through the number of integration points
-		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][degree[element->type]].begin(); i != ipwpl[element->family()][degree[element->type]].end(); i++)
+			// build the element_iterator stiffness matrix: cycle through the number of integration points
+		// cout << "base ipwpl size: " << ipwpl[element_iterator->family()].size() << endl;
+		// cout << "element ipwpl size: " << element->ipwpl.size() << endl;
+		
+		for (std::vector<boost::tuple<fem::point,double> >::iterator i = element->ipwpl[degree[element_iterator->type]].begin(); i != element->ipwpl[degree[element_iterator->type]].end(); i++)
 		{
-#define X(N) model.node_list[element->nodes[N]].x()
-#define Y(N) model.node_list[element->nodes[N]].y()
-#define Z(N) model.node_list[element->nodes[N]].z()
+			cout << "ipwpl: " << i->get<0>() << ",\t" << i->get<1>() << endl;
+#define X(N) model.node_list[element_iterator->nodes[N]].x()
+#define Y(N) model.node_list[element_iterator->nodes[N]].y()
+#define Z(N) model.node_list[element_iterator->nodes[N]].z()
 
-				// get the shape function and it's partial derivatives for this integration point
-			dNdcsi = getdNdcsi(element->type, i->get<0>() );
-			dNdeta = getdNdeta(element->type, i->get<0>() );
-			dNdzeta = getdNdzeta(element->type, i->get<0>() );
+				// set the shape function and it's partial derivatives for this integration point
+			element->setdNdcsi( i->get<0>() );
+			element->setdNdeta( i->get<0>() );
+			element->setdNdzeta( i->get<0>() );
 
 				// generate the jacobian
 			J.setZero();
 			for(int n = 0; n < nnodes; n++)
 			{
-				J(0,0) += dNdcsi[n]*X(n);	J(0,1) += dNdcsi[n]*Y(n);	J(0,2) += dNdcsi[n]*Z(n);
-				J(1,0) += dNdeta[n]*X(n);	J(1,1) += dNdeta[n]*Y(n);	J(1,2) += dNdeta[n]*Z(n);
-				J(2,0) += dNdzeta[n]*X(n);	J(2,1) += dNdzeta[n]*Y(n);	J(2,2) += dNdzeta[n]*Z(n);
+				J(0,0) += element->dNdcsi[n]*X(n);	J(0,1) += element->dNdcsi[n]*Y(n);	J(0,2) += element->dNdcsi[n]*Z(n);
+				J(1,0) += element->dNdeta[n]*X(n);	J(1,1) += element->dNdeta[n]*Y(n);	J(1,2) += element->dNdeta[n]*Z(n);
+				J(2,0) += element->dNdzeta[n]*X(n);	J(2,1) += element->dNdzeta[n]*Y(n);	J(2,2) += element->dNdzeta[n]*Z(n);
 			}
 
 			//std::cout << "J:\n" << J << "\n" << endl;
@@ -132,7 +161,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			if(detJ <= 0)
 			{
 				QString m;
-				m.sprintf("stumbled on a negative determinant on element %ld", distance(model.element_list.begin(), element));
+				m.sprintf("stumbled on a negative determinant on element_iterator %ld", distance(model.element_list.begin(), element_iterator));
 				mylog.message(m);
 				
 				return ERR_NEGATIVE_DETERMINANT;
@@ -148,9 +177,9 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 #undef X
 #undef Y
 #undef Z
-#define dNdx invJ(0,0)*dNdcsi[n] + invJ(0,1)*dNdeta[n] + invJ(0,2)*dNdzeta[n]
-#define dNdy invJ(1,0)*dNdcsi[n] + invJ(1,1)*dNdeta[n] + invJ(1,2)*dNdzeta[n]
-#define dNdz invJ(2,0)*dNdcsi[n] + invJ(2,1)*dNdeta[n] + invJ(2,2)*dNdzeta[n]
+#define dNdx invJ(0,0)*element->dNdcsi[n] + invJ(0,1)*element->dNdeta[n] + invJ(0,2)*element->dNdzeta[n]
+#define dNdy invJ(1,0)*element->dNdcsi[n] + invJ(1,1)*element->dNdeta[n] + invJ(1,2)*element->dNdzeta[n]
+#define dNdz invJ(2,0)*element->dNdcsi[n] + invJ(2,1)*element->dNdeta[n] + invJ(2,2)*element->dNdzeta[n]
 
 				// set the current node portion of the B matrix
 				B(0,3*n)	= dNdx;
@@ -170,8 +199,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 
 			Bt = B.transpose();
 	
-			if(material_index != element->material)
-				D = model.material_list[element->material].generateD();
+			if(material_index != element_iterator->material)
+				D = model.material_list[element_iterator->material].generateD();
 
 			// add this integration point's contribution
 			k_elem += Bt*D*B*detJ*i->get<1>();
@@ -179,47 +208,88 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 		//cout << "k elem: " << k_elem << endl;
 
 			// add elementary stiffness matrix to the global stiffness matrix 
-		add_elementary_stiffness_to_global(k_elem, lm, *element);
+		add_elementary_stiffness_to_global(k_elem, lm, *element_iterator);
 	}
 
 		// now set up the equivalent forces vector
 	// set nodal force contribution made by the domain loads
 	for(std::map<size_t,fem::DomainLoad>::const_iterator domain_load = lp.domain_loads.begin(); domain_load != lp.domain_loads.end(); domain_load++)
 	{
-		fem::Element *element;
-		element = &model.element_list[domain_load->first];
-		nnodes = element->node_number();
+		//TODO rewrite to rely on the element_reference classes
+		fem::Element *element_reference;
+		element_reference = &model.element_list[domain_load->first];
+		nnodes = element_reference->node_number();
+
+		// set the routines for the current element
+		switch(element_reference->type)
+		{
+			case Element::FE_TETRAHEDRON4:
+				element = &tetra4;
+				break;
+
+			case Element::FE_TETRAHEDRON10:
+				element = &tetra10;
+				break;
+
+			case Element::FE_HEXAHEDRON8:
+				element = &hexa8;
+				break;
+
+			case Element::FE_HEXAHEDRON20:
+				element = &hexa20;
+				break;
+
+			case Element::FE_HEXAHEDRON27:
+				element = &hexa27;
+				break;
+
+			case Element::FE_PRISM6:
+				element = &prism6;
+				break;
+
+			case Element::FE_PRISM15:
+				element = &prism15;
+				break;
+
+			case Element::FE_PRISM18:
+				element = &prism18;
+				break;
+
+			default:
+				mylog.message("unsupported element");
+				return ERR_UNSUPPORTED_ELEMENT;
+				break;
+		}
 
 		f_elem.resize(nnodes*3);
 		f_elem.setZero();
 
 		// as the distribution is linear across the domain then degree 1 is enough
-		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[element->family()][ddegree[element->type]].begin(); i != ipwpl[element->family()][ddegree[element->type]].end(); i++)
+		for (std::vector<boost::tuple<fem::point,double> >::iterator i = element->ipwpl[ddegree[element_reference->type]].begin(); i != element->ipwpl[ddegree[element_reference->type]].end(); i++)
 		{
 				// build the Jacobian
-			//TODO rewrite this
-			sf = getN(element->type, i->get<0>());
-			dNdcsi = getdNdcsi(element->type, i->get<0>() );
-			dNdeta = getdNdeta(element->type, i->get<0>() );
-			dNdzeta = getdNdzeta(element->type, i->get<0>() );
+			element->setN( i->get<0>());
+			element->setdNdcsi( i->get<0>() );
+			element->setdNdeta( i->get<0>() );
+			element->setdNdzeta( i->get<0>() );
 
 				// generate the jacobian
 			J.setZero();
-#define X(N)	model.node_list[element->nodes[N]].x()
-#define Y(N)	model.node_list[element->nodes[N]].y()
-#define Z(N)	model.node_list[element->nodes[N]].z()
+#define X(N)	model.node_list[element_reference->nodes[N]].x()
+#define Y(N)	model.node_list[element_reference->nodes[N]].y()
+#define Z(N)	model.node_list[element_reference->nodes[N]].z()
 			for(int n = 0; n < nnodes; n++)
 			{
-				J(0,0) += dNdcsi[n]*X(n);	J(0,1) += dNdcsi[n]*Y(n);	J(0,2) += dNdcsi[n]*Z(n);
-				J(1,0) += dNdeta[n]*X(n);	J(1,1) += dNdeta[n]*Y(n);	J(1,2) += dNdeta[n]*Z(n);
-				J(2,0) += dNdzeta[n]*X(n);	J(2,1) += dNdzeta[n]*Y(n);	J(2,2) += dNdzeta[n]*Z(n);
+				J(0,0) += element->dNdcsi[n]*X(n);	J(0,1) += element->dNdcsi[n]*Y(n);	J(0,2) += element->dNdcsi[n]*Z(n);
+				J(1,0) += element->dNdeta[n]*X(n);	J(1,1) += element->dNdeta[n]*Y(n);	J(1,2) += element->dNdeta[n]*Z(n);
+				J(2,0) += element->dNdzeta[n]*X(n);	J(2,1) += element->dNdzeta[n]*Y(n);	J(2,2) += element->dNdzeta[n]*Z(n);
 			}
 
 			detJ = J.determinant();
 			if(detJ <= 0)
 			{
 				QString m;
-				m.sprintf("stumbled on a negative determinant on element %ld", domain_load->first);
+				m.sprintf("stumbled on a negative determinant on element_reference %ld", domain_load->first);
 				mylog.message(m);
 
 				// quit
@@ -229,7 +299,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			// and now the f_elem
 			for(int n = 0; n < nnodes; n++)
 			{
-#define N(n) sf[n]
+#define N(n) element->N[n]
 #define b(COORD) domain_load->second.force.COORD()
 #define W    i->get<1>()
 				f_elem(3*n) += N(n)*b(x)*detJ*W;
@@ -271,18 +341,48 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 
 	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
 	{
-		//TODO
-		nnodes = surface_load->node_number();
+		switch(surface_load->type)
+		{
+			case Element::FE_TRIANGLE3:
+				element = &tri3;
+				break;
 
+			case Element::FE_TRIANGLE6:
+				element = &tri6;
+				break;
+
+			case Element::FE_TRIANGLE10:
+				element = &tri10;
+				break;
+
+			case Element::FE_QUADRANGLE4:
+				element = &quad4;
+				break;
+
+			case Element::FE_QUADRANGLE8:
+				element = &quad8;
+				break;
+
+			case Element::FE_QUADRANGLE9:
+				element = &quad9;
+				break;
+
+			default:
+				mylog.message("unsupported element");
+				return ERR_UNSUPPORTED_ELEMENT;
+				break;
+		}
+
+		nnodes = surface_load->node_number();
 		f_elem.resize(nnodes*3);
 		f_elem.setZero();
 
-		for (std::vector<boost::tuple<fem::point,double> >::iterator i = ipwpl[surface_load->family()][degree[surface_load->type]].begin(); i != ipwpl[surface_load->family()][degree[surface_load->type]].end(); i++)
+		for (std::vector<boost::tuple<fem::point,double> >::iterator i = element->ipwpl[degree[surface_load->type]].begin(); i != element->ipwpl[degree[surface_load->type]].end(); i++)
 		{
 				// get shape function and shape function derivatives in this integration point's coordinate
-			sf = getN(surface_load->type, i->get<0>() );
-			dNdcsi = getdNdcsi(surface_load->type, i->get<0>() );
-			dNdeta = getdNdeta(surface_load->type, i->get<0>() );
+			element->setN( i->get<0>() );
+			element->setdNdcsi(i->get<0>() );
+			element->setdNdeta(i->get<0>() );
 
 				// calculate the Jacobian
 			J.setZero();
@@ -292,8 +392,8 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			J(0,0) = 1;	J(1,0) = 1;	J(2,0) = 1;
 			for(int n = 0; n < nnodes; n++)
 			{
-				J(0,1) += dNdcsi[n]*X(n);	J(1,1) += dNdcsi[n]*Y(n);	J(2,1) += dNdcsi[n]*Z(n);
-				J(0,2) += dNdeta[n]*X(n);	J(1,2) += dNdeta[n]*Y(n);	J(2,2) += dNdeta[n]*Z(n);
+				J(0,1) += element->dNdcsi[n]*X(n);	J(1,1) += element->dNdcsi[n]*Y(n);	J(2,1) += element->dNdcsi[n]*Z(n);
+				J(0,2) += element->dNdeta[n]*X(n);	J(1,2) += element->dNdeta[n]*Y(n);	J(2,2) += element->dNdeta[n]*Z(n);
 			}
 			//cout << "\nJ matrix:\n" << J << endl;
 
@@ -307,7 +407,7 @@ enum Analysis::Error Analysis::build_fem_equation(Model &model, const LoadPatter
 			}
 
 
-#define N(n) sf[n]
+#define N(n) element->N[n]
 #define b(COORD) domain_load->second.force.COORD()
 #define W    i->get<1>()
 				// calculate q(csi, eta, zeta)
@@ -385,10 +485,10 @@ void Analysis::output_fem_equation(std::ostream &out)
 
 	// output stiffness matrix
 	out << "\t\t\"stiffness matrix\" : [\n";
-	for(int i = 0; i < K.rows(); i++)
+	for(size_t i = 0; i < K.rows(); i++)
 	{
 		out << "\t\t\t[";
-		for(int j = 0; j < K.columns(); j++)
+		for(size_t j = 0; j < K.columns(); j++)
 		{
 			if(j != 0)
 				out << ",";
@@ -403,7 +503,7 @@ void Analysis::output_fem_equation(std::ostream &out)
 
 	// output force vector
 	out << "\t\t\"force vector\" : [\n";
-	for(int i = 0; i < f.size(); i++)
+	for(size_t i = 0; i < f.size(); i++)
 	{
 		out << "\t\t\t";
 		out << f.value(i);
@@ -481,50 +581,6 @@ std::map<size_t, Node> Analysis::displacements_map()
 }
 
 
-/*******************************************************************************
-Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
-(Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and
-B.P. Flannery
-*******************************************************************************/
-/*******************************************************************************
-Given n, this
-routine returns arrays x[1..n] and w[1..n] of length n, containing the abscissas
-and weights of the Gauss-Legendre n-point quadrature formula.
-*******************************************************************************/
-void Analysis::gauleg(double x[], double w[], int n)
-{
-	int m,j,i;
-	double z1,z,pp,p3,p2,p1;
-	m=(n+1)/2; /* The roots are symmetric, so we only find half of them. */
-
-	for (i=1;i<=m;i++) 
-	{ /* Loop over the desired roots. */
-		z=cos(3.141592654*(i-0.25)/(n+0.5));
-		/* Starting with the above approximation to the ith root, we enter */
-		/* the main loop of refinement by Newton's method.                 */
-		do {
-			p1=1.0;
-			p2=0.0;
-			for (j=1;j<=n;j++) { /* Recurrence to get Legendre polynomial. */
-				p3=p2;
-				p2=p1;
-				p1=((2.0*j-1.0)*z*p2-(j-1.0)*p3)/j;
-			}
-			/* p1 is now the desired Legendre polynomial. We next compute */
-			/* pp, its derivative, by a standard relation involving also  */
-			/* p2, the polynomial of one lower order.                     */
-			pp=n*(z*p1-p2)/(z*z-1.0);
-			z1=z;
-			z=z1-p1/pp; /* Newton's method. */
-		} while (fabs(z-z1) > 3e-11);	// ARBITRATED
-		x[i-1]=-z;      /* Scale the root to the desired interval, */
-		x[n-i]=z;  /* and put in its symmetric counterpart.   */
-		w[i-1]=2.0/((1.0-z*z)*pp*pp); /* Compute the weight             */
-		w[n-i]=w[i-1];                 /* and its symmetric counterpart. */
-	}
-}
-
-
 void Analysis::setDegree(Element::Type &type, int &d)
 {
 	degree[type] = d;
@@ -572,322 +628,6 @@ void Analysis::setDefaultIntegrationDegrees()
 	degree[Element::FE_ITRIANGLE12] = 1;	ddegree[Element::FE_ITRIANGLE12] = 1;
 	degree[Element::FE_ITRIANGLE15] = 1;	ddegree[Element::FE_ITRIANGLE15] = 1;
 	degree[Element::FE_TRIANGLE21 ] = 1;	ddegree[Element::FE_TRIANGLE21 ] = 1;
-}
-
-
-void Analysis::build_integration_points()
-{
-	using namespace boost;
-	std::vector<tuple<fem::point, double> > ips;
-
-	// triangle family, level 1
-	{
-		//TODO needs testing
-		ips.clear();
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3,1.0/3), 0.5));
-		ipwpl[Element::EF_TRIANGLE][1] = ips;
-	}
-
-	// triangle family, level 2: 3 points, degree 2
-	{
-		//TODO needs testing
-		ips.clear();
-		ips.push_back(tuple<fem::point,double>(fem::point(	2.0/3,	1.0/6,	1.0/6), 1.0/6));
-		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	2.0/3,	1.0/6), 1.0/6));
-		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	1.0/6,	2.0/3), 1.0/6));
-		ipwpl[Element::EF_TRIANGLE][2] = ips;
-	}
-
-	// triangle family, level 3: 6 points, degree 4
-	{
-		//TODO needs testing
-		ips.clear();
-		double g1=(8-sqrt(10.0)+sqrt(38.0-44.0*sqrt(2.0/5)))/18;
-		double g2=(8-sqrt(10.0)-sqrt(38.0-44.0*sqrt(2.0/5)))/18;
-
-		ips.push_back(tuple<fem::point,double>(fem::point(1-2*g1, g1, g1), (620+sqrt(213125-53320*sqrt(10)))/(2*3720)) );
-		ips.push_back(tuple<fem::point,double>(fem::point(g1, 1-2*g1, g1), (620+sqrt(213125-53320*sqrt(10)))/(2*3720)) );
-		ips.push_back(tuple<fem::point,double>(fem::point(g1, g1, 1-2*g1), (620+sqrt(213125-53320*sqrt(10)))/(2*3720)) );
-
-		ips.push_back(tuple<fem::point,double>(fem::point(1-2*g2, g2, g2), (620-sqrt(213125-53320*sqrt(10)))/(2*3720)) );
-		ips.push_back(tuple<fem::point,double>(fem::point(g2, 1-2*g2, g2), (620-sqrt(213125-53320*sqrt(10)))/(2*3720)) );
-		ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 1-2*g2), (620-sqrt(213125-53320*sqrt(10)))/(2*3720)) );
-
-		ipwpl[Element::EF_TRIANGLE][3] = ips;
-	}
-
-	// triangle family, level 4: 7  points, degree 5
-	{
-		//TODO needs testing
-		ips.clear();
-	
-		double g1=(6.0-sqrt(15))/21; 
-		double g2=(6.0+sqrt(15))/21;
-
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g1, g1, g1), (155.0-sqrt(15))/(2*1200)));
-		ips.push_back(tuple<fem::point,double>(fem::point(g1, 1.0-2*g1, g1), (155.0-sqrt(15))/(2*1200)));
-		ips.push_back(tuple<fem::point,double>(fem::point(g1, g1, 1.0-2*g1), (155.0-sqrt(15))/(2*1200)));
-
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g2, g2, g2), (155.0+sqrt(15))/(2*1200)));
-		ips.push_back(tuple<fem::point,double>(fem::point(g2, 1.0-2*g2, g2), (155.0+sqrt(15))/(2*1200)));
-		ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 1.0-2*g2), (155.0+sqrt(15))/(2*1200)));
-
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3), 9.0/(2*40)));
-
-		ipwpl[Element::EF_TRIANGLE][4] = ips;
-	}
-
-
-	// Quadrilateral family
-	{
-		for(int d = 1; d < 6; d++)
-		{
-			ips.clear();
-			double x[d], w[d];	// for the Gauss-Legendre integration points and weights
-			// get the Gauss-Legendre integration points and weights
-			gauleg(x,w,d);
-
-			// and now generate a list with those points
-			for(int i = 0; i < d; i++)
-			{
-				for(int j = 0; j < d; j++)
-				{
-					ips.push_back(tuple<fem::point,double>(fem::point(x[i],x[j],0), w[i]*w[j]));
-				}
-			}
-			ipwpl[Element::EF_QUADRILATERAL][d] = ips;
-		}
-	}
-
-
-	// Tetrahedron family, degree 1
-	{
-		ips.clear();
-		ips.push_back(tuple<fem::point,double>(fem::point(0.25,0.25,0.25), 1.0/6.0));
-		ipwpl[Element::EF_TETRAHEDRON][1] = ips;
-	}
-
-	// Tetrahedron family, degree 2
-	{
-		ips.clear();
-
-		ips.push_back(tuple<fem::point,double>(fem::point(0.58541019662496845446,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
-		ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.58541019662496845446,0.13819660112501051518),1.0/(6*4)));
-		ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.58541019662496845446),1.0/(6*4)));
-		ips.push_back(tuple<fem::point,double>(fem::point(0.13819660112501051518,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
-
-		ipwpl[Element::EF_TETRAHEDRON][2] = ips;
-	}
-
-	// Tetrahedron family, degree 3
-	{
-		ips.clear();
-		/*
-		ips.push_back(tuple<fem::point,double>(fem::point(0, 0, 0), 1.0/(40*6)));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, 1.0/3),  9.0/(40*6)));
-		*/
-
-		/*
-		   If [j<=0,info={{g1,g1,g1,g1},w1}; info[[1,i]]=1-3*g1];
-		   If [j> 0,info={{g2,g2,g2,g2},w2}; info[[1,j]]=1-3*g2]];
-		 */
-
-		double g[2];
-		double w[2];
-
-		g[0]=(55-3*sqrt(17)+sqrt(1022-134*sqrt(17)))/196;
-		g[1]=(55-3*sqrt(17)-sqrt(1022-134*sqrt(17)))/196;
-
-		w[0]= (1.0/8 + sqrt((1715161837-406006699*sqrt(17))/23101)/3120)/6.0;
-		w[1]= (1.0/8 - sqrt((1715161837-406006699*sqrt(17))/23101)/3120) /6.0;
-
-		// 1 to 4
-		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[0], g[0], g[0]), w[0] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[0], 1-3*g[0], g[0]), w[0] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], 1-3*g[0]), w[0] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], g[0]), w[0] ));
-
-		// 5 to 8
-		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[1], g[1], g[1]), w[1] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[1], 1-3*g[1], g[1]), w[1] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], 1-3*g[1]), w[1] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], g[1]), w[1] ));
-
-		ipwpl[Element::EF_TETRAHEDRON][3] = ips;
-	}
-
-	// Tetrahedron family, degree 4
-	{
-		ips.clear();
-		double g[3];
-		double w[2];
-		g[0]=0.09273525031089122640232391373703060;
-		g[1]=0.31088591926330060979734573376345783;
-		g[2]=0.45449629587435035050811947372066056;
-
-		w[0] = (-1+6*g[1]*(2+g[1]*(-7+8*g[1]))+14*g[2]-60*g[1]*(3+4*g[1]* (-3+4*g[1]))*g[2]+4*(-7+30*g[1]*(3+4*g[1]*(-3+4*g[1])))*g[2]*g[2])/ (120*(g[0]-g[1])*(g[1]*(-3+8*g[1])+6*g[2]+8*g[1]*(-3+4*g[1])*g[2]-4* (3+4*g[1]*(-3+4*g[1]))*g[2]*g[2]+8*g[0]*g[0]*(1+12*g[1]* (-1+2*g[1])+4*g[2]-8*g[2]*g[2])+g[0]*(-3-96*g[1]*g[1]+24*g[2]*(-1+2*g[2])+ g[1]*(44+32*(1-2*g[2])*g[2]))));
-		w[1] = (-1-20*(1+12*g[0]*(2*g[0]-1))*w[0]+20*g[2]*(2*g[2]-1)*(4*w[0]-1))/ (20*(1+12*g[1]*(2*g[1]-1)+4*g[2]-8*g[2]*g[2]));
-
-		// 1 to 4
-		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[0], g[0], g[0]), w[0] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[0], 1-3*g[0], g[0]), w[0] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], 1-3*g[0]), w[0] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], g[0]), w[0] ));
-		// 5 to 8
-		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[1], g[1], g[1]), w[1] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[1], 1-3*g[1], g[1]), w[1] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], 1-3*g[1]), w[1] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], g[1]), w[1] ));
-		// 9 to 14
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], g[3]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[3], g[3], 1.0/2-g[2]), 1.0/6 - 2*(w[0]+w[1])/3  ));
-		ipwpl[Element::EF_TETRAHEDRON][4] = ips;
-	}
-
-	// Tetrahedron family, degree 5
-	{
-		ips.clear();
-		double g[3];
-		double w[2];
-
-		g[0]=(7-sqrt(15))/34; 	g[1]=7/17-g[0]; 	g[2]=(10-2*sqrt(15))/40;
-		w[0]=(2665+14*sqrt(15))/37800;	w[1]=(2665-14*sqrt(15))/37800;
-
-		// 1 to 4
-		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[0], g[0], g[0]), w[0] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[0], 1-3*g[0], g[0]), w[0] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], 1-3*g[0]), w[0] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[0], g[0], g[0]), w[0] ));
-
-		// 5 to 8
-		ips.push_back(tuple<fem::point,double>(fem::point(1-3*g[1], g[1], g[1]), w[1] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[1], 1-3*g[1], g[1]), w[1] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], 1-3*g[1]), w[1] ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], g[1] ), w[1] ));
-
-		// 9 to 14
-		ips.push_back(tuple<fem::point,double>(fem::point(0.5-g[2], 0.5 - g[2], g[2] ), 10.0/189));
-		ips.push_back(tuple<fem::point,double>(fem::point(0.5-g[2], g[2], 0.5-g[2] ), 10.0/189));
-		ips.push_back(tuple<fem::point,double>(fem::point(0.5-g[2], g[2], g[2] ), 10.0/189));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[2], 0.5-g[2], 0.5-g[2] ), 10.0/189));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[2], 0.5-g[2], g[2] ), 10.0/189));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[2], g[2], 0.5-g[2] ), 10.0/189));
-
-		// 15
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/4, 1.0/4, 1.0/4 ), 16.0/135));
-
-		ipwpl[Element::EF_TETRAHEDRON][5] = ips;
-	}
-
-
-	// Hexahedron family, integration points 1 to 5
-	for(int d = 1; d < 5; d++)
-	{
-		ips.clear();
-		double x[d], w[d];	// for the Gauss-Legendre integration points and weights
-		// get the Gauss-Legendre integration points and weights
-		gauleg(x,w,d);
-
-		// and now generate a list with those points
-		for(int i = 0; i < d; i++)
-		{
-			for(int j = 0; j < d; j++)
-			{
-				for(int k = 0; k < d; k++)
-				{
-					ips.push_back(tuple<fem::point,double>(fem::point(x[i],x[j],x[k]), w[i]*w[j]*w[k]));
-				}
-			}
-		}
-		ipwpl[Element::EF_HEXAHEDRON][d] = ips;
-	}
-
-
-	// Prism family, level 1 (tri degree 1 * line Gauss degree 1)
-	{
-		//TODO needs testing
-		ips.clear();
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3, 0), 0.5*2));
-		this->ipwpl[Element::EF_PRISM][1] = ips;
-	}
-
-	// triangle family, level 2: (tri degree 2 * line gauss degree 2)
-	{
-		//TODO needs testing
-		ips.clear();
-		ips.push_back(tuple<fem::point,double>(fem::point(	2.0/3,	1.0/6,	-1.0/sqrt(3) ), 1.0/6));
-		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	2.0/3,	-1.0/sqrt(3) ), 1.0/6));
-		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	1.0/6,	-1.0/sqrt(3) ), 1.0/6));
-
-		ips.push_back(tuple<fem::point,double>(fem::point(	2.0/3,	1.0/6,	1.0/sqrt(3) ), 1.0/6));
-		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	2.0/3,	1.0/sqrt(3) ), 1.0/6));
-		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	1.0/6,	1.0/sqrt(3) ), 1.0/6));
-
-		this->ipwpl[Element::EF_PRISM][2] = ips;
-	}
-
-	// triangle family, level 3: ( tri degree 4 * line Gauss degree 5)
-	{
-		double x[3], w[3];	// for the Gauss-Legendre integration points and weights
-		// get the Gauss-Legendre integration points and weights
-		gauleg(x,w,3);
-
-		//TODO needs testing
-		ips.clear();
-		double g1=(8-sqrt(10.0)+sqrt(38.0-44.0*sqrt(2.0/5)))/18;
-		double g2=(8-sqrt(10.0)-sqrt(38.0-44.0*sqrt(2.0/5)))/18;
-
-		for(int i = 0; i < 3; i++)
-		{
-			ips.push_back(tuple<fem::point,double>(fem::point(1-2*g1, g1,	x[i]), (620+sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
-			ips.push_back(tuple<fem::point,double>(fem::point(g1, 1-2*g1,	x[i]), (620+sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
-			ips.push_back(tuple<fem::point,double>(fem::point(g1, g1,	x[i]), (620+sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
-
-			ips.push_back(tuple<fem::point,double>(fem::point(1-2*g2, g2, 	x[i]), (620-sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
-			ips.push_back(tuple<fem::point,double>(fem::point(g2, 1-2*g2, 	x[i]), (620-sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
-			ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 	x[i]), (620-sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
-		}
-
-		this->ipwpl[Element::EF_PRISM][3] = ips;
-	}
-
-	// triangle family, level 4: 7  points, degree 5
-	{
-		double x[3], w[3];	// for the Gauss-Legendre integration points and weights
-		// get the Gauss-Legendre integration points and weights
-		gauleg(x,w,3);
-
-		//TODO needs testing
-		ips.clear();
-	
-		double g1=(6.0-sqrt(15))/21; 
-		double g2=(6.0+sqrt(15))/21;
-
-		for(int i = 0; i < 3; i++)
-		{
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g1, g1,	x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
-		ips.push_back(tuple<fem::point,double>(fem::point(g1, 1.0-2*g1, x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
-		ips.push_back(tuple<fem::point,double>(fem::point(g1, g1, 	x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
-
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g2, g2, x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
-		ips.push_back(tuple<fem::point,double>(fem::point(g2, 1.0-2*g2, x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
-		ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 	x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
-
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, x[i]), 9.0*w[i]/(2*40)));
-		}
-
-		this->ipwpl[Element::EF_PRISM][4] = ips;
-	}
 }
 
 
@@ -990,269 +730,6 @@ inline void Analysis::add_elementary_stiffness_to_global(const Eigen::Matrix<dou
 				}
 			}
 		}
-	}
-}
-
-
-const std::vector<double> & Analysis::getN( const Element::Type &type, const point & p)
-{
-	switch(type)
-	{
-		case Element::FE_TRIANGLE3:
-			return this->tri3.setN(p);
-			break;
-
-		case Element::FE_TRIANGLE6:
-			return this->tri6.setN(p);
-			break;
-
-		case Element::FE_TRIANGLE10:
-			return this->tri10.setN(p);
-			break;
-
-		case Element::FE_QUADRANGLE4:
-			return this->quad4.setN(p);
-			break;
-
-		case Element::FE_QUADRANGLE8:
-			return this->quad8.setN(p);
-			break;
-
-		case Element::FE_QUADRANGLE9:
-			return this->quad9.setN(p);
-			break;
-
-		case Element::FE_TETRAHEDRON4:
-			return this->tetra4.setN(p);
-			break;
-
-		case Element::FE_TETRAHEDRON10:
-			return this->tetra10.setN(p);
-			break;
-
-		case Element::FE_HEXAHEDRON8:
-			return this->hexa8.setN(p);
-			break;
-
-		case Element::FE_HEXAHEDRON20:
-			return this->hexa20.setN(p);
-			break;
-
-		case Element::FE_HEXAHEDRON27:
-			return this->hexa27.setN(p);
-			break;
-
-		case Element::FE_PRISM6:
-			return this->prism6.setN(p);
-			break;
-
-		case Element::FE_PRISM15:
-			return this->prism15.setN(p);
-			break;
-
-		case Element::FE_PRISM18:
-			return this->prism18.setN(p);
-			break;
-
-		//TODO add remaining elements
-	}
-}
-
-
-
-const std::vector<double> & Analysis::getdNdcsi( const Element::Type &type, const point & p)
-{
-	switch(type)
-	{
-		case Element::FE_TRIANGLE3:
-			return this->tri3.setdNdcsi(p);
-			break;
-
-		case Element::FE_TRIANGLE6:
-			return this->tri6.setdNdcsi(p);
-			break;
-
-		case Element::FE_TRIANGLE10:
-			return this->tri10.setdNdcsi(p);
-			break;
-
-		case Element::FE_QUADRANGLE4:
-			return this->quad4.setdNdcsi(p);
-			break;
-
-		case Element::FE_QUADRANGLE8:
-			return this->quad8.setdNdcsi(p);
-			break;
-
-		case Element::FE_QUADRANGLE9:
-			return this->quad9.setdNdcsi(p);
-			break;
-
-		case Element::FE_TETRAHEDRON4:
-			return this->tetra4.setdNdcsi(p);
-			break;
-
-		case Element::FE_TETRAHEDRON10:
-			return this->tetra10.setdNdcsi(p);
-			break;
-
-		case Element::FE_HEXAHEDRON8:
-			return this->hexa8.setdNdcsi(p);
-			break;
-
-		case Element::FE_HEXAHEDRON20:
-			return this->hexa20.setdNdcsi(p);
-			break;
-
-		case Element::FE_HEXAHEDRON27:
-			return this->hexa27.setdNdcsi(p);
-			break;
-
-		case Element::FE_PRISM6:
-			return this->prism6.setdNdcsi(p);
-			break;
-
-		case Element::FE_PRISM15:
-			return this->prism15.setdNdcsi(p);
-			break;
-
-		case Element::FE_PRISM18:
-			return this->prism18.setdNdcsi(p);
-			break;
-
-		//TODO add remaining elements
-	}
-}
-
-
-
-const std::vector<double> & Analysis::getdNdeta( const Element::Type &type, const point & p)
-{
-	switch(type)
-	{
-		case Element::FE_TRIANGLE3:
-			return this->tri3.setdNdeta(p);
-			break;
-
-		case Element::FE_TRIANGLE6:
-			return this->tri6.setdNdeta(p);
-			break;
-
-		case Element::FE_TRIANGLE10:
-			return this->tri10.setdNdeta(p);
-			break;
-
-		case Element::FE_QUADRANGLE4:
-			return this->quad4.setdNdeta(p);
-			break;
-
-		case Element::FE_QUADRANGLE8:
-			return this->quad8.setdNdeta(p);
-			break;
-
-		case Element::FE_QUADRANGLE9:
-			return this->quad9.setdNdeta(p);
-			break;
-
-		case Element::FE_TETRAHEDRON4:
-			return this->tetra4.setdNdeta(p);
-			break;
-
-		case Element::FE_TETRAHEDRON10:
-			return this->tetra10.setdNdeta(p);
-			break;
-
-		case Element::FE_HEXAHEDRON8:
-			return this->hexa8.setdNdeta(p);
-			break;
-
-		case Element::FE_HEXAHEDRON20:
-			return this->hexa20.setdNdeta(p);
-			break;
-
-		case Element::FE_HEXAHEDRON27:
-			return this->hexa27.setdNdeta(p);
-			break;
-
-		case Element::FE_PRISM6:
-			return this->prism6.setdNdeta(p);
-			break;
-
-		case Element::FE_PRISM15:
-			return this->prism15.setdNdeta(p);
-			break;
-
-		case Element::FE_PRISM18:
-			return this->prism18.setdNdeta(p);
-			break;
-
-
-		//TODO add remaining elements
-	}
-}
-
-
-const std::vector<double> & Analysis::getdNdzeta( const Element::Type &type, const point & p)
-{
-	switch(type)
-	{
-		case Element::FE_TRIANGLE3:
-			return this->tri3.setdNdzeta(p);
-			break;
-
-		case Element::FE_TRIANGLE6:
-			return this->tri6.setdNdzeta(p);
-			break;
-
-		case Element::FE_TRIANGLE10:
-			return this->tri10.setdNdzeta(p);
-			break;
-
-		case Element::FE_QUADRANGLE4:
-			return this->quad4.setdNdzeta(p);
-			break;
-
-		case Element::FE_QUADRANGLE8:
-			return this->quad8.setdNdzeta(p);
-			break;
-
-		case Element::FE_QUADRANGLE9:
-			return this->quad9.setdNdzeta(p);
-			break;
-
-		case Element::FE_TETRAHEDRON4:
-			return this->tetra4.setdNdzeta(p);
-			break;
-
-		case Element::FE_TETRAHEDRON10:
-			return this->tetra10.setdNdzeta(p);
-			break;
-
-		case Element::FE_HEXAHEDRON8:
-			return this->hexa8.setdNdzeta(p);
-			break;
-
-		case Element::FE_HEXAHEDRON20:
-			return this->hexa20.setdNdzeta(p);
-			break;
-
-		case Element::FE_HEXAHEDRON27:
-			return this->hexa27.setdNdzeta(p);
-			break;
-
-		case Element::FE_PRISM6:
-			return this->prism6.setdNdzeta(p);
-			break;
-
-		case Element::FE_PRISM15:
-			return this->prism15.setdNdzeta(p);
-			break;
-
-		case Element::FE_PRISM18:
-			return this->prism18.setdNdzeta(p);
-			break;
-
-		//TODO add remaining elements
 	}
 }
 

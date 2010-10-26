@@ -31,7 +31,7 @@ enum LinearAnalysis::Error LinearAnalysis::run(Model &model, LoadPattern &lp, Pr
 	using namespace std;
 	using namespace Eigen;
 
-	build_fem_equation(model, lp, true);
+	build_fem_equation(model, lp);
 
 	/*
 	cout << "matrix:" << endl;

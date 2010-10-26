@@ -38,12 +38,16 @@ namespace fem
 class Analysis
 {
 	private:
+		// list of supported elements
+		// area elements, used to integrate surface loads
 		Triangle3<double>	tri3;
 		Triangle6<double>	tri6;
 		Triangle10<double>	tri10;
 		Quadrangle4<double> 	quad4;
 		Quadrangle8<double> 	quad8;
 		Quadrangle9<double> 	quad9;
+
+		// volume elements
 		Tetrahedron4<double>	tetra4;
 		Tetrahedron10<double>	tetra10;
 		Hexahedron8<double> 	hexa8;
@@ -67,7 +71,6 @@ class Analysis
 		};
 
 	protected:
-		std::map<enum Element::ElementFamily, std::map<int, std::vector<boost::tuple<fem::point, double> > > > ipwpl;	// integration points/weights pair list
 		std::map<enum Element::Type, int> degree;	// stiffness matrix integration point degree for a particular element
 		std::map<enum Element::Type, int> ddegree;	// domain load integration point degree for a particular element
 
@@ -99,7 +102,7 @@ class Analysis
 		@param verbose	true to output progress messages
 		@return an error
 		**/
-		enum Error build_fem_equation(Model &model, const LoadPattern &lp, bool verbose);
+		enum Error build_fem_equation(Model &model, const LoadPattern &lp);
 
 
 		/** runs the analysis
@@ -141,23 +144,6 @@ class Analysis
 
 
 		/**
-		  Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
-		  (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and
-		  B.P. Flannery
-		@param x	array of doubles, stores the abcissa of the integration point
-		@param w	array of doubles, stores the weights of the integration points
-		@param n	the number of Gauss points
-		*/
-		void gauleg(double x[], double w[], int n);
-
-
-		/**
-		Pre-builds all lists of integration point/weight pairs for all supported elements
-		**/
-		void build_integration_points();
-
-
-		/**
 		Builds the location matrix, a map between the node number and a 3-tuple holding the degree of freedom reference numbers for each degree of freedom, and resizes the temp FemEquation object
 		**/
 		void make_location_matrix(Model &model);
@@ -172,13 +158,6 @@ class Analysis
 		@param element	reference to the element
 		**/
 		void add_elementary_stiffness_to_global(const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element);
-
-
-		const std::vector<double> & getN( const Element::Type &type, const point & p);
-		const std::vector<double> & getdNdcsi( const Element::Type &type, const point & p);
-		const std::vector<double> & getdNdeta( const Element::Type &type, const point & p);
-		const std::vector<double> & getdNdzeta( const Element::Type &type, const point & p);
-
 
 };
 

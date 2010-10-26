@@ -18,10 +18,9 @@ namespace fem
 template <typename T>
 struct BaseElement
 {
-	protected:
+	public:
 		std::map<int, std::vector<boost::tuple<fem::point, T> > > ipwpl;	// integration points/weights pair list
 
-	public:
 		std::vector<T>	N;
 		std::vector<T>	dNdcsi;
 		std::vector<T>	dNdeta;
@@ -40,7 +39,12 @@ struct BaseElement
 		virtual std::vector<T> & setdNdzeta(const point &p) = 0;
 		virtual std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0) = 0;
 
-	public:
+		/**
+		Returns a list of
+		**/
+		// virtual std::vector<boost::tuple<fem::point, T> > & ipwp(unsigned int degree) = 0;
+
+	protected:
 		/**
 		  Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
 		  (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and
@@ -51,12 +55,6 @@ struct BaseElement
 		*/
 		void gauleg (T x[], T w[], int n);
 
-		/**
-		Returns a list of
-		**/
-		//std::vector<boost::tuple<fem::point, T> > ipwp(int degree);
-
-	protected:
 		/*
 		Generates the lists of integration points/weights for this type of element
 		*/

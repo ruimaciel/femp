@@ -45,7 +45,6 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c \
 	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++ \
 	ui/NewMaterialDialog.c++ ui/MaterialsEditorDialog.c++\
-	fem/Analysis.c++ fem/LinearAnalysis.c++ \
 	ui/DialogScale.c++ \
 	MessageLogger.c++ \
 	fem/Surface.c++

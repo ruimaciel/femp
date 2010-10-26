@@ -760,7 +760,7 @@ void MainWindow::runAnalysis()
 
 	//TODO finish this
 	//TODO consider options for integration points
-	fem::LinearAnalysis analysis;
+	fem::LinearAnalysis<double> analysis;
 
 	//TODO for testing purposes only. remove
 	ProcessedModel p;

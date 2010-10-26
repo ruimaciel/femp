@@ -23,11 +23,11 @@ class SparseDOK
 			size_t	t_rows;		// number of rows
 			size_t	t_columns;	// number of columns
 
-			std::map< size_t, std::map<size_t, scalar> > 	data;
+			std::map< size_t, scalar> 	data;
 		} data;
 
 	public:
-		SparseDOK(const size_t rows = 0, const size_t columns = 0);
+		SparseDOK(const size_t rows = 1, const size_t columns = 1);
 		~SparseDOK()	{};
 
 		size_t rows()		{ return data.t_rows; };
@@ -62,18 +62,13 @@ scalar SparseDOK<scalar>::value(const size_t row, const size_t column)
 	assert(row < data.t_rows);
 	assert(column < data.t_columns);
 
-	typename map<size_t, map<size_t,scalar> >::iterator value_row;
-	typename map<size_t, scalar>::iterator	value_column;
+	typename map<size_t, scalar>::iterator	i;
 
-	value_row = data.data.find(row);
-	if(value_row == data.data.end())
-		return 0;	// value wasn't added to the matrix yet
-
-	value_column = value_row->second.find(column);
-	if(value_column == value_row->second.end())
+	i = data.data.find(row*data.t_columns + column);
+	if(i == data.data.end())
 		return 0;
 
-	return value_column->second;
+	return i->second;
 }
 
 
@@ -83,7 +78,7 @@ scalar & SparseDOK<scalar>::operator() (const size_t row, const size_t column)
 	assert(row < data.t_rows);
 	assert(column < data.t_columns);
 
-	return this->data.data[row][column];
+	return this->data.data[row*data.t_columns + column];
 }
 
 
@@ -92,25 +87,7 @@ void SparseDOK<scalar>::resize(const size_t rows, const size_t columns)
 {
 	using namespace std;
 
-	if(data.t_rows > rows)
-	{
-		// remove all extra rows
-		for(typename map<size_t, map<size_t, scalar> >::iterator excess_row = data.data.lower_bound(rows); excess_row != data.data.end(); excess_row = data.data.lower_bound(rows))
-		{
-			data.data.erase(excess_row);
-		}
-	}
-	if(data.t_columns > columns )
-	{
-		for(typename map<size_t, map<size_t, scalar> >::iterator i = data.data.begin(); i != data.data.end(); i++)
-		{
-			// remove all extra rows
-			for(typename map<size_t, scalar>::iterator excess_column = i->second.lower_bound(columns); excess_column != i->second.end(); excess_column = i->second.lower_bound(columns))
-			{
-				i->second.erase(excess_column);
-			}
-		}
-	}
+	data.data.clear();
 
 	data.t_rows = rows;
 	data.t_columns = columns;

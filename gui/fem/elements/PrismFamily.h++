@@ -60,7 +60,7 @@ void PrismFamily<T>::generateQuadratureData()
 		this->ipwpl[2] = ips;
 	}
 
-	// triangle family, level 3: ( tri degree 4 * line Gauss degree 5)
+	// triangle family, level 3: ( tri degree 4 (6 points) * line Gauss degree 5)
 	{
 		T x[3], w[3];	// for the Gauss-Legendre integration points and weights
 		// get the Gauss-Legendre integration points and weights
@@ -85,7 +85,7 @@ void PrismFamily<T>::generateQuadratureData()
 		this->ipwpl[3] = ips;
 	}
 
-	// triangle family, level 4: 7  points, degree 5
+	// triangle family, level 4: (tri degree 5 (7  points) * line gauss degree 5)
 	{
 		T x[3], w[3];	// for the Gauss-Legendre integration points and weights
 		// get the Gauss-Legendre integration points and weights
@@ -99,18 +99,57 @@ void PrismFamily<T>::generateQuadratureData()
 
 		for(int i = 0; i < 3; i++)
 		{
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g1, g1,	x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
-		ips.push_back(tuple<fem::point,double>(fem::point(g1, 1.0-2*g1, x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
-		ips.push_back(tuple<fem::point,double>(fem::point(g1, g1, 	x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
+			ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g1, g1,	x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
+			ips.push_back(tuple<fem::point,double>(fem::point(g1, 1.0-2*g1, x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
+			ips.push_back(tuple<fem::point,double>(fem::point(g1, g1, 	x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
 
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g2, g2, x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
-		ips.push_back(tuple<fem::point,double>(fem::point(g2, 1.0-2*g2, x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
-		ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 	x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
+			ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g2, g2, x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
+			ips.push_back(tuple<fem::point,double>(fem::point(g2, 1.0-2*g2, x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
+			ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 	x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
 
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, x[i]), 9.0*w[i]/(2*40)));
+			ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, x[i]), 9.0*w[i]/(2*40)));
 		}
 
 		this->ipwpl[4] = ips;
+	}
+
+	// triangle family, level 5: (tri degree 6 (12  points) * line gauss degree 7)
+	{
+		T x[4], w[4];	// for the Gauss-Legendre integration points and weights
+		// get the Gauss-Legendre integration points and weights
+		gauleg(x,w,4);
+
+		//TODO needs testing
+		ips.clear();
+	
+		for(int i = 0; i < 4; i++)
+		{
+			/*
+			ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g1, g1,	x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
+			ips.push_back(tuple<fem::point,double>(fem::point(g1, 1.0-2*g1, x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
+			ips.push_back(tuple<fem::point,double>(fem::point(g1, g1, 	x[i]), (155.0-sqrt(15))*w[i]/(2*1200)));
+
+			ips.push_back(tuple<fem::point,double>(fem::point(1.0-2*g2, g2, x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
+			ips.push_back(tuple<fem::point,double>(fem::point(g2, 1.0-2*g2, x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
+			ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 	x[i]), (155.0+sqrt(15))*w[i]/(2*1200)));
+
+			ips.push_back(tuple<fem::point,double>(fem::point(1.0/3, 1.0/3, x[i]), 9.0*w[i]/(2*40)));
+			*/
+			ips.push_back(tuple<fem::point,double>(fem::point(0.873821971016996, 0.063089014491502, x[i]), 0.5*w[i]*0.050844906370207));
+			ips.push_back(tuple<fem::point,double>(fem::point(0.063089014491502, 0.873821971016996, x[i]), 0.5*w[i]*0.050844906370207));
+			ips.push_back(tuple<fem::point,double>(fem::point(0.063089014491502, 0.063089014491502, x[i]), 0.5*w[i]*0.050844906370207));
+			ips.push_back(tuple<fem::point,double>(fem::point(0.501426509658179, 0.249286745170910, x[i]), 0.5*w[i]*0.116786275726379));
+			ips.push_back(tuple<fem::point,double>(fem::point(0.249286745170910, 0.501426509658179, x[i]), 0.5*w[i]*0.116786275726379));
+			ips.push_back(tuple<fem::point,double>(fem::point(0.249286745170910, 0.249286745170910, x[i]), 0.5*w[i]*0.116786275726379));
+			ips.push_back(tuple<fem::point,double>(fem::point(0.636502499121399, 0.310352451033785, x[i]), 0.5*w[i]*0.082851075618374));
+			ips.push_back(tuple<fem::point,double>(fem::point(0.310352451033785, 0.636502499121399, x[i]), 0.5*w[i]*0.082851075618374));
+			ips.push_back(tuple<fem::point,double>(fem::point(0.636502499121399, 0.053145049844816, x[i]), 0.5*w[i]*0.082851075618374));
+			ips.push_back(tuple<fem::point,double>(fem::point(0.053145049844816, 0.636502499121399, x[i]), 0.5*w[i]*0.082851075618374));
+			ips.push_back(tuple<fem::point,double>(fem::point(0.310352451033785, 0.053145049844816, x[i]), 0.5*w[i]*0.082851075618374));
+			ips.push_back(tuple<fem::point,double>(fem::point(0.053145049844816, 0.310352451033785, x[i]), 0.5*w[i]*0.082851075618374));
+		}
+
+		this->ipwpl[5] = ips;
 	}
 }
 

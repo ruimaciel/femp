@@ -99,24 +99,24 @@ std::vector<T> & Prism18<T>::setdNdcsi(const T &csi, const T &eta, const T &zeta
 	//TODO test this
 	// this->dNdcsi
 
-	this->dNdcsi[10] = (2*eta+2*csi-1)*(zeta-1)*zeta/2+(eta+csi-1)*(zeta-1)*zeta;
-	this->dNdcsi[10] = (2*csi-1)*(zeta-1)*zeta/2+csi*(zeta-1)*zeta;
-	this->dNdcsi[10] = 0;
-	this->dNdcsi[10] = (2*eta+2*csi-1)*zeta*(zeta+1)/2+(eta+csi-1)*zeta*(zeta+1);
-	this->dNdcsi[10] =  (2*csi-1)*zeta*(zeta+1)/2+csi*zeta*(zeta+1);
-	this->dNdcsi[10] = 0;
-	this->dNdcsi[10] = -2*(eta+csi-1)*(zeta-1)*zeta-2*csi*(zeta-1)*zeta;
-	this->dNdcsi[10] = -2*eta*(zeta-1)*zeta;
-	this->dNdcsi[10] = -(2*eta+2*csi-1)*(zeta*zeta-1)-2*(eta+csi-1)*(zeta*zeta-1);
-	this->dNdcsi[10] = 2*eta*(zeta-1)*zeta;
+	this->dNdcsi[0] = (2*eta+2*csi-1)*(zeta-1)*zeta/2+(eta+csi-1)*(zeta-1)*zeta;
+	this->dNdcsi[1] = (2*csi-1)*(zeta-1)*zeta/2+csi*(zeta-1)*zeta;
+	this->dNdcsi[2] = 0;
+	this->dNdcsi[3] = (2*eta+2*csi-1)*zeta*(zeta+1)/2+(eta+csi-1)*zeta*(zeta+1);
+	this->dNdcsi[4] =  (2*csi-1)*zeta*(zeta+1)/2+csi*zeta*(zeta+1);
+	this->dNdcsi[5] = 0;
+	this->dNdcsi[6] = -2*(eta+csi-1)*(zeta-1)*zeta-2*csi*(zeta-1)*zeta;
+	this->dNdcsi[7] = -2*eta*(zeta-1)*zeta;
+	this->dNdcsi[8] = -(2*eta+2*csi-1)*(zeta*zeta-1)-2*(eta+csi-1)*(zeta*zeta-1);
+	this->dNdcsi[9] = 2*eta*(zeta-1)*zeta;
 	this->dNdcsi[10] =  -(2*csi-1)*(zeta*zeta-1)-2*csi*(zeta*zeta-1);
-	this->dNdcsi[10] = 0;
-	this->dNdcsi[10] = -2*(eta+csi-1)*zeta*(zeta+1)-2*csi*zeta*(zeta+1);
-	this->dNdcsi[10] = -2*eta*zeta*(zeta+1);
-	this->dNdcsi[10] = 2*eta*zeta*(zeta+1);
-	this->dNdcsi[10] = 4*(eta+csi-1)*(zeta*zeta-1)+4*csi*(zeta*zeta-1);
-	this->dNdcsi[10] = 4*eta*(zeta*zeta-1);
-	this->dNdcsi[10] = -4*eta*(zeta*zeta-1);
+	this->dNdcsi[11] = 0;
+	this->dNdcsi[12] = -2*(eta+csi-1)*zeta*(zeta+1)-2*csi*zeta*(zeta+1);
+	this->dNdcsi[13] = -2*eta*zeta*(zeta+1);
+	this->dNdcsi[14] = 2*eta*zeta*(zeta+1);
+	this->dNdcsi[15] = 4*(eta+csi-1)*(zeta*zeta-1)+4*csi*(zeta*zeta-1);
+	this->dNdcsi[16] = 4*eta*(zeta*zeta-1);
+	this->dNdcsi[17] = -4*eta*(zeta*zeta-1);
 
 
 	return this->dNdcsi;

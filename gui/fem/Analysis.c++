@@ -616,9 +616,9 @@ void Analysis::setDefaultIntegrationDegrees()
 	degree[Element::FE_HEXAHEDRON20] = 3;	ddegree[Element::FE_HEXAHEDRON20] = 2;
 	degree[Element::FE_HEXAHEDRON27] = 3;	ddegree[Element::FE_HEXAHEDRON27] = 2;
 
-	degree[Element::FE_PRISM6 ] = 2;	ddegree[Element::FE_PRISM6 ] = 1;
-	degree[Element::FE_PRISM15] = 4;	ddegree[Element::FE_PRISM15] = 2;
-	degree[Element::FE_PRISM18] = 4;	ddegree[Element::FE_PRISM18] = 2;
+	degree[Element::FE_PRISM6 ] = 5;	ddegree[Element::FE_PRISM6 ] = 1;
+	degree[Element::FE_PRISM15] = 5;	ddegree[Element::FE_PRISM15] = 2;
+	degree[Element::FE_PRISM18] = 5;	ddegree[Element::FE_PRISM18] = 2;
 
 	degree[Element::FE_PYRAMID5 ] = 4;	ddegree[Element::FE_PYRAMID5 ] = 1;
 	degree[Element::FE_PYRAMID14] = 4;	ddegree[Element::FE_PYRAMID14] = 1;

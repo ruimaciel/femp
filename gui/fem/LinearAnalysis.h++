@@ -25,7 +25,7 @@ class LinearAnalysis
 		LinearAnalysis();
 		~LinearAnalysis();
 
-		enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp, ProcessedModel &p);
+		enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp);
 };
 
 
@@ -44,7 +44,7 @@ LinearAnalysis<Scalar>::~LinearAnalysis()
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, ProcessedModel &p)
+enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp)
 {
 	using namespace std;
 	using namespace Eigen;

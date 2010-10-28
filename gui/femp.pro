@@ -10,7 +10,6 @@ INCLUDEPATH += /usr/include/eigen2
 LIBS += -ll -ly
 
 HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.h++ NewProjectWizard.h++ \
-	ProcessedModel.h++ \
 	ModelSelection.h++ \
 	MdiWindowProperties.h++ \
 	ui/NewProjectWizardPage1.h++ ui/NewProjectWizardPage2.h++ ui/NewProjectWizardPage3.h++ ui/NewProjectWizardPageLast.h++ \
@@ -34,7 +33,6 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
-	ProcessedModel.c++ \
 	ModelSelection.c++ \
 	MdiWindowProperties.c++ \
 	ui/NewProjectWizardPage1.c++ ui/NewProjectWizardPage2.c++ ui/NewProjectWizardPage3.c++ ui/NewProjectWizardPageLast.c++  \

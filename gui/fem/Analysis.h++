@@ -15,8 +15,6 @@
 #include "Element.h++"
 #include "LoadPattern.h++"
 
-#include "ProcessedModel.h++"
-
 #include "../lalib/Matrix.h++"
 #include "../lalib/Vector.h++"
 
@@ -86,13 +84,9 @@ class Analysis
 			// location matrix: <node, <DoF number, DoF number, DoF number> >, if DoF == 0 then this isn't a DoF
 		std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;
 
+	public:
 			// the FEM equation
 		// FemEquation f;
-		/*
-		Eigen::DynamicSparseMatrix<Scalar,Eigen::RowMajor> k;
-		Eigen::Matrix<Scalar,Eigen::Dynamic,1> f;
-		Eigen::Matrix<Scalar,Eigen::Dynamic,1> d;
-		*/
 		lalib::Matrix<Scalar,lalib::SparseDOK> K;
 		lalib::Vector<Scalar> f;
 		lalib::Vector<Scalar> d;
@@ -119,7 +113,7 @@ class Analysis
 		@param lp	the load pattern
 		@return an error
 		**/
-		virtual enum Error run(Model &model, LoadPattern &lp, ProcessedModel &p) = 0;
+		virtual enum Error run(Model &model, LoadPattern &lp) = 0;
 
 
 		/**
@@ -733,11 +727,11 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map()
 
 		// assign the displacements
 		if(i->second.get<0>() != 0)
-			node.data[0] = d(n++);
+			node.data[0] = this->d(n++);
 		if(i->second.get<1>() != 0)
-			node.data[1] = d(n++);
+			node.data[1] = this->d(n++);
 		if(i->second.get<2>() != 0)
-			node.data[2] = d(n++);
+			node.data[2] = this->d(n++);
 
 		// add the displacement field to the map
 		df[i->first] = node;
@@ -785,9 +779,9 @@ void Analysis<Scalar>::setDefaultIntegrationDegrees()
 	degree[Element::FE_HEXAHEDRON20] = 3;	ddegree[Element::FE_HEXAHEDRON20] = 2;
 	degree[Element::FE_HEXAHEDRON27] = 3;	ddegree[Element::FE_HEXAHEDRON27] = 2;
 
-	degree[Element::FE_PRISM6 ] = 5;	ddegree[Element::FE_PRISM6 ] = 1;
-	degree[Element::FE_PRISM15] = 5;	ddegree[Element::FE_PRISM15] = 2;
-	degree[Element::FE_PRISM18] = 5;	ddegree[Element::FE_PRISM18] = 2;
+	degree[Element::FE_PRISM6 ] = 4;	ddegree[Element::FE_PRISM6 ] = 1;
+	degree[Element::FE_PRISM15] = 4;	ddegree[Element::FE_PRISM15] = 2;
+	degree[Element::FE_PRISM18] = 4;	ddegree[Element::FE_PRISM18] = 2;
 
 	degree[Element::FE_PYRAMID5 ] = 4;	ddegree[Element::FE_PYRAMID5 ] = 1;
 	degree[Element::FE_PYRAMID14] = 4;	ddegree[Element::FE_PYRAMID14] = 1;

@@ -763,10 +763,7 @@ void MainWindow::runAnalysis()
 	fem::LinearAnalysis<double> analysis;
 
 	//TODO for testing purposes only. remove
-	ProcessedModel p;
-	document.processed_model.push_back(p);
-
-	analysis.run(document.model, document.model.load_pattern_list[0], document.processed_model.back());
+	analysis.run(document.model, document.model.load_pattern_list[0]);
 
 	message.sprintf("Model analysis: finished after %d ms", time.elapsed());
 	//TODO implement variadic function

@@ -1,7 +1,8 @@
 TEMPLATE = app
 
 CONFIG += qt debug 
-QMAKE_CXXFLAGS_DEBUG +=-O0 -Wfatal-errors
+QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS_DEBUG +=-O0 -Wfatal-errors -std=c++0x
 
 QT += opengl
 QMAKE_EXT_CPP += c++
@@ -21,7 +22,9 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem/elements/Tetrahedron4.h++ fem/elements/Tetrahedron10.h++ \
 	fem/elements/Prism6.h++ \
 	fem/elements/Prism18.h++ \
-	Camera.h++ glBaseWidget.h++ glModelWidget.h++ glDisplacementsWidget.h++ ViewportColors.h++ DisplayOptions.h++\
+	viewer/Camera.h++  viewer/DisplayOptions.h++  viewer/ModelViewport.h++  viewer/ViewportColors.h++  viewer/ViewportState.h++  viewer/VPStateModel.h++ \
+	viewer/SceneGraph.h++ viewer/SceneGraphComponent.h++ viewer/SGCSurface.h++ \
+	viewer/boundaries/BoundaryStrategy.h++ viewer/boundaries/SphericalBoundary.h++ \
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h \
 	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
@@ -30,7 +33,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	ui/DialogScale.h++ \
 	MessageLogger.h++ Logs.h++ \
 	fem/Surface.h++ \
-	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++
+	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++ 
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
 	ModelSelection.c++ \
@@ -38,7 +41,9 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	ui/NewProjectWizardPage1.c++ ui/NewProjectWizardPage2.c++ ui/NewProjectWizardPage3.c++ ui/NewProjectWizardPageLast.c++  \
 	fem/Model.c++ fem/Node.c++ fem/Element.c++ fem/Material.c++ fem/LoadPattern.c++ fem/NodalLoad.c++ fem/NodalDisplacement.c++ fem/point.c++ fem/NodeRestrictions.c++ \
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
-	Camera.c++ glBaseWidget.c++ glModelWidget.c++ glDisplacementsWidget.c++ ViewportColors.c++ DisplayOptions.c++\
+	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ModelViewport.c++  viewer/ViewportColors.c++  viewer/ViewportState.c++  viewer/VPStateModel.c++ \
+	viewer/SceneGraph.c++ viewer/SceneGraphComponent.c++  viewer/SGCSurface.c++ \
+	viewer/boundaries/BoundaryStrategy.c++  viewer/boundaries/SphericalBoundary.c++  \
 	fem_msh.c++ lex.msh_yy.c++ \
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c \
 	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++ \

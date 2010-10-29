@@ -20,6 +20,8 @@ struct ViewportColors {
 	GLfloat prism6[3];
 
 	GLfloat arrow[3];
+	
+	GLfloat background[3];
 };
 
 

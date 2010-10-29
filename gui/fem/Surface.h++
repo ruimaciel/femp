@@ -17,7 +17,7 @@ namespace fem
 
 class Surface
 {
-	private:
+	public:
 		std::vector<size_t>	nodes;	// references to the nodes which define this surface
 		Element::Type	type;	// type of surface
 

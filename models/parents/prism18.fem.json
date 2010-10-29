@@ -4,7 +4,7 @@
 		"type": "3D solid"
 	},
 	"materials": [
-		{"type":"linear elastic", "label": "A400", "E":200e9,"nu":0.3, "fy": 2e+07}
+		{"type":"linear elastic", "label": "A400", "E":200,"nu":0.3, "fy": 2e+07}
 	],
 	"nodes":[
 		[1,[0,0,-1]],

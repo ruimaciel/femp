@@ -1,7 +1,7 @@
 #ifndef LALIB_OPERATIONS_HPP
 #define LALIB_OPERATIONS_HPP
 
-#include <iostream>
+#include <iostream>	//TODO debug purposes only
 #include <vector>
 #include <map>
 
@@ -31,12 +31,9 @@ void assign(Matrix<scalar,MatrixStoragePolicy> &lhs, Matrix<scalar, SparseDOK> &
 
 	lhs.resize(rhs.rows(), rhs.columns());
 
-	for(typename map<size_t,map<size_t,scalar> >::iterator i = rhs.data.data.begin(); i != rhs.data.data.end(); i++)
+	for(typename map<size_t, scalar >::iterator i = rhs.data.data.begin(); i != rhs.data.data.end(); i++)
 	{
-		for(typename map<size_t,scalar>::iterator j = i->second.begin(); j != i->second.end(); j++)
-		{
-			lhs(i->first, j->first) = j->second;
-		}
+		lhs(i->first/rhs.data.t_rows, i->first%rhs.data.t_rows) = i->second;
 	}
 
 }

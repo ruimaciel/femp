@@ -6,4 +6,5 @@ viewport.wireframe.color	number array	the default value for the wireframe color
 viewport.elements.tetrahedron4.color	number array	element color
 viewport.elements.tetrahedron10.color	number array	element color
 viewport.elements.hexahedron8.color	number array	element color
+viewport.elements.hexahedron20.color	number array	element color
 viewport.elements.hexahedron27.color	number array	element color

@@ -8,7 +8,7 @@
 
 #include "CommandLineDockWidget.h++"
 #include "ProgramOptions.h++"
-#include "ViewportColors.h++"
+#include "viewer/ViewportColors.h++"
 
 #include "Document.h++"
 
@@ -21,7 +21,7 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow (QWidget *parent = 0);
 
-private:
+protected:
 	Ui::MainWindow 	ui;
 	CommandLineDockWidget *commandLineDockWidget;
 
@@ -38,6 +38,7 @@ private:
 	bool 	hasUnsavedChanges;	// true if the document has unsaved changes
 
 	Document document;	// the FEM document
+
 	ViewportColors colors;	// the elements' viewport colors
 
 	QAction *actionViewportXY;	// places the camera displaying the XY plane

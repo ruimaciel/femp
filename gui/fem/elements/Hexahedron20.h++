@@ -4,7 +4,7 @@
 #include <vector>
 #include <boost/tuple/tuple.hpp>
 
-#include "BaseElement.h++"
+#include "HexahedronFamily.h++"
 #include "../point.h++"
 
 
@@ -15,7 +15,7 @@ namespace fem
 
 template <typename T>
 struct Hexahedron20
-	: public BaseElement<T>
+	: public HexahedronFamily<T>
 {
 	public:
 		Hexahedron20();
@@ -30,11 +30,6 @@ struct Hexahedron20
 		std::vector<T> & setdNdzeta(const point &p);
 		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
-	protected:
-		/*
-		Generates the lists of integration points/weights for this type of element
-		*/
-		void generateQuadratureData();
 };
 
 
@@ -190,34 +185,6 @@ std::vector<T> & Hexahedron20<T>::setdNdzeta(const T &csi, const T &eta, const T
 	return this->dNdzeta;
 }
 
-
-
-template<typename T>
-void Hexahedron20<T>::generateQuadratureData()
-{
-	std::vector<boost::tuple<fem::point, T> > ips;
-
-	for(int d = 1; d < 5; d++)
-	{
-		this->ipwpl.clear();
-		T x[d], w[d];	// for the Gauss-Legendre integration points and weights
-		// get the Gauss-Legendre integration points and weights
-		gauleg(x,w,d);
-
-		// and now generate a list with those points
-		for(int i = 0; i < d; i++)
-		{
-			for(int j = 0; j < d; j++)
-			{
-				for(int k = 0; k < d; k++)
-				{
-					ips.push_back(boost::tuple<fem::point,T>(fem::point(x[i],x[j],x[k]), w[i]*w[j]*w[k]));
-				}
-			}
-		}
-		this->ipwpl[d] = ips;
-	}
-}
 
 }
 

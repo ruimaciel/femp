@@ -24,6 +24,7 @@ class ModelViewport
 	Q_OBJECT
 
 	protected:
+		fem::Model *model;
 		ViewportState	*state;	// pointer to object used for the State pattern
 		VPStateModel	StateModel;	// rendering state: Model
 
@@ -31,7 +32,7 @@ class ModelViewport
 		ModelViewport(fem::Model *model, QWidget *parent = NULL);
 		~ModelViewport();
 
-		void setColors(ViewportColors *colors);
+		void setColors(ViewportColors *new_colors);
 
 		QSize minimumSizeHint() const;
 		QSize sizeHint() const;
@@ -64,17 +65,6 @@ class ModelViewport
 
 	protected:
 		void normalizeAngle(int *angle);
-
-		Camera camera;	// transition to a camera class
-		ViewportColors *colors;	// color definitions
-
-		float zoom;		// drawing zoom, used to zoom
-		float aspect_ratio;	// window aspect ratio
-		float node_scale;	// the scale used by the nodes, reset when a window resizes
-
-		fem::Model *model;
-
-		QPoint lastPos;
 };
 
 #endif

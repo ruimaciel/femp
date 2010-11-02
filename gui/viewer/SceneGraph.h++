@@ -22,9 +22,14 @@ class SceneGraph
 		std::list<SceneGraphComponent *> primitive_components;
 
 	public:
-		SceneGraph(fem::Model &new_model);
+		SceneGraph();
 		~SceneGraph();
 
+
+		/*
+		Clears all the data structures managed by this class
+		*/
+		void clear();
 
 		/*
 		Generic routine to add a primitive component to this scenegraph

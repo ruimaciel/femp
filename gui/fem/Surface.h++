@@ -50,6 +50,7 @@ class Surface
 		@return		true if it's an internal surface, false if it's an external surface
 		**/
 		bool internal()	{ if(elements.size() > 1) return true; else return false; }
+		bool external()	{ return !internal(); }
 
 		/**
 		@return	true if the number of nodes is compatible with the surface type

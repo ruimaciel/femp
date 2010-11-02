@@ -4,11 +4,12 @@
 
 #include "SGCSurface.h++"
 
+#include "Logs.h++"
 
-SceneGraph::SceneGraph(fem::Model &new_model)
+
+SceneGraph::SceneGraph()
 	: SceneGraphComponent()
 {
-	this->model = &new_model;	// sets this scenegraph's model
 }
 
 
@@ -27,6 +28,9 @@ void SceneGraph::addPrimitiveComponent(PrimitiveComponent &new_component)
 template<>
 void SceneGraph::addPrimitiveComponent(fem::Surface &new_component)
 {
+	mylog.setPrefix("void SceneGraph::addPrimitiveComponent(fem::Surface &new_component)");
+	mylog.message("add a surface");
+
 	SGCSurface * new_surface = new SGCSurface;
 	new_surface->setReferenceSurface(new_component);
 
@@ -41,7 +45,7 @@ void SceneGraph::generateSceneGraph()
 
 	for(std::list<SceneGraphComponent *>::iterator i = this->primitive_components.begin(); i != this->primitive_components.end(); i++)
 	{
-		this->pushComponent( **i );
+		this->pushComponent( *i );
 	}
 }
 

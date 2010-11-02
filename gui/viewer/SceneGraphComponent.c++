@@ -1,8 +1,9 @@
 #include "SceneGraphComponent.h++"
 
 
+#include <assert.h>
+#include "Logs.h++"	// declare the global message loggers
 
-fem::Model * SceneGraphComponent::model = NULL;
 
 
 SceneGraphComponent::SceneGraphComponent()
@@ -12,31 +13,38 @@ SceneGraphComponent::SceneGraphComponent()
 
 SceneGraphComponent::~SceneGraphComponent()
 {
+	//TODO implement a better cleanup code
+	/*
 	for(std::list<SceneGraphComponent *>::iterator i = children.begin(); i!= children.end(); i++)
 	{
 		delete *i;
 	}
 
 	delete boundary;
+	*/
 }
 
 
-void SceneGraphComponent::paintGL()
+void SceneGraphComponent::paintGL(fem::Model *model)
 {
+	mylog.setPrefix("void SceneGraphComponent::paintGL()");
+	mylog.message("painting");
 	for(std::list<SceneGraphComponent *>::iterator i = this->children.begin(); i != this->children.end(); i++)
 	{
-		(*i)->paintGL();
+		(*i)->paintGL(model);
 	}
 }
 
 
-void SceneGraphComponent::pushComponent(SceneGraphComponent &new_component)
+void SceneGraphComponent::pushComponent(SceneGraphComponent *new_component)
 {
+	assert(new_component != NULL);
+
 	SceneGraphComponent *c = new SceneGraphComponent;
 
 	// initialize the new object
-	c->children = new_component.children;
-	c->boundary = new_component.boundary;
+	c->children 	= new_component->children;
+	c->boundary 	= new_component->boundary;
 
 	this->children.push_back(c);
 }

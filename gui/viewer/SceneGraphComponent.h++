@@ -20,7 +20,6 @@ class SceneGraphComponent
 		BoundaryStrategy *boundary;	// a boundary volume which contains this component
 
 		static float detail_factor;	// test value which is used to set the detail level of the drawings
-		static fem::Model *model;	// pointer to a valid model
 
 	public:
 		SceneGraphComponent();
@@ -31,13 +30,13 @@ class SceneGraphComponent
 		/*
 		Render the content of this Scenegraph component
 		*/
-		virtual void paintGL();
+		virtual void paintGL(fem::Model *model);
 
 		/*
 		Pushes a new scenegraph component to this component's children's list
 		This routine makes a copy of object new_component and adds a pointer to thew new object in the children's list
 		*/
-		void pushComponent(SceneGraphComponent &new_component);
+		void pushComponent(SceneGraphComponent *new_component);
 };
 
 

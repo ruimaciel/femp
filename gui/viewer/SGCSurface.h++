@@ -4,6 +4,8 @@
 
 #include "SceneGraphComponent.h++"
 
+#include "ViewportColors.h++"
+
 #include "../fem/Surface.h++"
 
 
@@ -27,7 +29,10 @@ class SGCSurface
 		/*
 		Renders this surface according to the surface type and the detail factor
 		*/
-		void paintGL();
+		void paintGL(fem::Model *model, ViewportColors *colors);
+
+	protected:
+		void renderTriangle3(const fem::point &p1, const fem::point &p2, const fem::point &p3);
 };
 
 

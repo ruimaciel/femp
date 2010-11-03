@@ -7,6 +7,8 @@ ViewportColors::ViewportColors ()
 	#define INIT_ELEMENT(ELEMENT, R, G, B) \
 	ELEMENT[0] = R, ELEMENT[1] = G, ELEMENT[2] = B;
 
+	INIT_ELEMENT(background, 0.39,0.39,0);
+
 	INIT_ELEMENT(node, 0,0.5,0);
 	INIT_ELEMENT(wireframe,0,0,0);
 
@@ -31,6 +33,8 @@ ViewportColors::ViewportColors (const ViewportColors &copied)
 	ELEMENT[1] = copied.ELEMENT[1]; \
 	ELEMENT[2] = copied.ELEMENT[2]; \
 	}
+
+	SET_COLOR(background);
 
 	// set the element colors
 	SET_COLOR(node);

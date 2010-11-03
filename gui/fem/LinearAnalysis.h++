@@ -72,9 +72,11 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 	ofstream file;
 	file.open("fem.oct");
 	dump_octave(file, "K", this->K);
-	dump_octave(file, "my_k", my_k);
+	/*
+	//dump_octave(file, "my_k", my_k);
 	dump_octave(file, "f", this->f);
 	dump_octave(file, "L", L);
+	// */
 	file.close();
 
 
@@ -84,12 +86,10 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 	//cout << "k pos:\n" << k << endl;
 
 	// set the equation
-	/*
 	p.k = my_k;
 	p.f = this->f;
 	p.d = this->d;
 	p.displacements_map = this->displacements_map();
-	*/
 
 	cout << this->d << endl;
 	// calculate U

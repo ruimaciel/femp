@@ -7,7 +7,6 @@
 
 #include "fem/Model.h++"
 #include "ModelSelection.h++"
-#include "ProcessedModel.h++"
 
 
 class Document
@@ -30,7 +29,6 @@ class Document
 	public:
 		QString *file_name;	// path for the project's directory
 		fem::Model model;	// the FEM model
-		std::list<ProcessedModel> processed_model;	// list of all processed models
 
 
 		// data structures for storing selected objects

@@ -292,8 +292,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		B.setZero();
 
 			// build the element_iterator stiffness matrix: cycle through the number of integration points
-		// cout << "base ipwpl size: " << ipwpl[element_iterator->family()].size() << endl;
-		// cout << "element ipwpl size: " << element->ipwpl.size() << endl;
 		
 		for (std::vector<boost::tuple<fem::point,double> >::iterator i = element->ipwpl[degree[element_iterator->type]].begin(); i != element->ipwpl[degree[element_iterator->type]].end(); i++)
 		{
@@ -314,8 +312,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 				J(1,0) += element->dNdeta[n]*X(n);	J(1,1) += element->dNdeta[n]*Y(n);	J(1,2) += element->dNdeta[n]*Z(n);
 				J(2,0) += element->dNdzeta[n]*X(n);	J(2,1) += element->dNdzeta[n]*Y(n);	J(2,2) += element->dNdzeta[n]*Z(n);
 			}
-
-			//std::cout << "J:\n" << J << "\n" << endl;
 
 			detJ = J.determinant();
 
@@ -367,7 +363,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 			// add this integration point's contribution
 			k_elem += Bt*D*B*detJ*i->get<1>();
 		}
-		//cout << "k elem: " << k_elem << endl;
 
 			// add elementary stiffness matrix to the global stiffness matrix 
 		add_elementary_stiffness_to_global(k_elem, lm, *element_iterator);
@@ -557,7 +552,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 				J(0,1) += element->dNdcsi[n]*X(n);	J(1,1) += element->dNdcsi[n]*Y(n);	J(2,1) += element->dNdcsi[n]*Z(n);
 				J(0,2) += element->dNdeta[n]*X(n);	J(1,2) += element->dNdeta[n]*Y(n);	J(2,2) += element->dNdeta[n]*Z(n);
 			}
-			//cout << "\nJ matrix:\n" << J << endl;
 
 			detJ = J.determinant();
 			if(detJ <= 0)
@@ -578,8 +572,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 				q += N(j)*surface_load->surface_forces[j];
 			}
 			
-			//cout << "\nq: " << q << endl;
-
 			for(int n = 0; n < nnodes; n++)
 			{
 
@@ -590,10 +582,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 #define N(n) element->N[n]
 #define W    i->get<1>()
 		}
-		//cout << "\nf_elem:\n" << f_elem << endl;
 
 			//add the surface load's f_elem contribution to f
-		//for(size_t i = 0; i < model.element_list[domain_load->first].nodes.size(); i++)
 		for(int i = 0; i < nnodes; i++)
 		{
 			dof = lm.find(surface_load->nodes[i]);
@@ -630,9 +620,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 			f(lm[n].get<2>()-1) += nodal_load->second.z();
 	}
 
-	//DEBUG
-	//cout << "K[" << k.rows() << ", " << k.cols() << "]" << endl;
-	
 	mylog.message("Finished building FEM equation");
 
 	mylog.clearPrefix();

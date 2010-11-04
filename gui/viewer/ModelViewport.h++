@@ -32,7 +32,7 @@ class ModelViewport
 		ModelViewport(fem::Model *model, QWidget *parent = NULL);
 		~ModelViewport();
 
-		void setColors(ViewportColors *new_colors);
+		void setColors(ViewportColors &new_colors);
 
 		QSize minimumSizeHint() const;
 		QSize sizeHint() const;
@@ -61,6 +61,7 @@ class ModelViewport
 
 	public:
 		DisplayOptions display_options;	// options list to be used by the render routine
+		ViewportColors colors;	// color definitions
 
 
 	protected:

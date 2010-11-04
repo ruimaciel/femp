@@ -15,8 +15,6 @@ ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)
 	StateModel.populateScenegraph(model);
 	this->state = &StateModel;	// the state's default starting point is Model
 
-	this->state->colors = NULL;
-
 	// set this widget's load pattern pointer
 	if(model->load_pattern_list.empty())
 	{
@@ -35,10 +33,9 @@ ModelViewport::~ModelViewport()
 }
 
 
-void ModelViewport::setColors(ViewportColors *new_colors)
+void ModelViewport::setColors(ViewportColors &new_colors)
 {
-	assert(state->colors != NULL);
-	this->state->colors = new_colors;
+	colors = new_colors;
 }
 
 
@@ -63,6 +60,9 @@ void ModelViewport::initializeGL()
 		pos[0] -= it->second.x();
 		pos[1] -= it->second.y();
 		pos[2] -= it->second.z();
+
+		state->camera.reset();
+		state->camera.setCenter(0,0,-500);
 		state->camera.setPosition(pos[0]/model->node_list.size(),pos[1]/model->node_list.size(),pos[2]/model->node_list.size());
 	}
 
@@ -75,7 +75,7 @@ void ModelViewport::initializeGL()
 	GLfloat specularity[]= { 1.0f, 1.0f, 1.0f, 1.0f };
 	GLint specmaterial = 60;
 
-	glClearColor(state->colors->background[0], state->colors->background[1], state->colors->background[2], 0 );
+	//glClearColor(colors.background[0], colors.background[1], colors.background[2], 0 );
 
 	glClearDepth(1.0f);
 	glEnable(GL_DEPTH_TEST);
@@ -131,7 +131,7 @@ void ModelViewport::paintGL()
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	state->paintGL(model, state->colors);
+	state->paintGL(model, colors);
 }
 
 

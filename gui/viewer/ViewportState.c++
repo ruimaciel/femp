@@ -17,6 +17,7 @@ ViewportState::~ViewportState()
 
 void ViewportState::mousePressEvent(QMouseEvent *event)
 {
+	lastPos = event->pos();
 	// process left clicks
 	if(event->buttons() & Qt::LeftButton)
 	{
@@ -39,7 +40,6 @@ void ViewportState::mousePressEvent(QMouseEvent *event)
 }
 
 
-/*
 void ViewportState::mouseMoveEvent(QMouseEvent *event)
 {
 	int dx = event->x() - lastPos.x();
@@ -50,12 +50,15 @@ void ViewportState::mouseMoveEvent(QMouseEvent *event)
 		//TODO set action for left click button
 	} else if (event->buttons() & Qt::RightButton) 
 	{
+		camera.rotation.data[0] += dy;
+		camera.rotation.data[1] += dx;
+		/*
 		setXRotation(camera.rotation.data[0] + dy);
 		setYRotation(camera.rotation.data[1] + dx);
+		*/
 	}
 
 	lastPos = event->pos();
 }
-*/
 
 

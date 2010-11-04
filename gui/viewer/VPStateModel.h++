@@ -19,8 +19,8 @@ class VPStateModel
 		~VPStateModel();
 
 		void populateScenegraph(fem::Model *);
-		void paintGL(fem::Model *model, ViewportColors *colors);
-		void mousePressEvent(QMouseEvent *event);
+		void paintGL(fem::Model *model, ViewportColors &colors);
+		// void mousePressEvent(QMouseEvent *event);
 		// void mouseMoveEvent(QMouseEvent *event);
 
 	protected:
@@ -28,7 +28,7 @@ class VPStateModel
 		a temporary brute force solution to sidestep the scenegraph
 		to be replaced with the scenegraph code
 		*/
-		void crudePaintHack(fem::Model *model, ViewportColors *colors);
+		void crudePaintHack(fem::Model *model, ViewportColors &colors);
 
 		void renderLine3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions = 10);
 		void renderQuad4(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, int partitions = 4);
@@ -37,7 +37,7 @@ class VPStateModel
 		void renderTriangle3(const fem::point &p1, const fem::point &p2,const fem::point &p3, int partitions = 4);
 		void renderTriangle6(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, const fem::point &p5, const fem::point &p6, int partitions = 8);
 
-		void paintNode(fem::Model * model, size_t label, const fem::Node node);
+		void paintNode(fem::Model * model, ViewportColors &colors, size_t label, const fem::point p);
 };
 
 

@@ -1004,7 +1004,7 @@ void MainWindow::setUserInterfaceAsOpened()
 
 	// set the new viewport widget
 	ModelViewport *viewport = new ModelViewport(&document.model, this);
-	viewport->setColors(&colors);
+	viewport->setColors(colors);
 
 	/*
 	// open all relevant MDI windows

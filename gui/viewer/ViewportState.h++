@@ -30,15 +30,14 @@ class ViewportState
 		/*
 		Routine which will paint each OpenGL scene
 		*/
-		virtual void paintGL(fem::Model *model, ViewportColors *colors) = 0;
+		virtual void paintGL(fem::Model *model, ViewportColors &colors) = 0;
 
-		void mousePressEvent(QMouseEvent *event);
-		// void mouseMoveEvent(QMouseEvent *event);
+		virtual void mousePressEvent(QMouseEvent *event);
+		virtual void mouseMoveEvent(QMouseEvent *event);
 
 	
 		// objects used by the renderer
 		Camera camera;	// transition to a camera class
-		ViewportColors *colors;	// color definitions
 
 		float zoom;		// drawing zoom, used to zoom
 		float aspect_ratio;	// window aspect ratio

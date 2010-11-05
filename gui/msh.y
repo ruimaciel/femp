@@ -217,11 +217,9 @@ ElementLine:	INTEGER EL_LINE2 Tags INTEGER INTEGER '\n'	{
 	model.pushElement(fem::Element::FE_PRISM6, temp); 
 	}
 	|	INTEGER EL_PYRAMID5 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
-	/*
 	temp.clear(); temp.reserve(5);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	model.pushElement(fem::Element::FE_PYRAMID5, temp); 
-	*/
 	}
 	|	INTEGER EL_LINE3 Tags INTEGER  INTEGER  INTEGER  '\n' {
 	/*
@@ -271,13 +269,11 @@ ElementLine:	INTEGER EL_LINE2 Tags INTEGER INTEGER '\n'	{
 	model.pushElement(fem::Element::FE_PRISM18, temp); 
 	}
 	|	INTEGER EL_PYRAMID14 Tags INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER INTEGER  '\n' {
-	/*
 	temp.clear(); temp.reserve(14);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	temp.push_back($9), temp.push_back($10), temp.push_back($11), temp.push_back($12), temp.push_back($13);
 	temp.push_back($14), temp.push_back($15), temp.push_back($16), temp.push_back($17);
 	model.pushElement(fem::Element::FE_PYRAMID14, temp); 
-	*/
 	}
 	|	INTEGER EL_POINT Tags INTEGER  '\n' {
 	/*
@@ -310,13 +306,11 @@ ElementLine:	INTEGER EL_LINE2 Tags INTEGER INTEGER '\n'	{
 	model.pushElement(fem::Element::FE_PRISM15, temp); 
 	}
 	|	INTEGER EL_PYRAMID13 Tags  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
-	/*
 	temp.clear(); temp.reserve(13);
 	temp.push_back($4), temp.push_back($5), temp.push_back($6), temp.push_back($7), temp.push_back($8);
 	temp.push_back($9), temp.push_back($10), temp.push_back($11), temp.push_back($12), temp.push_back($13);
 	temp.push_back($14), temp.push_back($15), temp.push_back($16);
 	model.pushElement(fem::Element::FE_PYRAMID13, temp); 
-	*/
 	}
 	|	INTEGER EL_ITRIANGLE9 Tags INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  INTEGER  '\n' {
 	/*

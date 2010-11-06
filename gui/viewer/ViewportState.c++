@@ -15,50 +15,21 @@ ViewportState::~ViewportState()
 }
 
 
-void ViewportState::mousePressEvent(QMouseEvent *event)
+void ViewportState::mouseMoveEvent(QMouseEvent *event, ViewportData &data)
 {
-	lastPos = event->pos();
-	// process left clicks
-	if(event->buttons() & Qt::LeftButton)
-	{
-		fem::point near, far;
-		QPoint pos = event->pos();
-		GLdouble modelview[16];
-		GLdouble projection[16];
-		GLint viewport[4];
-
-		glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-		glGetDoublev(GL_PROJECTION_MATRIX, projection);
-		glGetIntegerv(GL_VIEWPORT, viewport);
-		gluUnProject(pos.x(), viewport[3]-pos.y(), 0, modelview, projection, viewport, &near.data[0], &near.data[1], &near.data[2]);
-		gluUnProject(pos.x(), viewport[3]-pos.y(), 1, modelview, projection, viewport, &far.data[0], &far.data[1], &far.data[2]);
-
-		// push the line
-		// selectModelObjects(near, far); 	//TODO finish this
-
-	}
-}
-
-
-void ViewportState::mouseMoveEvent(QMouseEvent *event)
-{
-	int dx = event->x() - lastPos.x();
-	int dy = event->y() - lastPos.y();
+	int dx = event->x() - data.lastPos.x();
+	int dy = event->y() - data.lastPos.y();
 
 	if (event->buttons() & Qt::LeftButton) 
 	{
 		//TODO set action for left click button
 	} else if (event->buttons() & Qt::RightButton) 
 	{
-		camera.rotation.data[0] += dy;
-		camera.rotation.data[1] += dx;
-		/*
-		setXRotation(camera.rotation.data[0] + dy);
-		setYRotation(camera.rotation.data[1] + dx);
-		*/
+		data.camera.rotation.data[0] += dy/pow(2,data.zoom);
+		data.camera.rotation.data[1] += dx/pow(2,data.zoom);
 	}
 
-	lastPos = event->pos();
+	data.lastPos = event->pos();
 }
 
 

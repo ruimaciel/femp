@@ -14,6 +14,7 @@
 #include "ViewportColors.h++"
 #include "DisplayOptions.h++"
 
+#include "ViewportData.h++"
 #include "ViewportState.h++"	// for the vieport's state pattern base class
 #include "VPStateModel.h++"
 
@@ -24,6 +25,7 @@ class ModelViewport
 	Q_OBJECT
 
 	protected:
+		ViewportData viewport_data;
 		fem::Model *model;
 		ViewportState	*state;	// pointer to object used for the State pattern
 		VPStateModel	StateModel;	// rendering state: Model

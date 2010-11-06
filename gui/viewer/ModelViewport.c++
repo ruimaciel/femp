@@ -61,9 +61,9 @@ void ModelViewport::initializeGL()
 		pos[1] -= it->second.y();
 		pos[2] -= it->second.z();
 
-		state->camera.reset();
-		state->camera.setCenter(0,0,-500);
-		state->camera.setPosition(pos[0]/model->node_list.size(),pos[1]/model->node_list.size(),pos[2]/model->node_list.size());
+		viewport_data.camera.reset();
+		viewport_data.camera.setCenter(0,0,-500);
+		viewport_data.camera.setPosition(pos[0]/model->node_list.size(),pos[1]/model->node_list.size(),pos[2]/model->node_list.size());
 	}
 
 	// handle opengl
@@ -111,12 +111,12 @@ void ModelViewport::initializeGL()
 
 void ModelViewport::resizeGL(int width, int height)
 {
-	state->aspect_ratio = qMin(width, height);
+	viewport_data.aspect_ratio = qMin(width, height);
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	
-	glOrtho(-(width*2)/(state->aspect_ratio*pow(2,state->zoom)), (width*2)/(state->aspect_ratio*pow(2,state->zoom)), -height*2/(state->aspect_ratio*pow(2,state->zoom)), +height*2/(state->aspect_ratio*pow(2,state->zoom)), 0.1, 1000.0);
+	glOrtho(-(width*2)/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom)), (width*2)/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom)), -height*2/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom)), +height*2/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom)), 0.1, 1000.0);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -131,13 +131,13 @@ void ModelViewport::paintGL()
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	state->paintGL(model, colors);
+	state->paintGL(model, viewport_data, colors);
 }
 
 
 void ModelViewport::mousePressEvent(QMouseEvent *event)
 {
-	state->mousePressEvent(event);
+	state->mousePressEvent(event, viewport_data);
 
 	updateGL();
 }
@@ -145,19 +145,7 @@ void ModelViewport::mousePressEvent(QMouseEvent *event)
 
 void ModelViewport::mouseMoveEvent(QMouseEvent *event)
 {
-	int dx = event->x() - state->lastPos.x();
-	int dy = event->y() - state->lastPos.y();
-
-	if (event->buttons() & Qt::LeftButton) 
-	{
-		//TODO set action for left click button
-	} else if (event->buttons() & Qt::RightButton) 
-	{
-		setXRotation(state->camera.rotation.data[0] + dy);
-		setYRotation(state->camera.rotation.data[1] + dx);
-	}
-
-	state->lastPos = event->pos();
+	state->mouseMoveEvent(event, viewport_data);
 
 	updateGL();
 }
@@ -165,8 +153,8 @@ void ModelViewport::mouseMoveEvent(QMouseEvent *event)
 
 void ModelViewport::wheelEvent(QWheelEvent *event)
 {
-	state->zoom += event->delta()/1000.0f;
-	//qWarning("state->zoom: %f, %f",state->zoom, pow(2,state->zoom));
+	viewport_data.zoom += event->delta()/1000.0f;
+	//qWarning("viewport_data.zoom: %f, %f",viewport_data.zoom, pow(2,viewport_data.zoom));
 
 	this->resizeGL(this->width(), this->height());
 	this->updateGL();
@@ -177,7 +165,7 @@ void ModelViewport::wheelEvent(QWheelEvent *event)
 void ModelViewport::setXRotation(int angle)
 {
 	normalizeAngle(&angle);
-	state->camera.rotation.data[0] = angle;
+	viewport_data.camera.rotation.data[0] = angle;
 	Q_EMIT xRotationChanged(angle);
 	updateGL();
 }
@@ -186,7 +174,7 @@ void ModelViewport::setXRotation(int angle)
 void ModelViewport::setYRotation(int angle)
 {
 	normalizeAngle(&angle);
-	state->camera.rotation.data[1] = angle;
+	viewport_data.camera.rotation.data[1] = angle;
 	Q_EMIT yRotationChanged(angle);
 	updateGL();
 }
@@ -195,7 +183,7 @@ void ModelViewport::setYRotation(int angle)
 void ModelViewport::setZRotation(int angle)
 {
 	normalizeAngle(&angle);
-	state->camera.rotation.data[2] = angle;
+	viewport_data.camera.rotation.data[2] = angle;
 	Q_EMIT zRotationChanged(angle);
 	updateGL();
 }
@@ -205,12 +193,12 @@ void ModelViewport::setPosition(int x, int y)
 {
 	mylog.setPrefix("ModelViewport::setPosition(int x, int y)");
 	//TODO implement this
-	state->camera.pos.x(-x);
-	state->camera.pos.y(-y);
-	//state->camera.pos.z(amount/100.0f);
-	//qWarning("pos: %f, %f, %f",state->camera.pos.x(), state->camera.pos.y(), state->camera.pos.z());
+	viewport_data.camera.pos.x(-x);
+	viewport_data.camera.pos.y(-y);
+	//viewport_data.camera.pos.z(amount/100.0f);
+	//qWarning("pos: %f, %f, %f",viewport_data.camera.pos.x(), viewport_data.camera.pos.y(), viewport_data.camera.pos.z());
 	QString m;
-	mylog.message(m.sprintf("pos: %f, %f, %f",state->camera.pos.x(), state->camera.pos.y(), state->camera.pos.z()));
+	mylog.message(m.sprintf("pos: %f, %f, %f",viewport_data.camera.pos.x(), viewport_data.camera.pos.y(), viewport_data.camera.pos.z()));
 
 	updateGL();
 

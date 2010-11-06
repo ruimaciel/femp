@@ -10,7 +10,9 @@ ViewportColors::ViewportColors ()
 	INIT_ELEMENT(background, 0.52,0.52,0.68);
 
 	INIT_ELEMENT(node, 0,0.5,0);
+	INIT_ELEMENT(selected, 1,0,0);
 	INIT_ELEMENT(wireframe,0,0,0);
+	INIT_ELEMENT(surface,0,0.5,0);
 
 	INIT_ELEMENT(tetrahedron4, 0, 0.5, 0);
 	INIT_ELEMENT(tetrahedron10, 0, 0.5, 0);
@@ -22,34 +24,6 @@ ViewportColors::ViewportColors ()
 	INIT_ELEMENT(arrow, 1, 0, 0);
 
 	#undef INIT_ELEMENT
-}
-
-
-ViewportColors::ViewportColors (const ViewportColors &copied)
-{
-	// define a helper function
-	#define SET_COLOR(ELEMENT) { \
-	ELEMENT[0] = copied.ELEMENT[0]; \
-	ELEMENT[1] = copied.ELEMENT[1]; \
-	ELEMENT[2] = copied.ELEMENT[2]; \
-	}
-
-	SET_COLOR(background);
-
-	// set the element colors
-	SET_COLOR(node);
-	SET_COLOR(wireframe);
-
-	SET_COLOR(tetrahedron4);
-	SET_COLOR(tetrahedron10);
-	SET_COLOR(hexahedron8);
-	SET_COLOR(hexahedron20);
-	SET_COLOR(hexahedron27);
-	SET_COLOR(prism6);
-
-	SET_COLOR(arrow);
-
-	#undef SET_COLOR
 }
 
 

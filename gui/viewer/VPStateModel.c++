@@ -1,5 +1,7 @@
 #include "VPStateModel.h++"
 
+#include <algorithm>
+
 #include <GL/gl.h>
 #include <GL/glu.h>	// for gluQuadric()
 
@@ -11,12 +13,7 @@
 
 VPStateModel::VPStateModel()
 	: ViewportState()
-{
-	mylog.setPrefix("VPStateModel::VPStateModel()");
-	mylog.message("constructor");
-
-	camera.setCenter(0,0,-10);
-	camera.reset();
+{ 
 }
 
 
@@ -48,7 +45,7 @@ void VPStateModel::populateScenegraph(fem::Model *model)
 }
 
 
-void VPStateModel::paintGL(fem::Model *model, ViewportColors &colors)
+void VPStateModel::paintGL(fem::Model *model, ViewportData &data, ViewportColors &colors)
 {
 	assert(model != NULL);
 	mylog.setPrefix("VPStateModel::paintGL()");
@@ -59,12 +56,37 @@ void VPStateModel::paintGL(fem::Model *model, ViewportColors &colors)
 	//TODO finish implementing this
 	//this->scenegraph.paintGL(model);
 
-	this->crudePaintHack(model, colors);
+	this->crudePaintHack(model, data, colors);
 
 }
 
 
-void VPStateModel::crudePaintHack(fem::Model *model, ViewportColors &colors)
+void VPStateModel::mousePressEvent(QMouseEvent *event, ViewportData &data)
+{
+	data.lastPos = event->pos();
+	// process left clicks
+	if(event->buttons() & Qt::LeftButton)
+	{
+		fem::point near, far;
+		QPoint pos = event->pos();
+		GLdouble modelview[16];
+		GLdouble projection[16];
+		GLint viewport[4];
+
+		glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+		glGetDoublev(GL_PROJECTION_MATRIX, projection);
+		glGetIntegerv(GL_VIEWPORT, viewport);
+		gluUnProject(pos.x(), viewport[3]-pos.y(), 0, modelview, projection, viewport, &near.data[0], &near.data[1], &near.data[2]);
+		gluUnProject(pos.x(), viewport[3]-pos.y(), 1, modelview, projection, viewport, &far.data[0], &far.data[1], &far.data[2]);
+
+		// push the line
+		// selectModelObjects(near, far); 	//TODO finish this
+
+	}
+}
+
+
+void VPStateModel::crudePaintHack(fem::Model *model, ViewportData &data, ViewportColors &colors)
 {
 	using namespace fem;
 
@@ -76,10 +98,11 @@ void VPStateModel::crudePaintHack(fem::Model *model, ViewportColors &colors)
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	camera.reposition();
+	data.camera.reposition();
 
-	std::cout << "pos: " << camera.pos << "\trot: " << camera.rotation << std::endl;
+	std::cout << "pos: " << data.camera.pos << "\trot: " << data.camera.rotation << "\tzoom: " << data.zoom << std::endl;
 
+	/*
 	glBegin(GL_TRIANGLES);
 	glColor3f(1,1,1);
 	glVertex3f(0,0,0);
@@ -93,7 +116,10 @@ void VPStateModel::crudePaintHack(fem::Model *model, ViewportColors &colors)
 	// paint nodes
 	for( std::map<size_t, Node>::iterator node = model->node_list.begin(); node != model->node_list.end(); node++)
 	{
-		paintNode(model,colors,1,node->second);
+		if(std::find(data.selected_node_list.begin(), data.selected_node_list.end(), node->first) == data.selected_node_list.end())
+			paintNode(data,colors.node,node->second);
+		else
+			paintNode(data,colors.selected,node->second);
 	}
 
 	mylog.message("painting surfaces");
@@ -485,12 +511,12 @@ inline void VPStateModel::renderTriangle6(const fem::point &p1, const fem::point
 }
 
 
-void VPStateModel::paintNode(fem::Model * model, ViewportColors &colors, size_t label, const fem::point pos)
+void VPStateModel::paintNode( ViewportData &data, GLfloat color[4], const fem::point pos)
 {
 	glPushMatrix();
 	glTranslated(pos.data[0],pos.data[1],pos.data[2]);
 	
-	glScalef(node_scale/(aspect_ratio*pow(2,zoom)), node_scale/(aspect_ratio*pow(2,zoom)), node_scale/(aspect_ratio*pow(2,zoom)));
+	glScalef(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
 
 	//TODO find a better rendering for the nodes
 	glBegin(GL_LINES);
@@ -512,12 +538,13 @@ void VPStateModel::paintNode(fem::Model * model, ViewportColors &colors, size_t 
 		glColor3f(1.0f,0,0);
 	else
 	*/
-	glColor3fv(colors.node);
+	glColor3fv(color);
 
 	GLUquadric *p;
 	p = gluNewQuadric();
 	gluSphere(p,1,8,8);
 
+	/*
 	// paint restrictions, if there are any
 	if(model->node_restrictions_list.find(label) != model->node_restrictions_list.end())
 	{
@@ -624,6 +651,7 @@ void VPStateModel::paintNode(fem::Model * model, ViewportColors &colors, size_t 
 			glEnd();
 		}
 	}
+	*/
 
 	// end 
 	glPopMatrix();

@@ -41,6 +41,9 @@ void SceneGraph::addPrimitiveComponent(fem::Surface &new_component)
 
 void SceneGraph::generateSceneGraph()
 {
+	mylog.setPrefix(" void SceneGraph::generateSceneGraph()");
+	mylog.message("generating scene graph");
+
 	//TODO implement a better scenegraph structure
 
 	for(std::list<SceneGraphComponent *>::iterator i = this->primitive_components.begin(); i != this->primitive_components.end(); i++)

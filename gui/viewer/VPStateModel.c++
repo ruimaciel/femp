@@ -49,14 +49,22 @@ void VPStateModel::paintGL(fem::Model *model, ViewportData &data, ViewportColors
 {
 	assert(model != NULL);
 	mylog.setPrefix("VPStateModel::paintGL()");
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	data.camera.reposition();
+
+	std::cout << "pos: " << data.camera.pos << "\trot: " << data.camera.rotation << "\tzoom: " << data.zoom << std::endl;
 	
 	//mylog.message("painting");
 
 
 	//TODO finish implementing this
-	//this->scenegraph.paintGL(model);
+	this->scenegraph.paintGL(data, model, colors);
 
-	this->crudePaintHack(model, data, colors);
+	//this->crudePaintHack(model, data, colors);
 
 }
 

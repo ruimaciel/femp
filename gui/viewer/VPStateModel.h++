@@ -5,8 +5,9 @@
 #include <QMouseEvent>
 
 #include "ViewportState.h++"
-
+#include "ViewportData.h++"
 #include "ViewportColors.h++"
+
 
 /*
 A pattern for the State pattern which is used to render the model space

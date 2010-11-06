@@ -4,6 +4,7 @@
 
 #include "SceneGraphComponent.h++"
 
+#include "ViewportData.h++"
 #include "ViewportColors.h++"
 
 #include "../fem/Surface.h++"
@@ -29,10 +30,15 @@ class SGCSurface
 		/*
 		Renders this surface according to the surface type and the detail factor
 		*/
-		void paintGL(fem::Model *model, ViewportColors *colors);
+		void paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors);
 
 	protected:
-		void renderTriangle3(const fem::point &p1, const fem::point &p2, const fem::point &p3);
+		void renderLine3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions = 10);
+		void renderQuad4(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, int partitions = 4);
+		void renderQuad8(const fem::point &p1, const fem::point &p2, const fem::point &p3, const fem::point &p4,const fem::point &p5, const fem::point &p6, const fem::point &p7, const fem::point &p8, int partitions = 8);
+		void renderQuad9(const fem::point &p1, const fem::point &p2, const fem::point &p3, const fem::point &p4,const fem::point &p5, const fem::point &p6, const fem::point &p7, const fem::point &p8, const fem::point &p9, int partitions = 8);
+		void renderTriangle3(const fem::point &p1, const fem::point &p2,const fem::point &p3, int partitions = 4);
+		void renderTriangle6(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, const fem::point &p5, const fem::point &p6, int partitions = 8);
 };
 
 

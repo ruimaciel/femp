@@ -4,6 +4,9 @@
 
 #include <list>
 
+#include "ViewportData.h++"
+#include "ViewportColors.h++"
+
 #include "boundaries/BoundaryStrategy.h++"	// a definition of a bounding volume through the use of a strategy pattern
 
 #include "../fem/Model.h++"
@@ -30,7 +33,7 @@ class SceneGraphComponent
 		/*
 		Render the content of this Scenegraph component
 		*/
-		virtual void paintGL(fem::Model *model);
+		virtual void paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors);
 
 		/*
 		Pushes a new scenegraph component to this component's children's list

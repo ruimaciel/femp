@@ -1,5 +1,7 @@
 #include "VPStateModel.h++"
 
+#include <map>
+#include <list>
 #include <algorithm>
 
 #include <GL/gl.h>
@@ -32,6 +34,14 @@ void VPStateModel::populateScenegraph(ModelViewport *mv)
 	mylog.message("populating");
 
 	//TODO generate the scenegraph
+
+	// add the nodes to the scenegraph
+	for(std::map<size_t, fem::Node>::iterator i = mv->model->node_list.begin(); i != mv->model->node_list.end(); i++)
+	{
+		this->scenegraph.addPrimitiveComponent(i->second);
+	}
+
+	// add the surfaces to the scenegraph
 	for(std::list<fem::Surface>::iterator i = mv->model->surface_list.begin(); i != mv->model->surface_list.end(); i++)
 	{
 		if(i->external())

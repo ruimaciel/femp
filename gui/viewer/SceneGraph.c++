@@ -2,6 +2,7 @@
 
 #include <assert.h>
 
+#include "SGCNode.h++"
 #include "SGCSurface.h++"
 
 #include "Logs.h++"
@@ -36,6 +37,19 @@ void SceneGraph::addPrimitiveComponent(fem::Surface &new_component)
 
 	// add this component to the primitive components' list
 	this->primitive_components.push_back(new_surface);
+}
+
+
+template<>
+void SceneGraph::addPrimitiveComponent(fem::Node &new_component)
+{
+	mylog.setPrefix("void SceneGraph::addPrimitiveComponent(fem::Node &new_component)");
+	mylog.message("add a node");
+
+	SGCNode * new_node = new SGCNode;
+	new_node->setReferenceNode(new_component);
+
+	this->primitive_components.push_back(new_node);
 }
 
 

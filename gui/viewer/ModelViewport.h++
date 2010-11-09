@@ -24,8 +24,10 @@ class ModelViewport
 {
 	Q_OBJECT
 
-	protected:
+	public:
 		ViewportData viewport_data;
+		ViewportColors colors;	// color definitions
+
 		fem::Model *model;
 		ViewportState	*state;	// pointer to object used for the State pattern
 		VPStateModel	StateModel;	// rendering state: Model
@@ -63,7 +65,6 @@ class ModelViewport
 
 	public:
 		DisplayOptions display_options;	// options list to be used by the render routine
-		ViewportColors colors;	// color definitions
 
 
 	protected:

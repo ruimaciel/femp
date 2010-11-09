@@ -12,7 +12,7 @@ ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)
 	// initialize the dangling pointers
 	this->model = model;
 
-	StateModel.populateScenegraph(model);
+	StateModel.populateScenegraph(this);
 	this->state = &StateModel;	// the state's default starting point is Model
 
 	// set this widget's load pattern pointer
@@ -131,13 +131,13 @@ void ModelViewport::paintGL()
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	state->paintGL(model, viewport_data, colors);
+	state->paintGL(this);
 }
 
 
 void ModelViewport::mousePressEvent(QMouseEvent *event)
 {
-	state->mousePressEvent(event, viewport_data);
+	state->mousePressEvent(this, event);
 
 	updateGL();
 }
@@ -145,7 +145,7 @@ void ModelViewport::mousePressEvent(QMouseEvent *event)
 
 void ModelViewport::mouseMoveEvent(QMouseEvent *event)
 {
-	state->mouseMoveEvent(event, viewport_data);
+	state->mouseMoveEvent(this, event);
 
 	updateGL();
 }

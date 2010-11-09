@@ -10,6 +10,8 @@
 #include "../fem/Model.h++"
 #include "../fem/Surface.h++"
 
+#include "ModelViewport.h++"
+
 
 VPStateModel::VPStateModel()
 	: ViewportState()
@@ -24,15 +26,13 @@ VPStateModel::~VPStateModel()
 }
 
 
-void VPStateModel::populateScenegraph(fem::Model *model)
+void VPStateModel::populateScenegraph(ModelViewport *mv)
 {
-	mylog.setPrefix("void VPStateModel::populateScenegraph(fem::Model *model)");
+	mylog.setPrefix("void VPStateModel::populateScenegraph(fem::Model *mv->model)");
 	mylog.message("populating");
 
-	assert(model != NULL);
-
 	//TODO generate the scenegraph
-	for(std::list<fem::Surface>::iterator i = model->surface_list.begin(); i != model->surface_list.end(); i++)
+	for(std::list<fem::Surface>::iterator i = mv->model->surface_list.begin(); i != mv->model->surface_list.end(); i++)
 	{
 		if(i->external())
 		{
@@ -45,33 +45,32 @@ void VPStateModel::populateScenegraph(fem::Model *model)
 }
 
 
-void VPStateModel::paintGL(fem::Model *model, ViewportData &data, ViewportColors &colors)
+void VPStateModel::paintGL(ModelViewport *mv)
 {
-	assert(model != NULL);
 	mylog.setPrefix("VPStateModel::paintGL()");
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	data.camera.reposition();
+	mv->viewport_data.camera.reposition();
 
-	std::cout << "pos: " << data.camera.pos << "\trot: " << data.camera.rotation << "\tzoom: " << data.zoom << std::endl;
+	std::cout << "pos: " << mv->viewport_data.camera.pos << "\trot: " << mv->viewport_data.camera.rotation << "\tzoom: " << mv->viewport_data.zoom << std::endl;
 	
 	//mylog.message("painting");
 
 
 	//TODO finish implementing this
-	this->scenegraph.paintGL(data, model, colors);
+	this->scenegraph.paintGL(mv->viewport_data, mv->model, mv->colors);
 
-	//this->crudePaintHack(model, data, colors);
+	//this->crudePaintHack(mv->model, mv->viewport_data, mv->colors);
 
 }
 
 
-void VPStateModel::mousePressEvent(QMouseEvent *event, ViewportData &data)
+void VPStateModel::mousePressEvent(ModelViewport *mv, QMouseEvent *event)
 {
-	data.lastPos = event->pos();
+	mv->viewport_data.lastPos = event->pos();
 	// process left clicks
 	if(event->buttons() & Qt::LeftButton)
 	{
@@ -94,11 +93,11 @@ void VPStateModel::mousePressEvent(QMouseEvent *event, ViewportData &data)
 }
 
 
-void VPStateModel::crudePaintHack(fem::Model *model, ViewportData &data, ViewportColors &colors)
+void VPStateModel::crudePaintHack(ModelViewport *mv)
 {
 	using namespace fem;
 
-	mylog.setPrefix("void VPStateModel::crudePaintHack(fem::Model *model)");
+	mylog.setPrefix("void VPStateModel::crudePaintHack(fem::Model *mv->model)");
 	mylog.message("painting");
 
 
@@ -106,9 +105,9 @@ void VPStateModel::crudePaintHack(fem::Model *model, ViewportData &data, Viewpor
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	data.camera.reposition();
+	mv->viewport_data.camera.reposition();
 
-	std::cout << "pos: " << data.camera.pos << "\trot: " << data.camera.rotation << "\tzoom: " << data.zoom << std::endl;
+	std::cout << "pos: " << mv->viewport_data.camera.pos << "\trot: " << mv->viewport_data.camera.rotation << "\tzoom: " << mv->viewport_data.zoom << std::endl;
 
 	/*
 	glBegin(GL_TRIANGLES);
@@ -117,50 +116,50 @@ void VPStateModel::crudePaintHack(fem::Model *model, ViewportData &data, Viewpor
 	glVertex3f(1,0,0);
 	glVertex3f(0,1,0);
 	glEnd();
-	paintNode(model,colors,1,point(0,0,0));
+	paintNode(mv->model,mv->colors,1,point(0,0,0));
 	// */
 
 	mylog.message("painting nodes");
 	// paint nodes
-	for( std::map<size_t, Node>::iterator node = model->node_list.begin(); node != model->node_list.end(); node++)
+	for( std::map<size_t, Node>::iterator node = mv->model->node_list.begin(); node != mv->model->node_list.end(); node++)
 	{
-		if(std::find(data.selected_node_list.begin(), data.selected_node_list.end(), node->first) == data.selected_node_list.end())
-			paintNode(data,colors.node,node->second);
+		if(std::find(mv->viewport_data.selected_node_list.begin(), mv->viewport_data.selected_node_list.end(), node->first) == mv->viewport_data.selected_node_list.end())
+			paintNode(mv->viewport_data,mv->colors.node,node->second);
 		else
-			paintNode(data,colors.selected,node->second);
+			paintNode(mv->viewport_data,mv->colors.selected,node->second);
 	}
 
 	mylog.message("painting surfaces");
 	// paint external surfaces
-	for( std::list<Surface>::iterator surface = model->surface_list.begin(); surface != model->surface_list.end(); surface++)
+	for( std::list<Surface>::iterator surface = mv->model->surface_list.begin(); surface != mv->model->surface_list.end(); surface++)
 	{
 		if(surface->external())
 		{
 			switch(surface->type)
 			{
 				case Element::FE_TRIANGLE3:
-					glColor3fv(colors.tetrahedron4);
-					renderTriangle3(model->node_list[surface->nodes[0]], model->node_list[surface->nodes[1]], model->node_list[surface->nodes[2]]);
+					glColor3fv(mv->colors.tetrahedron4);
+					renderTriangle3(mv->model->node_list[surface->nodes[0]], mv->model->node_list[surface->nodes[1]], mv->model->node_list[surface->nodes[2]]);
 					break;
 
 				case Element::FE_TRIANGLE6:
-					glColor3fv(colors.tetrahedron4);
-					renderTriangle6(model->node_list[surface->nodes[0]], model->node_list[surface->nodes[1]], model->node_list[surface->nodes[2]], model->node_list[surface->nodes[3]], model->node_list[surface->nodes[4]], model->node_list[surface->nodes[5]]);
+					glColor3fv(mv->colors.tetrahedron4);
+					renderTriangle6(mv->model->node_list[surface->nodes[0]], mv->model->node_list[surface->nodes[1]], mv->model->node_list[surface->nodes[2]], mv->model->node_list[surface->nodes[3]], mv->model->node_list[surface->nodes[4]], mv->model->node_list[surface->nodes[5]]);
 					break;
 
 				case Element::FE_QUADRANGLE4:
-					glColor3fv(colors.tetrahedron4);
-					renderQuad4(model->node_list[surface->nodes[0]], model->node_list[surface->nodes[1]], model->node_list[surface->nodes[2]], model->node_list[surface->nodes[3]]);
+					glColor3fv(mv->colors.tetrahedron4);
+					renderQuad4(mv->model->node_list[surface->nodes[0]], mv->model->node_list[surface->nodes[1]], mv->model->node_list[surface->nodes[2]], mv->model->node_list[surface->nodes[3]]);
 					break;
 
 				case Element::FE_QUADRANGLE8:
-					glColor3fv(colors.tetrahedron4);
-					renderQuad8(model->node_list[surface->nodes[0]], model->node_list[surface->nodes[1]], model->node_list[surface->nodes[2]], model->node_list[surface->nodes[3]], model->node_list[surface->nodes[4]],  model->node_list[surface->nodes[5]],model->node_list[surface->nodes[6]],  model->node_list[surface->nodes[7]]);
+					glColor3fv(mv->colors.tetrahedron4);
+					renderQuad8(mv->model->node_list[surface->nodes[0]], mv->model->node_list[surface->nodes[1]], mv->model->node_list[surface->nodes[2]], mv->model->node_list[surface->nodes[3]], mv->model->node_list[surface->nodes[4]],  mv->model->node_list[surface->nodes[5]],mv->model->node_list[surface->nodes[6]],  mv->model->node_list[surface->nodes[7]]);
 					break;
 
 				case Element::FE_QUADRANGLE9:
-					glColor3fv(colors.tetrahedron4);
-					renderQuad9(model->node_list[surface->nodes[0]], model->node_list[surface->nodes[1]], model->node_list[surface->nodes[2]], model->node_list[surface->nodes[3]], model->node_list[surface->nodes[4]], model->node_list[surface->nodes[5]],model->node_list[surface->nodes[6]],  model->node_list[surface->nodes[7]], model->node_list[surface->nodes[8]] );
+					glColor3fv(mv->colors.tetrahedron4);
+					renderQuad9(mv->model->node_list[surface->nodes[0]], mv->model->node_list[surface->nodes[1]], mv->model->node_list[surface->nodes[2]], mv->model->node_list[surface->nodes[3]], mv->model->node_list[surface->nodes[4]], mv->model->node_list[surface->nodes[5]],mv->model->node_list[surface->nodes[6]],  mv->model->node_list[surface->nodes[7]], mv->model->node_list[surface->nodes[8]] );
 					break;
 
 				default:

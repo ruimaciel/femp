@@ -9,6 +9,8 @@
 #include "ViewportColors.h++"
 
 
+class ModelViewport;
+
 /*
 A pattern for the State pattern which is used to render the model space
 */
@@ -19,9 +21,9 @@ class VPStateModel
 		VPStateModel();
 		~VPStateModel();
 
-		void populateScenegraph(fem::Model *);
-		void paintGL(fem::Model *model, ViewportData &data, ViewportColors &colors);
-		void mousePressEvent(QMouseEvent *event, ViewportData &data);
+		void populateScenegraph(ModelViewport *mv);
+		void paintGL(ModelViewport *mv);
+		void mousePressEvent(ModelViewport *mv, QMouseEvent *event);
 		// void mouseMoveEvent(QMouseEvent *event);
 
 	protected:
@@ -29,7 +31,7 @@ class VPStateModel
 		a temporary brute force solution to sidestep the scenegraph
 		to be replaced with the scenegraph code
 		*/
-		void crudePaintHack(fem::Model *model, ViewportData &data, ViewportColors &colors);
+		void crudePaintHack(ModelViewport *mv);
 
 		void renderLine3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions = 10);
 		void renderQuad4(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, int partitions = 4);

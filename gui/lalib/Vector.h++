@@ -26,6 +26,11 @@ class Vector
 		size_t size()		{ return VectorStoragePolicy<scalar>::size(); };
 
 		/**
+		Sets all values to zero
+		**/
+		void clear();
+
+		/**
 		Returns the value [index,column] defined in this matrix
 		**/
 		scalar value(const size_t index);
@@ -42,6 +47,14 @@ template<typename scalar, template<typename> class VectorStoragePolicy>
 Vector<scalar, VectorStoragePolicy>::Vector(const size_t size)
 	: VectorStoragePolicy<scalar>(size)
 {
+}
+
+
+
+template<typename scalar, template<typename> class VectorStoragePolicy>
+void Vector<scalar, VectorStoragePolicy>::clear()
+{
+	VectorStoragePolicy<scalar>::clear();
 }
 
 

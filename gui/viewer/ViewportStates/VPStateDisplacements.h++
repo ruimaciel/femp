@@ -4,12 +4,12 @@
 
 #include <QMouseEvent>
 
-#include "../fem/Node.h++"
-#include "../ViewportState.h++"
+#include "../../fem/Node.h++"
+#include "ViewportState.h++"
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"
 
-#include "../fem/LinearAnalysis.h++"
+#include "../../fem/LinearAnalysis.h++"
 
 
 class ModelViewport;

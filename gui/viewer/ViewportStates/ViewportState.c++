@@ -2,8 +2,8 @@
 
 //#include <QtOpenGL>
 
-#include "../point.h++"
-#include "ModelViewport.h++"
+#include "../../point.h++"
+#include "../ModelViewport.h++"
 
 
 ViewportState::ViewportState()

@@ -3,10 +3,10 @@
 
 
 #include "SceneGraphComponent.h++"
-#include "OperationsVisitor.h++"
+#include "../OperationsVisitor.h++"
 
-#include "../fem/Node.h++"
-#include "../fem/LinearAnalysis.h++"
+#include "../../fem/Node.h++"
+#include "../../fem/LinearAnalysis.h++"
 
 
 class SGCNode

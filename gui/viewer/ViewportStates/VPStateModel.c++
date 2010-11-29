@@ -7,12 +7,12 @@
 #include <GL/gl.h>
 #include <GL/glu.h>	// for gluQuadric()
 
-#include "Logs.h++"	// declare the global message loggers
+#include "../Logs.h++"	// declare the global message loggers
 
-#include "../fem/Model.h++"
-#include "../fem/Surface.h++"
+#include "../../fem/Model.h++"
+#include "../../fem/Surface.h++"
 
-#include "ModelViewport.h++"
+#include "../ModelViewport.h++"
 
 
 VPStateModel::VPStateModel()

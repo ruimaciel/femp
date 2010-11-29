@@ -2,7 +2,7 @@
 
 
 #include <assert.h>
-#include "Logs.h++"	// declare the global message loggers
+#include "../Logs.h++"	// declare the global message loggers
 
 
 

@@ -4,16 +4,16 @@
 
 #include <list>
 
-#include "ViewportData.h++"
-#include "ViewportColors.h++"
+#include "../ViewportData.h++"
+#include "../ViewportColors.h++"
 
-#include "boundaries/BoundaryStrategy.h++"	// a definition of a bounding volume through the use of a strategy pattern
-#include "boundaries/SphericalBoundary.h++"
+#include "../boundaries/BoundaryStrategy.h++"	// a definition of a bounding volume through the use of a strategy pattern
+#include "../boundaries/SphericalBoundary.h++"
 
-#include "OperationsVisitor.h++"
+#include "../OperationsVisitor.h++"
 
-#include "../fem/Model.h++"
-#include "../fem/LinearAnalysis.h++"
+#include "../../fem/Model.h++"
+#include "../../fem/LinearAnalysis.h++"
 
 
 

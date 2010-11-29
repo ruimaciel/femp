@@ -5,8 +5,8 @@
 #include <QMouseEvent>
 
 #include "ViewportState.h++"
-#include "ViewportData.h++"
-#include "ViewportColors.h++"
+#include "../ViewportData.h++"
+#include "../ViewportColors.h++"
 
 
 class ModelViewport;

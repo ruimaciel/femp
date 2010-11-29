@@ -24,8 +24,8 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem/elements/Prism18.h++ \
 	viewer/ViewportData.h++ \
 	viewer/Camera.h++  viewer/DisplayOptions.h++  viewer/ModelViewport.h++  viewer/ViewportColors.h++  \
-	viewer/ViewportState.h++  viewer/VPStateModel.h++ viewer/ViewportStates/VPStateDisplacements.h++ \
-	viewer/SceneGraph.h++ viewer/SceneGraphComponent.h++ viewer/SGCSurface.h++ viewer/SGCNode.h++ \
+	viewer/ViewportStates/ViewportState.h++  viewer/ViewportStates/VPStateModel.h++ viewer/ViewportStates/VPStateDisplacements.h++ \
+	viewer/SceneGraph.h++ viewer/SceneGraphComponents/SceneGraphComponent.h++ viewer/SceneGraphComponents/SGCSurface.h++ viewer/SceneGraphComponents/SGCNode.h++ \
 	viewer/boundaries/BoundaryStrategy.h++ viewer/boundaries/SphericalBoundary.h++ \
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h \
@@ -46,8 +46,8 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
 	viewer/ViewportData.c++ \
 	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ModelViewport.c++  viewer/ViewportColors.c++  \
-	viewer/ViewportState.c++  viewer/VPStateModel.c++ viewer/ViewportStates/VPStateDisplacements.c++ \
-	viewer/SceneGraph.c++ viewer/SceneGraphComponent.c++  viewer/SGCSurface.c++ viewer/SGCNode.c++ \
+	viewer/ViewportStates/ViewportState.c++  viewer/ViewportStates/VPStateModel.c++ viewer/ViewportStates/VPStateDisplacements.c++ \
+	viewer/SceneGraph.c++ viewer/SceneGraphComponents/SceneGraphComponent.c++  viewer/SceneGraphComponents/SGCSurface.c++ viewer/SceneGraphComponents/SGCNode.c++ \
 	viewer/boundaries/BoundaryStrategy.c++  viewer/boundaries/SphericalBoundary.c++  \
 	fem_msh.c++ lex.msh_yy.c++ \
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c \

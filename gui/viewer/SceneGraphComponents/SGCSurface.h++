@@ -3,11 +3,12 @@
 
 
 #include "SceneGraphComponent.h++"
+#include "../OperationsVisitor.h++"
 
-#include "ViewportData.h++"
-#include "ViewportColors.h++"
+#include "../ViewportData.h++"
+#include "../ViewportColors.h++"
 
-#include "../fem/Surface.h++"
+#include "../../fem/Surface.h++"
 
 
 class SGCSurface

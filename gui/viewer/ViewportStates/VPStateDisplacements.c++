@@ -9,8 +9,8 @@
 
 #include "Logs.h++"	// declare the global message loggers
 
-#include "../fem/Model.h++"
-#include "../fem/Surface.h++"
+#include "../../fem/Model.h++"
+#include "../../fem/Surface.h++"
 
 #include "../ModelViewport.h++"
 

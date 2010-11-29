@@ -2,7 +2,7 @@
 
 #include <GL/gl.h>
 
-#include "Logs.h++"	// declare the global message loggers
+#include "../Logs.h++"	// declare the global message loggers
 
 
 SGCSurface::SGCSurface()

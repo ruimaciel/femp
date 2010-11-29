@@ -4,11 +4,11 @@
 
 #include <QMouseEvent>
 
-#include "../fem/Model.h++"
-#include "ViewportData.h++"
-#include "ViewportColors.h++"
-#include "Camera.h++"
-#include "SceneGraph.h++"
+#include "../../fem/Model.h++"
+#include "../ViewportData.h++"
+#include "../ViewportColors.h++"
+#include "../Camera.h++"
+#include "../SceneGraph.h++"
 
 
 class ModelViewport;

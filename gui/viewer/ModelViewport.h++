@@ -15,9 +15,9 @@
 #include "DisplayOptions.h++"
 
 #include "ViewportData.h++"
-#include "ViewportState.h++"	// for the vieport's state pattern base class
 
-#include "VPStateModel.h++"
+#include "ViewportStates/ViewportState.h++"	// for the vieport's state pattern base class
+#include "ViewportStates/VPStateModel.h++"
 #include "ViewportStates/VPStateDisplacements.h++"
 
 #include "../fem/LinearAnalysis.h++"

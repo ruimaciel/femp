@@ -3,7 +3,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-#include "Logs.h++"	// declare the global message loggers
+#include "../Logs.h++"	// declare the global message loggers
 
 
 SGCNode::SGCNode()

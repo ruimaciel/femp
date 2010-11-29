@@ -16,7 +16,11 @@
 
 #include "ViewportData.h++"
 #include "ViewportState.h++"	// for the vieport's state pattern base class
+
 #include "VPStateModel.h++"
+#include "ViewportStates/VPStateDisplacements.h++"
+
+#include "../fem/LinearAnalysis.h++"
 
 
 class ModelViewport 
@@ -29,8 +33,8 @@ class ModelViewport
 		ViewportColors colors;	// color definitions
 
 		fem::Model *model;
+
 		ViewportState	*state;	// pointer to object used for the State pattern
-		VPStateModel	StateModel;	// rendering state: Model
 
 	public:
 		ModelViewport(fem::Model *model, QWidget *parent = NULL);
@@ -42,11 +46,17 @@ class ModelViewport
 		QSize sizeHint() const;
 
 
+		template <class NewState>
+		void setState(NewState *);
+
+
 	public Q_SLOTS:
 		void setXRotation(int angle);
 		void setYRotation(int angle);
 		void setZRotation(int angle);
 		void setPosition(int x, int y);
+
+		void showDisplacements(fem::LinearAnalysis<double> &);
 
 	Q_SIGNALS:
 		void xRotationChanged(int angle);

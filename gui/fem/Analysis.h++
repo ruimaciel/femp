@@ -81,6 +81,7 @@ class Analysis
 		std::map<enum Element::Type, int> degree;	// stiffness matrix integration point degree for a particular element
 		std::map<enum Element::Type, int> ddegree;	// domain load integration point degree for a particular element
 
+	public:
 			// location matrix: <node, <DoF number, DoF number, DoF number> >, if DoF == 0 then this isn't a DoF
 		std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;
 
@@ -96,6 +97,12 @@ class Analysis
 		Analysis();
 		Analysis(const Analysis &);
 		~Analysis();
+
+
+		/**
+		clears any data structure which was created during the analysis
+		**/
+		void clear();
 
 
 		/** sets up a FEM equation according to the info contained in the instance of this class
@@ -187,6 +194,15 @@ Analysis<Scalar>::Analysis(const Analysis &copied)
 template<typename Scalar>
 Analysis<Scalar>::~Analysis()
 {
+}
+
+
+template<typename Scalar>
+void Analysis<Scalar>::clear()
+{
+	K.clear();
+	f.clear();
+	d.clear();
 }
 
 

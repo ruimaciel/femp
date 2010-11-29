@@ -8,27 +8,18 @@
 
 SceneGraphComponent::SceneGraphComponent()
 {
+	selected = false;
 }
 
 
 SceneGraphComponent::~SceneGraphComponent()
 {
 	//TODO implement a better cleanup code
-	/*
-	for(std::list<SceneGraphComponent *>::iterator i = children.begin(); i!= children.end(); i++)
-	{
-		delete *i;
-	}
-
-	delete boundary;
-	*/
 }
 
 
 void SceneGraphComponent::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors)
 {
-	mylog.setPrefix("void SceneGraphComponent::paintGL()");
-	mylog.message("painting");
 	for(std::list<SceneGraphComponent *>::iterator i = this->children.begin(); i != this->children.end(); i++)
 	{
 		(*i)->paintGL(data, model, colors);
@@ -52,3 +43,8 @@ void SceneGraphComponent::pushComponent(SceneGraphComponent *new_component)
 }
 
 
+void SceneGraphComponent::accept(OperationsVisitor &)
+{
+	mylog.setPrefix("void SceneGraphComponent::Accept(OperationsVisitor &v)");
+	mylog.message("error: base class element being called");
+}

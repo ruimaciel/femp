@@ -5,6 +5,7 @@
 
 #include "Logs.h++"	// declare the global message loggers
 
+
 SGCNode::SGCNode()
 	: SceneGraphComponent()
 {
@@ -55,7 +56,12 @@ void SGCNode::paintGL(ViewportData &data, fem::Model *model, ViewportColors &col
 		glColor3f(1.0f,0,0);
 	else
 	*/
-	glColor3fv(colors.node);
+	if(this->selected)
+		glColor3fv(colors.selected);
+	else
+		glColor3fv(colors.node);
+
+	//TODO replace this with a display list
 
 	GLUquadric *p;
 	p = gluNewQuadric();
@@ -172,4 +178,10 @@ void SGCNode::paintGL(ViewportData &data, fem::Model *model, ViewportColors &col
 
 	// end 
 	glPopMatrix();
+}
+
+
+void SGCNode::accept(OperationsVisitor &v)
+{
+	v.visit(*this);
 }

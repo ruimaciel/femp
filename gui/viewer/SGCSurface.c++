@@ -20,8 +20,10 @@ void SGCSurface::setReferenceSurface(fem::Surface &referenced_surface)
 {
 	this->surface = &referenced_surface;
 
+	/*
 	mylog.setPrefix("SGCSurface::setReferenceSurface()");
 	mylog.message("yet to be implemented");
+	*/
 
 	//TODO adjust boundary to this surface
 }
@@ -32,10 +34,7 @@ void SGCSurface::paintGL(ViewportData &data, fem::Model *model, ViewportColors &
 	assert(model != NULL);
 	using namespace fem;
 
-	mylog.setPrefix("SGCSurface::paintGL()");
-	mylog.message("painting surfaces");
 
-	//TODO must implement this
 	switch(surface->type)
 	{
 		case Element::FE_TRIANGLE3:
@@ -64,6 +63,7 @@ void SGCSurface::paintGL(ViewportData &data, fem::Model *model, ViewportColors &
 			break;
 
 		default:
+			mylog.setPrefix("SGCSurface::paintGL()");
 			mylog.message("unknown surface");
 			break;
 	}
@@ -439,3 +439,7 @@ inline void SGCSurface::renderTriangle6(const fem::point &p1, const fem::point &
 }
 
 
+void SGCSurface::accept(OperationsVisitor &v)
+{
+	v.visit(*this);
+}

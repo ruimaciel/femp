@@ -21,6 +21,7 @@ class VPStateModel
 		VPStateModel();
 		~VPStateModel();
 
+		void initialize(ModelViewport *mv);
 		void populateScenegraph(ModelViewport *mv);
 		void paintGL(ModelViewport *mv);
 		void mousePressEvent(ModelViewport *mv, QMouseEvent *event);
@@ -41,6 +42,11 @@ class VPStateModel
 		void renderTriangle6(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, const fem::point &p5, const fem::point &p6, int partitions = 8);
 
 		void paintNode(ViewportData &data, GLfloat color[3], const fem::point p);
+
+		/*
+		Marks all objects which intersect with a given ray as selected
+		*/
+		void selectModelObjects(const fem::point &near,const fem::point &far);
 };
 
 

@@ -20,6 +20,8 @@ struct ViewportData
 	float aspect_ratio;	// window aspect ratio
 	float node_scale;	// the scale used by the nodes, reset when a window resizes
 
+	float modelview[16];	// opengl modelview matrix
+
 	QPoint lastPos;
 
 	std::list<size_t> selected_node_list;

@@ -1,6 +1,6 @@
 #include "ViewportState.h++"
 
-#include <QtOpenGL>
+//#include <QtOpenGL>
 
 #include "../point.h++"
 #include "ModelViewport.h++"

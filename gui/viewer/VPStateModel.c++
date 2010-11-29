@@ -28,6 +28,13 @@ VPStateModel::~VPStateModel()
 }
 
 
+void VPStateModel::initialize(ModelViewport *mv)
+{
+	mylog.setPrefix("VPStateModel::initialize()");
+	mylog.message("yet to be implemented");
+}
+
+
 void VPStateModel::populateScenegraph(ModelViewport *mv)
 {
 	mylog.setPrefix("void VPStateModel::populateScenegraph(fem::Model *mv->model)");
@@ -71,7 +78,8 @@ void VPStateModel::paintGL(ModelViewport *mv)
 
 
 	//TODO finish implementing this
-	this->scenegraph.paintGL(mv->viewport_data, mv->model, mv->colors);
+	//this->scenegraph.paintGL(mv->viewport_data, mv->model, mv->colors);
+	this->scenegraph.paint(mv);
 
 	//this->crudePaintHack(mv->model, mv->viewport_data, mv->colors);
 
@@ -672,4 +680,25 @@ void VPStateModel::paintNode( ViewportData &data, GLfloat color[4], const fem::p
 
 	// end 
 	glPopMatrix();
+}
+
+
+void VPStateModel::selectModelObjects(const fem::point &near,const fem::point &far)
+{
+	// test nodes
+	float a, b, c;
+	float x2x1, y2y1, z2z1; // helper temp variables to avoid remultiplying
+	std::map<size_t,float> distance_map;
+
+	//for(std::map<size_t,fem::Node>::iterator i = document->model.node_list.begin(); i != document->model.node_list.end(); i++)
+	for(std::list<SceneGraphComponent *>::iterator i = this->scenegraph.primitive_components.begin(); i != this->scenegraph.primitive_components.end(); i++)
+	{
+
+		if(b*b - 4*a*c > 0)
+		{
+			(*i)->selected = true;
+		}
+	}
+	// select the nearest hit
+	// document->selectNode(std::min_element(distance_map.begin(), distance_map.end(), distance_map.value_comp())->first);
 }

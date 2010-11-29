@@ -10,7 +10,11 @@
 #include "ProgramOptions.h++"
 #include "viewer/ViewportColors.h++"
 
+#include "viewer/ModelViewport.h++"
+
 #include "Document.h++"
+
+#include "fem/LinearAnalysis.h++"
 
 
 
@@ -23,6 +27,10 @@ public:
 
 protected:
 	Ui::MainWindow 	ui;
+	ModelViewport *viewport;	// opengl viewport
+
+	fem::LinearAnalysis<double> analysis;
+
 	CommandLineDockWidget *commandLineDockWidget;
 
 	QMdiArea	* mdiArea;

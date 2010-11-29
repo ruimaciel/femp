@@ -23,7 +23,8 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem/elements/Prism6.h++ \
 	fem/elements/Prism18.h++ \
 	viewer/ViewportData.h++ \
-	viewer/Camera.h++  viewer/DisplayOptions.h++  viewer/ModelViewport.h++  viewer/ViewportColors.h++  viewer/ViewportState.h++  viewer/VPStateModel.h++ \
+	viewer/Camera.h++  viewer/DisplayOptions.h++  viewer/ModelViewport.h++  viewer/ViewportColors.h++  \
+	viewer/ViewportState.h++  viewer/VPStateModel.h++ viewer/ViewportStates/VPStateDisplacements.h++ \
 	viewer/SceneGraph.h++ viewer/SceneGraphComponent.h++ viewer/SGCSurface.h++ viewer/SGCNode.h++ \
 	viewer/boundaries/BoundaryStrategy.h++ viewer/boundaries/SphericalBoundary.h++ \
 	fem_msh.h++ lex.msh_yy.h \
@@ -34,6 +35,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	ui/DialogScale.h++ \
 	MessageLogger.h++ Logs.h++ \
 	fem/Surface.h++ \
+	viewer/boundaries/CollisionDetection.h++ \
 	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++ 
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
@@ -43,7 +45,8 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	fem/Model.c++ fem/Node.c++ fem/Element.c++ fem/Material.c++ fem/LoadPattern.c++ fem/NodalLoad.c++ fem/NodalDisplacement.c++ fem/point.c++ fem/NodeRestrictions.c++ \
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
 	viewer/ViewportData.c++ \
-	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ModelViewport.c++  viewer/ViewportColors.c++  viewer/ViewportState.c++  viewer/VPStateModel.c++ \
+	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ModelViewport.c++  viewer/ViewportColors.c++  \
+	viewer/ViewportState.c++  viewer/VPStateModel.c++ viewer/ViewportStates/VPStateDisplacements.c++ \
 	viewer/SceneGraph.c++ viewer/SceneGraphComponent.c++  viewer/SGCSurface.c++ viewer/SGCNode.c++ \
 	viewer/boundaries/BoundaryStrategy.c++  viewer/boundaries/SphericalBoundary.c++  \
 	fem_msh.c++ lex.msh_yy.c++ \
@@ -52,7 +55,8 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	ui/NewMaterialDialog.c++ ui/MaterialsEditorDialog.c++\
 	ui/DialogScale.c++ \
 	MessageLogger.c++ \
-	fem/Surface.c++
+	fem/Surface.c++ \
+	viewer/boundaries/CollisionDetection.c++ 
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 	ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPage3.ui  ui/NewProjectWizardPageLast.ui \

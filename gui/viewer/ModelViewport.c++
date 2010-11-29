@@ -11,9 +11,9 @@ ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)
 
 	// initialize the dangling pointers
 	this->model = model;
+	this->state = NULL;
 
-	StateModel.populateScenegraph(this);
-	this->state = &StateModel;	// the state's default starting point is Model
+	this->setState(new VPStateModel);	// set the current viewport state
 
 	// set this widget's load pattern pointer
 	if(model->load_pattern_list.empty())
@@ -162,6 +162,27 @@ void ModelViewport::wheelEvent(QWheelEvent *event)
 }
 
 
+template <class NewState>
+void ModelViewport::setState(NewState *new_state)
+{
+	if(this->state != NULL) delete this->state;
+
+	this->state = new_state;	// the state's default starting point is Model
+	this->state->initialize(this);
+	this->state->populateScenegraph(this);
+}
+
+
+/*
+template <>
+void ModelViewport::setState(VPStateModel *new_state)
+{
+	this->state = new_state;	// the state's default starting point is Model
+	this->state->populateScenegraph(this);
+}
+*/
+
+
 void ModelViewport::setXRotation(int angle)
 {
 	normalizeAngle(&angle);
@@ -203,6 +224,18 @@ void ModelViewport::setPosition(int x, int y)
 	updateGL();
 
 	mylog.clearPrefix();
+}
+
+
+void ModelViewport::showDisplacements(fem::LinearAnalysis<double> &analysis)
+{
+	// setup the displacements map
+
+	// set the state
+	VPStateDisplacements* state = new VPStateDisplacements;
+
+	this->setState(state);
+	state->setDisplacements(analysis);
 }
 
 

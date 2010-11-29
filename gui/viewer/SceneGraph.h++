@@ -3,9 +3,14 @@
 
 #include <list>
 
+#include <GL/gl.h>
+
 #include "SceneGraphComponent.h++"
 
 #include "../fem/Model.h++"
+
+
+class ModelViewport;
 
 
 /*
@@ -14,7 +19,7 @@ Facade pattern for the scenegraph structure
 class SceneGraph
 	: public SceneGraphComponent
 {
-	protected:
+	public:
 		/* 
 		This is the master list of all scene graph objects in this scene graph.
 		It is used to store every object of type SGCSurface (etc...) managed by this scenegraph.
@@ -30,6 +35,9 @@ class SceneGraph
 		Clears all the data structures managed by this class
 		*/
 		void clear();
+
+
+		void paint(ModelViewport *);
 
 		/*
 		Generic routine to add a primitive component to this scenegraph

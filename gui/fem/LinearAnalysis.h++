@@ -49,6 +49,9 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 	using namespace std;
 	using namespace Eigen;
 
+	// clear existing data structures
+	this->clear();
+
 	this->build_fem_equation(model, lp);
 
 	//TODO implement a choice of solver

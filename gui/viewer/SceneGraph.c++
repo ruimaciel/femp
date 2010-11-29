@@ -1,11 +1,14 @@
 #include "SceneGraph.h++"
 
 #include <assert.h>
+#include <iostream>
 
 #include "SGCNode.h++"
 #include "SGCSurface.h++"
 
 #include "Logs.h++"
+
+#include "ModelViewport.h++"
 
 
 SceneGraph::SceneGraph()
@@ -16,6 +19,23 @@ SceneGraph::SceneGraph()
 
 SceneGraph::~SceneGraph()
 {
+}
+
+
+void SceneGraph::clear()
+{
+	mylog.setPrefix("void SceneGraph::clear()");
+	mylog.message("must implement this");
+}
+
+
+void SceneGraph::paint(ModelViewport *mvp)
+{
+	using namespace std;
+	// get the model
+	glGetFloatv(GL_PROJECTION_MATRIX, mvp->viewport_data.modelview) ;
+
+	this->paintGL(mvp->viewport_data, mvp->model, mvp->colors);
 }
 
 

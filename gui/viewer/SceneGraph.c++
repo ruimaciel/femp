@@ -3,9 +3,6 @@
 #include <assert.h>
 #include <iostream>
 
-#include "SGCNode.h++"
-#include "SGCSurface.h++"
-
 #include "Logs.h++"
 
 #include "ModelViewport.h++"
@@ -39,6 +36,7 @@ void SceneGraph::paint(ModelViewport *mvp)
 }
 
 
+/*
 template<typename PrimitiveComponent>
 void SceneGraph::addPrimitiveComponent(PrimitiveComponent &new_component)
 {
@@ -58,8 +56,17 @@ void SceneGraph::addPrimitiveComponent(fem::Surface &new_component)
 	// add this component to the primitive components' list
 	this->primitive_components.push_back(new_surface);
 }
+*/
 
 
+void SceneGraph::addPrimitiveComponent(SceneGraphComponent *new_component)
+{
+	assert(new_component != NULL);
+	this->primitive_components.push_back(new_component);
+}
+
+
+/*
 template<>
 void SceneGraph::addPrimitiveComponent(fem::Node &new_component)
 {
@@ -71,6 +78,7 @@ void SceneGraph::addPrimitiveComponent(fem::Node &new_component)
 
 	this->primitive_components.push_back(new_node);
 }
+*/
 
 
 void SceneGraph::generateSceneGraph()

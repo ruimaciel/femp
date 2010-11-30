@@ -2,7 +2,7 @@
 #define COLLISION_DETECTION_HPP
 
 #include "SphericalBoundary.h++"
-#include "../../point.h++"
+#include "../../fem/point.h++"
 
 
 /*

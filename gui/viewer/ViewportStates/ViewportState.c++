@@ -2,7 +2,7 @@
 
 //#include <QtOpenGL>
 
-#include "../../point.h++"
+#include "../../fem/point.h++"
 #include "../ModelViewport.h++"
 
 

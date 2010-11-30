@@ -4,7 +4,7 @@
 
 #include "BoundaryStrategy.h++"
 
-#include "../../point.h++"
+#include "../../fem/point.h++"
 
 /*
 A concrete class that implements a sphere boundary throught the Boundary strategy pattern

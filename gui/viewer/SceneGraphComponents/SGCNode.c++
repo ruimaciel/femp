@@ -6,10 +6,10 @@
 #include "../Logs.h++"	// declare the global message loggers
 
 
-SGCNode::SGCNode()
+SGCNode::SGCNode(fem::Node &reference_node)
 	: SceneGraphComponent()
 {
-	this->node = NULL;
+	this->setReferenceNode(reference_node);
 }
 
 

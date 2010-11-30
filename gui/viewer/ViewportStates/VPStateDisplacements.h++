@@ -71,17 +71,23 @@ void VPStateDisplacements::setDisplacements(fem::LinearAnalysis<scalar> &analysi
 		n = i->second.get<0>();
 		if(n != 0)
 			p.x(analysis.d(n-1));
+		else
+			p.x(0);
 		n = i->second.get<1>();
 		if(n != 0)
 			p.y(analysis.d(n-1));
+		else
+			p.y(0);
 		n = i->second.get<2>();
 		if(n != 0)
 			p.z(analysis.d(n-1));
+		else
+			p.z(0);
 
 		displacements[i->first] = fem::Node(p);
 	}
 
-	this->setDisplacementScale(1000000.0);
+	this->setDisplacementScale(10000000.0);
 }
 
 #endif

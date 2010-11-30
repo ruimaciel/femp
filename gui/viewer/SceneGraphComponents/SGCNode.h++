@@ -16,7 +16,7 @@ class SGCNode
 		fem::Node *node;
 
 	public:
-		SGCNode();
+		SGCNode(fem::Node &);
 		~SGCNode();
 
 

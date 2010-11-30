@@ -14,6 +14,9 @@
 
 #include "../ModelViewport.h++"
 
+#include "../SceneGraphComponents/SGCNode.h++"
+#include "../SceneGraphComponents/SGCSurface.h++"
+
 
 VPStateModel::VPStateModel()
 	: ViewportState()
@@ -45,7 +48,7 @@ void VPStateModel::populateScenegraph(ModelViewport *mv)
 	// add the nodes to the scenegraph
 	for(std::map<size_t, fem::Node>::iterator i = mv->model->node_list.begin(); i != mv->model->node_list.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(i->second);
+		this->scenegraph.addPrimitiveComponent(new SGCNode(i->second) );
 	}
 
 	// add the surfaces to the scenegraph
@@ -53,7 +56,7 @@ void VPStateModel::populateScenegraph(ModelViewport *mv)
 	{
 		if(i->external())
 		{
-			this->scenegraph.addPrimitiveComponent(*i);
+			this->scenegraph.addPrimitiveComponent(new SGCSurface(*i) );
 		}
 	}
 

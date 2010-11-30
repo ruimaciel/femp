@@ -14,6 +14,15 @@
 
 #include "../ModelViewport.h++"
 
+#include "../SceneGraphComponents/SGCNode.h++"
+#include "../SceneGraphComponents/SGCSurface.h++"	// test purposes only
+#include "../SceneGraphComponents/SGCDisplacementSurface.h++"
+#include "../SceneGraphComponents/SurfaceTriangle3.h++"
+#include "../SceneGraphComponents/SurfaceTriangle6.h++"
+#include "../SceneGraphComponents/SurfaceQuad4.h++"
+#include "../SceneGraphComponents/SurfaceQuad8.h++"
+#include "../SceneGraphComponents/SurfaceQuad9.h++"
+
 
 VPStateDisplacements::VPStateDisplacements()
 	: ViewportState()
@@ -42,14 +51,13 @@ void VPStateDisplacements::initialize(ModelViewport *mv)
 void VPStateDisplacements::populateScenegraph(ModelViewport *mv)
 {
 	mylog.setPrefix("void VPStateDisplacements::populateScenegraph(fem::Model *mv->model)");
-	mylog.message("populating");
 
 	//TODO generate the scenegraph
 
 	// add the nodes to the scenegraph
 	for(std::map<size_t, fem::Node>::iterator i = mv->model->node_list.begin(); i != mv->model->node_list.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(i->second);
+		this->scenegraph.addPrimitiveComponent(new SGCNode(i->second) );
 	}
 
 	// add the surfaces to the scenegraph
@@ -57,7 +65,33 @@ void VPStateDisplacements::populateScenegraph(ModelViewport *mv)
 	{
 		if(i->external())
 		{
-			this->scenegraph.addPrimitiveComponent(*i);
+			//this->scenegraph.addPrimitiveComponent(new SGCSurface(*i) );
+			switch(i->getType())
+			{
+				case fem::Element::FE_TRIANGLE3:
+					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceTriangle3>(*i, displaced_nodes) );
+					break;
+
+				case fem::Element::FE_TRIANGLE6:
+					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceTriangle6>(*i, displaced_nodes) );
+					break;
+
+				case fem::Element::FE_QUADRANGLE4:
+					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceQuad4>(*i, displaced_nodes) );
+					break;
+
+				case fem::Element::FE_QUADRANGLE8:
+					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceQuad8>(*i, displaced_nodes) );
+					break;
+
+				case fem::Element::FE_QUADRANGLE9:
+					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceQuad9>(*i, displaced_nodes) );
+					break;
+
+				default:
+					mylog.message("unknown surface type");
+					break;
+			}
 		}
 	}
 
@@ -119,8 +153,11 @@ void VPStateDisplacements::setDisplacementScale(float new_scale)
 	for(std::map<size_t, fem::Node>::iterator i = original_nodes->begin(); i != original_nodes->end(); i++)
 	{
 		//TODO finish this
-		//displaced_nodes[i->first] = new_scale*i->second;
 		displaced_nodes[i->first] = i->second;
+		if(displacements.find(i->first) != displacements.end())
+		{
+			displaced_nodes[i->first] += new_scale*displacements[i->first];
+		}
 	}
 }
 
@@ -129,6 +166,7 @@ void VPStateDisplacements::selectModelObjects(const fem::point &near,const fem::
 {
 	//TODO finish implementing this
 
+	/*
 	// test nodes
 	float a, b, c;
 	float x2x1, y2y1, z2z1; // helper temp variables to avoid remultiplying
@@ -145,4 +183,5 @@ void VPStateDisplacements::selectModelObjects(const fem::point &near,const fem::
 	}
 	// select the nearest hit
 	// document->selectNode(std::min_element(distance_map.begin(), distance_map.end(), distance_map.value_comp())->first);
+	*/
 }

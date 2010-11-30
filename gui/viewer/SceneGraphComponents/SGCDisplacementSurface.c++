@@ -1,28 +1,29 @@
-#include "SGCSurface.h++"
+#include "SGCDisplacementSurface.h++"
 
 #include <GL/gl.h>
 
-#include "../Logs.h++"	// declare the global message loggers
+#include "Logs.h++"	// declare the global message loggers
 
 
-SGCSurface::SGCSurface(fem::Surface &reference_surface)
-	: SceneGraphComponent()
+SGCDisplacementSurface::SGCDisplacementSurface(fem::Surface &reference_surface, std::map<size_t, fem::Node> &reference_nodes)
+	: SceneGraphComponent(), SurfacePolicy
 {
-	this->setReferenceSurface(reference_surface);
+	this->setReferenceSurface(referenced_surface);
+	this->setReferenceNodes(reference_nodes);
 }
 
 
-SGCSurface::~SGCSurface()
+SGCDisplacementSurface::~SGCDisplacementSurface()
 {
 }
 
 
-void SGCSurface::setReferenceSurface(fem::Surface &reference_surface)
+void SGCDisplacementSurface::setReferenceSurface(fem::Surface &referenced_surface)
 {
-	this->surface = &reference_surface;
+	this->surface = &referenced_surface;
 
 	/*
-	mylog.setPrefix("SGCSurface::setReferenceSurface()");
+	mylog.setPrefix("SGCDisplacementSurface::setReferenceSurface()");
 	mylog.message("yet to be implemented");
 	*/
 
@@ -30,7 +31,7 @@ void SGCSurface::setReferenceSurface(fem::Surface &reference_surface)
 }
 
 
-void SGCSurface::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors)
+void SGCDisplacementSurface::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors)
 {
 	assert(model != NULL);
 	using namespace fem;
@@ -64,14 +65,14 @@ void SGCSurface::paintGL(ViewportData &data, fem::Model *model, ViewportColors &
 			break;
 
 		default:
-			mylog.setPrefix("SGCSurface::paintGL()");
+			mylog.setPrefix("SGCDisplacementSurface::paintGL()");
 			mylog.message("unknown surface");
 			break;
 	}
 }
 
 
-inline void SGCSurface::renderLine3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions)
+inline void SGCDisplacementSurface::renderLine3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions)
 {
 	glBegin(GL_LINE_STRIP); 
 	for(int i = 0; i <= partitions; i++) 
@@ -83,7 +84,7 @@ inline void SGCSurface::renderLine3(const fem::point &p1, const fem::point &p2, 
 }
 
 
-inline void SGCSurface::renderQuad4(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, int partitions)
+inline void SGCDisplacementSurface::renderQuad4(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, int partitions)
 {
 /*
 	^ y
@@ -162,7 +163,7 @@ inline void SGCSurface::renderQuad4(const fem::point &p1, const fem::point &p2,c
 	} 
 }
 
-inline void SGCSurface::renderQuad8(const fem::point &p1, const fem::point &p2, const fem::point &p3, const fem::point &p4,const fem::point &p5, const fem::point &p6, const fem::point &p7, const fem::point &p8, int partitions)
+inline void SGCDisplacementSurface::renderQuad8(const fem::point &p1, const fem::point &p2, const fem::point &p3, const fem::point &p4,const fem::point &p5, const fem::point &p6, const fem::point &p7, const fem::point &p8, int partitions)
 {
 /*
 	^ y
@@ -247,7 +248,7 @@ inline void SGCSurface::renderQuad8(const fem::point &p1, const fem::point &p2, 
 }
 
 
-inline void SGCSurface::renderQuad9(const fem::point &p1, const fem::point &p2, const fem::point &p3, const fem::point &p4,const fem::point &p5, const fem::point &p6, const fem::point &p7, const fem::point &p8, const fem::point &p9, int partitions)
+inline void SGCDisplacementSurface::renderQuad9(const fem::point &p1, const fem::point &p2, const fem::point &p3, const fem::point &p4,const fem::point &p5, const fem::point &p6, const fem::point &p7, const fem::point &p8, const fem::point &p9, int partitions)
 {
 /*
 	^ y
@@ -326,7 +327,7 @@ inline void SGCSurface::renderQuad9(const fem::point &p1, const fem::point &p2, 
 }
 
 
-inline void SGCSurface::renderTriangle3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions)
+inline void SGCDisplacementSurface::renderTriangle3(const fem::point &p1, const fem::point &p2, const fem::point &p3, int partitions)
 {
 /*
      v
@@ -353,7 +354,7 @@ inline void SGCSurface::renderTriangle3(const fem::point &p1, const fem::point &
 }
 
 
-inline void SGCSurface::renderTriangle6(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, const fem::point &p5, const fem::point &p6, int partitions)
+inline void SGCDisplacementSurface::renderTriangle6(const fem::point &p1, const fem::point &p2,const fem::point &p3,const fem::point &p4, const fem::point &p5, const fem::point &p6, int partitions)
 {
 /*
      v
@@ -440,7 +441,7 @@ inline void SGCSurface::renderTriangle6(const fem::point &p1, const fem::point &
 }
 
 
-void SGCSurface::accept(OperationsVisitor &v)
+void SGCDisplacementSurface::accept(OperationsVisitor &v)
 {
 	v.visit(*this);
 }

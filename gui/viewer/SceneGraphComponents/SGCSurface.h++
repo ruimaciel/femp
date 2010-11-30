@@ -18,7 +18,7 @@ class SGCSurface
 		fem::Surface *surface;	// pointer to the referenced surface object which is a part of fem::Model::surface_list
 
 	public:
-		SGCSurface();
+		SGCSurface(fem::Surface &);
 		~SGCSurface();
 
 

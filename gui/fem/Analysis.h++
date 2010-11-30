@@ -15,7 +15,6 @@
 #include "Element.h++"
 #include "LoadPattern.h++"
 
-#include "ProcessedModel.h++"
 
 #include "../lalib/Matrix.h++"
 #include "../lalib/Vector.h++"
@@ -126,7 +125,7 @@ class Analysis
 		@param lp	the load pattern
 		@return an error
 		**/
-		virtual enum Error run(Model &model, LoadPattern &lp, ProcessedModel &p) = 0;
+		virtual enum Error run(Model &model, LoadPattern &lp) = 0;
 
 
 		/**
@@ -247,8 +246,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 
 	int nnodes;	// number of nodes
 	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
-
-	size_t k_elem_count = 0;
 
 	cout.precision(10);
 

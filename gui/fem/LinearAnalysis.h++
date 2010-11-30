@@ -25,7 +25,7 @@ class LinearAnalysis
 		LinearAnalysis();
 		~LinearAnalysis();
 
-		enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp, ProcessedModel &p);
+		enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp);
 };
 
 
@@ -44,7 +44,7 @@ LinearAnalysis<Scalar>::~LinearAnalysis()
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, ProcessedModel &p)
+enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp)
 {
 	using namespace std;
 	using namespace Eigen;
@@ -89,10 +89,6 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 	//cout << "k pos:\n" << k << endl;
 
 	// set the equation
-	p.k = my_k;
-	p.f = this->f;
-	p.d = this->d;
-	p.displacements_map = this->displacements_map();
 
 	cout << this->d << endl;
 	// calculate U

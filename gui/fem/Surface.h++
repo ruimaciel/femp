@@ -17,7 +17,7 @@ namespace fem
 
 class Surface
 {
-	private:
+	public:
 		std::vector<size_t>	nodes;	// references to the nodes which define this surface
 		Element::Type	type;	// type of surface
 
@@ -50,6 +50,9 @@ class Surface
 		@return		true if it's an internal surface, false if it's an external surface
 		**/
 		bool internal()	{ if(elements.size() > 1) return true; else return false; }
+		bool external()	{ return !internal(); }
+
+		Element::Type getType()	{ return type;	}
 
 		/**
 		@return	true if the number of nodes is compatible with the surface type

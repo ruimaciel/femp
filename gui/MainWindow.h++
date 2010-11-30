@@ -8,9 +8,13 @@
 
 #include "CommandLineDockWidget.h++"
 #include "ProgramOptions.h++"
-#include "ViewportColors.h++"
+#include "viewer/ViewportColors.h++"
+
+#include "viewer/ModelViewport.h++"
 
 #include "Document.h++"
+
+#include "fem/LinearAnalysis.h++"
 
 
 
@@ -21,8 +25,12 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow (QWidget *parent = 0);
 
-private:
+protected:
 	Ui::MainWindow 	ui;
+	ModelViewport *viewport;	// opengl viewport
+
+	fem::LinearAnalysis<double> analysis;
+
 	CommandLineDockWidget *commandLineDockWidget;
 
 	QMdiArea	* mdiArea;
@@ -38,6 +46,7 @@ private:
 	bool 	hasUnsavedChanges;	// true if the document has unsaved changes
 
 	Document document;	// the FEM document
+
 	ViewportColors colors;	// the elements' viewport colors
 
 	QAction *actionViewportXY;	// places the camera displaying the XY plane

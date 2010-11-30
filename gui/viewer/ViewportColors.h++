@@ -5,12 +5,14 @@
 
 struct ViewportColors {
 	ViewportColors ();
-	ViewportColors (const ViewportColors &);
 	~ViewportColors ();
 
 	// set of color options
 	GLfloat node[3];
+	GLfloat selected[3];
+
 	GLfloat wireframe[3];
+	GLfloat surface[3];
 
 	GLfloat tetrahedron4[3];
 	GLfloat tetrahedron10[3];
@@ -20,6 +22,8 @@ struct ViewportColors {
 	GLfloat prism6[3];
 
 	GLfloat arrow[3];
+	
+	GLfloat background[3];
 };
 
 

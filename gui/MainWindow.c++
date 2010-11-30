@@ -22,9 +22,6 @@
 #include "DisplayOptionsDialog.h++"
 #include "ui/MaterialsEditorDialog.h++"
 
-#include "glModelWidget.h++"
-#include "glDisplacementsWidget.h++"
-
 #include "fem_msh.h++"
 #include "parsers/json.h"
 
@@ -32,6 +29,7 @@
 
 #include "fem/Analysis.h++"
 #include "fem/LinearAnalysis.h++"
+
 
 
 
@@ -670,19 +668,7 @@ void MainWindow::setElementDisplay()
 			case MdiWindowProperties::MWP_Model:
 				{
 					mylog.message("MWP_Model");
-					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
-
-					// set the position
-					w->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
-					w->display_options.surfaces	= this->ui.actionDisplaySurfaces->isChecked()?1:0;
-					w->display_options.wireframe	= this->ui.actionDisplayWireframe->isChecked()?1:0;
-				}
-				break;
-
-			case MdiWindowProperties::MWP_Displacements:
-				{
-					mylog.message("MWP_Displacements");
-					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
+					ModelViewport *w = static_cast<ModelViewport *>(mwp);
 
 					// set the position
 					w->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
@@ -720,16 +706,7 @@ void MainWindow::setNodeForcesDisplay()
 		{
 			case MdiWindowProperties::MWP_Model:
 				{
-					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
-
-					// set the position
-					w->display_options.nodal_forces 	= this->ui.actionShowNodalForces->isChecked()?1:0;
-				}
-				break;
-
-			case MdiWindowProperties::MWP_Displacements:
-				{
-					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
+					ModelViewport *w = static_cast<ModelViewport *>(mwp);
 
 					// set the position
 					w->display_options.nodal_forces 	= this->ui.actionShowNodalForces->isChecked()?1:0;
@@ -759,44 +736,15 @@ void MainWindow::runAnalysis()
 	time.start();	// to get the run time
 
 	//TODO finish this
-	//TODO consider options for integration points
-	fem::LinearAnalysis<double> analysis;
-
 	//TODO for testing purposes only. remove
-	ProcessedModel p;
-	document.processed_model.push_back(p);
-
-	analysis.run(document.model, document.model.load_pattern_list[0], document.processed_model.back());
+	analysis.run(document.model, document.model.load_pattern_list[0]);
 
 	message.sprintf("Model analysis: finished after %d ms", time.elapsed());
 	//TODO implement variadic function
 	mylog.message(message);
 
-	// create the ProcessedModel object
+	viewport->showDisplacements(analysis);
 
-	// create subwindows
-	GLDisplacementsWidget *glDisplacementsWidget;
-	std::map<size_t, fem::Node> dm = analysis.displacements_map();	//TODO pass the displacements_map to the ProcessedModel object
-
-	glDisplacementsWidget = new GLDisplacementsWidget(&document, &document.processed_model.back(), this);
-	glDisplacementsWidget->setColors(&colors);
-
-	double radius;
-	options.getOption("viewport.nodes.radius",radius,20);
-	glDisplacementsWidget->setNodeRadiusScale(radius);
-	glDisplacementsWidget->setFocusPolicy(Qt::StrongFocus);
-	glDisplacementsWidget->display_options.setDefaultOptions();
-
-	// create new MDI window for the displacements widget
-	QMdiSubWindow *subWindow;
-	subWindow = new QMdiSubWindow(mdiArea);
-	subWindow->setWidget(glDisplacementsWidget);
-	subWindow->setAttribute(Qt::WA_DeleteOnClose);
-	subWindow->setWindowTitle("Displacements");
-
-	glDisplacementsWidget->show();
-
-	//emit setMessage(message);
 
 	mylog.clearPrefix();
 }
@@ -840,19 +788,7 @@ void MainWindow::setViewportXY()
 			case MdiWindowProperties::MWP_Model:
 				{
 					mylog.message("MWP_Model");
-					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
-
-					// set the position
-					w->setXRotation(0);
-					w->setYRotation(0);
-					w->setZRotation(0);
-				}
-				break;
-
-			case MdiWindowProperties::MWP_Displacements:
-				{
-					mylog.message("MWP_Displacements");
-					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
+					ModelViewport *w = static_cast<ModelViewport *>(mwp);
 
 					// set the position
 					w->setXRotation(0);
@@ -889,19 +825,7 @@ void MainWindow::setViewportYZ()
 			case MdiWindowProperties::MWP_Model:
 				{
 					mylog.message("MWP_Model");
-					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
-
-					// set the position
-					w->setXRotation(0);
-					w->setYRotation(270);
-					w->setZRotation(0);
-				}
-				break;
-
-			case MdiWindowProperties::MWP_Displacements:
-				{
-					mylog.message("MWP_Displacements");
-					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
+					ModelViewport *w = static_cast<ModelViewport *>(mwp);
 
 					// set the position
 					w->setXRotation(0);
@@ -938,19 +862,7 @@ void MainWindow::setViewportXZ()
 			case MdiWindowProperties::MWP_Model:
 				{
 					mylog.message("MWP_Model");
-					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
-
-					// set the view angle
-					w->setXRotation(90);
-					w->setYRotation(0);
-					w->setZRotation(0);
-				}
-				break;
-
-			case MdiWindowProperties::MWP_Displacements:
-				{
-					mylog.message("MWP_Displacements");
-					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
+					ModelViewport *w = static_cast<ModelViewport *>(mwp);
 
 					// set the view angle
 					w->setXRotation(90);
@@ -1014,30 +926,9 @@ void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)
 			case MdiWindowProperties::MWP_Model:
 				{
 					//mylog.message("MWP_Model");
-					GLModelWidget *w = static_cast<GLModelWidget *>(mwp);
+					ModelViewport *w = static_cast<ModelViewport *>(mwp);
 
 					// update the UI according to this window's options
-					this->ui.actionDisplayNodes->setChecked(w->display_options.nodes);
-					this->ui.actionDisplaySurfaces->setChecked(w->display_options.surfaces);
-					this->ui.actionDisplayWireframe->setChecked(w->display_options.wireframe);
-
-					// change combo box
-					//TODO set the combo box to the current load pattern
-					this->ui.actionShowNodalDisplacements->setChecked(w->display_options.nodal_displacements);
-					this->ui.actionShowNodalForces->setChecked(w->display_options.nodal_forces);
-					this->ui.actionShowSurfaceForces->setChecked(w->display_options.surface_forces);
-					this->ui.actionShowDomainForces->setChecked(w->display_options.domain_forces);
-
-					//TODO finish this
-				}
-				break;
-
-			case MdiWindowProperties::MWP_Displacements:
-				{
-					//mylog.message("MWP_Displacements");
-					GLDisplacementsWidget *w = static_cast<GLDisplacementsWidget *>(mwp);
-
-					// set the position
 					this->ui.actionDisplayNodes->setChecked(w->display_options.nodes);
 					this->ui.actionDisplaySurfaces->setChecked(w->display_options.surfaces);
 					this->ui.actionDisplayWireframe->setChecked(w->display_options.wireframe);
@@ -1081,32 +972,24 @@ void MainWindow::setUserInterfaceAsOpened()
 	ui.actionDisplaySurfaces->setChecked(true);
 	ui.actionDisplayWireframe->setChecked(true);
 
-	// open all relevant MDI windows
-	GLModelWidget *glWidget = new GLModelWidget(&document, this);
-	glWidget->setColors(&colors);
-	double radius;
-	options.getOption("viewport.nodes.radius",radius,20);
-	glWidget->setNodeRadiusScale(radius);
-	glWidget->setFocusPolicy(Qt::StrongFocus);
-	glWidget->display_options.setDefaultOptions();
+	// set the new viewport widget
+	viewport = new ModelViewport(&document.model, this);
+	viewport->setColors(colors);
 
 	// create the model's MDI window
 	QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport
 
 	window_gl_viewport = new QMdiSubWindow(mdiArea);
-	window_gl_viewport->setWidget(glWidget);
+	window_gl_viewport->setWidget(viewport);
 	window_gl_viewport->setAttribute(Qt::WA_DeleteOnClose);
 	window_gl_viewport->setWindowTitle(tr("model viewport"));
 	window_gl_viewport->showMaximized();
-
-	//mdiArea->addSubWindow(window_gl_viewport);
-	// enable the "close"
 
 	// set toolbars
 	createToolBars();
 
 	// set the docks
-	this->addDockWidget(static_cast<Qt::DockWidgetArea>(8), commandLineDockWidget);
+	this->addDockWidget(static_cast<Qt::DockWidgetArea>(9), commandLineDockWidget);
 
 	mylog.clearPrefix();
 }

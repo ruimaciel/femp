@@ -15,8 +15,6 @@
 #include "Element.h++"
 #include "LoadPattern.h++"
 
-#include "ProcessedModel.h++"
-
 #include "../lalib/Matrix.h++"
 #include "../lalib/Vector.h++"
 
@@ -83,16 +81,13 @@ class Analysis
 		std::map<enum Element::Type, int> degree;	// stiffness matrix integration point degree for a particular element
 		std::map<enum Element::Type, int> ddegree;	// domain load integration point degree for a particular element
 
+	public:
 			// location matrix: <node, <DoF number, DoF number, DoF number> >, if DoF == 0 then this isn't a DoF
 		std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;
 
+	public:
 			// the FEM equation
 		// FemEquation f;
-		/*
-		Eigen::DynamicSparseMatrix<Scalar,Eigen::RowMajor> k;
-		Eigen::Matrix<Scalar,Eigen::Dynamic,1> f;
-		Eigen::Matrix<Scalar,Eigen::Dynamic,1> d;
-		*/
 		lalib::Matrix<Scalar,lalib::SparseDOK> K;
 		lalib::Vector<Scalar> f;
 		lalib::Vector<Scalar> d;
@@ -102,6 +97,12 @@ class Analysis
 		Analysis();
 		Analysis(const Analysis &);
 		~Analysis();
+
+
+		/**
+		clears any data structure which was created during the analysis
+		**/
+		void clear();
 
 
 		/** sets up a FEM equation according to the info contained in the instance of this class
@@ -119,7 +120,7 @@ class Analysis
 		@param lp	the load pattern
 		@return an error
 		**/
-		virtual enum Error run(Model &model, LoadPattern &lp, ProcessedModel &p) = 0;
+		virtual enum Error run(Model &model, LoadPattern &lp) = 0;
 
 
 		/**
@@ -193,6 +194,15 @@ Analysis<Scalar>::Analysis(const Analysis &copied)
 template<typename Scalar>
 Analysis<Scalar>::~Analysis()
 {
+}
+
+
+template<typename Scalar>
+void Analysis<Scalar>::clear()
+{
+	K.clear();
+	f.clear();
+	d.clear();
 }
 
 
@@ -720,11 +730,11 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map()
 
 		// assign the displacements
 		if(i->second.get<0>() != 0)
-			node.data[0] = d(n++);
+			node.data[0] = this->d(n++);
 		if(i->second.get<1>() != 0)
-			node.data[1] = d(n++);
+			node.data[1] = this->d(n++);
 		if(i->second.get<2>() != 0)
-			node.data[2] = d(n++);
+			node.data[2] = this->d(n++);
 
 		// add the displacement field to the map
 		df[i->first] = node;
@@ -772,9 +782,9 @@ void Analysis<Scalar>::setDefaultIntegrationDegrees()
 	degree[Element::FE_HEXAHEDRON20] = 3;	ddegree[Element::FE_HEXAHEDRON20] = 2;
 	degree[Element::FE_HEXAHEDRON27] = 3;	ddegree[Element::FE_HEXAHEDRON27] = 2;
 
-	degree[Element::FE_PRISM6 ] = 5;	ddegree[Element::FE_PRISM6 ] = 1;
-	degree[Element::FE_PRISM15] = 5;	ddegree[Element::FE_PRISM15] = 2;
-	degree[Element::FE_PRISM18] = 5;	ddegree[Element::FE_PRISM18] = 2;
+	degree[Element::FE_PRISM6 ] = 4;	ddegree[Element::FE_PRISM6 ] = 1;
+	degree[Element::FE_PRISM15] = 4;	ddegree[Element::FE_PRISM15] = 2;
+	degree[Element::FE_PRISM18] = 4;	ddegree[Element::FE_PRISM18] = 2;
 
 	degree[Element::FE_PYRAMID5 ] = 4;	ddegree[Element::FE_PYRAMID5 ] = 1;
 	degree[Element::FE_PYRAMID14] = 4;	ddegree[Element::FE_PYRAMID14] = 1;

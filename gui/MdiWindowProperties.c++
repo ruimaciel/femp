@@ -1,8 +1,9 @@
 #include "MdiWindowProperties.h++"
 
 
-MdiWindowProperties::MdiWindowProperties()
+MdiWindowProperties::MdiWindowProperties(enum WindowType type )
 {
+	window_type = type;
 }
 
 

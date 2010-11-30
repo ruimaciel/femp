@@ -27,6 +27,11 @@ class DenseVector
 
 		size_t size()		{ return t_size; };
 
+		/**
+		Sets all values to zero
+		**/
+		void clear();
+
 		/*
 		Returns the value in [index]
 		*/
@@ -46,6 +51,15 @@ DenseVector<scalar>::DenseVector(const size_t size)
 	resize(size);
 }
 
+
+template<typename scalar>
+void DenseVector<scalar>::clear()
+{
+	for(typename std::vector<scalar>::iterator i = data.begin(); i != data.end(); i++)
+	{
+		*i = 0;
+	}
+}
 
 
 template<typename scalar>

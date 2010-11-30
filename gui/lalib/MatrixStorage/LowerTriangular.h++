@@ -29,6 +29,11 @@ class LowerTriangular
 		LowerTriangular(const size_t rows = 0, const size_t columns = 0);
 		~LowerTriangular()	{};
 
+		/**
+		Sets all values to zero
+		**/
+		void clear();
+
 		size_t rows()		{ return data.t_rows; };
 		size_t columns()	{ return data.t_columns; };
 
@@ -51,6 +56,16 @@ LowerTriangular<scalar>::LowerTriangular(const size_t rows, const size_t columns
 	resize(rows, columns);
 }
 
+
+template<typename scalar>
+void LowerTriangular<scalar>::clear()
+{
+	using namespace std;
+	for(typename vector<scalar>::iterator i = data.data.begin(); i != data.data.end(); i++)
+	{
+		*i = 0;
+	}
+}
 
 
 template<typename scalar>

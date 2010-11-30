@@ -29,6 +29,11 @@ class DenseMatrix
 		DenseMatrix(const size_t rows = 0, const size_t columns = 0);
 		~DenseMatrix()	{};
 
+		/**
+		Sets all values to zero
+		**/
+		void clear();
+
 		size_t rows()		{ return data.t_rows; };
 		size_t columns()	{ return data.t_columns; };
 
@@ -51,6 +56,19 @@ DenseMatrix<scalar>::DenseMatrix(const size_t rows, const size_t columns)
 	resize(rows, columns);
 }
 
+
+template<typename scalar>
+void DenseMatrix<scalar>::clear()
+{
+	using namespace std;
+	for(size_t i = 0; i < this->rows(); i++)
+	{
+		for(size_t j = 0; j < this->columns(); j++)
+		{
+			data[i][j] = 0;
+		}
+	}
+}
 
 
 template<typename scalar>

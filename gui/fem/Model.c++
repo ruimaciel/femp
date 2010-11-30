@@ -199,7 +199,7 @@ Model::Error Model::pushElement(fem::Element e)
 			nodes[4] = e.nodes[10];
 			nodes[5] = e.nodes[17];
 			nodes[6] = e.nodes[15];
-			nodes[7] = e.nodes[19];
+			nodes[7] = e.nodes[9];
 			pushSurface(Element::FE_QUADRANGLE8, nodes, element_list.size() -1, 1);
 
 			// face 3:
@@ -268,7 +268,7 @@ Model::Error Model::pushElement(fem::Element e)
 			nodes[4] = e.nodes[10];
 			nodes[5] = e.nodes[17];
 			nodes[6] = e.nodes[15];
-			nodes[7] = e.nodes[19];
+			nodes[7] = e.nodes[9];
 			nodes[8] = e.nodes[22];
 			pushSurface(Element::FE_QUADRANGLE9, nodes, element_list.size() -1, 1);
 
@@ -325,23 +325,23 @@ Model::Error Model::pushElement(fem::Element e)
 			nodes.resize(4);
 			// face 1: quadrangle with the coplanar XX
 			nodes[0] = e.nodes[0];
-			nodes[1] = e.nodes[3];
+			nodes[1] = e.nodes[1];
 			nodes[2] = e.nodes[4];
-			nodes[3] = e.nodes[1];
+			nodes[3] = e.nodes[3];
 			pushSurface(Element::FE_QUADRANGLE4, nodes, element_list.size() -1, 0);
 
 			// face 2: quadrangle with the coplanar YY
-			nodes[0] = e.nodes[3];
-			nodes[1] = e.nodes[0];
-			nodes[2] = e.nodes[2];
-			nodes[3] = e.nodes[5];
+			nodes[0] = e.nodes[0];
+			nodes[1] = e.nodes[3];
+			nodes[2] = e.nodes[5];
+			nodes[3] = e.nodes[2];
 			pushSurface(Element::FE_QUADRANGLE4, nodes, element_list.size() -1, 1);
 
 			// face 3: quadrangle with the diagonal
 			nodes[0] = e.nodes[1];
-			nodes[1] = e.nodes[4];
+			nodes[1] = e.nodes[2];
 			nodes[2] = e.nodes[5];
-			nodes[3] = e.nodes[2];
+			nodes[3] = e.nodes[4];
 			pushSurface(Element::FE_QUADRANGLE4, nodes, element_list.size() -1, 3);
 			/*
 			prism faces: 3 quadrangles, 2 triangles 
@@ -349,14 +349,14 @@ Model::Error Model::pushElement(fem::Element e)
 			// face 5: near triangle
 			nodes.resize(3);
 			nodes[0] = e.nodes[0];
-			nodes[1] = e.nodes[1];
-			nodes[2] = e.nodes[2];
+			nodes[1] = e.nodes[2];
+			nodes[2] = e.nodes[1];
 			pushSurface(Element::FE_TRIANGLE3, nodes, element_list.size() -1, 4);
 
 			// face 6: far triangle
-			nodes[0] = e.nodes[0];
-			nodes[1] = e.nodes[1];
-			nodes[2] = e.nodes[2];
+			nodes[0] = e.nodes[3];
+			nodes[1] = e.nodes[4];
+			nodes[2] = e.nodes[5];
 			pushSurface(Element::FE_TRIANGLE3, nodes, element_list.size() -1, 5);
 
 			break;
@@ -365,35 +365,35 @@ Model::Error Model::pushElement(fem::Element e)
 			nodes.resize(8);
 			// face 1: quadrangle with the coplanar XX
 			nodes[0] = e.nodes[0];
-			nodes[1] = e.nodes[3];
+			nodes[1] = e.nodes[1];
 			nodes[2] = e.nodes[4];
-			nodes[3] = e.nodes[1];
+			nodes[3] = e.nodes[3];
 			nodes[4] = e.nodes[6];
-			nodes[5] = e.nodes[8];
+			nodes[5] = e.nodes[10];
 			nodes[6] = e.nodes[12];
-			nodes[7] = e.nodes[10];
+			nodes[7] = e.nodes[8];
 			pushSurface(Element::FE_QUADRANGLE8, nodes, element_list.size() -1, 0);
 
 			// face 2: quadrangle with the coplanar YY
-			nodes[0] = e.nodes[3];
-			nodes[1] = e.nodes[0];
-			nodes[2] = e.nodes[2];
-			nodes[3] = e.nodes[5];
+			nodes[0] = e.nodes[0];
+			nodes[1] = e.nodes[3];
+			nodes[2] = e.nodes[5];
+			nodes[3] = e.nodes[2];
 			nodes[4] = e.nodes[8];
-			nodes[5] = e.nodes[7];
+			nodes[5] = e.nodes[13];
 			nodes[6] = e.nodes[11];
-			nodes[7] = e.nodes[13];
+			nodes[7] = e.nodes[7];
 			pushSurface(Element::FE_QUADRANGLE8, nodes, element_list.size() -1, 1);
 
 			// face 3: quadrangle with the diagonal
 			nodes[0] = e.nodes[1];
-			nodes[1] = e.nodes[4];
+			nodes[1] = e.nodes[2];
 			nodes[2] = e.nodes[5];
-			nodes[3] = e.nodes[2];
-			nodes[4] = e.nodes[10];
-			nodes[5] = e.nodes[14];
-			nodes[6] = e.nodes[11];
-			nodes[7] = e.nodes[9];
+			nodes[3] = e.nodes[4];
+			nodes[4] = e.nodes[9];
+			nodes[5] = e.nodes[11];
+			nodes[6] = e.nodes[14];
+			nodes[7] = e.nodes[10];
 			pushSurface(Element::FE_QUADRANGLE8, nodes, element_list.size() -1, 3);
 			/*
 			prism faces: 3 quadrangles, 2 triangles 
@@ -401,20 +401,20 @@ Model::Error Model::pushElement(fem::Element e)
 			// face 5: near triangle
 			nodes.resize(3);
 			nodes[0] = e.nodes[0];
-			nodes[1] = e.nodes[1];
-			nodes[2] = e.nodes[2];
-			nodes[3] = e.nodes[6];
+			nodes[1] = e.nodes[2];
+			nodes[2] = e.nodes[1];
+			nodes[3] = e.nodes[7];
 			nodes[4] = e.nodes[9];
-			nodes[5] = e.nodes[7];
+			nodes[5] = e.nodes[6];
 			pushSurface(Element::FE_TRIANGLE6, nodes, element_list.size() -1, 4);
 
 			// face 6: far triangle
 			nodes[0] = e.nodes[3];
-			nodes[1] = e.nodes[5];
-			nodes[2] = e.nodes[4];
-			nodes[3] = e.nodes[13];
+			nodes[1] = e.nodes[4];
+			nodes[2] = e.nodes[5];
+			nodes[3] = e.nodes[12];
 			nodes[4] = e.nodes[14];
-			nodes[5] = e.nodes[12];
+			nodes[5] = e.nodes[13];
 			pushSurface(Element::FE_TRIANGLE6, nodes, element_list.size() -1, 5);
 
 			break;
@@ -423,37 +423,37 @@ Model::Error Model::pushElement(fem::Element e)
 			nodes.resize(9);
 			// face 1: quadrangle with the coplanar XX
 			nodes[0] = e.nodes[0];
-			nodes[1] = e.nodes[3];
+			nodes[1] = e.nodes[1];
 			nodes[2] = e.nodes[4];
-			nodes[3] = e.nodes[1];
+			nodes[3] = e.nodes[3];
 			nodes[4] = e.nodes[6];
-			nodes[5] = e.nodes[8];
+			nodes[5] = e.nodes[10];
 			nodes[6] = e.nodes[12];
-			nodes[7] = e.nodes[10];
+			nodes[7] = e.nodes[8];
 			nodes[8] = e.nodes[15];
 			pushSurface(Element::FE_QUADRANGLE9, nodes, element_list.size() -1, 0);
 
 			// face 2: quadrangle with the coplanar YY
-			nodes[0] = e.nodes[3];
-			nodes[1] = e.nodes[0];
-			nodes[2] = e.nodes[2];
-			nodes[3] = e.nodes[5];
+			nodes[0] = e.nodes[0];
+			nodes[1] = e.nodes[3];
+			nodes[2] = e.nodes[5];
+			nodes[3] = e.nodes[2];
 			nodes[4] = e.nodes[8];
-			nodes[5] = e.nodes[7];
+			nodes[5] = e.nodes[13];
 			nodes[6] = e.nodes[11];
-			nodes[7] = e.nodes[13];
+			nodes[7] = e.nodes[7];
 			nodes[8] = e.nodes[16];
 			pushSurface(Element::FE_QUADRANGLE9, nodes, element_list.size() -1, 1);
 
 			// face 3: quadrangle with the diagonal
 			nodes[0] = e.nodes[1];
-			nodes[1] = e.nodes[4];
+			nodes[1] = e.nodes[2];
 			nodes[2] = e.nodes[5];
-			nodes[3] = e.nodes[2];
-			nodes[4] = e.nodes[10];
-			nodes[5] = e.nodes[14];
-			nodes[6] = e.nodes[11];
-			nodes[7] = e.nodes[9];
+			nodes[3] = e.nodes[4];
+			nodes[4] = e.nodes[9];
+			nodes[5] = e.nodes[11];
+			nodes[6] = e.nodes[14];
+			nodes[7] = e.nodes[10];
 			nodes[8] = e.nodes[17];
 			pushSurface(Element::FE_QUADRANGLE9, nodes, element_list.size() -1, 3);
 			/*
@@ -462,21 +462,22 @@ Model::Error Model::pushElement(fem::Element e)
 			// face 5: near triangle
 			nodes.resize(3);
 			nodes[0] = e.nodes[0];
-			nodes[1] = e.nodes[1];
-			nodes[2] = e.nodes[2];
-			nodes[3] = e.nodes[6];
+			nodes[1] = e.nodes[2];
+			nodes[2] = e.nodes[1];
+			nodes[3] = e.nodes[7];
 			nodes[4] = e.nodes[9];
-			nodes[5] = e.nodes[7];
+			nodes[5] = e.nodes[6];
 			pushSurface(Element::FE_TRIANGLE6, nodes, element_list.size() -1, 4);
 
 			// face 6: far triangle
 			nodes[0] = e.nodes[3];
-			nodes[1] = e.nodes[5];
-			nodes[2] = e.nodes[4];
-			nodes[3] = e.nodes[13];
+			nodes[1] = e.nodes[4];
+			nodes[2] = e.nodes[5];
+			nodes[3] = e.nodes[12];
 			nodes[4] = e.nodes[14];
-			nodes[5] = e.nodes[12];
+			nodes[5] = e.nodes[13];
 			pushSurface(Element::FE_TRIANGLE6, nodes, element_list.size() -1, 5);
+
 			break;
 
 		default:

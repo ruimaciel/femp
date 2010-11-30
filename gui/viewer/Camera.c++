@@ -25,7 +25,7 @@ void Camera::setPosition(double x, double y, double z)
 
 void Camera::reset()
 {
-	pos.set(0,0,0);
+	pos = center;
 	rotation.set(0,0,0);
 }
 

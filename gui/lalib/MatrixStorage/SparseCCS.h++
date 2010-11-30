@@ -33,6 +33,11 @@ class SparseCCS
 		SparseCCS(const size_t rows = 0, const size_t columns = 0);
 		~SparseCCS()	{};
 
+		/**
+		Sets all values to zero
+		**/
+		void clear();
+
 		size_t rows()		{ return data.column_pointer.size(); };
 		size_t columns()	{ return data.t_columns; };
 
@@ -80,6 +85,18 @@ SparseCCS<scalar>::SparseCCS(const size_t rows, const size_t columns)
 
 }
 
+
+
+template<typename scalar>
+void SparseCCS<scalar>::clear()
+{
+	//TODO properly clear the sparse matrix instead of just zeroing the existing values
+	using namespace std;
+	for(typename vector<scalar>::iterator i = data.values.begin(); i != data.values.end(); i++)
+	{
+		*i = 0;
+	}
+}
 
 
 template<typename scalar>

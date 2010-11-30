@@ -12,6 +12,7 @@ class Node: public point
 	public:
 		Node();
 		Node(const Node &);
+		Node(const point &);
 		~Node();
 };
 

@@ -15,6 +15,8 @@
 #include "Element.h++"
 #include "LoadPattern.h++"
 
+#include "ProcessedModel.h++"
+
 #include "../lalib/Matrix.h++"
 #include "../lalib/Vector.h++"
 
@@ -85,9 +87,13 @@ class Analysis
 			// location matrix: <node, <DoF number, DoF number, DoF number> >, if DoF == 0 then this isn't a DoF
 		std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;
 
-	public:
 			// the FEM equation
 		// FemEquation f;
+		/*
+		Eigen::DynamicSparseMatrix<Scalar,Eigen::RowMajor> k;
+		Eigen::Matrix<Scalar,Eigen::Dynamic,1> f;
+		Eigen::Matrix<Scalar,Eigen::Dynamic,1> d;
+		*/
 		lalib::Matrix<Scalar,lalib::SparseDOK> K;
 		lalib::Vector<Scalar> f;
 		lalib::Vector<Scalar> d;
@@ -120,7 +126,7 @@ class Analysis
 		@param lp	the load pattern
 		@return an error
 		**/
-		virtual enum Error run(Model &model, LoadPattern &lp) = 0;
+		virtual enum Error run(Model &model, LoadPattern &lp, ProcessedModel &p) = 0;
 
 
 		/**
@@ -222,24 +228,29 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 	make_location_matrix(model);
 
 		// declare variables
-	double detJ = 0;
+	Scalar detJ = 0;
 
 	Matrix3d J, invJ;
-	std::vector< Eigen::Matrix<double,6,6> > D_list;
+	std::vector< Eigen::Matrix<Scalar,6,6> > D_list;
 
 		// set up the temporary variables for the elementary matrix and vector
-	Matrix<double,Dynamic, Dynamic> k_elem;
-	Matrix<double,Dynamic,1> f_elem;
-	Matrix<double,Dynamic,Dynamic> B;
-	Matrix<double,Dynamic,Dynamic> Bt;
-	Matrix<double,6,6> D = model.material_list[0].generateD();
+	Matrix<Scalar,Dynamic, Dynamic> k_elem;
+	Matrix<Scalar,Dynamic, Dynamic> k_test;	//TODO testing purposes only. remove.
+	Matrix<Scalar,Dynamic,1> f_elem;
+	Matrix<Scalar,Dynamic,Dynamic> B;
+	Matrix<Scalar,Dynamic,Dynamic> Bt;
+	Matrix<Scalar,6,6> D = model.material_list[0].generateD().cast<Scalar>();
 
 	size_t material_index = 0;
 
-	BaseElement<double> *element = NULL;	// points to the current element class
+	BaseElement<Scalar> *element = NULL;	// points to the current element class
 
 	int nnodes;	// number of nodes
 	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
+
+	size_t k_elem_count = 0;
+
+	cout.precision(10);
 
 
 		// generate stiffness matrix by cycling through all elements in the model
@@ -292,27 +303,29 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 
 			// resize the elementary matrices to fit the new node size
 		k_elem.resize(nnodes*3,nnodes*3);
+		k_test.resize(nnodes*3,nnodes*3);	//TODO testing only. remove.
 		f_elem.resize(nnodes*3);
 		B.resize(6,3*nnodes);
 		Bt.resize(3*nnodes,6);
 
 			// initialize variables
 		k_elem.setZero();
+		k_test.setZero();
 		f_elem.setZero();
 		B.setZero();
 
 			// build the element_iterator stiffness matrix: cycle through the number of integration points
 		
-		for (std::vector<boost::tuple<fem::point,double> >::iterator i = element->ipwpl[degree[element_iterator->type]].begin(); i != element->ipwpl[degree[element_iterator->type]].end(); i++)
+		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->ipwpl[degree[element_iterator->type]].begin(); i != element->ipwpl[degree[element_iterator->type]].end(); i++)
 		{
 #define X(N) model.node_list[element_iterator->nodes[N]].x()
 #define Y(N) model.node_list[element_iterator->nodes[N]].y()
 #define Z(N) model.node_list[element_iterator->nodes[N]].z()
 
 				// set the shape function and it's partial derivatives for this integration point
-			element->setdNdcsi( i->get<0>() );
-			element->setdNdeta( i->get<0>() );
-			element->setdNdzeta( i->get<0>() );
+			element->setdNdcsi( i->template get<0>() );
+			element->setdNdeta( i->template get<0>() );
+			element->setdNdzeta( i->template get<0>() );
 
 				// generate the jacobian
 			J.setZero();
@@ -363,18 +376,16 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 #undef dNdz
 			}
 
-			// having done the legwork, let's build up the elementary stiffness matrix and equivalent nodal force vector
-
 			Bt = B.transpose();
-	
+
 			if(material_index != element_iterator->material)
-				D = model.material_list[element_iterator->material].generateD();
+				D = model.material_list[element_iterator->material].generateD().cast<Scalar>();
 
 			// add this integration point's contribution
 			k_elem += Bt*D*B*detJ*i->get<1>();
 		}
 
-			// add elementary stiffness matrix to the global stiffness matrix 
+		// add elementary stiffness matrix to the global stiffness matrix 
 		add_elementary_stiffness_to_global(k_elem, lm, *element_iterator);
 	}
 
@@ -432,13 +443,13 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		f_elem.setZero();
 
 		// as the distribution is linear across the domain then degree 1 is enough
-		for (std::vector<boost::tuple<fem::point,double> >::iterator i = element->ipwpl[ddegree[element_reference->type]].begin(); i != element->ipwpl[ddegree[element_reference->type]].end(); i++)
+		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->ipwpl[ddegree[element_reference->type]].begin(); i != element->ipwpl[ddegree[element_reference->type]].end(); i++)
 		{
 				// build the Jacobian
-			element->setN( i->get<0>());
-			element->setdNdcsi( i->get<0>() );
-			element->setdNdeta( i->get<0>() );
-			element->setdNdzeta( i->get<0>() );
+			element->setN( i->template get<0>());
+			element->setdNdcsi( i->template get<0>() );
+			element->setdNdeta( i->template get<0>() );
+			element->setdNdzeta( i->template get<0>() );
 
 				// generate the jacobian
 			J.setZero();
@@ -468,7 +479,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 			{
 #define N(n) element->N[n]
 #define b(COORD) domain_load->second.force.COORD()
-#define W    i->get<1>()
+#define W    i->template get<1>()
 				f_elem(3*n) += N(n)*b(x)*detJ*W;
 				f_elem(3*n+1) += N(n)*b(y)*detJ*W;
 				f_elem(3*n+2) += N(n)*b(z)*detJ*W;
@@ -544,12 +555,12 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		f_elem.resize(nnodes*3);
 		f_elem.setZero();
 
-		for (std::vector<boost::tuple<fem::point,double> >::iterator i = element->ipwpl[degree[surface_load->type]].begin(); i != element->ipwpl[degree[surface_load->type]].end(); i++)
+		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->ipwpl[degree[surface_load->type]].begin(); i != element->ipwpl[degree[surface_load->type]].end(); i++)
 		{
 				// get shape function and shape function derivatives in this integration point's coordinate
-			element->setN( i->get<0>() );
-			element->setdNdcsi(i->get<0>() );
-			element->setdNdeta(i->get<0>() );
+			element->setN( i->template get<0>() );
+			element->setdNdcsi(i->template get<0>() );
+			element->setdNdeta(i->template get<0>() );
 
 				// calculate the Jacobian
 			J.setZero();
@@ -574,7 +585,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 
 
 #define N(n) element->N[n]
-#define W    i->get<1>()
+#define W    i->template get<1>()
 				// calculate q(csi, eta, zeta)
 			fem::point q;
 			for(int j = 0; j < nnodes; j++)
@@ -590,7 +601,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 				f_elem(3*n+2) += N(n)*q.z()*detJ*W;
 			}
 #define N(n) element->N[n]
-#define W    i->get<1>()
+#define W    i->template get<1>()
 		}
 
 			//add the surface load's f_elem contribution to f
@@ -730,11 +741,11 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map()
 
 		// assign the displacements
 		if(i->second.get<0>() != 0)
-			node.data[0] = this->d(n++);
+			node.data[0] = d(n++);
 		if(i->second.get<1>() != 0)
-			node.data[1] = this->d(n++);
+			node.data[1] = d(n++);
 		if(i->second.get<2>() != 0)
-			node.data[2] = this->d(n++);
+			node.data[2] = d(n++);
 
 		// add the displacement field to the map
 		df[i->first] = node;
@@ -782,9 +793,9 @@ void Analysis<Scalar>::setDefaultIntegrationDegrees()
 	degree[Element::FE_HEXAHEDRON20] = 3;	ddegree[Element::FE_HEXAHEDRON20] = 2;
 	degree[Element::FE_HEXAHEDRON27] = 3;	ddegree[Element::FE_HEXAHEDRON27] = 2;
 
-	degree[Element::FE_PRISM6 ] = 4;	ddegree[Element::FE_PRISM6 ] = 1;
-	degree[Element::FE_PRISM15] = 4;	ddegree[Element::FE_PRISM15] = 2;
-	degree[Element::FE_PRISM18] = 4;	ddegree[Element::FE_PRISM18] = 2;
+	degree[Element::FE_PRISM6 ] = 5;	ddegree[Element::FE_PRISM6 ] = 1;
+	degree[Element::FE_PRISM15] = 5;	ddegree[Element::FE_PRISM15] = 2;
+	degree[Element::FE_PRISM18] = 5;	ddegree[Element::FE_PRISM18] = 2;
 
 	degree[Element::FE_PYRAMID5 ] = 4;	ddegree[Element::FE_PYRAMID5 ] = 1;
 	degree[Element::FE_PYRAMID14] = 4;	ddegree[Element::FE_PYRAMID14] = 1;

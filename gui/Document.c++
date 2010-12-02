@@ -1297,7 +1297,7 @@ enum Document::Error Document::load()
 						break;
 
 					case fem::Element::FE_QUADRANGLE9:
-						surface_load.type = fem::Element::FE_QUADRANGLE8;
+						surface_load.type = fem::Element::FE_QUADRANGLE9;
 						state.push(49);	// SurfaceNextForce
 						state.push(49);	// SurfaceNextForce
 						state.push(49);	// SurfaceNextForce

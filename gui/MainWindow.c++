@@ -30,7 +30,6 @@
 #include "fem/Analysis.h++"
 #include "fem/LinearAnalysis.h++"
 
-#include "viewer/ModelViewport.h++"
 
 
 
@@ -737,9 +736,6 @@ void MainWindow::runAnalysis()
 	time.start();	// to get the run time
 
 	//TODO finish this
-	//TODO consider options for integration points
-	fem::LinearAnalysis<double> analysis;
-
 	//TODO for testing purposes only. remove
 
 	analysis.run(document.model, document.model.load_pattern_list[0]);
@@ -748,34 +744,8 @@ void MainWindow::runAnalysis()
 	//TODO implement variadic function
 	mylog.message(message);
 
+	viewport->showDisplacements(analysis);
 
-	//TODO implement displacements viewport
-	mylog.message("displacements widget wasn't implemented yet");
-
-	/*
-	// create subwindows
-	GLDisplacementsWidget *glDisplacementsWidget;
-	std::map<size_t, fem::Node> dm = analysis.displacements_map();	//TODO pass the displacements_map to the ProcessedModel object
-
-	glDisplacementsWidget = new GLDisplacementsWidget(&document, &document.processed_model.back(), this);
-	glDisplacementsWidget->setColors(&colors);
-
-	double radius;
-	options.getOption("viewport.nodes.radius",radius,20);
-	glDisplacementsWidget->setNodeRadiusScale(radius);
-	glDisplacementsWidget->setFocusPolicy(Qt::StrongFocus);
-	glDisplacementsWidget->display_options.setDefaultOptions();
-
-	// create new MDI window for the displacements widget
-	QMdiSubWindow *subWindow;
-	subWindow = new QMdiSubWindow(mdiArea);
-	subWindow->setWidget(glDisplacementsWidget);
-	subWindow->setAttribute(Qt::WA_DeleteOnClose);
-	subWindow->setWindowTitle("Displacements");
-
-	glDisplacementsWidget->show();
-
-	*/
 
 	mylog.clearPrefix();
 }
@@ -1004,19 +974,8 @@ void MainWindow::setUserInterfaceAsOpened()
 	ui.actionDisplayWireframe->setChecked(true);
 
 	// set the new viewport widget
-	ModelViewport *viewport = new ModelViewport(&document.model, this);
-	viewport->setColors(&colors);
-
-	/*
-	// open all relevant MDI windows
-	GLModelWidget *glWidget = new GLModelWidget(&document, this);
-	glWidget->setColors(&colors);
-	double radius;
-	options.getOption("viewport.nodes.radius",radius,20);
-	glWidget->setNodeRadiusScale(radius);
-	glWidget->setFocusPolicy(Qt::StrongFocus);
-	glWidget->display_options.setDefaultOptions();
-	*/
+	viewport = new ModelViewport(&document.model, this);
+	viewport->setColors(colors);
 
 	// create the model's MDI window
 	QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport
@@ -1031,7 +990,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	createToolBars();
 
 	// set the docks
-	this->addDockWidget(static_cast<Qt::DockWidgetArea>(8), commandLineDockWidget);
+	this->addDockWidget(static_cast<Qt::DockWidgetArea>(9), commandLineDockWidget);
 
 	mylog.clearPrefix();
 }

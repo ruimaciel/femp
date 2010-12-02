@@ -33,6 +33,11 @@ class Matrix
 		size_t columns()	{ return MatrixStoragePolicy<scalar>::columns(); };
 
 		/**
+		Sets all values to zero
+		**/
+		void clear();
+
+		/**
 		Returns the value [row,column] defined in this matrix
 		**/
 		scalar value(const size_t row, const size_t column);
@@ -58,6 +63,12 @@ Matrix<scalar, MatrixStoragePolicy>::Matrix(Matrix<scalar, MatrixStoragePolicy> 
 	this->data = other.data;
 }
 
+
+template<typename scalar, template<typename> class MatrixStoragePolicy>
+void Matrix<scalar, MatrixStoragePolicy>::clear()
+{
+	MatrixStoragePolicy<scalar>::clear();
+}
 
 template<typename scalar, template<typename> class MatrixStoragePolicy>
 scalar Matrix<scalar, MatrixStoragePolicy>::value(const size_t row, const size_t column)

@@ -255,6 +255,12 @@ point getNormalVector(const point &a, const point &b, const point &c)
 }
 
 
+point getNormalVector(point &a, point &b, point &c)
+{
+	return cross_product(b-a, c-b);
+}
+
+
 std::ostream &operator<< (std::ostream &out, const point &p)
 {
 	out << "[" << p.x() << ", " << p.y() << ", " << p.z() << "]";

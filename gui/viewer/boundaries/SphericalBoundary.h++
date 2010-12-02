@@ -4,7 +4,7 @@
 
 #include "BoundaryStrategy.h++"
 
-#include "../../point.h++"
+#include "../../fem/point.h++"
 
 /*
 A concrete class that implements a sphere boundary throught the Boundary strategy pattern
@@ -12,7 +12,7 @@ A concrete class that implements a sphere boundary throught the Boundary strateg
 class SphericalBoundary
 	: public BoundaryStrategy
 {
-	protected:
+	public:
 		fem::point center;	// sphere center
 		float radius2;	// the square of the sphere's radius
 		

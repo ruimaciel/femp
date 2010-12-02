@@ -14,6 +14,12 @@ Node::Node(const Node &copied)
 }
 
 
+Node::Node(const point &copied)
+	: point(copied)
+{
+}
+
+
 Node::~Node()
 {
 }

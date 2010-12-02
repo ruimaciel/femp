@@ -14,8 +14,13 @@
 #include "ViewportColors.h++"
 #include "DisplayOptions.h++"
 
-#include "ViewportState.h++"	// for the vieport's state pattern base class
-#include "VPStateModel.h++"
+#include "ViewportData.h++"
+
+#include "ViewportStates/ViewportState.h++"	// for the vieport's state pattern base class
+#include "ViewportStates/VPStateModel.h++"
+#include "ViewportStates/VPStateDisplacements.h++"
+
+#include "../fem/LinearAnalysis.h++"
 
 
 class ModelViewport 
@@ -23,18 +28,26 @@ class ModelViewport
 {
 	Q_OBJECT
 
-	protected:
+	public:
+		ViewportData viewport_data;
+		ViewportColors colors;	// color definitions
+
+		fem::Model *model;
+
 		ViewportState	*state;	// pointer to object used for the State pattern
-		VPStateModel	StateModel;	// rendering state: Model
 
 	public:
 		ModelViewport(fem::Model *model, QWidget *parent = NULL);
 		~ModelViewport();
 
-		void setColors(ViewportColors *colors);
+		void setColors(ViewportColors &new_colors);
 
 		QSize minimumSizeHint() const;
 		QSize sizeHint() const;
+
+
+		template <class NewState>
+		void setState(NewState *);
 
 
 	public Q_SLOTS:
@@ -42,6 +55,8 @@ class ModelViewport
 		void setYRotation(int angle);
 		void setZRotation(int angle);
 		void setPosition(int x, int y);
+
+		void showDisplacements(fem::LinearAnalysis<double> &);
 
 	Q_SIGNALS:
 		void xRotationChanged(int angle);
@@ -64,17 +79,6 @@ class ModelViewport
 
 	protected:
 		void normalizeAngle(int *angle);
-
-		Camera camera;	// transition to a camera class
-		ViewportColors *colors;	// color definitions
-
-		float zoom;		// drawing zoom, used to zoom
-		float aspect_ratio;	// window aspect ratio
-		float node_scale;	// the scale used by the nodes, reset when a window resizes
-
-		fem::Model *model;
-
-		QPoint lastPos;
 };
 
 #endif

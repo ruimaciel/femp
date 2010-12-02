@@ -30,6 +30,11 @@ class SparseDOK
 		SparseDOK(const size_t rows = 1, const size_t columns = 1);
 		~SparseDOK()	{};
 
+		/**
+		Sets all values to zero
+		**/
+		void clear();
+
 		size_t rows()		{ return data.t_rows; };
 		size_t columns()	{ return data.t_columns; };
 
@@ -52,6 +57,13 @@ SparseDOK<scalar>::SparseDOK(const size_t rows, const size_t columns)
 	resize(rows, columns);
 }
 
+
+template<typename scalar>
+void SparseDOK<scalar>::clear()
+{
+	using namespace std;
+	data.data.clear();
+}
 
 
 template<typename scalar>

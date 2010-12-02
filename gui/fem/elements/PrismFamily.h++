@@ -31,8 +31,6 @@ PrismFamily<T>::PrismFamily()
 template<typename T>
 void PrismFamily<T>::generateQuadratureData()
 {
-	//TODO test implement this
-	std::cout << "PrismFamily" << std::endl;
 
 	using namespace boost;
 	std::vector<tuple<fem::point, double> > ips;

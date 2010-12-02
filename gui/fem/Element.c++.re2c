@@ -169,6 +169,10 @@ int Element::node_number() const
 			return 4;
 			break;
 
+		case FE_QUADRANGLE8:
+			return 8;
+			break;
+
 		case FE_QUADRANGLE9:
 			return 9;
 			break;

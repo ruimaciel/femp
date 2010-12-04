@@ -240,7 +240,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 	Matrix<Scalar,Dynamic,Dynamic> Bt;
 	Matrix<Scalar,6,6> D = model.material_list[0].generateD().cast<Scalar>();
 
-	size_t material_index = 0;
+	int material_index = 0;
 
 	BaseElement<Scalar> *element = NULL;	// points to the current element class
 

@@ -81,7 +81,7 @@ void SGCDisplacementSurface<SurfacePolicy>::setReferenceSurface(fem::Surface &re
 
 
 template<class SurfacePolicy>
-void SGCDisplacementSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors)
+void SGCDisplacementSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Model *model, ViewportColors &)
 {
 	SurfacePolicy::paintGL(data, model, nodes, surface);
 }

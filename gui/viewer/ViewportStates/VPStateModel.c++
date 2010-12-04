@@ -688,7 +688,9 @@ void VPStateModel::paintNode( ViewportData &data, GLfloat color[4], const fem::p
 
 void VPStateModel::selectModelObjects(const fem::point &near,const fem::point &far)
 {
+	//TODO finish this
 	// test nodes
+	/*
 	float a, b, c;
 	float x2x1, y2y1, z2z1; // helper temp variables to avoid remultiplying
 	std::map<size_t,float> distance_map;
@@ -702,6 +704,7 @@ void VPStateModel::selectModelObjects(const fem::point &near,const fem::point &f
 			(*i)->selected = true;
 		}
 	}
+	*/
 	// select the nearest hit
 	// document->selectNode(std::min_element(distance_map.begin(), distance_map.end(), distance_map.value_comp())->first);
 }

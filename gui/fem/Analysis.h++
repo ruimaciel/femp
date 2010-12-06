@@ -513,7 +513,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		// integrate the surface loads
 	//TODO finish this
 	mylog.message("Surface loads");
-
 	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
 	{
 		switch(surface_load->type)
@@ -554,6 +553,13 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 
 		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->ipwpl[degree[surface_load->type]].begin(); i != element->ipwpl[degree[surface_load->type]].end(); i++)
 		{
+			/*
+			f = \int f(csi,eta) sqrt( det(A.A') ) dA
+			with:
+				A: [ diff(g,csi) ; diff(g,eta) ]
+				g(csi,eta): \sum N_i(csi,eta)*d_i
+				f(csi,eta): \sum N_i(csi,eta)*f_i
+			*/
 				// get shape function and shape function derivatives in this integration point's coordinate
 			element->setN( i->template get<0>() );
 			element->setdNdcsi(i->template get<0>() );
@@ -564,14 +570,17 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 #define X(N)	model.node_list[surface_load->nodes[N]].x()
 #define Y(N)	model.node_list[surface_load->nodes[N]].y()
 #define Z(N)	model.node_list[surface_load->nodes[N]].z()
-			J(0,0) = 1;	J(1,0) = 1;	J(2,0) = 1;
+			//J(0,0) = 1;	J(1,0) = 2;	J(2,0) = 3;
 			for(int n = 0; n < nnodes; n++)
 			{
-				J(0,1) += element->dNdcsi[n]*X(n);	J(1,1) += element->dNdcsi[n]*Y(n);	J(2,1) += element->dNdcsi[n]*Z(n);
-				J(0,2) += element->dNdeta[n]*X(n);	J(1,2) += element->dNdeta[n]*Y(n);	J(2,2) += element->dNdeta[n]*Z(n);
+				J(0,0) += element->dNdcsi[n]*X(n);	J(0,1) += element->dNdcsi[n]*Y(n);	J(0,2) += element->dNdcsi[n]*Z(n);
+				J(1,0) += element->dNdeta[n]*X(n);	J(1,1) += element->dNdeta[n]*Y(n);	J(1,2) += element->dNdeta[n]*Z(n);
 			}
+			
+			J = J * J.transpose();
 
-			detJ = J.determinant();
+			detJ = J(0,0)*J(1,1)-J(1,0)*J(0,1);
+
 			if(detJ <= 0)
 			{
 				mylog.message("stumbled on a negative determinant on the surface load");
@@ -580,11 +589,12 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 				return ERR_NEGATIVE_DETERMINANT;
 			}
 
+			detJ = sqrt(detJ);
 
 #define N(n) element->N[n]
 #define W    i->template get<1>()
 				// calculate q(csi, eta, zeta)
-			fem::point q;
+			fem::point q(0,0,0);
 			for(int j = 0; j < nnodes; j++)
 			{
 				q += N(j)*surface_load->surface_forces[j];
@@ -597,9 +607,10 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 				f_elem(3*n+1) += N(n)*q.y()*detJ*W;
 				f_elem(3*n+2) += N(n)*q.z()*detJ*W;
 			}
-#define N(n) element->N[n]
-#define W    i->template get<1>()
+#undef N
+#undef W
 		}
+
 
 			//add the surface load's f_elem contribution to f
 		for(int i = 0; i < nnodes; i++)

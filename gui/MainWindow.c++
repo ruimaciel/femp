@@ -345,6 +345,7 @@ void MainWindow::createActions()
 
 	connect(ui.actionWindowTile, SIGNAL(triggered()), this, SLOT(setTiledWindows()));
 	connect(ui.actionWindowCascade, SIGNAL(triggered()), this, SLOT(setCascadeWindows()));
+	connect(ui.actionNewViewportWindow, SIGNAL(triggered()), this, SLOT(createNewViewportWindow()));
 
 	connect(ui.actionShowNodalForces,	SIGNAL(triggered()),	this,	SLOT(setNodeForcesDisplay()));
 }
@@ -744,7 +745,35 @@ void MainWindow::runAnalysis()
 	//TODO implement variadic function
 	mylog.message(message);
 
-	viewport->showDisplacements(analysis);
+	//viewport->showDisplacements(analysis);
+	QMdiSubWindow *displacements_window;
+
+	displacements_window = mdiArea->activeSubWindow();
+	if(displacements_window == NULL)
+	{
+		// no window is currently active
+		ModelViewport *viewport;	// opengl viewport
+		viewport = new ModelViewport(&document.model, this);
+		viewport->setColors(colors);
+
+		// create the model's MDI window
+		QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport
+
+		window_gl_viewport = new QMdiSubWindow(mdiArea);
+		window_gl_viewport->setWidget(viewport);
+		window_gl_viewport->setAttribute(Qt::WA_DeleteOnClose);
+		window_gl_viewport->setWindowTitle(tr("model viewport"));
+		window_gl_viewport->showMaximized();
+
+		viewport->showDisplacements(analysis);
+	}
+	else
+	{
+		ModelViewport *viewport;	// opengl viewport
+		viewport = static_cast<ModelViewport *>(displacements_window->widget());
+		
+		viewport->showDisplacements(analysis);
+	}
 
 
 	mylog.clearPrefix();
@@ -900,6 +929,23 @@ void MainWindow::setCascadeWindows()
 }
 
 
+void MainWindow:: createNewViewportWindow()
+{
+	ModelViewport *viewport;	// opengl viewport
+	viewport = new ModelViewport(&document.model, this);
+	viewport->setColors(colors);
+
+	// create the model's MDI window
+	QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport
+
+	window_gl_viewport = new QMdiSubWindow(mdiArea);
+	window_gl_viewport->setWidget(viewport);
+	window_gl_viewport->setAttribute(Qt::WA_DeleteOnClose);
+	window_gl_viewport->setWindowTitle(tr("model viewport"));
+	window_gl_viewport->show();
+}
+
+
 void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)
 {
 	mylog.setPrefix("MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)");
@@ -974,6 +1020,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	ui.actionDisplayWireframe->setChecked(true);
 
 	// set the new viewport widget
+	ModelViewport *viewport;	// opengl viewport
 	viewport = new ModelViewport(&document.model, this);
 	viewport->setColors(colors);
 

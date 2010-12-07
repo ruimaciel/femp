@@ -27,7 +27,7 @@ public:
 
 protected:
 	Ui::MainWindow 	ui;
-	ModelViewport *viewport;	// opengl viewport
+	//ModelViewport *viewport;	// opengl viewport
 
 	fem::LinearAnalysis<double> analysis;
 
@@ -101,6 +101,7 @@ public Q_SLOTS:
 	// set MDI subwindow configuration
 	void setTiledWindows();
 	void setCascadeWindows();
+	void createNewViewportWindow();
 
 	// updates the UI according to the currently active MDI subwindow
 	void updateUiFromActiveMdiSubWindow(QMdiSubWindow *);

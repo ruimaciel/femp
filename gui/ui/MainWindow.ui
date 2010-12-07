@@ -46,13 +46,14 @@
    </widget>
    <widget class="QMenu" name="menuWindow">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="title">
      <string>Window</string>
     </property>
     <addaction name="actionWindowTile"/>
     <addaction name="actionWindowCascade"/>
+    <addaction name="actionNewViewportWindow"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -297,6 +298,11 @@
   <action name="actionWindowCascade">
    <property name="text">
     <string>Cascade</string>
+   </property>
+  </action>
+  <action name="actionNewViewportWindow">
+   <property name="text">
+    <string>New</string>
    </property>
   </action>
  </widget>

@@ -14,6 +14,8 @@
 
 #include "../ModelViewport.h++"
 
+#include "ui/DialogScale.h++"
+
 #include "../SceneGraphComponents/SGCNode.h++"
 #include "../SceneGraphComponents/SGCSurface.h++"	// test purposes only
 #include "../SceneGraphComponents/SGCDisplacementSurface.h++"
@@ -142,6 +144,34 @@ void VPStateDisplacements::mousePressEvent(ModelViewport *mv, QMouseEvent *event
 	}
 }
 
+
+void VPStateDisplacements::keyPressEvent ( ModelViewport *mv, QKeyEvent * event )
+{
+	qWarning("keypressed");
+	switch( event->key() )
+	{
+		case Qt::Key_S:	// change the displacements scale
+			{
+				DialogScale ds(1.0f, mv);
+				switch(ds.exec())
+				{
+					case QDialog::Accepted:
+						this->setDisplacementScale(ds.scale());
+
+						//update the scene
+						mv->updateGL();
+						break;
+
+					default:
+						break;
+				}
+			}
+			break;
+
+		default:
+			break;
+	}
+}
 
 
 void VPStateDisplacements::setDisplacementScale(float new_scale)

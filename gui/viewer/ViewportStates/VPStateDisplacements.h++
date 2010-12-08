@@ -34,6 +34,7 @@ class VPStateDisplacements
 		void paintGL(ModelViewport *mv);
 		void mousePressEvent(ModelViewport *mv, QMouseEvent *event);
 		// void mouseMoveEvent(QMouseEvent *event);
+		void keyPressEvent ( ModelViewport *mv, QKeyEvent * event );
 
 
 		/**

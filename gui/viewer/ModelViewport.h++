@@ -72,6 +72,7 @@ class ModelViewport
 		void mousePressEvent(QMouseEvent *event);
 		void mouseMoveEvent(QMouseEvent *event);
 		void wheelEvent(QWheelEvent *event);
+		void keyPressEvent ( QKeyEvent * event );
 
 	public:
 		DisplayOptions display_options;	// options list to be used by the render routine

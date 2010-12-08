@@ -34,3 +34,8 @@ void ViewportState::mouseMoveEvent(ModelViewport *mv, QMouseEvent *event)
 }
 
 
+void ViewportState::keyPressEvent ( ModelViewport *mv, QKeyEvent * event )
+{
+	qWarning("not keypressed");
+	event->ignore();
+}

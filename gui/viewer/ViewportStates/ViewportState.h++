@@ -42,6 +42,7 @@ class ViewportState
 		virtual void paintGL(ModelViewport *mv)	= 0;
 		virtual void mousePressEvent(ModelViewport *mv, QMouseEvent *event) = 0;
 		virtual void mouseMoveEvent(ModelViewport *mv, QMouseEvent *event);
+		virtual void keyPressEvent ( ModelViewport *mv, QKeyEvent * event );
 };
 
 

@@ -25,6 +25,7 @@ ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)
 		// set the first load pattern
 		display_options.load_pattern = &model->load_pattern_list.front();
 	}
+	this->setFocusPolicy(Qt::StrongFocus);
 }
 
 
@@ -159,6 +160,13 @@ void ModelViewport::wheelEvent(QWheelEvent *event)
 	this->resizeGL(this->width(), this->height());
 	this->updateGL();
 	event->accept();
+}
+
+
+void ModelViewport::keyPressEvent( QKeyEvent *event)
+{
+	qWarning("blah not keypressed");
+	state->keyPressEvent(this, event);
 }
 
 

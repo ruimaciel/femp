@@ -38,8 +38,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
 	ui.setupUi(this);
 
-	analysis_result = NULL;
-
 	// set the MDI area widget as the window's central widget
 	mdiArea = new QMdiArea;
 	setCentralWidget(mdiArea);	// this main window has a Multiple Document Interface
@@ -740,9 +738,7 @@ void MainWindow::runAnalysis()
 	time.start();	// to get the run time
 
 	//TODO finish this
-	analysis_result = new fem::AnalysisResult<double>;
-
-	if( analysis.run(document.model, document.model.load_pattern_list[0], analysis_result) != fem::Analysis<double>::ERR_OK)
+	if( analysis.run(document.model, document.model.load_pattern_list[0], &analysis_result) != fem::Analysis<double>::ERR_OK)
 	{
 		//TODO throw error message
 		return;
@@ -774,14 +770,14 @@ void MainWindow::runAnalysis()
 		window_gl_viewport->setWindowTitle(tr("model viewport"));
 		window_gl_viewport->showMaximized();
 
-		viewport->showDisplacements(*analysis_result);
+		viewport->showDisplacements(analysis_result);
 	}
 	else
 	{
 		ModelViewport *viewport;	// opengl viewport
 		viewport = static_cast<ModelViewport *>(displacements_window->widget());
 		
-		viewport->showDisplacements(*analysis_result);
+		viewport->showDisplacements(analysis_result);
 	}
 
 

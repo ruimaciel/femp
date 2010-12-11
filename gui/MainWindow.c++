@@ -29,6 +29,7 @@
 
 #include "fem/Analysis.h++"
 #include "fem/LinearAnalysis.h++"
+#include "fem/AnalysisResult.h++"
 
 
 
@@ -36,6 +37,8 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
 	ui.setupUi(this);
+
+	analysis_result = NULL;
 
 	// set the MDI area widget as the window's central widget
 	mdiArea = new QMdiArea;
@@ -737,9 +740,15 @@ void MainWindow::runAnalysis()
 	time.start();	// to get the run time
 
 	//TODO finish this
-	//TODO for testing purposes only. remove
+	analysis_result = new fem::AnalysisResult<double>;
 
-	analysis.run(document.model, document.model.load_pattern_list[0]);
+	if( analysis.run(document.model, document.model.load_pattern_list[0], analysis_result) != fem::Analysis<double>::ERR_OK)
+	{
+		//TODO throw error message
+		return;
+	}
+
+	//TODO set the UI
 
 	message.sprintf("Model analysis: finished after %d ms", time.elapsed());
 	//TODO implement variadic function
@@ -765,14 +774,14 @@ void MainWindow::runAnalysis()
 		window_gl_viewport->setWindowTitle(tr("model viewport"));
 		window_gl_viewport->showMaximized();
 
-		viewport->showDisplacements(analysis);
+		viewport->showDisplacements(*analysis_result);
 	}
 	else
 	{
 		ModelViewport *viewport;	// opengl viewport
 		viewport = static_cast<ModelViewport *>(displacements_window->widget());
 		
-		viewport->showDisplacements(analysis);
+		viewport->showDisplacements(*analysis_result);
 	}
 
 

@@ -235,7 +235,7 @@ void ModelViewport::setPosition(int x, int y)
 }
 
 
-void ModelViewport::showDisplacements(fem::LinearAnalysis<double> &analysis)
+void ModelViewport::showDisplacements(fem::AnalysisResult<double> &analysis)
 {
 	// setup the displacements map
 

@@ -56,7 +56,7 @@ class ModelViewport
 		void setZRotation(int angle);
 		void setPosition(int x, int y);
 
-		void showDisplacements(fem::LinearAnalysis<double> &);
+		void showDisplacements(fem::AnalysisResult<double> &);
 
 	Q_SIGNALS:
 		void xRotationChanged(int angle);

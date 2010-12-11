@@ -9,7 +9,7 @@
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"
 
-#include "../../fem/LinearAnalysis.h++"
+#include "../../fem/AnalysisResult.h++"
 
 
 class ModelViewport;
@@ -41,7 +41,7 @@ class VPStateDisplacements
 		Sets 
 		**/
 		template<typename scalar>
-		void setDisplacements(fem::LinearAnalysis<scalar> &);
+		void setDisplacements(fem::AnalysisResult<scalar> &);
 
 		/**
 		Sets the new displacement scale to be used when rendering stuff
@@ -59,7 +59,7 @@ class VPStateDisplacements
 
 
 template<typename scalar>
-void VPStateDisplacements::setDisplacements(fem::LinearAnalysis<scalar> &analysis)
+void VPStateDisplacements::setDisplacements(fem::AnalysisResult<scalar> &analysis)
 {
 	displacements.clear();
 

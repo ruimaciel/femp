@@ -36,7 +36,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h \
 	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
 	ui/NewMaterialDialog.h++ ui/MaterialsEditorDialog.h++\
-	fem/Analysis.h++ fem/LinearAnalysis.h++ \
+	fem/Analysis.h++ fem/LinearAnalysis.h++ fem/AnalysisResult.h++\
 	ui/DialogScale.h++ \
 	MessageLogger.h++ Logs.h++ \
 	fem/Surface.h++ \

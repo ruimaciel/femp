@@ -62,22 +62,15 @@
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="title">
      <string>View</string>
     </property>
-    <widget class="QMenu" name="menuModel">
-     <property name="title">
-      <string>Model</string>
-     </property>
-     <addaction name="actionDisplayWireframe"/>
-     <addaction name="actionDisplaySurfaces"/>
-     <addaction name="actionDisplayNodes"/>
-    </widget>
-    <addaction name="actionCommand_line"/>
-    <addaction name="actionViewActions"/>
-    <addaction name="menuModel"/>
+    <addaction name="actionModel"/>
+    <addaction name="actionDisplacements"/>
+    <addaction name="actionStresses"/>
+    <addaction name="actionStrains"/>
    </widget>
    <widget class="QMenu" name="menuProject">
     <property name="enabled">
@@ -303,6 +296,26 @@
   <action name="actionNewViewportWindow">
    <property name="text">
     <string>New</string>
+   </property>
+  </action>
+  <action name="actionModel">
+   <property name="text">
+    <string>Model</string>
+   </property>
+  </action>
+  <action name="actionDisplacements">
+   <property name="text">
+    <string>Displacements</string>
+   </property>
+  </action>
+  <action name="actionStresses">
+   <property name="text">
+    <string>Stresses</string>
+   </property>
+  </action>
+  <action name="actionStrains">
+   <property name="text">
+    <string>Strains</string>
    </property>
   </action>
  </widget>

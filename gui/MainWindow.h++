@@ -15,6 +15,7 @@
 #include "Document.h++"
 
 #include "fem/LinearAnalysis.h++"
+#include "fem/AnalysisResult.h++"
 
 
 
@@ -30,6 +31,7 @@ protected:
 	//ModelViewport *viewport;	// opengl viewport
 
 	fem::LinearAnalysis<double> analysis;
+	fem::AnalysisResult<double> *analysis_result;
 
 	CommandLineDockWidget *commandLineDockWidget;
 

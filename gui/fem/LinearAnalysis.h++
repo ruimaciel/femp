@@ -12,6 +12,8 @@
 #include "../lalib/solvers/Cholesky.h++"
 #include "../lalib/output.h++"
 
+#include "AnalysisResult.h++"
+
 
 namespace fem
 {
@@ -25,7 +27,7 @@ class LinearAnalysis
 		LinearAnalysis();
 		~LinearAnalysis();
 
-		enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp);
+		enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result);
 };
 
 
@@ -44,22 +46,23 @@ LinearAnalysis<Scalar>::~LinearAnalysis()
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp)
+enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result)
 {
 	using namespace std;
 	using namespace Eigen;
 
 	// clear existing data structures
-	this->clear();
+	result->clear();
 
-	this->build_fem_equation(model, lp);
+	this->build_fem_equation(model, lp, result);
 
 	//TODO implement a choice of solver
-	this->d = (Scalar)0.0*this->f;
+	result->d = (Scalar)0.0*result->f;	// is this reallly necessary?
+
 	lalib::Matrix<Scalar, lalib::SparseCRS> my_k;
 	lalib::Matrix<Scalar, lalib::LowerTriangular> L;
 
-	assign(my_k, this->K);
+	assign(my_k, result->K);
 
 
 	/*
@@ -70,11 +73,11 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 	}
 	// */
 
-	lalib::cholesky(my_k,this->d,this->f,L);
+	lalib::cholesky(my_k,result->d,result->f,L);
 
 	ofstream file;
 	file.open("fem.oct");
-	dump_octave(file, "K", this->K);
+	dump_octave(file, "K", result->K);
 	/*
 	//dump_octave(file, "my_k", my_k);
 	dump_octave(file, "f", this->f);
@@ -90,11 +93,11 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 
 	// set the equation
 
-	cout << this->d << endl;
+	cout << result->d << endl;
 	// calculate U
-	lalib::Vector<Scalar> d1 = this->d;
-	d1 = this->K*this->d;
-	cout << "Strain energy: " << dot(this->d,d1) << endl;
+	lalib::Vector<Scalar> d1 = result->d;
+	d1 = result->K*result->d;
+	cout << "Strain energy: " << dot(result->d,d1) << endl;
 
 
 	return Analysis<Scalar>::ERR_OK;

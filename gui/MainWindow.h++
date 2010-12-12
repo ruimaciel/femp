@@ -75,6 +75,7 @@ public Q_SLOTS:
 	void setNodeActions();
 	void setDisplayOptions();
 	void editMaterials();
+	void editQuadratureRules();
 
 	/**
 	Sets DisplayOption's options refering to the element visualization

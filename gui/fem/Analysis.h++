@@ -47,7 +47,7 @@ namespace fem
 template<typename Scalar>
 class Analysis
 {
-	private:
+	public:
 		// list of supported elements
 		// area elements, used to integrate surface loads
 		Triangle3<Scalar>	tri3;

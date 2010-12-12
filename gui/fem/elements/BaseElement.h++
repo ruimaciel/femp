@@ -18,7 +18,7 @@ namespace fem
 template <typename T>
 struct BaseElement
 {
-	protected:
+	public:
 		int stiffness_degree;	// Quadrature rule degree to integrate stiffness matrices
 		int domain_degree;	// Quadrature rule degree to integrate domain loads
 

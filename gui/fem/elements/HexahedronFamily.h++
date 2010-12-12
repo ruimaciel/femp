@@ -31,7 +31,7 @@ HexahedronFamily<T>::HexahedronFamily()
 template<typename T>
 void HexahedronFamily<T>::generateQuadratureData()
 {
-	for(int d = 1; d < 5; d++)
+	for(int d = 1; d <= 5; d++)
 	{
 		T x[d], w[d];	// for the Gauss-Legendre integration points and weights
 		// get the Gauss-Legendre integration points and weights

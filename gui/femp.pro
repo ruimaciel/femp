@@ -14,6 +14,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	ModelSelection.h++ \
 	MdiWindowProperties.h++ \
 	ui/NewProjectWizardPage1.h++ ui/NewProjectWizardPage2.h++ ui/NewProjectWizardPage3.h++ ui/NewProjectWizardPageLast.h++ \
+	ui/QuadratureRulesOptionsDialog.h++ \
 	fem/Model.h++ fem/Node.h++ fem/Element.h++ fem/Material.h++ fem/LoadPattern.h++ fem/NodalLoad.h++ fem/NodalDisplacement.h++ fem/point.h++ fem/NodeRestrictions.h++ \
 	fem/DomainLoad.h++ fem/SurfaceLoad.h++\
 	fem/elements/Triangle3.h++ fem/elements/Triangle6.h++ fem/elements/Triangle10.h++ \
@@ -48,6 +49,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	ModelSelection.c++ \
 	MdiWindowProperties.c++ \
 	ui/NewProjectWizardPage1.c++ ui/NewProjectWizardPage2.c++ ui/NewProjectWizardPage3.c++ ui/NewProjectWizardPageLast.c++  \
+	ui/QuadratureRulesOptionsDialog.c++ \
 	fem/Model.c++ fem/Node.c++ fem/Element.c++ fem/Material.c++ fem/LoadPattern.c++ fem/NodalLoad.c++ fem/NodalDisplacement.c++ fem/point.c++ fem/NodeRestrictions.c++ \
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
 	viewer/ViewportData.c++ \
@@ -73,7 +75,8 @@ FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 	ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPage3.ui  ui/NewProjectWizardPageLast.ui \
 	ui/NodeRestrainDialog.ui ui/NodeActionsDialog.ui ui/DisplayOptionsDialog.ui \
 	ui/NewMaterialDialog.ui ui/MaterialsEditorDialog.ui \
-	ui/DialogScale.ui
+	ui/DialogScale.ui \
+	ui/QuadratureRulesOptionsDialog.ui
 
 UI_DIR += ./ui
 OBJECTS_DIR += ./build

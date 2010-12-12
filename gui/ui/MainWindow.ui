@@ -90,6 +90,7 @@
     <addaction name="separator"/>
     <addaction name="actionPreferences"/>
     <addaction name="actionEditMaterials"/>
+    <addaction name="actionQuadrature_rules"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -316,6 +317,11 @@
   <action name="actionViewStrains">
    <property name="text">
     <string>Strains</string>
+   </property>
+  </action>
+  <action name="actionQuadrature_rules">
+   <property name="text">
+    <string>Quadrature rules</string>
    </property>
   </action>
  </widget>

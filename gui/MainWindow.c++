@@ -21,6 +21,7 @@
 #include "NodeActionsDialog.h++"
 #include "DisplayOptionsDialog.h++"
 #include "ui/MaterialsEditorDialog.h++"
+#include "ui/QuadratureRulesOptionsDialog.h++"
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
@@ -352,6 +353,8 @@ void MainWindow::createActions()
 
 	connect(ui.actionViewModel,	SIGNAL(triggered()),	this,	SLOT(showModel()));
 	connect(ui.actionViewDisplacements,	SIGNAL(triggered()),	this,	SLOT(showDisplacements()));
+
+	connect(ui.actionQuadrature_rules,	SIGNAL(triggered()),	this,  SLOT(editQuadratureRules()) );
 }
 
 
@@ -648,6 +651,13 @@ void MainWindow::editMaterials()
 {
 	//TODO finish this
 	MaterialsEditorDialog dialog(&document.model, this);
+	dialog.exec();
+}
+
+
+void MainWindow::editQuadratureRules()
+{
+	QuadratureRulesOptionsDialog dialog(analysis, this);
 	dialog.exec();
 }
 
@@ -1047,6 +1057,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	ui.actionNodeRestraints->setEnabled(true);
 	ui.actionNodeActions->setEnabled(true);
 	ui.actionEditMaterials->setEnabled(true);
+	ui.actionQuadrature_rules->setEnabled(true);
 
 	ui.actionDisplayNodes->setChecked(true);
 	ui.actionDisplaySurfaces->setChecked(true);
@@ -1088,6 +1099,7 @@ void MainWindow::setUserInterfaceAsClosed()
 	ui.actionNodeRestraints->setDisabled(true);
 	ui.actionNodeActions->setDisabled(true);
 	ui.actionEditMaterials->setDisabled(true);
+	ui.actionQuadrature_rules->setDisabled(true);
 
 	// close all MDI windows
 	mdiArea->closeAllSubWindows();

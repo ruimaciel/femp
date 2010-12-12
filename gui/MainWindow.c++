@@ -349,6 +349,9 @@ void MainWindow::createActions()
 	connect(ui.actionNewViewportWindow, SIGNAL(triggered()), this, SLOT(createNewViewportWindow()));
 
 	connect(ui.actionShowNodalForces,	SIGNAL(triggered()),	this,	SLOT(setNodeForcesDisplay()));
+
+	connect(ui.actionViewModel,	SIGNAL(triggered()),	this,	SLOT(showModel()));
+	connect(ui.actionViewDisplacements,	SIGNAL(triggered()),	this,	SLOT(showDisplacements()));
 }
 
 
@@ -782,6 +785,37 @@ void MainWindow::runAnalysis()
 
 
 	mylog.clearPrefix();
+}
+
+
+void MainWindow::showModel()
+{
+	//TODO finish this
+	QMdiSubWindow *window;
+
+	window = mdiArea->activeSubWindow();
+	if(window != NULL)
+	{
+		ModelViewport *viewport;	// opengl viewport
+		viewport = static_cast<ModelViewport *>(window->widget());
+		
+		viewport->showModel();
+	}
+}
+
+
+void MainWindow::showDisplacements()
+{
+	QMdiSubWindow *window;
+
+	window = mdiArea->activeSubWindow();
+	if(window != NULL)
+	{
+		ModelViewport *viewport;	// opengl viewport
+		viewport = static_cast<ModelViewport *>(window->widget());
+		
+		viewport->showDisplacements(analysis_result);
+	}
 }
 
 

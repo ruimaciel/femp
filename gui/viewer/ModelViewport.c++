@@ -235,6 +235,15 @@ void ModelViewport::setPosition(int x, int y)
 }
 
 
+void ModelViewport::showModel()
+{
+	// set the state
+	VPStateModel* state = new VPStateModel;
+
+	this->setState(state);
+}
+
+
 void ModelViewport::showDisplacements(fem::AnalysisResult<double> &analysis)
 {
 	// setup the displacements map

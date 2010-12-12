@@ -83,8 +83,10 @@ void SGCDisplacementOriginalSurface<SurfacePolicy>::setReferenceSurface(fem::Sur
 template<class SurfacePolicy>
 void SGCDisplacementOriginalSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors)
 {
+	glEnable(GL_BLEND);
 	glColor4fv(colors.original_surface);
 	SurfacePolicy::paintGL(data, model, nodes, surface);
+	glDisable(GL_BLEND);
 }
 
 

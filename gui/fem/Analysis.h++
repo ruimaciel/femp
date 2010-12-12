@@ -85,33 +85,9 @@ class Analysis
 		std::map<enum Element::Type, int> ddegree;	// domain load integration point degree for a particular element
 
 	public:
-			// location matrix: <node, <DoF number, DoF number, DoF number> >, if DoF == 0 then this isn't a DoF
-		//std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;
-
-			// the FEM equation
-		// FemEquation f;
-		/*
-		Eigen::DynamicSparseMatrix<Scalar,Eigen::RowMajor> k;
-		Eigen::Matrix<Scalar,Eigen::Dynamic,1> f;
-		Eigen::Matrix<Scalar,Eigen::Dynamic,1> d;
-		*/
-		/*
-		lalib::Matrix<Scalar,lalib::SparseDOK> K;
-		lalib::Vector<Scalar> f;
-		lalib::Vector<Scalar> d;
-		*/
-
-
-	public:
 		Analysis();
 		Analysis(const Analysis &);
 		~Analysis();
-
-
-		/**
-		clears any data structure which was created during the analysis
-		**/
-		// void clear();
 
 
 		/** sets up a FEM equation according to the info contained in the instance of this class
@@ -207,17 +183,6 @@ Analysis<Scalar>::~Analysis()
 }
 
 
-/*
-template<typename Scalar>
-void Analysis<Scalar>::clear()
-{
-	K.clear();
-	f.clear();
-	d.clear();
-}
-*/
-
-
 template<typename Scalar>
 enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> *result)
 {
@@ -253,8 +218,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 
 	int nnodes;	// number of nodes
 	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
-
-	cout.precision(10);
 
 
 		// generate stiffness matrix by cycling through all elements in the model
@@ -560,13 +523,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 
 		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->ipwpl[degree[surface_load->type]].begin(); i != element->ipwpl[degree[surface_load->type]].end(); i++)
 		{
-			/*
-			result->f = \int result->f(csi,eta) sqrt( det(A.A') ) dA
-			with:
-				A: [ diff(g,csi) ; diff(g,eta) ]
-				g(csi,eta): \sum N_i(csi,eta)*d_i
-				result->f(csi,eta): \sum N_i(csi,eta)*f_i
-			*/
 				// get shape function and shape function derivatives in this integration point's coordinate
 			element->setN( i->template get<0>() );
 			element->setdNdcsi(i->template get<0>() );

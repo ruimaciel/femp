@@ -13,6 +13,7 @@ ViewportColors::ViewportColors ()
 	INIT_ELEMENT(selected, 1,0,0);
 	INIT_ELEMENT(wireframe,0,0,0);
 	INIT_ELEMENT(surface,0,0.5,0);
+	INIT_ELEMENT(original_surface,0,0.5,0); original_surface[3] = 0.2;
 
 	INIT_ELEMENT(tetrahedron4, 0, 0.5, 0);
 	INIT_ELEMENT(tetrahedron10, 0, 0.5, 0);

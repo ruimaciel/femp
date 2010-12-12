@@ -18,6 +18,10 @@ namespace fem
 template <typename T>
 struct BaseElement
 {
+	protected:
+		int stiffness_degree;	// Quadrature rule degree to integrate stiffness matrices
+		int domain_degree;	// Quadrature rule degree to integrate domain loads
+
 	public:
 		std::map<int, std::vector<boost::tuple<fem::point, T> > > ipwpl;	// integration points/weights pair list
 
@@ -43,6 +47,8 @@ struct BaseElement
 		Returns a list of
 		**/
 		// virtual std::vector<boost::tuple<fem::point, T> > & ipwp(unsigned int degree) = 0;
+		std::vector<boost::tuple<fem::point, T> > &stiffness_quadrature()	{ return this->ipwpl[stiffness_degree]; }
+		std::vector<boost::tuple<fem::point, T> > &domain_quadrature()	{ return this->ipwpl[domain_degree]; }
 
 	protected:
 		/**

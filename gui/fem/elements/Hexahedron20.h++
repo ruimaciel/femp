@@ -36,6 +36,9 @@ struct Hexahedron20
 template<typename T>
 Hexahedron20<T>::Hexahedron20()
 {
+	this->stiffness_degree = 3;
+	this->domain_degree = 2;
+
 	this->N.resize(20);
 	this->dNdcsi.resize(20);
 	this->dNdeta.resize(20);

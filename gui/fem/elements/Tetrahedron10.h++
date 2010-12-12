@@ -39,6 +39,9 @@ struct Tetrahedron10
 template<typename T>
 Tetrahedron10<T>::Tetrahedron10()
 {
+	this->stiffness_degree = 2;
+	this->domain_degree = 2;
+
 	this->N.resize(10);
 	this->dNdcsi.resize(10);
 	this->dNdeta.resize(10);

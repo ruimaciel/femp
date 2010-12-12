@@ -37,6 +37,9 @@ struct Triangle10
 template<typename T>
 Triangle10<T>::Triangle10()
 {
+	this->stiffness_degree = 1;
+	this->domain_degree = 1;
+
 	this->N.resize(10);
 	this->dNdcsi.resize(10);
 	this->dNdeta.resize(10);

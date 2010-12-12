@@ -80,10 +80,6 @@ class Analysis
 			ERR_NEGATIVE_DETERMINANT
 		};
 
-	protected:
-		std::map<enum Element::Type, int> degree;	// stiffness matrix integration point degree for a particular element
-		std::map<enum Element::Type, int> ddegree;	// domain load integration point degree for a particular element
-
 	public:
 		Analysis();
 		Analysis(const Analysis &);
@@ -110,33 +106,11 @@ class Analysis
 
 
 		/**
-		Set a new integration degree for a specific element: stiffness matrix integration
-		@param type	element type
-		@param d	desired degree
-		**/
-		void setDegree(Element::Type &type, int &d);
-
-		/**
-		Set a new integration degree for a specific element: domain loads integration
-		@param type	element type
-		@param d	desired degree
-		**/
-		void setDDegree(Element::Type &type, int &d);
-
-
-
-		/**
 		Returns a map of all nodes which had any relative displacement
 		**/
 		std::map<size_t, Node> displacements_map(AnalysisResult<Scalar> *result);
 
 	protected:
-		/**
-		Set the default values for the intended integration degrees for all supported elements
-		**/
-		void setDefaultIntegrationDegrees();
-
-
 		/**
 		Builds the location matrix, a map between the node number and a 3-tuple holding the degree of freedom reference numbers for each degree of freedom, and resizes the temp FemEquation object
 		@param model	the reference of a fem::Model object
@@ -161,8 +135,6 @@ class Analysis
 template<typename Scalar>
 Analysis<Scalar>::Analysis()
 {
-	// build all lists of integration points/weights pairs
-	setDefaultIntegrationDegrees();
 }
 
 
@@ -282,8 +254,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		B.setZero();
 
 			// build the element_iterator stiffness matrix: cycle through the number of integration points
-		
-		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->ipwpl[degree[element_iterator->type]].begin(); i != element->ipwpl[degree[element_iterator->type]].end(); i++)
+		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->stiffness_quadrature().begin(); i != element->stiffness_quadrature().end(); i++)
 		{
 #define X(N) model.node_list[element_iterator->nodes[N]].x()
 #define Y(N) model.node_list[element_iterator->nodes[N]].y()
@@ -410,7 +381,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		f_elem.setZero();
 
 		// as the distribution is linear across the domain then degree 1 is enough
-		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->ipwpl[ddegree[element_reference->type]].begin(); i != element->ipwpl[ddegree[element_reference->type]].end(); i++)
+		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
 		{
 				// build the Jacobian
 			element->setN( i->template get<0>());
@@ -521,7 +492,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		f_elem.resize(nnodes*3);
 		f_elem.setZero();
 
-		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->ipwpl[degree[surface_load->type]].begin(); i != element->ipwpl[degree[surface_load->type]].end(); i++)
+		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
 		{
 				// get shape function and shape function derivatives in this integration point's coordinate
 			element->setN( i->template get<0>() );
@@ -651,59 +622,6 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar
 	}
 
 	return df;
-}
-
-
-template<typename Scalar>
-void Analysis<Scalar>::setDegree(Element::Type &type, int &d)
-{
-	degree[type] = d;
-}
-
-
-template<typename Scalar>
-void Analysis<Scalar>::setDDegree(Element::Type &type, int &d)
-{
-	ddegree[type] = d;
-}
-
-
-template<typename Scalar>
-void Analysis<Scalar>::setDefaultIntegrationDegrees()
-{
-	//TODO tweak integration points	
-	// the degree for the stiffness matrix	// and the degree for the domain loads
-	degree[Element::FE_TRIANGLE3 ] = 1;	ddegree[Element::FE_TRIANGLE3 ] = 1;
-	degree[Element::FE_TRIANGLE6 ] = 1;	ddegree[Element::FE_TRIANGLE6 ] = 1;
-	degree[Element::FE_TRIANGLE10] = 1;	ddegree[Element::FE_TRIANGLE10] = 1;
-	degree[Element::FE_TRIANGLE15] = 1;	ddegree[Element::FE_TRIANGLE15] = 1;
-
-	degree[Element::FE_QUADRANGLE4] = 1;	ddegree[Element::FE_QUADRANGLE4] = 1;
-	degree[Element::FE_QUADRANGLE8] = 1;	ddegree[Element::FE_QUADRANGLE8] = 1;
-	degree[Element::FE_QUADRANGLE9] = 1;	ddegree[Element::FE_QUADRANGLE9] = 1;
-
-	degree[Element::FE_TETRAHEDRON4 ] = 1;	ddegree[Element::FE_TETRAHEDRON4 ] = 1;
-	degree[Element::FE_TETRAHEDRON10] = 2;	ddegree[Element::FE_TETRAHEDRON10] = 2;
-	degree[Element::FE_TETRAHEDRON20] = 4;	ddegree[Element::FE_TETRAHEDRON20] = 3;
-	degree[Element::FE_TETRAHEDRON35] = 4;	ddegree[Element::FE_TETRAHEDRON35] = 1;
-	degree[Element::FE_TETRAHEDRON56] = 4;	ddegree[Element::FE_TETRAHEDRON56] = 1;
-
-	degree[Element::FE_HEXAHEDRON8 ] = 2;	ddegree[Element::FE_HEXAHEDRON8 ] = 1;
-	degree[Element::FE_HEXAHEDRON20] = 3;	ddegree[Element::FE_HEXAHEDRON20] = 2;
-	degree[Element::FE_HEXAHEDRON27] = 3;	ddegree[Element::FE_HEXAHEDRON27] = 2;
-
-	degree[Element::FE_PRISM6 ] = 5;	ddegree[Element::FE_PRISM6 ] = 1;
-	degree[Element::FE_PRISM15] = 5;	ddegree[Element::FE_PRISM15] = 2;
-	degree[Element::FE_PRISM18] = 5;	ddegree[Element::FE_PRISM18] = 2;
-
-	degree[Element::FE_PYRAMID5 ] = 4;	ddegree[Element::FE_PYRAMID5 ] = 1;
-	degree[Element::FE_PYRAMID14] = 4;	ddegree[Element::FE_PYRAMID14] = 1;
-	degree[Element::FE_PYRAMID13] = 4;	ddegree[Element::FE_PYRAMID13] = 1;
-
-	degree[Element::FE_ITRIANGLE9 ] = 1;	ddegree[Element::FE_ITRIANGLE9 ] = 1;
-	degree[Element::FE_ITRIANGLE12] = 1;	ddegree[Element::FE_ITRIANGLE12] = 1;
-	degree[Element::FE_ITRIANGLE15] = 1;	ddegree[Element::FE_ITRIANGLE15] = 1;
-	degree[Element::FE_TRIANGLE21 ] = 1;	ddegree[Element::FE_TRIANGLE21 ] = 1;
 }
 
 

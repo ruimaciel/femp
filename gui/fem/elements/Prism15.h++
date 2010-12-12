@@ -44,6 +44,9 @@ struct Prism15
 template<typename T>
 Prism15<T>::Prism15()
 {
+	this->stiffness_degree = 5;
+	this->domain_degree = 2;
+
 	this->N.resize(15);
 	this->dNdcsi.resize(15);
 	this->dNdeta.resize(15);

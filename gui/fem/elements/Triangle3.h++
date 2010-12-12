@@ -37,6 +37,9 @@ struct Triangle3
 template<typename T>
 Triangle3<T>::Triangle3()
 {
+	this->stiffness_degree = 1;
+	this->domain_degree = 1;
+
 	this->N.resize(3);
 	this->dNdcsi.resize(3);
 	this->dNdeta.resize(3);

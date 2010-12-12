@@ -44,6 +44,9 @@ struct Prism18
 template<typename T>
 Prism18<T>::Prism18()
 {
+	this->stiffness_degree = 5;
+	this->domain_degree = 2;
+
 	this->N.resize(18);
 	this->dNdcsi.resize(18);
 	this->dNdeta.resize(18);

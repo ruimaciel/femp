@@ -37,6 +37,9 @@ struct Triangle6
 template<typename T>
 Triangle6<T>::Triangle6()
 {
+	this->stiffness_degree = 1;
+	this->domain_degree = 1;
+
 	this->N.resize(6);
 	this->dNdcsi.resize(6);
 	this->dNdeta.resize(6);

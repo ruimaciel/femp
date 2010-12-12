@@ -36,6 +36,9 @@ struct Quadrangle4
 template<typename T>
 Quadrangle4<T>::Quadrangle4()
 {
+	this->stiffness_degree = 1;
+	this->domain_degree = 1;
+
 	this->N.resize(4);
 	this->dNdcsi.resize(4);
 	this->dNdeta.resize(4);

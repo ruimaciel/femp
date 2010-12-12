@@ -37,6 +37,9 @@ template<typename T>
 Hexahedron8<T>::Hexahedron8()
 	: HexahedronFamily<T>()
 {
+	this->stiffness_degree = 2;
+	this->domain_degree = 1;
+
 	this->N.resize(8);
 	this->dNdcsi.resize(8);
 	this->dNdeta.resize(8);

@@ -765,23 +765,15 @@ void MainWindow::runAnalysis()
 		viewport->setColors(colors);
 
 		// create the model's MDI window
-		QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport
+		displacements_window = new QMdiSubWindow(mdiArea);
+		displacements_window->setWidget(viewport);
+		displacements_window->setAttribute(Qt::WA_DeleteOnClose);
+		displacements_window->showMaximized();
 
-		window_gl_viewport = new QMdiSubWindow(mdiArea);
-		window_gl_viewport->setWidget(viewport);
-		window_gl_viewport->setAttribute(Qt::WA_DeleteOnClose);
-		window_gl_viewport->setWindowTitle(tr("model viewport"));
-		window_gl_viewport->showMaximized();
-
-		viewport->showDisplacements(analysis_result);
+		mdiArea->setActiveSubWindow(displacements_window);
 	}
-	else
-	{
-		ModelViewport *viewport;	// opengl viewport
-		viewport = static_cast<ModelViewport *>(displacements_window->widget());
-		
-		viewport->showDisplacements(analysis_result);
-	}
+	
+	this->showDisplacements();
 
 
 	mylog.clearPrefix();
@@ -796,6 +788,7 @@ void MainWindow::showModel()
 	window = mdiArea->activeSubWindow();
 	if(window != NULL)
 	{
+		window->setWindowTitle("Model");
 		ModelViewport *viewport;	// opengl viewport
 		viewport = static_cast<ModelViewport *>(window->widget());
 		
@@ -811,6 +804,7 @@ void MainWindow::showDisplacements()
 	window = mdiArea->activeSubWindow();
 	if(window != NULL)
 	{
+		window->setWindowTitle("Displacements");
 		ModelViewport *viewport;	// opengl viewport
 		viewport = static_cast<ModelViewport *>(window->widget());
 		

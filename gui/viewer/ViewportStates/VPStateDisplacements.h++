@@ -88,7 +88,8 @@ void VPStateDisplacements::setDisplacements(fem::AnalysisResult<scalar> &analysi
 		displacements[i->first] = fem::Node(p);
 	}
 
-	this->setDisplacementScale(10000000.0);
+	//TODO set an appropriate displacement scale
+	this->setDisplacementScale(1.0);
 }
 
 #endif

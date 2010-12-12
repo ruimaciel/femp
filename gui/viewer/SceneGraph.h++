@@ -43,10 +43,6 @@ class SceneGraph
 		Generic routine to add a primitive component to this scenegraph
 		The template was provided for syntax convenience only; this class only accepts specific types derived from SceneGraphComponent
 		*/
-		/*
-		template<typename PrimitiveComponent>
-		void addPrimitiveComponent(PrimitiveComponent &new_component);
-		*/
 		void addPrimitiveComponent(SceneGraphComponent *new_component);
 
 		/*

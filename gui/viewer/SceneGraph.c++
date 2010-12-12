@@ -16,6 +16,7 @@ SceneGraph::SceneGraph()
 
 SceneGraph::~SceneGraph()
 {
+	this->clear();
 }
 
 
@@ -23,6 +24,14 @@ void SceneGraph::clear()
 {
 	mylog.setPrefix("void SceneGraph::clear()");
 	mylog.message("must implement this");
+
+	//TODO finish this
+
+	// frees the primitives included in the list
+	for(std::list<SceneGraphComponent *>::iterator i = primitive_components.begin(); i != primitive_components.end(); i++)
+	{
+		delete(*i);
+	}
 }
 
 
@@ -36,49 +45,11 @@ void SceneGraph::paint(ModelViewport *mvp)
 }
 
 
-/*
-template<typename PrimitiveComponent>
-void SceneGraph::addPrimitiveComponent(PrimitiveComponent &new_component)
-{
-	static_assert(true,"only specialized types are allowed");
-}
-
-
-template<>
-void SceneGraph::addPrimitiveComponent(fem::Surface &new_component)
-{
-	mylog.setPrefix("void SceneGraph::addPrimitiveComponent(fem::Surface &new_component)");
-	mylog.message("add a surface");
-
-	SGCSurface * new_surface = new SGCSurface;
-	new_surface->setReferenceSurface(new_component);
-
-	// add this component to the primitive components' list
-	this->primitive_components.push_back(new_surface);
-}
-*/
-
-
 void SceneGraph::addPrimitiveComponent(SceneGraphComponent *new_component)
 {
 	assert(new_component != NULL);
 	this->primitive_components.push_back(new_component);
 }
-
-
-/*
-template<>
-void SceneGraph::addPrimitiveComponent(fem::Node &new_component)
-{
-	mylog.setPrefix("void SceneGraph::addPrimitiveComponent(fem::Node &new_component)");
-	mylog.message("add a node");
-
-	SGCNode * new_node = new SGCNode;
-	new_node->setReferenceNode(new_component);
-
-	this->primitive_components.push_back(new_node);
-}
-*/
 
 
 void SceneGraph::generateSceneGraph()

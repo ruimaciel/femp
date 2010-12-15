@@ -60,7 +60,7 @@ void VPStateDisplacements::populateScenegraph(ModelViewport *mv)
 	// add the nodes to the scenegraph
 	for(std::map<size_t, fem::Node>::iterator i = mv->model->node_list.begin(); i != mv->model->node_list.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(new SGCNode(i->second) );
+		this->scenegraph.addPrimitiveComponent(new SGCNode(i->first, i->second, mv->model->node_restrictions_list) );
 	}
 
 	// add the surfaces to the scenegraph

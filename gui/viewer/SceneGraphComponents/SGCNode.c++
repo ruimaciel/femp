@@ -6,10 +6,12 @@
 #include "../Logs.h++"	// declare the global message loggers
 
 
-SGCNode::SGCNode(fem::Node &reference_node)
+SGCNode::SGCNode(size_t reference_node_label, fem::Node &reference_node, std::map<size_t, fem::NodeRestrictions> &reference_node_restrictions_map)
 	: SceneGraphComponent()
 {
+	this->node_label = reference_node_label;
 	this->setReferenceNode(reference_node);
+	node_restrictions_map = &reference_node_restrictions_map;
 }
 
 
@@ -67,11 +69,10 @@ void SGCNode::paintGL(ViewportData &data, fem::Model *model, ViewportColors &col
 	p = gluNewQuadric();
 	gluSphere(p,1,8,8);
 
-	/*
 	// paint restrictions, if there are any
-	if(model->node_restrictions_list.find(label) != model->node_restrictions_list.end())
+	if(node_restrictions_map->find(node_label) != node_restrictions_map->end())
 	{
-		if(model->node_restrictions_list[label].dx())
+		if((*node_restrictions_map)[node_label].dx())
 		{
 			glBegin(GL_TRIANGLES);
 			glNormal3f(1.4142f, 0, 1.4142f);
@@ -104,7 +105,7 @@ void SGCNode::paintGL(ViewportData &data, fem::Model *model, ViewportColors &col
 			glVertex3i(-2, 2, 2);
 			glEnd();
 		}
-		if(model->node_restrictions_list[label].dy())
+		if((*node_restrictions_map)[node_label].dy())
 		{
 			// render the pyramid
 			glBegin(GL_TRIANGLES);
@@ -138,7 +139,7 @@ void SGCNode::paintGL(ViewportData &data, fem::Model *model, ViewportColors &col
 			glVertex3i( 2,-2,-2);
 			glEnd();
 		}
-		if(model->node_restrictions_list[label].dz())
+		if( (*node_restrictions_map)[node_label].dz())
 		{
 			glRotatef(-90,1,0,0);
 			// render the pyramid
@@ -174,7 +175,6 @@ void SGCNode::paintGL(ViewportData &data, fem::Model *model, ViewportColors &col
 			glEnd();
 		}
 	}
-	*/
 
 	// end 
 	glPopMatrix();

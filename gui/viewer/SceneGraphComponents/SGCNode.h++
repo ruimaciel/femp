@@ -6,6 +6,7 @@
 #include "../OperationsVisitor.h++"
 
 #include "../../fem/Node.h++"
+#include "../../fem/NodeRestrictions.h++"
 #include "../../fem/LinearAnalysis.h++"
 
 
@@ -13,10 +14,12 @@ class SGCNode
 	: public SceneGraphComponent
 {
 	protected:
+		size_t node_label;
 		fem::Node *node;
+		std::map<size_t, fem::NodeRestrictions> *node_restrictions_map;
 
 	public:
-		SGCNode(fem::Node &);
+		SGCNode(size_t, fem::Node &, std::map<size_t, fem::NodeRestrictions> &);
 		~SGCNode();
 
 

@@ -207,6 +207,7 @@ void MainWindow::saveProject()
 
 		// set a new file name for this file
 		
+		this->setWindowTitle("Femp - " + *document.file_name);
 	}
 	document.save();
 	hasUnsavedChanges = false;
@@ -1083,6 +1084,12 @@ void MainWindow::setUserInterfaceAsOpened()
 	// set the docks
 	this->addDockWidget(static_cast<Qt::DockWidgetArea>(9), commandLineDockWidget);
 
+	// set the window name
+	if(document.file_name == NULL)
+		this->setWindowTitle("Femp - [unnamed.fem.json]");
+	else
+		this->setWindowTitle("Femp - " + *document.file_name);
+
 	mylog.clearPrefix();
 }
 
@@ -1110,5 +1117,8 @@ void MainWindow::setUserInterfaceAsClosed()
 	// handle the docks
 	this->removeDockWidget(commandLineDockWidget);
 	commandLineDockWidget->clear();
+
+	// set the window name
+	this->setWindowTitle("Femp");
 }
 

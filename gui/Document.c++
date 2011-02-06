@@ -19,13 +19,17 @@ Document::Document()
 
 Document::Document(const Document & copied)
 {
-    this->unsaved = copied.unsaved;
-    if (copied.file_name != NULL) {
-	this->file_name = new QString;
-	*this->file_name = *copied.file_name;
-    }
-    this->model = copied.model;
-    this->document_type = copied.document_type;
+	this->unsaved = copied.unsaved;
+	if (copied.file_name != NULL) {
+		this->file_name = new QString;
+		*this->file_name = *copied.file_name;
+	}
+	else
+	{
+		this->file_name = NULL;
+	}
+	this->model = copied.model;
+	this->document_type = copied.document_type;
 }
 
 
@@ -38,37 +42,37 @@ Document::~Document()
 
 void Document::clear()
 {
-    unsaved = false;
-    if (file_name != NULL) {
-	delete file_name;
-	file_name = NULL;
-    }
-    document_type = TYPE_NONE;
-    model.clear();
+	unsaved = false;
+	if (file_name != NULL) {
+		delete file_name;
+		file_name = NULL;
+	}
+	document_type = TYPE_NONE;
+	model.clear();
 
 	// clear all selections
-    model_selection.deselectAll();
+	model_selection.deselectAll();
 }
 
 
-enum Document::Error
+	enum Document::Error
 Document::setFileName(QString new_file)
 {
-    if (this->file_name == NULL)
-	this->file_name = new QString;
-    *this->file_name = new_file;
+	if (this->file_name == NULL)
+		this->file_name = new QString;
+	*this->file_name = new_file;
 
-    // check if file exists
-    QFile           file;
-    file.setFileName(*file_name);
-    if (!file.exists()) {
-	delete(this->file_name);
-	this->file_name = NULL;
-	return ERR_FILE_NOT_FOUND;
-    }
-    // TODO perform checks on the file_name
+	// check if file exists
+	QFile           file;
+	file.setFileName(*file_name);
+	if (!file.exists()) {
+		delete(this->file_name);
+		this->file_name = NULL;
+		return ERR_FILE_NOT_FOUND;
+	}
+	// TODO perform checks on the file_name
 
-    return ERR_OK;
+	return ERR_OK;
 }
 
 
@@ -907,7 +911,7 @@ enum Document::Error Document::load()
 
 					state.push(36);	// NodeDisplacements
 				}
-			       	else if (strcmp(cursor.top()->text, "domain loads") == 0) 
+				else if (strcmp(cursor.top()->text, "domain loads") == 0) 
 				{
 					// TODO
 					CURSOR_PUSH(JSON_ARRAY);	

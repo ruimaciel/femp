@@ -22,7 +22,7 @@ class Document
 			ERR_UNKNOWN		//
 			};
 
-	private:
+	protected:
 		bool unsaved;	// true if this document suffered changes that are saveable
 		Type document_type;	// specifies the model type
 

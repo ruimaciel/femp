@@ -73,27 +73,22 @@ void VPStateDisplacements::populateScenegraph(ModelViewport *mv)
 			{
 				case fem::Element::FE_TRIANGLE3:
 					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceTriangle3>(*i, displaced_nodes) );
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceTriangle3>(*i, *original_nodes) );
 					break;
 
 				case fem::Element::FE_TRIANGLE6:
 					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceTriangle6>(*i, displaced_nodes) );
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceTriangle6>(*i, *original_nodes) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE4:
 					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceQuad4>(*i, displaced_nodes) );
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceQuad4>(*i, *original_nodes) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE8:
 					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceQuad8>(*i, displaced_nodes) );
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceQuad8>(*i, *original_nodes) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE9:
 					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceQuad9>(*i, displaced_nodes) );
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceQuad9>(*i, *original_nodes) );
 					break;
 
 				default:
@@ -103,6 +98,40 @@ void VPStateDisplacements::populateScenegraph(ModelViewport *mv)
 		}
 	}
 
+	// add the transparent surfaces to the scenegraph
+	for(std::list<fem::Surface>::iterator i = mv->model->surface_list.begin(); i != mv->model->surface_list.end(); i++)
+	{
+		if(i->external())
+		{
+			//this->scenegraph.addPrimitiveComponent(new SGCSurface(*i) );
+			switch(i->getType())
+			{
+				case fem::Element::FE_TRIANGLE3:
+					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceTriangle3>(*i, *original_nodes) );
+					break;
+
+				case fem::Element::FE_TRIANGLE6:
+					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceTriangle6>(*i, *original_nodes) );
+					break;
+
+				case fem::Element::FE_QUADRANGLE4:
+					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceQuad4>(*i, *original_nodes) );
+					break;
+
+				case fem::Element::FE_QUADRANGLE8:
+					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceQuad8>(*i, *original_nodes) );
+					break;
+
+				case fem::Element::FE_QUADRANGLE9:
+					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceQuad9>(*i, *original_nodes) );
+					break;
+
+				default:
+					mylog.message("unknown surface type");
+					break;
+			}
+		}
+	}
 	// generate the scene graph
 	this->scenegraph.generateSceneGraph();
 }

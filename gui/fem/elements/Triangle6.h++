@@ -81,12 +81,12 @@ std::vector<T> & Triangle6<T>::setdNdcsi(const T &csi, const T &eta, const T &)
 {
 	//TODO test this
 	// this->dNdcsi
-	this->N[0] = 1.0-4*(1-eta-csi);
-	this->N[1] = 4*csi-1;
-	this->N[2] = 0;
-	this->N[3] = 4*(1-eta-csi)-4*csi;
-	this->N[4] = 4*eta;
-	this->N[5] = -4*eta;
+	this->dNdcsi[0] = 1.0-4*(1-eta-csi);
+	this->dNdcsi[1] = 4*csi-1;
+	this->dNdcsi[2] = 0;
+	this->dNdcsi[3] = 4*(1-eta-csi)-4*csi;
+	this->dNdcsi[4] = 4*eta;
+	this->dNdcsi[5] = -4*eta;
 
 	return this->dNdcsi;
 }
@@ -104,12 +104,12 @@ std::vector<T> & Triangle6<T>::setdNdeta(const T &csi, const T &eta, const T &)
 {
 	//TODO test this
 	// this->dNdeta
-	this->N[0] = 1-4*(1-eta-csi);
-	this->N[1] = 0;
-	this->N[2] = 4*eta-1;
-	this->N[3] = -4*csi;
-	this->N[4] = 4*csi;
-	this->N[5] = 4*(1-eta-csi)-4*eta;
+	this->dNdeta[0] = 1-4*(1-eta-csi);
+	this->dNdeta[1] = 0;
+	this->dNdeta[2] = 4*eta-1;
+	this->dNdeta[3] = -4*csi;
+	this->dNdeta[4] = 4*csi;
+	this->dNdeta[5] = 4*(1-eta-csi)-4*eta;
 	
 	return this->dNdeta;
 }

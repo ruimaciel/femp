@@ -28,6 +28,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	viewer/ViewportStates/ViewportState.h++  viewer/ViewportStates/VPStateModel.h++ viewer/ViewportStates/VPStateDisplacements.h++ \
 	viewer/SceneGraph.h++ viewer/SceneGraphComponents/SceneGraphComponent.h++ viewer/SceneGraphComponents/SGCSurface.h++ viewer/SceneGraphComponents/SGCNode.h++ \
 	viewer/SceneGraphComponents/SGCDisplacementSurface.h++ viewer/SceneGraphComponents/SGCDisplacementOriginalSurface.h++ \
+	viewer/SceneGraphComponents/SGCModelSurface.h++ \
 	viewer/SceneGraphComponents/SurfaceTriangle3.h++\
 	viewer/SceneGraphComponents/SurfaceTriangle6.h++\
 	viewer/SceneGraphComponents/SurfaceQuad4.h++\

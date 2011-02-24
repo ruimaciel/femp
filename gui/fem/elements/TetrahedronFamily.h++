@@ -106,12 +106,12 @@ void TetrahedronFamily<T>::generateQuadratureData()
 		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], 1-3*g[1]), w[1]/6.0 ));
 		ips.push_back(tuple<fem::point,double>(fem::point(g[1], g[1], g[1]), w[1]/6.0 ));
 		// 9 to 14
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], 1.0/2-g[2], g[3]), (1.0/6 - 2*(w[0]+w[1])/3)/6  ));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], 1.0/2-g[2]), (1.0/6 - 2*(w[0]+w[1])/3)/6  ));
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[3], g[3]), (1.0/6 - 2*(w[0]+w[1])/3)/6  ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], 1.0/2-g[2]), (1.0/6 - 2*(w[0]+w[1])/3)/6  ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[3], 1.0/2-g[2], g[3]), (1.0/6 - 2*(w[0]+w[1])/3)/6  ));
-		ips.push_back(tuple<fem::point,double>(fem::point(g[3], g[3], 1.0/2-g[2]), (1.0/6 - 2*(w[0]+w[1])/3)/6  ));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], 1.0/2-g[2], g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[2], 1.0/2-g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/2-g[2], g[2], g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[2], 1.0/2-g[2], 1.0/2-g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[2], 1.0/2-g[2], g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
+		ips.push_back(tuple<fem::point,double>(fem::point(g[2], g[2], 1.0/2-g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
 		this->ipwpl[4] = ips;
 	}
 

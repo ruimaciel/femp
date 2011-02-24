@@ -8,23 +8,23 @@ struct ViewportColors {
 	~ViewportColors ();
 
 	// set of color options
-	GLfloat node[3];
-	GLfloat selected[3];
+	GLfloat node[4];
+	GLfloat selected[4];
 
-	GLfloat wireframe[3];
-	GLfloat surface[3];
+	GLfloat wireframe[4];
+	GLfloat surface[4];
 	GLfloat original_surface[4];	// displacement: for surfaces for the model in the original configuration
 
-	GLfloat tetrahedron4[3];	// remove
-	GLfloat tetrahedron10[3];	// remove
-	GLfloat hexahedron8[3];	// remove
-	GLfloat hexahedron20[3];	// remove
-	GLfloat hexahedron27[3];	// remove
-	GLfloat prism6[3];
+	GLfloat tetrahedron4[4];	// remove
+	GLfloat tetrahedron10[4];	// remove
+	GLfloat hexahedron8[4];	// remove
+	GLfloat hexahedron20[4];	// remove
+	GLfloat hexahedron27[4];	// remove
+	GLfloat prism6[4];
 
-	GLfloat arrow[3];
+	GLfloat arrow[4];
 	
-	GLfloat background[3];
+	GLfloat background[4];
 };
 
 

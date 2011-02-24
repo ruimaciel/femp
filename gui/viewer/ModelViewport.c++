@@ -86,7 +86,6 @@ void ModelViewport::initializeGL()
 	glEnable(GL_NORMALIZE);
 
 	// set antialias options
-	glEnable(GL_POLYGON_SMOOTH);
 	glEnable(GL_LINE_SMOOTH);
 
 	glShadeModel(GL_SMOOTH);

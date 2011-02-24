@@ -17,6 +17,12 @@
 
 #include "../SceneGraphComponents/SGCNode.h++"
 #include "../SceneGraphComponents/SGCSurface.h++"
+#include "../SceneGraphComponents/SGCModelSurface.h++"
+#include "../SceneGraphComponents/SurfaceTriangle3.h++"
+#include "../SceneGraphComponents/SurfaceTriangle6.h++"
+#include "../SceneGraphComponents/SurfaceQuad4.h++"
+#include "../SceneGraphComponents/SurfaceQuad8.h++"
+#include "../SceneGraphComponents/SurfaceQuad9.h++"
 
 
 VPStateModel::VPStateModel()
@@ -57,7 +63,33 @@ void VPStateModel::populateScenegraph(ModelViewport *mv)
 	{
 		if(i->external())
 		{
-			this->scenegraph.addPrimitiveComponent(new SGCSurface(*i) );
+			// this->scenegraph.addPrimitiveComponent(new SGCSurface(*i) );
+			switch(i->getType())
+			{
+				case fem::Element::FE_TRIANGLE3:
+					this->scenegraph.addPrimitiveComponent(new SGCModelSurface<SurfaceTriangle3>(*i, mv->model->node_list) );
+					break;
+
+				case fem::Element::FE_TRIANGLE6:
+					this->scenegraph.addPrimitiveComponent(new SGCModelSurface<SurfaceTriangle6>(*i, mv->model->node_list) );
+					break;
+
+				case fem::Element::FE_QUADRANGLE4:
+					this->scenegraph.addPrimitiveComponent(new SGCModelSurface<SurfaceQuad4>(*i, mv->model->node_list) );
+					break;
+
+				case fem::Element::FE_QUADRANGLE8:
+					this->scenegraph.addPrimitiveComponent(new SGCModelSurface<SurfaceQuad8>(*i, mv->model->node_list) );
+					break;
+
+				case fem::Element::FE_QUADRANGLE9:
+					this->scenegraph.addPrimitiveComponent(new SGCModelSurface<SurfaceQuad9>(*i, mv->model->node_list) );
+					break;
+
+				default:
+					mylog.message("unknown surface type");
+					break;
+			}
 		}
 	}
 

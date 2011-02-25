@@ -39,7 +39,7 @@ void PrismFamily<T>::generateQuadratureData()
 	{
 		//TODO needs testing
 		ips.clear();
-		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3, 0), 0.5*2));
+		ips.push_back(tuple<fem::point,double>(fem::point(1.0/3,1.0/3, 0), 0.5*1*2));
 		this->ipwpl[1] = ips;
 	}
 
@@ -47,13 +47,13 @@ void PrismFamily<T>::generateQuadratureData()
 	{
 		//TODO needs testing
 		ips.clear();
-		ips.push_back(tuple<fem::point,double>(fem::point(	2.0/3,	1.0/6,	-1.0/sqrt(3) ), 1.0/6));
-		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	2.0/3,	-1.0/sqrt(3) ), 1.0/6));
-		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	1.0/6,	-1.0/sqrt(3) ), 1.0/6));
+		ips.push_back(tuple<fem::point,double>(fem::point(	2.0/3,	1.0/6,	-1.0/sqrt(3) ), 0.5*(1.0/3)*1));
+		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	2.0/3,	-1.0/sqrt(3) ), 0.5*(1.0/3)*1));
+		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	1.0/6,	-1.0/sqrt(3) ), 0.5*(1.0/3)*1));
 
-		ips.push_back(tuple<fem::point,double>(fem::point(	2.0/3,	1.0/6,	1.0/sqrt(3) ), 1.0/6));
-		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	2.0/3,	1.0/sqrt(3) ), 1.0/6));
-		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	1.0/6,	1.0/sqrt(3) ), 1.0/6));
+		ips.push_back(tuple<fem::point,double>(fem::point(	2.0/3,	1.0/6,	1.0/sqrt(3) ), 0.5*(1.0/3)*1));
+		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	2.0/3,	1.0/sqrt(3) ), 0.5*(1.0/3)*1));
+		ips.push_back(tuple<fem::point,double>(fem::point(	1.0/6,	1.0/6,	1.0/sqrt(3) ), 0.5*(1.0/3)*1));
 
 		this->ipwpl[2] = ips;
 	}
@@ -71,13 +71,13 @@ void PrismFamily<T>::generateQuadratureData()
 
 		for(int i = 0; i < 3; i++)
 		{
-			ips.push_back(tuple<fem::point,double>(fem::point(1-2*g1, g1,	x[i]), (620+sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
-			ips.push_back(tuple<fem::point,double>(fem::point(g1, 1-2*g1,	x[i]), (620+sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
-			ips.push_back(tuple<fem::point,double>(fem::point(g1, g1,	x[i]), (620+sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
+			ips.push_back(tuple<fem::point,double>(fem::point(1-2*g1, g1,	x[i]), 0.5*(620+sqrt(213125-53320*sqrt(10)))*w[i]/(3720)) );
+			ips.push_back(tuple<fem::point,double>(fem::point(g1, 1-2*g1,	x[i]), 0.5*(620+sqrt(213125-53320*sqrt(10)))*w[i]/(3720)) );
+			ips.push_back(tuple<fem::point,double>(fem::point(g1, g1,	x[i]), 0.5*(620+sqrt(213125-53320*sqrt(10)))*w[i]/(3720)) );
 
-			ips.push_back(tuple<fem::point,double>(fem::point(1-2*g2, g2, 	x[i]), (620-sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
-			ips.push_back(tuple<fem::point,double>(fem::point(g2, 1-2*g2, 	x[i]), (620-sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
-			ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 	x[i]), (620-sqrt(213125-53320*sqrt(10)))*w[i]/(2*3720)) );
+			ips.push_back(tuple<fem::point,double>(fem::point(1-2*g2, g2, 	x[i]), 0.5*(620-sqrt(213125-53320*sqrt(10)))*w[i]/(3720)) );
+			ips.push_back(tuple<fem::point,double>(fem::point(g2, 1-2*g2, 	x[i]), 0.5*(620-sqrt(213125-53320*sqrt(10)))*w[i]/(3720)) );
+			ips.push_back(tuple<fem::point,double>(fem::point(g2, g2, 	x[i]), 0.5*(620-sqrt(213125-53320*sqrt(10)))*w[i]/(3720)) );
 		}
 
 		this->ipwpl[3] = ips;

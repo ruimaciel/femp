@@ -1,5 +1,6 @@
 #include "SurfaceTriangle6.h++"
 
+#include <iostream>
 
 void SurfaceTriangle6::paintGL(ViewportData &data, fem::Model *model, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
@@ -12,6 +13,22 @@ void SurfaceTriangle6::paintGL(ViewportData &data, fem::Model *model, std::map<s
 	fem::point p4 = (*node_list)[surface->nodes[3]];
 	fem::point p5 = (*node_list)[surface->nodes[4]];
 	fem::point p6 = (*node_list)[surface->nodes[5]];
+
+	std::cout << "triangle 6 nodes" << std::endl;
+	/*
+	for(int b = 0; b < 6; b++)
+	{
+		std::cout << "node: " << b << "\tpoint" << (*node_list)[surface->nodes[b]] << std::endl;
+
+	}
+	*/
+	std::cout << "node: 1\tpoint" << p1 << std::endl;
+	std::cout << "node: 2\tpoint" << p2 << std::endl;
+	std::cout << "node: 3\tpoint" << p3 << std::endl;
+	std::cout << "node: 4\tpoint" << p4 << std::endl;
+	std::cout << "node: 5\tpoint" << p5 << std::endl;
+	std::cout << "node: 6\tpoint" << p6 << std::endl;
+	std::cout << std::endl;
 
 /*
      v
@@ -52,11 +69,11 @@ void SurfaceTriangle6::paintGL(ViewportData &data, fem::Model *model, std::map<s
 	for(int i = 0; i <= partitions; i++)
 	{
 		x = ((double)i)/partitions;
-		p_lower_row[i] = p2*y*(2*y-1)+4*p6*(-y-x+1)*y+4*p5*x*y+p1*(2*(-y-x+1)-1)*(-y-x+1)+4*p4*x*(-y-x+1)+p3*x*(2*x-1);
+		p_lower_row[i] = p3*y*(2*y-1)+4*p6*(-y-x+1)*y+4*p5*x*y+p1*(2*(-y-x+1)-1)*(-y-x+1)+4*p4*x*(-y-x+1)+p2*x*(2*x-1);
 
 		// and now set the normal vector
-		dndx = -4*p6*y+4*p5*y+4*p4*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+p3*(2*x-1)-4*p4*x+2*p3*x;
-		dndy = p2*(2*y-1)-4*p6*y+2*p2*y+4*p6*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+4*p5*x-4*p4*x;
+		dndx = -4*p6*y+4*p5*y+4*p4*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+p2*(2*x-1)-4*p4*x+2*p2*x;
+		dndy = p3*(2*y-1)-4*p6*y+2*p3*y+4*p6*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+4*p5*x-4*p4*x;
 		
 		n_lower_row[i] = fem::cross_product(dndx, dndy);
 	}
@@ -71,11 +88,11 @@ void SurfaceTriangle6::paintGL(ViewportData &data, fem::Model *model, std::map<s
 		{ 
 			// get the upper row points and normal vectors
 			x = (double)i/partitions;
-			pu[i] = p2*y*(2*y-1)+4*p6*(-y-x+1)*y+4*p5*x*y+p1*(2*(-y-x+1)-1)*(-y-x+1)+4*p4*x*(-y-x+1)+p3*x*(2*x-1);
+			pu[i] = p3*y*(2*y-1)+4*p6*(-y-x+1)*y+4*p5*x*y+p1*(2*(-y-x+1)-1)*(-y-x+1)+4*p4*x*(-y-x+1)+p2*x*(2*x-1);
 
 			// and now set the normal vector for the upper row
-			dndx = -4*p6*y+4*p5*y+4*p4*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+p3*(2*x-1)-4*p4*x+2*p3*x;
-			dndy = p2*(2*y-1)-4*p6*y+2*p2*y+4*p6*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+4*p5*x-4*p4*x;
+			dndx = -4*p6*y+4*p5*y+4*p4*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+p2*(2*x-1)-4*p4*x+2*p2*x;
+			dndy = p3*(2*y-1)-4*p6*y+2*p3*y+4*p6*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+4*p5*x-4*p4*x;
 			nu[i] = fem::cross_product(dndx, dndy);
 
 			// draw the triangles

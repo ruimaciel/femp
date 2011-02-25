@@ -83,6 +83,7 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 	dump_octave(file, "f", this->f);
 	dump_octave(file, "L", L);
 	// */
+	dump_octave(file, "f", result->f);
 	file.close();
 
 

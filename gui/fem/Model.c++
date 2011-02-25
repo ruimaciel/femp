@@ -93,12 +93,12 @@ Model::Error Model::pushElement(fem::Element e)
 		case Element::FE_TETRAHEDRON10:
 			nodes.resize(6);
 			// face 1:
-			nodes[0] = e.nodes[0];
-			nodes[1] = e.nodes[2];
-			nodes[2] = e.nodes[1];
-			nodes[3] = e.nodes[6];
-			nodes[4] = e.nodes[5];
-			nodes[5] = e.nodes[4];
+			nodes[0] = e.nodes[1];
+			nodes[1] = e.nodes[0];
+			nodes[2] = e.nodes[2];
+			nodes[3] = e.nodes[4];
+			nodes[4] = e.nodes[6];
+			nodes[5] = e.nodes[5];
 			pushSurface(Element::FE_TRIANGLE6, nodes, element_list.size() -1, 0);
 			// face 2:
 			nodes[0] = e.nodes[0];

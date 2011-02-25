@@ -147,7 +147,6 @@ void VPStateDisplacements::paintGL(ModelViewport *mv)
 
 	mv->viewport_data.camera.reposition();
 
-	// std::cout << "pos: " << mv->viewport_data.camera.pos << "\trot: " << mv->viewport_data.camera.rotation << "\tzoom: " << mv->viewport_data.zoom << std::endl;
 	//mylog.message("painting");
 
 	this->scenegraph.paint(mv);

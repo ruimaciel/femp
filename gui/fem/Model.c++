@@ -55,7 +55,6 @@ void Model::setNode(size_t ref, fem::point p)
 
 Model::Error Model::pushElement(fem::Element e)
 {
-	std::cout << "pushElement()" << std::endl;
 	// push element to the element list
 	e.material = default_material;
 	this->element_list.push_back(e);

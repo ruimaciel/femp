@@ -955,9 +955,38 @@ void MainWindow::setViewportXZ()
 
 void MainWindow::setViewportIso()
 {
-	mylog.setPrefix("MainWindow::setViewportIso()");
-	mylog.message("MainWindow::setViewportIso(): needs to be implemented");
-	mylog.clearPrefix();
+	//TODO check if current MDI window supports this feature
+	if(mdiArea->activeSubWindow() != NULL)
+	{
+		// mdiArea has an active subwindow
+		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(mdiArea->activeSubWindow()->widget());
+
+		if(mwp == NULL)
+		{
+			mylog.message("MainWindow::setViewportIso(): casting to MdiWindowProperties has failed");
+			return;
+		}
+
+		// set the new viewport according to the MDI subwindow's widget type
+		switch(mwp->window_type)
+		{
+			case MdiWindowProperties::MWP_Model:
+				{
+					mylog.message("MWP_Model");
+					ModelViewport *w = static_cast<ModelViewport *>(mwp);
+
+					// set the view angle
+					w->setXRotation(45);
+					w->setYRotation(45);
+					w->setZRotation(0);
+				}
+				break;
+
+			default:
+				mylog.message("void MainWindow::setViewportIso(): unsupported case");
+				break;
+		}
+	}
 }
 
 

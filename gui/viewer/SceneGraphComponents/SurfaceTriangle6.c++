@@ -14,22 +14,6 @@ void SurfaceTriangle6::paintGL(ViewportData &data, fem::Model *model, std::map<s
 	fem::point p5 = (*node_list)[surface->nodes[4]];
 	fem::point p6 = (*node_list)[surface->nodes[5]];
 
-	std::cout << "triangle 6 nodes" << std::endl;
-	/*
-	for(int b = 0; b < 6; b++)
-	{
-		std::cout << "node: " << b << "\tpoint" << (*node_list)[surface->nodes[b]] << std::endl;
-
-	}
-	*/
-	std::cout << "node: 1\tpoint" << p1 << std::endl;
-	std::cout << "node: 2\tpoint" << p2 << std::endl;
-	std::cout << "node: 3\tpoint" << p3 << std::endl;
-	std::cout << "node: 4\tpoint" << p4 << std::endl;
-	std::cout << "node: 5\tpoint" << p5 << std::endl;
-	std::cout << "node: 6\tpoint" << p6 << std::endl;
-	std::cout << std::endl;
-
 /*
      v
      ^          

@@ -55,7 +55,6 @@ void SceneGraph::addPrimitiveComponent(SceneGraphComponent *new_component)
 void SceneGraph::generateSceneGraph()
 {
 	mylog.setPrefix(" void SceneGraph::generateSceneGraph()");
-	mylog.message("generating scene graph");
 
 	//TODO implement a better scenegraph structure
 

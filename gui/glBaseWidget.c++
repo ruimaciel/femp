@@ -177,7 +177,6 @@ void GLBaseWidget::setPosition(int x, int y)
 	//camera.pos.z(amount/100.0f);
 	//qWarning("pos: %f, %f, %f",camera.pos.x(), camera.pos.y(), camera.pos.z());
 	QString m;
-	mylog.message(m.sprintf("pos: %f, %f, %f",camera.pos.x(), camera.pos.y(), camera.pos.z()));
 
 	updateGL();
 

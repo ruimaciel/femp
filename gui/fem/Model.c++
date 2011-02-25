@@ -399,7 +399,7 @@ Model::Error Model::pushElement(fem::Element e)
 			prism faces: 3 quadrangles, 2 triangles 
 			*/
 			// face 5: near triangle
-			nodes.resize(3);
+			nodes.resize(6);
 			nodes[0] = e.nodes[0];
 			nodes[1] = e.nodes[2];
 			nodes[2] = e.nodes[1];
@@ -460,7 +460,7 @@ Model::Error Model::pushElement(fem::Element e)
 			prism faces: 3 quadrangles, 2 triangles 
 			*/
 			// face 5: near triangle
-			nodes.resize(3);
+			nodes.resize(6);
 			nodes[0] = e.nodes[0];
 			nodes[1] = e.nodes[2];
 			nodes[2] = e.nodes[1];

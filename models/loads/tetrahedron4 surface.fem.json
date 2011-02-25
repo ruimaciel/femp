@@ -4,37 +4,25 @@
 		"type": "3D solid"
 	},
 	"materials": [
-		{"type":"linear elastic", "label": "A400", "E":2e+09,"nu":0, "fy": 2e+07}
+		{"type":"linear elastic", "label": "Steel", "E":200e+06,"nu":0.3, "fy": 2e+07}
 	],
 	"nodes":[
 		[1,[0,0,0]],
 		[2,[1,0,0]],
 		[3,[0,1,0]],
-		[4,[0,0,1]]
-	],
-	"elements":[
-		{"type":"tetrahedron4", "nodes":[1,2,3,4], "material": 0}
+		[4,[0.25,0.25,1]]
 	],
 
-	"node restrictions": [
-		{ "node":1, "dx":true, "dy":true, "dz":true},
-		{ "node":2, "dx":true, "dy":true, "dz":true},
-		{ "node":4, "dx":true, "dy":true, "dz":true}
+	"elements":[
+		{"type":"tetrahedron4", "nodes":[1,2,3,4], "material": 0}
 	],
 
 	"load patterns":[
 		{
 			"label": "First test pattern",
-			"nodal loads":[
-				{"node":1, "force":[0, 0, 0]},
-				{"node":3, "force":[6, 4, 1]}
-			]
-,
-			"domain loads":[
-				{"element":0, "force": [1,1,1]}
-			] ,
+
 			"surface loads":[
-				{"type": "triangle3", "nodes": [1,2,3], "forces": [[1,0,0],[1,0,0],[1,0,0]]}
+				{"type": "triangle3", "nodes": [2,3,4], "forces": [[1,0,0],[1,0,0],[1,0,0]]}
 			]
 		}
 	]

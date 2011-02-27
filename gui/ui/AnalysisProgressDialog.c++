@@ -12,6 +12,8 @@ AnalysisProgressDialog::AnalysisProgressDialog( QWidget *parent)
 
 void AnalysisProgressDialog::beginSection(std::string section_name)
 {
+	timer.start();
+
 	QString temp;
 	m_section_name = section_name;
 	temp = "started ";
@@ -34,6 +36,9 @@ void AnalysisProgressDialog::endSection()
 	QString temp;
 	temp = "finished ";
 	temp += m_section_name.c_str();
+	temp += "\ttime elapsed: ";
+	temp += QString::number(timer.elapsed()/100.0 );
+	temp += " seconds";
 	this->textEdit->append(temp);
 	m_section_name.clear();
 }

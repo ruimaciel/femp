@@ -2,6 +2,7 @@
 #define ANALYSIS_PROGRESS_DIALOG_HPP
 
 #include <QtGui/QDialog>
+#include <QTime>
 
 #include <string>
 
@@ -14,6 +15,7 @@ class AnalysisProgressDialog
 
 	protected:
 		std::string m_section_name;
+		QTime timer;	// to time the run
 
 	public:
 		AnalysisProgressDialog(QWidget *parent = NULL);

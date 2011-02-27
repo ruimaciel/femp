@@ -25,6 +25,8 @@
 
 #include "elements/BaseElement.h++"
 
+#include "ProgressIndicatorStrategy.h++"
+
 #include "elements/Triangle3.h++"
 #include "elements/Triangle6.h++"
 #include "elements/Triangle10.h++"
@@ -82,7 +84,6 @@ class Analysis
 
 	public:
 		Analysis();
-		Analysis(const Analysis &);
 		~Analysis();
 
 
@@ -93,7 +94,7 @@ class Analysis
 		@param result	a pointer to a AnalysisResult<Scalar> object, where the run results will be stored
 		@return an error
 		**/
-		enum Error build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> *result);
+		enum Error build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
 
 
 		/** runs the analysis
@@ -102,7 +103,7 @@ class Analysis
 		@param result	a pointer to a AnalysisResult<Scalar> object, where the run results will be stored
 		@return an error
 		**/
-		virtual enum Error run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result) = 0;
+		virtual enum Error run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress) = 0;
 
 
 		/**
@@ -138,17 +139,6 @@ Analysis<Scalar>::Analysis()
 }
 
 
-
-template<typename Scalar>
-Analysis<Scalar>::Analysis(const Analysis &copied)
-{
-	// copy the FEM equation
-	this->K = copied.K;
-	this->f = copied.f;
-	this->d = copied.d;
-}
-
-
 template<typename Scalar>
 Analysis<Scalar>::~Analysis()
 {
@@ -156,7 +146,7 @@ Analysis<Scalar>::~Analysis()
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> *result)
+enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
 {
 	mylog.setPrefix("Analysis<Scalar>::build_fem_equation()");
 
@@ -193,7 +183,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 
 
 		// generate stiffness matrix by cycling through all elements in the model
-	mylog.message("Beginning stiffness matrix");
+	progress.markSectionStart("stiffness matrix");
+	progress.markSectionLimit(model.element_list.size());
 	for(std::vector<Element>::iterator element_iterator = model.element_list.begin(); element_iterator != model.element_list.end(); element_iterator++)
 	{
 			// sets the current element routines
@@ -325,10 +316,16 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 
 		// add elementary stiffness matrix to the global stiffness matrix 
 		add_elementary_stiffness_to_global(k_elem, result->lm, *element_iterator, result);
+
+		// mark progress
+		progress.markSectionIterationIncrement();
 	}
+	progress.markSectionEnd();
 
 		// now set up the equivalent forces vector
 	// set nodal force contribution made by the domain loads
+	progress.markSectionStart("domain loads");
+	progress.markSectionLimit(lp.domain_loads.size());
 	for(std::map<size_t,fem::DomainLoad>::const_iterator domain_load = lp.domain_loads.begin(); domain_load != lp.domain_loads.end(); domain_load++)
 	{
 		//TODO rewrite to rely on the element_reference classes
@@ -449,11 +446,13 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 					result->f(n-1) += f_elem(3*i+2);
 			}
 		}
+		progress.markSectionIterationIncrement();
 	}
+	progress.markSectionEnd();
 
 		// integrate the surface loads
-	//TODO finish this
-	mylog.message("Surface loads");
+	progress.markSectionStart("surface loads");
+	progress.markSectionLimit(lp.surface_loads.size());
 	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
 	{
 		switch(surface_load->type)
@@ -565,10 +564,13 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 					result->f(n-1) += f_elem(3*i+2);
 			}
 		}
+		progress.markSectionIterationIncrement();
 	}
+	progress.markSectionEnd();
 
 	// set nodal forces
-	mylog.message("Nodal loads");
+	progress.markSectionStart("nodal loads");
+	progress.markSectionLimit(lp.nodal_loads.size());
 	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
 	{
 		size_t n;
@@ -581,11 +583,10 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 			result->f(result->lm[n].get<1>()-1) += nodal_load->second.y();
 		if(result->lm[n].get<2>() != 0)
 			result->f(result->lm[n].get<2>()-1) += nodal_load->second.z();
+
+		progress.markSectionIterationIncrement();
 	}
-
-	mylog.message("Finished building FEM equation");
-
-	mylog.clearPrefix();
+	progress.markSectionEnd();
 
 	// fem equation is set.
 	return ERR_OK;

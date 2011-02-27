@@ -12,6 +12,7 @@
 #include "../lalib/solvers/Cholesky.h++"
 #include "../lalib/output.h++"
 
+#include "ProgressIndicatorStrategy.h++"
 #include "AnalysisResult.h++"
 
 
@@ -23,11 +24,25 @@ template<typename Scalar>
 class LinearAnalysis
 	: public Analysis<Scalar>
 {
+	protected:
+		Model *m_model;
+		LoadPattern *m_load_pattern;
+		AnalysisResult<Scalar> *m_result;
+		ProgressIndicatorStrategy *m_progress;
+
 	public:
 		LinearAnalysis();
 		~LinearAnalysis();
 
-		enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result);
+		void set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
+
+		/**
+		Operator intended to run the analysis through a thread
+		**/
+		void operator() ();
+
+	protected:
+		enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
 };
 
 
@@ -36,6 +51,10 @@ template<typename Scalar>
 LinearAnalysis<Scalar>::LinearAnalysis()
 	: Analysis<Scalar>()
 {
+	m_model = NULL;
+	m_load_pattern = NULL;
+	m_result = NULL;
+	m_progress = NULL;
 }
 
 
@@ -46,7 +65,19 @@ LinearAnalysis<Scalar>::~LinearAnalysis()
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result)
+void LinearAnalysis<Scalar>::set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
+{
+	assert(result != NULL);
+
+	this->m_model = &model;
+	this->m_load_pattern = &lp;
+	this->m_result = result;
+	this->m_progress = &progress;
+}
+
+
+template<typename Scalar>
+enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
 {
 	using namespace std;
 	using namespace Eigen;
@@ -54,18 +85,21 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 	// clear existing data structures
 	result->clear();
 
-	this->build_fem_equation(model, lp, result);
+	this->build_fem_equation(model, lp, result, progress);
 
-	//TODO implement a choice of solver
 	result->d = (Scalar)0.0*result->f;	// is this reallly necessary?
 
+	// temporary matrices
 	lalib::Matrix<Scalar, lalib::SparseCRS> my_k;
 	lalib::Matrix<Scalar, lalib::LowerTriangular> L;
 
 	assign(my_k, result->K);
 
+	progress.markSectionStart("solve FEM equation");
+	progress.markSectionLimit(model.element_list.size());
 
 	/*
+	//TODO implement a choice of solver
 	if(lalib::cg(my_k,d,f,(Scalar)1e-10) != lalib::OK)
 	{
 		cout << "did not converged" << endl;
@@ -75,34 +109,35 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 
 	lalib::cholesky(my_k,result->d,result->f,L);
 
+	progress.markSectionEnd();
+
+	/*
+	// TODO implement an option to dump a file
 	ofstream file;
 	file.open("fem.oct");
 	dump_octave(file, "K", result->K);
-	/*
-	//dump_octave(file, "my_k", my_k);
-	dump_octave(file, "f", this->f);
-	dump_octave(file, "L", L);
-	// */
 	dump_octave(file, "f", result->f);
 	file.close();
+	*/
 
-
-	//cout << "k pre:\n" << k << endl;
-	//SparseLLT<DynamicSparseMatrix<double,RowMajor>,Cholmod>(k).solveInPlace(d);
-
-	//cout << "k pos:\n" << k << endl;
 
 	// set the equation
-
-	cout << result->d << endl;
-	// calculate U
-	lalib::Vector<Scalar> d1 = result->d;
-	d1 = result->K*result->d;
-	cout << "Strain energy: " << dot(result->d,d1) << endl;
-
+	progress.markFinish();
 
 	return Analysis<Scalar>::ERR_OK;
 }
+
+
+template<typename Scalar>
+void LinearAnalysis<Scalar>::operator() ()
+{
+	if( this->run(*m_model, *m_load_pattern, m_result, *m_progress) != fem::Analysis<double>::ERR_OK)
+	{
+		//TODO throw error message
+		return;
+	}
+}
+
 
 }
 #endif

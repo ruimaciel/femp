@@ -12,17 +12,21 @@
 MessageLogger mylog;
 
 
+Q_DECLARE_METATYPE(size_t);
+Q_DECLARE_METATYPE(std::string);
+
 int main(int argc, char *argv[])
 {
+	qRegisterMetaType<size_t>("size_t");
+	qRegisterMetaType<std::string>("std::string");
 
 	QApplication app(argc, argv);
 
-	// cl_boot(argc, argv);
+	// register types
 
 	MainWindow mainWin;
 	mainWin.show();
 
-	// cl_shutdown();
 	return app.exec();
 }
 

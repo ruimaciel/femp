@@ -8,6 +8,7 @@
 #include <QToolBar>
 #include <QString>
 
+#include <thread>
 #include <string>
 #include <fstream>
 #include <iostream>	// for cout. remove after tests
@@ -22,12 +23,14 @@
 #include "DisplayOptionsDialog.h++"
 #include "ui/MaterialsEditorDialog.h++"
 #include "ui/QuadratureRulesOptionsDialog.h++"
+#include "ui/AnalysisProgressDialog.h++"
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
 
 #include "fem/NodeRestrictions.h++"
 
+#include "DefaultProgressIndicator.h++"
 #include "fem/Analysis.h++"
 #include "fem/LinearAnalysis.h++"
 #include "fem/AnalysisResult.h++"
@@ -743,26 +746,38 @@ void MainWindow::runAnalysis()
 
 	using namespace std;
 
-	//emit setMessage("Model analysis: started");
-	mylog.message("Model analysis: started");
-
 	QString message;
-	QTime time;
+	DefaultProgressIndicator progress;
+	AnalysisProgressDialog dialog(this);
 
-	time.start();	// to get the run time
+	// connect the dialog with the progress indicator
+	connect(&progress,	SIGNAL(beginSection(std::string)),	&dialog,	SLOT(beginSection(std::string) ));
+	connect(&progress,	SIGNAL(endSection()),	&dialog,	SLOT(endSection() ));
+	connect(&progress,	SIGNAL(setProgress(size_t)),	&dialog,	SLOT(setProgress(size_t) ));
+	connect(&progress,	SIGNAL(finish()),	&dialog,	SLOT(finish() ));
 
 	//TODO finish this
-	if( analysis.run(document.model, document.model.load_pattern_list[0], &analysis_result) != fem::Analysis<double>::ERR_OK)
+	analysis.set(document.model, document.model.load_pattern_list[0], &analysis_result, progress);
+	/*
+	if( analysis.run(document.model, document.model.load_pattern_list[0], &analysis_result, progress) != fem::Analysis<double>::ERR_OK)
 	{
 		//TODO throw error message
 		return;
 	}
+	*/
+	std::thread t(analysis);
+
+	switch(dialog.exec())
+	{
+		case QDialog::Accepted:
+			break;
+
+		default:
+			break;
+	}
+	t.join();
 
 	//TODO set the UI
-
-	message.sprintf("Model analysis: finished after %d ms", time.elapsed());
-	//TODO implement variadic function
-	mylog.message(message);
 
 	//viewport->showDisplacements(analysis);
 	QMdiSubWindow *displacements_window;

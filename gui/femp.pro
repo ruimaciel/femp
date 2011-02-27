@@ -40,11 +40,14 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
 	ui/NewMaterialDialog.h++ ui/MaterialsEditorDialog.h++\
 	fem/Analysis.h++ fem/LinearAnalysis.h++ fem/AnalysisResult.h++\
+	fem/ProgressIndicatorStrategy.h++ \
+	DefaultProgressIndicator.h++ \
 	ui/DialogScale.h++ \
 	MessageLogger.h++ Logs.h++ \
 	fem/Surface.h++ \
 	viewer/boundaries/CollisionDetection.h++ \
-	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++ 
+	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++ \
+	ui/AnalysisProgressDialog.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
 	ModelSelection.c++ \
@@ -67,17 +70,20 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c \
 	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++ \
 	ui/NewMaterialDialog.c++ ui/MaterialsEditorDialog.c++\
+	DefaultProgressIndicator.c++ \
 	ui/DialogScale.c++ \
 	MessageLogger.c++ \
 	fem/Surface.c++ \
-	viewer/boundaries/CollisionDetection.c++ 
+	viewer/boundaries/CollisionDetection.c++ \
+	ui/AnalysisProgressDialog.c++
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 	ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPage3.ui  ui/NewProjectWizardPageLast.ui \
 	ui/NodeRestrainDialog.ui ui/NodeActionsDialog.ui ui/DisplayOptionsDialog.ui \
 	ui/NewMaterialDialog.ui ui/MaterialsEditorDialog.ui \
 	ui/DialogScale.ui \
-	ui/QuadratureRulesOptionsDialog.ui
+	ui/QuadratureRulesOptionsDialog.ui \
+	ui/AnalysisProgressDialog.ui
 
 UI_DIR += ./ui
 OBJECTS_DIR += ./build

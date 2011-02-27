@@ -46,7 +46,7 @@ ReturnCode cg(Matrix<scalar, MatrixStoragePolicy> &A, Vector<scalar, VectorStora
 		rsold = rsnew;
 	}
 
-	return EXCESSIVE_ITERATIONS;
+	return ERR_EXCESSIVE_ITERATIONS;
 }
 
 

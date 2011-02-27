@@ -88,6 +88,11 @@ public Q_SLOTS:
 	**/
 	void runAnalysis();
 
+	/**
+	Dumps the FEM equation (K matrix, d and f vectors) to a file following the Matlab format
+	**/
+	void dumpFemEquation();
+
 	// set current ModelViewport
 	void showModel();
 	void showDisplacements();

@@ -80,6 +80,7 @@
      <string>Project</string>
     </property>
     <addaction name="actionRun"/>
+    <addaction name="actionDump_FEM_equation"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -322,6 +323,14 @@
   <action name="actionQuadrature_rules">
    <property name="text">
     <string>Quadrature rules</string>
+   </property>
+  </action>
+  <action name="actionDump_FEM_equation">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Dump FEM equation</string>
    </property>
   </action>
  </widget>

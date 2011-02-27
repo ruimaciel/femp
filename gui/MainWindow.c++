@@ -7,6 +7,7 @@
 #include <QTranslator>
 #include <QToolBar>
 #include <QString>
+#include <QTextStream>
 
 #include <thread>
 #include <string>
@@ -333,32 +334,34 @@ void MainWindow::createActions()
 	connect(actionViewportYZ,	SIGNAL(triggered()),	this,	SLOT(setViewportYZ()));
 	connect(actionViewportXZ,	SIGNAL(triggered()),	this,	SLOT(setViewportXZ()));
 	connect(actionViewportIso,	SIGNAL(triggered()),	this,	SLOT(setViewportIso()));
-	connect(ui.actionNew, 	SIGNAL(triggered()), this, SLOT(newProject()));
-	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openProject()));
-	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(saveProject()));
-	connect(ui.actionSaveAs, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
-	connect(ui.actionClose, SIGNAL(triggered()), this, SLOT(closeProject()));
-	connect(ui.actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
-	connect(ui.actionImportMesh, SIGNAL(triggered()), this, SLOT(importMesh()));
-	connect(ui.actionNodeRestraints, SIGNAL(triggered()), this, SLOT(setNodeRestraints()));
-	connect(ui.actionNodeActions, SIGNAL(triggered()), this, SLOT(setNodeActions()));
-	connect(ui.actionRun, SIGNAL(triggered()), this, SLOT(runAnalysis()));
-	connect(ui.actionViewActions, SIGNAL(triggered()), this, SLOT(setDisplayOptions()));
-	connect(ui.actionEditMaterials, SIGNAL(triggered()),	this,	SLOT(editMaterials()));
-	connect(ui.actionDisplayNodes, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
-	connect(ui.actionDisplaySurfaces, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
-	connect(ui.actionDisplayWireframe, SIGNAL(triggered()), this, SLOT(setElementDisplay()));
+	connect(ui.actionNew,	SIGNAL(triggered()), this,	SLOT(newProject()));
+	connect(ui.actionOpen,	SIGNAL(triggered()), this,	SLOT(openProject()));
+	connect(ui.actionSave,	SIGNAL(triggered()), this,	SLOT(saveProject()));
+	connect(ui.actionSaveAs,	SIGNAL(triggered()), this,	SLOT(saveProjectAs()));
+	connect(ui.actionClose,	SIGNAL(triggered()), this,	SLOT(closeProject()));
+	connect(ui.actionQuit,	SIGNAL(triggered()), this,	SLOT(quit()));
+	connect(ui.actionImportMesh,	SIGNAL(triggered()), this,	SLOT(importMesh()));
+	connect(ui.actionNodeRestraints,	SIGNAL(triggered()), this,	SLOT(setNodeRestraints()));
+	connect(ui.actionNodeActions,	SIGNAL(triggered()), this,	SLOT(setNodeActions()));
+	connect(ui.actionRun,	SIGNAL(triggered()), this,	SLOT(runAnalysis()));
+	connect(ui.actionDump_FEM_equation,	SIGNAL(triggered()),	this,	SLOT(dumpFemEquation()));
 
-	connect(ui.actionWindowTile, SIGNAL(triggered()), this, SLOT(setTiledWindows()));
-	connect(ui.actionWindowCascade, SIGNAL(triggered()), this, SLOT(setCascadeWindows()));
-	connect(ui.actionNewViewportWindow, SIGNAL(triggered()), this, SLOT(createNewViewportWindow()));
+	connect(ui.actionViewActions,	SIGNAL(triggered()), this,	SLOT(setDisplayOptions()));
+	connect(ui.actionEditMaterials,	SIGNAL(triggered()),	this,	SLOT(editMaterials()));
+	connect(ui.actionDisplayNodes,	SIGNAL(triggered()), this,	SLOT(setElementDisplay()));
+	connect(ui.actionDisplaySurfaces,	SIGNAL(triggered()), this,	SLOT(setElementDisplay()));
+	connect(ui.actionDisplayWireframe,	SIGNAL(triggered()), this,	SLOT(setElementDisplay()));
+
+	connect(ui.actionWindowTile,	SIGNAL(triggered()), this,	SLOT(setTiledWindows()));
+	connect(ui.actionWindowCascade,	SIGNAL(triggered()), this,	SLOT(setCascadeWindows()));
+	connect(ui.actionNewViewportWindow,	SIGNAL(triggered()), this,	SLOT(createNewViewportWindow()));
 
 	connect(ui.actionShowNodalForces,	SIGNAL(triggered()),	this,	SLOT(setNodeForcesDisplay()));
 
 	connect(ui.actionViewModel,	SIGNAL(triggered()),	this,	SLOT(showModel()));
 	connect(ui.actionViewDisplacements,	SIGNAL(triggered()),	this,	SLOT(showDisplacements()));
 
-	connect(ui.actionQuadrature_rules,	SIGNAL(triggered()),	this,  SLOT(editQuadratureRules()) );
+	connect(ui.actionQuadrature_rules,	SIGNAL(triggered()),	this,	SLOT(editQuadratureRules()) );
 }
 
 
@@ -758,18 +761,13 @@ void MainWindow::runAnalysis()
 
 	//TODO finish this
 	analysis.set(document.model, document.model.load_pattern_list[0], &analysis_result, progress);
-	/*
-	if( analysis.run(document.model, document.model.load_pattern_list[0], &analysis_result, progress) != fem::Analysis<double>::ERR_OK)
-	{
-		//TODO throw error message
-		return;
-	}
-	*/
+
 	std::thread t(analysis);
 
 	switch(dialog.exec())
 	{
 		case QDialog::Accepted:
+			//TODO implement a way to abort the analysis thread if the abort button is pressed
 			break;
 
 		default:
@@ -779,7 +777,6 @@ void MainWindow::runAnalysis()
 
 	//TODO set the UI
 
-	//viewport->showDisplacements(analysis);
 	QMdiSubWindow *displacements_window;
 
 	displacements_window = mdiArea->activeSubWindow();
@@ -801,8 +798,99 @@ void MainWindow::runAnalysis()
 	
 	this->showDisplacements();
 
+        ui.actionDump_FEM_equation->setEnabled(true);
+
 
 	mylog.clearPrefix();
+}
+
+
+void MainWindow::dumpFemEquation()
+{
+	using namespace std;
+
+	//TODO pick file name
+	QFileDialog dialog(this);
+	QStringList sl;
+	QString file_name;
+
+	// setup the file dialog
+	dialog.setFileMode(QFileDialog::AnyFile);
+	dialog.setNameFilter(tr("Octave file (*.oct)"));
+	dialog.setDefaultSuffix("oct");
+	if(dialog.exec() == QDialog::Rejected)
+	{
+		// user cancelled 
+		return;
+	}
+	sl = dialog.selectedFiles();
+	file_name = sl.at(0);
+
+	// check if file already exists
+	QFile file;
+	file.setFileName(file_name);
+	if(file.exists())
+	{
+		QMessageBox msgBox;
+		msgBox.setText(tr("File already exists") );
+		msgBox.setInformativeText(tr("Do you want to overwrite it?") );
+		msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+		msgBox.setDefaultButton(QMessageBox::No);
+		if(msgBox.exec() == QMessageBox::No)
+		{
+			mylog.message("rejected");
+			delete document.file_name;
+			document.file_name = NULL;
+			return;
+		}
+		mylog.message("accepted");
+	}
+
+	// set a new file name for this file
+	file.open(QFile::WriteOnly);
+	QTextStream     out(&file);
+
+	//dump_octave(outfile, "K", analysis_result.K);
+	out << "# Created by lalib\n";
+	out << "# name: K\n";
+	out << "# type: matrix\n";
+	out << "# rows: " << analysis_result.K.rows() << "\n";
+	out << "# columns: " << analysis_result.K.columns() << "\n";
+
+	for(size_t j = 0; j < analysis_result.K.columns(); j++)
+	{
+		for(size_t i = 0; i < analysis_result.K.rows(); i++)
+		{
+			out << " " << analysis_result.K.value(i,j);
+		}
+		out << "\n";
+	}
+	out << endl;
+
+	//dump_octave(outfile, "f", analysis_result.f);
+	out << "# Created by lalib\n";
+	out << "# name: f\n";
+	out << "# type: matrix\n";
+	out << "# rows: " << analysis_result.f.size() << "\n";
+	out << "# columns: 1\n";
+	for(size_t i = 0; i < analysis_result.f.size(); i++)
+	{
+		out << " " << analysis_result.f.value(i) << "\n";
+	}
+	out << endl;
+
+	//dump_octave(outfile, "d", analysis_result.d);
+	out << "# Created by lalib\n";
+	out << "# name: d\n";
+	out << "# type: matrix\n";
+	out << "# rows: " << analysis_result.d.size() << "\n";
+	out << "# columns: 1\n";
+	for(size_t i = 0; i < analysis_result.d.size(); i++)
+	{
+		out << " " << analysis_result.d.value(i) << "\n";
+	}
+	out << endl;
+	file.close();
 }
 
 
@@ -1151,6 +1239,7 @@ void MainWindow::setUserInterfaceAsClosed()
 	ui.actionNodeActions->setDisabled(true);
 	ui.actionEditMaterials->setDisabled(true);
 	ui.actionQuadrature_rules->setDisabled(true);
+        ui.actionDump_FEM_equation->setDisabled(true);
 
 	// close all MDI windows
 	mdiArea->closeAllSubWindows();

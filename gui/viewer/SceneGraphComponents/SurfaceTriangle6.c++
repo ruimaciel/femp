@@ -4,7 +4,7 @@
 
 void SurfaceTriangle6::paintGL(ViewportData &data, fem::Model *model, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
-	int partitions = 4;	//TODO implement a better code
+	int partitions = 6;	//TODO implement a better code
 
 	// temp code to help with the copy/paste
 	fem::point p1 = (*node_list)[surface->nodes[0]];

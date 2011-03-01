@@ -849,6 +849,7 @@ void MainWindow::dumpFemEquation()
 	// set a new file name for this file
 	file.open(QFile::WriteOnly);
 	QTextStream     out(&file);
+	out.setRealNumberNotation(QTextStream::ScientificNotation);
 	out.setRealNumberPrecision(16);
 
 	//dump_octave(outfile, "K", analysis_result.K);

@@ -36,8 +36,8 @@ struct Quadrangle8
 template<typename T>
 Quadrangle8<T>::Quadrangle8()
 {
-	this->stiffness_degree = 1;
-	this->domain_degree = 1;
+	this->stiffness_degree = 2;
+	this->domain_degree = 2;
 
 	this->N.resize(8);
 	this->dNdcsi.resize(8);

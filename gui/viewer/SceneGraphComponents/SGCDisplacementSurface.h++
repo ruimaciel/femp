@@ -20,7 +20,11 @@ class SGCDisplacementSurface
 
 
 	public:
-		SGCDisplacementSurface(fem::Surface &, std::map<size_t, fem::Node> &);
+		/*
+		@param	reference_surface	the reference to this surface's fem::Surface object
+		@param	reference_nodes	a map which links this surface's nodes to their displaced value
+		*/
+		SGCDisplacementSurface(fem::Surface &reference_surface, std::map<size_t, fem::Node> &reference_nodes);
 		~SGCDisplacementSurface();
 
 		/*

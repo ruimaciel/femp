@@ -85,7 +85,7 @@ void SGCDisplacementOriginalSurface<SurfacePolicy>::paintGL(ViewportData &data, 
 {
 	glEnable(GL_BLEND);
 	glColor4fv(colors.original_surface);
-	SurfacePolicy::paintGL(data, model, nodes, surface);
+	SurfacePolicy::paintGL(data, model, colors, nodes, surface);
 	glDisable(GL_BLEND);
 }
 

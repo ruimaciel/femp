@@ -20,11 +20,7 @@
 #include "../SceneGraphComponents/SGCSurface.h++"	// test purposes only
 #include "../SceneGraphComponents/SGCDisplacementSurface.h++"
 #include "../SceneGraphComponents/SGCDisplacementOriginalSurface.h++"
-#include "../SceneGraphComponents/SurfaceTriangle3.h++"
-#include "../SceneGraphComponents/SurfaceTriangle6.h++"
-#include "../SceneGraphComponents/SurfaceQuad4.h++"
-#include "../SceneGraphComponents/SurfaceQuad8.h++"
-#include "../SceneGraphComponents/SurfaceQuad9.h++"
+#include "../SceneGraphComponents/OpaqueSurface/surfaces.h++"
 
 
 VPStateDisplacements::VPStateDisplacements()
@@ -60,7 +56,7 @@ void VPStateDisplacements::populateScenegraph(ModelViewport *mv)
 	// add the nodes to the scenegraph
 	for(std::map<size_t, fem::Node>::iterator i = mv->model->node_list.begin(); i != mv->model->node_list.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(new SGCNode(i->first, i->second, mv->model->node_restrictions_list) );
+		this->scenegraph.addPrimitiveComponent(0, new SGCNode(i->first, i->second, mv->model->node_restrictions_list) );
 	}
 
 	// add the surfaces to the scenegraph
@@ -72,23 +68,23 @@ void VPStateDisplacements::populateScenegraph(ModelViewport *mv)
 			switch(i->getType())
 			{
 				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceTriangle3>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(1, new SGCDisplacementSurface<SurfaceTriangle3>(*i, displaced_nodes) );
 					break;
 
 				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceTriangle6>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(1, new SGCDisplacementSurface<SurfaceTriangle6>(*i, displaced_nodes) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceQuad4>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(1, new SGCDisplacementSurface<SurfaceQuad4>(*i, displaced_nodes) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceQuad8>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(1, new SGCDisplacementSurface<SurfaceQuad8>(*i, displaced_nodes) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementSurface<SurfaceQuad9>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(1, new SGCDisplacementSurface<SurfaceQuad9>(*i, displaced_nodes) );
 					break;
 
 				default:
@@ -107,23 +103,23 @@ void VPStateDisplacements::populateScenegraph(ModelViewport *mv)
 			switch(i->getType())
 			{
 				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceTriangle3>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(2, new SGCDisplacementOriginalSurface<SurfaceTriangle3>(*i, *original_nodes) );
 					break;
 
 				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceTriangle6>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(2, new SGCDisplacementOriginalSurface<SurfaceTriangle6>(*i, *original_nodes) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceQuad4>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(2, new SGCDisplacementOriginalSurface<SurfaceQuad4>(*i, *original_nodes) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceQuad8>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(2, new SGCDisplacementOriginalSurface<SurfaceQuad8>(*i, *original_nodes) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(new SGCDisplacementOriginalSurface<SurfaceQuad9>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(2, new SGCDisplacementOriginalSurface<SurfaceQuad9>(*i, *original_nodes) );
 					break;
 
 				default:

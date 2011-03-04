@@ -83,10 +83,8 @@ void SGCModelSurface<SurfacePolicy>::setReferenceSurface(fem::Surface &reference
 template<class SurfacePolicy>
 void SGCModelSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors)
 {
-	glEnable(GL_BLEND);
 	glColor4fv(colors.surface);
-	SurfacePolicy::paintGL(data, model, nodes, surface);
-	glDisable(GL_BLEND);
+	SurfacePolicy::paintGL(data, model, colors, nodes, surface);
 }
 
 

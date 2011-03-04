@@ -3,18 +3,12 @@
 - import only the elements which are supported, filter out all other cruft
 - separate designation for the element type supported by the program and those supported by the document format
 
-
 - certificar que antes da importação da malha há materiais definidos
 - ao importar a malha, escolher o material a atribuir
 - seleccionar o tipo de elementos a importar
 - não interpretar matrix singular como erro
 
-- passar rotinas de resolução de sistemas de equações para fora da classe
-
 - MdiArea::subWindowActivate() implica actualizar UI 
 - apontar DisplayOptions::load_pattern para o objecto LoadPattern referido pela toolbar
 - abandonar flex/bison ao escrever um analisador sintático LL para o formato MSH 
 
-- acabar funções de forma (fellipa)
-
-- refactorizar código de glModelWidget e glDisplacementsWidget, implementar padrão de estados

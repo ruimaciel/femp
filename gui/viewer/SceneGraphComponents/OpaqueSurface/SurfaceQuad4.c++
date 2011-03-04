@@ -1,31 +1,25 @@
-#include "SurfaceTriangle6.h++"
+#include "SurfaceQuad4.h++"
 
-#include <iostream>
 
-void SurfaceTriangle6::paintGL(ViewportData &data, fem::Model *model, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void SurfaceQuad4::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
-	int partitions = 6;	//TODO implement a better code
+	glEnable(GL_BLEND);
+	int partitions = 3;	//TODO implement a better code
 
 	// temp code to help with the copy/paste
 	fem::point p1 = (*node_list)[surface->nodes[0]];
 	fem::point p2 = (*node_list)[surface->nodes[1]];
 	fem::point p3 = (*node_list)[surface->nodes[2]];
 	fem::point p4 = (*node_list)[surface->nodes[3]];
-	fem::point p5 = (*node_list)[surface->nodes[4]];
-	fem::point p6 = (*node_list)[surface->nodes[5]];
-
+	
 /*
-     v
-     ^          
-     |           
-     2            
-     |`, 
-     |  `.          
-     5    `4         
-     |      `.        
-     |        `.       
-     0-----3----1 --> u 
-
+	^ y
+	|
+	4 ------ 3
+	|        |
+	|        |
+	|        |
+	1 ------ 2 --> x
 */
 	// defining temporary structures for points and normal vectors
 	fem::point p_upper_row[partitions+1];
@@ -53,30 +47,30 @@ void SurfaceTriangle6::paintGL(ViewportData &data, fem::Model *model, std::map<s
 	for(int i = 0; i <= partitions; i++)
 	{
 		x = ((double)i)/partitions;
-		p_lower_row[i] = p3*y*(2*y-1)+4*p6*(-y-x+1)*y+4*p5*x*y+p1*(2*(-y-x+1)-1)*(-y-x+1)+4*p4*x*(-y-x+1)+p2*x*(2*x-1);
+		p_lower_row[i] = p3*x*y+p4*(1-x)*y+p2*x*(1-y)+p1*(1-x)*(1-y);
 
 		// and now set the normal vector
-		dndx = -4*p6*y+4*p5*y+4*p4*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+p2*(2*x-1)-4*p4*x+2*p2*x;
-		dndy = p3*(2*y-1)-4*p6*y+2*p3*y+4*p6*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+4*p5*x-4*p4*x;
-		
+		dndx = p3*y-p4*y+p2*(1-y)-p1*(1-y);
+		dndy = p3*x-p2*x+p4*(1-x)-p1*(1-x);
 		n_lower_row[i] = fem::cross_product(dndx, dndy);
 	}
 
 	// the rest of the loop
-	for (int j = 1, i; j <= partitions; j++)  
+	for (int j = 1; j <= partitions; j++)  
 	{ 
 		y = (double)j/partitions;
 		// and now let's render
 		glBegin(GL_TRIANGLE_STRIP);  
-		for (i = 0; i <= (partitions-j); i++)  
+		for (int i = 0; i <= partitions; i++)  
 		{ 
 			// get the upper row points and normal vectors
 			x = (double)i/partitions;
-			pu[i] = p3*y*(2*y-1)+4*p6*(-y-x+1)*y+4*p5*x*y+p1*(2*(-y-x+1)-1)*(-y-x+1)+4*p4*x*(-y-x+1)+p2*x*(2*x-1);
+			pu[i] = p3*x*y+p4*(1-x)*y+p2*x*(1-y)+p1*(1-x)*(1-y);
 
-			// and now set the normal vector for the upper row
-			dndx = -4*p6*y+4*p5*y+4*p4*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+p2*(2*x-1)-4*p4*x+2*p2*x;
-			dndy = p3*(2*y-1)-4*p6*y+2*p3*y+4*p6*(-y-x+1)-2*p1*(-y-x+1)-p1*(2*(-y-x+1)-1)+4*p5*x-4*p4*x;
+			// and now set the normal vector
+			dndx = p3*y-p4*y+p2*(1-y)-p1*(1-y);
+			dndy = p3*x-p2*x+p4*(1-x)-p1*(1-x);
+
 			nu[i] = fem::cross_product(dndx, dndy);
 
 			// draw the triangles
@@ -85,16 +79,14 @@ void SurfaceTriangle6::paintGL(ViewportData &data, fem::Model *model, std::map<s
 			glNormal3dv(nl[i].data);
 			glVertex3dv(pl[i].data);
 		} 
-		glNormal3dv(nl[i].data);
-		glVertex3dv(pl[i].data);
-		glEnd(); 
-
 		// swap buffer pointes
 		pl = pu;
 		pu = (pu == p_upper_row)?p_lower_row:p_upper_row;
-
 		nl = nu;
 		nu = (nu == n_upper_row)?n_lower_row:n_upper_row;
+
+		glEnd(); 
 	} 
+	glDisable(GL_BLEND);
 }
 

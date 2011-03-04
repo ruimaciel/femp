@@ -29,11 +29,8 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	viewer/SceneGraph.h++ viewer/SceneGraphComponents/SceneGraphComponent.h++ viewer/SceneGraphComponents/SGCSurface.h++ viewer/SceneGraphComponents/SGCNode.h++ \
 	viewer/SceneGraphComponents/SGCDisplacementSurface.h++ viewer/SceneGraphComponents/SGCDisplacementOriginalSurface.h++ \
 	viewer/SceneGraphComponents/SGCModelSurface.h++ \
-	viewer/SceneGraphComponents/SurfaceTriangle3.h++\
-	viewer/SceneGraphComponents/SurfaceTriangle6.h++\
-	viewer/SceneGraphComponents/SurfaceQuad4.h++\
-	viewer/SceneGraphComponents/SurfaceQuad8.h++\
-	viewer/SceneGraphComponents/SurfaceQuad9.h++\
+	viewer/SceneGraphComponents/OpaqueSurface/*.h++ \
+	viewer/SceneGraphComponents/WireframeSurface/*.h++ \
 	viewer/boundaries/BoundaryStrategy.h++ viewer/boundaries/SphericalBoundary.h++ \
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h \
@@ -60,11 +57,11 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ModelViewport.c++  viewer/ViewportColors.c++  \
 	viewer/ViewportStates/ViewportState.c++  viewer/ViewportStates/VPStateModel.c++ viewer/ViewportStates/VPStateDisplacements.c++ \
 	viewer/SceneGraph.c++ viewer/SceneGraphComponents/SceneGraphComponent.c++ viewer/SceneGraphComponents/SGCSurface.c++ viewer/SceneGraphComponents/SGCNode.c++ \
-	viewer/SceneGraphComponents/SurfaceTriangle3.c++\
-	viewer/SceneGraphComponents/SurfaceTriangle6.c++\
-	viewer/SceneGraphComponents/SurfaceQuad4.c++\
-	viewer/SceneGraphComponents/SurfaceQuad8.c++\
-	viewer/SceneGraphComponents/SurfaceQuad9.c++\
+	viewer/SceneGraphComponents/OpaqueSurface/SurfaceTriangle3.c++\
+	viewer/SceneGraphComponents/OpaqueSurface/SurfaceTriangle6.c++\
+	viewer/SceneGraphComponents/OpaqueSurface/SurfaceQuad4.c++\
+	viewer/SceneGraphComponents/OpaqueSurface/SurfaceQuad8.c++\
+	viewer/SceneGraphComponents/OpaqueSurface/SurfaceQuad9.c++\
 	viewer/boundaries/BoundaryStrategy.c++  viewer/boundaries/SphericalBoundary.c++  \
 	fem_msh.c++ lex.msh_yy.c++ \
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c \

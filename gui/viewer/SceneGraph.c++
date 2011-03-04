@@ -8,8 +8,25 @@
 #include "ModelViewport.h++"
 
 
+SceneGraph::RenderGroup::RenderGroup()
+{
+	this->render = true;
+	this->selectable = true;
+}
+
+
+void SceneGraph::RenderGroup::generateSceneGraph()
+{
+	//TODO implement a better scenegraph structure
+
+	for(std::list<SceneGraphComponent *>::iterator i = this->primitive_components.begin(); i != this->primitive_components.end(); i++)
+	{
+		this->scenegraph.pushComponent( *i );
+	}
+}
+
+
 SceneGraph::SceneGraph()
-	: SceneGraphComponent()
 {
 }
 
@@ -22,15 +39,16 @@ SceneGraph::~SceneGraph()
 
 void SceneGraph::clear()
 {
-	mylog.setPrefix("void SceneGraph::clear()");
-	mylog.message("must implement this");
-
+	using namespace std;
 	//TODO finish this
 
 	// frees the primitives included in the list
-	for(std::list<SceneGraphComponent *>::iterator i = primitive_components.begin(); i != primitive_components.end(); i++)
+	for(map<int, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
 	{
-		delete(*i);
+		for(std::list<SceneGraphComponent *>::iterator j = i->second.primitive_components.begin(); j != i->second.primitive_components.end(); j++)
+		{
+			delete(*j);
+		}
 	}
 }
 
@@ -41,26 +59,27 @@ void SceneGraph::paint(ModelViewport *mvp)
 	// get the model
 	glGetFloatv(GL_PROJECTION_MATRIX, mvp->viewport_data.modelview) ;
 
-	this->paintGL(mvp->viewport_data, mvp->model, mvp->colors);
+	for(map<int, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
+	{
+		if(i->second.render)
+			i->second.scenegraph.paintGL(mvp->viewport_data, mvp->model, mvp->colors);
+	}
 }
 
 
-void SceneGraph::addPrimitiveComponent(SceneGraphComponent *new_component)
+void SceneGraph::addPrimitiveComponent(int group, SceneGraphComponent *new_component)
 {
 	assert(new_component != NULL);
-	this->primitive_components.push_back(new_component);
+	//this->primitive_components.push_back(new_component);
+	rendering_groups[group].primitive_components.push_back(new_component);
 }
 
 
 void SceneGraph::generateSceneGraph()
 {
-	mylog.setPrefix(" void SceneGraph::generateSceneGraph()");
-
-	//TODO implement a better scenegraph structure
-
-	for(std::list<SceneGraphComponent *>::iterator i = this->primitive_components.begin(); i != this->primitive_components.end(); i++)
+	for(std::map<int, RenderGroup>::iterator i = this->rendering_groups.begin(); i!= this->rendering_groups.end(); i++)
 	{
-		this->pushComponent( *i );
+		i->second.generateSceneGraph();
 	}
 }
 

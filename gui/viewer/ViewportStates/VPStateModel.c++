@@ -18,11 +18,13 @@
 #include "../SceneGraphComponents/SGCNode.h++"
 #include "../SceneGraphComponents/SGCSurface.h++"
 #include "../SceneGraphComponents/SGCModelSurface.h++"
-#include "../SceneGraphComponents/SurfaceTriangle3.h++"
-#include "../SceneGraphComponents/SurfaceTriangle6.h++"
-#include "../SceneGraphComponents/SurfaceQuad4.h++"
-#include "../SceneGraphComponents/SurfaceQuad8.h++"
-#include "../SceneGraphComponents/SurfaceQuad9.h++"
+#include "../SceneGraphComponents/OpaqueSurface/SurfaceTriangle3.h++"
+#include "../SceneGraphComponents/OpaqueSurface/SurfaceTriangle6.h++"
+#include "../SceneGraphComponents/OpaqueSurface/SurfaceQuad4.h++"
+#include "../SceneGraphComponents/OpaqueSurface/SurfaceQuad8.h++"
+#include "../SceneGraphComponents/OpaqueSurface/SurfaceQuad9.h++"
+#include "../SceneGraphComponents/WireframeSurface/surfaces.h++"
+
 
 
 VPStateModel::VPStateModel()
@@ -55,7 +57,8 @@ void VPStateModel::populateScenegraph(ModelViewport *mv)
 	// add the nodes to the scenegraph
 	for(std::map<size_t, fem::Node>::iterator i = mv->model->node_list.begin(); i != mv->model->node_list.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(new SGCNode(i->first, i->second, mv->model->node_restrictions_list) );
+		//TODO set rendering groups
+		this->scenegraph.addPrimitiveComponent(0, new SGCNode(i->first, i->second, mv->model->node_restrictions_list) );
 	}
 
 	// add the surfaces to the scenegraph
@@ -67,23 +70,28 @@ void VPStateModel::populateScenegraph(ModelViewport *mv)
 			switch(i->getType())
 			{
 				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(new SGCModelSurface<SurfaceTriangle3>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(1, new SGCModelSurface<SurfaceTriangle3>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(2, new SGCModelSurface<WireframeSurfaceTriangle3>(*i, mv->model->node_list) );
 					break;
 
 				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(new SGCModelSurface<SurfaceTriangle6>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(1, new SGCModelSurface<SurfaceTriangle6>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(2, new SGCModelSurface<WireframeSurfaceTriangle6>(*i, mv->model->node_list) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(new SGCModelSurface<SurfaceQuad4>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(1, new SGCModelSurface<SurfaceQuad4>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(2, new SGCModelSurface<WireframeSurfaceQuad4>(*i, mv->model->node_list) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(new SGCModelSurface<SurfaceQuad8>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(1, new SGCModelSurface<SurfaceQuad8>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(2, new SGCModelSurface<WireframeSurfaceQuad8>(*i, mv->model->node_list) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(new SGCModelSurface<SurfaceQuad9>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(1, new SGCModelSurface<SurfaceQuad9>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(2, new SGCModelSurface<WireframeSurfaceQuad9>(*i, mv->model->node_list) );
 					break;
 
 				default:
@@ -92,6 +100,9 @@ void VPStateModel::populateScenegraph(ModelViewport *mv)
 			}
 		}
 	}
+
+	// set the visibility of the rendering groups
+	this->scenegraph.rendering_groups[2].render = false;	// hide wireframe surfaces
 
 	// generate the scene graph
 	this->scenegraph.generateSceneGraph();
@@ -110,11 +121,7 @@ void VPStateModel::paintGL(ModelViewport *mv)
 
 
 	//TODO finish implementing this
-	//this->scenegraph.paintGL(mv->viewport_data, mv->model, mv->colors);
 	this->scenegraph.paint(mv);
-
-	//this->crudePaintHack(mv->model, mv->viewport_data, mv->colors);
-
 }
 
 

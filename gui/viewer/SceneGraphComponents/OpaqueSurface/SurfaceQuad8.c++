@@ -1,8 +1,9 @@
 #include "SurfaceQuad8.h++"
 
 
-void SurfaceQuad8::paintGL(ViewportData &data, fem::Model *model, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void SurfaceQuad8::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
+	glEnable(GL_BLEND);
 	int partitions = 6;	//TODO implement a better code
 
 	// temp code to help with the copy/paste
@@ -92,5 +93,6 @@ void SurfaceQuad8::paintGL(ViewportData &data, fem::Model *model, std::map<size_
 		nu = (nu == n_upper_row)?n_lower_row:n_upper_row;
 		glEnd(); 
 	} 
+	glDisable(GL_BLEND);
 }
 

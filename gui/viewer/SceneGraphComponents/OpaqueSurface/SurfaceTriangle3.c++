@@ -3,8 +3,9 @@
 #include "../fem/point.h++"
 
 
-void SurfaceTriangle3::paintGL(ViewportData &data, fem::Model *model, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void SurfaceTriangle3::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
+	glEnable(GL_BLEND);
 	using namespace fem;
 
 	int partitions = 4;	//TODO implement a better code
@@ -22,5 +23,6 @@ void SurfaceTriangle3::paintGL(ViewportData &data, fem::Model *model, std::map<s
 	glVertex3dv(p2.data);
 	glVertex3dv(p3.data);
 	glEnd();
+	glDisable(GL_BLEND);
 }
 

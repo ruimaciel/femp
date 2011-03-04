@@ -8,6 +8,8 @@
 
 #include "SceneGraphComponents/SceneGraphComponent.h++"
 
+#include "ViewportData.h++"
+#include "ViewportColors.h++"
 #include "../fem/Model.h++"
 
 
@@ -58,7 +60,7 @@ class SceneGraph
 		void clear();
 
 
-		void paint(ModelViewport *);
+		void paint(ViewportData &viewport_data, fem::Model &model, ViewportColors &colors);
 
 		/*
 		Generic routine to add a primitive component to this scenegraph

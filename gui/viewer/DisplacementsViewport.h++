@@ -1,5 +1,5 @@
-#ifndef MODEL_VIEWPORT_HPP
-#define MODEL_VIEWPORT_HPP
+#ifndef DISPLACEMENTS_VIEWPORT_HPP
+#define DISPLACEMENTS_VIEWPORT_HPP
 
 
 #include <QWidget>
@@ -17,16 +17,18 @@
 #include "ViewportData.h++"
 
 #include "ViewportStates/ViewportState.h++"	// for the vieport's state pattern base class
-#include "ViewportStates/VPStateModel.h++"
 #include "ViewportStates/VPStateDisplacements.h++"
 
 #include "../fem/LinearAnalysis.h++"
 
 
-class ModelViewport 
+class DisplacementsViewport 
 	: public QGLWidget, public MdiWindowProperties
 {
 	Q_OBJECT
+
+	protected:
+		fem::AnalysisResult<double> *analysis_result;
 
 	public:
 		ViewportData viewport_data;
@@ -34,11 +36,11 @@ class ModelViewport
 
 		fem::Model *model;
 
-		ViewportState<ModelViewport>	*state;	// pointer to object used for the State pattern
+		ViewportState<DisplacementsViewport>	*state;	// pointer to object used for the State pattern
 
 	public:
-		ModelViewport(fem::Model *model, QWidget *parent = NULL);
-		~ModelViewport();
+		DisplacementsViewport(fem::Model *model, fem::AnalysisResult<double> &analysis, QWidget *parent = NULL);
+		~DisplacementsViewport();
 
 		void setColors(ViewportColors &new_colors);
 
@@ -57,7 +59,8 @@ class ModelViewport
 		void setPosition(int x, int y);
 
 		// set the viewport state
-		void showModel();
+		// void showModel();
+		void showDisplacements(fem::AnalysisResult<double> &);
 
 	Q_SIGNALS:
 		void xRotationChanged(int angle);

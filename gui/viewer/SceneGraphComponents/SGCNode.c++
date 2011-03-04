@@ -39,6 +39,7 @@ void SGCNode::paintGL(ViewportData &data, fem::Model *model, ViewportColors &col
 	glScalef(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
 
 	//TODO find a better rendering for the nodes
+	glColor3fv(colors.node);
 	glBegin(GL_LINES);
 		glColor3f(1.0f,0.0f,0.0f);
 		glVertex3i(0,0,0);
@@ -72,6 +73,7 @@ void SGCNode::paintGL(ViewportData &data, fem::Model *model, ViewportColors &col
 	// paint restrictions, if there are any
 	if(node_restrictions_map->find(node_label) != node_restrictions_map->end())
 	{
+		glColor3fv(colors.restraints);
 		if((*node_restrictions_map)[node_label].dx())
 		{
 			glBegin(GL_TRIANGLES);

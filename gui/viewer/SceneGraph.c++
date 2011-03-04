@@ -53,16 +53,16 @@ void SceneGraph::clear()
 }
 
 
-void SceneGraph::paint(ModelViewport *mvp)
+void SceneGraph::paint(ViewportData &viewport_data, fem::Model &model, ViewportColors &colors)
 {
 	using namespace std;
 	// get the model
-	glGetFloatv(GL_PROJECTION_MATRIX, mvp->viewport_data.modelview) ;
+	glGetFloatv(GL_PROJECTION_MATRIX, viewport_data.modelview) ;
 
 	for(map<int, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
 	{
 		if(i->second.render)
-			i->second.scenegraph.paintGL(mvp->viewport_data, mvp->model, mvp->colors);
+			i->second.scenegraph.paintGL(viewport_data, &model, colors);
 	}
 }
 

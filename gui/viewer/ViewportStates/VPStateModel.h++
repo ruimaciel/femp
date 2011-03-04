@@ -15,7 +15,7 @@ class ModelViewport;
 A pattern for the State pattern which is used to render the model space
 */
 class VPStateModel
-	:public ViewportState
+	:public ViewportState<ModelViewport>
 {
 	public:
 		VPStateModel();

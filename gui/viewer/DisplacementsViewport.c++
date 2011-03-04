@@ -1,10 +1,12 @@
-#include "ModelViewport.h++"
+#include "DisplacementsViewport.h++"
 
 
-ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)
-	: QGLWidget(parent), MdiWindowProperties(MdiWindowProperties::MWP_Model)
+DisplacementsViewport::DisplacementsViewport(fem::Model *model, fem::AnalysisResult<double> &analysis, QWidget *parent)
+	: QGLWidget(parent), MdiWindowProperties(MdiWindowProperties::MWP_Displacements)
 {
-	mylog.setPrefix("ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)");
+	this->analysis_result = &analysis;
+
+	mylog.setPrefix("DisplacementsViewport::DisplacementsViewport(fem::Model *model, QWidget *parent)");
 	mylog.message("constructor");
 
 	assert(model != NULL);
@@ -13,7 +15,8 @@ ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)
 	this->model = model;
 	this->state = NULL;
 
-	this->setState(new VPStateModel);	// set the current viewport state
+	//this->setState(new VPStateDisplacements);	// set the current viewport state
+	this->showDisplacements(*this->analysis_result);
 
 	// set this widget's load pattern pointer
 	if(model->load_pattern_list.empty())
@@ -29,30 +32,30 @@ ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)
 }
 
 
-ModelViewport::~ModelViewport()
+DisplacementsViewport::~DisplacementsViewport()
 {
 }
 
 
-void ModelViewport::setColors(ViewportColors &new_colors)
+void DisplacementsViewport::setColors(ViewportColors &new_colors)
 {
 	colors = new_colors;
 }
 
 
-QSize ModelViewport::minimumSizeHint() const
+QSize DisplacementsViewport::minimumSizeHint() const
 {
 	return QSize(50, 50);
 }
 
 
-QSize ModelViewport::sizeHint() const
+QSize DisplacementsViewport::sizeHint() const
 {
 	return QSize(600, 400);
 }
 
 
-void ModelViewport::initializeGL()
+void DisplacementsViewport::initializeGL()
 {
 	// set the state->camera position according to the nodal center
 	double pos[3] = {0};
@@ -112,7 +115,7 @@ void ModelViewport::initializeGL()
 }
 
 
-void ModelViewport::resizeGL(int width, int height)
+void DisplacementsViewport::resizeGL(int width, int height)
 {
 	viewport_data.aspect_ratio = qMin(width, height);
 	glViewport(0, 0, width, height);
@@ -126,7 +129,7 @@ void ModelViewport::resizeGL(int width, int height)
 }
 
 
-void ModelViewport::paintGL()
+void DisplacementsViewport::paintGL()
 {
 	assert(model != NULL);
 
@@ -138,7 +141,7 @@ void ModelViewport::paintGL()
 }
 
 
-void ModelViewport::mousePressEvent(QMouseEvent *event)
+void DisplacementsViewport::mousePressEvent(QMouseEvent *event)
 {
 	state->mousePressEvent(this, event);
 
@@ -146,7 +149,7 @@ void ModelViewport::mousePressEvent(QMouseEvent *event)
 }
 
 
-void ModelViewport::mouseMoveEvent(QMouseEvent *event)
+void DisplacementsViewport::mouseMoveEvent(QMouseEvent *event)
 {
 	state->mouseMoveEvent(this, event);
 
@@ -154,7 +157,7 @@ void ModelViewport::mouseMoveEvent(QMouseEvent *event)
 }
 
 
-void ModelViewport::wheelEvent(QWheelEvent *event)
+void DisplacementsViewport::wheelEvent(QWheelEvent *event)
 {
 	viewport_data.zoom += event->delta()/1000.0f;
 	//qWarning("viewport_data.zoom: %f, %f",viewport_data.zoom, pow(2,viewport_data.zoom));
@@ -165,7 +168,7 @@ void ModelViewport::wheelEvent(QWheelEvent *event)
 }
 
 
-void ModelViewport::keyPressEvent( QKeyEvent *event)
+void DisplacementsViewport::keyPressEvent( QKeyEvent *event)
 {
 	qWarning("blah not keypressed");
 	state->keyPressEvent(this, event);
@@ -173,27 +176,17 @@ void ModelViewport::keyPressEvent( QKeyEvent *event)
 
 
 template <class NewState>
-void ModelViewport::setState(NewState *new_state)
+void DisplacementsViewport::setState(NewState *new_state)
 {
 	if(this->state != NULL) delete this->state;
 
-	this->state = new_state;	// the state's default starting point is Model
+	this->state = new_state;
 	this->state->initialize(this);
 	this->state->populateScenegraph(this);
 }
 
 
-/*
-template <>
-void ModelViewport::setState(VPStateModel *new_state)
-{
-	this->state = new_state;	// the state's default starting point is Model
-	this->state->populateScenegraph(this);
-}
-*/
-
-
-void ModelViewport::setXRotation(int angle)
+void DisplacementsViewport::setXRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[0] = angle;
@@ -202,7 +195,7 @@ void ModelViewport::setXRotation(int angle)
 }
 
 
-void ModelViewport::setYRotation(int angle)
+void DisplacementsViewport::setYRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[1] = angle;
@@ -211,7 +204,7 @@ void ModelViewport::setYRotation(int angle)
 }
 
 
-void ModelViewport::setZRotation(int angle)
+void DisplacementsViewport::setZRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[2] = angle;
@@ -220,9 +213,9 @@ void ModelViewport::setZRotation(int angle)
 }
 
 
-void ModelViewport::setPosition(int x, int y)
+void DisplacementsViewport::setPosition(int x, int y)
 {
-	mylog.setPrefix("ModelViewport::setPosition(int x, int y)");
+	mylog.setPrefix("DisplacementsViewport::setPosition(int x, int y)");
 	//TODO implement this
 	viewport_data.camera.pos.x(-x);
 	viewport_data.camera.pos.y(-y);
@@ -237,16 +230,30 @@ void ModelViewport::setPosition(int x, int y)
 }
 
 
-void ModelViewport::showModel()
+/*
+void DisplacementsViewport::showModel()
 {
 	// set the state
 	VPStateModel* state = new VPStateModel;
 
 	this->setState(state);
 }
+*/
 
 
-void ModelViewport::normalizeAngle(int *angle)
+void DisplacementsViewport::showDisplacements(fem::AnalysisResult<double> &analysis)
+{
+	// setup the displacements map
+
+	// set the state
+	VPStateDisplacements* state = new VPStateDisplacements;
+
+	this->setState(state);
+	state->setDisplacements(analysis);
+}
+
+
+void DisplacementsViewport::normalizeAngle(int *angle)
 {
 	while (*angle < 0)
 		*angle += 360 * 16;

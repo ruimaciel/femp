@@ -25,6 +25,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem/elements/Prism18.h++ \
 	viewer/ViewportData.h++ \
 	viewer/Camera.h++  viewer/DisplayOptions.h++  viewer/ModelViewport.h++  viewer/ViewportColors.h++  \
+	viewer/DisplacementsViewport.h++  \
 	viewer/ViewportStates/ViewportState.h++  viewer/ViewportStates/VPStateModel.h++ viewer/ViewportStates/VPStateDisplacements.h++ \
 	viewer/SceneGraph.h++ viewer/SceneGraphComponents/SceneGraphComponent.h++ viewer/SceneGraphComponents/SGCSurface.h++ viewer/SceneGraphComponents/SGCNode.h++ \
 	viewer/SceneGraphComponents/SGCDisplacementSurface.h++ viewer/SceneGraphComponents/SGCDisplacementOriginalSurface.h++ \
@@ -55,7 +56,8 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
 	viewer/ViewportData.c++ \
 	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ModelViewport.c++  viewer/ViewportColors.c++  \
-	viewer/ViewportStates/ViewportState.c++  viewer/ViewportStates/VPStateModel.c++ viewer/ViewportStates/VPStateDisplacements.c++ \
+	viewer/DisplacementsViewport.c++  \
+	viewer/ViewportStates/VPStateModel.c++ viewer/ViewportStates/VPStateDisplacements.c++ \
 	viewer/SceneGraph.c++ viewer/SceneGraphComponents/SceneGraphComponent.c++ viewer/SceneGraphComponents/SGCSurface.c++ viewer/SceneGraphComponents/SGCNode.c++ \
 	viewer/SceneGraphComponents/OpaqueSurface/SurfaceTriangle3.c++\
 	viewer/SceneGraphComponents/OpaqueSurface/SurfaceTriangle6.c++\

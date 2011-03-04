@@ -28,7 +28,7 @@
 
 
 VPStateModel::VPStateModel()
-	: ViewportState()
+	: ViewportState<ModelViewport>()
 { 
 }
 
@@ -121,7 +121,7 @@ void VPStateModel::paintGL(ModelViewport *mv)
 
 
 	//TODO finish implementing this
-	this->scenegraph.paint(mv);
+	this->scenegraph.paint(mv->viewport_data, *mv->model, mv->colors);
 }
 
 

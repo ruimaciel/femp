@@ -699,6 +699,18 @@ void MainWindow::setElementDisplay()
 				}
 				break;
 
+			case MdiWindowProperties::MWP_Displacements:
+				{
+					mylog.message("MWP_Displacements");
+					DisplacementsViewport *w = static_cast<DisplacementsViewport *>(mwp);
+
+					// set the position
+					w->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
+					w->display_options.surfaces	= this->ui.actionDisplaySurfaces->isChecked()?1:0;
+					w->display_options.wireframe	= this->ui.actionDisplayWireframe->isChecked()?1:0;
+				}
+				break;
+
 			default:
 				mylog.message("void MainWindow::setElementDisplay(): unsupported case");
 				break;
@@ -905,10 +917,13 @@ void MainWindow::showModel()
 	if(window != NULL)
 	{
 		window->setWindowTitle("Model");
-		ModelViewport *viewport;	// opengl viewport
-		viewport = static_cast<ModelViewport *>(window->widget());
-		
-		viewport->showModel();
+
+		ModelViewport *viewport = new ModelViewport(&document.model, this);
+		window->setWidget(viewport);
+	}
+	else
+	{
+		qWarning("MainWindow::showModel(): no active subwindow");
 	}
 }
 
@@ -921,10 +936,13 @@ void MainWindow::showDisplacements()
 	if(window != NULL)
 	{
 		window->setWindowTitle("Displacements");
-		ModelViewport *viewport;	// opengl viewport
-		viewport = static_cast<ModelViewport *>(window->widget());
-		
-		viewport->showDisplacements(analysis_result);
+
+		DisplacementsViewport *viewport = new DisplacementsViewport(&document.model, analysis_result,  this);
+		window->setWidget(viewport);
+	}
+	else
+	{
+		qWarning("MainWindow::showDisplacements(): no active subwindow");
 	}
 }
 
@@ -968,6 +986,18 @@ void MainWindow::setViewportXY()
 				{
 					mylog.message("MWP_Model");
 					ModelViewport *w = static_cast<ModelViewport *>(mwp);
+
+					// set the position
+					w->setXRotation(0);
+					w->setYRotation(0);
+					w->setZRotation(0);
+				}
+				break;
+
+			case MdiWindowProperties::MWP_Displacements:
+				{
+					mylog.message("MWP_Displacements");
+					DisplacementsViewport *w = static_cast<DisplacementsViewport *>(mwp);
 
 					// set the position
 					w->setXRotation(0);
@@ -1164,8 +1194,25 @@ void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)
 					this->ui.actionShowNodalForces->setChecked(w->display_options.nodal_forces);
 					this->ui.actionShowSurfaceForces->setChecked(w->display_options.surface_forces);
 					this->ui.actionShowDomainForces->setChecked(w->display_options.domain_forces);
+				}
+				break;
 
-					//TODO finish this
+			case MdiWindowProperties::MWP_Displacements:
+				{
+					//mylog.message("MWP_Model");
+					DisplacementsViewport *w = static_cast<DisplacementsViewport *>(mwp);
+
+					// update the UI according to this window's options
+					this->ui.actionDisplayNodes->setChecked(w->display_options.nodes);
+					this->ui.actionDisplaySurfaces->setChecked(w->display_options.surfaces);
+					this->ui.actionDisplayWireframe->setChecked(w->display_options.wireframe);
+
+					// change combo box
+					//TODO set the combo box to the current load pattern
+					this->ui.actionShowNodalDisplacements->setChecked(w->display_options.nodal_displacements);
+					this->ui.actionShowNodalForces->setChecked(w->display_options.nodal_forces);
+					this->ui.actionShowSurfaceForces->setChecked(w->display_options.surface_forces);
+					this->ui.actionShowDomainForces->setChecked(w->display_options.domain_forces);
 				}
 				break;
 

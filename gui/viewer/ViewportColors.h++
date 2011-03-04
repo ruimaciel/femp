@@ -5,10 +5,10 @@
 
 struct ViewportColors {
 	ViewportColors ();
-	~ViewportColors ();
 
 	// set of color options
-	GLfloat node[4];
+	GLfloat node[4];	// node colors
+	GLfloat restraints[4];	// color for the cinematic restraints
 	GLfloat selected[4];
 
 	GLfloat wireframe[4];

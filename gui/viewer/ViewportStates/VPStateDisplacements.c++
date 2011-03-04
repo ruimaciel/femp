@@ -4,6 +4,8 @@
 #include <list>
 #include <algorithm>
 
+#include <assert.h>
+
 #include <GL/gl.h>
 #include <GL/glu.h>	// for gluQuadric()
 
@@ -12,7 +14,7 @@
 #include "../../fem/Model.h++"
 #include "../../fem/Surface.h++"
 
-#include "../ModelViewport.h++"
+#include "../DisplacementsViewport.h++"
 
 #include "ui/DialogScale.h++"
 
@@ -24,7 +26,7 @@
 
 
 VPStateDisplacements::VPStateDisplacements()
-	: ViewportState()
+	: ViewportState<DisplacementsViewport>()
 { 
 	original_nodes = NULL;
 }
@@ -37,9 +39,9 @@ VPStateDisplacements::~VPStateDisplacements()
 }
 
 
-void VPStateDisplacements::initialize(ModelViewport *mv)
+void VPStateDisplacements::initialize(DisplacementsViewport *viewport)
 {
-	original_nodes = &mv->model->node_list;
+	original_nodes = &viewport->model->node_list;
 
 	// build the displaced_nodes from the analysis
 
@@ -47,20 +49,20 @@ void VPStateDisplacements::initialize(ModelViewport *mv)
 }
 
 
-void VPStateDisplacements::populateScenegraph(ModelViewport *mv)
+void VPStateDisplacements::populateScenegraph(DisplacementsViewport *viewport)
 {
-	mylog.setPrefix("void VPStateDisplacements::populateScenegraph(fem::Model *mv->model)");
+	mylog.setPrefix("void VPStateDisplacements::populateScenegraph(fem::Model *viewport->model)");
 
 	//TODO generate the scenegraph
 
 	// add the nodes to the scenegraph
-	for(std::map<size_t, fem::Node>::iterator i = mv->model->node_list.begin(); i != mv->model->node_list.end(); i++)
+	for(std::map<size_t, fem::Node>::iterator i = viewport->model->node_list.begin(); i != viewport->model->node_list.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(0, new SGCNode(i->first, i->second, mv->model->node_restrictions_list) );
+		this->scenegraph.addPrimitiveComponent(0, new SGCNode(i->first, i->second, viewport->model->node_restrictions_list) );
 	}
 
 	// add the surfaces to the scenegraph
-	for(std::list<fem::Surface>::iterator i = mv->model->surface_list.begin(); i != mv->model->surface_list.end(); i++)
+	for(std::list<fem::Surface>::iterator i = viewport->model->surface_list.begin(); i != viewport->model->surface_list.end(); i++)
 	{
 		if(i->external())
 		{
@@ -95,7 +97,7 @@ void VPStateDisplacements::populateScenegraph(ModelViewport *mv)
 	}
 
 	// add the transparent surfaces to the scenegraph
-	for(std::list<fem::Surface>::iterator i = mv->model->surface_list.begin(); i != mv->model->surface_list.end(); i++)
+	for(std::list<fem::Surface>::iterator i = viewport->model->surface_list.begin(); i != viewport->model->surface_list.end(); i++)
 	{
 		if(i->external())
 		{
@@ -133,26 +135,28 @@ void VPStateDisplacements::populateScenegraph(ModelViewport *mv)
 }
 
 
-void VPStateDisplacements::paintGL(ModelViewport *mv)
+void VPStateDisplacements::paintGL(DisplacementsViewport *viewport)
 {
+	assert(viewport != NULL);
+
 	mylog.setPrefix("VPStateDisplacements::paintGL()");
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	mv->viewport_data.camera.reposition();
+	viewport->viewport_data.camera.reposition();
 
 	//mylog.message("painting");
 
-	this->scenegraph.paint(mv);
+	this->scenegraph.paint(viewport->viewport_data, *viewport->model, viewport->colors);
 
 }
 
 
-void VPStateDisplacements::mousePressEvent(ModelViewport *mv, QMouseEvent *event)
+void VPStateDisplacements::mousePressEvent(DisplacementsViewport *viewport, QMouseEvent *event)
 {
-	mv->viewport_data.lastPos = event->pos();
+	viewport->viewport_data.lastPos = event->pos();
 	// process left clicks
 	if(event->buttons() & Qt::LeftButton)
 	{
@@ -175,21 +179,21 @@ void VPStateDisplacements::mousePressEvent(ModelViewport *mv, QMouseEvent *event
 }
 
 
-void VPStateDisplacements::keyPressEvent ( ModelViewport *mv, QKeyEvent * event )
+void VPStateDisplacements::keyPressEvent ( DisplacementsViewport *viewport, QKeyEvent * event )
 {
 	qWarning("keypressed");
 	switch( event->key() )
 	{
 		case Qt::Key_S:	// change the displacements scale
 			{
-				DialogScale ds(1.0f, mv);
+				DialogScale ds(1.0f, viewport);
 				switch(ds.exec())
 				{
 					case QDialog::Accepted:
 						this->setDisplacementScale(ds.scale());
 
 						//update the scene
-						mv->updateGL();
+						viewport->updateGL();
 						break;
 
 					default:

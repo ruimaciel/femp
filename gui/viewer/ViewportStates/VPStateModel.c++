@@ -17,7 +17,6 @@
 
 #include "../SceneGraph.h++"
 #include "../SceneGraphComponents/SGCNode.h++"
-#include "../SceneGraphComponents/SGCSurface.h++"
 #include "../SceneGraphComponents/SGCModelSurface.h++"
 #include "../SceneGraphComponents/OpaqueSurface/SurfaceTriangle3.h++"
 #include "../SceneGraphComponents/OpaqueSurface/SurfaceTriangle6.h++"
@@ -67,7 +66,6 @@ void VPStateModel::populateScenegraph(ModelViewport *mv)
 	{
 		if(i->external())
 		{
-			// this->scenegraph.addPrimitiveComponent(new SGCSurface(*i) );
 			switch(i->getType())
 			{
 				case fem::Element::FE_TRIANGLE3:

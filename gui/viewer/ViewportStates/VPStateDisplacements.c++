@@ -20,7 +20,6 @@
 
 #include "../SceneGraph.h++"
 #include "../SceneGraphComponents/SGCNode.h++"
-#include "../SceneGraphComponents/SGCSurface.h++"	// test purposes only
 #include "../SceneGraphComponents/SGCDisplacementSurface.h++"
 #include "../SceneGraphComponents/SGCDisplacementOriginalSurface.h++"
 #include "../SceneGraphComponents/OpaqueSurface/surfaces.h++"
@@ -68,7 +67,6 @@ void VPStateDisplacements::populateScenegraph(DisplacementsViewport *viewport)
 	{
 		if(i->external())
 		{
-			//this->scenegraph.addPrimitiveComponent(new SGCSurface(*i) );
 			switch(i->getType())
 			{
 				case fem::Element::FE_TRIANGLE3:
@@ -103,7 +101,6 @@ void VPStateDisplacements::populateScenegraph(DisplacementsViewport *viewport)
 	{
 		if(i->external())
 		{
-			//this->scenegraph.addPrimitiveComponent(new SGCSurface(*i) );
 			switch(i->getType())
 			{
 				case fem::Element::FE_TRIANGLE3:

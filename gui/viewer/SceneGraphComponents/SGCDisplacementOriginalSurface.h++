@@ -10,6 +10,9 @@
 #include "../../fem/Surface.h++"
 
 
+/*
+SceneGraph object that is intended to represent a surface in it's original undeformed configuration
+*/
 template<class SurfacePolicy>
 class SGCDisplacementOriginalSurface
 	: public SceneGraphComponent, public SurfacePolicy

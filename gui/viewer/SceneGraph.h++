@@ -13,9 +13,6 @@
 #include "../fem/Model.h++"
 
 
-class ModelViewport;
-
-
 /*
 Facade pattern for the scenegraph structure
 */
@@ -38,6 +35,14 @@ class SceneGraph
 			   Generate a new scenegraph tree from the current list of primitive components
 			*/
 			void generateSceneGraph();
+		};
+	public:
+		enum Groups 	// common groups for all scenegraphs
+		{
+			RG_NODES,	// the element nodes
+			RG_SURFACES,	// the opaque surfaces used in ModelViewport an DisplacementsViewport
+			RG_WIREFRAME,	// wireframe of the opaque surfaces.  This group and RG_SURFACES are mutually explusive
+			RG_GHOST_SURFACES	// surfaces rendered in the displacement viewport to show the model's original configuration
 		};
 
 	public:

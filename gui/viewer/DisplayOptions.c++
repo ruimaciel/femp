@@ -17,7 +17,6 @@ void DisplayOptions::setDefaultOptions()
 {
 	nodes = 1;
 	surfaces = 1;
-	wireframe = 1;
 
 	nodal_forces = 0;
 	surface_forces = 0;

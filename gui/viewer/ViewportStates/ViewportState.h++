@@ -11,8 +11,6 @@
 #include "../SceneGraph.h++"
 
 
-class Viewport;
-
 /*
 The base state pattern that is used to implement the Viewport's model rendering states
 */
@@ -33,6 +31,14 @@ class ViewportState
 		*/
 		virtual void populateScenegraph(Viewport *viewport) = 0;
 
+
+		/**
+		Sets the visibility of a SceneGraph render group
+		@param	group	scene graph render group code, as defined in class SceneGraph
+		@param	state	true if visible, false if invisible
+		**/
+		void setRenderGoupVisibility(SceneGraph::Groups group, bool state);
+
 		/*
 		Routine which will paint each OpenGL scene
 		*/
@@ -41,6 +47,13 @@ class ViewportState
 		virtual void mouseMoveEvent(Viewport *viewport, QMouseEvent *event);
 		virtual void keyPressEvent ( Viewport *viewport, QKeyEvent * event );
 };
+
+
+template<class Viewport>
+void ViewportState<Viewport>::setRenderGoupVisibility(SceneGraph::Groups group, bool state)
+{
+	this->scenegraph.rendering_groups[group].render = state;
+}
 
 
 template <class Viewport>

@@ -350,7 +350,6 @@ void MainWindow::createActions()
 	connect(ui.actionEditMaterials,	SIGNAL(triggered()),	this,	SLOT(editMaterials()));
 	connect(ui.actionDisplayNodes,	SIGNAL(triggered()), this,	SLOT(setElementDisplay()));
 	connect(ui.actionDisplaySurfaces,	SIGNAL(triggered()), this,	SLOT(setElementDisplay()));
-	connect(ui.actionDisplayWireframe,	SIGNAL(triggered()), this,	SLOT(setElementDisplay()));
 
 	connect(ui.actionWindowTile,	SIGNAL(triggered()), this,	SLOT(setTiledWindows()));
 	connect(ui.actionWindowCascade,	SIGNAL(triggered()), this,	SLOT(setCascadeWindows()));
@@ -371,7 +370,6 @@ void MainWindow::createToolBars()
 	visibilityToolBar = addToolBar(tr("Visibility"));
 	visibilityToolBar->addAction(ui.actionDisplayNodes);
 	visibilityToolBar->addAction(ui.actionDisplaySurfaces);
-	visibilityToolBar->addAction(ui.actionDisplayWireframe);
 
 	// build the viewport toolbar
 	viewportToolBar = addToolBar(tr("Viewport"));
@@ -693,9 +691,10 @@ void MainWindow::setElementDisplay()
 					ModelViewport *w = static_cast<ModelViewport *>(mwp);
 
 					// set the position
-					w->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
-					w->display_options.surfaces	= this->ui.actionDisplaySurfaces->isChecked()?1:0;
-					w->display_options.wireframe	= this->ui.actionDisplayWireframe->isChecked()?1:0;
+					//w->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
+					//w->display_options.surfaces	= this->ui.actionDisplaySurfaces->isChecked()?1:0;
+					w->setNodeVisibility(this->ui.actionDisplayNodes->isChecked());
+					w->setSurfaceVisibility(this->ui.actionDisplaySurfaces->isChecked());
 				}
 				break;
 
@@ -705,9 +704,10 @@ void MainWindow::setElementDisplay()
 					DisplacementsViewport *w = static_cast<DisplacementsViewport *>(mwp);
 
 					// set the position
-					w->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
-					w->display_options.surfaces	= this->ui.actionDisplaySurfaces->isChecked()?1:0;
-					w->display_options.wireframe	= this->ui.actionDisplayWireframe->isChecked()?1:0;
+					//w->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
+					//w->display_options.surfaces	= this->ui.actionDisplaySurfaces->isChecked()?1:0;
+					w->setNodeVisibility(this->ui.actionDisplayNodes->isChecked());
+					w->setSurfaceVisibility(this->ui.actionDisplaySurfaces->isChecked());
 				}
 				break;
 
@@ -1186,7 +1186,6 @@ void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)
 					// update the UI according to this window's options
 					this->ui.actionDisplayNodes->setChecked(w->display_options.nodes);
 					this->ui.actionDisplaySurfaces->setChecked(w->display_options.surfaces);
-					this->ui.actionDisplayWireframe->setChecked(w->display_options.wireframe);
 
 					// change combo box
 					//TODO set the combo box to the current load pattern
@@ -1205,7 +1204,6 @@ void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)
 					// update the UI according to this window's options
 					this->ui.actionDisplayNodes->setChecked(w->display_options.nodes);
 					this->ui.actionDisplaySurfaces->setChecked(w->display_options.surfaces);
-					this->ui.actionDisplayWireframe->setChecked(w->display_options.wireframe);
 
 					// change combo box
 					//TODO set the combo box to the current load pattern
@@ -1243,7 +1241,6 @@ void MainWindow::setUserInterfaceAsOpened()
 
 	ui.actionDisplayNodes->setChecked(true);
 	ui.actionDisplaySurfaces->setChecked(true);
-	ui.actionDisplayWireframe->setChecked(true);
 
 	// set the new viewport widget
 	ModelViewport *viewport;	// opengl viewport

@@ -14,7 +14,6 @@ struct DisplayOptions {
 	// boolean
 	unsigned int nodes:		1;
 	unsigned int surfaces:		1;
-	unsigned int wireframe:		1;
 
 	unsigned int nodal_forces: 	1;
 	unsigned int surface_forces: 	1;

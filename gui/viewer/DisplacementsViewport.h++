@@ -33,6 +33,7 @@ class DisplacementsViewport
 	public:
 		ViewportData viewport_data;
 		ViewportColors colors;	// color definitions
+		DisplayOptions display_options;	// options list to be used by the render routine
 
 		fem::Model *model;
 
@@ -50,6 +51,13 @@ class DisplacementsViewport
 
 		template <class NewState>
 		void setState(NewState *);
+
+		/*
+		sets if the element nodes are visible
+		@param	state	true if nodes should be visible, false if they shouldn't be rendered
+		*/
+		void setNodeVisibility(bool state);
+		void setSurfaceVisibility(bool state);
 
 
 	public Q_SLOTS:
@@ -77,10 +85,6 @@ class DisplacementsViewport
 		void mouseMoveEvent(QMouseEvent *event);
 		void wheelEvent(QWheelEvent *event);
 		void keyPressEvent ( QKeyEvent * event );
-
-	public:
-		DisplayOptions display_options;	// options list to be used by the render routine
-
 
 	protected:
 		void normalizeAngle(int *angle);

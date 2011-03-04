@@ -244,17 +244,6 @@
     <string>Actions</string>
    </property>
   </action>
-  <action name="actionDisplayWireframe">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Wireframe</string>
-   </property>
-  </action>
   <action name="actionDisplaySurfaces">
    <property name="checkable">
     <bool>true</bool>

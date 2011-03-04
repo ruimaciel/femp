@@ -40,6 +40,21 @@ void ModelViewport::setColors(ViewportColors &new_colors)
 }
 
 
+void ModelViewport::setNodeVisibility(bool state)
+{
+	this->state->setRenderGoupVisibility(SceneGraph::RG_NODES, state);
+	this->display_options.nodes = state;
+}
+
+
+void ModelViewport::setSurfaceVisibility(bool state)
+{
+	this->state->setRenderGoupVisibility(SceneGraph::RG_SURFACES, state);
+	this->state->setRenderGoupVisibility(SceneGraph::RG_WIREFRAME, !state);
+	this->display_options.surfaces = state;
+}
+
+
 QSize ModelViewport::minimumSizeHint() const
 {
 	return QSize(50, 50);

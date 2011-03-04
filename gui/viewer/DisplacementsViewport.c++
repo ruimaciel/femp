@@ -43,6 +43,21 @@ void DisplacementsViewport::setColors(ViewportColors &new_colors)
 }
 
 
+void DisplacementsViewport::setNodeVisibility(bool state)
+{
+	this->state->setRenderGoupVisibility(SceneGraph::RG_NODES, state);
+	this->display_options.nodes = state;
+}
+
+
+void DisplacementsViewport::setSurfaceVisibility(bool state)
+{
+	this->state->setRenderGoupVisibility(SceneGraph::RG_SURFACES, state);
+	this->state->setRenderGoupVisibility(SceneGraph::RG_WIREFRAME, !state);
+	this->display_options.surfaces = state;
+}
+
+
 QSize DisplacementsViewport::minimumSizeHint() const
 {
 	return QSize(50, 50);

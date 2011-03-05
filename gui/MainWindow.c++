@@ -281,6 +281,7 @@ void MainWindow::closeProject()
 
 	// free everything
 	document.clear();
+	analysis_result.clear();
 
 	//TODO finish this
 }

@@ -24,18 +24,15 @@ void WireframeSurfaceTriangle3::paintGL(ViewportData &data, fem::Model *model, V
 
 	int partitions = 4;	//TODO implement a better code
 
-	// temp code to help with the copy/paste
 	fem::point p1 = (*node_list)[surface->nodes[0]];
 	fem::point p2 = (*node_list)[surface->nodes[1]];
 	fem::point p3 = (*node_list)[surface->nodes[2]];
 
-	fem::point temp;
-	temp = getNormalVector(p1,p2,p3);
-	glBegin(GL_TRIANGLES);
-	glNormal3dv(temp.data);
+	glBegin(GL_LINE_STRIP);
 	glVertex3dv(p1.data);
 	glVertex3dv(p2.data);
 	glVertex3dv(p3.data);
+	glVertex3dv(p1.data);
 	glEnd();
 }
 

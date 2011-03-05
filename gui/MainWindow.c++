@@ -1043,6 +1043,18 @@ void MainWindow::setViewportYZ()
 				}
 				break;
 
+			case MdiWindowProperties::MWP_Displacements:
+				{
+					mylog.message("MWP_Displacements");
+					DisplacementsViewport *w = static_cast<DisplacementsViewport *>(mwp);
+
+					// set the position
+					w->setXRotation(0);
+					w->setYRotation(270);
+					w->setZRotation(0);
+				}
+				break;
+
 			default:
 				mylog.message("void MainWindow::setViewportXY(): unsupported case");
 				break;
@@ -1080,6 +1092,17 @@ void MainWindow::setViewportXZ()
 				}
 				break;
 
+			case MdiWindowProperties::MWP_Displacements:
+				{
+					mylog.message("MWP_Displacements");
+					DisplacementsViewport *w = static_cast<DisplacementsViewport *>(mwp);
+
+					// set the view angle
+					w->setXRotation(90);
+					w->setYRotation(0);
+					w->setZRotation(0);
+				}
+				break;
 			default:
 				mylog.message("void MainWindow::setViewportXZ(): unsupported case");
 				break;
@@ -1109,6 +1132,18 @@ void MainWindow::setViewportIso()
 				{
 					mylog.message("MWP_Model");
 					ModelViewport *w = static_cast<ModelViewport *>(mwp);
+
+					// set the view angle
+					w->setXRotation(45);
+					w->setYRotation(45);
+					w->setZRotation(0);
+				}
+				break;
+
+			case MdiWindowProperties::MWP_Displacements:
+				{
+					mylog.message("MWP_Displacements");
+					DisplacementsViewport *w = static_cast<DisplacementsViewport *>(mwp);
 
 					// set the view angle
 					w->setXRotation(45);

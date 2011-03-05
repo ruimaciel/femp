@@ -27,8 +27,6 @@ struct AnalysisResult
 
 
 	void clear();
-	void output_fem_equation(std::ostream &out);
-	void output_displacements(std::ostream &out);
 };
 
 
@@ -39,78 +37,8 @@ void AnalysisResult<Scalar>::clear()
 	K.clear();
 	f.clear();
 	d.clear();
-}
 
-
-template<typename Scalar>
-void AnalysisResult<Scalar>::output_fem_equation(std::ostream &out)
-{
-	out << "\t\"fem equation\" : {\n";
-
-	// output stiffness matrix
-	out << "\t\t\"stiffness matrix\" : [\n";
-	for(size_t i = 0; i < K.rows(); i++)
-	{
-		out << "\t\t\t[";
-		for(size_t j = 0; j < K.columns(); j++)
-		{
-			if(j != 0)
-				out << ",";
-			out << "\t" << K.value(i,j);
-		}
-		out << "]";
-		if(i + 1 < K.rows())
-			out << ",";
-		out << "\n";
-	}
-	out << "\t\t],\n";
-
-	// output force vector
-	out << "\t\t\"force vector\" : [\n";
-	for(size_t i = 0; i < f.size(); i++)
-	{
-		out << "\t\t\t";
-		out << f.value(i);
-		if(i +1 < f.size() )
-			out << ",";
-		out << "\n";
-	}
-	out << "\t\t]\n";
-
-	out << "\t},\n";
-}
-
-
-template<typename Scalar>
-void AnalysisResult<Scalar>::output_displacements(std::ostream &out)
-{
-	using namespace std;
-
-	// output displacements field
-	out << "\t\"displacement\": [";
-	size_t n = 0;
-	bool first = true;
-	for(map<size_t, boost::tuple<size_t,size_t,size_t> >::const_iterator i = lm.begin(); i != lm.end(); i++)
-	{
-		if( (i->second.get<0>() == 0)&& (i->second.get<1>() == 0) &&  (i->second.get<1>() == 0) )
-			continue;
-
-		if(!first)
-			out << ",";
-		else
-			first = false;
-
-		out << "\n\t\t{ \"node\": " << i->first;
-		if(i->second.get<0>() != 0)
-			out << ", \"dx\": " << d(n++);
-		if(i->second.get<1>() != 0)
-			out << ", \"dy\": " << d(n++);
-		if(i->second.get<2>() != 0)
-			out << ", \"dz\": " << d(n++);
-		out << "}";
-	}
-
-	out << "\n\t]\n";
+	lm.clear();
 }
 
 

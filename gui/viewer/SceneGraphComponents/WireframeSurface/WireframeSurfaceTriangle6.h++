@@ -43,6 +43,7 @@ void WireframeSurfaceTriangle6::paintGL(ViewportData &data, fem::Model *model, V
      0-----3----1 --> u 
 
 */
+	glColor3fv(colors.wireframe);
 	glBegin(GL_LINE_STRIP); 
 	for(int i = 0; i <= partitions; i++) 
 	{ 

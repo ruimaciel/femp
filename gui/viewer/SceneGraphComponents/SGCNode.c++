@@ -38,20 +38,6 @@ void SGCNode::paintGL(ViewportData &data, fem::Model *model, ViewportColors &col
 	
 	glScalef(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
 
-	//TODO find a better rendering for the nodes
-	glColor3fv(colors.node);
-	glBegin(GL_LINES);
-		glColor3f(1.0f,0.0f,0.0f);
-		glVertex3i(0,0,0);
-		glVertex3i(2,0,0);
-		glColor3f(0.0f,1.0f,0.0f);
-		glVertex3i(0,0,0);
-		glVertex3i(0,2,0);
-		glColor3f(0.0f,0.0f,1.0f);
-		glVertex3i(0,0,0);
-		glVertex3i(0,0,2);
-	glEnd();
-
 	//TODO paint selected node in a different color
 	// paint the nodal sphere
 	/*

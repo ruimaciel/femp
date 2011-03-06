@@ -41,6 +41,7 @@ void WireframeSurfaceQuad8::paintGL(ViewportData &data, fem::Model *model, Viewp
 	|         |
 	1 -- 5 -- 2 --> x
 */
+	glColor3fv(colors.wireframe);
 	glBegin(GL_LINE_STRIP); 
 	for(int i = 0; i <= partitions; i++) 
 	{ 

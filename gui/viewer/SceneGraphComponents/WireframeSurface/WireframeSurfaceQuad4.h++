@@ -40,6 +40,7 @@ void WireframeSurfaceQuad4::paintGL(ViewportData &data, fem::Model *model, Viewp
 	1 ------ 2 --> x
 */
 
+	glColor3fv(colors.wireframe);
 	glBegin(GL_LINE_STRIP);
 	glVertex3dv(p1.data);
 	glVertex3dv(p2.data);

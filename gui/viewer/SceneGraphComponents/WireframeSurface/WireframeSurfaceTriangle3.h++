@@ -28,6 +28,7 @@ void WireframeSurfaceTriangle3::paintGL(ViewportData &data, fem::Model *model, V
 	fem::point p2 = (*node_list)[surface->nodes[1]];
 	fem::point p3 = (*node_list)[surface->nodes[2]];
 
+	glColor3fv(colors.wireframe);
 	glBegin(GL_LINE_STRIP);
 	glVertex3dv(p1.data);
 	glVertex3dv(p2.data);

@@ -17,6 +17,7 @@ void SurfaceTriangle3::paintGL(ViewportData &data, fem::Model *model, ViewportCo
 
 	fem::point temp;
 	temp = getNormalVector(p1,p2,p3);
+	glColor3fv(colors.surface);
 	glBegin(GL_TRIANGLES);
 	glNormal3dv(temp.data);
 	glVertex3dv(p1.data);

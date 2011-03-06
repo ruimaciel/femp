@@ -60,7 +60,6 @@ void SurfaceQuad9::paintGL(ViewportData &data, fem::Model *model, ViewportColors
 		n_lower_row[i] = fem::cross_product(dndx, dndy);
 	}
 
-	glColor3fv(colors.surface);
 	// the rest of the loop
 	for (int j = 1; j <= partitions; j++)  
 	{ 

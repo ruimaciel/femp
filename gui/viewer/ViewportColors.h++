@@ -15,13 +15,6 @@ struct ViewportColors {
 	GLfloat surface[4];
 	GLfloat original_surface[4];	// displacement: for surfaces for the model in the original configuration
 
-	GLfloat tetrahedron4[4];	// remove
-	GLfloat tetrahedron10[4];	// remove
-	GLfloat hexahedron8[4];	// remove
-	GLfloat hexahedron20[4];	// remove
-	GLfloat hexahedron27[4];	// remove
-	GLfloat prism6[4];
-
 	GLfloat arrow[4];
 	
 	GLfloat background[4];

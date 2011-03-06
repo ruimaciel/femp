@@ -63,7 +63,6 @@ void SurfaceTriangle6::paintGL(ViewportData &data, fem::Model *model, ViewportCo
 		n_lower_row[i] = fem::cross_product(dndx, dndy);
 	}
 
-	glColor3fv(colors.surface);
 	// the rest of the loop
 	for (int j = 1, i; j <= partitions; j++)  
 	{ 

@@ -24,9 +24,6 @@ void SGCNode::setReferenceNode(fem::Node &referenced_node)
 {
 	this->node = &referenced_node;
 
-	mylog.setPrefix("SGCNode::setReferenceNode()");
-	mylog.message("yet to be implemented");
-
 	//TODO adjust boundary to this surface
 }
 

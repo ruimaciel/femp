@@ -442,15 +442,12 @@ void MainWindow::loadOptions()
 	options.setDefault();
 	options.setOption("viewport.nodes.radius",10.0f);	// sets the default node radius
 	default_color.reserve(3);
+
 	default_color[0] = 0, default_color[1] = 0.8f, default_color[2] = 0.8f;
 	options.setOption("viewport.nodes.color",default_color);
-	default_color[0] = 0, default_color[1] = 0, default_color[2] = 0;
+
+	default_color[0] = 0.5f, default_color[1] = 0.5f, default_color[2] = 0;
 	options.setOption("viewport.wireframe.color",default_color);
-	default_color[0] = 0, default_color[1] = 0, default_color[2] = 1;
-	options.setOption("viewport.elements.tetrahedron4.color",default_color);
-	options.setOption("viewport.elements.tetrahedron10.color",default_color);
-	options.setOption("viewport.elements.hexahedron8.color",default_color);
-	options.setOption("viewport.elements.hexahedron27.color",default_color);
 
 	default_color[0] = 1, default_color[1] = 0, default_color[2] = 0;
 	options.setOption("viewport.arrows.color",default_color);
@@ -502,27 +499,6 @@ void MainWindow::loadOptions()
 				colors.wireframe[2] = temp[2]; 
 			} 
 		} 
-
-
-		// set up a helper function
-#define SET_ELEMENT_COLOR(ELEMENT) { \
-	if(options.getOption("viewport.elements."#ELEMENT".color",temp, std::vector<double>())) \
-	{ \
-		if(temp.size() == 3) \
-		{ \
-			colors.ELEMENT[0] = temp[0]; \
-			colors.ELEMENT[1] = temp[1]; \
-			colors.ELEMENT[2] = temp[2]; \
-		} \
-	} }
-
-		// let's set the element colors
-		SET_ELEMENT_COLOR(tetrahedron4);
-		SET_ELEMENT_COLOR(tetrahedron10);
-		SET_ELEMENT_COLOR(hexahedron8);
-		SET_ELEMENT_COLOR(hexahedron27);
-
-#undef SET_ELEMENT_COLOR
 
 		//TODO add code for the force arrows custom color code
 	}

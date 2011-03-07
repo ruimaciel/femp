@@ -44,8 +44,8 @@ struct Prism6
 template<typename T>
 Prism6<T>::Prism6()
 {
-	this->stiffness_degree = 5;
-	this->domain_degree = 1;
+	this->stiffness_degree = 2;
+	this->domain_degree = 2;
 
 	this->N.resize(6);
 	this->dNdcsi.resize(6);

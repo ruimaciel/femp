@@ -59,7 +59,7 @@
 		{	
 			"label": "First test pattern",
 			"nodal loads":[
-				{"node":2, "force":[1, 0, 0]}
+				{"node":3, "force":[1, 0, 0]}
 			],
 
 			"domain loads":[

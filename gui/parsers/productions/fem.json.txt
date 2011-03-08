@@ -1,0 +1,11 @@
+; Syntax specification for the fem.json ASCII file format, described in ABNF
+; following RFC 5234
+; http://tools.ietf.org/html/rfc5234
+
+<name separator>	= ":"
+
+<document>	=	"{"	<document v1.0>/<document v2.0>	"}"	<EOF>
+
+<document v1.0>	=	<header v1.0> <materials v1.0> <nodes v1.0> <elements v1.0> 0*1<node restrictions v1.0> 0*1<load patterns v1.0>
+
+"\"fem\"" <name separator> "1.0"

@@ -1,0 +1,76 @@
+; Syntax specification for the fem.json ASCII file format, described in ABNF
+; following RFC 5234
+; http://tools.ietf.org/html/rfc5234
+; this language should be a subset of the JSON document format, as described
+; following RFC 4627
+; http://tools.ietf.org/html/rfc4627
+
+<name-separator>	= ":"
+<value-separator>	= ","
+<begin-array>	= "["
+<end-array>	= "]"
+<begin-object>	= "{"
+<end-object>	= "}"
+<true>	= "true"
+<false>	= "false"
+<null>	= "null"
+
+<reference>	= "0" / [1-9] *[0-9] 
+
+<vector3d>	= <begin-array> <number> 2(<value-separator> <number>) <end-array>
+
+
+<document>	=	<begin-object> <header> <materials> <nodes> <elements> [<node restrictions>] [<load patterns>] <end-object>
+
+<header>	=	"\"fem\"" <name-separator> <begin-object> "\"version\"" <name-separator> "1.0" <value-separator> "\"type\" <name-separator> "\"3D solid\"" <end-object>
+
+<materials>	=	"\"materials\""	<name-separator> <begin-array> <material> *(<value-separator> <material>) <end-array>
+
+<material>	=	<begin-object> "\"type\"" <name-separator> "\"linear elastic\"" <value-separator> "\"label\"" <name-separator> <string> <value-separator> "\"E\"" <name-separator> <number> <value-separator> "\"nu\"" <name-separator> <number> <value-separator> "\"fy\"" <name-separator> <number> 
+
+
+<nodes>	= "\"nodes\"" <name-separator> <begin-array> <node> *(<value-separator> <node>) <end-array>
+
+<node>	<reference> <value-separator> <vector3d>
+
+<elements>	= 	"\"elements\"" : <begin-array> <element> *(<value-separator> <element>) <end-array>
+
+<element>	=	<begin-object> "\"type\"" <name-separator> "\"hexahedron8\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 7(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ]
+		=	<begin-object> "\"type\"" <name-separator> "\"hexahedron20\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 19(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ] 
+		=	<begin-object> "\"type\"" <name-separator> "\"hexahedron27\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 27(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ]
+		=	<begin-object> "\"type\"" <name-separator> "\"tetrahedron4\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 3(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ]
+		=	<begin-object> "\"type\"" <name-separator> "\"tetrahedron10\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 9(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ]
+		=	<begin-object> "\"type\"" <name-separator> "\"prism6\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 5(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ]
+		=	<begin-object> "\"type\"" <name-separator> "\"prism15\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 14(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ] 
+		=	<begin-object> "\"type\"" <name-separator> "\"prism18\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 17(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ]
+
+	
+<node restrictions>	=	"\"node restrictions\"" <name-separator> <begin-array> <node-restriction> *(<value-separator> <node-restriction>) <end-array>
+
+<node restriction>	=	<begin-object> "\"node\"" <name-separator> <reference> <value-separator> <restrictions> <end-object>
+
+<restrictions>	=	"\"dx\"" <name-separator> [<true> <false>] [<value separator> "\"dy\"" <name-separator> [<true> <false>] [<value separator> "\"dz"\" <name-separator> [<true> <false>] ] ] 
+		=	"\"dy\"" <name-separator> [<true> <false>] [<value separator> "\"dz"\" <name-separator> [<true> <false>] ] 
+		=	"\"dz\"" <name-separator> [<true> <false>] 
+
+<load patterns>	=	<begin-array> <load pattern> [<value-separator> <load pattern>] <end-array>
+
+<load pattern>	= <begin-object> "\"label\"" <name-separator> <string> <value-separator> <nodal loads> [<value-separator> <domain loads> [<value-separator> <surface loads>] ] <end-object>
+	= <begin-object> "\"label\"" <name-separator> <string> <value-separator> <domain loads> [<value-separator> <surface loads>] <end-object>
+	= <begin-object> "\"label\"" <name-separator> <string> <value-separator> <value-separator> <surface loads> <end-object>
+
+<nodal loads>	=	"\"nodal loads\"" <name-separator> <begin-array> <nodal-load> [<value-separator> <nodal-load> ] <end-array> 
+
+<nodal-load>	=	<begin-object> "\"node\"" <name-separator> <reference> <value-separator> "\"force\"" <name-separator> <vector3d> <end-object>
+
+<domain loads>	=	"\"domain loads\"" <name-separator> <begin-array> <domain-load> [<value-separator> <domain-load>] <end-array>
+
+<domain-load>	=	<begin-object> "\"element\"" <name-separator> <reference> <value-separator> "\"force\"" <name-separator> <vector3d> <end-object>
+
+<surface loads>	=	"\"surface loads\"" <name-separator> <begin-array> <surface-load> [<value-separator> <surface-load>] <end-array>
+
+<surface-load>	=	<begin-object> "\"type\"" <name-separator> "\"triangle3\"" <value-separator> "\"nodes\"" <name-separator> <begin-array> <reference> 2(<value-separator> <reference>) <name separator>"\"force\"" <name-separator> <begin-array> <vector3d> 2(<value-separator> <reference>) <end-array> <end-object>
+		=	<begin-object> "\"type\"" <name-separator> "\"triangle6\"" <value-separator> "\"nodes\"" <name-separator> <begin-array> <reference> 5(<value-separator> <reference>) <name separator>"\"force\"" <name-separator> <begin-array> <vector3d> 5(<value-separator> <reference>) <end-array> <end-object>
+		=	<begin-object> "\"type\"" <name-separator> "\"quadrangle4\"" <value-separator> "\"nodes\"" <name-separator> <begin-array> <reference> 3(<value-separator> <reference>) <name separator>"\"force\"" <name-separator> <begin-array> <vector3d> 3(<value-separator> <reference>) <end-array> <end-object>
+		=	<begin-object> "\"type\"" <name-separator> "\"quadrangle8\"" <value-separator> "\"nodes\"" <name-separator> <begin-array> <reference> 7(<value-separator> <reference>) <name separator>"\"force\"" <name-separator> <begin-array> <vector3d> 7(<value-separator> <reference>) <end-array> <end-object>
+		=	<begin-object> "\"type\"" <name-separator> "\"quadrangle9\"" <value-separator> "\"nodes\"" <name-separator> <begin-array> <reference> 8(<value-separator> <reference>) <name separator>"\"force\"" <name-separator> <begin-array> <vector3d> 8(<value-separator> <reference>) <end-array> <end-object>

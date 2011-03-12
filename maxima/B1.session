@@ -1,0 +1,9 @@
+;;; -*- Mode: LISP; package:maxima; syntax:common-lisp; -*- 
+(in-package :maxima)
+(DSKSETQ |$b1|
+         '(($MATRIX SIMP) ((MLIST . #0=(SIMP)) |$dNdx1| 0 0)
+           ((MLIST . #0#) 0 |$dNdx2| 0) ((MLIST . #0#) 0 0 |$dNdx3|)
+           ((MLIST . #0#) |$dNdx2| |$dNdx1| 0)
+           ((MLIST . #0#) |$dNdx3| 0 |$dNdx1|)
+           ((MLIST . #0#) 0 |$dNdx3| |$dNdx2|))) 
+(ADD2LNC '|$b1| $VALUES) 

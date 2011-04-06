@@ -3,8 +3,27 @@ project.new.default_directory	string	home folder subdirectory which acts as the 
 viewport.node.radius	number	sets the default scale for the sphere depicting the nodes
 viewport.node.color	number array	color
 viewport.wireframe.color	number array	the default value for the wireframe color
-viewport.elements.tetrahedron4.color	number array	element color
-viewport.elements.tetrahedron10.color	number array	element color
-viewport.elements.hexahedron8.color	number array	element color
-viewport.elements.hexahedron20.color	number array	element color
-viewport.elements.hexahedron27.color	number array	element color
+
+analysis.quadrature.domain.tetrahedron4	number
+analysis.quadrature.stiffness.tetrahedron4	number
+analysis.quadrature.stiffness.tetrahedron10	number
+analysis.quadrature.stiffness.hexahedron8	number
+analysis.quadrature.stiffness.hexahedron20	number
+analysis.quadrature.stiffness.hexahedron27	number
+analysis.quadrature.stiffness.prism6	number
+analysis.quadrature.stiffness.prism15	number
+analysis.quadrature.stiffness.prism18	number
+
+analysis.quadrature.domain.triangle3	number
+analysis.quadrature.domain.triangle6	number
+analysis.quadrature.domain.triangle10	number
+analysis.quadrature.domain.quadrangle4	number
+analysis.quadrature.domain.quadrangle8	number
+analysis.quadrature.domain.quadrangle9	number
+analysis.quadrature.domain.tetrahedron10	number
+analysis.quadrature.domain.hexahedron8	number
+analysis.quadrature.domain.hexahedron20	number
+analysis.quadrature.domain.hexahedron27	number
+analysis.quadrature.domain.prism6	number
+analysis.quadrature.domain.prism15	number
+analysis.quadrature.domain.prism18	number

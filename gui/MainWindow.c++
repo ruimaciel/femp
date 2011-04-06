@@ -86,7 +86,7 @@ void MainWindow::newProject()
 	std::string default_path, tmp;
 
 	default_path = getenv("HOME");
-	if(options.getOption("project.new.default_directory",tmp, ""))
+	if(options.getOption("project.new.default_directory",tmp))
 	{
 		default_path += "/" + tmp;
 	}
@@ -434,6 +434,8 @@ void MainWindow::destroyToolBars()
 
 void MainWindow::loadOptions()
 {
+	using namespace std;
+
 	std::ifstream is;
 	std::string path;
 	std::vector<double> default_color;
@@ -480,7 +482,7 @@ void MainWindow::loadOptions()
 	// set color options
 	{
 		std::vector<double> temp;
-		if(options.getOption("viewport.nodes.color",temp, std::vector<double>())) 
+		if(options.getOption("viewport.nodes.color",temp) )
 		{ 
 			if(temp.size() == 3) 
 			{ 
@@ -490,7 +492,7 @@ void MainWindow::loadOptions()
 			} 
 		} 
 
-		if(options.getOption("viewport.wireframe.color",temp, std::vector<double>())) 
+		if(options.getOption("viewport.wireframe.color",temp) )
 		{ 
 			if(temp.size() == 3) 
 			{ 
@@ -501,6 +503,195 @@ void MainWindow::loadOptions()
 		} 
 
 		//TODO add code for the force arrows custom color code
+	}
+
+	// set quadrature rules options for the stiffness matrix 
+	{
+		int temp = 0;
+
+		if(options.wasSet("analysis.quadrature.stiffness.tetrahedron4") )
+		{
+			if(options.getOption("analysis.quadrature.stiffness.tetrahedron4",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )
+					this->analysis.tetra4.stiffness_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.stiffness.tetrahedron10") )
+		{
+			if(options.getOption("analysis.quadrature.stiffness.tetrahedron10",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.tetra10.stiffness_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.stiffness.hexahedron8") )
+		{
+			if(options.getOption("analysis.quadrature.stiffness.hexahedron8",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.hexa8.stiffness_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.stiffness.hexahedron20") )
+		{
+			if(options.getOption("analysis.quadrature.stiffness.hexahedron20",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.hexa20.stiffness_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.stiffness.hexahedron27") )
+		{
+			if(options.getOption("analysis.quadrature.stiffness.hexahedron27",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.hexa27.stiffness_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.stiffness.prism6") )
+		{
+			if(options.getOption("analysis.quadrature.stiffness.prism6",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.prism6.stiffness_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.stiffness.prism15") )
+		{
+			if(options.getOption("analysis.quadrature.stiffness.prism15",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.prism15.stiffness_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.stiffness.prism18") )
+		{
+			if(options.getOption("analysis.quadrature.stiffness.prism18",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.prism18.stiffness_degree = temp;
+			}
+		}
+	}
+
+	// set quadrature rules options for the domain loads
+	{
+		int temp = 0;
+
+		if(options.wasSet("analysis.quadrature.domain.triangle3") )
+		{
+			if(options.getOption("analysis.quadrature.domain.triangle3",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.tri3.domain_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.domain.triangle6") )
+		{
+			if(options.getOption("analysis.quadrature.domain.triangle6",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.tri6.domain_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.domain.triangle10") )
+		{
+			if(options.getOption("analysis.quadrature.domain.triangle10",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.tri10.domain_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.domain.quadrangle4") )
+		{
+			if(options.getOption("analysis.quadrature.domain.quadrangle4",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.quad4.domain_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.domain.quadrangle8") )
+		{
+			if(options.getOption("analysis.quadrature.domain.quadrangle8",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.quad8.domain_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.domain.quadrangle9") )
+		{
+			if(options.getOption("analysis.quadrature.domain.quadrangle9",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.quad9.domain_degree = temp;
+			}
+		}
+
+		if(options.wasSet("analysis.quadrature.domain.tetrahedron4") )
+		{
+			if(options.getOption("analysis.quadrature.domain.tetrahedron4",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )
+					this->analysis.tetra4.domain_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.domain.tetrahedron10") )
+		{
+			if(options.getOption("analysis.quadrature.domain.tetrahedron10",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.tetra10.domain_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.domain.hexahedron8") )
+		{
+			if(options.getOption("analysis.quadrature.domain.hexahedron8",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.hexa8.domain_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.domain.hexahedron20") )
+		{
+			if(options.getOption("analysis.quadrature.domain.hexahedron20",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.hexa20.domain_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.domain.hexahedron27") )
+		{
+			if(options.getOption("analysis.quadrature.domain.hexahedron27",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.hexa27.domain_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.domain.prism6") )
+		{
+			if(options.getOption("analysis.quadrature.domain.prism6",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.prism6.domain_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.domain.prism15") )
+		{
+			if(options.getOption("analysis.quadrature.domain.prism15",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.prism15.domain_degree = temp;
+			}
+		}
+		if(options.wasSet("analysis.quadrature.domain.prism18") )
+		{
+			if(options.getOption("analysis.quadrature.domain.prism18",temp) )
+			{
+				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
+					this->analysis.prism18.domain_degree = temp;
+			}
+		}
 	}
 }
 

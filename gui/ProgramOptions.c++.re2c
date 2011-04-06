@@ -87,6 +87,13 @@ ProgramOptions::~ProgramOptions()
 {
 }
 
+void ProgramOptions::setOption(const std::string option, int value)
+{
+	Option op;
+	op.setOption((double)value, option_level);
+	options_list[option] = op;
+}
+
 
 void ProgramOptions::setOption(const std::string option, long int value)
 {
@@ -134,7 +141,32 @@ bool ProgramOptions::wasSet(const std::string text) const
 }
 
 
-bool ProgramOptions::getOption(const std::string op, long int &val, long int default_value)
+bool ProgramOptions::getOption(const std::string op, int &val)
+{
+	std::map<std::string, class Option>::iterator it;
+	it = options_list.find(op);
+	if(it != options_list.end())
+	{
+		if( it->second.isNumber())
+		{
+			val = (int)it->second.getNumber();
+			return true;
+		}
+		else
+		{
+			std::cerr << "option " << op << " isn't a number" << std::endl;
+			return false;
+		}
+	}
+	else
+	{
+		std::cerr << "option " << op << " wasn't set" << std::endl;
+		return false;
+	}
+}
+
+
+bool ProgramOptions::getOption(const std::string op, long int &val)
 {
 	std::map<std::string, class Option>::iterator it;
 	it = options_list.find(op);
@@ -148,20 +180,18 @@ bool ProgramOptions::getOption(const std::string op, long int &val, long int def
 		else
 		{
 			std::cerr << "option " << op << " isn't a number" << std::endl;
-			val = default_value;
 			return false;
 		}
 	}
 	else
 	{
 		std::cerr << "option " << op << " wasn't set" << std::endl;
-		val = default_value;
 		return false;
 	}
 }
 
 
-bool ProgramOptions::getOption(const std::string op, double &val, double default_value)
+bool ProgramOptions::getOption(const std::string op, double &val)
 {
 	std::map<std::string, class Option>::iterator it;
 	it = options_list.find(op);
@@ -175,20 +205,18 @@ bool ProgramOptions::getOption(const std::string op, double &val, double default
 		else
 		{
 			std::cerr << "option " << op << " isn't a float" << std::endl;
-			val = default_value;
 			return false;
 		}
 	}
 	else
 	{
 		std::cerr << "option " << op << " wasn't set" << std::endl;
-		val = default_value;
 		return false;
 	}
 }
 
 
-bool ProgramOptions::getOption(const std::string op, std::string &val, std::string default_value)
+bool ProgramOptions::getOption(const std::string op, std::string &val)
 {
 	std::map<std::string, class Option>::iterator it;
 	it = options_list.find(op);
@@ -202,20 +230,18 @@ bool ProgramOptions::getOption(const std::string op, std::string &val, std::stri
 		else
 		{
 			std::cerr << "option " << op << " isn't a text" << std::endl;
-			val = default_value;
 			return false;
 		}
 	}
 	else
 	{
 		std::cerr << "option " << op << " wasn't set" << std::endl;
-		val = default_value;
 		return false;
 	}
 }
 
 
-bool ProgramOptions::getOption(const std::string op, bool &val, bool default_value)
+bool ProgramOptions::getOption(const std::string op, bool &val)
 {
 	std::map<std::string, class Option>::iterator it;
 	it = options_list.find(op);
@@ -229,20 +255,18 @@ bool ProgramOptions::getOption(const std::string op, bool &val, bool default_val
 		else
 		{
 			std::cerr << "option " << op << " isn't a bool" << std::endl;
-			val = default_value;
 			return false;
 		}
 	}
 	else
 	{
 		std::cerr << "option " << op << " wasn't set" << std::endl;
-		val = default_value;
 		return false;
 	}
 }
 
 
-bool ProgramOptions::getOption(const std::string op, std::vector<double> &val, std::vector<double>default_value)
+bool ProgramOptions::getOption(const std::string op, std::vector<double> &val)
 {
 	std::map<std::string, class Option>::iterator it;
 	it = options_list.find(op);
@@ -256,14 +280,12 @@ bool ProgramOptions::getOption(const std::string op, std::vector<double> &val, s
 		else
 		{
 			std::cerr << "option " << op << " isn't a number list" << std::endl;
-			val = default_value;
 			return false;
 		}
 	}
 	else
 	{
 		std::cerr << "option " << op << " wasn't set" << std::endl;
-		val = default_value;
 		return false;
 	}
 }

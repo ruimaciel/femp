@@ -88,6 +88,7 @@ class ProgramOptions
 		void setTemporary()	{ option_level = Option::OPT_TEMPORARY; }
 
 		// set the options
+		void setOption(const std::string, int);
 		void setOption(const std::string, long int);
 		void setOption(const std::string, double);
 		void setOption(const std::string, std::string);
@@ -98,11 +99,12 @@ class ProgramOptions
 		bool wasSet(const std::string) const;
 
 		// automatically gets the option or, if it isn't set or if it's the wrong type, writes to stdout
-		bool getOption(const std::string, long int &, long int);
-		bool getOption(const std::string, double &, double);
-		bool getOption(const std::string, std::string &, std::string);
-		bool getOption(const std::string, bool &, bool);
-		bool getOption(const std::string, std::vector<double> &, std::vector<double>);
+		bool getOption(const std::string, int &);
+		bool getOption(const std::string, long int &);
+		bool getOption(const std::string, double &);
+		bool getOption(const std::string, std::string &);
+		bool getOption(const std::string, bool &);
+		bool getOption(const std::string, std::vector<double> &);
 
 		// generates an options file 
 		//TODO implement an export mechanism that enables exporting in the full and compacted formats

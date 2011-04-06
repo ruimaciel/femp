@@ -391,14 +391,12 @@ std:
 	float	= integer "." [0-9]+([eE][+-]?[0-9]+)?;
 	number	= integer|float;
 	string	= '"' [a-zA-Z0-9]* '"';
-	indent	= [\t];
 
 	'.'	{ return LEX_OPTION_SEPARATOR; }
 	'='	{ lex_state = 1; return LEX_OPTION_ASSIGN; }
-	indent	{ return LEX_INDENT; }
 	option	{ CPo; return LEX_OPTION_NAME; }
 	'\n'	{ return LEX_EOL; }
-	' '+	{ goto std;}
+	[ \t]+	{ goto std;}
 	.	{ return LEX_UNKNOWN_TOKEN; }
 	*/
 	}
@@ -408,14 +406,14 @@ std:
 	{
 	/*!re2c
 	number	{ CP; value.number = atof(tmp.c_str()); return LEX_NUMBER; }
-	string	{ CPs; return LEX_STRING; }
+	string	{ CPs; return LEX_STRING; 	}
 	"true"	{ value.b = true; return LEX_BOOL; }
 	"false"	{ value.b = false; return LEX_BOOL; }
-	'{'	{ return LEX_OPEN_VECTOR; }
-	'}'	{ return LEX_CLOSE_VECTOR; }
-	','	{ return LEX_VECTOR_SEPARATOR; }
+	'{'	{ return LEX_OPEN_VECTOR; 	}
+	'}'	{ return LEX_CLOSE_VECTOR; 	}
+	','	{ return LEX_VECTOR_SEPARATOR; 	}
 	'\n'	{ lex_state = 0; return LEX_EOL; }
-	' '+	{ goto std;}
+	[ \t]+	{ goto std;	}
 	.	{ return LEX_UNKNOWN_TOKEN; }
 	*/
 	}

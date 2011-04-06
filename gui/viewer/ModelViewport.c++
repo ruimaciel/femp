@@ -121,7 +121,7 @@ void ModelViewport::initializeGL()
 	glEnable(GL_MAP2_VERTEX_3);	// to interpolate the elements' surfaces
 	glEnable(GL_AUTO_NORMAL);
 
-	//glEnable(GL_BLEND);
+	glEnable(GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 }

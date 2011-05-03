@@ -49,3 +49,4 @@ Recombine Surface{18};
 Extrude {0, 0, l} {
   Surface{18}; Layers{5}; Recombine;
 }
+Physical Volume(96) = {1};

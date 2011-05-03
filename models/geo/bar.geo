@@ -1,6 +1,8 @@
 b = 0.5;
 h = 1;
-l = 5;
+l = 2;
+
+div = 8;
 
 Point(1) = {	-b/2,	 -h/2, -l/2, 1e+22};
 Point(2) = {	 b/2,	 -h/2, -l/2, 1e+22};
@@ -15,11 +17,11 @@ Line(4) = {4, 1};
 Line Loop(6) = {1, 2, 3, 4};
 Plane Surface(6) = {6};
 
-Transfinite Line{1:4} = 5;
+Transfinite Line{1:4} = div;
 Transfinite Surface{6} = {1, 2, 3, 4};
 
 Recombine Surface{6};
 
 Extrude {0, 0, l} {
-  Surface{6}; Layers{16}; Recombine;
+  Surface{6}; Layers{div}; Recombine;
 }

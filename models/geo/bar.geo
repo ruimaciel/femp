@@ -1,8 +1,8 @@
-b = 0.5;
-h = 1;
-l = 2;
+b = 0.25;
+h = 0.25;
+l = 4;
 
-div = 8;
+div = 1;
 
 Point(1) = {	-b/2,	 -h/2, -l/2, 1e+22};
 Point(2) = {	 b/2,	 -h/2, -l/2, 1e+22};
@@ -23,5 +23,7 @@ Transfinite Surface{6} = {1, 2, 3, 4};
 Recombine Surface{6};
 
 Extrude {0, 0, l} {
-  Surface{6}; Layers{div}; Recombine;
+  Surface{6}; Layers{16*div}; Recombine;
 }
+
+Physical Volume(29) = {1};

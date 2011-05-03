@@ -16,6 +16,17 @@ namespace fem
 Model::Model()
 {
 	default_material = 0;
+
+	// add default steel material
+	Material material;
+
+	material.label = "Steel";
+	material.type = Material::MAT_LINEAR_ELASTIC;
+	material.E = 200e9;
+	material.nu = 0.3;
+
+	this->material_list.push_back(material);
+
 }
 
 

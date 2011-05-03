@@ -62,6 +62,7 @@ public Q_SLOTS:
 	/* starts off a brand new FEM project */
 	void newProject();	// launches the New Project wizard 
 	void openProject();
+	void reopenProject();	// if the current model has been saved to a file then this routine reloads the document
 	void saveProject();
 	void saveProjectAs();
 	void closeProject();

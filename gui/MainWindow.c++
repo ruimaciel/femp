@@ -168,6 +168,54 @@ void MainWindow::openProject()
 }
 
 
+void MainWindow::reopenProject()
+{
+	if(document.file_name != NULL)
+	{
+		// clear the document
+		setUserInterfaceAsClosed();
+		this->document.model.clear();
+
+		// load the file and check for errors
+		switch( document.load() )
+		{
+			case Document::ERR_OK:
+				// tweak the UI
+				setUserInterfaceAsOpened();
+				hasUnsavedChanges = false;
+				return;
+				break;
+
+			case Document::ERR_FILE_NOT_FOUND:
+				QMessageBox::critical(this, tr("Error"), tr("File not found"));
+				break;
+
+			case Document::ERR_FILE_OPEN:
+				QMessageBox::critical(this, tr("Error"), tr("There was an error opening the file"));
+				break;
+
+			case Document::ERR_INVALID_FILE:
+				QMessageBox::critical(this, tr("Error"), tr("Invalid file"));
+				break;
+
+			case Document::ERR_PARSER_ERROR:
+				QMessageBox::critical(this, tr("Error"), tr("Malformed file"));
+				break;
+
+			default:
+				QMessageBox::critical(this, tr("Error"), tr("A misterious error occurred"));
+				break;
+		}
+
+		// clean up the mess
+		document.clear();
+	}
+	else
+	{
+		QMessageBox::critical(this, tr("Error"), tr("This document hasn't been saved to a file"));
+	}
+}
+
 void MainWindow::saveProject()
 {
 	mylog.setPrefix("MainWindow::saveProject()");
@@ -212,6 +260,7 @@ void MainWindow::saveProject()
 		// set a new file name for this file
 		
 		this->setWindowTitle("Femp - " + *document.file_name);
+		ui.actionReopen->setEnabled(true);
 	}
 	document.save();
 	hasUnsavedChanges = false;
@@ -337,6 +386,7 @@ void MainWindow::createActions()
 	connect(actionViewportIso,	SIGNAL(triggered()),	this,	SLOT(setViewportIso()));
 	connect(ui.actionNew,	SIGNAL(triggered()), this,	SLOT(newProject()));
 	connect(ui.actionOpen,	SIGNAL(triggered()), this,	SLOT(openProject()));
+	connect(ui.actionReopen,	SIGNAL(triggered()), this,	SLOT(reopenProject()));
 	connect(ui.actionSave,	SIGNAL(triggered()), this,	SLOT(saveProject()));
 	connect(ui.actionSaveAs,	SIGNAL(triggered()), this,	SLOT(saveProjectAs()));
 	connect(ui.actionClose,	SIGNAL(triggered()), this,	SLOT(closeProject()));
@@ -1434,6 +1484,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	ui.menuProject->setEnabled(true);
 	ui.menuView->setEnabled(true);
 	ui.menuWindow->setEnabled(true);
+	ui.actionReopen->setEnabled(true);
 	ui.actionSave->setEnabled(true);
 	ui.actionSaveAs->setEnabled(true);
 	ui.actionClose->setEnabled(true);
@@ -1481,6 +1532,7 @@ void MainWindow::setUserInterfaceAsClosed()
 	ui.menuProject->setDisabled(true);
 	ui.menuView->setDisabled(true);
 	ui.menuWindow->setDisabled(true);
+	ui.actionReopen->setDisabled(true);
 	ui.actionSave->setDisabled(true);
 	ui.actionSaveAs->setDisabled(true);
 	ui.actionClose->setDisabled(true);

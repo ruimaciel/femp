@@ -37,6 +37,7 @@
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
     <addaction name="separator"/>
+    <addaction name="actionReopen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
     <addaction name="separator"/>
@@ -320,6 +321,17 @@
    </property>
    <property name="text">
     <string>Dump FEM equation</string>
+   </property>
+  </action>
+  <action name="actionReopen">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Reopen</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
    </property>
   </action>
  </widget>

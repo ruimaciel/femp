@@ -42,7 +42,9 @@ class DefaultProgressIndicator
 		virtual void markProgress(size_t);
 
 
-		virtual void markError(std::string);
+		virtual void message(std::string);
+
+		virtual void error(std::string);
 
 		/**
 		Announces the end of the entire process
@@ -66,6 +68,10 @@ class DefaultProgressIndicator
 		**/
 		void setProgress(size_t);
 
+		/**
+		Sends an informative message
+		**/
+		void setMessage(std::string);
 
 		/**
 		Sends an error message

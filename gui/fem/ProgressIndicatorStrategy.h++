@@ -44,7 +44,9 @@ class ProgressIndicatorStrategy
 		**/
 		virtual void markProgress(size_t) = 0;
 
-		virtual void markError(std::string) = 0;
+		virtual void message(std::string) = 0;
+
+		virtual void error(std::string) = 0;
 
 		/**
 		Announces the end of the entire process

@@ -44,6 +44,15 @@ void AnalysisProgressDialog::endSection()
 }
 
 
+void AnalysisProgressDialog::setMessage(std::string message)
+{
+	QString temp;
+	temp += m_section_name.c_str();
+	temp += ": ";
+	temp += message.c_str();
+	this->textEdit->append(temp);
+}
+
 void AnalysisProgressDialog::setError(std::string error_message)
 {
 	QColor current, error;

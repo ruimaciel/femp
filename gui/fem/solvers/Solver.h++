@@ -3,6 +3,8 @@
 
 #include "../AnalysisResult.h++"
 
+#include "../ProgressIndicatorStrategy.h++"
+
 /*
 Abstract class for a template method design pattern that implements solvers for the FEM routine
 */
@@ -23,35 +25,11 @@ class Solver
 		/*
 		If necessary, initializes any data structure specific for this solver
 		*/
-		virtual enum Error initialize(AnalysisResult<Scalar> &result) = 0;
-		virtual enum Error solve(AnalysisResult<Scalar> &result) = 0;
-		virtual enum Error cleanup(AnalysisResult<Scalar> &result) = 0;
+		virtual enum Error initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress) = 0;
+		virtual enum Error solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress) = 0;
+		virtual enum Error cleanup(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress) = 0;
 };
 
-
-
-/*
-template<typename Scalar>
-enum Solver<Scalar>::Error Solver<Scalar>::initialize(AnalysisResult<Scalar> &result)
-{
-	return ERR_UNKNOWN;
-}
-
-
-template<typename Scalar>
-enum Solver<Scalar>::Error Solver<Scalar>::solve(AnalysisResult<Scalar> &result)
-{
-	return ERR_UNKNOWN;
-}
-
-
-template<typename Scalar>
-enum Solver<Scalar>::Error Solver<Scalar>::cleanup(AnalysisResult<Scalar> &result)
-{
-	return ERR_UNKNOWN;
-}
-
-*/
 
 }
 

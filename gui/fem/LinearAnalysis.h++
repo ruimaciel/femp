@@ -8,8 +8,6 @@
 
 #include "../lalib/Matrix.h++"
 #include "../lalib/Vector.h++"
-#include "../lalib/solvers/CG.h++"
-#include "../lalib/solvers/Cholesky.h++"
 #include "../lalib/output.h++"
 
 #include "ProgressIndicatorStrategy.h++"
@@ -93,13 +91,13 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 
 	this->build_fem_equation(model, lp, result, progress);
 
-	result->d = (Scalar)0.0*result->f;	// is this reallly necessary?
+	result->d.resize(result->f.size());	// is this reallly necessary?
 
 	// temporary matrices
 	lalib::Matrix<Scalar, lalib::SparseCRS> my_k;
 
 	//assign(my_k, result->K);
-	this->m_solver->initialize(*result);
+	this->m_solver->initialize(*result, &progress);
 
 	progress.markSectionStart("solve FEM equation");
 	progress.markSectionLimit(model.element_list.size());
@@ -114,12 +112,12 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 	// */
 
 	//lalib::cholesky(my_k,result->d,result->f,L);
-	this->m_solver->solve(*result);
+	this->m_solver->solve(*result, &progress);
 
 	progress.markSectionEnd();
 
 	// announce the end
-	this->m_solver->cleanup(*result);
+	this->m_solver->cleanup(*result, &progress);
 	progress.markFinish();
 
 	return Analysis<Scalar>::ERR_OK;

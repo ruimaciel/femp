@@ -35,6 +35,11 @@ class AnalysisProgressDialog
 		void setProgress(size_t);
 
 
+		/**
+		Sets an informative message
+		**/
+		void setMessage(std::string);
+
 		void setError(std::string);
 
 		/**

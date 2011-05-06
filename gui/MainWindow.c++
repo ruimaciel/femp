@@ -1007,6 +1007,8 @@ void MainWindow::runAnalysis()
 	connect(&progress,	SIGNAL(beginSection(std::string)),	&dialog,	SLOT(beginSection(std::string) ));
 	connect(&progress,	SIGNAL(endSection()),	&dialog,	SLOT(endSection() ));
 	connect(&progress,	SIGNAL(setProgress(size_t)),	&dialog,	SLOT(setProgress(size_t) ));
+	connect(&progress,	SIGNAL(setMessage(std::string)),	&dialog,	SLOT(setMessage(std::string) ));
+	connect(&progress,	SIGNAL(setError(std::string)),	&dialog,	SLOT(setError(std::string) ));
 	connect(&progress,	SIGNAL(finish()),	&dialog,	SLOT(finish() ));
 
 	//TODO finish this

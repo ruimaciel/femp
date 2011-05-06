@@ -25,6 +25,7 @@
 #include "ui/MaterialsEditorDialog.h++"
 #include "ui/QuadratureRulesOptionsDialog.h++"
 #include "ui/AnalysisProgressDialog.h++"
+#include "ui/AnalysisDialog.h++"
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
@@ -35,6 +36,8 @@
 #include "fem/Analysis.h++"
 #include "fem/LinearAnalysis.h++"
 #include "fem/AnalysisResult.h++"
+#include "fem/solvers/CholeskySolver.h++"
+#include "fem/solvers/CGSolver.h++"
 
 
 
@@ -979,6 +982,23 @@ void MainWindow::runAnalysis()
 
 	using namespace std;
 
+	fem::Solver<double> * solver = NULL;
+
+	// run the AnalysisDialog to get the solver
+	AnalysisDialog analysis_dialog(this);
+	switch(analysis_dialog.exec())
+	{
+		case QDialog::Accepted:
+			solver = analysis_dialog.solver();
+			break;
+
+		default:
+			return;
+			break;
+	}
+
+
+	// runs the analysis
 	QString message;
 	DefaultProgressIndicator progress;
 	AnalysisProgressDialog dialog(this);
@@ -990,7 +1010,7 @@ void MainWindow::runAnalysis()
 	connect(&progress,	SIGNAL(finish()),	&dialog,	SLOT(finish() ));
 
 	//TODO finish this
-	analysis.set(document.model, document.model.load_pattern_list[0], &analysis_result, progress);
+	analysis.set(document.model, document.model.load_pattern_list[0], &analysis_result, progress, solver);
 
 	std::thread t(analysis);
 

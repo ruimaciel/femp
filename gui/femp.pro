@@ -39,12 +39,14 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	ui/NewMaterialDialog.h++ ui/MaterialsEditorDialog.h++\
 	fem/Analysis.h++ fem/LinearAnalysis.h++ fem/AnalysisResult.h++\
 	fem/ProgressIndicatorStrategy.h++ \
+	fem/solvers/Solver.h++ fem/solvers/CholeskySolver.h++ fem/solvers/CGSolver.h++\
 	DefaultProgressIndicator.h++ \
 	ui/DialogScale.h++ \
 	MessageLogger.h++ Logs.h++ \
 	fem/Surface.h++ \
 	viewer/boundaries/CollisionDetection.h++ \
 	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++ \
+	ui/AnalysisDialog.h++ \
 	ui/AnalysisProgressDialog.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
@@ -74,6 +76,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	MessageLogger.c++ \
 	fem/Surface.c++ \
 	viewer/boundaries/CollisionDetection.c++ \
+	ui/AnalysisDialog.c++ \
 	ui/AnalysisProgressDialog.c++
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
@@ -82,6 +85,7 @@ FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 	ui/NewMaterialDialog.ui ui/MaterialsEditorDialog.ui \
 	ui/DialogScale.ui \
 	ui/QuadratureRulesOptionsDialog.ui \
+	ui/AnalysisDialog.ui \
 	ui/AnalysisProgressDialog.ui
 
 UI_DIR += ./ui

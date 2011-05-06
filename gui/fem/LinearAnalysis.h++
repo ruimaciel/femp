@@ -15,6 +15,8 @@
 #include "ProgressIndicatorStrategy.h++"
 #include "AnalysisResult.h++"
 
+#include "solvers/Solver.h++"
+
 
 namespace fem
 {
@@ -29,12 +31,13 @@ class LinearAnalysis
 		LoadPattern *m_load_pattern;
 		AnalysisResult<Scalar> *m_result;
 		ProgressIndicatorStrategy *m_progress;
+		Solver<Scalar>	* m_solver;
 
 	public:
 		LinearAnalysis();
 		~LinearAnalysis();
 
-		void set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
+		void set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver);
 
 		/**
 		Operator intended to run the analysis through a thread
@@ -55,6 +58,7 @@ LinearAnalysis<Scalar>::LinearAnalysis()
 	m_load_pattern = NULL;
 	m_result = NULL;
 	m_progress = NULL;
+	m_solver = NULL;
 }
 
 
@@ -65,14 +69,16 @@ LinearAnalysis<Scalar>::~LinearAnalysis()
 
 
 template<typename Scalar>
-void LinearAnalysis<Scalar>::set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
+void LinearAnalysis<Scalar>::set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver)
 {
 	assert(result != NULL);
+	assert(solver != NULL);
 
 	this->m_model = &model;
 	this->m_load_pattern = &lp;
 	this->m_result = result;
 	this->m_progress = &progress;
+	this->m_solver = solver;
 }
 
 
@@ -91,9 +97,9 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 
 	// temporary matrices
 	lalib::Matrix<Scalar, lalib::SparseCRS> my_k;
-	lalib::Matrix<Scalar, lalib::LowerTriangular> L;
 
-	assign(my_k, result->K);
+	//assign(my_k, result->K);
+	this->m_solver->initialize(*result);
 
 	progress.markSectionStart("solve FEM equation");
 	progress.markSectionLimit(model.element_list.size());
@@ -107,21 +113,13 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 	}
 	// */
 
-	lalib::cholesky(my_k,result->d,result->f,L);
+	//lalib::cholesky(my_k,result->d,result->f,L);
+	this->m_solver->solve(*result);
 
 	progress.markSectionEnd();
 
-	/*
-	// TODO implement an option to dump a file
-	ofstream file;
-	file.open("fem.oct");
-	dump_octave(file, "K", result->K);
-	dump_octave(file, "f", result->f);
-	file.close();
-	*/
-
-
-	// set the equation
+	// announce the end
+	this->m_solver->cleanup(*result);
 	progress.markFinish();
 
 	return Analysis<Scalar>::ERR_OK;

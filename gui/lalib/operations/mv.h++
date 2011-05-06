@@ -36,7 +36,7 @@ The matrix-vector operator specialized for the SparseCRS matrices
 @param	v	a vector, instance of class Vector<scalar, VectorStoragePolicy>
 @return	a dense vector, instance of class Vector<scalar, DenseVector>
 **/
-/*
+
 template<typename scalar, template<typename> class VectorStoragePolicy>
 Vector<scalar, DenseVector> operator*(Matrix<scalar, SparseCRS> &m, Vector<scalar, VectorStoragePolicy> &v)
 {
@@ -51,7 +51,7 @@ Vector<scalar, DenseVector> operator*(Matrix<scalar, SparseCRS> &m, Vector<scala
 		v_out(row) = 0;
 		for(size_t i = m.data.row_pointer[row]; i < m.data.row_pointer[row+1]; i++)
 		{
-			cout << "i:" << i << endl;
+			//cout << "i:" << i << endl;
 			v_out(row) += m.data.values[i]*v.value(m.data.column_index[i]);
 		}
 	}

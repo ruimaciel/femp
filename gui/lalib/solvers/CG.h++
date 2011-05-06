@@ -40,7 +40,7 @@ ReturnCode cg(Matrix<scalar, MatrixStoragePolicy> &A, Vector<scalar, VectorStora
 	for (int iter = 0; iter < max_iterations; iter++)
 	{
 		
-		progress->markProgress(iter);
+		if(iter%10 == 0) progress->markProgress(iter);
 
 		Ap = A*p;
 		alpha = rsold/dot(p,Ap);

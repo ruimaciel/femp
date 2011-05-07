@@ -1052,6 +1052,8 @@ void MainWindow::runAnalysis()
 
         ui.actionDump_FEM_equation->setEnabled(true);
 
+	delete solver;
+
 
 	mylog.clearPrefix();
 }

@@ -7,8 +7,8 @@ QMAKE_CXXFLAGS_DEBUG +=-O0 -Wfatal-errors -std=c++0x
 QT += opengl
 QMAKE_EXT_CPP += c++
 
-INCLUDEPATH += /usr/include/eigen2
-LIBS += -ll -ly
+INCLUDEPATH += /usr/include/eigen2 /usr/include/suitesparse
+LIBS += -ll -ly -lumfpack -lmetis -lblas -lamd
 
 HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.h++ NewProjectWizard.h++ \
 	ModelSelection.h++ \
@@ -47,6 +47,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	viewer/boundaries/CollisionDetection.h++ \
 	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++ \
 	ui/AnalysisDialog.h++ \
+	fem/solvers/*.h++ \
 	ui/AnalysisProgressDialog.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \

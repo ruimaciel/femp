@@ -30,7 +30,7 @@
        <item>
         <widget class="QToolBox" name="toolBoxSolvers">
          <property name="currentIndex">
-          <number>2</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="pageCholesky">
           <property name="geometry">
@@ -38,7 +38,7 @@
             <x>0</x>
             <y>0</y>
             <width>366</width>
-            <height>164</height>
+            <height>112</height>
            </rect>
           </property>
           <attribute name="label">
@@ -50,8 +50,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>366</width>
-            <height>138</height>
+            <width>192</width>
+            <height>60</height>
            </rect>
           </property>
           <attribute name="label">
@@ -106,8 +106,21 @@
           </layout>
          </widget>
          <widget class="QWidget" name="pageDenseCholesky">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>100</width>
+            <height>30</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Dense Cholesky</string>
+          </attribute>
+         </widget>
+         <widget class="QWidget" name="pageUmfpack">
+          <attribute name="label">
+           <string>Umfpack</string>
           </attribute>
          </widget>
         </widget>

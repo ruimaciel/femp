@@ -5,6 +5,7 @@
 #include "../fem/solvers/CholeskySolver.h++"
 #include "../fem/solvers/CGSolver.h++"
 #include "../fem/solvers/DenseCholeskySolver.h++"
+#include "../fem/solvers/UmfpackSolver.h++"
 
 #include "assert.h"
 
@@ -47,6 +48,15 @@ fem::Solver<double> * AnalysisDialog::solver()
 			{
 				fem::DenseCholeskySolver<double> * solver = NULL;
 				solver = new fem::DenseCholeskySolver<double>;
+
+				return solver;
+			}
+			break;
+
+		case 3:
+			{
+				fem::UmfpackSolver<double> * solver = NULL;
+				solver = new fem::UmfpackSolver<double>;
 
 				return solver;
 			}

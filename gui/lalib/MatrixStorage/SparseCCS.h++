@@ -21,11 +21,11 @@ class SparseCCS
 	public:
 		struct Data
 		{
-			size_t	t_columns;	// number of columns
+			size_t	t_rows;	// number of columns
 
 			std::vector<scalar> values;
-			std::vector<size_t> row_index;
-			std::vector<size_t> column_pointer;
+			std::vector<int> row_index;
+			std::vector<int> column_pointer;
 		} data;
 
 
@@ -38,8 +38,8 @@ class SparseCCS
 		**/
 		void clear();
 
-		size_t rows()		{ return data.column_pointer.size(); };
-		size_t columns()	{ return data.t_columns; };
+		size_t rows()		{ return data.t_rows; };
+		size_t columns()	{ return data.column_pointer.size()-1; };
 
 		/*
 		Returns the value in [row,column] 
@@ -145,15 +145,15 @@ scalar & SparseCCS<scalar>::operator() (const size_t row, const size_t column)
 	// the first element in this column has a greater row index than the one being referenced
 	if(row < data.row_index[data.column_pointer[column]])
 	{
-		vector<size_t>::iterator ro = data.row_index.begin();
+		vector<int>::iterator ro = data.row_index.begin();
 		advance(ro,data.column_pointer[column]);
 		data.row_index.insert(ro,row);
 
 		typename vector<scalar>::iterator val = data.values.begin();
 		advance(val, data.column_pointer[column]);
-		data.values.insert(val, 9);
+		data.values.insert(val, 0);
 
-		for(size_t i = column+1; i < data.column_pointer.size(); i++)
+		for(int i = column+1; i < data.column_pointer.size(); i++)
 		{
 			data.column_pointer[i]++;
 		}
@@ -174,7 +174,7 @@ scalar & SparseCCS<scalar>::operator() (const size_t row, const size_t column)
 		break;
 	}
 
-	vector<size_t>::iterator ro = data.row_index.begin();
+	vector<int>::iterator ro = data.row_index.begin();
 	advance(ro,j);
 	data.row_index.insert(ro,row);
 
@@ -188,7 +188,6 @@ scalar & SparseCCS<scalar>::operator() (const size_t row, const size_t column)
 	}
 
 	return data.values[ j];
-
 }
 
 
@@ -201,15 +200,18 @@ void SparseCCS<scalar>::resize(const size_t rows, const size_t columns)
 
 	data.values.resize(columns);
 	data.row_index.resize(columns);
-	data.column_pointer.resize(columns);
+	data.column_pointer.resize(columns+1);	// to account to the after-last element guard
+
+	data.t_rows = rows;
 
 	for(size_t i = 0; i < columns; i++)
+	{
 		data.row_index[i] = i;
+		data.values[i] = 0;
+	}
 
-	for(size_t j = 0; j < rows; j++)
+	for(size_t j = 0; j <= columns; j++)
 		data.column_pointer[j] = j;
-
-	data.t_columns = columns;
 }
 
 
@@ -227,14 +229,14 @@ void SparseCCS<scalar>::dump()
 	cout << endl;
 
 	cout << "col_ind:";
-	for(vector<size_t>::iterator i = data.row_index.begin(); i != data.row_index.end(); i++)
+	for(vector<int>::iterator i = data.row_index.begin(); i != data.row_index.end(); i++)
 	{
 		cout << " " << *i;
 	}
 	cout << endl;
 
 	cout << "row_ptr:";
-	for(vector<size_t>::iterator i = data.column_pointer.begin(); i != data.column_pointer.end(); i++)
+	for(vector<int>::iterator i = data.column_pointer.begin(); i != data.column_pointer.end(); i++)
 	{
 		cout << " " << *i;
 	}

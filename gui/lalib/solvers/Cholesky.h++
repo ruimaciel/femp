@@ -93,7 +93,8 @@ ReturnCode cholesky(Matrix<scalar, MatrixStoragePolicy> &A, Vector<scalar, Vecto
 	assert(A.rows() == A.columns());
 	assert(A.columns() == b.size());
 
-	Vector<scalar> S;
+	Vector<scalar, SparseCS> S;
+	S.reserve(A.columns());
 	S.resize(A.columns());
 
 	size_t *p;
@@ -104,10 +105,27 @@ ReturnCode cholesky(Matrix<scalar, MatrixStoragePolicy> &A, Vector<scalar, Vecto
 	// A=LL^t, factor L
 	for(size_t j = 0; j < A.columns(); j++)
 	{
-		for(size_t i = j; i < A.rows(); i++)
+		S.clear();
+		scalar Si;	// temp variable to avoid calling S(i)
+		// unrolling the for(i = j;...) part of the for loop
+		Si = A.value(j,j);
+		p = &L.data.column_index[L.data.row_pointer[j]] ;
+		lp = &L.data.values[L.data.row_pointer[j]];
+		while(*p < j)
 		{
-			S(i) = A.value(i,j);
-			scalar test = S(i);
+			Si -= (*lp)*(*lp);
+	
+			p++;
+			lp++;
+		}
+		//S(j) = Si;
+		S.push_back(j,Si);
+
+		// continuing the remaining for loop
+		for(size_t i = j+1; i < A.rows(); i++)
+		{
+			Si = A.value(i,j);
+		
 			/*
 			for(size_t k = 0; k < j; k++)
 			{
@@ -124,45 +142,41 @@ ReturnCode cholesky(Matrix<scalar, MatrixStoragePolicy> &A, Vector<scalar, Vecto
 			{
 				if(*p == *q)
 				{
-					S(i) -= (*lp)*(*lq);
-					scalar test = S(i);
+					Si -= (*lp)*(*lq);
+			
 					p++;
-					if(p >= &L.data.column_index[L.data.row_pointer[i+1]])
-						break;
 					lp++;
 
 					q++;
-					if(q >= &L.data.column_index[L.data.row_pointer[j+1] ])
-						break;
 					lq++;
 				}
 				else if(*p < *q)
 				{
 					p++;
-					if(p >= &L.data.column_index[ L.data.row_pointer[i+1] ])
-						break;
 					lp++;
 				}
 				else
 				{
 					q++;
-					if(q >= &L.data.column_index[ L.data.row_pointer[j+1] ])
-						break;
 					lq++;
 				}
 			}
 			// */
 
+			//S(i) = Si;
+			S.push_back(i,Si);
 		}
 
-		L(j,j) = sqrt(S(j));
+		scalar diag;
+		diag = L(j,j) = sqrt(S(j));
 
-		for(size_t i = j+1; i < A.rows(); i++)
+		//for(size_t i = j+1; i < A.rows(); i++)
+		for(size_t i= 1; i < S.data.values.size(); i++)
 		{
-			L(i,j) = S(i)/L.value(j,j);
+			L(S.data.column_index[i],j) = S.data.values[i]/diag;
 		}
 	}
-	//std::cout << "L:\n" << L << "\nend L" << std::endl;
+
 	// */
 
 

@@ -7,6 +7,7 @@
 
 
 #include "VectorStorage/Dense.h++"
+#include "VectorStorage/SparseCS.h++"
 
 
 namespace lalib

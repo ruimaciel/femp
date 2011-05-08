@@ -16,7 +16,7 @@ DenseVector: a storage policy class intended to implement the interfaces specifi
 template<typename scalar>
 class DenseVector
 {
-	protected:
+	public:
 		size_t	t_size;		// number of size
 
 		std::vector< scalar >	data;	

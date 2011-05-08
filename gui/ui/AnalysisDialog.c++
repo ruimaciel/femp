@@ -4,6 +4,7 @@
 
 #include "../fem/solvers/CholeskySolver.h++"
 #include "../fem/solvers/CGSolver.h++"
+#include "../fem/solvers/DenseCholeskySolver.h++"
 
 #include "assert.h"
 
@@ -37,6 +38,15 @@ fem::Solver<double> * AnalysisDialog::solver()
 				// set the options
 				solver->delta = pow(10,spinBoxDeltaExponent->value());
 				solver->max_iterations = spinBoxMaxIterations->value();
+
+				return solver;
+			}
+			break;
+
+		case 2:
+			{
+				fem::DenseCholeskySolver<double> * solver = NULL;
+				solver = new fem::DenseCholeskySolver<double>;
 
 				return solver;
 			}

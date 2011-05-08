@@ -17,13 +17,13 @@ namespace lalib
 /**
 Generic cholesky decomposition for dense matrices, works on all matrix types
 **/
-template<typename scalar, template<typename> class MatrixStoragePolicy, template<typename> class LMatrixStoragePolicy, template<typename> class VectorStoragePolicy>
-ReturnCode cholesky(Matrix<scalar, MatrixStoragePolicy> &A, Vector<scalar, VectorStoragePolicy> &x, Vector<scalar, VectorStoragePolicy> &b, Matrix<scalar, LMatrixStoragePolicy> &L)
+template<typename Scalar, template<typename> class MatrixStoragePolicy, template<typename> class LMatrixStoragePolicy, template<typename> class VectorStoragePolicy>
+ReturnCode cholesky(Matrix<Scalar, MatrixStoragePolicy> &A, Vector<Scalar, VectorStoragePolicy> &x, Vector<Scalar, VectorStoragePolicy> &b, Matrix<Scalar, LMatrixStoragePolicy> &L)
 {
 	assert(A.rows() == A.columns());
 	assert(A.columns() == b.size());
 
-	Vector<scalar> S;
+	Vector<Scalar> S;
 	S.resize(A.columns());
 
 	// A=LL^t, factor L
@@ -31,18 +31,21 @@ ReturnCode cholesky(Matrix<scalar, MatrixStoragePolicy> &A, Vector<scalar, Vecto
 	{
 		for(size_t i = j; i < A.rows(); i++)
 		{
-			S(i) = A.value(i,j);
+			Scalar Si;
+			Si = A.value(i,j);
 			for(size_t k = 0; k < j; k++)
 			{
-				S(i) -= L.value(i,k)*L.value(j,k);
+				Si -= L.value(i,k)*L.value(j,k);
 			}
+			S(i) = Si;
 		}
 
-		L(j,j) = sqrt(S(j));
+		
+		Scalar diag = L(j,j) = sqrt(S(j));
 
 		for(size_t i = j+1; i < A.rows(); i++)
 		{
-			L(i,j) = S(i)/L.value(j,j);
+			L(i,j) = S(i)/diag;
 		}
 	}
 	// */
@@ -87,26 +90,26 @@ ReturnCode cholesky(Matrix<scalar, MatrixStoragePolicy> &A, Vector<scalar, Vecto
 /**
 Generic cholesky decomposition for dense matrices, works on all matrix types
 **/
-template<typename scalar, template<typename> class MatrixStoragePolicy, template<typename> class VectorStoragePolicy>
-ReturnCode cholesky(Matrix<scalar, MatrixStoragePolicy> &A, Vector<scalar, VectorStoragePolicy> &x, Vector<scalar, VectorStoragePolicy> &b, Matrix<scalar, SparseCRS> &L)
+template<typename Scalar, template<typename> class MatrixStoragePolicy, template<typename> class VectorStoragePolicy>
+ReturnCode cholesky(Matrix<Scalar, MatrixStoragePolicy> &A, Vector<Scalar, VectorStoragePolicy> &x, Vector<Scalar, VectorStoragePolicy> &b, Matrix<Scalar, SparseCRS> &L)
 {
 	assert(A.rows() == A.columns());
 	assert(A.columns() == b.size());
 
-	Vector<scalar, SparseCS> S;
+	Vector<Scalar, SparseCS> S;
 	S.reserve(A.columns());
 	S.resize(A.columns());
 
 	size_t *p;
-	scalar *lp;
+	Scalar *lp;
 	size_t *q;
-	scalar *lq;
+	Scalar *lq;
 
 	// A=LL^t, factor L
 	for(size_t j = 0; j < A.columns(); j++)
 	{
 		S.clear();
-		scalar Si;	// temp variable to avoid calling S(i)
+		Scalar Si;	// temp variable to avoid calling S(i)
 		// unrolling the for(i = j;...) part of the for loop
 		Si = A.value(j,j);
 		p = &L.data.column_index[L.data.row_pointer[j]] ;
@@ -167,7 +170,7 @@ ReturnCode cholesky(Matrix<scalar, MatrixStoragePolicy> &A, Vector<scalar, Vecto
 			S.push_back(i,Si);
 		}
 
-		scalar diag;
+		Scalar diag;
 		diag = L(j,j) = sqrt(S(j));
 
 		//for(size_t i = j+1; i < A.rows(); i++)
@@ -194,6 +197,65 @@ ReturnCode cholesky(Matrix<scalar, MatrixStoragePolicy> &A, Vector<scalar, Vecto
 	return OK;
 }
 
+
+/**
+Generic cholesky decomposition for dense matrices, works on all matrix types
+**/
+template<typename Scalar, template<typename> class MatrixStoragePolicy, template<typename> class VectorStoragePolicy>
+ReturnCode cholesky(Matrix<Scalar, MatrixStoragePolicy> &A, Vector<Scalar, VectorStoragePolicy> &x, Vector<Scalar, VectorStoragePolicy> &b, Matrix<Scalar> &L)
+{
+	assert(A.rows() == A.columns());
+	assert(A.columns() == b.size());
+
+	Vector<Scalar> S;
+	S.resize(A.columns());
+
+	// A=LL^t, factor L
+	for(size_t j = 0; j < A.columns(); j++)
+	{
+		for(size_t i = j; i < A.rows(); i++)
+		{
+			Scalar Si;
+			Scalar *li, *lj;
+
+			Si = A.value(i,j);
+			li = &L.data.data[i*L.data.t_rows];
+			lj = &L.data.data[j*L.data.t_rows];
+			for(size_t k = 0; k < j; k++)
+			{
+				//Si -= L.value(i,k)*L.value(j,k);
+				Si -= (*li)*(*lj);
+				++li;
+				++lj;
+			}
+			S(i) = Si;
+		}
+
+		
+		Scalar diag = L(j,j) = sqrt(S(j));
+
+		for(size_t i = j+1; i < A.rows(); i++)
+		{
+			L(i,j) = S(i)/diag;
+		}
+	}
+	// */
+
+
+	ReturnCode code;
+	// Ly = b
+	code = forward_substitution(L,x,b);
+	if(code != OK)
+		return code;
+
+	//Lx=y
+	code = back_substitution(L,x,x);
+	if(code != OK)
+		return code;
+
+
+	return OK;
+}
 }
 
 #endif

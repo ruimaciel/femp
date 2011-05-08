@@ -22,7 +22,7 @@ class DenseMatrix
 			size_t	t_rows;		// number of rows
 			size_t	t_columns;	// number of columns
 
-			std::vector< std::vector<scalar> >	data;	
+			std::vector< scalar >	data;	
 		} data;
 
 	public:
@@ -61,13 +61,9 @@ template<typename scalar>
 void DenseMatrix<scalar>::clear()
 {
 	using namespace std;
-	for(size_t i = 0; i < this->rows(); i++)
-	{
-		for(size_t j = 0; j < this->columns(); j++)
-		{
-			data[i][j] = 0;
-		}
-	}
+
+	data.data.clear();
+	data.data.resize(rows*columns);
 }
 
 
@@ -77,7 +73,7 @@ scalar DenseMatrix<scalar>::value(const size_t row, const size_t column)
 	assert(row < data.t_rows);
 	assert(column < data.t_columns);
 
-	return this->data.data[row][column];
+	return this->data.data[row*data.t_rows + column];
 }
 
 
@@ -87,7 +83,7 @@ scalar & DenseMatrix<scalar>::operator() (const size_t row, const size_t column)
 	assert(row < data.t_rows);
 	assert(column < data.t_columns);
 
-	return this->data.data[row][column];
+	return this->data.data[row*data.t_rows + column];
 }
 
 
@@ -99,12 +95,11 @@ void DenseMatrix<scalar>::resize(const size_t rows, const size_t columns)
 	data.data.resize(rows);
 	data.t_rows = rows;
 
-	for(typename vector< vector<scalar> >::iterator i = data.data.begin(); i != data.data.end(); i++)
-	{
-		i->resize(columns);
-	}
-
+	data.t_rows = rows;
 	data.t_columns = columns;
+
+	data.data.clear();
+	data.data.resize(data.t_rows*data.t_columns);
 }
 
 

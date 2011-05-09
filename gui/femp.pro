@@ -39,7 +39,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	ui/NewMaterialDialog.h++ ui/MaterialsEditorDialog.h++\
 	fem/Analysis.h++ fem/LinearAnalysis.h++ fem/AnalysisResult.h++\
 	fem/ProgressIndicatorStrategy.h++ \
-	fem/solvers/Solver.h++ fem/solvers/CholeskySolver.h++ fem/solvers/CGSolver.h++\
+	fem/solvers/Solver.h++ fem/solvers/CholeskySolver.h++ fem/solvers/CGSolver.h++ fem/solvers/UmfpackSolver.h++\
 	DefaultProgressIndicator.h++ \
 	ui/DialogScale.h++ \
 	MessageLogger.h++ Logs.h++ \

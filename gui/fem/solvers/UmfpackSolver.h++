@@ -38,9 +38,9 @@ enum Solver<Scalar>::Error UmfpackSolver<Scalar>::initialize(AnalysisResult<Scal
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error UmfpackSolver<Scalar>::solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *)
+enum Solver<Scalar>::Error UmfpackSolver<Scalar>::solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress)
 {
-	lalib::umfpack(A, result.d, result.f);
+	lalib::umfpack(A, result.d, result.f, progress);
 
 	return Solver<Scalar>::ERR_OK;
 }

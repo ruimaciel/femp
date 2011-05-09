@@ -24,8 +24,8 @@ class SparseCCS
 			size_t	t_rows;	// number of columns
 
 			std::vector<scalar> values;
-			std::vector<int> row_index;
-			std::vector<int> column_pointer;
+			std::vector<long int> row_index;
+			std::vector<long int> column_pointer;
 		} data;
 
 
@@ -50,9 +50,6 @@ class SparseCCS
 
 
 		void resize(const size_t row, const size_t column);
-
-
-		void dump();
 };
 
 
@@ -145,7 +142,7 @@ scalar & SparseCCS<scalar>::operator() (const size_t row, const size_t column)
 	// the first element in this column has a greater row index than the one being referenced
 	if(row < data.row_index[data.column_pointer[column]])
 	{
-		vector<int>::iterator ro = data.row_index.begin();
+		vector<long int>::iterator ro = data.row_index.begin();
 		advance(ro,data.column_pointer[column]);
 		data.row_index.insert(ro,row);
 
@@ -153,7 +150,7 @@ scalar & SparseCCS<scalar>::operator() (const size_t row, const size_t column)
 		advance(val, data.column_pointer[column]);
 		data.values.insert(val, 0);
 
-		for(int i = column+1; i < data.column_pointer.size(); i++)
+		for(size_t i = column+1; i < data.column_pointer.size(); i++)
 		{
 			data.column_pointer[i]++;
 		}
@@ -174,7 +171,7 @@ scalar & SparseCCS<scalar>::operator() (const size_t row, const size_t column)
 		break;
 	}
 
-	vector<int>::iterator ro = data.row_index.begin();
+	vector<long int>::iterator ro = data.row_index.begin();
 	advance(ro,j);
 	data.row_index.insert(ro,row);
 
@@ -212,36 +209,6 @@ void SparseCCS<scalar>::resize(const size_t rows, const size_t columns)
 
 	for(size_t j = 0; j <= columns; j++)
 		data.column_pointer[j] = j;
-}
-
-
-
-template<typename scalar>
-void SparseCCS<scalar>::dump()
-{
-	using namespace std;
-	//TODO debug purposes only
-	cout << "data.values:";
-	for(typename vector<scalar>::iterator i = data.values.begin(); i != data.values.end(); i++)
-	{
-		cout << " " << *i;
-	}
-	cout << endl;
-
-	cout << "col_ind:";
-	for(vector<int>::iterator i = data.row_index.begin(); i != data.row_index.end(); i++)
-	{
-		cout << " " << *i;
-	}
-	cout << endl;
-
-	cout << "row_ptr:";
-	for(vector<int>::iterator i = data.column_pointer.begin(); i != data.column_pointer.end(); i++)
-	{
-		cout << " " << *i;
-	}
-	cout << "\n" <<endl;
-	//*/
 }
 
 

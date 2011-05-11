@@ -17,6 +17,7 @@
 
 #include "../SceneGraph.h++"
 #include "../SceneGraphComponents/SGCNode.h++"
+#include "../SceneGraphComponents/SGCNodeRestrictions.h++"
 #include "../SceneGraphComponents/SGCModelSurface.h++"
 #include "../SceneGraphComponents/OpaqueSurface/SurfaceTriangle3.h++"
 #include "../SceneGraphComponents/OpaqueSurface/SurfaceTriangle6.h++"
@@ -40,7 +41,7 @@ VPStateModel::~VPStateModel()
 }
 
 
-void VPStateModel::initialize(ModelViewport *mv)
+void VPStateModel::initialize(ModelViewport *)
 {
 	mylog.setPrefix("VPStateModel::initialize()");
 	mylog.message("yet to be implemented");
@@ -59,6 +60,11 @@ void VPStateModel::populateScenegraph(ModelViewport *mv)
 	{
 		//TODO set rendering groups
 		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(i->first, i->second, mv->model->node_restrictions_list) );
+	}
+
+	for( std::map<size_t, fem::NodeRestrictions>::iterator i = mv->model->node_restrictions_list.begin(); i != mv->model->node_restrictions_list.end(); i++)
+	{
+		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, new SGCNodeRestrictions(mv->model->node_list[i->first], i->second) );
 	}
 
 	// add the surfaces to the scenegraph

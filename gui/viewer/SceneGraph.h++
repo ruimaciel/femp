@@ -42,7 +42,8 @@ class SceneGraph
 			RG_NODES,	// the element nodes
 			RG_SURFACES,	// the opaque surfaces used in ModelViewport an DisplacementsViewport
 			RG_WIREFRAME,	// wireframe of the opaque surfaces.  This group and RG_SURFACES are mutually explusive
-			RG_GHOST_SURFACES	// surfaces rendered in the displacement viewport to show the model's original configuration
+			RG_GHOST_SURFACES,	// surfaces rendered in the displacement viewport to show the model's original configuration
+			RG_NODE_RESTRICTIONS
 		};
 
 	public:

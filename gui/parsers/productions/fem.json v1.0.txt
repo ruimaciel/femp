@@ -5,72 +5,65 @@
 ; following RFC 4627
 ; http://tools.ietf.org/html/rfc4627
 
-<name-separator>	= ":"
-<value-separator>	= ","
-<begin-array>	= "["
-<end-array>	= "]"
-<begin-object>	= "{"
-<end-object>	= "}"
 <true>	= "true"
 <false>	= "false"
 <null>	= "null"
 
 <reference>	= "0" / [1-9] *[0-9] 
 
-<vector3d>	= <begin-array> <number> 2(<value-separator> <number>) <end-array>
+<vector3d>	= "[" <number> 2("," <number>) "]"
 
 
-<document>	=	<begin-object> <header> <materials> <nodes> <elements> [<node restrictions>] [<load patterns>] <end-object>
+<document>	=	"{" <header> <materials> <nodes> <elements> [<node restrictions>] [<load patterns>] "}"
 
-<header>	=	"\"fem\"" <name-separator> <begin-object> "\"version\"" <name-separator> "1.0" <value-separator> "\"type\" <name-separator> "\"3D solid\"" <end-object>
+<header>	=	"\"fem\"" ":" "{" "\"version\"" ":" "1.0" "," "\"type\" ":" "\"3D solid\"" "}"
 
-<materials>	=	"\"materials\""	<name-separator> <begin-array> <material> *(<value-separator> <material>) <end-array>
+<materials>	=	"\"materials\""	":" "[" <material> *("," <material>) "]"
 
-<material>	=	<begin-object> "\"type\"" <name-separator> "\"linear elastic\"" <value-separator> "\"label\"" <name-separator> <string> <value-separator> "\"E\"" <name-separator> <number> <value-separator> "\"nu\"" <name-separator> <number> <value-separator> "\"fy\"" <name-separator> <number> 
+<material>	=	"{" "\"type\"" ":" "\"linear elastic\"" "," "\"label\"" ":" <string> "," "\"E\"" ":" <number> "," "\"nu\"" ":" <number> "," "\"fy\"" ":" <number> "}"
 
 
-<nodes>	= "\"nodes\"" <name-separator> <begin-array> <node> *(<value-separator> <node>) <end-array>
+<nodes>	= "\"nodes\"" ":" "[" <node> *("," <node>) "]"
 
-<node>	<reference> <value-separator> <vector3d>
+<node>	<reference> "," <vector3d>
 
-<elements>	= 	"\"elements\"" : <begin-array> <element> *(<value-separator> <element>) <end-array>
+<elements>	= 	"\"elements\"" : "[" <element> *("," <element>) "]"
 
-<element>	=	<begin-object> "\"type\"" <name-separator> "\"hexahedron8\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 7(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ]
-		=	<begin-object> "\"type\"" <name-separator> "\"hexahedron20\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 19(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ] 
-		=	<begin-object> "\"type\"" <name-separator> "\"hexahedron27\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 27(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ]
-		=	<begin-object> "\"type\"" <name-separator> "\"tetrahedron4\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 3(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ]
-		=	<begin-object> "\"type\"" <name-separator> "\"tetrahedron10\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 9(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ]
-		=	<begin-object> "\"type\"" <name-separator> "\"prism6\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 5(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ]
-		=	<begin-object> "\"type\"" <name-separator> "\"prism15\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 14(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ] 
-		=	<begin-object> "\"type\"" <name-separator> "\"prism18\"" <value-separator> "\"nodes\"" <name-sparator> <begin-array> <reference> 17(<value-separator> <reference>) <end-array> [<value-separator> "\"material\"" <name-separator> <reference> ]
+<element>	=	"{" "\"type\"" ":" "\"hexahedron8\"" "," "\"nodes\"" ":" "[" <reference> 7("," <reference>) "]" ["," "\"material\"" ":" <reference> ]
+		=/	"{" "\"type\"" ":" "\"hexahedron20\"" "," "\"nodes\"" ":" "[" <reference> 19("," <reference>) "]" ["," "\"material\"" ":" <reference> ] 
+		=/	"{" "\"type\"" ":" "\"hexahedron27\"" "," "\"nodes\"" ":" "[" <reference> 27("," <reference>) "]" ["," "\"material\"" ":" <reference> ]
+		=/	"{" "\"type\"" ":" "\"tetrahedron4\"" "," "\"nodes\"" ":" "[" <reference> 3("," <reference>) "]" ["," "\"material\"" ":" <reference> ]
+		=/	"{" "\"type\"" ":" "\"tetrahedron10\"" "," "\"nodes\"" ":" "[" <reference> 9("," <reference>) "]" ["," "\"material\"" ":" <reference> ]
+		=/	"{" "\"type\"" ":" "\"prism6\"" "," "\"nodes\"" ":" "[" <reference> 5("," <reference>) "]" ["," "\"material\"" ":" <reference> ]
+		=/	"{" "\"type\"" ":" "\"prism15\"" "," "\"nodes\"" ":" "[" <reference> 14("," <reference>) "]" ["," "\"material\"" ":" <reference> ] 
+		=/	"{" "\"type\"" ":" "\"prism18\"" "," "\"nodes\"" ":" "[" <reference> 17("," <reference>) "]" ["," "\"material\"" ":" <reference> ]
 
 	
-<node restrictions>	=	"\"node restrictions\"" <name-separator> <begin-array> <node-restriction> *(<value-separator> <node-restriction>) <end-array>
+<node restrictions>	=	"\"node restrictions\"" ":" "[" <node-restriction> *("," <node-restriction>) "]"
 
-<node restriction>	=	<begin-object> "\"node\"" <name-separator> <reference> <value-separator> <restrictions> <end-object>
+<node restriction>	=	"{" "\"node\"" ":" <reference> "," <restrictions> "}"
 
-<restrictions>	=	"\"dx\"" <name-separator> [<true> <false>] [<value separator> "\"dy\"" <name-separator> [<true> <false>] [<value separator> "\"dz"\" <name-separator> [<true> <false>] ] ] 
-		=	"\"dy\"" <name-separator> [<true> <false>] [<value separator> "\"dz"\" <name-separator> [<true> <false>] ] 
-		=	"\"dz\"" <name-separator> [<true> <false>] 
+<restrictions>	=	"\"dx\"" ":" [<true> <false>] ["," "\"dy\"" ":" [<true> <false>] ["," "\"dz"\" ":" [<true> <false>] ] ] 
+		=	"\"dy\"" ":" [<true> <false>] ["," "\"dz"\" ":" [<true> <false>] ] 
+		=	"\"dz\"" ":" [<true> <false>] 
 
-<load patterns>	=	<begin-array> <load pattern> [<value-separator> <load pattern>] <end-array>
+<load patterns>	=	"\"load patterns\"" ":" "[" <load-pattern> *("," <load pattern>) "]"
 
-<load pattern>	= <begin-object> "\"label\"" <name-separator> <string> <value-separator> <nodal loads> [<value-separator> <domain loads> [<value-separator> <surface loads>] ] <end-object>
-	= <begin-object> "\"label\"" <name-separator> <string> <value-separator> <domain loads> [<value-separator> <surface loads>] <end-object>
-	= <begin-object> "\"label\"" <name-separator> <string> <value-separator> <value-separator> <surface loads> <end-object>
+<load-pattern>	=	"{" "\"label\" ":" <string> (<nodal loads> [<domain loads>] [<surface loads>] / <domain loads> [<surface loads] / <surface loads>) "}"
 
-<nodal loads>	=	"\"nodal loads\"" <name-separator> <begin-array> <nodal-load> [<value-separator> <nodal-load> ] <end-array> 
+<nodal loads>	=	"\"nodal loads\"" ":" "[" 1*<nodal load> "]"
 
-<nodal-load>	=	<begin-object> "\"node\"" <name-separator> <reference> <value-separator> "\"force\"" <name-separator> <vector3d> <end-object>
+<nodal load>	=	"{" "\"node\"" ":" <reference> "," "\"force\"" ":" <vector3d> "}"
 
-<domain loads>	=	"\"domain loads\"" <name-separator> <begin-array> <domain-load> [<value-separator> <domain-load>] <end-array>
+<domain loads>	=	"\"domain loads\"" ":" "[" 1*<domain load> "]"
 
-<domain-load>	=	<begin-object> "\"element\"" <name-separator> <reference> <value-separator> "\"force\"" <name-separator> <vector3d> <end-object>
+<domain load>	=	"{" "\"element\" ":" <reference> "," "\"force\"" ":" <vector3d> "}" 
 
-<surface loads>	=	"\"surface loads\"" <name-separator> <begin-array> <surface-load> [<value-separator> <surface-load>] <end-array>
+<surface loads>	=	"\"surface loads\""  ":"  "[" 1*<surface load> "]"
 
-<surface-load>	=	<begin-object> "\"type\"" <name-separator> "\"triangle3\"" <value-separator> "\"nodes\"" <name-separator> <begin-array> <reference> 2(<value-separator> <reference>) <name separator>"\"force\"" <name-separator> <begin-array> <vector3d> 2(<value-separator> <reference>) <end-array> <end-object>
-		=	<begin-object> "\"type\"" <name-separator> "\"triangle6\"" <value-separator> "\"nodes\"" <name-separator> <begin-array> <reference> 5(<value-separator> <reference>) <name separator>"\"force\"" <name-separator> <begin-array> <vector3d> 5(<value-separator> <reference>) <end-array> <end-object>
-		=	<begin-object> "\"type\"" <name-separator> "\"quadrangle4\"" <value-separator> "\"nodes\"" <name-separator> <begin-array> <reference> 3(<value-separator> <reference>) <name separator>"\"force\"" <name-separator> <begin-array> <vector3d> 3(<value-separator> <reference>) <end-array> <end-object>
-		=	<begin-object> "\"type\"" <name-separator> "\"quadrangle8\"" <value-separator> "\"nodes\"" <name-separator> <begin-array> <reference> 7(<value-separator> <reference>) <name separator>"\"force\"" <name-separator> <begin-array> <vector3d> 7(<value-separator> <reference>) <end-array> <end-object>
-		=	<begin-object> "\"type\"" <name-separator> "\"quadrangle9\"" <value-separator> "\"nodes\"" <name-separator> <begin-array> <reference> 8(<value-separator> <reference>) <name separator>"\"force\"" <name-separator> <begin-array> <vector3d> 8(<value-separator> <reference>) <end-array> <end-object>
+<surface load>	=	"{" "\"type\"" ":" "\"quadrangle4\"" "," "\"nodes\"" ":" "[" <reference> 3("," <reference>) "]" "," "\"force\"" ":" "[" <vector3d> 3("," <vector3d>) "]" "}"
+		=/	"{" "\"type\"" ":" "\"quadrangle8\"" "," "\"nodes\"" ":" "[" <reference> 7("," <reference>) "]" "," "\"force\"" ":" "[" <vector7d> 7("," <vector7d>) "]" "}"
+		=/	"{" "\"type\"" ":" "\"quadrangle9\"" "," "\"nodes\"" ":" "[" <reference> 8("," <reference>) "]" "," "\"force\"" ":" "[" <vector8d> 8("," <vector8d>) "]" "}"
+		=/	"{" "\"type\"" ":" "\"triangle3\"" "," "\"nodes\"" ":" "[" <reference> 2("," <reference>) "]" "," "\"force\"" ":" "[" <vector2d> 2("," <vector2d>) "]" "}"
+		=/	"{" "\"type\"" ":" "\"triangle6\"" "," "\"nodes\"" ":" "[" <reference> 5("," <reference>) "]" "," "\"force\"" ":" "[" <vector5d> 5("," <vector5d>) "]" "}"
+

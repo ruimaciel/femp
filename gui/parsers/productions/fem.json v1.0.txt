@@ -58,6 +58,7 @@
 <domain loads>	=	"\"domain loads\"" ":" "[" 1*<domain load> "]"
 
 <domain load>	=	"{" "\"element\" ":" <reference> "," "\"force\"" ":" <vector3d> "}" 
+		=/	"{" "\"element\" ":" "[" <reference> "," <reference> "]" "," "\"force\"" ":" <vector3d> "}" 
 
 <surface loads>	=	"\"surface loads\""  ":"  "[" 1*<surface load> "]"
 

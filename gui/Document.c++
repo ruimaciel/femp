@@ -1136,33 +1136,88 @@ enum Document::Error Document::load()
 				DECHO();
 				state.pop();
 
+				refs.clear();	
 				state.push(42);	// DomainLoadsFollow
 				state.push(41);	// DomainLoad
 				break;
 
 
 			case 41:	// DomainLoad
-				DECHO();
+				{
+					DECHO();
 
-				CURSOR_PUSH(JSON_STRING);
-				CURSOR_VERIFY_TEXT("element");
-				CURSOR_PUSH(JSON_NUMBER);
-				text = cursor.top()->text;
-				ref = text.toULongLong();
-				cursor.pop();
+					CURSOR_PUSH(JSON_STRING);
+					CURSOR_VERIFY_TEXT("element");
 
-				CURSOR_NEXT_TEST(JSON_STRING);
-				CURSOR_VERIFY_TEXT("force");
-				CURSOR_PUSH(JSON_ARRAY);
+					if(cursor.top()->child == NULL) ERROR();
+					switch(cursor.top()->child->type )
+					{
+						case JSON_ARRAY:
+							{
+								size_t ei, ej;
+								CURSOR_PUSH(JSON_ARRAY);
 
-				state.pop();
-				state.push(15);	// Coordinates
+								CURSOR_PUSH(JSON_NUMBER);
+
+								// get the vector components
+								text = cursor.top()->text;
+								ei = text.toLong();
+								CURSOR_NEXT_TEST(JSON_NUMBER);
+								text = cursor.top()->text;
+								ej = text.toULongLong();
+
+								if(cursor.top()->next != NULL) 
+									ERROR();
+
+								if(ei > ej)
+								{
+									ERROR();
+								}
+								else if (ei == ej)
+									refs.push_back(ei);
+								else
+								{
+									// push the entire range to the element range list
+									for(size_t i = ei; i <= ej; i++)
+									{
+										refs.push_back(i);
+									}
+								}
+
+								cursor.pop();
+								cursor.pop();
+							}
+							break;
+
+						case JSON_NUMBER:
+							CURSOR_PUSH(JSON_NUMBER);
+							text = cursor.top()->text;
+							refs.push_back(text.toULongLong());
+							cursor.pop();
+							break;
+
+						default:
+							//TODO tweak error message
+							ERROR();
+							break;
+
+					}
+
+					CURSOR_NEXT_TEST(JSON_STRING);
+					CURSOR_VERIFY_TEXT("force");
+					CURSOR_PUSH(JSON_ARRAY);
+
+					state.pop();
+					state.push(15);	// Coordinates
+				}
 				break;
 
 			case 42:	// DomainLoadsFollow
 				DECHO();
-				//TODO
-				load_pattern.addDomainLoad(ref, v);
+				for(std::vector<size_t>::iterator iter = refs.begin(); iter != refs.end(); iter++)
+				{
+					load_pattern.addDomainLoad(*iter, v);
+				}
 
 				cursor.pop();	// JSON_OBJECT -> "force" JSON_ARRAY
 				cursor.pop();	// -> JSON_OBJECT "force"

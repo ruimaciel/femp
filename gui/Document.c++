@@ -1445,11 +1445,12 @@ enum Document::Error Document::load()
 				DECHO();
 				//TODO
 				model.pushLoadPattern(load_pattern);
+				std::cout << "pushed " << load_pattern.label << std::endl;
 
 				// Test the FIRST
+				cursor.pop();	// JSON_OBJECT -> "force" JSON_ARRAY
 				if(cursor.top()->next == NULL)
 				{
-					cursor.pop();	// JSON_OBJECT -> "force" JSON_ARRAY
 					cursor.pop();	// -> JSON_OBJECT "force"
 
 					state.pop();

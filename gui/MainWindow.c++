@@ -982,6 +982,13 @@ void MainWindow::runAnalysis()
 
 	using namespace std;
 
+	// check if ther is a load pattern
+	if( (this->comboActionsLoadPattern == NULL) || (!this->comboActionsLoadPattern->isEnabled()) )
+	{
+		QMessageBox::critical(this, "No load patterns", "This model doesn't have any load patterns to run");
+		return;
+	}
+
 	fem::Solver<double> * solver = NULL;
 
 	// run the AnalysisDialog to get the solver
@@ -1012,7 +1019,13 @@ void MainWindow::runAnalysis()
 	connect(&progress,	SIGNAL(finish()),	&dialog,	SLOT(finish() ));
 
 	//TODO finish this
-	analysis.set(document.model, document.model.load_pattern_list[0], &analysis_result, progress, solver);
+	if(comboActionsLoadPattern->currentIndex() >= document.model.load_pattern_list.size())
+	{
+		QMessageBox::critical(this, "Error", "The program tried to run a load pattern that doesn't exist");
+		return;
+	}
+
+	analysis.set(document.model, document.model.load_pattern_list[comboActionsLoadPattern->currentIndex()], &analysis_result, progress, solver);
 
 	std::thread t(analysis);
 
@@ -1101,12 +1114,20 @@ void MainWindow::dumpFemEquation()
 	}
 
 	// set a new file name for this file
+	/*
 	file.open(QFile::WriteOnly);
 	QTextStream     out(&file);
 	out.setRealNumberNotation(QTextStream::ScientificNotation);
 	out.setRealNumberPrecision(16);
+	*/
+	ofstream out(file.fileName().toStdString () );
+	out << "test" << endl;
 
+
+	//lalib::dump_octave(out, "K", analysis_result.K);
+	
 	//dump_octave(outfile, "K", analysis_result.K);
+	/*
 	out << "# Created by lalib\n";
 	out << "# name: K\n";
 	out << "# type: matrix\n";
@@ -1122,8 +1143,22 @@ void MainWindow::dumpFemEquation()
 		out << "\n";
 	}
 	out << endl;
+	*/
+	out << "# Created by lalib\n";
+	out << "# name: K\n";
+	out << "# type: sparse matrix\n";
+	out << "# nnz: " << analysis_result.K.data.data.size() << "\n";
+	out << "# rows: " << analysis_result.K.rows() << "\n";
+	out << "# columns: " << analysis_result.K.columns() << "\n";
 
-	//dump_octave(outfile, "f", analysis_result.f);
+	for( std::map< size_t, double>::iterator i = analysis_result.K.data.data.begin(); i != analysis_result.K.data.data.end(); i++)
+	{
+		out << i->first/analysis_result.K.columns() << " " << i->first%analysis_result.K.columns() << " " << i->second << "\n";
+	}
+	out << endl;
+	// */
+
+	//lalib::dump_octave(out, "f", analysis_result.f);
 	out << "# Created by lalib\n";
 	out << "# name: f\n";
 	out << "# type: matrix\n";
@@ -1134,8 +1169,10 @@ void MainWindow::dumpFemEquation()
 		out << " " << analysis_result.f.value(i) << "\n";
 	}
 	out << endl;
+	//*/
 
-	//dump_octave(outfile, "d", analysis_result.d);
+	//lalib::dump_octave(out, "d", analysis_result.d);
+	
 	out << "# Created by lalib\n";
 	out << "# name: d\n";
 	out << "# type: matrix\n";
@@ -1146,6 +1183,8 @@ void MainWindow::dumpFemEquation()
 		out << " " << analysis_result.d.value(i) << "\n";
 	}
 	out << endl;
+	//*/
+	out.close();
 	file.close();
 }
 

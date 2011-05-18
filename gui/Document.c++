@@ -721,18 +721,68 @@ enum Document::Error Document::load()
 
 			case 27:		// NodeRestriction
 				DECHO();
+				refs.clear();	
+
 				// TODO finish
 				CURSOR_PUSH(JSON_STRING);	
 				CURSOR_VERIFY_TEXT("node");
-				CURSOR_PUSH(JSON_NUMBER);	
 
-				// set the temps
-				node_restrictions.reset();
+				if(cursor.top()->child == NULL) ERROR();
 
-				text = cursor.top()->text;
-				ref = text.toULongLong();
+				switch(cursor.top()->child->type )
+				{
+					case JSON_ARRAY:
+						{
+							size_t ei, ej;
+							CURSOR_PUSH(JSON_ARRAY);
 
-				cursor.pop();
+							CURSOR_PUSH(JSON_NUMBER);
+
+							// get the vector components
+							text = cursor.top()->text;
+							ei = text.toULongLong();
+							CURSOR_NEXT_TEST(JSON_NUMBER);
+							text = cursor.top()->text;
+							ej = text.toULongLong();
+
+							if(cursor.top()->next != NULL) 
+								ERROR();
+
+							if(ei > ej)
+							{
+								ERROR();
+							}
+							else
+							{
+								// push the entire range to the element range list
+								for(size_t i = ei; i <= ej; i++)
+								{
+									refs.push_back(i);
+								}
+							}
+
+							cursor.pop();
+							cursor.pop();
+							}
+						break;
+
+					case JSON_NUMBER: 
+						CURSOR_PUSH(JSON_NUMBER);	
+						// set the temps
+						node_restrictions.reset();
+
+						text = cursor.top()->text;
+						refs.push_back(text.toULongLong());
+						cursor.pop();
+						break;
+
+					default:
+						//TODO implement a better error handler
+						ERROR();
+						break;
+				}
+
+
 				CURSOR_NEXT_TEST(JSON_STRING);
 
 				if (strcmp(cursor.top()->text, "dx") == 0) 
@@ -813,7 +863,10 @@ enum Document::Error Document::load()
 					ERROR();
 
 				// set the node restrictions
-				model.pushNodeRestrictions(ref, node_restrictions);
+				for(std::vector<size_t>::iterator iter = refs.begin(); iter != refs.end(); iter++)
+				{
+					model.pushNodeRestrictions(*iter, node_restrictions);
+				}
 
 				cursor.pop();	
 
@@ -1136,7 +1189,6 @@ enum Document::Error Document::load()
 				DECHO();
 				state.pop();
 
-				refs.clear();	
 				state.push(42);	// DomainLoadsFollow
 				state.push(41);	// DomainLoad
 				break;
@@ -1145,6 +1197,7 @@ enum Document::Error Document::load()
 			case 41:	// DomainLoad
 				{
 					DECHO();
+					refs.clear();	
 
 					CURSOR_PUSH(JSON_STRING);
 					CURSOR_VERIFY_TEXT("element");
@@ -1161,7 +1214,7 @@ enum Document::Error Document::load()
 
 								// get the vector components
 								text = cursor.top()->text;
-								ei = text.toLong();
+								ei = text.toULongLong();
 								CURSOR_NEXT_TEST(JSON_NUMBER);
 								text = cursor.top()->text;
 								ej = text.toULongLong();

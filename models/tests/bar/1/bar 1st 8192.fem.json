@@ -18744,6 +18744,14 @@
 				{"node":7, "force":[0, -1000, 0]},
 				{"node":8, "force":[0, -1000, 0]}
 			]
+		} ,
+		{
+			"label": "distributed domain load",
+
+			"domain loads":[
+				{"element":[0,8191], "force": [0,-1000,0]}
+			]
 		}
+
 	]
 }

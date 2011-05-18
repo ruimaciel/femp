@@ -456,5 +456,14 @@
 				{"node":8, "force":[0, -1000, 0]}
 			]
 		}
+		,
+		{
+			"label": "distributed domain load",
+
+			"domain loads":[
+				{"element":[0,127], "force": [0,-1000,0]}
+			]
+		}
+
 	]
 }

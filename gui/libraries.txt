@@ -1,0 +1,9 @@
+libqt4-dev
+libqt4-designer
+libqt4-opengl-dev
+libboost1.42-dev
+libeigen2-dev
+libsuitesparse-dev
+libsuitesparse-metis-dev
+bison
+flex

@@ -1114,20 +1114,22 @@ void MainWindow::dumpFemEquation()
 	}
 
 	// set a new file name for this file
-	/*
+	
 	file.open(QFile::WriteOnly);
 	QTextStream     out(&file);
 	out.setRealNumberNotation(QTextStream::ScientificNotation);
 	out.setRealNumberPrecision(16);
-	*/
+	// */
+	/*
 	ofstream out(file.fileName().toStdString () );
 	out << "test" << endl;
+	*/
 
 
 	//lalib::dump_octave(out, "K", analysis_result.K);
 	
 	//dump_octave(outfile, "K", analysis_result.K);
-	/*
+	
 	out << "# Created by lalib\n";
 	out << "# name: K\n";
 	out << "# type: matrix\n";
@@ -1143,7 +1145,8 @@ void MainWindow::dumpFemEquation()
 		out << "\n";
 	}
 	out << endl;
-	*/
+	// */
+	/*
 	out << "# Created by lalib\n";
 	out << "# name: K\n";
 	out << "# type: sparse matrix\n";
@@ -1184,7 +1187,7 @@ void MainWindow::dumpFemEquation()
 	}
 	out << endl;
 	//*/
-	out.close();
+	//out.close();
 	file.close();
 }
 

@@ -13,7 +13,7 @@
 #include "../../fem/NodeRestrictions.h++"
 #include "../../fem/Surface.h++"
 
-#include "../ModelViewport.h++"
+#include "../BaseViewport.h++"
 
 #include "../SceneGraph.h++"
 #include "../SceneGraphComponents/SGCNode.h++"
@@ -29,7 +29,7 @@
 
 
 VPStateModel::VPStateModel()
-	: ViewportState<ModelViewport>()
+	: ViewportState<BaseViewport>()
 { 
 }
 
@@ -41,14 +41,14 @@ VPStateModel::~VPStateModel()
 }
 
 
-void VPStateModel::initialize(ModelViewport *)
+void VPStateModel::initialize(BaseViewport *)
 {
 	mylog.setPrefix("VPStateModel::initialize()");
 	mylog.message("yet to be implemented");
 }
 
 
-void VPStateModel::populateScenegraph(ModelViewport *mv)
+void VPStateModel::populateScenegraph(BaseViewport *mv)
 {
 	mylog.setPrefix("void VPStateModel::populateScenegraph(fem::Model *mv->model)");
 	mylog.message("populating");
@@ -114,7 +114,7 @@ void VPStateModel::populateScenegraph(ModelViewport *mv)
 }
 
 
-void VPStateModel::paintGL(ModelViewport *mv)
+void VPStateModel::paintGL(BaseViewport *mv)
 {
 	mylog.setPrefix("VPStateModel::paintGL()");
 
@@ -130,7 +130,7 @@ void VPStateModel::paintGL(ModelViewport *mv)
 }
 
 
-void VPStateModel::mousePressEvent(ModelViewport *mv, QMouseEvent *event)
+void VPStateModel::mousePressEvent(BaseViewport *mv, QMouseEvent *event)
 {
 	mv->viewport_data.lastPos = event->pos();
 	// process left clicks

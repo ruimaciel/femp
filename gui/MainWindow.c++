@@ -26,6 +26,9 @@
 #include "ui/QuadratureRulesOptionsDialog.h++"
 #include "ui/AnalysisProgressDialog.h++"
 #include "ui/AnalysisDialog.h++"
+#include "ui/MdiWindow.h++"
+#include "ui/ModelWindow.h++"
+#include "ui/ResultWindow.h++"
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
@@ -49,20 +52,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	// set the MDI area widget as the window's central widget
 	mdiArea = new QMdiArea;
 	setCentralWidget(mdiArea);	// this main window has a Multiple Document Interface
-	//mdiArea->setViewMode(QMdiArea::TabbedView);
 
 	// Load global options from the options files
 	this->loadOptions();
 
 	// initialize the member attributes
 	this->hasUnsavedChanges = false;
-
-
-	// initialize the toolbars
-	visibilityToolBar	= NULL;
-	viewportToolBar	= NULL;
-	actionsToolBar	= NULL;
-	comboActionsLoadPattern	= NULL;
 
 	// initialize the Docks
 	commandLineDockWidget = new CommandLineDockWidget(this);
@@ -71,7 +66,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	connect(this, SIGNAL(setError(QString)), commandLineDockWidget, SLOT(getError(QString)));
 
 	// set the MainWindow connections
-	connect(mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(updateUiFromActiveMdiSubWindow(QMdiSubWindow*)));
 	connect(&mylog,	SIGNAL(newMessage(QString)),	commandLineDockWidget, SLOT(getMessage(QString)));
 
 	// create actions and connect signals to slots
@@ -376,17 +370,7 @@ void MainWindow::quit()
 
 void MainWindow::createActions()
 {
-	// create actions
-	actionViewportXY = new QAction("XY", this);
-	actionViewportYZ = new QAction("YZ", this);
-	actionViewportXZ = new QAction("XZ", this);
-	actionViewportIso = new QAction("iso", this);
-
 	// connect the actions
-	connect(actionViewportXY,	SIGNAL(triggered()),	this,	SLOT(setViewportXY()));
-	connect(actionViewportYZ,	SIGNAL(triggered()),	this,	SLOT(setViewportYZ()));
-	connect(actionViewportXZ,	SIGNAL(triggered()),	this,	SLOT(setViewportXZ()));
-	connect(actionViewportIso,	SIGNAL(triggered()),	this,	SLOT(setViewportIso()));
 	connect(ui.actionNew,	SIGNAL(triggered()), this,	SLOT(newProject()));
 	connect(ui.actionOpen,	SIGNAL(triggered()), this,	SLOT(openProject()));
 	connect(ui.actionReopen,	SIGNAL(triggered()), this,	SLOT(reopenProject()));
@@ -420,68 +404,14 @@ void MainWindow::createActions()
 
 void MainWindow::createToolBars()
 {
-	// build the visibility toolbar
-	visibilityToolBar = addToolBar(tr("Visibility"));
-	visibilityToolBar->addAction(ui.actionDisplayNodes);
-	visibilityToolBar->addAction(ui.actionDisplaySurfaces);
-
-	// build the viewport toolbar
-	viewportToolBar = addToolBar(tr("Viewport"));
-	viewportToolBar->addAction(actionViewportXY);
-	viewportToolBar->addAction(actionViewportYZ);
-	viewportToolBar->addAction(actionViewportXZ);
-	viewportToolBar->addAction(actionViewportIso);
-
 	// build the actions toolbar
 	//TODO finish this
-	actionsToolBar = addToolBar(tr("Display actions"));
-
-	comboActionsLoadPattern = new QComboBox;
-	// fill the combo box with load patterns
-	if(document.model.load_pattern_list.empty())
-	{
-		comboActionsLoadPattern->addItem(tr("no load cases"));
-		comboActionsLoadPattern->setDisabled(true);
-	}
-	else
-	{
-		// fill the combo box with all the load patterns which were already defined
-		for(std::vector<fem::LoadPattern>::iterator i = document.model.load_pattern_list.begin(); i != document.model.load_pattern_list.end(); i++)
-		{
-			comboActionsLoadPattern->addItem(QString::fromStdString(i->label));
-		}
-	}
-	// add the rest of the toolbar buttons
-	actionsToolBar->addWidget(comboActionsLoadPattern);
-	actionsToolBar->addAction(ui.actionShowNodalDisplacements);
-	actionsToolBar->addAction(ui.actionShowNodalForces);
-	actionsToolBar->addAction(ui.actionShowSurfaceForces);
-	actionsToolBar->addAction(ui.actionShowDomainForces);
 }
 
 
 void MainWindow::destroyToolBars()
 {
 	//deletes all toolbars
-	if(visibilityToolBar)
-	{
-		removeToolBar(visibilityToolBar); 
-		delete visibilityToolBar;
-		visibilityToolBar = NULL;
-	}
-	if(viewportToolBar)
-	{
-		removeToolBar(viewportToolBar); 
-		delete viewportToolBar;
-		viewportToolBar = NULL;
-	}
-	if(actionsToolBar)
-	{
-		//TODO delete the load pattern combo box?
-		removeToolBar(actionsToolBar); 
-		delete actionsToolBar;
-		actionsToolBar = NULL;
-	}
 }
 
 
@@ -890,89 +820,11 @@ void MainWindow::editQuadratureRules()
 
 void MainWindow::setElementDisplay()
 {
-	mylog.setPrefix("MainWindow::setElementDisplay()");
-	//TODO make this rely on the active window
-	if(mdiArea->activeSubWindow() != NULL)
-	{
-		// mdiArea has an active subwindow
-		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(mdiArea->activeSubWindow()->widget());
-
-		if(mwp == NULL)
-		{
-			mylog.message("no can do");
-			return;
-		}
-
-		// set the new viewport according to the MDI subwindow's widget type
-		switch(mwp->window_type)
-		{
-			case MdiWindowProperties::MWP_Model:
-				{
-					mylog.message("MWP_Model");
-					ModelViewport *w = static_cast<ModelViewport *>(mwp);
-
-					// set the position
-					//w->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
-					//w->display_options.surfaces	= this->ui.actionDisplaySurfaces->isChecked()?1:0;
-					w->setNodeVisibility(this->ui.actionDisplayNodes->isChecked());
-					w->setSurfaceVisibility(this->ui.actionDisplaySurfaces->isChecked());
-				}
-				break;
-
-			case MdiWindowProperties::MWP_Displacements:
-				{
-					mylog.message("MWP_Displacements");
-					DisplacementsViewport *w = static_cast<DisplacementsViewport *>(mwp);
-
-					// set the position
-					//w->display_options.nodes 	= this->ui.actionDisplayNodes->isChecked()?1:0;
-					//w->display_options.surfaces	= this->ui.actionDisplaySurfaces->isChecked()?1:0;
-					w->setNodeVisibility(this->ui.actionDisplayNodes->isChecked());
-					w->setSurfaceVisibility(this->ui.actionDisplaySurfaces->isChecked());
-				}
-				break;
-
-			default:
-				mylog.message("void MainWindow::setElementDisplay(): unsupported case");
-				break;
-		}
-	}
-
-	mylog.clearPrefix();
 }
 
 
 void MainWindow::setNodeForcesDisplay()
 {
-	//TODO make this rely on the active window
-	if(mdiArea->activeSubWindow() != NULL)
-	{
-		// mdiArea has an active subwindow
-		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(mdiArea->activeSubWindow()->widget());
-
-		if(mwp == NULL)
-		{
-			mylog.message("MainWindow::setNodeForcesDisplay(): no can do");
-			return;
-		}
-
-		// set the new viewport according to the MDI subwindow's widget type
-		switch(mwp->window_type)
-		{
-			case MdiWindowProperties::MWP_Model:
-				{
-					ModelViewport *w = static_cast<ModelViewport *>(mwp);
-
-					// set the position
-					w->display_options.nodal_forces 	= this->ui.actionShowNodalForces->isChecked()?1:0;
-				}
-				break;
-
-			default:
-				mylog.message("void MainWindow::setNodeForcesDisplay(): unsupported case");
-				break;
-		}
-	}
 }
 
 
@@ -983,7 +835,7 @@ void MainWindow::runAnalysis()
 	using namespace std;
 
 	// check if ther is a load pattern
-	if( (this->comboActionsLoadPattern == NULL) || (!this->comboActionsLoadPattern->isEnabled()) )
+	if( this->document.model.load_pattern_list.empty() ) 
 	{
 		QMessageBox::critical(this, "No load patterns", "This model doesn't have any load patterns to run");
 		return;
@@ -992,11 +844,16 @@ void MainWindow::runAnalysis()
 	fem::Solver<double> * solver = NULL;
 
 	// run the AnalysisDialog to get the solver
-	AnalysisDialog analysis_dialog(this);
+	AnalysisDialog analysis_dialog(document.model, this);
 	switch(analysis_dialog.exec())
 	{
 		case QDialog::Accepted:
 			solver = analysis_dialog.solver();
+			if( analysis_dialog.loadPattern() == -1)
+			{
+				QMessageBox::critical(this, "No load patterns", "This model doesn't have any load patterns to run");
+				return;
+			}
 			break;
 
 		default:
@@ -1019,13 +876,7 @@ void MainWindow::runAnalysis()
 	connect(&progress,	SIGNAL(finish()),	&dialog,	SLOT(finish() ));
 
 	//TODO finish this
-	if(comboActionsLoadPattern->currentIndex() >= document.model.load_pattern_list.size())
-	{
-		QMessageBox::critical(this, "Error", "The program tried to run a load pattern that doesn't exist");
-		return;
-	}
-
-	analysis.set(document.model, document.model.load_pattern_list[comboActionsLoadPattern->currentIndex()], &analysis_result, progress, solver);
+	analysis.set(document.model, document.model.load_pattern_list[analysis_dialog.loadPattern()], &analysis_result, progress, solver);
 
 	std::thread t(analysis);
 
@@ -1202,12 +1053,12 @@ void MainWindow::showModel()
 	{
 		window->setWindowTitle("Model");
 
-		ModelViewport *viewport = new ModelViewport(&document.model, this);
-		window->setWidget(viewport);
+		ModelWindow *model_window = new ModelWindow(document.model, colors, this);
+		window->setWidget(model_window);
 	}
 	else
 	{
-		qWarning("MainWindow::showModel(): no active subwindow");
+		this->createNewViewportWindow();
 	}
 }
 
@@ -1221,7 +1072,7 @@ void MainWindow::showDisplacements()
 	{
 		window->setWindowTitle("Displacements");
 
-		DisplacementsViewport *viewport = new DisplacementsViewport(&document.model, analysis_result,  this);
+		ResultWindow *viewport = new ResultWindow(document.model, colors, analysis_result,  this);
 		window->setWidget(viewport);
 	}
 	else
@@ -1249,201 +1100,6 @@ void MainWindow::getError(QString message)
 }
 
 
-void MainWindow::setViewportXY()
-{
-	//TODO check if current MDI window supports this feature
-	if(mdiArea->activeSubWindow() != NULL)
-	{
-		// mdiArea has an active subwindow
-		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(mdiArea->activeSubWindow()->widget());
-
-		if(mwp == NULL)
-		{
-			mylog.message("no can do");
-			return;
-		}
-
-		// set the new viewport according to the MDI subwindow's widget type
-		switch(mwp->window_type)
-		{
-			case MdiWindowProperties::MWP_Model:
-				{
-					mylog.message("MWP_Model");
-					ModelViewport *w = static_cast<ModelViewport *>(mwp);
-
-					// set the position
-					w->setXRotation(0);
-					w->setYRotation(0);
-					w->setZRotation(0);
-				}
-				break;
-
-			case MdiWindowProperties::MWP_Displacements:
-				{
-					mylog.message("MWP_Displacements");
-					DisplacementsViewport *w = static_cast<DisplacementsViewport *>(mwp);
-
-					// set the position
-					w->setXRotation(0);
-					w->setYRotation(0);
-					w->setZRotation(0);
-				}
-				break;
-
-			default:
-				mylog.message("void MainWindow::setViewportXY(): unsupported case");
-				break;
-		}
-	}
-}
-
-
-void MainWindow::setViewportYZ()
-{
-	//TODO check if current MDI window supports this feature
-	if(mdiArea->activeSubWindow() != NULL)
-	{
-		// mdiArea has an active subwindow
-		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(mdiArea->activeSubWindow()->widget());
-
-		if(mwp == NULL)
-		{
-			mylog.message("MainWindow::setViewportYZ(): casting to MdiWindowProperties has failed");
-			return;
-		}
-
-		// set the new viewport according to the MDI subwindow's widget type
-		switch(mwp->window_type)
-		{
-			case MdiWindowProperties::MWP_Model:
-				{
-					mylog.message("MWP_Model");
-					ModelViewport *w = static_cast<ModelViewport *>(mwp);
-
-					// set the position
-					w->setXRotation(0);
-					w->setYRotation(270);
-					w->setZRotation(0);
-				}
-				break;
-
-			case MdiWindowProperties::MWP_Displacements:
-				{
-					mylog.message("MWP_Displacements");
-					DisplacementsViewport *w = static_cast<DisplacementsViewport *>(mwp);
-
-					// set the position
-					w->setXRotation(0);
-					w->setYRotation(270);
-					w->setZRotation(0);
-				}
-				break;
-
-			default:
-				mylog.message("void MainWindow::setViewportXY(): unsupported case");
-				break;
-		}
-	}
-}
-
-
-void MainWindow::setViewportXZ()
-{
-	//TODO check if current MDI window supports this feature
-	if(mdiArea->activeSubWindow() != NULL)
-	{
-		// mdiArea has an active subwindow
-		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(mdiArea->activeSubWindow()->widget());
-
-		if(mwp == NULL)
-		{
-			mylog.message("MainWindow::setViewportXZ(): casting to MdiWindowProperties has failed");
-			return;
-		}
-
-		// set the new viewport according to the MDI subwindow's widget type
-		switch(mwp->window_type)
-		{
-			case MdiWindowProperties::MWP_Model:
-				{
-					mylog.message("MWP_Model");
-					ModelViewport *w = static_cast<ModelViewport *>(mwp);
-
-					// set the view angle
-					w->setXRotation(90);
-					w->setYRotation(0);
-					w->setZRotation(0);
-				}
-				break;
-
-			case MdiWindowProperties::MWP_Displacements:
-				{
-					mylog.message("MWP_Displacements");
-					DisplacementsViewport *w = static_cast<DisplacementsViewport *>(mwp);
-
-					// set the view angle
-					w->setXRotation(90);
-					w->setYRotation(0);
-					w->setZRotation(0);
-				}
-				break;
-			default:
-				mylog.message("void MainWindow::setViewportXZ(): unsupported case");
-				break;
-		}
-	}
-}
-
-
-void MainWindow::setViewportIso()
-{
-	//TODO check if current MDI window supports this feature
-	if(mdiArea->activeSubWindow() != NULL)
-	{
-		// mdiArea has an active subwindow
-		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(mdiArea->activeSubWindow()->widget());
-
-		if(mwp == NULL)
-		{
-			mylog.message("MainWindow::setViewportIso(): casting to MdiWindowProperties has failed");
-			return;
-		}
-
-		// set the new viewport according to the MDI subwindow's widget type
-		switch(mwp->window_type)
-		{
-			case MdiWindowProperties::MWP_Model:
-				{
-					mylog.message("MWP_Model");
-					ModelViewport *w = static_cast<ModelViewport *>(mwp);
-
-					// set the view angle
-					w->setXRotation(45);
-					w->setYRotation(45);
-					w->setZRotation(0);
-				}
-				break;
-
-			case MdiWindowProperties::MWP_Displacements:
-				{
-					mylog.message("MWP_Displacements");
-					DisplacementsViewport *w = static_cast<DisplacementsViewport *>(mwp);
-
-					// set the view angle
-					w->setXRotation(45);
-					w->setYRotation(45);
-					w->setZRotation(0);
-				}
-				break;
-
-			default:
-				mylog.message("void MainWindow::setViewportIso(): unsupported case");
-				break;
-		}
-	}
-}
-
-
 void MainWindow::setTiledWindows()
 {
 	mdiArea->tileSubWindows();
@@ -1458,87 +1114,17 @@ void MainWindow::setCascadeWindows()
 
 void MainWindow:: createNewViewportWindow()
 {
-	ModelViewport *viewport;	// opengl viewport
-	viewport = new ModelViewport(&document.model, this);
-	viewport->setColors(colors);
+	ModelWindow *window;	// opengl viewport
+	window = new ModelWindow(document.model, colors, this);
 
 	// create the model's MDI window
 	QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport
 
 	window_gl_viewport = new QMdiSubWindow(mdiArea);
-	window_gl_viewport->setWidget(viewport);
+	window_gl_viewport->setWidget(window);
 	window_gl_viewport->setAttribute(Qt::WA_DeleteOnClose);
 	window_gl_viewport->setWindowTitle(tr("model viewport"));
-	window_gl_viewport->show();
-}
-
-
-void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)
-{
-	mylog.setPrefix("MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow)");
-
-	//TODO finish this
-	if(subwindow == NULL)
-	{
-		// there are no active windows in the workspace
-		//TODO finish this
-	}
-	else
-	{
-		// update the UI accordingly
-		MdiWindowProperties *mwp = dynamic_cast<MdiWindowProperties *>(subwindow->widget());
-
-		if(mwp == NULL)
-		{
-			mylog.message("void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow): failed to access the window's MdiWindoProperties");
-			return;
-		}
-
-		// set the new viewport according to the MDI subwindow's widget type
-		switch(mwp->window_type)
-		{
-			case MdiWindowProperties::MWP_Model:
-				{
-					//mylog.message("MWP_Model");
-					ModelViewport *w = static_cast<ModelViewport *>(mwp);
-
-					// update the UI according to this window's options
-					this->ui.actionDisplayNodes->setChecked(w->display_options.nodes);
-					this->ui.actionDisplaySurfaces->setChecked(w->display_options.surfaces);
-
-					// change combo box
-					//TODO set the combo box to the current load pattern
-					this->ui.actionShowNodalDisplacements->setChecked(w->display_options.nodal_displacements);
-					this->ui.actionShowNodalForces->setChecked(w->display_options.nodal_forces);
-					this->ui.actionShowSurfaceForces->setChecked(w->display_options.surface_forces);
-					this->ui.actionShowDomainForces->setChecked(w->display_options.domain_forces);
-				}
-				break;
-
-			case MdiWindowProperties::MWP_Displacements:
-				{
-					//mylog.message("MWP_Model");
-					DisplacementsViewport *w = static_cast<DisplacementsViewport *>(mwp);
-
-					// update the UI according to this window's options
-					this->ui.actionDisplayNodes->setChecked(w->display_options.nodes);
-					this->ui.actionDisplaySurfaces->setChecked(w->display_options.surfaces);
-
-					// change combo box
-					//TODO set the combo box to the current load pattern
-					this->ui.actionShowNodalDisplacements->setChecked(w->display_options.nodal_displacements);
-					this->ui.actionShowNodalForces->setChecked(w->display_options.nodal_forces);
-					this->ui.actionShowSurfaceForces->setChecked(w->display_options.surface_forces);
-					this->ui.actionShowDomainForces->setChecked(w->display_options.domain_forces);
-				}
-				break;
-
-			default:
-				mylog.message("void MainWindow::updateUiFromActiveMdiSubWindow(QMdiSubWindow *subwindow): unsupported state");
-				break;
-		}
-	}
-	mylog.clearPrefix();
+	window_gl_viewport->showMaximized();
 }
 
 
@@ -1562,19 +1148,7 @@ void MainWindow::setUserInterfaceAsOpened()
 	ui.actionDisplayNodes->setChecked(true);
 	ui.actionDisplaySurfaces->setChecked(true);
 
-	// set the new viewport widget
-	ModelViewport *viewport;	// opengl viewport
-	viewport = new ModelViewport(&document.model, this);
-	viewport->setColors(colors);
-
-	// create the model's MDI window
-	QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport
-
-	window_gl_viewport = new QMdiSubWindow(mdiArea);
-	window_gl_viewport->setWidget(viewport);
-	window_gl_viewport->setAttribute(Qt::WA_DeleteOnClose);
-	window_gl_viewport->setWindowTitle(tr("model viewport"));
-	window_gl_viewport->showMaximized();
+	this->createNewViewportWindow();
 
 	// set toolbars
 	createToolBars();

@@ -9,22 +9,22 @@
 #include "../ViewportColors.h++"
 
 
-class ModelViewport;
+class BaseViewport;
 
 /*
 A pattern for the State pattern which is used to render the model space
 */
 class VPStateModel
-	:public ViewportState<ModelViewport>
+	:public ViewportState<BaseViewport>
 {
 	public:
 		VPStateModel();
 		~VPStateModel();
 
-		void initialize(ModelViewport *mv);
-		void populateScenegraph(ModelViewport *mv);
-		void paintGL(ModelViewport *mv);
-		void mousePressEvent(ModelViewport *mv, QMouseEvent *event);
+		void initialize(BaseViewport *mv);
+		void populateScenegraph(BaseViewport *mv);
+		void paintGL(BaseViewport *mv);
+		void mousePressEvent(BaseViewport *mv, QMouseEvent *event);
 		// void mouseMoveEvent(QMouseEvent *event);
 
 	protected:

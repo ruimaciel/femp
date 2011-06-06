@@ -1,3 +1,5 @@
+Mesh.SecondOrderIncomplete = 1;
+
 b = 0.25;
 h = 0.25;
 l = 4;
@@ -23,7 +25,7 @@ Transfinite Surface{6} = {1, 2, 3, 4};
 Recombine Surface{6};
 
 Extrude {0, 0, l} {
-  Surface{6}; Layers{16*div}; Recombine;
+  Surface{6}; Layers{ 8*div}; Recombine;
 }
 
 Physical Volume(29) = {1};

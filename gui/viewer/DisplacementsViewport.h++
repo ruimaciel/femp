@@ -10,6 +10,7 @@
 #include "../MdiWindowProperties.h++"
 
 #include "../fem/Model.h++"
+#include "BaseViewport.h++"
 #include "Camera.h++"
 #include "ViewportColors.h++"
 #include "DisplayOptions.h++"
@@ -23,7 +24,7 @@
 
 
 class DisplacementsViewport 
-	: public QGLWidget, public MdiWindowProperties
+	: public BaseViewport
 {
 	Q_OBJECT
 
@@ -31,13 +32,6 @@ class DisplacementsViewport
 		fem::AnalysisResult<double> *analysis_result;
 
 	public:
-		ViewportData viewport_data;
-		ViewportColors colors;	// color definitions
-		DisplayOptions display_options;	// options list to be used by the render routine
-
-		fem::Model *model;
-
-		ViewportState<DisplacementsViewport>	*state;	// pointer to object used for the State pattern
 
 	public:
 		DisplacementsViewport(fem::Model *model, fem::AnalysisResult<double> &analysis, QWidget *parent = NULL);

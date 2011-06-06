@@ -6,20 +6,20 @@
 
 #include "../../fem/Node.h++"
 #include "ViewportState.h++"
-#include "../DisplacementsViewport.h++"
+#include "../BaseViewport.h++"
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"
 
 #include "../../fem/AnalysisResult.h++"
 
 
-class DisplacementsViewport;
+class BaseViewport;
 
 /*
 A pattern for the State pattern which is used to render the model space
 */
 class VPStateDisplacements
-	:public ViewportState<DisplacementsViewport>
+	:public ViewportState<BaseViewport>
 {
 	protected:
 		std::map<size_t, fem::Node> 	displaced_nodes;
@@ -30,12 +30,12 @@ class VPStateDisplacements
 		VPStateDisplacements();
 		~VPStateDisplacements();
 
-		void initialize(DisplacementsViewport *mv);
-		void populateScenegraph(DisplacementsViewport *mv);
-		void paintGL(DisplacementsViewport *mv);
-		void mousePressEvent(DisplacementsViewport *mv, QMouseEvent *event);
+		void initialize(BaseViewport *mv);
+		void populateScenegraph(BaseViewport *mv);
+		void paintGL(BaseViewport *mv);
+		void mousePressEvent(BaseViewport *mv, QMouseEvent *event);
 		// void mouseMoveEvent(QMouseEvent *event);
-		void keyPressEvent ( DisplacementsViewport *mv, QKeyEvent * event );
+		void keyPressEvent ( BaseViewport *mv, QKeyEvent * event );
 
 
 		/**

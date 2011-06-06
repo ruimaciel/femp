@@ -10,6 +10,8 @@
 #include "../MdiWindowProperties.h++"
 
 #include "../fem/Model.h++"
+
+#include "BaseViewport.h++"
 #include "Camera.h++"
 #include "ViewportColors.h++"
 #include "DisplayOptions.h++"
@@ -25,18 +27,12 @@
 
 
 class ModelViewport 
-	: public QGLWidget, public MdiWindowProperties
+	: public BaseViewport
 {
 	Q_OBJECT
 
 	public:
-		ViewportData viewport_data;
-		ViewportColors colors;	// color definitions
-		DisplayOptions display_options;	// options list to be used by the render routine
-
-		fem::Model *model;
-
-		ViewportState<ModelViewport>	*state;	// pointer to object used for the State pattern
+		ViewportState<BaseViewport>	*state;	// pointer to object used for the State pattern
 
 	public:
 		ModelViewport(fem::Model *model, QWidget *parent = NULL);

@@ -28,7 +28,6 @@ public:
 
 protected:
 	Ui::MainWindow 	ui;
-	//ModelViewport *viewport;	// opengl viewport
 
 	fem::LinearAnalysis<double> analysis;
 	fem::AnalysisResult<double> analysis_result;
@@ -37,26 +36,12 @@ protected:
 
 	QMdiArea	* mdiArea;
 
-	// the toolbars
-	QToolBar *visibilityToolBar;
-	QToolBar *viewportToolBar;
-	QToolBar *actionsToolBar;
-
-	QComboBox *comboActionsLoadPattern;	// a combo box that is inserted in the Actions toolbar to select the load pattern
-
 	ProgramOptions 	options;	// the global program options
 	bool 	hasUnsavedChanges;	// true if the document has unsaved changes
 
 	Document document;	// the FEM document
 
 	ViewportColors colors;	// the elements' viewport colors
-
-	QAction *actionViewportXY;	// places the camera displaying the XY plane
-	QAction *actionViewportYZ;	// places the camera displaying the XY plane
-	QAction *actionViewportXZ;	// places the camera displaying the XZ plane
-	QAction *actionViewportIso;	// places the camera on an isometric view angle
-
-
 
 public Q_SLOTS:
 	/* starts off a brand new FEM project */
@@ -105,19 +90,10 @@ public Q_SLOTS:
 	void getWarning(QString);
 	void getError(QString);
 
-	// set the viewport in the current MDI window
-	void setViewportXY();
-	void setViewportYZ();
-	void setViewportXZ();
-	void setViewportIso();
-
 	// set MDI subwindow configuration
 	void setTiledWindows();
 	void setCascadeWindows();
 	void createNewViewportWindow();
-
-	// updates the UI according to the currently active MDI subwindow
-	void updateUiFromActiveMdiSubWindow(QMdiSubWindow *);
 
 Q_SIGNALS:
 	void setMessage(QString);

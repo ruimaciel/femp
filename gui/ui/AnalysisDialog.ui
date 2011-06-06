@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>464</width>
+    <height>363</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,6 +17,26 @@
    <bool>false</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="labelLoadPattern">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Load pattern</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBoxLoadPattern"/>
+     </item>
+    </layout>
+   </item>
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
@@ -37,8 +57,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>366</width>
-            <height>112</height>
+            <width>430</width>
+            <height>146</height>
            </rect>
           </property>
           <attribute name="label">
@@ -50,8 +70,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>192</width>
-            <height>60</height>
+            <width>430</width>
+            <height>146</height>
            </rect>
           </property>
           <attribute name="label">
@@ -110,8 +130,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>100</width>
-            <height>30</height>
+            <width>430</width>
+            <height>146</height>
            </rect>
           </property>
           <attribute name="label">
@@ -119,6 +139,14 @@
           </attribute>
          </widget>
          <widget class="QWidget" name="pageUmfpack">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>430</width>
+            <height>146</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Umfpack</string>
           </attribute>

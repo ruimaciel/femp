@@ -25,7 +25,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem/elements/Prism18.h++ \
 	viewer/ViewportData.h++ \
 	viewer/Camera.h++  viewer/DisplayOptions.h++  viewer/ModelViewport.h++  viewer/ViewportColors.h++  \
-	viewer/DisplacementsViewport.h++  \
+	viewer/BaseViewport.h++ viewer/DisplacementsViewport.h++  \
 	viewer/ViewportStates/ViewportState.h++  viewer/ViewportStates/VPStateModel.h++ viewer/ViewportStates/VPStateDisplacements.h++ \
 	viewer/SceneGraph.h++ viewer/SceneGraphComponents/SceneGraphComponent.h++  \
 	viewer/SceneGraphComponents/SGCNode.h++ \
@@ -50,7 +50,8 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++ \
 	ui/AnalysisDialog.h++ \
 	fem/solvers/*.h++ \
-	ui/AnalysisProgressDialog.h++
+	ui/AnalysisProgressDialog.h++ \
+	ui/MdiWindow.h++ ui/ModelWindow.h++ ui/ResultWindow.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
 	ModelSelection.c++ \
@@ -61,7 +62,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
 	viewer/ViewportData.c++ \
 	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ModelViewport.c++  viewer/ViewportColors.c++  \
-	viewer/DisplacementsViewport.c++  \
+	viewer/BaseViewport.c++ viewer/DisplacementsViewport.c++  \
 	viewer/ViewportStates/VPStateModel.c++ viewer/ViewportStates/VPStateDisplacements.c++ \
 	viewer/SceneGraph.c++ viewer/SceneGraphComponents/SceneGraphComponent.c++ \
 	viewer/SceneGraphComponents/SGCNode.c++ \
@@ -82,7 +83,8 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	fem/Surface.c++ \
 	viewer/boundaries/CollisionDetection.c++ \
 	ui/AnalysisDialog.c++ \
-	ui/AnalysisProgressDialog.c++
+	ui/AnalysisProgressDialog.c++ \
+	ui/MdiWindow.c++ ui/ModelWindow.c++ ui/ResultWindow.c++
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 	ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPage3.ui  ui/NewProjectWizardPageLast.ui \
@@ -91,7 +93,8 @@ FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 	ui/DialogScale.ui \
 	ui/QuadratureRulesOptionsDialog.ui \
 	ui/AnalysisDialog.ui \
-	ui/AnalysisProgressDialog.ui
+	ui/AnalysisProgressDialog.ui \
+	ui/MdiWindow.ui
 
 UI_DIR += ./ui
 OBJECTS_DIR += ./build

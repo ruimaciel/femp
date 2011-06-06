@@ -1,6 +1,9 @@
 #include "AnalysisDialog.h++"
 
 #include <cmath>	// for pow()
+#include <iostream>	//TODO debug: remove
+
+#include <QString>
 
 #include "../fem/solvers/CholeskySolver.h++"
 #include "../fem/solvers/CGSolver.h++"
@@ -10,10 +13,13 @@
 #include "assert.h"
 
 
-AnalysisDialog::AnalysisDialog(QWidget *parent)
+AnalysisDialog::AnalysisDialog(fem::Model &model, QWidget *parent)
 	:QDialog(parent)
 {
 	setupUi(this);
+
+	//set the load pattern combo box
+	loadLoadPatternList(model);
 }
 
 
@@ -69,5 +75,25 @@ fem::Solver<double> * AnalysisDialog::solver()
 
 	// this part will never be reached
 	return NULL;
+}
+
+
+int AnalysisDialog::loadPattern()
+{
+	//TODO finish this
+	return comboBoxLoadPattern->currentIndex();
+}
+
+
+void AnalysisDialog::loadLoadPatternList(fem::Model &model)
+{
+	QString temp;
+	for(std::vector<fem::LoadPattern>::iterator i =  model.load_pattern_list.begin(); i != model.load_pattern_list.end(); i++)
+	{
+		//TODO this has a bug, and doesn't work
+		temp.fromStdString(i->label);
+		
+		comboBoxLoadPattern->addItem(temp);
+	}
 }
 

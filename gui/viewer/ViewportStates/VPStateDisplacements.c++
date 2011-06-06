@@ -14,7 +14,7 @@
 #include "../../fem/Model.h++"
 #include "../../fem/Surface.h++"
 
-#include "../DisplacementsViewport.h++"
+#include "../BaseViewport.h++"
 
 #include "ui/DialogScale.h++"
 
@@ -26,7 +26,7 @@
 
 
 VPStateDisplacements::VPStateDisplacements()
-	: ViewportState<DisplacementsViewport>()
+	: ViewportState<BaseViewport>()
 { 
 	original_nodes = NULL;
 }
@@ -39,7 +39,7 @@ VPStateDisplacements::~VPStateDisplacements()
 }
 
 
-void VPStateDisplacements::initialize(DisplacementsViewport *viewport)
+void VPStateDisplacements::initialize(BaseViewport *viewport)
 {
 	original_nodes = &viewport->model->node_list;
 
@@ -49,7 +49,7 @@ void VPStateDisplacements::initialize(DisplacementsViewport *viewport)
 }
 
 
-void VPStateDisplacements::populateScenegraph(DisplacementsViewport *viewport)
+void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 {
 	mylog.setPrefix("void VPStateDisplacements::populateScenegraph(fem::Model *viewport->model)");
 
@@ -134,7 +134,7 @@ void VPStateDisplacements::populateScenegraph(DisplacementsViewport *viewport)
 }
 
 
-void VPStateDisplacements::paintGL(DisplacementsViewport *viewport)
+void VPStateDisplacements::paintGL(BaseViewport *viewport)
 {
 	assert(viewport != NULL);
 
@@ -153,7 +153,7 @@ void VPStateDisplacements::paintGL(DisplacementsViewport *viewport)
 }
 
 
-void VPStateDisplacements::mousePressEvent(DisplacementsViewport *viewport, QMouseEvent *event)
+void VPStateDisplacements::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
 {
 	viewport->viewport_data.lastPos = event->pos();
 	// process left clicks
@@ -178,7 +178,7 @@ void VPStateDisplacements::mousePressEvent(DisplacementsViewport *viewport, QMou
 }
 
 
-void VPStateDisplacements::keyPressEvent ( DisplacementsViewport *viewport, QKeyEvent * event )
+void VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 {
 	qWarning("keypressed");
 	switch( event->key() )

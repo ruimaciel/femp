@@ -4,6 +4,8 @@
 #include <QtGui/QDialog>
 
 #include "../fem/solvers/Solver.h++"
+#include "../fem/Model.h++"
+#include "../fem/LoadPattern.h++"
 
 #include "ui_AnalysisDialog.h"
 
@@ -16,7 +18,7 @@ class AnalysisDialog
 	Q_OBJECT
 
 	public:
-		AnalysisDialog(QWidget *parent = NULL);
+		AnalysisDialog(fem::Model &model, QWidget *parent = NULL);
 
 
 		/*
@@ -24,6 +26,18 @@ class AnalysisDialog
 		@return	a pointer to a instance of a solver, must be freed afterwards
 		*/
 		fem::Solver<double> * solver();
+
+		/**
+		Returns which load patter the user selected to be analyized
+		@return	counter to the current index
+		**/
+		int loadPattern();
+
+	protected:
+		/**
+		Fills the combo box with the load pattern list from the model
+		**/
+		void loadLoadPatternList(fem::Model &model);
 };
 
 #endif

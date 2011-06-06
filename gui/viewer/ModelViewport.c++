@@ -2,7 +2,7 @@
 
 
 ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)
-	: QGLWidget(parent), MdiWindowProperties(MdiWindowProperties::MWP_Model)
+	: BaseViewport(model, parent)
 {
 	mylog.setPrefix("ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)");
 	mylog.message("constructor");

@@ -2,7 +2,7 @@
 
 
 DisplacementsViewport::DisplacementsViewport(fem::Model *model, fem::AnalysisResult<double> &analysis, QWidget *parent)
-	: QGLWidget(parent), MdiWindowProperties(MdiWindowProperties::MWP_Displacements)
+	: BaseViewport(model, parent)
 {
 	this->analysis_result = &analysis;
 

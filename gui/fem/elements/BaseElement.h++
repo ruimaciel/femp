@@ -25,6 +25,8 @@ struct BaseElement
 	public:
 		std::map<int, std::vector<boost::tuple<fem::point, T> > > ipwpl;	// integration points/weights pair list
 
+		std::vector<fem::point>	coordinates;
+
 		std::vector<T>	N;
 		std::vector<T>	dNdcsi;
 		std::vector<T>	dNdeta;
@@ -33,6 +35,8 @@ struct BaseElement
 	public:
 		BaseElement(){};
 		~BaseElement(){};
+
+		virtual std::vector<fem::point> & setCoordinates() = 0;
 
 		virtual std::vector<T> & setN(const point & p) = 0;
 		virtual std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0) = 0;

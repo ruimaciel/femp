@@ -2,7 +2,6 @@
 #define PRISM18_HPP
 
 #include <vector>
-#include <boost/tuple/tuple.hpp>
 
 #include "PrismFamily.h++"
 #include "../point.h++"
@@ -21,6 +20,8 @@ struct Prism18
 		Prism18();
 		~Prism18()	{};
 
+		std::vector<fem::point> & setCoordinates();
+
 		std::vector<T> & setN(const point & p);
 		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
 
@@ -33,11 +34,6 @@ struct Prism18
 		std::vector<T> & setdNdzeta(const point &p);
 		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
-	protected:
-		/*
-		Generates the lists of integration points/weights for this type of element
-		*/
-		// void generateQuadratureData();
 };
 
 
@@ -46,6 +42,8 @@ Prism18<T>::Prism18()
 {
 	this->stiffness_degree = 5;
 	this->domain_degree = 2;
+
+	this->coordinates.resize(18);
 
 	this->N.resize(18);
 	this->dNdcsi.resize(18);
@@ -196,6 +194,32 @@ std::vector<T> & Prism18<T>::setdNdzeta(const T &csi, const T &eta, const T &zet
 	return this->dNdzeta;
 }
 
+template<typename T>
+std::vector<fem::point> & Prism18<T>::setCoordinates()
+{
+	this->coordinates[0] = point(	0,	0,	-1	);
+	this->coordinates[1] = point(	1,	0,	-1	);
+	this->coordinates[2] = point(	0,	1,	-1	);
+	this->coordinates[3] = point(	0,	0,	1	);
+	this->coordinates[4] = point(	1,	0,	1	);
+	this->coordinates[5] = point(	0,	1,	1	);
+
+	this->coordinates[6] = point(	0.5,	0,	-1	);
+	this->coordinates[7] = point(	0,	0.5,	-1	);
+	this->coordinates[8] = point(	0,	0,	0	);
+	this->coordinates[9] = point(	0.5,	0.5,	-1	);
+	this->coordinates[10] = point(	1,	0,	0	);
+	this->coordinates[11] = point(	0,	1,	0	);
+	this->coordinates[12] = point(	0.5,	0,	1	);
+	this->coordinates[13] = point(	0,	0.5,	1	);
+	this->coordinates[14] = point(	0.5,	0.5,	1	);
+
+	this->coordinates[15] = point(	0.5,	0,	0	);
+	this->coordinates[16] = point(	0,	0.5,	0	);
+	this->coordinates[17] = point(	0.5,	0.5,	0	);
+
+	return this->coordinates;
+}
 }
 
 #endif

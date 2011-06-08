@@ -2,7 +2,6 @@
 #define QUADRANGLE4_HPP
 
 #include <vector>
-#include <boost/tuple/tuple.hpp>
 
 #include "QuadrangleFamily.h++"
 #include "../point.h++"
@@ -21,12 +20,17 @@ struct Quadrangle4
 		Quadrangle4();
 		~Quadrangle4()	{};
 
+		std::vector<fem::point> & setCoordinates();
+
 		std::vector<T> & setN(const point & p);
 		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
+
 		std::vector<T> & setdNdcsi(const point &p);
 		std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
+
 		std::vector<T> & setdNdeta(const point &p);
 		std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
+
 		std::vector<T> & setdNdzeta(const point &p);
 		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
@@ -38,6 +42,8 @@ Quadrangle4<T>::Quadrangle4()
 {
 	this->stiffness_degree = 1;
 	this->domain_degree = 1;
+
+	this->coordinates.resize(4);
 
 	this->N.resize(4);
 	this->dNdcsi.resize(4);
@@ -124,6 +130,12 @@ std::vector<T> & Quadrangle4<T>::setdNdzeta(const T &, const T &, const T &)
 	return this->dNdzeta;
 }
 
+template<typename T>
+std::vector<fem::point> & Quadrangle4<T>::setCoordinates()
+{
+
+	return this->coordinates;
+}
 
 
 }

@@ -2,7 +2,6 @@
 #define HEXAHEDRON20_HPP
 
 #include <vector>
-#include <boost/tuple/tuple.hpp>
 
 #include "HexahedronFamily.h++"
 #include "../point.h++"
@@ -21,12 +20,17 @@ struct Hexahedron20
 		Hexahedron20();
 		~Hexahedron20()	{};
 
+		std::vector<fem::point> & setCoordinates();
+
 		std::vector<T> & setN(const point & p);
 		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
+
 		std::vector<T> & setdNdcsi(const point &p);
 		std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
+
 		std::vector<T> & setdNdeta(const point &p);
 		std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
+
 		std::vector<T> & setdNdzeta(const point &p);
 		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
@@ -38,6 +42,8 @@ Hexahedron20<T>::Hexahedron20()
 {
 	this->stiffness_degree = 3;
 	this->domain_degree = 2;
+
+	this->coordinates.resize(20);
 
 	this->N.resize(20);
 	this->dNdcsi.resize(20);
@@ -186,6 +192,37 @@ std::vector<T> & Hexahedron20<T>::setdNdzeta(const T &csi, const T &eta, const T
 	this->dNdzeta[19] = (1-csi*csi)*(eta+1)/4;
 
 	return this->dNdzeta;
+}
+
+
+
+template<typename T>
+std::vector<fem::point> & Hexahedron20<T>::setCoordinates()
+{
+	this->coordinates[0] = point(	-1,	-1,	-1	);
+	this->coordinates[1] = point(	1,	-1,	-1	);
+	this->coordinates[2] = point(	1,	1,	-1	);
+	this->coordinates[3] = point(	-1,	1,	-1	);
+
+	this->coordinates[4] = point(	-1,	-1,	1	);
+	this->coordinates[5] = point(	1,	-1,	1	);
+	this->coordinates[6] = point(	1,	1,	1	);
+	this->coordinates[7] = point(	-1,	1,	1	);
+
+	this->coordinates[8] = point(	0,	-1,	-1	);
+	this->coordinates[9] = point(	-1,	0,	-1	);
+	this->coordinates[10] = point(	-1,	-1,	0	);
+	this->coordinates[11] = point(	1,	0,	-1	);
+	this->coordinates[12] = point(	1,	-1,	0	);
+	this->coordinates[13] = point(	0,	1,	-1	);
+	this->coordinates[14] = point(	1,	1,	0	);
+	this->coordinates[15] = point(	-1,	1,	0	);
+	this->coordinates[16] = point(	0,	-1,	1	);
+	this->coordinates[17] = point(	-1,	0,	1	);
+	this->coordinates[18] = point(	1,	0,	1	);
+	this->coordinates[19] = point(	0,	1,	1	);
+
+	return this->coordinates;
 }
 
 

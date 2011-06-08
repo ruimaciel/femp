@@ -2,7 +2,6 @@
 #define TETRAHEDRON4_HPP
 
 #include <vector>
-#include <boost/tuple/tuple.hpp>
 
 #include "TetrahedronFamily.h++"
 #include "../point.h++"
@@ -20,6 +19,8 @@ struct Tetrahedron4
 	public:
 		Tetrahedron4();
 		~Tetrahedron4()	{};
+
+		std::vector<fem::point> & setCoordinates();
 
 		std::vector<T> & setN(const point & p);
 		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
@@ -129,6 +130,18 @@ std::vector<T> & Tetrahedron4<T>::setdNdzeta(const T &, const T &, const T &)
 	this->dNdzeta[3] = 1;
 
 	return this->dNdzeta;
+}
+
+
+template<typename T>
+std::vector<fem::point> & Tetrahedron4<T>::setCoordinates()
+{
+	this->coordinates[0] = point(	0,	0,	0	);
+	this->coordinates[1] = point(	1,	0,	0	);
+	this->coordinates[2] = point(	0,	1,	0	);
+	this->coordinates[3] = point(	0,	0,	1	);
+
+	return this->coordinates;
 }
 
 

@@ -19,6 +19,8 @@ struct Triangle10
 		Triangle10();
 		~Triangle10()	{};
 
+		std::vector<fem::point> & setCoordinates();
+
 		std::vector<T> & setN(const point & p);
 		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
 
@@ -39,6 +41,8 @@ Triangle10<T>::Triangle10()
 {
 	this->stiffness_degree = 1;
 	this->domain_degree = 1;
+
+	this->coordinates.resize(10);
 
 	this->N.resize(10);
 	this->dNdcsi.resize(10);
@@ -152,6 +156,15 @@ std::vector<T> & Triangle10<T>::setdNdzeta(const T &, const T &, const T &)
 
 	return this->dNdzeta;
 }
+
+
+template<typename T>
+std::vector<fem::point> & Triangle10<T>::setCoordinates()
+{
+	//TODO finish
+	return this->coordinates;
+}
+
 
 }
 

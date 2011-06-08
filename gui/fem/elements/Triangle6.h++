@@ -19,6 +19,8 @@ struct Triangle6
 		Triangle6();
 		~Triangle6()	{};
 
+		std::vector<fem::point> & setCoordinates();
+
 		std::vector<T> & setN(const point & p);
 		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
 
@@ -39,6 +41,8 @@ Triangle6<T>::Triangle6()
 {
 	this->stiffness_degree = 1;
 	this->domain_degree = 2;
+
+	this->coordinates.resize(6);
 
 	this->N.resize(6);
 	this->dNdcsi.resize(6);
@@ -137,6 +141,14 @@ std::vector<T> & Triangle6<T>::setdNdzeta(const T &, const T &, const T &)
 	return this->dNdzeta;
 }
 
+
+template<typename T>
+std::vector<fem::point> & Triangle6<T>::setCoordinates()
+{
+	//TODO finish
+
+	return this->coordinates;
+}
 
 
 }

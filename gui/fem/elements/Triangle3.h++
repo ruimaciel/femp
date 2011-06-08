@@ -19,6 +19,8 @@ struct Triangle3
 		Triangle3();
 		~Triangle3()	{};
 
+		void setCoordinates();
+
 		std::vector<T> & setN(const point & p);
 		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
 
@@ -39,6 +41,8 @@ Triangle3<T>::Triangle3()
 {
 	this->stiffness_degree = 1;
 	this->domain_degree = 1;
+
+	this->coordinates.resize(3);
 
 	this->N.resize(3);
 	this->dNdcsi.resize(3);
@@ -119,6 +123,15 @@ std::vector<T> & Triangle3<T>::setdNdzeta(const T &, const T &, const T &)
 	this->dNdzeta[2] = 0;
 
 	return this->dNdzeta;
+}
+
+
+template<typename T>
+void Triangle3<T>::setCoordinates()
+{
+	this->coordinates[ 0] = point(	0,	0,	0);
+	this->coordinates[ 1] = point(	1,	0,	0);
+	this->coordinates[ 2] = point(	0,	1,	0);
 }
 
 

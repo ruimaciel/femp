@@ -17,7 +17,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	ui/QuadratureRulesOptionsDialog.h++ \
 	fem/Model.h++ fem/Node.h++ fem/Element.h++ fem/Material.h++ fem/LoadPattern.h++ fem/NodalLoad.h++ fem/NodalDisplacement.h++ fem/point.h++ fem/NodeRestrictions.h++ \
 	fem/DomainLoad.h++ fem/SurfaceLoad.h++\
-	fem/elements/Triangle3.h++ fem/elements/Triangle6.h++ fem/elements/Triangle10.h++ \
+	fem/elements/Triangle3.h++ fem/elements/Triangle6.h++ \
 	fem/elements/Quadrangle4.h++ fem/elements/Quadrangle8.h++ fem/elements/Quadrangle9.h++ \
 	fem/elements/Hexahedron8.h++ fem/elements/Hexahedron20.h++ fem/elements/Hexahedron27.h++ \
 	fem/elements/Tetrahedron4.h++ fem/elements/Tetrahedron10.h++ \

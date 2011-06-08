@@ -578,14 +578,6 @@ void MainWindow::loadOptions()
 					this->analysis.tri6.domain_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.domain.triangle10") )
-		{
-			if(options.getOption("analysis.quadrature.domain.triangle10",temp) )
-			{
-				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.tri10.domain_degree = temp;
-			}
-		}
 		if(options.wasSet("analysis.quadrature.domain.quadrangle4") )
 		{
 			if(options.getOption("analysis.quadrature.domain.quadrangle4",temp) )

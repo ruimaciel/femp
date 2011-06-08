@@ -48,7 +48,6 @@ void QuadratureRulesOptionsDialog::setSpinBoxValues()
 	// SURFACE loads
 	spinBox_Su_tri3->setValue(analysis->tri3.domain_degree);
 	spinBox_Su_tri6->setValue(analysis->tri6.domain_degree);
-	spinBox_Su_tri10->setValue(analysis->tri10.domain_degree);
 
 	spinBox_Su_quad4->setValue(analysis->quad4.domain_degree);
 	spinBox_Su_quad8->setValue(analysis->quad8.domain_degree);
@@ -84,7 +83,6 @@ void QuadratureRulesOptionsDialog::setQuadratureRule()
 	// SURFACE
 	analysis->tri3.domain_degree = spinBox_Su_tri3->value();
 	analysis->tri6.domain_degree = spinBox_Su_tri6->value();
-	analysis->tri10.domain_degree = spinBox_Su_tri10->value();
 
 	analysis->quad4.domain_degree = spinBox_Su_quad4->value();
 	analysis->quad8.domain_degree = spinBox_Su_quad8->value();

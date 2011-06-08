@@ -28,7 +28,7 @@ void SGCNode::setReferenceNode(fem::Node &referenced_node)
 }
 
 
-void SGCNode::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors)
+void SGCNode::paintGL(ViewportData &data, fem::Model *, ViewportColors &colors)
 {
 	glPushMatrix();
 	glTranslated(node->data[0],node->data[1],node->data[2]);

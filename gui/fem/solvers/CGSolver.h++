@@ -39,7 +39,7 @@ CGSolver<Scalar>::CGSolver()
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error CGSolver<Scalar>::initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress)
+enum Solver<Scalar>::Error CGSolver<Scalar>::initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *)
 {
 	assign(my_k, result.K);
 
@@ -60,7 +60,7 @@ enum Solver<Scalar>::Error CGSolver<Scalar>::solve(AnalysisResult<Scalar> &resul
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error CGSolver<Scalar>::cleanup(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress)
+enum Solver<Scalar>::Error CGSolver<Scalar>::cleanup(AnalysisResult<Scalar> &, ProgressIndicatorStrategy *)
 {
 	return Solver<Scalar>::ERR_OK;
 }

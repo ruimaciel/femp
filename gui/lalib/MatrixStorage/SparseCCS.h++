@@ -132,15 +132,15 @@ scalar & SparseCCS<scalar>::operator() (const size_t row, const size_t column)
 	//TODO finish this
 	using namespace std;
 
-	assert(row < this->rows());
-	assert(column < this->columns());
+	assert(row < (size_t)this->rows());
+	assert(column < (size_t)this->columns());
 
 
-	if(row == data.row_index[data.column_pointer[column]])
+	if(row == (size_t)data.row_index[data.column_pointer[column]])
 		return data.values[ data.column_pointer[column]];
 
 	// the first element in this column has a greater row index than the one being referenced
-	if(row < data.row_index[data.column_pointer[column]])
+	if(row < (size_t)data.row_index[data.column_pointer[column]])
 	{
 		vector<long int>::iterator ro = data.row_index.begin();
 		advance(ro,data.column_pointer[column]);
@@ -159,13 +159,13 @@ scalar & SparseCCS<scalar>::operator() (const size_t row, const size_t column)
 	}
 
 	// the first element in this row has an inferior column index.  Search for the first superior instance, insert a new element and reference it
-	size_t j;
+	long int j;
 	for(j = data.column_pointer[column]; j < data.column_pointer[column+1]; j++)
 	{
-		if(data.row_index[j] < row)
+		if((size_t)data.row_index[j] < row)
 			continue;
 
-		if(data.row_index[j] == row)	
+		if((size_t)data.row_index[j] == row)	
 			return data.values[j];
 
 		break;

@@ -20,9 +20,9 @@ class WireframeSurfaceQuad4
 
 
 
-void WireframeSurfaceQuad4::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void WireframeSurfaceQuad4::paintGL(ViewportData &, fem::Model *, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
-	int partitions = 3;	//TODO implement a better code
+	//int partitions = 3;	//TODO implement a better code
 
 	// temp code to help with the copy/paste
 	fem::point p1 = (*node_list)[surface->nodes[0]];

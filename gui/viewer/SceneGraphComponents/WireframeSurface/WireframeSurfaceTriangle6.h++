@@ -18,7 +18,7 @@ class WireframeSurfaceTriangle6
 };
 
 
-void WireframeSurfaceTriangle6::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void WireframeSurfaceTriangle6::paintGL(ViewportData &, fem::Model *, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
 	int partitions = 6;	//TODO implement a better code
 

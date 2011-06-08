@@ -3,12 +3,12 @@
 #include "../fem/point.h++"
 
 
-void SurfaceTriangle3::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void SurfaceTriangle3::paintGL(ViewportData &, fem::Model *, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
 	glEnable(GL_BLEND);
 	using namespace fem;
 
-	int partitions = 4;	//TODO implement a better code
+	//int partitions = 4;	//TODO implement a better code
 
 	// temp code to help with the copy/paste
 	fem::point p1 = (*node_list)[surface->nodes[0]];
@@ -18,6 +18,8 @@ void SurfaceTriangle3::paintGL(ViewportData &data, fem::Model *model, ViewportCo
 	fem::point temp;
 	temp = getNormalVector(p1,p2,p3);
 	
+	glColor4fv(colors.surface);
+
 	glBegin(GL_TRIANGLES);
 	glNormal3dv(temp.data);
 	glVertex3dv(p1.data);

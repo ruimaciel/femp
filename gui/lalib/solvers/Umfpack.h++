@@ -18,7 +18,7 @@ namespace lalib
 /**
 Umfpack routine
 **/
-ReturnCode umfpack(Matrix<double, SparseCCS> &A, Vector<double> &x, Vector<double> &b, ProgressIndicatorStrategy *progress)
+ReturnCode umfpack(Matrix<double, SparseCCS> &A, Vector<double> &x, Vector<double> &b, ProgressIndicatorStrategy *)
 {
 	assert(A.rows() == A.columns());
 	assert(A.columns() == b.size());

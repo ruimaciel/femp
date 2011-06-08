@@ -18,11 +18,9 @@ class WireframeSurfaceTriangle3
 };
 
 
-void WireframeSurfaceTriangle3::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void WireframeSurfaceTriangle3::paintGL(ViewportData &, fem::Model *, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
 	using namespace fem;
-
-	int partitions = 4;	//TODO implement a better code
 
 	fem::point p1 = (*node_list)[surface->nodes[0]];
 	fem::point p2 = (*node_list)[surface->nodes[1]];

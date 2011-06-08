@@ -78,7 +78,7 @@ void ViewportState<Viewport>::mouseMoveEvent(Viewport *viewport, QMouseEvent *ev
 
 
 template <class Viewport>
-void ViewportState<Viewport>::keyPressEvent ( Viewport *viewport, QKeyEvent * event )
+void ViewportState<Viewport>::keyPressEvent ( Viewport *, QKeyEvent * event )
 {
 	qWarning("not keypressed");
 	event->ignore();

@@ -30,7 +30,7 @@ class DenseCholeskySolver
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error DenseCholeskySolver<Scalar>::initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress)
+enum Solver<Scalar>::Error DenseCholeskySolver<Scalar>::initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *)
 {
 	assign(L, result.K);
 	return Solver<Scalar>::ERR_OK;
@@ -38,7 +38,7 @@ enum Solver<Scalar>::Error DenseCholeskySolver<Scalar>::initialize(AnalysisResul
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error DenseCholeskySolver<Scalar>::solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress)
+enum Solver<Scalar>::Error DenseCholeskySolver<Scalar>::solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *)
 {
 	//using namespace std;
 	//cout << "K\n" << result.K << "\n\nL:\n" << L << endl;
@@ -49,7 +49,7 @@ enum Solver<Scalar>::Error DenseCholeskySolver<Scalar>::solve(AnalysisResult<Sca
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error DenseCholeskySolver<Scalar>::cleanup(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress)
+enum Solver<Scalar>::Error DenseCholeskySolver<Scalar>::cleanup(AnalysisResult<Scalar> &, ProgressIndicatorStrategy *)
 {
 	return Solver<Scalar>::ERR_OK;
 }

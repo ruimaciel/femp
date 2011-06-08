@@ -21,8 +21,6 @@ struct Hexahedron27
 		Hexahedron27();
 		~Hexahedron27()	{};
 
-		void setCoordinates();
-
 		std::vector<T> & setN(const point & p);
 		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
 		std::vector<T> & setdNdcsi(const point &p);
@@ -37,19 +35,14 @@ struct Hexahedron27
 
 template<typename T>
 Hexahedron27<T>::Hexahedron27()
-	: HexahedronFamily<T>()
 {
 	this->stiffness_degree = 3;
 	this->domain_degree = 2;
-
-	this->coordinates.resize(27);
 
 	this->N.resize(27);
 	this->dNdcsi.resize(27);
 	this->dNdeta.resize(27);
 	this->dNdzeta.resize(27);
-
-	setCoordinates();
 }
 
 

@@ -21,8 +21,6 @@ struct Hexahedron20
 		Hexahedron20();
 		~Hexahedron20()	{};
 
-		void setCoordinates();
-
 		std::vector<T> & setN(const point & p);
 		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
 		std::vector<T> & setdNdcsi(const point &p);
@@ -37,19 +35,14 @@ struct Hexahedron20
 
 template<typename T>
 Hexahedron20<T>::Hexahedron20()
-	: HexahedronFamily<T>()
 {
 	this->stiffness_degree = 3;
 	this->domain_degree = 2;
-
-	this->coordinates.resize(20);
 
 	this->N.resize(20);
 	this->dNdcsi.resize(20);
 	this->dNdeta.resize(20);
 	this->dNdzeta.resize(20);
-
-	setCoordinates();
 }
 
 
@@ -194,24 +187,6 @@ std::vector<T> & Hexahedron20<T>::setdNdzeta(const T &csi, const T &eta, const T
 
 	return this->dNdzeta;
 }
-
-
-template<typename T>
-void Hexahedron20<T>::setCoordinates()
-{
-	this->coordinates[ 0] = point(	-1,	-1,	-1);
-	this->coordinates[ 1] = point(	1,	-1,	-1);
-	this->coordinates[ 2] = point(	1,	1,	-1);
-	this->coordinates[ 3] = point(	-1,	1,	-1);
-	this->coordinates[ 4] = point(	-1,	-1,	1);
-	this->coordinates[ 5] = point(	1,	-1,	1);
-	this->coordinates[ 6] = point(	1,	1,	1);
-	this->coordinates[ 7] = point(	-1,	1,	1);
-
-	this->coordinates[ 8] = point(	-1,	0,	-1);
-	this->coordinates[ 9] = point(	-1,	0,	-1);
-}
-
 
 
 }

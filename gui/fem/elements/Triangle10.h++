@@ -11,9 +11,6 @@
 namespace fem
 {
 
-/**
-This class isn't used
-**/
 template <typename T>
 struct Triangle10
 	: public TriangleFamily<T>
@@ -21,8 +18,6 @@ struct Triangle10
 	public:
 		Triangle10();
 		~Triangle10()	{};
-
-		void setCoordinates();
 
 		std::vector<T> & setN(const point & p);
 		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
@@ -156,19 +151,6 @@ std::vector<T> & Triangle10<T>::setdNdzeta(const T &, const T &, const T &)
 	this->dNdzeta[9] = 0;
 
 	return this->dNdzeta;
-}
-
-
-template<typename T>
-void Triangle10<T>::setCoordinates()
-{
-	//TODO finish this
-	this->coordinates[ 0] = point(	0,	0,	0);
-	this->coordinates[ 1] = point(	1,	0,	0);
-	this->coordinates[ 2] = point(	0,	1,	0);
-	this->coordinates[ 3] = point(	0.5,	0,	0);
-	this->coordinates[ 4] = point(	0,	0.5,	0);
-	this->coordinates[ 5] = point(	0.5,	0.5,	0);
 }
 
 }

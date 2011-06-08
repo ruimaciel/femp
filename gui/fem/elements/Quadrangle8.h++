@@ -21,8 +21,6 @@ struct Quadrangle8
 		Quadrangle8();
 		~Quadrangle8()	{};
 
-		void setCoordinates();
-
 		std::vector<T> & setN(const point & p);
 		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
 		std::vector<T> & setdNdcsi(const point &p);
@@ -40,8 +38,6 @@ Quadrangle8<T>::Quadrangle8()
 {
 	this->stiffness_degree = 2;
 	this->domain_degree = 2;
-
-	this->coordinates.resize(8);
 
 	this->N.resize(8);
 	this->dNdcsi.resize(8);
@@ -147,21 +143,6 @@ std::vector<T> & Quadrangle8<T>::setdNdzeta(const T &, const T &, const T &)
 
 	return this->dNdzeta;
 }
-
-template<typename T>
-void Quadrangle8<T>::setCoordinates()
-{
-	this->coordinates[ 0] = point(	-1,	-1,	0);
-	this->coordinates[ 1] = point(	1,	-1,	0);
-	this->coordinates[ 2] = point(	1,	1,	0);
-	this->coordinates[ 3] = point(	-1,	1,	0);
-
-	this->coordinates[ 4] = point(	0,	-1,	0);
-	this->coordinates[ 5] = point(	1,	0,	0);
-	this->coordinates[ 6] = point(	0,	1,	0);
-	this->coordinates[ 7] = point(	-1,	0,	0);
-}
-
 
 }
 

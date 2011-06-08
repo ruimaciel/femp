@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include "BaseElement.h++"
-#include "../point.h++"
 
 
 namespace fem
@@ -45,7 +44,7 @@ void HexahedronFamily<T>::generateQuadratureData()
 			{
 				for(int k = 0; k < d; k++)
 				{
-					this->ipwpl[d].push_back(boost::tuple<point,T>(point(x[i],x[j],x[k]), w[i]*w[j]*w[k]));
+					this->ipwpl[d].push_back(boost::tuple<fem::point,T>(fem::point(x[i],x[j],x[k]), w[i]*w[j]*w[k]));
 				}
 			}
 		}

@@ -23,17 +23,16 @@ struct BaseElement
 		int domain_degree;	// Quadrature rule degree to integrate domain loads
 
 	public:
-		std::map<int, std::vector<boost::tuple<point, T> > > ipwpl;	// integration points/weights pair list
+		std::map<int, std::vector<boost::tuple<fem::point, T> > > ipwpl;	// integration points/weights pair list
 
-		std::vector<point> coordinates;	// coordinates of this element's nodes
 		std::vector<T>	N;
 		std::vector<T>	dNdcsi;
 		std::vector<T>	dNdeta;
 		std::vector<T>	dNdzeta;
 
 	public:
-		BaseElement();
-
+		BaseElement(){};
+		~BaseElement(){};
 
 		virtual std::vector<T> & setN(const point & p) = 0;
 		virtual std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0) = 0;
@@ -47,16 +46,11 @@ struct BaseElement
 		/**
 		Returns a list of
 		**/
-		// virtual std::vector<boost::tuple<point, T> > & ipwp(unsigned int degree) = 0;
-		std::vector<boost::tuple<point, T> > &stiffness_quadrature()	{ return this->ipwpl[stiffness_degree]; }
-		std::vector<boost::tuple<point, T> > &domain_quadrature()	{ return this->ipwpl[domain_degree]; }
+		// virtual std::vector<boost::tuple<fem::point, T> > & ipwp(unsigned int degree) = 0;
+		std::vector<boost::tuple<fem::point, T> > &stiffness_quadrature()	{ return this->ipwpl[stiffness_degree]; }
+		std::vector<boost::tuple<fem::point, T> > &domain_quadrature()	{ return this->ipwpl[domain_degree]; }
 
 	protected:
-		/**
-		Sets the value for the element nodes' coordinates, in local coordinate space
-		**/
-		virtual void setCoordinates() = 0;
-
 		/**
 		  Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
 		  (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and
@@ -72,12 +66,6 @@ struct BaseElement
 		*/
 		virtual void generateQuadratureData() = 0;
 };
-
-
-template<typename T>
-BaseElement<T>::BaseElement()
-{
-}
 
 
 /*******************************************************************************

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QComboBox>
+#include <QDir>
 
 #include "ui/ui_MainWindow.h"
 
@@ -42,6 +43,9 @@ protected:
 	Document document;	// the FEM document
 
 	ViewportColors colors;	// the elements' viewport colors
+
+	QDir file_dialog_last_directory;
+
 
 public Q_SLOTS:
 	/* starts off a brand new FEM project */

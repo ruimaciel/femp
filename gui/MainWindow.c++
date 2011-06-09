@@ -74,6 +74,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 	// set the user interface
 	setUserInterfaceAsClosed();
+
+	file_dialog_last_directory = QDir::home();
 }
 
 
@@ -111,6 +113,8 @@ void MainWindow::openProject()
 
 	// get the last dir where a project was opened 
 	QFileDialog dialog(this);
+	dialog.setDirectory(file_dialog_last_directory);
+	
 	QStringList sl;
 
 	// setup the file dialog
@@ -121,6 +125,9 @@ void MainWindow::openProject()
 		// user cancelled, no file was loaded
 		return;
 	}
+
+	file_dialog_last_directory = dialog.directory();
+
 	// clear the document
 	this->setUserInterfaceAsClosed();
 	this->document.clear();
@@ -220,6 +227,7 @@ void MainWindow::saveProject()
 	if(document.file_name == NULL)
 	{
 		QFileDialog dialog(this);
+		dialog.setDirectory(file_dialog_last_directory);
 		QStringList sl;
 
 		// setup the file dialog
@@ -231,6 +239,9 @@ void MainWindow::saveProject()
 			// user cancelled 
 			return;
 		}
+
+		file_dialog_last_directory = dialog.directory();
+
 		sl = dialog.selectedFiles();
 		document.file_name = new QString;
 		*document.file_name = sl.at(0);
@@ -273,6 +284,8 @@ void MainWindow::saveProjectAs()
 	QFileDialog dialog(this);
 	QStringList sl;
 
+	dialog.setDirectory(file_dialog_last_directory);
+
 	// setup the file dialog
 	dialog.setFileMode(QFileDialog::AnyFile);
 	dialog.setNameFilter(tr("FEM project (*.fem.json)"));
@@ -282,6 +295,9 @@ void MainWindow::saveProjectAs()
 		// user cancelled 
 		return;
 	}
+
+	file_dialog_last_directory = dialog.directory();
+
 	sl = dialog.selectedFiles();
 	document.file_name = new QString;
 	*document.file_name = sl.at(0);

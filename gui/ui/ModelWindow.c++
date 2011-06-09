@@ -1,10 +1,10 @@
 #include "ModelWindow.h++"
 
 
-ModelWindow::ModelWindow (fem::Model &model, ViewportColors &colors, QWidget *parent)
+ModelWindow::ModelWindow (fem::Project &project, ViewportColors &colors, QWidget *parent)
 	: MdiWindow(parent)
 {
-	viewport = new ModelViewport(&model, this);
+	viewport = new ModelViewport(project, this);
 	this->setCentralWidget(viewport);
 
 	viewport->setColors(colors);

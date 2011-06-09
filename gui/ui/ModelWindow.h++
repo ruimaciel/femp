@@ -3,7 +3,7 @@
 
 #include "MdiWindow.h++"
 
-#include "../fem/Model.h++"
+#include "../fem/Project.h++"
 #include "../viewer/ViewportColors.h++"
 #include "../viewer/ModelViewport.h++"
 
@@ -16,7 +16,7 @@ class ModelWindow
 	Q_OBJECT
 
 	public:
-		ModelWindow (fem::Model &model, ViewportColors &colors, QWidget *parent = 0);
+		ModelWindow (fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
 
 
 	protected:

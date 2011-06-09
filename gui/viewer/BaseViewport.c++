@@ -1,14 +1,13 @@
 #include "BaseViewport.h++"
 
 
-BaseViewport::BaseViewport(fem::Model *model, QWidget *parent)
+BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
 	: QGLWidget(parent)
 {
-	assert(model != NULL);
 	assert(parent != NULL);
 
 	// initialize the dangling pointers
-	this->model = model;
+	this->project = &project;
 	this->state = NULL;
 
 	this->setFocusPolicy(Qt::StrongFocus);
@@ -37,7 +36,7 @@ void BaseViewport::initializeGL()
 {
 	// set the state->camera position according to the nodal center
 	double pos[3] = {0};
-	for(std::map<size_t, fem::Node>::iterator it = model->node_list.begin(); it != model->node_list.end(); it++)
+	for(std::map<size_t, fem::Node>::iterator it = project->model.node_list.begin(); it != project->model.node_list.end(); it++)
 	{
 		pos[0] -= it->second.x();
 		pos[1] -= it->second.y();
@@ -45,7 +44,7 @@ void BaseViewport::initializeGL()
 
 		viewport_data.camera.reset();
 		viewport_data.camera.setCenter(0,0,-500);
-		viewport_data.camera.setPosition(pos[0]/model->node_list.size(),pos[1]/model->node_list.size(),pos[2]/model->node_list.size());
+		viewport_data.camera.setPosition(pos[0]/project->model.node_list.size(),pos[1]/project->model.node_list.size(),pos[2]/project->model.node_list.size());
 	}
 
 	// handle opengl

@@ -10,7 +10,7 @@
 #include "../viewer/DisplacementsViewport.h++"
 
 /**
-MDI window designed to represent any recovered information from any analysis, such as displacements, stress fields, etc...
+MDI window designed to represent any recovered information from any analysis, such as displacements
 **/
 class ResultWindow 
 	: public MdiWindow
@@ -18,7 +18,7 @@ class ResultWindow
 	Q_OBJECT
 
 	public:
-		ResultWindow (fem::Model &model, ViewportColors &colors, fem::AnalysisResult<double> &analysis, QWidget *parent = 0);
+		ResultWindow (fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
 
 
 	protected:

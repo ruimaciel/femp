@@ -7,6 +7,7 @@
 
 #include "../MdiWindowProperties.h++"
 
+#include "../fem/Project.h++"
 #include "../fem/Model.h++"
 
 #include "BaseViewport.h++"
@@ -32,12 +33,12 @@ class BaseViewport
 		ViewportColors colors;	// color definitions
 		DisplayOptions display_options;	// options list to be used by the render routine
 
-		fem::Model *model;
+		fem::Project *project;
 
 		ViewportState<BaseViewport>	*state;	// pointer to object used for the State pattern
 
 	public:
-		BaseViewport(fem::Model *model, QWidget *parent);
+		BaseViewport(fem::Project &project, QWidget *parent);
 
 
 		void setColors(ViewportColors &new_colors);

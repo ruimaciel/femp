@@ -35,7 +35,7 @@ class LinearAnalysis
 		LinearAnalysis();
 		~LinearAnalysis();
 
-		void set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver);
+		void set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver);
 
 		/**
 		Operator intended to run the analysis through a thread
@@ -67,14 +67,13 @@ LinearAnalysis<Scalar>::~LinearAnalysis()
 
 
 template<typename Scalar>
-void LinearAnalysis<Scalar>::set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver)
+void LinearAnalysis<Scalar>::set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver)
 {
-	assert(result != NULL);
 	assert(solver != NULL);
 
 	this->m_model = &model;
 	this->m_load_pattern = &lp;
-	this->m_result = result;
+	this->m_result = &result;
 	this->m_progress = &progress;
 	this->m_solver = solver;
 }

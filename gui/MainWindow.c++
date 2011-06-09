@@ -178,7 +178,7 @@ void MainWindow::reopenProject()
 	{
 		// clear the document
 		setUserInterfaceAsClosed();
-		this->document.model.clear();
+		this->document.project.model.clear();
 
 		// load the file and check for errors
 		switch( document.load() )
@@ -343,9 +343,6 @@ void MainWindow::closeProject()
 
 	// free everything
 	document.clear();
-	analysis_result.clear();
-
-	//TODO finish this
 }
 
 
@@ -725,7 +722,7 @@ void MainWindow::importMesh()
 
 		// import mesh from a Gmsh file
 		FILE *f = fdopen(mesh_file.handle(), "r");
-		fem_model_import_msh(f,document.model);
+		fem_model_import_msh(f,document.project.model);
 		mesh_file.close();
 
 		//TODO implement way to add document type from the dialog box
@@ -762,7 +759,7 @@ void MainWindow::setNodeRestraints()
 					nr.setdy();
 				if(r & NodeRestrainsDialog::RZ)
 					nr.setdz();
-				document.model.node_restrictions_list[it->first] = nr;
+				document.project.model.node_restrictions_list[it->first] = nr;
 			}
 		}
 	}
@@ -773,7 +770,7 @@ void MainWindow::setNodeActions()
 {
 	mylog.setPrefix("MainWindow::setNodeActions()");
 
-	NodeActionsDialog na(document.model, this);
+	NodeActionsDialog na(document.project.model, this);
 	if(na.exec() == QDialog::Accepted)
 	{
 		for(std::map<size_t,bool>::iterator it = document.model_selection.nodes.begin(); it != document.model_selection.nodes.end(); it++)
@@ -794,12 +791,12 @@ void MainWindow::setDisplayOptions()
 {
 	//TODO make this generic
 	/*
-	   DisplayOptionsDialog da(document.model, this);
+	   DisplayOptionsDialog da(document.project.model, this);
 	   if(da.exec() == QDialog::Accepted)
 	   {
 	// set the LoadPattern pointer
 	size_t n = da.getLoadPatternIndex();
-	glWidget->display_options.load_pattern = &document.model.load_pattern_list[n];
+	glWidget->display_options.load_pattern = &document.project.model.load_pattern_list[n];
 
 	// set the other visualization options
 	glWidget->display_options.nodal_forces = da.renderNodalForces();
@@ -814,7 +811,7 @@ void MainWindow::setDisplayOptions()
 void MainWindow::editMaterials()
 {
 	//TODO finish this
-	MaterialsEditorDialog dialog(&document.model, this);
+	MaterialsEditorDialog dialog(&document.project.model, this);
 	dialog.exec();
 }
 
@@ -843,7 +840,7 @@ void MainWindow::runAnalysis()
 	using namespace std;
 
 	// check if ther is a load pattern
-	if( this->document.model.load_pattern_list.empty() ) 
+	if( this->document.project.model.load_pattern_list.empty() ) 
 	{
 		QMessageBox::critical(this, "No load patterns", "This model doesn't have any load patterns to run");
 		return;
@@ -852,7 +849,7 @@ void MainWindow::runAnalysis()
 	fem::Solver<double> * solver = NULL;
 
 	// run the AnalysisDialog to get the solver
-	AnalysisDialog analysis_dialog(document.model, this);
+	AnalysisDialog analysis_dialog(document.project.model, this);
 	switch(analysis_dialog.exec())
 	{
 		case QDialog::Accepted:
@@ -872,6 +869,7 @@ void MainWindow::runAnalysis()
 
 	// runs the analysis
 	QString message;
+	fem::AnalysisResult<double> analysis_result;
 	DefaultProgressIndicator progress;
 	AnalysisProgressDialog dialog(this);
 
@@ -884,7 +882,7 @@ void MainWindow::runAnalysis()
 	connect(&progress,	SIGNAL(finish()),	&dialog,	SLOT(finish() ));
 
 	//TODO finish this
-	analysis.set(document.model, document.model.load_pattern_list[analysis_dialog.loadPattern()], &analysis_result, progress, solver);
+	analysis.set(document.project.model, document.project.model.load_pattern_list[analysis_dialog.loadPattern()], analysis_result, progress, solver);
 
 	std::thread t(analysis);
 
@@ -899,6 +897,8 @@ void MainWindow::runAnalysis()
 	}
 	t.join();
 
+	document.project.pushAnalysisResult(analysis_result);
+
 	//TODO set the UI
 
 	QMdiSubWindow *displacements_window;
@@ -908,7 +908,7 @@ void MainWindow::runAnalysis()
 	{
 		// no window is currently active
 		ModelViewport *viewport;	// opengl viewport
-		viewport = new ModelViewport(&document.model, this);
+		viewport = new ModelViewport(document.project, this);
 		viewport->setColors(colors);
 
 		// create the model's MDI window
@@ -933,121 +933,124 @@ void MainWindow::runAnalysis()
 
 void MainWindow::dumpFemEquation()
 {
-	using namespace std;
-
-	//TODO pick file name
-	QFileDialog dialog(this);
-	QStringList sl;
-	QString file_name;
-
-	// setup the file dialog
-	dialog.setFileMode(QFileDialog::AnyFile);
-	dialog.setNameFilter(tr("Octave file (*.oct)"));
-	dialog.setDefaultSuffix("oct");
-	if(dialog.exec() == QDialog::Rejected)
+	if( document.project.result.empty() )
 	{
-		// user cancelled 
-		return;
+		QMessageBox::information(this, "No analysis", "There isn't a equation to dump");
 	}
-	sl = dialog.selectedFiles();
-	file_name = sl.at(0);
-
-	// check if file already exists
-	QFile file;
-	file.setFileName(file_name);
-	if(file.exists())
+	else
 	{
-		QMessageBox msgBox;
-		msgBox.setText(tr("File already exists") );
-		msgBox.setInformativeText(tr("Do you want to overwrite it?") );
-		msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-		msgBox.setDefaultButton(QMessageBox::No);
-		if(msgBox.exec() == QMessageBox::No)
+		using namespace std;
+
+		//TODO pick file name
+		QFileDialog dialog(this);
+		QStringList sl;
+		QString file_name;
+
+		// setup the file dialog
+		dialog.setFileMode(QFileDialog::AnyFile);
+		dialog.setNameFilter(tr("Octave file (*.oct)"));
+		dialog.setDefaultSuffix("oct");
+		if(dialog.exec() == QDialog::Rejected)
 		{
-			mylog.message("rejected");
-			delete document.file_name;
-			document.file_name = NULL;
+			// user cancelled 
 			return;
 		}
-		mylog.message("accepted");
-	}
+		sl = dialog.selectedFiles();
+		file_name = sl.at(0);
 
-	// set a new file name for this file
-	
-	file.open(QFile::WriteOnly);
-	QTextStream     out(&file);
-	out.setRealNumberNotation(QTextStream::ScientificNotation);
-	out.setRealNumberPrecision(16);
-	// */
-	/*
-	ofstream out(file.fileName().toStdString () );
-	out << "test" << endl;
-	*/
-
-
-	//lalib::dump_octave(out, "K", analysis_result.K);
-	
-	//dump_octave(outfile, "K", analysis_result.K);
-	
-	out << "# Created by lalib\n";
-	out << "# name: K\n";
-	out << "# type: matrix\n";
-	out << "# rows: " << analysis_result.K.rows() << "\n";
-	out << "# columns: " << analysis_result.K.columns() << "\n";
-
-	for(size_t j = 0; j < analysis_result.K.columns(); j++)
-	{
-		for(size_t i = 0; i < analysis_result.K.rows(); i++)
+		// check if file already exists
+		QFile file;
+		file.setFileName(file_name);
+		if(file.exists())
 		{
-			out << " " << analysis_result.K.value(i,j);
+			QMessageBox msgBox;
+			msgBox.setText(tr("File already exists") );
+			msgBox.setInformativeText(tr("Do you want to overwrite it?") );
+			msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+			msgBox.setDefaultButton(QMessageBox::No);
+			if(msgBox.exec() == QMessageBox::No)
+			{
+				mylog.message("rejected");
+				delete document.file_name;
+				document.file_name = NULL;
+				return;
+			}
+			mylog.message("accepted");
 		}
-		out << "\n";
-	}
-	out << endl;
-	// */
-	/*
-	out << "# Created by lalib\n";
-	out << "# name: K\n";
-	out << "# type: sparse matrix\n";
-	out << "# nnz: " << analysis_result.K.data.data.size() << "\n";
-	out << "# rows: " << analysis_result.K.rows() << "\n";
-	out << "# columns: " << analysis_result.K.columns() << "\n";
 
-	for( std::map< size_t, double>::iterator i = analysis_result.K.data.data.begin(); i != analysis_result.K.data.data.end(); i++)
-	{
-		out << i->first/analysis_result.K.columns() << " " << i->first%analysis_result.K.columns() << " " << i->second << "\n";
-	}
-	out << endl;
-	// */
+		// set a new file name for this file
 
-	//lalib::dump_octave(out, "f", analysis_result.f);
-	out << "# Created by lalib\n";
-	out << "# name: f\n";
-	out << "# type: matrix\n";
-	out << "# rows: " << analysis_result.f.size() << "\n";
-	out << "# columns: 1\n";
-	for(size_t i = 0; i < analysis_result.f.size(); i++)
-	{
-		out << " " << analysis_result.f.value(i) << "\n";
-	}
-	out << endl;
-	//*/
+		file.open(QFile::WriteOnly);
+		QTextStream     out(&file);
+		out.setRealNumberNotation(QTextStream::ScientificNotation);
+		out.setRealNumberPrecision(16);
+		// */
+		/*
+		   ofstream out(file.fileName().toStdString () );
+		   out << "test" << endl;
+		 */
 
-	//lalib::dump_octave(out, "d", analysis_result.d);
-	
-	out << "# Created by lalib\n";
-	out << "# name: d\n";
-	out << "# type: matrix\n";
-	out << "# rows: " << analysis_result.d.size() << "\n";
-	out << "# columns: 1\n";
-	for(size_t i = 0; i < analysis_result.d.size(); i++)
-	{
-		out << " " << analysis_result.d.value(i) << "\n";
+
+		out << "# Created by lalib\n";
+		out << "# name: K\n";
+		out << "# type: matrix\n";
+		out << "# rows: " << document.project.result.back().K.rows() << "\n";
+		out << "# columns: " << document.project.result.back().K.columns() << "\n";
+
+		for(size_t j = 0; j < document.project.result.back().K.columns(); j++)
+		{
+			for(size_t i = 0; i < document.project.result.back().K.rows(); i++)
+			{
+				out << " " << document.project.result.back().K.value(i,j);
+			}
+			out << "\n";
+		}
+		out << endl;
+		// */
+		/*
+		   out << "# Created by lalib\n";
+		   out << "# name: K\n";
+		   out << "# type: sparse matrix\n";
+		   out << "# nnz: " << document.project.result.back().K.data.data.size() << "\n";
+		   out << "# rows: " << document.project.result.back().K.rows() << "\n";
+		   out << "# columns: " << document.project.result.back().K.columns() << "\n";
+
+		   for( std::map< size_t, double>::iterator i = document.project.result.back().K.data.data.begin(); i != document.project.result.back().K.data.data.end(); i++)
+		   {
+		   out << i->first/document.project.result.back().K.columns() << " " << i->first%document.project.result.back().K.columns() << " " << i->second << "\n";
+		   }
+		   out << endl;
+		// */
+
+		//lalib::dump_octave(out, "f", document.project.result.back().f);
+		out << "# Created by lalib\n";
+		out << "# name: f\n";
+		out << "# type: matrix\n";
+		out << "# rows: " << document.project.result.back().f.size() << "\n";
+		out << "# columns: 1\n";
+		for(size_t i = 0; i < document.project.result.back().f.size(); i++)
+		{
+			out << " " << document.project.result.back().f.value(i) << "\n";
+		}
+		out << endl;
+		//*/
+
+		//lalib::dump_octave(out, "d", document.project.result.back().d);
+
+		out << "# Created by lalib\n";
+		out << "# name: d\n";
+		out << "# type: matrix\n";
+		out << "# rows: " << document.project.result.back().d.size() << "\n";
+		out << "# columns: 1\n";
+		for(size_t i = 0; i < document.project.result.back().d.size(); i++)
+		{
+			out << " " << document.project.result.back().d.value(i) << "\n";
+		}
+		out << endl;
+		//*/
+		//out.close();
+		file.close();
 	}
-	out << endl;
-	//*/
-	//out.close();
-	file.close();
 }
 
 
@@ -1061,7 +1064,7 @@ void MainWindow::showModel()
 	{
 		window->setWindowTitle("Model");
 
-		ModelWindow *model_window = new ModelWindow(document.model, colors, this);
+		ModelWindow *model_window = new ModelWindow(document.project, colors, this);
 		window->setWidget(model_window);
 	}
 	else
@@ -1080,7 +1083,8 @@ void MainWindow::showDisplacements()
 	{
 		window->setWindowTitle("Displacements");
 
-		ResultWindow *viewport = new ResultWindow(document.model, colors, analysis_result,  this);
+		//TODO rename ResultWindow to DisplacementsWindow
+		ResultWindow *viewport = new ResultWindow(document.project, colors, this);
 		window->setWidget(viewport);
 	}
 	else
@@ -1123,7 +1127,7 @@ void MainWindow::setCascadeWindows()
 void MainWindow:: createNewViewportWindow()
 {
 	ModelWindow *window;	// opengl viewport
-	window = new ModelWindow(document.model, colors, this);
+	window = new ModelWindow(document.project, colors, this);
 
 	// create the model's MDI window
 	QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport

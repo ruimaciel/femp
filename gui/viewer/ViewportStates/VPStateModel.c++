@@ -50,53 +50,53 @@ void VPStateModel::initialize(BaseViewport *)
 
 void VPStateModel::populateScenegraph(BaseViewport *mv)
 {
-	mylog.setPrefix("void VPStateModel::populateScenegraph(fem::Model *mv->model)");
+	mylog.setPrefix("void VPStateModel::populateScenegraph(fem::Model *mv->project->model)");
 	mylog.message("populating");
 
 	//TODO generate the scenegraph
 
 	// add the nodes to the scenegraph
-	for(std::map<size_t, fem::Node>::iterator i = mv->model->node_list.begin(); i != mv->model->node_list.end(); i++)
+	for(std::map<size_t, fem::Node>::iterator i = mv->project->model.node_list.begin(); i != mv->project->model.node_list.end(); i++)
 	{
 		//TODO set rendering groups
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(i->first, i->second, mv->model->node_restrictions_list) );
+		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(i->first, i->second, mv->project->model.node_restrictions_list) );
 	}
 
-	for( std::map<size_t, fem::NodeRestrictions>::iterator i = mv->model->node_restrictions_list.begin(); i != mv->model->node_restrictions_list.end(); i++)
+	for( std::map<size_t, fem::NodeRestrictions>::iterator i = mv->project->model.node_restrictions_list.begin(); i != mv->project->model.node_restrictions_list.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, new SGCNodeRestrictions(mv->model->node_list[i->first], i->second) );
+		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, new SGCNodeRestrictions(mv->project->model.node_list[i->first], i->second) );
 	}
 
 	// add the surfaces to the scenegraph
-	for(std::list<fem::Surface>::iterator i = mv->model->surface_list.begin(); i != mv->model->surface_list.end(); i++)
+	for(std::list<fem::Surface>::iterator i = mv->project->model.surface_list.begin(); i != mv->project->model.surface_list.end(); i++)
 	{
 		if(i->external())
 		{
 			switch(i->getType())
 			{
 				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceTriangle3>(*i, mv->model->node_list) );
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceTriangle3>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceTriangle3>(*i, mv->project->model.node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceTriangle3>(*i, mv->project->model.node_list) );
 					break;
 
 				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceTriangle6>(*i, mv->model->node_list) );
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceTriangle6>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceTriangle6>(*i, mv->project->model.node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceTriangle6>(*i, mv->project->model.node_list) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceQuad4>(*i, mv->model->node_list) );
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceQuad4>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceQuad4>(*i, mv->project->model.node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceQuad4>(*i, mv->project->model.node_list) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceQuad8>(*i, mv->model->node_list) );
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceQuad8>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceQuad8>(*i, mv->project->model.node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceQuad8>(*i, mv->project->model.node_list) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceQuad9>(*i, mv->model->node_list) );
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceQuad9>(*i, mv->model->node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceQuad9>(*i, mv->project->model.node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceQuad9>(*i, mv->project->model.node_list) );
 					break;
 
 				default:
@@ -126,7 +126,7 @@ void VPStateModel::paintGL(BaseViewport *mv)
 
 
 	//TODO finish implementing this
-	this->scenegraph.paint(mv->viewport_data, *mv->model, mv->colors);
+	this->scenegraph.paint(mv->viewport_data, mv->project->model, mv->colors);
 }
 
 

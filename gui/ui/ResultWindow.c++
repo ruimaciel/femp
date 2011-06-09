@@ -1,10 +1,10 @@
 #include "ResultWindow.h++"
 
 
-ResultWindow::ResultWindow(fem::Model &model, ViewportColors &colors, fem::AnalysisResult<double> &analysis, QWidget *parent)
+ResultWindow::ResultWindow(fem::Project &project, ViewportColors &colors, QWidget *parent)
 	: MdiWindow(parent)
 {
-	viewport = new DisplacementsViewport(&model, analysis, this);
+	viewport = new DisplacementsViewport(project, this);
 	this->setCentralWidget(viewport);
 
 	viewport->setColors(colors);

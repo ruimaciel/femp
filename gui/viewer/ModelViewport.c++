@@ -1,29 +1,27 @@
 #include "ModelViewport.h++"
 
 
-ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)
-	: BaseViewport(model, parent)
+ModelViewport::ModelViewport(fem::Project &project, QWidget *parent)
+	: BaseViewport(project, parent)
 {
 	mylog.setPrefix("ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)");
 	mylog.message("constructor");
 
-	assert(model != NULL);
-
 	// initialize the dangling pointers
-	this->model = model;
+	this->project = &project;
 	this->state = NULL;
 
 	this->setState(new VPStateModel);	// set the current viewport state
 
 	// set this widget's load pattern pointer
-	if(model->load_pattern_list.empty())
+	if(project.model.load_pattern_list.empty())
 	{
 		display_options.load_pattern = NULL;
 	}
 	else
 	{
 		// set the first load pattern
-		display_options.load_pattern = &model->load_pattern_list.front();
+		display_options.load_pattern = &project.model.load_pattern_list.front();
 	}
 	this->setFocusPolicy(Qt::StrongFocus);
 }
@@ -71,7 +69,7 @@ void ModelViewport::initializeGL()
 {
 	// set the state->camera position according to the nodal center
 	double pos[3] = {0};
-	for(std::map<size_t, fem::Node>::iterator it = model->node_list.begin(); it != model->node_list.end(); it++)
+	for(std::map<size_t, fem::Node>::iterator it = project->model.node_list.begin(); it != project->model.node_list.end(); it++)
 	{
 		pos[0] -= it->second.x();
 		pos[1] -= it->second.y();
@@ -79,7 +77,7 @@ void ModelViewport::initializeGL()
 
 		viewport_data.camera.reset();
 		viewport_data.camera.setCenter(0,0,-500);
-		viewport_data.camera.setPosition(pos[0]/model->node_list.size(),pos[1]/model->node_list.size(),pos[2]/model->node_list.size());
+		viewport_data.camera.setPosition(pos[0]/project->model.node_list.size(),pos[1]/project->model.node_list.size(),pos[2]/project->model.node_list.size());
 	}
 
 	// handle opengl
@@ -143,7 +141,7 @@ void ModelViewport::resizeGL(int width, int height)
 
 void ModelViewport::paintGL()
 {
-	assert(model != NULL);
+	assert(project != NULL);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

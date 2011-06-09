@@ -28,7 +28,7 @@ Document::Document(const Document & copied)
 	{
 		this->file_name = NULL;
 	}
-	this->model = copied.model;
+	this->project.model = copied.model;
 	this->document_type = copied.document_type;
 }
 
@@ -48,7 +48,7 @@ void Document::clear()
 		file_name = NULL;
 	}
 	document_type = TYPE_NONE;
-	model.clear();
+	this->project.model.clear();
 
 	// clear all selections
 	model_selection.deselectAll();
@@ -88,7 +88,7 @@ enum Document::Error Document::load()
 		return ERR_FILE_NOT_FOUND;
 
 	// sets up all variables
-	model.clear();
+	this->project.clear();
 
 	// load the project files
 	// file exists, now open it and parse it
@@ -280,7 +280,7 @@ enum Document::Error Document::load()
 				cursor.pop();
 
 				// Material field is complete. Push material to the list
-				this->model.material_list.push_back(material);
+				this->project.model.material_list.push_back(material);
 
 				state.pop();
 				break;
@@ -389,7 +389,7 @@ enum Document::Error Document::load()
 			case 16:		// EndNode
 				DECHO();
 				// TODO finish
-				model.setNode(ref, v);
+				this->project.model.setNode(ref, v);
 
 				cursor.pop();
 
@@ -642,13 +642,13 @@ enum Document::Error Document::load()
 					CURSOR_VERIFY_TEXT("material");
 					CURSOR_PUSH(JSON_NUMBER);
 					text = cursor.top()->text;
-					model.setDefaultMaterial(text.toULongLong());
+					this->project.model.setDefaultMaterial(text.toULongLong());
 					cursor.pop();
 					cursor.pop();
 				}
 
 				// push element
-				model.pushElement(element);
+				this->project.model.pushElement(element);
 
 				state.pop();
 				break;
@@ -804,7 +804,7 @@ enum Document::Error Document::load()
 					if (cursor.top()->next == NULL)
 					{
 						// set the node restrictions
-						model.pushNodeRestrictions(ref, node_restrictions);
+						this->project.model.pushNodeRestrictions(ref, node_restrictions);
 
 						cursor.pop();	
 
@@ -833,7 +833,7 @@ enum Document::Error Document::load()
 					if (cursor.top()->next == NULL)
 					{
 						// set the node restrictions
-						model.pushNodeRestrictions(ref, node_restrictions);
+						this->project.model.pushNodeRestrictions(ref, node_restrictions);
 
 						cursor.pop();	
 
@@ -865,7 +865,7 @@ enum Document::Error Document::load()
 				// set the node restrictions
 				for(std::vector<size_t>::iterator iter = refs.begin(); iter != refs.end(); iter++)
 				{
-					model.pushNodeRestrictions(*iter, node_restrictions);
+					this->project.model.pushNodeRestrictions(*iter, node_restrictions);
 				}
 
 				cursor.pop();	
@@ -1552,7 +1552,7 @@ enum Document::Error Document::load()
 			case 52:	// LoadPatternFollow
 				DECHO();
 				//TODO
-				model.pushLoadPattern(load_pattern);
+				this->project.model.pushLoadPattern(load_pattern);
 				std::cout << "pushed " << load_pattern.label << std::endl;
 
 				// Test the FIRST
@@ -1638,11 +1638,11 @@ enum Document::Error Document::save()
 
 	// dump the materials list
 	out << "\t\"materials\": [";
-	for (std::vector < fem::Material >::iterator it = model.material_list.begin(); it != model.material_list.end(); it++) 
+	for (std::vector < fem::Material >::iterator it = this->project.model.material_list.begin(); it != this->project.model.material_list.end(); it++) 
 	{
 		// to print the comman between entries and avoiding printing it
 		// after the last
-		if (it != model.material_list.begin())
+		if (it != this->project.model.material_list.begin())
 			out << ",\n\t";
 		else
 			out << "\n\t";
@@ -1660,9 +1660,9 @@ enum Document::Error Document::save()
 
 	// dump the nodes list
 	out << "\t\"nodes\":[";
-	for (std::map < size_t, fem::Node >::iterator it = model.node_list.begin(); it != model.node_list.end(); it++) 
+	for (std::map < size_t, fem::Node >::iterator it = this->project.model.node_list.begin(); it != this->project.model.node_list.end(); it++) 
 	{
-		if (it != model.node_list.begin())
+		if (it != this->project.model.node_list.begin())
 			out << ",\n\t";
 		else
 			out << "\n\t";
@@ -1674,9 +1674,9 @@ enum Document::Error Document::save()
 	// dump the elements list
 	out << "\t\"elements\":[";
 	int             material = 0;
-	for (std::vector < fem::Element >::iterator it = model.element_list.begin(); it != model.element_list.end(); it++)
+	for (std::vector < fem::Element >::iterator it = this->project.model.element_list.begin(); it != this->project.model.element_list.end(); it++)
 	{
-		if (it != model.element_list.begin())
+		if (it != this->project.model.element_list.begin())
 			out << ",\n\t\t";
 		else
 			out << "\n\t\t";
@@ -1734,7 +1734,7 @@ enum Document::Error Document::save()
 		out << "]";
 		// output the element's material
 		if ((it->material != material)
-				|| (it == model.element_list.begin())) {
+				|| (it == this->project.model.element_list.begin())) {
 			material = it->material;
 			out << ", \"material\": " << material;
 		}
@@ -1742,15 +1742,15 @@ enum Document::Error Document::save()
 	}
 	out << "\n\t]";
 
-	if(!model.node_restrictions_list.empty())
+	if(!this->project.model.node_restrictions_list.empty())
 	{
 		out << ",\n\n";
 		// dump the load restrictions list
 		out << "\t\"node restrictions\": [";
-		for (std::map < size_t, fem::NodeRestrictions >::iterator it = model.node_restrictions_list.begin(); it != model.node_restrictions_list.end(); it++) 
+		for (std::map < size_t, fem::NodeRestrictions >::iterator it = this->project.model.node_restrictions_list.begin(); it != this->project.model.node_restrictions_list.end(); it++) 
 		{
 			// TODO test this
-			if (it != model.node_restrictions_list.begin())
+			if (it != this->project.model.node_restrictions_list.begin())
 				out << ",";
 			out << "\n\t\t";
 			out << "{ \"node\":" << it->first;
@@ -1765,15 +1765,15 @@ enum Document::Error Document::save()
 		out << "\n\t]";
 	}
 
-	if(!model.load_pattern_list.empty())
+	if(!this->project.model.load_pattern_list.empty())
 	{
 		out << ",\n\n";
 
 		// dump the load patterns list
 		out << "\t\"load patterns\":[";
-		for (std::vector < fem::LoadPattern >::iterator it = model.load_pattern_list.begin(); it != model.load_pattern_list.end(); it++) 
+		for (std::vector < fem::LoadPattern >::iterator it = this->project.model.load_pattern_list.begin(); it != this->project.model.load_pattern_list.end(); it++) 
 		{
-			if (it != model.load_pattern_list.begin())
+			if (it != this->project.model.load_pattern_list.begin())
 				out << ",";
 			out << "\n\t\t{";
 			out << "\n\t\t\t";
@@ -1937,7 +1937,7 @@ enum Document::Error Document::importMesh(QString file_name)
 	}
 	// TODO import mesh from a Gmsh file
 	FILE           *f = fdopen(mesh_file.handle(), "r");
-	fem_model_import_msh(f, model);
+	fem_model_import_msh(f, this->project.model);
 	mesh_file.close();
 
 	return ERR_OK;

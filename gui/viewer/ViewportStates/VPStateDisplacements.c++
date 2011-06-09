@@ -41,7 +41,7 @@ VPStateDisplacements::~VPStateDisplacements()
 
 void VPStateDisplacements::initialize(BaseViewport *viewport)
 {
-	original_nodes = &viewport->model->node_list;
+	original_nodes = &viewport->project->model.node_list;
 
 	// build the displaced_nodes from the analysis
 
@@ -51,19 +51,19 @@ void VPStateDisplacements::initialize(BaseViewport *viewport)
 
 void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 {
-	mylog.setPrefix("void VPStateDisplacements::populateScenegraph(fem::Model *viewport->model)");
+	mylog.setPrefix("void VPStateDisplacements::populateScenegraph(fem::Model *viewport->project->model)");
 
 	//TODO generate the scenegraph
 
 	// add the nodes to the scenegraph
-	//for(std::map<size_t, fem::Node>::iterator i = viewport->model->node_list.begin(); i != viewport->model->node_list.end(); i++)
+	//for(std::map<size_t, fem::Node>::iterator i = viewport->project->model.node_list.begin(); i != viewport->project->model.node_list.end(); i++)
 	for(std::map<size_t, fem::Node>::iterator i = displaced_nodes.begin(); i != displaced_nodes.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(i->first, i->second, viewport->model->node_restrictions_list) );
+		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(i->first, i->second, viewport->project->model.node_restrictions_list) );
 	}
 
 	// add the surfaces to the scenegraph
-	for(std::list<fem::Surface>::iterator i = viewport->model->surface_list.begin(); i != viewport->model->surface_list.end(); i++)
+	for(std::list<fem::Surface>::iterator i = viewport->project->model.surface_list.begin(); i != viewport->project->model.surface_list.end(); i++)
 	{
 		if(i->external())
 		{
@@ -97,7 +97,7 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 	}
 
 	// add the transparent surfaces to the scenegraph
-	for(std::list<fem::Surface>::iterator i = viewport->model->surface_list.begin(); i != viewport->model->surface_list.end(); i++)
+	for(std::list<fem::Surface>::iterator i = viewport->project->model.surface_list.begin(); i != viewport->project->model.surface_list.end(); i++)
 	{
 		if(i->external())
 		{
@@ -148,7 +148,7 @@ void VPStateDisplacements::paintGL(BaseViewport *viewport)
 
 	//mylog.message("painting");
 
-	this->scenegraph.paint(viewport->viewport_data, *viewport->model, viewport->colors);
+	this->scenegraph.paint(viewport->viewport_data, viewport->project->model, viewport->colors);
 
 }
 

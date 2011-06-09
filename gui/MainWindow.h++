@@ -31,7 +31,6 @@ protected:
 	Ui::MainWindow 	ui;
 
 	fem::LinearAnalysis<double> analysis;
-	fem::AnalysisResult<double> analysis_result;
 
 	CommandLineDockWidget *commandLineDockWidget;
 

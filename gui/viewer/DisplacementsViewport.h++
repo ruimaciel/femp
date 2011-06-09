@@ -9,6 +9,7 @@
 
 #include "../MdiWindowProperties.h++"
 
+#include "../fem/Project.h++"
 #include "../fem/Model.h++"
 #include "BaseViewport.h++"
 #include "Camera.h++"
@@ -28,20 +29,11 @@ class DisplacementsViewport
 {
 	Q_OBJECT
 
-	protected:
-		fem::AnalysisResult<double> *analysis_result;
-
 	public:
-
-	public:
-		DisplacementsViewport(fem::Model *model, fem::AnalysisResult<double> &analysis, QWidget *parent = NULL);
+		DisplacementsViewport(fem::Project &project, QWidget *parent = NULL);
 		~DisplacementsViewport();
 
 		void setColors(ViewportColors &new_colors);
-
-		QSize minimumSizeHint() const;
-		QSize sizeHint() const;
-
 
 		template <class NewState>
 		void setState(NewState *);
@@ -70,8 +62,6 @@ class DisplacementsViewport
 		void zRotationChanged(int angle);
 
 	protected:
-		void initializeGL();
-		void resizeGL(int width, int height);
 		void paintGL();
 
 		// routines to handle input

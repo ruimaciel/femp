@@ -15,6 +15,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	MdiWindowProperties.h++ \
 	ui/NewProjectWizardPage1.h++ ui/NewProjectWizardPage2.h++ ui/NewProjectWizardPage3.h++ ui/NewProjectWizardPageLast.h++ \
 	ui/QuadratureRulesOptionsDialog.h++ \
+	fem/Project.h++ \
 	fem/Model.h++ fem/Node.h++ fem/Element.h++ fem/Material.h++ fem/LoadPattern.h++ fem/NodalLoad.h++ fem/NodalDisplacement.h++ fem/point.h++ fem/NodeRestrictions.h++ \
 	fem/DomainLoad.h++ fem/SurfaceLoad.h++\
 	fem/elements/Triangle3.h++ fem/elements/Triangle6.h++ \
@@ -58,6 +59,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	MdiWindowProperties.c++ \
 	ui/NewProjectWizardPage1.c++ ui/NewProjectWizardPage2.c++ ui/NewProjectWizardPage3.c++ ui/NewProjectWizardPageLast.c++  \
 	ui/QuadratureRulesOptionsDialog.c++ \
+	fem/Project.c++ \
 	fem/Model.c++ fem/Node.c++ fem/Element.c++ fem/Material.c++ fem/LoadPattern.c++ fem/NodalLoad.c++ fem/NodalDisplacement.c++ fem/point.c++ fem/NodeRestrictions.c++ \
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
 	viewer/ViewportData.c++ \

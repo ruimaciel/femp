@@ -6,6 +6,7 @@
 #include <list>
 
 #include "fem/Model.h++"
+#include "fem/Project.h++"
 #include "ModelSelection.h++"
 
 
@@ -29,6 +30,7 @@ class Document
 	public:
 		QString *file_name;	// path for the project's directory
 		fem::Model model;	// the FEM model
+		fem::Project project;	// the FEM project
 
 
 		// data structures for storing selected objects

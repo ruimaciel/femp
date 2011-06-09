@@ -9,6 +9,7 @@
 
 #include "../MdiWindowProperties.h++"
 
+#include "../fem/Project.h++"
 #include "../fem/Model.h++"
 
 #include "BaseViewport.h++"
@@ -35,7 +36,7 @@ class ModelViewport
 		ViewportState<BaseViewport>	*state;	// pointer to object used for the State pattern
 
 	public:
-		ModelViewport(fem::Model *model, QWidget *parent = NULL);
+		ModelViewport(fem::Project &project, QWidget *parent = NULL);
 		~ModelViewport();
 
 		void setColors(ViewportColors &new_colors);

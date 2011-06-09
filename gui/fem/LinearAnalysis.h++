@@ -102,18 +102,12 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 	progress.markSectionStart("solve FEM equation");
 	progress.markSectionLimit(model.element_list.size());
 
-	/*
-	//TODO implement a choice of solver
-	if(lalib::cg(my_k,d,f,(Scalar)1e-10) != lalib::OK)
-	{
-		cout << "did not converged" << endl;
-		return ERR_SINGULAR_MATRIX;
-	}
-	// */
-
-	//lalib::cholesky(my_k,result->d,result->f,L);
 	this->m_solver->solve(*result, &progress);
 
+	progress.markSectionEnd();
+
+	progress.markSectionStart("recover values");
+	this->recoverValues(model, *result);
 	progress.markSectionEnd();
 
 	// announce the end

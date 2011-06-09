@@ -2,11 +2,15 @@
 #define ANALYSIS_RESULT_HPP
 
 #include <map>
+#include <vector>
+
 #include <boost/tuple/tuple.hpp>
 #include <iostream>
 
 #include "../lalib/Matrix.h++"
 #include "../lalib/Vector.h++"
+
+#include "RecoveredValues.h++"
 
 
 namespace fem
@@ -25,6 +29,10 @@ struct AnalysisResult
 
 	std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;
 
+	// map between a element reference and the element's recovered values
+	std::vector<RecoveredValues<Scalar> >	recovered_values;
+	typename RecoveredValues<Scalar>::Values maximum, minimum;
+
 
 	void clear();
 };
@@ -39,6 +47,10 @@ void AnalysisResult<Scalar>::clear()
 	d.clear();
 
 	lm.clear();
+	recovered_values.clear();
+
+	maximum = {0,0,0,0,0,0};
+	minimum = {0,0,0,0,0,0};
 }
 
 

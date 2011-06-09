@@ -9,6 +9,8 @@
 #include <Eigen/Sparse>
 #include <Eigen/LU>
 
+#include <iostream> //TODO rmove this: debug purposes only
+
 #include <map>
 
 #include "Model.h++"
@@ -29,7 +31,6 @@
 
 #include "elements/Triangle3.h++"
 #include "elements/Triangle6.h++"
-#include "elements/Triangle10.h++"
 #include "elements/Quadrangle4.h++"
 #include "elements/Quadrangle8.h++"
 #include "elements/Quadrangle9.h++"
@@ -54,7 +55,6 @@ class Analysis
 		// area elements, used to integrate surface loads
 		Triangle3<Scalar>	tri3;
 		Triangle6<Scalar>	tri6;
-		Triangle10<Scalar>	tri10;
 		Quadrangle4<Scalar> 	quad4;
 		Quadrangle8<Scalar> 	quad8;
 		Quadrangle9<Scalar> 	quad9;
@@ -110,6 +110,12 @@ class Analysis
 		Returns a map of all nodes which had any relative displacement
 		**/
 		std::map<size_t, Node> displacements_map(AnalysisResult<Scalar> *result);
+
+
+		/**
+		Calculates a set of recovered values in every node of each individual element
+		**/
+		enum Error recoverValues(Model &model, AnalysisResult<Scalar> &result);
 
 	protected:
 		/**
@@ -465,10 +471,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 				element = &tri6;
 				break;
 
-			case Element::FE_TRIANGLE10:
-				element = &tri10;
-				break;
-
 			case Element::FE_QUADRANGLE4:
 				element = &quad4;
 				break;
@@ -624,6 +626,161 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar
 
 	return df;
 }
+
+
+template<typename Scalar>
+enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Model &model, AnalysisResult<Scalar> &result)
+{
+	BaseElement<Scalar> *element = NULL;	// points to the current element class
+	typename RecoveredValues<Scalar>::Values values;
+	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
+
+	Eigen::Matrix<Scalar,3,3> J, invJ;
+
+	result.recovered_values.resize(model.element_list.size());
+
+	std::cout << result.d << std::endl;
+
+	for(size_t n = 0; n < model.element_list.size(); n++)
+	{
+		switch(model.element_list[n].type)
+		{
+			case Element::FE_TETRAHEDRON4:
+				element = &tetra4;
+				break;
+
+			case Element::FE_TETRAHEDRON10:
+				element = &tetra10;
+				break;
+
+			case Element::FE_HEXAHEDRON8:
+				element = &hexa8;
+				break;
+
+			case Element::FE_HEXAHEDRON20:
+				element = &hexa20;
+				break;
+
+			case Element::FE_HEXAHEDRON27:
+				element = &hexa27;
+				break;
+
+			case Element::FE_PRISM6:
+				element = &prism6;
+				break;
+
+			case Element::FE_PRISM15:
+				element = &prism15;
+				break;
+
+			case Element::FE_PRISM18:
+				element = &prism18;
+				break;
+
+			default:
+				mylog.message("unsupported element");
+				return ERR_UNSUPPORTED_ELEMENT;
+				break;
+		}
+
+		element->setCoordinates( );
+
+
+		// cycle through this element's nodes
+		for(size_t i = 0; i < model.element_list[n].nodes.size(); i++)
+		{
+			Scalar dx, dy, dz;	// degrees of freedom of each node
+			Scalar dNdx, dNdy, dNdz;	// degrees of freedom of each node
+
+			//TODO set dx, dy, dz;
+			dof = result.lm.find(model.element_list[n].nodes[i]);
+			if(dof == result.lm.end())
+			{
+				dx = dy = dz = 0;
+			}
+			else
+			{
+				size_t n = dof->second.get<0>();
+				dx = (n != 0)? result.d(n-1) : 0;
+				n = dof->second.get<1>();
+				dy = (n != 0)? result.d(n-1) : 0;
+				n = dof->second.get<2>();
+				dz = (n != 0)? result.d(n-1) : 0;
+			}
+
+			J.setZero();
+			invJ.setZero();
+
+			element->setdNdcsi( element->coordinates[i] );
+			element->setdNdeta( element->coordinates[i] );
+			element->setdNdzeta( element->coordinates[i] );
+
+			// This is the loop to sum over the entire dNd* arrays
+			for(size_t j = 0; j < model.element_list[n].nodes.size(); j++)
+			{
+				/* 
+				   calculate derivatives in global coordinates from expression in local coordinates
+				   dNdcsi = J*dNdx <=> dNdx = invJ*dNdcsi
+				*/
+				Scalar X, Y, Z;	// degrees of freedom of each node
+				X = element->coordinates[j].x();
+				Y = element->coordinates[j].y();
+				Z = element->coordinates[j].z();
+
+
+				J(0,0) += element->dNdcsi[ j]*X;	J(1,0) += element->dNdcsi[ j]*Y;	J(2,0) += element->dNdcsi[j]*Z;
+				J(0,1) += element->dNdeta[ j]*X;	J(1,1) += element->dNdeta[ j]*Y;	J(2,1) += element->dNdeta[j]*Z;
+				J(0,2) += element->dNdzeta[ j]*X;	J(1,2) += element->dNdzeta[ j]*Y;	J(2,2) += element->dNdzeta[j]*Z;
+			}
+
+			J.computeInverse(&invJ);
+
+			// assign to temp values, to enhance code readability
+			dNdx =  invJ(0,0)*element->dNdcsi[i] + invJ(0,1)*element->dNdeta[i] + invJ(0,2)*element->dNdzeta[i];
+			dNdy =  invJ(1,0)*element->dNdcsi[i] + invJ(1,1)*element->dNdeta[i] + invJ(1,2)*element->dNdzeta[i];
+			dNdz =  invJ(2,0)*element->dNdcsi[i] + invJ(2,1)*element->dNdeta[i] + invJ(2,2)*element->dNdzeta[i];
+
+			// assign the values
+			values.e11 = dNdx*dx;
+			values.e22 = dNdy*dy;
+			values.e33 = dNdz*dz;
+			values.e12 = dNdx*dy + dNdy*dx;
+			values.e13 = dNdx*dz + dNdz*dx;
+			values.e23 = dNdy*dz + dNdz*dy;
+
+			result.recovered_values[n].node[i] = values;
+
+			if(values.e11 > result.maximum.e11)	result.maximum.e11 = values.e11;
+			if(values.e22 > result.maximum.e22)	result.maximum.e22 = values.e22;
+			if(values.e33 > result.maximum.e33)	result.maximum.e33 = values.e33;
+			if(values.e12 > result.maximum.e12)	result.maximum.e12 = values.e12;
+			if(values.e13 > result.maximum.e13)	result.maximum.e13 = values.e13;
+			if(values.e23 > result.maximum.e23)	result.maximum.e23 = values.e23;
+
+			if(values.e11 < result.minimum.e11)	result.minimum.e11 = values.e11;
+			if(values.e22 < result.minimum.e22)	result.minimum.e22 = values.e22;
+			if(values.e33 < result.minimum.e33)	result.minimum.e33 = values.e33;
+			if(values.e12 < result.minimum.e12)	result.minimum.e12 = values.e12;
+			if(values.e13 < result.minimum.e13)	result.minimum.e13 = values.e13;
+			if(values.e23 < result.minimum.e23)	result.minimum.e23 = values.e23;
+
+			/*
+			std::cout << "\tnode: " << i << "{";
+			std::cout << "\te11: " << values.e11 << ", ";
+			std::cout << "\te22: " << values.e22 << ", ";
+			std::cout << "\te33: " << values.e33 << ", ";
+			std::cout << "\te12: " << values.e12 << ", ";
+			std::cout << "\te13: " << values.e13 << ", ";
+			std::cout << "\te23: " << values.e23 << "}";
+			std::cout << std::endl;
+			*/
+		}
+
+	}
+
+	return ERR_OK;
+}
+
 
 
 template<typename Scalar>

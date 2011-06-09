@@ -1,7 +1,7 @@
 #include "SurfaceQuad8.h++"
 
 
-void SurfaceQuad8::paintGL(ViewportData &, fem::Model *, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void SurfaceQuad8::paintGL(ViewportData &, fem::Model *, ViewportColors &, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
 	glEnable(GL_BLEND);
 	int partitions = 6;	//TODO implement a better code
@@ -45,8 +45,6 @@ void SurfaceQuad8::paintGL(ViewportData &, fem::Model *, ViewportColors &colors,
 
 	nu = n_upper_row;
 	nl = n_lower_row;
-
-	glColor4fv(colors.surface);
 
 	// initialize the bottom row
 	y = 0;

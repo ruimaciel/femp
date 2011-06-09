@@ -1,7 +1,7 @@
 #include "SurfaceQuad4.h++"
 
 
-void SurfaceQuad4::paintGL(ViewportData &, fem::Model *, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void SurfaceQuad4::paintGL(ViewportData &, fem::Model *, ViewportColors &, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
 	glEnable(GL_BLEND);
 	int partitions = 3;	//TODO implement a better code
@@ -54,8 +54,6 @@ void SurfaceQuad4::paintGL(ViewportData &, fem::Model *, ViewportColors &colors,
 		dndy = p3*x-p2*x+p4*(1-x)-p1*(1-x);
 		n_lower_row[i] = fem::cross_product(dndx, dndy);
 	}
-
-	glColor4fv(colors.surface);
 
 	// the rest of the loop
 	for (int j = 1; j <= partitions; j++)  

@@ -3,7 +3,7 @@
 #include "../fem/point.h++"
 
 
-void SurfaceTriangle3::paintGL(ViewportData &, fem::Model *, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void SurfaceTriangle3::paintGL(ViewportData &, fem::Model *, ViewportColors &, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
 	glEnable(GL_BLEND);
 	using namespace fem;
@@ -18,8 +18,6 @@ void SurfaceTriangle3::paintGL(ViewportData &, fem::Model *, ViewportColors &col
 	fem::point temp;
 	temp = getNormalVector(p1,p2,p3);
 	
-	glColor4fv(colors.surface);
-
 	glBegin(GL_TRIANGLES);
 	glNormal3dv(temp.data);
 	glVertex3dv(p1.data);

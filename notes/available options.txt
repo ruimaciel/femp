@@ -1,5 +1,6 @@
 option	type	description
 project.new.default_directory	string	home folder subdirectory which acts as the pre-defined directory where the "new project" file dialog starts. If it doesn't exist or the given path is invalid then the "new project" dialog defaults to the ~/ folder.
+project.open.default_directory	string	directory where the program looks for the first time
 viewport.node.radius	number	sets the default scale for the sphere depicting the nodes
 viewport.node.color	number array	color
 viewport.wireframe.color	number array	the default value for the wireframe color

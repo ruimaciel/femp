@@ -75,7 +75,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	// set the user interface
 	setUserInterfaceAsClosed();
 
-	file_dialog_last_directory = QDir::home();
 }
 
 
@@ -473,6 +472,25 @@ void MainWindow::loadOptions()
 	{
 		options.importFile(is);
 		is.close();
+	}
+
+	if(options.wasSet("project.open.default_directory"))
+	{
+		std::string default_path;
+		options.getOption("project.open.default_directory",default_path);
+		if( QFile::exists(QString::fromStdString(default_path)) )
+		{
+			//TODO this doesn't work
+			file_dialog_last_directory.setPath(QString::fromStdString(default_path));
+		}
+		else
+		{
+			file_dialog_last_directory = QDir::home();
+		}
+	}
+	else
+	{
+		file_dialog_last_directory = QDir::home();
 	}
 
 	// set color options

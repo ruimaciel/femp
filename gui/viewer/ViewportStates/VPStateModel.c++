@@ -126,7 +126,7 @@ void VPStateModel::paintGL(BaseViewport *mv)
 
 
 	//TODO finish implementing this
-	this->scenegraph.paint(mv->viewport_data, mv->project->model, mv->colors);
+	this->scenegraph.paint(mv->viewport_data, *mv->project, mv->colors);
 }
 
 

@@ -34,7 +34,7 @@ class SGCModelSurface
 		/*
 		Renders this surface according to the surface type and the detail factor
 		*/
-		void paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors);
+		void paintGL(ViewportData &data, fem::Project &project, ViewportColors &colors);
 
 	protected:
 		/*
@@ -81,10 +81,10 @@ void SGCModelSurface<SurfacePolicy>::setReferenceSurface(fem::Surface &reference
 
 
 template<class SurfacePolicy>
-void SGCModelSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors)
+void SGCModelSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Project &project, ViewportColors &colors)
 {
 	glColor4fv(colors.surface);
-	SurfacePolicy::paintGL(data, model, colors, nodes, surface);
+	SurfacePolicy::paintGL(data, project, colors, nodes, surface);
 }
 
 

@@ -10,7 +10,7 @@
 
 #include "ViewportData.h++"
 #include "ViewportColors.h++"
-#include "../fem/Model.h++"
+#include "../fem/Project.h++"
 
 
 /*
@@ -66,7 +66,7 @@ class SceneGraph
 		void clear();
 
 
-		void paint(ViewportData &viewport_data, fem::Model &model, ViewportColors &colors);
+		void paint(ViewportData &viewport_data, fem::Project &project, ViewportColors &colors);
 
 		/*
 		Generic routine to add a primitive component to this scenegraph

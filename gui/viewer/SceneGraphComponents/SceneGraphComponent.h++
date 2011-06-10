@@ -12,7 +12,7 @@
 
 #include "../OperationsVisitor.h++"
 
-#include "../../fem/Model.h++"
+#include "../../fem/Project.h++"
 #include "../../fem/LinearAnalysis.h++"
 
 
@@ -40,7 +40,7 @@ class SceneGraphComponent
 		/*
 		Render the content of this Scenegraph component
 		*/
-		virtual void paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors);
+		virtual void paintGL(ViewportData &data, fem::Project &project, ViewportColors &colors);
 
 		/*
 		Pushes a new scenegraph component to this component's children's list

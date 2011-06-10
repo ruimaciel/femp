@@ -28,7 +28,7 @@ void SGCNode::setReferenceNode(fem::Node &referenced_node)
 }
 
 
-void SGCNode::paintGL(ViewportData &data, fem::Model *, ViewportColors &colors)
+void SGCNode::paintGL(ViewportData &data, fem::Project &, ViewportColors &colors)
 {
 	glPushMatrix();
 	glTranslated(node->data[0],node->data[1],node->data[2]);
@@ -37,11 +37,6 @@ void SGCNode::paintGL(ViewportData &data, fem::Model *, ViewportColors &colors)
 
 	//TODO paint selected node in a different color
 	// paint the nodal sphere
-	/*
-	if(document->model_selection.isNodeSelected(label))
-		glColor3f(1.0f,0,0);
-	else
-	*/
 	if(this->selected)
 		glColor3fv(colors.selected);
 	else

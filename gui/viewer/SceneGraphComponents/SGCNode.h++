@@ -28,7 +28,7 @@ class SGCNode
 		/*
 		Renders this node
 		*/
-		void paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors);
+		void paintGL(ViewportData &data, fem::Project &project, ViewportColors &colors);
 
 		/*
 		Visitor pattern method

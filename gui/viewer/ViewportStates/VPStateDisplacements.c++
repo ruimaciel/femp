@@ -148,7 +148,7 @@ void VPStateDisplacements::paintGL(BaseViewport *viewport)
 
 	//mylog.message("painting");
 
-	this->scenegraph.paint(viewport->viewport_data, viewport->project->model, viewport->colors);
+	this->scenegraph.paint(viewport->viewport_data, *viewport->project, viewport->colors);
 
 }
 

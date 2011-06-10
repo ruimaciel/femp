@@ -15,12 +15,12 @@ Policy class to implemente the SGCDisplacementSurface through a template policy 
 class WireframeSurfaceQuad4
 {
 	public:
-		void paintGL(ViewportData &data, fem::Model *model, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface);
+		void paintGL(ViewportData &data, fem::Project &project, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface);
 };
 
 
 
-void WireframeSurfaceQuad4::paintGL(ViewportData &, fem::Model *, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void WireframeSurfaceQuad4::paintGL(ViewportData &, fem::Project &, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
 	//int partitions = 3;	//TODO implement a better code
 

@@ -19,10 +19,8 @@
 
 #include "ViewportData.h++"
 
-#include "SceneGraph.h++"
 #include "ViewportStates/ViewportState.h++"	// for the vieport's state pattern base class
 #include "ViewportStates/VPStateModel.h++"
-#include "ViewportStates/VPStateDisplacements.h++"
 
 #include "../fem/LinearAnalysis.h++"
 
@@ -33,17 +31,8 @@ class ModelViewport
 	Q_OBJECT
 
 	public:
-		ViewportState<BaseViewport>	*state;	// pointer to object used for the State pattern
-
-	public:
 		ModelViewport(fem::Project &project, QWidget *parent = NULL);
 		~ModelViewport();
-
-		void setColors(ViewportColors &new_colors);
-
-		QSize minimumSizeHint() const;
-		QSize sizeHint() const;
-
 
 		template <class NewState>
 		void setState(NewState *);
@@ -54,6 +43,7 @@ class ModelViewport
 		*/
 		void setNodeVisibility(bool state);
 		void setSurfaceVisibility(bool state);
+
 
 	public Q_SLOTS:
 		void setXRotation(int angle);
@@ -70,8 +60,6 @@ class ModelViewport
 		void zRotationChanged(int angle);
 
 	protected:
-		void initializeGL();
-		void resizeGL(int width, int height);
 		void paintGL();
 
 		// routines to handle input
@@ -79,8 +67,6 @@ class ModelViewport
 		void mouseMoveEvent(QMouseEvent *event);
 		void wheelEvent(QWheelEvent *event);
 		void keyPressEvent ( QKeyEvent * event );
-
-		void normalizeAngle(int *angle);
 };
 
 #endif

@@ -5,7 +5,6 @@
 
 #include "../fem/Project.h++"
 #include "../viewer/ViewportColors.h++"
-#include "../viewer/ModelViewport.h++"
 
 /**
 MDI window designed to represent the model

@@ -26,9 +26,10 @@
 #include "ui/QuadratureRulesOptionsDialog.h++"
 #include "ui/AnalysisProgressDialog.h++"
 #include "ui/AnalysisDialog.h++"
+
 #include "ui/MdiWindow.h++"
 #include "ui/ModelWindow.h++"
-#include "ui/ResultWindow.h++"
+#include "ui/DisplacementsWindow.h++"
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
@@ -516,6 +517,35 @@ void MainWindow::loadOptions()
 			} 
 		} 
 
+		if(options.getOption("viewport.fields.color.maximum_positive",temp) )
+		{ 
+			if(temp.size() == 3) 
+			{ 
+				colors.field_maximum_positive[0] = temp[0]; 
+				colors.field_maximum_positive[1] = temp[1]; 
+				colors.field_maximum_positive[2] = temp[2]; 
+			} 
+		} 
+
+		if(options.getOption("viewport.fields.color.maximum_negative",temp) )
+		{ 
+			if(temp.size() == 3) 
+			{ 
+				colors.field_maximum_negative[0] = temp[0]; 
+				colors.field_maximum_negative[1] = temp[1]; 
+				colors.field_maximum_negative[2] = temp[2]; 
+			} 
+		} 
+
+		if(options.getOption("viewport.fields.color.neutral",temp) )
+		{ 
+			if(temp.size() == 3) 
+			{ 
+				colors.field_neutral[0] = temp[0]; 
+				colors.field_neutral[1] = temp[1]; 
+				colors.field_neutral[2] = temp[2]; 
+			} 
+		} 
 		//TODO add code for the force arrows custom color code
 	}
 
@@ -1101,8 +1131,7 @@ void MainWindow::showDisplacements()
 	{
 		window->setWindowTitle("Displacements");
 
-		//TODO rename ResultWindow to DisplacementsWindow
-		ResultWindow *viewport = new ResultWindow(document.project, colors, this);
+		DisplacementsWindow *viewport = new DisplacementsWindow(document.project, colors, this);
 		window->setWidget(viewport);
 	}
 	else

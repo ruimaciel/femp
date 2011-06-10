@@ -67,7 +67,7 @@ class BaseViewport
 	protected:
 		void initializeGL();
 		void resizeGL(int width, int height);
-		void paintGL();
+		virtual void paintGL();
 
 		// routines to handle input
 		void mousePressEvent(QMouseEvent *event);

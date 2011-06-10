@@ -1,5 +1,7 @@
 #include "DisplacementsViewport.h++"
 
+#include "SceneGraph.h++"
+
 
 DisplacementsViewport::DisplacementsViewport(fem::Project &project, QWidget *parent)
 	: BaseViewport(project, parent)
@@ -8,6 +10,9 @@ DisplacementsViewport::DisplacementsViewport(fem::Project &project, QWidget *par
 	mylog.message("constructor");
 
 	//TODO let the user choose which result to represent
+	this->project = &project;
+	this->state = NULL;
+
 	this->showDisplacements(project.result.back());
 
 	// set this widget's load pattern pointer
@@ -29,12 +34,6 @@ DisplacementsViewport::~DisplacementsViewport()
 }
 
 
-void DisplacementsViewport::setColors(ViewportColors &new_colors)
-{
-	colors = new_colors;
-}
-
-
 void DisplacementsViewport::setNodeVisibility(bool state)
 {
 	this->state->setRenderGoupVisibility(SceneGraph::RG_NODES, state);
@@ -52,6 +51,8 @@ void DisplacementsViewport::setSurfaceVisibility(bool state)
 
 void DisplacementsViewport::paintGL()
 {
+	assert(project != NULL);
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -149,21 +150,8 @@ void DisplacementsViewport::setPosition(int x, int y)
 }
 
 
-/*
-void DisplacementsViewport::showModel()
-{
-	// set the state
-	VPStateModel* state = new VPStateModel;
-
-	this->setState(state);
-}
-*/
-
-
 void DisplacementsViewport::showDisplacements(fem::AnalysisResult<double> &analysis)
 {
-	// setup the displacements map
-
 	// set the state
 	VPStateDisplacements* state = new VPStateDisplacements;
 
@@ -171,13 +159,5 @@ void DisplacementsViewport::showDisplacements(fem::AnalysisResult<double> &analy
 	state->setDisplacements(analysis);
 }
 
-
-void DisplacementsViewport::normalizeAngle(int *angle)
-{
-	while (*angle < 0)
-		*angle += 360 * 16;
-	while (*angle > 360 * 16)
-		*angle -= 360 * 16;
-}
 
 

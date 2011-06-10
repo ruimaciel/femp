@@ -11,6 +11,7 @@
 
 #include "../fem/Project.h++"
 #include "../fem/Model.h++"
+
 #include "BaseViewport.h++"
 #include "Camera.h++"
 #include "ViewportColors.h++"
@@ -33,8 +34,6 @@ class DisplacementsViewport
 		DisplacementsViewport(fem::Project &project, QWidget *parent = NULL);
 		~DisplacementsViewport();
 
-		void setColors(ViewportColors &new_colors);
-
 		template <class NewState>
 		void setState(NewState *);
 
@@ -53,7 +52,6 @@ class DisplacementsViewport
 		void setPosition(int x, int y);
 
 		// set the viewport state
-		// void showModel();
 		void showDisplacements(fem::AnalysisResult<double> &);
 
 	Q_SIGNALS:
@@ -69,9 +67,6 @@ class DisplacementsViewport
 		void mouseMoveEvent(QMouseEvent *event);
 		void wheelEvent(QWheelEvent *event);
 		void keyPressEvent ( QKeyEvent * event );
-
-	protected:
-		void normalizeAngle(int *angle);
 };
 
 #endif

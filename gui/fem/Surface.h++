@@ -31,10 +31,6 @@ class Surface
 		
 
 	public:
-		Surface() {};
-		~Surface() {};
-
-
 		/**
 		Sets this surface's properties 
 		@param type	the type of surface

@@ -2,6 +2,7 @@
 #define MDI_WINDOW_HPP
 
 
+#include <QMainWindow>
 #include <QToolBar>
 #include <QAction>
 

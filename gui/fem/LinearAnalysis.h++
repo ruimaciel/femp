@@ -11,6 +11,8 @@
 #include "../lalib/output.h++"
 
 #include "ProgressIndicatorStrategy.h++"
+
+#include "Project.h++"
 #include "AnalysisResult.h++"
 
 #include "solvers/Solver.h++"
@@ -25,7 +27,7 @@ class LinearAnalysis
 	: public Analysis<Scalar>
 {
 	protected:
-		Model *m_model;
+		Project *m_project;
 		LoadPattern *m_load_pattern;
 		AnalysisResult<Scalar> *m_result;
 		ProgressIndicatorStrategy *m_progress;
@@ -35,7 +37,7 @@ class LinearAnalysis
 		LinearAnalysis();
 		~LinearAnalysis();
 
-		void set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver);
+		void set(Project &project, LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver);
 
 		/**
 		Operator intended to run the analysis through a thread
@@ -43,7 +45,7 @@ class LinearAnalysis
 		void operator() ();
 
 	protected:
-		enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
+		enum Analysis<Scalar>::Error run(Project &project, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
 };
 
 
@@ -52,7 +54,7 @@ template<typename Scalar>
 LinearAnalysis<Scalar>::LinearAnalysis()
 	: Analysis<Scalar>()
 {
-	m_model = NULL;
+	m_project = NULL;
 	m_load_pattern = NULL;
 	m_result = NULL;
 	m_progress = NULL;
@@ -67,11 +69,11 @@ LinearAnalysis<Scalar>::~LinearAnalysis()
 
 
 template<typename Scalar>
-void LinearAnalysis<Scalar>::set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver)
+void LinearAnalysis<Scalar>::set(Project &project, LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver)
 {
 	assert(solver != NULL);
 
-	this->m_model = &model;
+	this->m_project = &project;
 	this->m_load_pattern = &lp;
 	this->m_result = &result;
 	this->m_progress = &progress;
@@ -80,7 +82,7 @@ void LinearAnalysis<Scalar>::set(Model &model, LoadPattern &lp, AnalysisResult<S
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
+enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Project &project, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
 {
 	using namespace std;
 	using namespace Eigen;
@@ -88,7 +90,7 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 	// clear existing data structures
 	result->clear();
 
-	this->build_fem_equation(model, lp, result, progress);
+	this->build_fem_equation(project, lp, result, progress);
 
 	result->d.resize(result->f.size());	// is this reallly necessary?
 
@@ -99,14 +101,14 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 	this->m_solver->initialize(*result, &progress);
 
 	progress.markSectionStart("solve FEM equation");
-	progress.markSectionLimit(model.element_list.size());
+	progress.markSectionLimit(project.model.element_list.size());
 
 	this->m_solver->solve(*result, &progress);
 
 	progress.markSectionEnd();
 
 	progress.markSectionStart("recover values");
-	this->recoverValues(model, *result);
+	this->recoverValues(project, *result);
 	progress.markSectionEnd();
 
 	// announce the end
@@ -120,7 +122,7 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPatte
 template<typename Scalar>
 void LinearAnalysis<Scalar>::operator() ()
 {
-	if( this->run(*m_model, *m_load_pattern, m_result, *m_progress) != fem::Analysis<double>::ERR_OK)
+	if( this->run(*m_project, *m_load_pattern, m_result, *m_progress) != fem::Analysis<double>::ERR_OK)
 	{
 		//TODO throw error message
 		return;

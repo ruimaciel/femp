@@ -10,6 +10,8 @@
 #include "../lalib/Matrix.h++"
 #include "../lalib/Vector.h++"
 
+#include "point.h++"
+
 #include "RecoveredValues.h++"
 
 
@@ -26,11 +28,16 @@ struct AnalysisResult
 	AnalysisResult() {};
 	AnalysisResult(const AnalysisResult<Scalar> &);
 
+	// The FEM equation bit
 	lalib::Matrix<Scalar,lalib::SparseDOK> K;
 	lalib::Vector<Scalar> f;
 	lalib::Vector<Scalar> d;
 
 	std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;
+
+
+	// A map between the reference to a node and the displacements of it's DoF
+	std::map<size_t , fem::point> displacements;
 
 	// map between a element reference and the element's recovered values
 	std::vector<RecoveredValues<Scalar> >	recovered_values;
@@ -49,6 +56,9 @@ AnalysisResult<Scalar>::AnalysisResult(const AnalysisResult<Scalar> &copied)
 	this->d = copied.d;
 
 	this->lm = copied.lm;
+
+	this->displacements = copied.displacements;
+
 	this->recovered_values = copied.recovered_values;
 	this->maximum = copied.maximum;
 	this->minimum = copied.minimum;
@@ -63,6 +73,8 @@ void AnalysisResult<Scalar>::clear()
 	d.clear();
 
 	lm.clear();
+	displacements.clear();
+
 	recovered_values.clear();
 
 	maximum = {0,0,0,0,0,0};

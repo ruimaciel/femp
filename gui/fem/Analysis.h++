@@ -13,6 +13,7 @@
 
 #include <map>
 
+#include "Project.h++"
 #include "Model.h++"
 #include "Element.h++"
 #include "LoadPattern.h++"
@@ -89,21 +90,21 @@ class Analysis
 
 		/** sets up a FEM equation according to the info contained in the instance of this class
 		The struct FemEquation objects must already be resized to handle the model and initialized
-		@param model	a reference to a fem::Model object
+		@param project	a reference to a fem::Project object
 		@param lp	the load pattern
 		@param result	a pointer to a AnalysisResult<Scalar> object, where the run results will be stored
 		@return an error
 		**/
-		enum Error build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
+		enum Error build_fem_equation(Project &project, const LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
 
 
 		/** runs the analysis
-		@param model	a reference to a fem::Model object
+		@param project	a reference to a fem::Project object
 		@param lp	the load pattern
 		@param result	a pointer to a AnalysisResult<Scalar> object, where the run results will be stored
 		@return an error
 		**/
-		virtual enum Error run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress) = 0;
+		virtual enum Error run(Project &project, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress) = 0;
 
 
 		/**
@@ -115,7 +116,7 @@ class Analysis
 		/**
 		Calculates a set of recovered values in every node of each individual element
 		**/
-		enum Error recoverValues(Model &model, AnalysisResult<Scalar> &result);
+		enum Error recoverValues(Project &project, AnalysisResult<Scalar> &result);
 
 	protected:
 		/**
@@ -123,7 +124,7 @@ class Analysis
 		@param model	the reference of a fem::Model object
 		@param result	the pointer to a fem::AnalysisResult<Scalar> object, where the information will be stored
 		**/
-		void make_location_matrix(Model &model, AnalysisResult<Scalar> *result);
+		void make_location_matrix(Project &project, AnalysisResult<Scalar> *result);
 
 
 		/**
@@ -152,19 +153,19 @@ Analysis<Scalar>::~Analysis()
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
+enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &project, const LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
 {
 	mylog.setPrefix("Analysis<Scalar>::build_fem_equation()");
 
 	using namespace std;
 	using namespace Eigen;
 
-	// perform sanity checks on the model
-	if(model.element_list.empty() )
+	// perform sanity checks on the project.model
+	if(project.model.element_list.empty() )
 		return ERR_NO_ELEMENTS;
 
 		// generate the location matrix
-	make_location_matrix(model, result);
+	make_location_matrix(project, result);
 
 		// declare variables
 	Scalar detJ = 0;
@@ -178,7 +179,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 	Matrix<Scalar,Dynamic,1> f_elem;
 	Matrix<Scalar,Dynamic,Dynamic> B;
 	Matrix<Scalar,Dynamic,Dynamic> Bt;
-	Matrix<Scalar,6,6> D = model.material_list[0].generateD().cast<Scalar>();
+	Matrix<Scalar,6,6> D = project.model.material_list[0].generateD().cast<Scalar>();
 
 	int material_index = 0;
 
@@ -188,10 +189,10 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
 
 
-		// generate stiffness matrix by cycling through all elements in the model
+		// generate stiffness matrix by cycling through all elements in the project.model
 	progress.markSectionStart("stiffness matrix");
-	progress.markSectionLimit(model.element_list.size());
-	for(std::vector<Element>::iterator element_iterator = model.element_list.begin(); element_iterator != model.element_list.end(); element_iterator++)
+	progress.markSectionLimit(project.model.element_list.size());
+	for(std::vector<Element>::iterator element_iterator = project.model.element_list.begin(); element_iterator != project.model.element_list.end(); element_iterator++)
 	{
 			// sets the current element routines
 		switch(element_iterator->type)
@@ -253,9 +254,9 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 			// build the element_iterator stiffness matrix: cycle through the number of integration points
 		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->stiffness_quadrature().begin(); i != element->stiffness_quadrature().end(); i++)
 		{
-#define X(N) model.node_list[element_iterator->nodes[N]].x()
-#define Y(N) model.node_list[element_iterator->nodes[N]].y()
-#define Z(N) model.node_list[element_iterator->nodes[N]].z()
+#define X(N) project.model.node_list[element_iterator->nodes[N]].x()
+#define Y(N) project.model.node_list[element_iterator->nodes[N]].y()
+#define Z(N) project.model.node_list[element_iterator->nodes[N]].z()
 
 				// set the shape function and it's partial derivatives for this integration point
 			element->setdNdcsi( i->template get<0>() );
@@ -277,7 +278,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 			if(detJ <= 0)
 			{
 				QString m;
-				m.sprintf("stumbled on a negative determinant on element_iterator %ld", distance(model.element_list.begin(), element_iterator));
+				m.sprintf("stumbled on a negative determinant on element_iterator %ld", distance(project.model.element_list.begin(), element_iterator));
 				mylog.message(m);
 				
 				return ERR_NEGATIVE_DETERMINANT;
@@ -314,7 +315,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 			Bt = B.transpose();
 
 			if(material_index != element_iterator->material)
-				D = model.material_list[element_iterator->material].generateD().cast<Scalar>();
+				D = project.model.material_list[element_iterator->material].generateD().cast<Scalar>();
 
 			// add this integration point's contribution
 			k_elem += Bt*D*B*detJ*i->get<1>();
@@ -336,7 +337,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 	{
 		//TODO rewrite to rely on the element_reference classes
 		fem::Element *element_reference;
-		element_reference = &model.element_list[domain_load->first];
+		element_reference = &project.model.element_list[domain_load->first];
 		nnodes = element_reference->node_number();
 
 		// set the routines for the current element
@@ -394,9 +395,9 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 
 				// generate the jacobian
 			J.setZero();
-#define X(N)	model.node_list[element_reference->nodes[N]].x()
-#define Y(N)	model.node_list[element_reference->nodes[N]].y()
-#define Z(N)	model.node_list[element_reference->nodes[N]].z()
+#define X(N)	project.model.node_list[element_reference->nodes[N]].x()
+#define Y(N)	project.model.node_list[element_reference->nodes[N]].y()
+#define Z(N)	project.model.node_list[element_reference->nodes[N]].z()
 			for(int n = 0; n < nnodes; n++)
 			{
 				J(0,0) += element->dNdcsi[n]*X(n);	J(0,1) += element->dNdcsi[n]*Y(n);	J(0,2) += element->dNdcsi[n]*Z(n);
@@ -434,9 +435,9 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 #undef Z
 
 			//add the domain load's f_elem contribution to result->f
-		for(size_t i = 0; i < model.element_list[domain_load->first].nodes.size(); i++)
+		for(size_t i = 0; i < project.model.element_list[domain_load->first].nodes.size(); i++)
 		{
-			dof = result->lm.find(model.element_list[domain_load->first].nodes[i]);
+			dof = result->lm.find(project.model.element_list[domain_load->first].nodes[i]);
 			if(dof == result->lm.end())
 				continue;	// no degrees of freedom on this node
 			else
@@ -502,9 +503,9 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 
 				// calculate the Jacobian
 			J.setZero();
-#define X(N)	model.node_list[surface_load->nodes[N]].x()
-#define Y(N)	model.node_list[surface_load->nodes[N]].y()
-#define Z(N)	model.node_list[surface_load->nodes[N]].z()
+#define X(N)	project.model.node_list[surface_load->nodes[N]].x()
+#define Y(N)	project.model.node_list[surface_load->nodes[N]].y()
+#define Z(N)	project.model.node_list[surface_load->nodes[N]].z()
 			//J(0,0) = 1;	J(1,0) = 2;	J(2,0) = 3;
 			for(int n = 0; n < nnodes; n++)
 			{
@@ -629,7 +630,7 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Model &model, AnalysisResult<Scalar> &result)
+enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Project &project, AnalysisResult<Scalar> &result)
 {
 	BaseElement<Scalar> *element = NULL;	// points to the current element class
 	typename RecoveredValues<Scalar>::Values values;
@@ -637,13 +638,13 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Model &model, Analy
 
 	Eigen::Matrix<Scalar,3,3> J, invJ;
 
-	result.recovered_values.resize(model.element_list.size());
+	result.recovered_values.resize(project.model.element_list.size());
 
 	std::cout << result.d << std::endl;
 
-	for(size_t n = 0; n < model.element_list.size(); n++)
+	for(size_t n = 0; n < project.model.element_list.size(); n++)
 	{
-		switch(model.element_list[n].type)
+		switch(project.model.element_list[n].type)
 		{
 			case Element::FE_TETRAHEDRON4:
 				element = &tetra4;
@@ -687,13 +688,13 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Model &model, Analy
 
 
 		// cycle through this element's nodes
-		for(size_t i = 0; i < model.element_list[n].nodes.size(); i++)
+		for(size_t i = 0; i < project.model.element_list[n].nodes.size(); i++)
 		{
 			Scalar dx, dy, dz;	// degrees of freedom of each node
 			Scalar dNdx, dNdy, dNdz;	// degrees of freedom of each node
 
 			//TODO set dx, dy, dz;
-			dof = result.lm.find(model.element_list[n].nodes[i]);
+			dof = result.lm.find(project.model.element_list[n].nodes[i]);
 			if(dof == result.lm.end())
 			{
 				dx = dy = dz = 0;
@@ -716,7 +717,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Model &model, Analy
 			element->setdNdzeta( element->coordinates[i] );
 
 			// This is the loop to sum over the entire dNd* arrays
-			for(size_t j = 0; j < model.element_list[n].nodes.size(); j++)
+			for(size_t j = 0; j < project.model.element_list[n].nodes.size(); j++)
 			{
 				/* 
 				   calculate derivatives in global coordinates from expression in local coordinates
@@ -784,14 +785,14 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Model &model, Analy
 
 
 template<typename Scalar>
-void Analysis<Scalar>::make_location_matrix(Model &model, AnalysisResult<Scalar> *result)
+void Analysis<Scalar>::make_location_matrix(Project &project, AnalysisResult<Scalar> *result)
 {
 	size_t dof = 1;	// degree of freedom count, the 0 value is interpreted as a prescribed movement
 
 	// iterate through the node list
-	for(std::map<size_t, fem::Node>::iterator i = model.node_list.begin(); i != model.node_list.end(); i++)
+	for(std::map<size_t, fem::Node>::iterator i = project.model.node_list.begin(); i != project.model.node_list.end(); i++)
 	{
-		if(model.node_restrictions_list.find(i->first) == model.node_restrictions_list.end())
+		if(project.model.node_restrictions_list.find(i->first) == project.model.node_restrictions_list.end())
 		{
 			// there are no node restrictions set for this node
 			result->lm[i->first].template get<0>() = dof++;
@@ -801,17 +802,17 @@ void Analysis<Scalar>::make_location_matrix(Model &model, AnalysisResult<Scalar>
 		else
 		{
 				// there are some node restrictions set for this node
-			if(model.node_restrictions_list[i->first].dx() == false)
+			if(project.model.node_restrictions_list[i->first].dx() == false)
 				result->lm[i->first].template get<0>() = dof++;
 			else
 				result->lm[i->first].template get<0>() = 0;
 
-			if(model.node_restrictions_list[i->first].dy() == false)
+			if(project.model.node_restrictions_list[i->first].dy() == false)
 				result->lm[i->first].template get<1>() = dof++;
 			else
 				result->lm[i->first].template get<1>() = 0;
 
-			if(model.node_restrictions_list[i->first].dz() == false)
+			if(project.model.node_restrictions_list[i->first].dz() == false)
 				result->lm[i->first].template get<2>() = dof++;
 			else
 				result->lm[i->first].template get<2>() = 0;

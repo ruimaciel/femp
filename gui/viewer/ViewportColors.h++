@@ -18,6 +18,11 @@ struct ViewportColors {
 	GLfloat arrow[4];
 	
 	GLfloat background[4];
+
+	// field colors
+	GLfloat field_maximum_positive[3];
+	GLfloat field_neutral[3];
+	GLfloat field_maximum_negative[3];
 };
 
 

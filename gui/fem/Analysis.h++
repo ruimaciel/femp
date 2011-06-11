@@ -114,6 +114,11 @@ class Analysis
 
 
 		/**
+		Generates AnalysisResult::displacements, a map between a reference to a fem::Node object and a vector with it's displacements 
+		**/
+		void generateDisplacementsMap(Project &project, AnalysisResult<Scalar> &result);
+
+		/**
 		Calculates a set of recovered values in every node of each individual element
 		**/
 		enum Error recoverValues(Project &project, AnalysisResult<Scalar> &result);
@@ -626,6 +631,27 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar
 	}
 
 	return df;
+}
+
+
+template<typename Scalar>
+void Analysis<Scalar>::generateDisplacementsMap(Project &project, AnalysisResult<Scalar> &result)
+{
+	fem::point u;	// displacements field
+	boost::tuple<size_t,size_t,size_t> references;
+
+	result.displacements.clear();
+
+	for(size_t n = 0; n < project.model.node_list.size(); n++)
+	{
+		references = result.lm[n];
+
+		u.data[0] = (references.get<0>() == 0)? 0 : result.d(references.get<0>()-1);
+		u.data[1] = (references.get<1>() == 0)? 0 : result.d(references.get<0>()-1);
+		u.data[2] = (references.get<2>() == 0)? 0 : result.d(references.get<0>()-1);
+
+		result.displacements[n] = u;
+	}
 }
 
 

@@ -97,14 +97,15 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Project &project, LoadP
 	// temporary matrices
 	lalib::Matrix<Scalar, lalib::SparseCRS> my_k;
 
-	//assign(my_k, result->K);
 	this->m_solver->initialize(*result, &progress);
 
 	progress.markSectionStart("solve FEM equation");
 	progress.markSectionLimit(project.model.element_list.size());
-
 	this->m_solver->solve(*result, &progress);
+	progress.markSectionEnd();
 
+	progress.markSectionStart("generate displacements list");
+	this->generateDisplacementsMap(project, *result);
 	progress.markSectionEnd();
 
 	progress.markSectionStart("recover values");

@@ -18,11 +18,11 @@ SceneGraphComponent::~SceneGraphComponent()
 }
 
 
-void SceneGraphComponent::paintGL(ViewportData &data, fem::Project &project, ViewportColors &colors)
+void SceneGraphComponent::paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> *result, ViewportColors &colors)
 {
 	for(std::list<SceneGraphComponent *>::iterator i = this->children.begin(); i != this->children.end(); i++)
 	{
-		(*i)->paintGL(data, project, colors);
+		(*i)->paintGL(data, project, result, colors);
 	}
 }
 

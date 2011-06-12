@@ -5,6 +5,8 @@
 #include <QMouseEvent>
 
 #include "../../fem/Model.h++"
+#include "../../fem/AnalysisResult.h++"
+
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"
 #include "../Camera.h++"
@@ -19,8 +21,11 @@ class ViewportState
 {
 	protected:
 		SceneGraph scenegraph;
+		fem::AnalysisResult<double> *result;
 		
 	public:
+		ViewportState();
+
 		/*
 		Initializes everything needed in a ViewportState once the focus is placed on it
 		*/
@@ -31,6 +36,11 @@ class ViewportState
 		*/
 		virtual void populateScenegraph(Viewport *viewport) = 0;
 
+
+		/**
+		Configures the viewport to render the scene according to new_result
+		**/
+		void setAnalysisResult(fem::AnalysisResult<double> &new_result);
 
 		/**
 		Sets the visibility of a SceneGraph render group
@@ -47,6 +57,20 @@ class ViewportState
 		virtual void mouseMoveEvent(Viewport *viewport, QMouseEvent *event);
 		virtual void keyPressEvent ( Viewport *viewport, QKeyEvent * event );
 };
+
+
+template <class Viewport>
+ViewportState<Viewport>::ViewportState()
+{
+	result = NULL;
+}
+
+
+template <class Viewport>
+void ViewportState<Viewport>::setAnalysisResult(fem::AnalysisResult<double> &new_result)
+{
+	this->result = &new_result;
+}
 
 
 template<class Viewport>

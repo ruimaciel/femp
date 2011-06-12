@@ -143,7 +143,7 @@ void VPStateFields::paintGL(BaseViewport *viewport)
 
 	//mylog.message("painting");
 
-	this->scenegraph.paint(viewport->viewport_data, viewport->project->model, viewport->colors);
+	this->scenegraph.paint(viewport->viewport_data, viewport->project->model, this->result, viewport->colors);
 
 }
 

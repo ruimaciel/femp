@@ -10,6 +10,8 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, ViewportColor
 	WindowWithGhostSurfaces(project, colors, parent)
 {
 	viewport = new PostprocessingViewport(project,  parent);
+	viewport->setAnalysisResult(project.result.back());
+
 	this->setCentralWidget(viewport);
 
 	viewport->setColors(colors);

@@ -37,7 +37,7 @@ class SGCDisplacementOriginalSurface
 		/*
 		Renders this surface according to the surface type and the detail factor
 		*/
-		void paintGL(ViewportData &data, fem::Project &project, ViewportColors &colors);
+		void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> *result, ViewportColors &colors);
 
 	protected:
 		/*
@@ -84,11 +84,11 @@ void SGCDisplacementOriginalSurface<SurfacePolicy>::setReferenceSurface(fem::Sur
 
 
 template<class SurfacePolicy>
-void SGCDisplacementOriginalSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Project &project, ViewportColors &colors)
+void SGCDisplacementOriginalSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Project &project,  fem::AnalysisResult<double> *result, ViewportColors &colors)
 {
 	glEnable(GL_BLEND);
 	glColor4fv(colors.original_surface);
-	SurfacePolicy::paintGL(data, project, colors, nodes, surface);
+	SurfacePolicy::paintGL(data, project, result, colors, nodes, surface);
 	glDisable(GL_BLEND);
 }
 

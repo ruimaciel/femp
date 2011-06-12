@@ -9,6 +9,7 @@
 
 #include "../fem/Project.h++"
 #include "../fem/Model.h++"
+#include "../fem/AnalysisResult.h++"
 
 #include "BaseViewport.h++"
 #include "Camera.h++"
@@ -58,6 +59,11 @@ class BaseViewport
 		void setYRotation(int angle);
 		void setZRotation(int angle);
 		void setPosition(int x, int y);
+
+		/**
+		Configures the current viewport to render new_result
+		**/
+		void setAnalysisResult(fem::AnalysisResult<double> &new_result);
 
 	Q_SIGNALS:
 		void xRotationChanged(int angle);

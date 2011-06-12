@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-void SurfaceTriangle6::paintGL(ViewportData &, fem::Project &, ViewportColors &, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void SurfaceTriangle6::paintGL(ViewportData &, fem::Project &, fem::AnalysisResult<double> *result,  ViewportColors &, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
 	glEnable(GL_BLEND);
 	int partitions = 6;	//TODO implement a better code

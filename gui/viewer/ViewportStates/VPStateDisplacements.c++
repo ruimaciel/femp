@@ -137,6 +137,7 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 void VPStateDisplacements::paintGL(BaseViewport *viewport)
 {
 	assert(viewport != NULL);
+	assert(this->result != NULL);
 
 	mylog.setPrefix("VPStateDisplacements::paintGL()");
 
@@ -148,7 +149,7 @@ void VPStateDisplacements::paintGL(BaseViewport *viewport)
 
 	//mylog.message("painting");
 
-	this->scenegraph.paint(viewport->viewport_data, *viewport->project, viewport->colors);
+	this->scenegraph.paint(viewport->viewport_data, *viewport->project, this->result, viewport->colors);
 
 }
 

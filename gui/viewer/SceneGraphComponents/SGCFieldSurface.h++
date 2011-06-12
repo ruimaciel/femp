@@ -44,7 +44,7 @@ class SGCFieldSurface
 		/*
 		Renders this surface according to the surface type and the detail factor
 		*/
-		void paintGL(ViewportData &data, fem::Project &project, ViewportColors &colors);
+		void paintGL(ViewportData &data, fem::Project &project,  fem::AnalysisResult<double> *result, ViewportColors &colors);
 
 	protected:
 		/*
@@ -91,9 +91,9 @@ void SGCFieldSurface<SurfacePolicy>::setReferenceSurface(fem::Surface &reference
 
 
 template<class SurfacePolicy>
-void SGCFieldSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Project &project, ViewportColors &colors)
+void SGCFieldSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> *result, ViewportColors &colors)
 {
-	SurfacePolicy::paintGL(data, project, colors, nodes, surface);
+	SurfacePolicy::paintGL(data, project, result colors, nodes, surface);
 }
 
 

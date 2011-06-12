@@ -14,11 +14,11 @@ Policy class to implemente the SGCDisplacementSurface through a template policy 
 class WireframeSurfaceTriangle3
 {
 	public:
-		void paintGL(ViewportData &data, fem::Project &project, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface);
+		void paintGL(ViewportData &data, fem::Project &project,fem::AnalysisResult<double> *result,  ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface);
 };
 
 
-void WireframeSurfaceTriangle3::paintGL(ViewportData &, fem::Project &, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void WireframeSurfaceTriangle3::paintGL(ViewportData &, fem::Project &,fem::AnalysisResult<double> *result,  ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
 {
 	using namespace fem;
 

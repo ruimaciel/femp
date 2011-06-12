@@ -29,7 +29,7 @@ class SGCNodeRestrictions
 		/*
 		Renders this node
 		*/
-		void paintGL(ViewportData &data, fem::Project &project, ViewportColors &colors);
+		void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> * result,  ViewportColors &colors);
 
 		/*
 		Visitor pattern method

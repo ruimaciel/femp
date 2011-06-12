@@ -133,6 +133,7 @@ void VPStateStrain11::populateScenegraph(BaseViewport *viewport)
 void VPStateStrain11::paintGL(BaseViewport *viewport)
 {
 	assert(viewport != NULL);
+	assert(this->result != NULL);
 
 	mylog.setPrefix("VPStateStrain11::paintGL()");
 
@@ -144,7 +145,7 @@ void VPStateStrain11::paintGL(BaseViewport *viewport)
 
 	//mylog.message("painting");
 
-	this->scenegraph.paint(viewport->viewport_data, *viewport->project, viewport->colors);
+	this->scenegraph.paint(viewport->viewport_data, *viewport->project, this->result, viewport->colors);
 
 }
 

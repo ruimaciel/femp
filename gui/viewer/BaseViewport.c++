@@ -8,6 +8,7 @@ BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
 
 	// initialize the dangling pointers
 	this->project = &project;
+
 	this->state = NULL;
 
 	this->setFocusPolicy(Qt::StrongFocus);
@@ -191,6 +192,12 @@ void BaseViewport::setPosition(int x, int y)
 	viewport_data.camera.pos.y(-y);
 
 	updateGL();
+}
+
+
+void BaseViewport::setAnalysisResult(fem::AnalysisResult<double> &new_result)
+{
+	this->state->setAnalysisResult(new_result);
 }
 
 

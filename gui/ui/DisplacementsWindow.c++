@@ -7,6 +7,8 @@ DisplacementsWindow::DisplacementsWindow(fem::Project &project, ViewportColors &
 	: MdiWindow(parent), WindowWithResults(project, colors, parent), WindowWithGhostSurfaces(project, colors, parent)
 {
 	viewport = new DisplacementsViewport(project, this);
+	viewport->setAnalysisResult(project.result.back());
+
 	this->setCentralWidget(viewport);
 
 	viewport->setColors(colors);

@@ -30,6 +30,7 @@
 #include "ui/MdiWindow.h++"
 #include "ui/ModelWindow.h++"
 #include "ui/DisplacementsWindow.h++"
+#include "ui/PostprocessingWindow.h++"
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
@@ -410,6 +411,7 @@ void MainWindow::createActions()
 
 	connect(ui.actionViewModel,	SIGNAL(triggered()),	this,	SLOT(showModel()));
 	connect(ui.actionViewDisplacements,	SIGNAL(triggered()),	this,	SLOT(showDisplacements()));
+	connect(ui.actionViewPostprocessing,	SIGNAL(triggered()),	this,	SLOT(showPostprocessing()));
 
 	connect(ui.actionQuadrature_rules,	SIGNAL(triggered()),	this,	SLOT(editQuadratureRules()) );
 }
@@ -1137,6 +1139,25 @@ void MainWindow::showDisplacements()
 	else
 	{
 		qWarning("MainWindow::showDisplacements(): no active subwindow");
+	}
+}
+
+
+void MainWindow::showPostprocessing()
+{
+	QMdiSubWindow *window;
+
+	window = mdiArea->activeSubWindow();
+	if(window != NULL)
+	{
+		window->setWindowTitle("Postprocessing");
+
+		PostprocessingWindow *viewport = new PostprocessingWindow(document.project, colors, this);
+		window->setWidget(viewport);
+	}
+	else
+	{
+		qWarning("MainWindow::showPostprocessing(): no active subwindow");
 	}
 }
 

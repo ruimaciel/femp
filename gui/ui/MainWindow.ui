@@ -70,8 +70,7 @@
     </property>
     <addaction name="actionViewModel"/>
     <addaction name="actionViewDisplacements"/>
-    <addaction name="actionViewStresses"/>
-    <addaction name="actionViewStrains"/>
+    <addaction name="actionViewPostprocessing"/>
    </widget>
    <widget class="QMenu" name="menuProject">
     <property name="enabled">
@@ -300,9 +299,9 @@
     <string>Displacements</string>
    </property>
   </action>
-  <action name="actionViewStresses">
+  <action name="actionViewPostprocessing">
    <property name="text">
-    <string>Stresses</string>
+    <string>Postprocessing</string>
    </property>
   </action>
   <action name="actionViewStrains">

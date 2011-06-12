@@ -85,6 +85,7 @@ public Q_SLOTS:
 	// set current ModelViewport
 	void showModel();
 	void showDisplacements();
+	void showPostprocessing();
 
 	/**
 	Logging slots

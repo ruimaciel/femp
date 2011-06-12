@@ -26,8 +26,8 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem/elements/Prism18.h++ \
 	viewer/ViewportData.h++ \
 	viewer/Camera.h++  viewer/DisplayOptions.h++  viewer/ViewportColors.h++  \
-	viewer/BaseViewport.h++ viewer/ModelViewport.h++ viewer/DisplacementsViewport.h++  \
-	viewer/ViewportStates/ViewportState.h++  viewer/ViewportStates/VPStateModel.h++ viewer/ViewportStates/VPStateDisplacements.h++ \
+	viewer/BaseViewport.h++ viewer/ModelViewport.h++ viewer/DisplacementsViewport.h++  viewer/PostprocessingViewport.h++ \
+	viewer/ViewportStates/ViewportState.h++  viewer/ViewportStates/VPStateModel.h++ viewer/ViewportStates/VPStateDisplacements.h++ viewer/ViewportStates/VPStateModel.h++ \
 	viewer/SceneGraph.h++ viewer/SceneGraphComponents/SceneGraphComponent.h++  \
 	viewer/SceneGraphComponents/SGCNode.h++ \
 	viewer/SceneGraphComponents/SGCNodeRestrictions.h++ \
@@ -52,7 +52,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	ui/AnalysisDialog.h++ \
 	fem/solvers/*.h++ \
 	ui/AnalysisProgressDialog.h++ \
-	ui/MdiWindow.h++ ui/ModelWindow.h++ ui/DisplacementsWindow.h++
+	ui/MdiWindow.h++ ui/ModelWindow.h++ ui/DisplacementsWindow.h++ ui/PostprocessingWindow.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
 	ModelSelection.c++ \
@@ -64,8 +64,8 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
 	viewer/ViewportData.c++ \
 	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ViewportColors.c++  \
-	viewer/BaseViewport.c++ viewer/ModelViewport.c++ viewer/DisplacementsViewport.c++  \
-	viewer/ViewportStates/VPStateModel.c++ viewer/ViewportStates/VPStateDisplacements.c++ \
+	viewer/BaseViewport.c++ viewer/ModelViewport.c++ viewer/DisplacementsViewport.c++  viewer/PostprocessingViewport.c++ \
+	viewer/ViewportStates/VPStateModel.c++ viewer/ViewportStates/VPStateDisplacements.c++ viewer/ViewportStates/VPStateStrain11.c++  \
 	viewer/SceneGraph.c++ viewer/SceneGraphComponents/SceneGraphComponent.c++ \
 	viewer/SceneGraphComponents/SGCNode.c++ \
 	viewer/SceneGraphComponents/SGCNodeRestrictions.c++ \
@@ -86,7 +86,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	viewer/boundaries/CollisionDetection.c++ \
 	ui/AnalysisDialog.c++ \
 	ui/AnalysisProgressDialog.c++ \
-	ui/MdiWindow.c++ ui/ModelWindow.c++ ui/DisplacementsWindow.c++
+	ui/MdiWindow.c++ ui/ModelWindow.c++ ui/DisplacementsWindow.c++ ui/PostprocessingWindow.c++
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 	ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPage3.ui  ui/NewProjectWizardPageLast.ui \

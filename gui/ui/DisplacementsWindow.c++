@@ -11,7 +11,25 @@ DisplacementsWindow::DisplacementsWindow(fem::Project &project, ViewportColors &
 
 	viewport->setColors(colors);
 
+	createResultsToolbar(project);
+
 	connectSignalsToSlots();
+}
+
+
+void DisplacementsWindow::createResultsToolbar(fem::Project &project)
+{
+	resultsComboBox = new QComboBox(this);
+	QString number;
+
+	for(size_t n = 0; n < project.result.size(); n++)
+	{
+		number.setNum(n);
+		resultsComboBox->insertItem(n, number);
+	}
+
+	resultsToolBar = addToolBar(tr("Results"));
+	resultsToolBar->addWidget(resultsComboBox);
 }
 
 

@@ -2,6 +2,7 @@
 #define DISPLACEMENTS_WINDOW_HPP
 
 #include "MdiWindow.h++"
+#include "WindowWithResults.h++"
 
 #include <QComboBox>
 
@@ -13,7 +14,7 @@
 MDI window designed to represent any recovered information from any analysis, such as displacements
 **/
 class DisplacementsWindow 
-	: public MdiWindow
+	: virtual public MdiWindow, virtual public WindowWithResults
 {
 	Q_OBJECT
 
@@ -23,9 +24,6 @@ class DisplacementsWindow
 
 	public:
 		DisplacementsWindow (fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
-
-		void createResultsToolbar(fem::Project &project);
-
 
 	protected:
 		void connectSignalsToSlots();

@@ -52,7 +52,8 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	ui/AnalysisDialog.h++ \
 	fem/solvers/*.h++ \
 	ui/AnalysisProgressDialog.h++ \
-	ui/MdiWindow.h++ ui/ModelWindow.h++ ui/DisplacementsWindow.h++ ui/PostprocessingWindow.h++
+	ui/MdiWindow.h++ ui/ModelWindow.h++ ui/DisplacementsWindow.h++ ui/PostprocessingWindow.h++ \
+	ui/WindowWithResults.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
 	ModelSelection.c++ \
@@ -86,7 +87,8 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	viewer/boundaries/CollisionDetection.c++ \
 	ui/AnalysisDialog.c++ \
 	ui/AnalysisProgressDialog.c++ \
-	ui/MdiWindow.c++ ui/ModelWindow.c++ ui/DisplacementsWindow.c++ ui/PostprocessingWindow.c++
+	ui/MdiWindow.c++ ui/ModelWindow.c++ ui/DisplacementsWindow.c++ ui/PostprocessingWindow.c++ \
+	ui/WindowWithResults.c++
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 	ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPage3.ui  ui/NewProjectWizardPageLast.ui \

@@ -2,6 +2,8 @@
 #define POSTPROCESSING__WINDOW_HPP
 
 #include "MdiWindow.h++"
+#include "WindowWithResults.h++"
+#include "WindowWithPostprocessing.h++"
 
 #include <QWidget>
 #include <QComboBox>
@@ -13,7 +15,7 @@
 MDI window designed to represent the model
 **/
 class PostprocessingWindow 
-	: public MdiWindow
+	: virtual public MdiWindow, virtual public WindowWithResults, virtual public WindowWithPostprocessing
 {
 	Q_OBJECT
 
@@ -28,9 +30,6 @@ class PostprocessingWindow
 
 	public:
 		PostprocessingWindow (fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
-
-
-		void createAnalysisToolar();
 
 
 	protected:

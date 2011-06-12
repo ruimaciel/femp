@@ -53,7 +53,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem/solvers/*.h++ \
 	ui/AnalysisProgressDialog.h++ \
 	ui/MdiWindow.h++ ui/ModelWindow.h++ ui/DisplacementsWindow.h++ ui/PostprocessingWindow.h++ \
-	ui/WindowWithResults.h++ ui/WindowWithPostprocessing.h++
+	ui/WindowWithResults.h++ ui/WindowWithPostprocessing.h++ ui/WindowWithGhostSurfaces.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
 	ModelSelection.c++ \
@@ -88,7 +88,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	ui/AnalysisDialog.c++ \
 	ui/AnalysisProgressDialog.c++ \
 	ui/MdiWindow.c++ ui/ModelWindow.c++ ui/DisplacementsWindow.c++ ui/PostprocessingWindow.c++ \
-	ui/WindowWithResults.c++ ui/WindowWithPostprocessing.c++
+	ui/WindowWithResults.c++ ui/WindowWithPostprocessing.c++ ui/WindowWithGhostSurfaces.c++
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 	ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPage3.ui  ui/NewProjectWizardPageLast.ui \

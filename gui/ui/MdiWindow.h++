@@ -25,11 +25,15 @@ class MdiWindow
 
 	protected:
 		QToolBar *viewportToolBar;	// toolbar to set camera angles
+		QToolBar *visibilityToolBar;	// toolbar to set which rendering group (i.e., nodes, surfaces, etc...) is visible
 
 		QAction *actionViewportXY;	// places the camera displaying the XY plane
 		QAction *actionViewportYZ;	// places the camera displaying the XY plane
 		QAction *actionViewportXZ;	// places the camera displaying the XZ plane
 		QAction *actionViewportIso;	// places the camera on an isometric view angle
+
+		QAction *actionVisibleNodes;
+		QAction *actionVisibleRestrictions;
 
 	public:
 		MdiWindow (QWidget *parent = 0);
@@ -39,6 +43,7 @@ class MdiWindow
 		Sets the toolbar which provides buttons to set camera angles
 		**/
 		void createViewportToolbar();
+		void createVisibilityToolbar();
 
 		/**
 		Sets the colors which are used by the viewports

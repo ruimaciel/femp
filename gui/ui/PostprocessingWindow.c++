@@ -4,7 +4,10 @@
 
 
 PostprocessingWindow::PostprocessingWindow (fem::Project &project, ViewportColors &colors, QWidget *parent)
-	: MdiWindow(parent), WindowWithResults(project, colors, parent), WindowWithPostprocessing(project, colors, parent)
+	: MdiWindow(parent), 
+	WindowWithResults(project, colors, parent), 
+	WindowWithPostprocessing(project, colors, parent) ,
+	WindowWithGhostSurfaces(project, colors, parent)
 {
 	viewport = new PostprocessingViewport(project,  parent);
 	this->setCentralWidget(viewport);
@@ -12,6 +15,7 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, ViewportColor
 	viewport->setColors(colors);
 
 	WindowWithResults::createToolbar(project);
+	WindowWithGhostSurfaces::createToolbar();
 	WindowWithPostprocessing::createToolbar(project);
 
 	connectSignalsToSlots();

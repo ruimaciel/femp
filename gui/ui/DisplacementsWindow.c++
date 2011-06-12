@@ -4,7 +4,7 @@
 
 
 DisplacementsWindow::DisplacementsWindow(fem::Project &project, ViewportColors &colors, QWidget *parent)
-	: MdiWindow(parent), WindowWithResults(project, colors, parent)
+	: MdiWindow(parent), WindowWithResults(project, colors, parent), WindowWithGhostSurfaces(project, colors, parent)
 {
 	viewport = new DisplacementsViewport(project, this);
 	this->setCentralWidget(viewport);
@@ -12,9 +12,18 @@ DisplacementsWindow::DisplacementsWindow(fem::Project &project, ViewportColors &
 	viewport->setColors(colors);
 
 	// create the toolbars
+	DisplacementsWindow::createToolbar();
 	WindowWithResults::createToolbar(project);
 
 	connectSignalsToSlots();
+}
+
+
+void DisplacementsWindow::createToolbar()
+{
+	actionVisibleGhostSurfaces = new QAction("Original configuration", this);
+
+	visibilityToolBar->addAction(actionVisibleGhostSurfaces);
 }
 
 

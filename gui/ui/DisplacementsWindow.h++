@@ -3,6 +3,7 @@
 
 #include "MdiWindow.h++"
 #include "WindowWithResults.h++"
+#include "WindowWithGhostSurfaces.h++"
 
 #include <QComboBox>
 
@@ -14,7 +15,7 @@
 MDI window designed to represent any recovered information from any analysis, such as displacements
 **/
 class DisplacementsWindow 
-	: virtual public MdiWindow, virtual public WindowWithResults
+	: virtual public MdiWindow, virtual public WindowWithResults, virtual public WindowWithGhostSurfaces
 {
 	Q_OBJECT
 
@@ -24,6 +25,8 @@ class DisplacementsWindow
 
 	public:
 		DisplacementsWindow (fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
+
+		void createToolbar();
 
 	protected:
 		void connectSignalsToSlots();

@@ -3,6 +3,7 @@
 
 #include "MdiWindow.h++"
 #include "WindowWithResults.h++"
+#include "WindowWithGhostSurfaces.h++"
 #include "WindowWithPostprocessing.h++"
 
 #include <QWidget>
@@ -15,7 +16,7 @@
 MDI window designed to represent the model
 **/
 class PostprocessingWindow 
-	: virtual public MdiWindow, virtual public WindowWithResults, virtual public WindowWithPostprocessing
+	: virtual public MdiWindow, virtual public WindowWithResults, virtual public WindowWithPostprocessing, virtual public WindowWithGhostSurfaces
 {
 	Q_OBJECT
 

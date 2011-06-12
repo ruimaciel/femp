@@ -12,6 +12,7 @@ MdiWindow::MdiWindow (QWidget *parent)
 	this->viewport = NULL;
 
 	this->createViewportToolbar();
+	this->createVisibilityToolbar();
 
 	//signals and slots
 	connect(actionViewportXY, SIGNAL(triggered()),	this,	SLOT(setViewportXY()));
@@ -34,6 +35,17 @@ void MdiWindow::createViewportToolbar()
 	viewportToolBar->addAction(actionViewportYZ);
 	viewportToolBar->addAction(actionViewportXZ);
 	viewportToolBar->addAction(actionViewportIso);
+}
+
+
+void MdiWindow::createVisibilityToolbar()
+{
+	actionVisibleNodes = new QAction("Nodes",this);
+	actionVisibleRestrictions = new QAction("Restrictions",this);
+
+	visibilityToolBar = addToolBar(tr("Visibility"));
+	visibilityToolBar->addAction(actionVisibleNodes);
+	visibilityToolBar->addAction(actionVisibleRestrictions);
 }
 
 

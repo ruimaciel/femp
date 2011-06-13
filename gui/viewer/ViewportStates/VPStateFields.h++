@@ -44,6 +44,8 @@ class VPStateFields
 		template<typename scalar>
 		void setDisplacements(fem::AnalysisResult<scalar> &);
 
+		void setDisplacementsScale(float scale);
+
 		/**
 		Sets the new displacement scale to be used when rendering stuff
 		@param	new_scale	the new displacement's scale

@@ -14,24 +14,24 @@ Policy class to implemente the SGCDisplacementSurface through a template policy 
 class WireframeSurfaceQuad9
 {
 	public:
-		void paintGL(ViewportData &data, fem::Project &project,fem::AnalysisResult<double> *result,  ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface);
+		void paintGL(ViewportData &data, fem::Project &project,fem::AnalysisResult<double> *result, float &scale,  ViewportColors &colors, fem::Surface *surface);
 };
 
 
-void WireframeSurfaceQuad9::paintGL(ViewportData &, fem::Project &, fem::AnalysisResult<double> *result, ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void WireframeSurfaceQuad9::paintGL(ViewportData &, fem::Project &project, fem::AnalysisResult<double> *result, float &scale, ViewportColors &colors, fem::Surface *surface)
 {
 	int partitions = 6;	//TODO implement a better code
 
 	// temp code to help with the copy/paste
-	fem::point p1 = (*node_list)[surface->nodes[0]];
-	fem::point p2 = (*node_list)[surface->nodes[1]];
-	fem::point p3 = (*node_list)[surface->nodes[2]];
-	fem::point p4 = (*node_list)[surface->nodes[3]];
-	fem::point p5 = (*node_list)[surface->nodes[4]];
-	fem::point p6 = (*node_list)[surface->nodes[5]];
-	fem::point p7 = (*node_list)[surface->nodes[6]];
-	fem::point p8 = (*node_list)[surface->nodes[7]];
-	fem::point p9 = (*node_list)[surface->nodes[8]];
+	fem::point p1 = project.model.node_list[surface->nodes[0]]+ result->displacements[surface->nodes[0]];
+	fem::point p2 = project.model.node_list[surface->nodes[1]]+ result->displacements[surface->nodes[1]];
+	fem::point p3 = project.model.node_list[surface->nodes[2]]+ result->displacements[surface->nodes[2]];
+	fem::point p4 = project.model.node_list[surface->nodes[3]]+ result->displacements[surface->nodes[3]];
+	fem::point p5 = project.model.node_list[surface->nodes[4]]+ result->displacements[surface->nodes[4]];
+	fem::point p6 = project.model.node_list[surface->nodes[5]]+ result->displacements[surface->nodes[5]];
+	fem::point p7 = project.model.node_list[surface->nodes[6]]+ result->displacements[surface->nodes[6]];
+	fem::point p8 = project.model.node_list[surface->nodes[7]]+ result->displacements[surface->nodes[7]];
+	fem::point p9 = project.model.node_list[surface->nodes[8]]+ result->displacements[surface->nodes[8]];
 	
 /*
 	^ y

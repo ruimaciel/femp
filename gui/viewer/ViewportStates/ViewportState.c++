@@ -8,11 +8,24 @@
 
 ViewportState::ViewportState()
 {
+	scale = 1.0f;
 }
 
 
 ViewportState::~ViewportState()
 {
+}
+
+
+void ViewportState::setAnalysisResult(fem::AnalysisResult<double> &new_result)
+{
+	this->result = new_result;
+}
+
+
+void ViewportState::setDisplacementsScale(float new_scale)
+{
+	this->scale = new_scale;
 }
 
 

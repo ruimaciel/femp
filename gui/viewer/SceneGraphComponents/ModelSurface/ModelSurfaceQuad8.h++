@@ -1,5 +1,5 @@
-#ifndef SCENE_GRAPH_COMPONENT_TRIANGLE_6_HPP
-#define SCENE_GRAPH_COMPONENT_TRIANGLE_6_HPP
+#ifndef SCENE_GRAPH_COMPONENT_MODEL_QUAD_8_HPP
+#define SCENE_GRAPH_COMPONENT_MODEL_QUAD_8_HPP
 
 
 #include <map>
@@ -12,10 +12,10 @@
 /*
 Policy class to implemente the SGCDisplacementSurface through a template policy pattern
 */
-class SurfaceTriangle6
+class ModelSurfaceQuad8
 {
 	public:
-		void paintGL(ViewportData &data, fem::Project &project,  fem::AnalysisResult<double> *result, float &scale, ViewportColors &colors,  fem::Surface *surface);
+		void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> *result,  float &scale, ViewportColors &colors,  fem::Surface *surface);
 };
 
 #endif

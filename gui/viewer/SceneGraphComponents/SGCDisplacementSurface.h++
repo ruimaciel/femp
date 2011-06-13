@@ -16,29 +16,21 @@ class SGCDisplacementSurface
 {
 	protected:
 		fem::Surface *surface;	// pointer to the referenced surface object which is a part of fem::Model::surface_list
-		std::map<size_t, fem::Node> *nodes;
-
 
 	public:
 		/*
 		@param	reference_surface	the reference to this surface's fem::Surface object
 		@param	reference_nodes	a map which links this surface's nodes to their displaced value
 		*/
-		SGCDisplacementSurface(fem::Surface &reference_surface, std::map<size_t, fem::Node> &reference_nodes);
+		SGCDisplacementSurface(fem::Surface &reference_surface);
 		~SGCDisplacementSurface();
-
-		/*
-		Specifies the reference surface for this scenegraph component
-		It also adjusts the boundary volume
-		*/
-		void setReferenceNodes( std::map<size_t, fem::Node> 	&);
 
 		void setReferenceSurface(fem::Surface &);
 		
 		/*
 		Renders this surface according to the surface type and the detail factor
 		*/
-		void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> *result, ViewportColors &colors);
+		void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> *result, float &scale, ViewportColors &colors);
 
 	protected:
 		/*
@@ -49,11 +41,10 @@ class SGCDisplacementSurface
 
 
 template<class SurfacePolicy>
-SGCDisplacementSurface<SurfacePolicy>::SGCDisplacementSurface(fem::Surface &reference_surface, std::map<size_t, fem::Node> &reference_nodes)
+SGCDisplacementSurface<SurfacePolicy>::SGCDisplacementSurface(fem::Surface &reference_surface)
 	: SceneGraphComponent(), SurfacePolicy()
 {
 	this->setReferenceSurface(reference_surface);
-	this->setReferenceNodes(reference_nodes);
 }
 
 
@@ -64,31 +55,19 @@ SGCDisplacementSurface<SurfacePolicy>::~SGCDisplacementSurface()
 
 
 template<class SurfacePolicy>
-void SGCDisplacementSurface<SurfacePolicy>::setReferenceNodes( std::map<size_t, fem::Node> &reference_nodes)
-{
-	this->nodes = &reference_nodes;
-}
-
-
-template<class SurfacePolicy>
 void SGCDisplacementSurface<SurfacePolicy>::setReferenceSurface(fem::Surface &referenced_surface)
 {
 	this->surface = &referenced_surface;
-
-	/*
-	mylog.setPrefix("SGCDisplacementSurface::setReferenceSurface()");
-	mylog.message("yet to be implemented");
-	*/
 
 	//TODO adjust boundary to this surface
 }
 
 
 template<class SurfacePolicy>
-void SGCDisplacementSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> *result, ViewportColors &colors)
+void SGCDisplacementSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> *result, float &scale,  ViewportColors &colors)
 {
 	glColor3fv(colors.surface);
-	SurfacePolicy::paintGL(data, project, result, colors, nodes, surface);
+	SurfacePolicy::paintGL(data, project, result, scale, colors, surface);
 }
 
 

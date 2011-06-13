@@ -201,6 +201,12 @@ void BaseViewport::setAnalysisResult(fem::AnalysisResult<double> &new_result)
 }
 
 
+void BaseViewport::setDisplacementsScale(float scale)
+{
+	this->state->setDisplacementsScale(scale);
+}
+
+
 void BaseViewport::normalizeAngle(int *angle)
 {
 	while (*angle < 0)

@@ -647,11 +647,14 @@ void Analysis<Scalar>::generateDisplacementsMap(Project &project, AnalysisResult
 		references = result.lm[n];
 
 		u.data[0] = (references.get<0>() == 0)? 0 : result.d(references.get<0>()-1);
-		u.data[1] = (references.get<1>() == 0)? 0 : result.d(references.get<0>()-1);
-		u.data[2] = (references.get<2>() == 0)? 0 : result.d(references.get<0>()-1);
+		u.data[1] = (references.get<1>() == 0)? 0 : result.d(references.get<1>()-1);
+		u.data[2] = (references.get<2>() == 0)? 0 : result.d(references.get<2>()-1);
+
+		//std::cout << "u[" << n << "]: " << u << "\n";
 
 		result.displacements[n] = u;
 	}
+	//std::cout << std::endl;
 }
 
 

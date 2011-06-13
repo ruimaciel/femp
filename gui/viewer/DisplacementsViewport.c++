@@ -156,7 +156,7 @@ void DisplacementsViewport::showDisplacements(fem::AnalysisResult<double> &analy
 	VPStateDisplacements* state = new VPStateDisplacements;
 
 	this->setState(state);
-	state->setDisplacements(analysis);
+	state->setAnalysisResult(analysis);
 }
 
 

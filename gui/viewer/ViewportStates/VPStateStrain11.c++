@@ -55,7 +55,7 @@ void VPStateStrain11::populateScenegraph(BaseViewport *viewport)
 	//for(std::map<size_t, fem::Node>::iterator i = viewport->project->model.node_list.begin(); i != viewport->project->model.node_list.end(); i++)
 	for(std::map<size_t, fem::Node>::iterator i = displaced_nodes.begin(); i != displaced_nodes.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(i->first, i->second, viewport->project->model.node_restrictions_list) );
+		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(i->first, *viewport->project) );
 	}
 
 	// add the surfaces to the scenegraph
@@ -66,23 +66,23 @@ void VPStateStrain11::populateScenegraph(BaseViewport *viewport)
 			switch(i->getType())
 			{
 				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceTriangle3>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceTriangle3>(*i) );
 					break;
 
 				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceTriangle6>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceTriangle6>(*i) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad4>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad4>(*i) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad8>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad8>(*i) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad9>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad9>(*i) );
 					break;
 
 				default:
@@ -100,23 +100,23 @@ void VPStateStrain11::populateScenegraph(BaseViewport *viewport)
 			switch(i->getType())
 			{
 				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceTriangle3>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceTriangle3>(*i) );
 					break;
 
 				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceTriangle6>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceTriangle6>(*i) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad4>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad4>(*i) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad8>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad8>(*i) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad9>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad9>(*i) );
 					break;
 
 				default:
@@ -145,7 +145,7 @@ void VPStateStrain11::paintGL(BaseViewport *viewport)
 
 	//mylog.message("painting");
 
-	this->scenegraph.paint(viewport->viewport_data, *viewport->project, this->result, viewport->colors);
+	this->scenegraph.paint(viewport->viewport_data, *viewport->project, this->result, this->scale, viewport->colors);
 
 }
 

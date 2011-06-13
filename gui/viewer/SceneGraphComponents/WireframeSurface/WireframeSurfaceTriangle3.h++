@@ -14,17 +14,17 @@ Policy class to implemente the SGCDisplacementSurface through a template policy 
 class WireframeSurfaceTriangle3
 {
 	public:
-		void paintGL(ViewportData &data, fem::Project &project,fem::AnalysisResult<double> *result,  ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface);
+		void paintGL(ViewportData &data, fem::Project &project,fem::AnalysisResult<double> *result, float &scale,  ViewportColors &colors, fem::Surface *surface);
 };
 
 
-void WireframeSurfaceTriangle3::paintGL(ViewportData &, fem::Project &,fem::AnalysisResult<double> *result,  ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface)
+void WireframeSurfaceTriangle3::paintGL(ViewportData &, fem::Project &project, fem::AnalysisResult<double> *result, float &scale,  ViewportColors &colors, fem::Surface *surface)
 {
 	using namespace fem;
 
-	fem::point p1 = (*node_list)[surface->nodes[0]];
-	fem::point p2 = (*node_list)[surface->nodes[1]];
-	fem::point p3 = (*node_list)[surface->nodes[2]];
+	fem::point p1 = project.model.node_list[surface->nodes[0]]+ result->displacements[surface->nodes[0]];
+	fem::point p2 = project.model.node_list[surface->nodes[1]]+ result->displacements[surface->nodes[1]];
+	fem::point p3 = project.model.node_list[surface->nodes[2]]+ result->displacements[surface->nodes[2]];
 
 	glColor3fv(colors.wireframe);
 	glBegin(GL_LINE_STRIP);

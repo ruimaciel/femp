@@ -17,7 +17,7 @@ SGCNodeRestrictions::~SGCNodeRestrictions()
 }
 
 
-void SGCNodeRestrictions::paintGL(ViewportData &data, fem::Project &, fem::AnalysisResult<double> * result,  ViewportColors &colors)
+void SGCNodeRestrictions::paintGL(ViewportData &data, fem::Project &, fem::AnalysisResult<double> * result, float &scale,  ViewportColors &colors)
 {
 	glPushMatrix();
 	glTranslated(m_node->data[0],m_node->data[1],m_node->data[2]);

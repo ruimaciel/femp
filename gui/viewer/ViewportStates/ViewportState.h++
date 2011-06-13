@@ -22,6 +22,7 @@ class ViewportState
 	protected:
 		SceneGraph scenegraph;
 		fem::AnalysisResult<double> *result;
+		float scale;
 		
 	public:
 		ViewportState();
@@ -41,6 +42,8 @@ class ViewportState
 		Configures the viewport to render the scene according to new_result
 		**/
 		void setAnalysisResult(fem::AnalysisResult<double> &new_result);
+
+		void setDisplacementsScale(float new_scale);
 
 		/**
 		Sets the visibility of a SceneGraph render group
@@ -72,6 +75,11 @@ void ViewportState<Viewport>::setAnalysisResult(fem::AnalysisResult<double> &new
 	this->result = &new_result;
 }
 
+template<class Viewport>
+void ViewportState<Viewport>::setDisplacementsScale(float new_scale)
+{
+	this->scale = new_scale;
+}
 
 template<class Viewport>
 void ViewportState<Viewport>::setRenderGoupVisibility(SceneGraph::Groups group, bool state)

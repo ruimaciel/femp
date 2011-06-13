@@ -19,11 +19,7 @@
 #include "../SceneGraphComponents/SGCNode.h++"
 #include "../SceneGraphComponents/SGCNodeRestrictions.h++"
 #include "../SceneGraphComponents/SGCModelSurface.h++"
-#include "../SceneGraphComponents/OpaqueSurface/SurfaceTriangle3.h++"
-#include "../SceneGraphComponents/OpaqueSurface/SurfaceTriangle6.h++"
-#include "../SceneGraphComponents/OpaqueSurface/SurfaceQuad4.h++"
-#include "../SceneGraphComponents/OpaqueSurface/SurfaceQuad8.h++"
-#include "../SceneGraphComponents/OpaqueSurface/SurfaceQuad9.h++"
+#include "../SceneGraphComponents/ModelSurface/surfaces.h++"
 #include "../SceneGraphComponents/WireframeSurface/surfaces.h++"
 
 
@@ -59,7 +55,7 @@ void VPStateModel::populateScenegraph(BaseViewport *mv)
 	for(std::map<size_t, fem::Node>::iterator i = mv->project->model.node_list.begin(); i != mv->project->model.node_list.end(); i++)
 	{
 		//TODO set rendering groups
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(i->first, i->second, mv->project->model.node_restrictions_list) );
+		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(i->first, *mv->project) );
 	}
 
 	for( std::map<size_t, fem::NodeRestrictions>::iterator i = mv->project->model.node_restrictions_list.begin(); i != mv->project->model.node_restrictions_list.end(); i++)
@@ -75,27 +71,27 @@ void VPStateModel::populateScenegraph(BaseViewport *mv)
 			switch(i->getType())
 			{
 				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceTriangle3>(*i, mv->project->model.node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<ModelSurfaceTriangle3>(*i, mv->project->model.node_list) );
 					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceTriangle3>(*i, mv->project->model.node_list) );
 					break;
 
 				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceTriangle6>(*i, mv->project->model.node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<ModelSurfaceTriangle6>(*i, mv->project->model.node_list) );
 					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceTriangle6>(*i, mv->project->model.node_list) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceQuad4>(*i, mv->project->model.node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<ModelSurfaceQuad4>(*i, mv->project->model.node_list) );
 					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceQuad4>(*i, mv->project->model.node_list) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceQuad8>(*i, mv->project->model.node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<ModelSurfaceQuad8>(*i, mv->project->model.node_list) );
 					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceQuad8>(*i, mv->project->model.node_list) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<SurfaceQuad9>(*i, mv->project->model.node_list) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<ModelSurfaceQuad9>(*i, mv->project->model.node_list) );
 					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceQuad9>(*i, mv->project->model.node_list) );
 					break;
 
@@ -126,7 +122,7 @@ void VPStateModel::paintGL(BaseViewport *mv)
 
 
 	//TODO finish implementing this
-	this->scenegraph.paint(mv->viewport_data, *mv->project, this->result, mv->colors);
+	this->scenegraph.paint(mv->viewport_data, *mv->project, this->result, this->scale, mv->colors);
 }
 
 

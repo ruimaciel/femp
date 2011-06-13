@@ -33,6 +33,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	viewer/SceneGraphComponents/SGCNodeRestrictions.h++ \
 	viewer/SceneGraphComponents/SGCDisplacementSurface.h++ viewer/SceneGraphComponents/SGCDisplacementOriginalSurface.h++ \
 	viewer/SceneGraphComponents/SGCModelSurface.h++ \
+	viewer/SceneGraphComponents/ModelSurface/*.h++ \
 	viewer/SceneGraphComponents/OpaqueSurface/*.h++ \
 	viewer/SceneGraphComponents/WireframeSurface/*.h++ \
 	viewer/boundaries/BoundaryStrategy.h++ viewer/boundaries/SphericalBoundary.h++ \
@@ -70,6 +71,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	viewer/SceneGraph.c++ viewer/SceneGraphComponents/SceneGraphComponent.c++ \
 	viewer/SceneGraphComponents/SGCNode.c++ \
 	viewer/SceneGraphComponents/SGCNodeRestrictions.c++ \
+	viewer/SceneGraphComponents/ModelSurface/*.c++\
 	viewer/SceneGraphComponents/OpaqueSurface/SurfaceTriangle3.c++\
 	viewer/SceneGraphComponents/OpaqueSurface/SurfaceTriangle6.c++\
 	viewer/SceneGraphComponents/OpaqueSurface/SurfaceQuad4.c++\

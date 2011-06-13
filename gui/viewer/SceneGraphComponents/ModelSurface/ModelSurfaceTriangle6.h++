@@ -12,10 +12,10 @@
 /*
 Policy class to implemente the SGCDisplacementSurface through a template policy pattern
 */
-class SurfaceTriangle6
+class ModelSurfaceTriangle6
 {
 	public:
-		void paintGL(ViewportData &data, fem::Project &project,  fem::AnalysisResult<double> *result, float &scale, ViewportColors &colors,  fem::Surface *surface);
+		void paintGL(ViewportData &data, fem::Project &project,  fem::AnalysisResult<double> *result, float &scale, ViewportColors &colors, fem::Surface *surface);
 };
 
 #endif

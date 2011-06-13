@@ -1,20 +1,20 @@
-#include "SurfaceQuad8.h++"
+#include "ModelSurfaceQuad8.h++"
 
 
-void SurfaceQuad8::paintGL(ViewportData &, fem::Project &project, fem::AnalysisResult<double> *result, float &scale,  ViewportColors &,  fem::Surface *surface)
+void ModelSurfaceQuad8::paintGL(ViewportData &, fem::Project &project, fem::AnalysisResult<double> *result,  float &scale, ViewportColors &, fem::Surface *surface)
 {
 	glEnable(GL_BLEND);
 	int partitions = 6;	//TODO implement a better code
 
 	// temp code to help with the copy/paste
-	fem::point p1 = project.model.node_list[surface->nodes[0]] + scale* result->displacements[surface->nodes[0]];
-	fem::point p2 = project.model.node_list[surface->nodes[1]] + scale* result->displacements[surface->nodes[1]];
-	fem::point p3 = project.model.node_list[surface->nodes[2]] + scale* result->displacements[surface->nodes[2]];
-	fem::point p4 = project.model.node_list[surface->nodes[3]] + scale* result->displacements[surface->nodes[3]];
-	fem::point p5 = project.model.node_list[surface->nodes[4]] + scale* result->displacements[surface->nodes[4]];
-	fem::point p6 = project.model.node_list[surface->nodes[5]] + scale* result->displacements[surface->nodes[5]];
-	fem::point p7 = project.model.node_list[surface->nodes[6]] + scale* result->displacements[surface->nodes[6]];
-	fem::point p8 = project.model.node_list[surface->nodes[7]] + scale* result->displacements[surface->nodes[7]];
+	fem::point p1 = project.model.node_list[surface->nodes[0]];
+	fem::point p2 = project.model.node_list[surface->nodes[1]];
+	fem::point p3 = project.model.node_list[surface->nodes[2]];
+	fem::point p4 = project.model.node_list[surface->nodes[3]];
+	fem::point p5 = project.model.node_list[surface->nodes[4]];
+	fem::point p6 = project.model.node_list[surface->nodes[5]];
+	fem::point p7 = project.model.node_list[surface->nodes[6]];
+	fem::point p8 = project.model.node_list[surface->nodes[7]];
 	
 /*
 	^ y

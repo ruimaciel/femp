@@ -53,7 +53,7 @@ void SceneGraph::clear()
 }
 
 
-void SceneGraph::paint(ViewportData &viewport_data, fem::Project &project, fem::AnalysisResult<double> *result, ViewportColors &colors)
+void SceneGraph::paint(ViewportData &viewport_data, fem::Project &project, fem::AnalysisResult<double> *result, float &scale, ViewportColors &colors)
 {
 	using namespace std;
 	// get the model
@@ -62,7 +62,7 @@ void SceneGraph::paint(ViewportData &viewport_data, fem::Project &project, fem::
 	for(map<int, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
 	{
 		if(i->second.render)
-			i->second.scenegraph.paintGL(viewport_data, project, result, colors);
+			i->second.scenegraph.paintGL(viewport_data, project, result, scale, colors);
 	}
 }
 

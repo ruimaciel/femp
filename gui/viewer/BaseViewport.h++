@@ -65,6 +65,8 @@ class BaseViewport
 		**/
 		void setAnalysisResult(fem::AnalysisResult<double> &new_result);
 
+		void setDisplacementsScale(float scale);
+
 	Q_SIGNALS:
 		void xRotationChanged(int angle);
 		void yRotationChanged(int angle);

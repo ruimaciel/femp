@@ -15,7 +15,7 @@ Policy class to implemente the SGCDisplacementSurface through a template policy 
 class SurfaceQuad4
 {
 	public:
-		void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> *result,  ViewportColors &colors, std::map<size_t, fem::Node> *node_list, fem::Surface *surface);
+		void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> *result,  float &scale, ViewportColors &colors, fem::Surface *surface);
 };
 
 #endif

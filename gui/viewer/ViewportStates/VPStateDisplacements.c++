@@ -28,7 +28,6 @@
 VPStateDisplacements::VPStateDisplacements()
 	: ViewportState<BaseViewport>()
 { 
-	original_nodes = NULL;
 }
 
 
@@ -41,11 +40,9 @@ VPStateDisplacements::~VPStateDisplacements()
 
 void VPStateDisplacements::initialize(BaseViewport *viewport)
 {
-	original_nodes = &viewport->project->model.node_list;
-
 	// build the displaced_nodes from the analysis
 
-	this->setDisplacementScale(1.0);	//TODO tweak this value 
+	this->setDisplacementsScale(1.0);	//TODO tweak this value 
 }
 
 
@@ -56,10 +53,9 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 	//TODO generate the scenegraph
 
 	// add the nodes to the scenegraph
-	//for(std::map<size_t, fem::Node>::iterator i = viewport->project->model.node_list.begin(); i != viewport->project->model.node_list.end(); i++)
-	for(std::map<size_t, fem::Node>::iterator i = displaced_nodes.begin(); i != displaced_nodes.end(); i++)
+	for(size_t n = 0; n < viewport->project->model.node_list.size(); n++)
 	{
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(i->first, i->second, viewport->project->model.node_restrictions_list) );
+		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(n, *viewport->project) );
 	}
 
 	// add the surfaces to the scenegraph
@@ -70,23 +66,23 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 			switch(i->getType())
 			{
 				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceTriangle3>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceTriangle3>(*i) );
 					break;
 
 				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceTriangle6>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceTriangle6>(*i) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad4>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad4>(*i) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad8>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad8>(*i) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad9>(*i, displaced_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad9>(*i) );
 					break;
 
 				default:
@@ -104,23 +100,23 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 			switch(i->getType())
 			{
 				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceTriangle3>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceTriangle3>(*i) );
 					break;
 
 				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceTriangle6>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceTriangle6>(*i) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad4>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad4>(*i) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad8>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad8>(*i) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad9>(*i, *original_nodes) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad9>(*i) );
 					break;
 
 				default:
@@ -149,7 +145,7 @@ void VPStateDisplacements::paintGL(BaseViewport *viewport)
 
 	//mylog.message("painting");
 
-	this->scenegraph.paint(viewport->viewport_data, *viewport->project, this->result, viewport->colors);
+	this->scenegraph.paint(viewport->viewport_data, *viewport->project, this->result, this->scale, viewport->colors);
 
 }
 
@@ -190,7 +186,7 @@ void VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * e
 				switch(ds.exec())
 				{
 					case QDialog::Accepted:
-						this->setDisplacementScale(ds.scale());
+						this->setDisplacementsScale(ds.scale());
 
 						//update the scene
 						viewport->updateGL();
@@ -208,21 +204,10 @@ void VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * e
 }
 
 
-void VPStateDisplacements::setDisplacementScale(float new_scale)
+template<typename scalar>
+void VPStateDisplacements::setDisplacements(fem::AnalysisResult<scalar> &result)
 {
-	assert(original_nodes != NULL);
-
-	displaced_nodes.clear();
-
-	for(std::map<size_t, fem::Node>::iterator i = original_nodes->begin(); i != original_nodes->end(); i++)
-	{
-		//TODO finish this
-		displaced_nodes[i->first] = i->second;
-		if(displacements.find(i->first) != displacements.end())
-		{
-			displaced_nodes[i->first] += new_scale*displacements[i->first];
-		}
-	}
+	this->result = &result;
 }
 
 

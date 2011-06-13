@@ -158,6 +158,12 @@ void BaseViewport::setState(ViewportState<BaseViewport> *new_state)
 }
 
 
+void BaseViewport::refresh(void)
+{
+	this->updateGL();
+}
+
+
 void BaseViewport::setXRotation(int angle)
 {
 	normalizeAngle(&angle);

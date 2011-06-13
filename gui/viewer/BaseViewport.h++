@@ -53,6 +53,11 @@ class BaseViewport
 		template <class NewState>
 		void setState(NewState *);
 
+		/**
+		Method to refresh the scene
+		**/
+		void refresh(void);
+
 
 	public Q_SLOTS:
 		void setXRotation(int angle);

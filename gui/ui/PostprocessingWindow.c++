@@ -7,7 +7,8 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, ViewportColor
 	: MdiWindow(parent), 
 	WindowWithResults(project, colors, parent), 
 	WindowWithPostprocessing(project, colors, parent) ,
-	WindowWithGhostSurfaces(project, colors, parent)
+	WindowWithGhostSurfaces(project, colors, parent),
+	WindowWithScaling(project, colors, parent)
 {
 	viewport = new PostprocessingViewport(project,  parent);
 	viewport->setAnalysisResult(project.result.back());
@@ -16,11 +17,19 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, ViewportColor
 
 	viewport->setColors(colors);
 
+	WindowWithScaling::createToolbar(project);
 	WindowWithResults::createToolbar(project);
 	WindowWithGhostSurfaces::createToolbar();
 	WindowWithPostprocessing::createToolbar(project);
 
 	connectSignalsToSlots();
+}
+
+
+void PostprocessingWindow::setDisplacementsScale(double scale)
+{
+	this->viewport->setDisplacementsScale((float)scale);
+	this->viewport->refresh();
 }
 
 

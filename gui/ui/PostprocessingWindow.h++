@@ -5,6 +5,7 @@
 #include "WindowWithResults.h++"
 #include "WindowWithGhostSurfaces.h++"
 #include "WindowWithPostprocessing.h++"
+#include "WindowWithScaling.h++"
 
 #include <QWidget>
 #include <QComboBox>
@@ -16,7 +17,7 @@
 MDI window designed to represent the model
 **/
 class PostprocessingWindow 
-	: virtual public MdiWindow, virtual public WindowWithResults, virtual public WindowWithPostprocessing, virtual public WindowWithGhostSurfaces
+	: virtual public MdiWindow, virtual public WindowWithResults, virtual public WindowWithPostprocessing, virtual public WindowWithGhostSurfaces, virtual public WindowWithScaling
 {
 	Q_OBJECT
 
@@ -32,6 +33,9 @@ class PostprocessingWindow
 	public:
 		PostprocessingWindow (fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
 
+
+	public slots:
+		void setDisplacementsScale(double scale);
 
 	protected:
 		void connectSignalsToSlots();

@@ -4,7 +4,8 @@
 
 
 DisplacementsWindow::DisplacementsWindow(fem::Project &project, ViewportColors &colors, QWidget *parent)
-	: MdiWindow(parent), WindowWithResults(project, colors, parent), WindowWithGhostSurfaces(project, colors, parent)
+	: MdiWindow(parent), WindowWithResults(project, colors, parent), WindowWithGhostSurfaces(project, colors, parent),
+	WindowWithScaling(project, colors, parent)
 {
 	viewport = new DisplacementsViewport(project, this);
 	viewport->setAnalysisResult(project.result.back());
@@ -15,6 +16,7 @@ DisplacementsWindow::DisplacementsWindow(fem::Project &project, ViewportColors &
 
 	// create the toolbars
 	DisplacementsWindow::createToolbar();
+	WindowWithScaling::createToolbar(project);
 	WindowWithResults::createToolbar(project);
 
 	connectSignalsToSlots();
@@ -29,8 +31,16 @@ void DisplacementsWindow::createToolbar()
 }
 
 
+void DisplacementsWindow::setDisplacementsScale(double scale)
+{
+	this->viewport->setDisplacementsScale((float)scale);
+	this->viewport->refresh();
+}
+
+
 void DisplacementsWindow::connectSignalsToSlots()
 {
+	WindowWithScaling::connectSignalsToSlots();
 }
 
 

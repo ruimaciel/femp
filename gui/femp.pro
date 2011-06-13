@@ -27,15 +27,13 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	viewer/ViewportData.h++ \
 	viewer/Camera.h++  viewer/DisplayOptions.h++  viewer/ViewportColors.h++  \
 	viewer/BaseViewport.h++ viewer/ModelViewport.h++ viewer/DisplacementsViewport.h++  viewer/PostprocessingViewport.h++ \
-	viewer/ViewportStates/ViewportState.h++  viewer/ViewportStates/VPStateModel.h++ viewer/ViewportStates/VPStateDisplacements.h++ viewer/ViewportStates/VPStateModel.h++ \
-	viewer/SceneGraph.h++ viewer/SceneGraphComponents/SceneGraphComponent.h++  \
-	viewer/SceneGraphComponents/SGCNode.h++ \
-	viewer/SceneGraphComponents/SGCNodeRestrictions.h++ \
-	viewer/SceneGraphComponents/SGCDisplacementSurface.h++ viewer/SceneGraphComponents/SGCDisplacementOriginalSurface.h++ \
-	viewer/SceneGraphComponents/SGCModelSurface.h++ \
+	viewer/ViewportStates/*.h++ \
+	viewer/SceneGraph.h++ \
+	viewer/SceneGraphComponents/*.h++ \
 	viewer/SceneGraphComponents/ModelSurface/*.h++ \
 	viewer/SceneGraphComponents/OpaqueSurface/*.h++ \
 	viewer/SceneGraphComponents/WireframeSurface/*.h++ \
+	viewer/SceneGraphComponents/FieldSurface/*.h++ \
 	viewer/boundaries/BoundaryStrategy.h++ viewer/boundaries/SphericalBoundary.h++ \
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h \
@@ -67,16 +65,11 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	viewer/ViewportData.c++ \
 	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ViewportColors.c++  \
 	viewer/BaseViewport.c++ viewer/ModelViewport.c++ viewer/DisplacementsViewport.c++  viewer/PostprocessingViewport.c++ \
-	viewer/ViewportStates/VPStateModel.c++ viewer/ViewportStates/VPStateDisplacements.c++ viewer/ViewportStates/VPStateStrain11.c++  \
-	viewer/SceneGraph.c++ viewer/SceneGraphComponents/SceneGraphComponent.c++ \
-	viewer/SceneGraphComponents/SGCNode.c++ \
-	viewer/SceneGraphComponents/SGCNodeRestrictions.c++ \
+	viewer/ViewportStates/*.c++  \
+	viewer/SceneGraph.c++ \
+	viewer/SceneGraphComponents/*.c++ \
 	viewer/SceneGraphComponents/ModelSurface/*.c++\
-	viewer/SceneGraphComponents/OpaqueSurface/SurfaceTriangle3.c++\
-	viewer/SceneGraphComponents/OpaqueSurface/SurfaceTriangle6.c++\
-	viewer/SceneGraphComponents/OpaqueSurface/SurfaceQuad4.c++\
-	viewer/SceneGraphComponents/OpaqueSurface/SurfaceQuad8.c++\
-	viewer/SceneGraphComponents/OpaqueSurface/SurfaceQuad9.c++\
+	viewer/SceneGraphComponents/OpaqueSurface/*.c++\
 	viewer/boundaries/BoundaryStrategy.c++  viewer/boundaries/SphericalBoundary.c++  \
 	fem_msh.c++ lex.msh_yy.c++ \
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c \

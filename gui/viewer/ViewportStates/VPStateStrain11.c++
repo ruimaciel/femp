@@ -20,42 +20,44 @@
 
 #include "../SceneGraph.h++"
 #include "../SceneGraphComponents/SGCNode.h++"
-#include "../SceneGraphComponents/SGCDisplacementSurface.h++"
+#include "../SceneGraphComponents/SGCFieldSurface.h++"
 #include "../SceneGraphComponents/SGCDisplacementOriginalSurface.h++"
 #include "../SceneGraphComponents/OpaqueSurface/surfaces.h++"
+#include "../SceneGraphComponents/FieldSurface/surfaces.h++"
+
+#include "Strain11.h++"
 
 
 VPStateStrain11::VPStateStrain11()
 	: ViewportState<BaseViewport>()
 { 
-	original_nodes = NULL;
+	field = NULL;	
+
+	field = new Strain11;
 }
 
 
 VPStateStrain11::~VPStateStrain11()
 {
-	mylog.setPrefix("VPStateStrain11::~VPStateStrain11()");
-	mylog.message("destructor called");
 }
 
 
 void VPStateStrain11::initialize(BaseViewport *viewport)
 {
-	original_nodes = &viewport->project->model.node_list;
+	// build the displaced_nodes from the analysis
+
+	this->setDisplacementsScale(1.0);	//TODO tweak this value 
 }
 
 
 void VPStateStrain11::populateScenegraph(BaseViewport *viewport)
 {
-	mylog.setPrefix("void VPStateStrain11::populateScenegraph(fem::Model *viewport->project->model)");
-
 	//TODO generate the scenegraph
 
 	// add the nodes to the scenegraph
-	//for(std::map<size_t, fem::Node>::iterator i = viewport->project->model.node_list.begin(); i != viewport->project->model.node_list.end(); i++)
-	for(std::map<size_t, fem::Node>::iterator i = displaced_nodes.begin(); i != displaced_nodes.end(); i++)
+	for(size_t n = 0; n < viewport->project->model.node_list.size(); n++)
 	{
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(i->first, *viewport->project) );
+		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(n, *viewport->project) );
 	}
 
 	// add the surfaces to the scenegraph
@@ -66,23 +68,23 @@ void VPStateStrain11::populateScenegraph(BaseViewport *viewport)
 			switch(i->getType())
 			{
 				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceTriangle3>(*i) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCFieldSurface<FieldSurfaceTriangle3>(*i, field) );
 					break;
 
 				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceTriangle6>(*i) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCFieldSurface<FieldSurfaceTriangle6>(*i, field) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad4>(*i) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCFieldSurface<FieldSurfaceQuad4>(*i, field) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad8>(*i) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCFieldSurface<FieldSurfaceQuad8>(*i, field) );
 					break;
 
 				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad9>(*i) );
+					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCFieldSurface<FieldSurfaceQuad9>(*i, field) );
 					break;
 
 				default:
@@ -186,7 +188,7 @@ void VPStateStrain11::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 				switch(ds.exec())
 				{
 					case QDialog::Accepted:
-						//this->setDisplacementScale(ds.scale());
+						this->setDisplacementsScale(ds.scale());
 
 						//update the scene
 						viewport->updateGL();
@@ -204,4 +206,43 @@ void VPStateStrain11::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 }
 
 
+template<typename scalar>
+void VPStateStrain11::setDisplacements(fem::AnalysisResult<scalar> &result)
+{
+	this->result = &result;
+}
 
+
+void VPStateStrain11::setField(FieldComponent *field)
+{
+	assert(field != NULL);
+	//TODO finish this
+	if(this->field != NULL)
+		delete this->field;
+	this->field = field;
+}
+
+
+void VPStateStrain11::selectModelObjects(const fem::point &near,const fem::point &far)
+{
+	//TODO finish implementing this
+
+	/*
+	// test nodes
+	float a, b, c;
+	float x2x1, y2y1, z2z1; // helper temp variables to avoid remultiplying
+	std::map<size_t,float> distance_map;
+
+	//for(std::map<size_t,fem::Node>::iterator i = document->model.node_list.begin(); i != document->model.node_list.end(); i++)
+	for(std::list<SceneGraphComponent *>::iterator i = this->scenegraph.primitive_components.begin(); i != this->scenegraph.primitive_components.end(); i++)
+	{
+
+		if(b*b - 4*a*c > 0)
+		{
+			(*i)->selected = true;
+		}
+	}
+	// select the nearest hit
+	// document->selectNode(std::min_element(distance_map.begin(), distance_map.end(), distance_map.value_comp())->first);
+	*/
+}

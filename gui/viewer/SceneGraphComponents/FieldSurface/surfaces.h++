@@ -1,11 +1,12 @@
 #ifndef FIELD_SURFACES_HPP
 #define FIELD_SURFACES_HPP
 
-#include "SurfaceQuad4.h++"
-#include "SurfaceQuad8.h++"
-#include "SurfaceQuad9.h++"
-#include "SurfaceTriangle3.h++"
-#include "SurfaceTriangle6.h++"
+#include "FieldSurface.h++"
+#include "FieldSurfaceQuad4.h++"
+#include "FieldSurfaceQuad8.h++"
+#include "FieldSurfaceQuad9.h++"
+#include "FieldSurfaceTriangle3.h++"
+#include "FieldSurfaceTriangle6.h++"
 
 
 /*

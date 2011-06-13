@@ -63,10 +63,13 @@ void SGCDisplacementOriginalSurface<SurfacePolicy>::setReferenceSurface(fem::Sur
 
 
 template<class SurfacePolicy>
-void SGCDisplacementOriginalSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Project &project,  fem::AnalysisResult<double> *result, float &scale,  ViewportColors &colors)
+void SGCDisplacementOriginalSurface<SurfacePolicy>::paintGL(ViewportData &data, fem::Project &project,  fem::AnalysisResult<double> *result, float &,  ViewportColors &colors)
 {
 	glEnable(GL_BLEND);
 	glColor4fv(colors.original_surface);
+
+	float scale = 0.0f;	// nasty hack to render this surface in the original configuration
+
 	SurfacePolicy::paintGL(data, project, result, scale, colors, surface);
 	glDisable(GL_BLEND);
 }

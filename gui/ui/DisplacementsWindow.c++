@@ -4,7 +4,9 @@
 
 
 DisplacementsWindow::DisplacementsWindow(fem::Project &project, ViewportColors &colors, QWidget *parent)
-	: MdiWindow(parent), WindowWithResults(project, colors, parent), WindowWithGhostSurfaces(project, colors, parent),
+	: MdiWindow(parent), 
+	WindowWithResults(project, colors, parent), 
+	WindowWithGhostSurfaces(project, colors, parent),
 	WindowWithScaling(project, colors, parent)
 {
 	viewport = new DisplacementsViewport(project, this);
@@ -16,8 +18,9 @@ DisplacementsWindow::DisplacementsWindow(fem::Project &project, ViewportColors &
 
 	// create the toolbars
 	DisplacementsWindow::createToolbar();
-	WindowWithScaling::createToolbar(project);
 	WindowWithResults::createToolbar(project);
+	WindowWithGhostSurfaces::createToolbar();
+	WindowWithScaling::createToolbar(project);
 
 	connectSignalsToSlots();
 }
@@ -25,10 +28,8 @@ DisplacementsWindow::DisplacementsWindow(fem::Project &project, ViewportColors &
 
 void DisplacementsWindow::createToolbar()
 {
-	actionVisibleGhostSurfaces = new QAction("Original configuration", this);
-
-	visibilityToolBar->addAction(actionVisibleGhostSurfaces);
 }
+
 
 
 void DisplacementsWindow::setDisplacementsScale(double scale)
@@ -38,8 +39,20 @@ void DisplacementsWindow::setDisplacementsScale(double scale)
 }
 
 
+void DisplacementsWindow::setNodeRestrictionsVisibility(const bool state)
+{
+	WindowWithGhostSurfaces::setNodeRestrictionsVisibility(state);
+}
+
+
+void DisplacementsWindow::setGhostSurfacesVisibility(const bool state)
+{
+	WindowWithGhostSurfaces::setGhostSurfacesVisibility(state);
+}
+
 void DisplacementsWindow::connectSignalsToSlots()
 {
+	WindowWithGhostSurfaces::connectSignalsToSlots();
 	WindowWithScaling::connectSignalsToSlots();
 }
 

@@ -23,6 +23,13 @@ class WindowWithGhostSurfaces
 		WindowWithGhostSurfaces(fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
 
 		void createToolbar();
+	
+	public slots:
+		void setGhostSurfacesVisibility(const bool);
+
+	protected:
+		void connectSignalsToSlots() ;
+
 };
 
 

@@ -56,8 +56,14 @@ class MdiWindow
 		void setViewportYZ();
 		void setViewportIso();
 
+		/**
+		Sets the visibility of the nodes
+		**/
+		void setNodeVisibility(const bool);
+		void setNodeRestrictionsVisibility(const bool);
+
 	protected:
-		virtual void connectSignalsToSlots() = 0;
+		virtual void connectSignalsToSlots() ;
 
 		void normalizeAngle(int *angle);
 

@@ -37,6 +37,10 @@ class PostprocessingWindow
 	public slots:
 		void setDisplacementsScale(double scale);
 
+		// this member is needed because I can't get the connect() in WindowWithGhostSurfaces to have any effect
+		void setNodeRestrictionsVisibility(const bool state);
+		void setGhostSurfacesVisibility(const bool state);
+
 	protected:
 		void connectSignalsToSlots();
 };	

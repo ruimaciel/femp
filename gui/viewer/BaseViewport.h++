@@ -72,6 +72,11 @@ class BaseViewport
 
 		void setDisplacementsScale(float scale);
 
+		/**
+		Sets the visibility state of any scenegraph group of the current viewport state
+		**/
+		void setRenderGoupVisibility(SceneGraph::Groups group, bool state);
+
 	Q_SIGNALS:
 		void xRotationChanged(int angle);
 		void yRotationChanged(int angle);

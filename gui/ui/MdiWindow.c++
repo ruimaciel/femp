@@ -14,10 +14,7 @@ MdiWindow::MdiWindow (QWidget *parent)
 	this->createViewportToolbar();
 	this->createVisibilityToolbar();
 
-	//signals and slots
-	connect(actionViewportXY, SIGNAL(triggered()),	this,	SLOT(setViewportXY()));
-	connect(actionViewportXZ, SIGNAL(triggered()),	this,	SLOT(setViewportXZ()));
-	connect(actionViewportYZ, SIGNAL(triggered()),	this,	SLOT(setViewportYZ()));
+	this->connectSignalsToSlots();
 }
 
 
@@ -41,7 +38,12 @@ void MdiWindow::createViewportToolbar()
 void MdiWindow::createVisibilityToolbar()
 {
 	actionVisibleNodes = new QAction("Nodes",this);
+	actionVisibleNodes->setCheckable(true);
+	actionVisibleNodes->setChecked(true);
+
 	actionVisibleRestrictions = new QAction("Restrictions",this);
+	actionVisibleRestrictions->setCheckable(true);
+	actionVisibleRestrictions->setChecked(true);
 
 	visibilityToolBar = addToolBar(tr("Visibility"));
 	visibilityToolBar->addAction(actionVisibleNodes);
@@ -77,6 +79,31 @@ void MdiWindow::setViewportIso()
 	viewport->setXRotation(45);
 	viewport->setYRotation(45);
 	viewport->setZRotation(0);
+}
+
+
+void MdiWindow::setNodeVisibility(const bool state)
+{
+	this->viewport->setRenderGoupVisibility(SceneGraph::RG_NODES, state);
+	this->viewport->refresh();
+}
+
+void MdiWindow::setNodeRestrictionsVisibility(const bool state)
+{
+	this->viewport->setRenderGoupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, state);
+	this->viewport->refresh();
+}
+
+
+void MdiWindow::connectSignalsToSlots()
+{
+	//signals and slots
+	connect(actionViewportXY, SIGNAL(triggered()),	this,	SLOT(setViewportXY()));
+	connect(actionViewportXZ, SIGNAL(triggered()),	this,	SLOT(setViewportXZ()));
+	connect(actionViewportYZ, SIGNAL(triggered()),	this,	SLOT(setViewportYZ()));
+
+	connect(actionVisibleNodes,	SIGNAL(toggled(bool)),	this,	SLOT(setNodeVisibility(bool)));
+	connect(actionVisibleRestrictions,	SIGNAL(toggled(bool)),	this,	SLOT(setNodeRestrictionsVisibility(bool)));
 }
 
 

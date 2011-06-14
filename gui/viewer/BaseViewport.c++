@@ -213,6 +213,12 @@ void BaseViewport::setDisplacementsScale(float scale)
 }
 
 
+void BaseViewport::setRenderGoupVisibility(SceneGraph::Groups group, bool state)
+{
+	this->state->setRenderGoupVisibility(group, state);
+}
+
+
 void BaseViewport::normalizeAngle(int *angle)
 {
 	while (*angle < 0)

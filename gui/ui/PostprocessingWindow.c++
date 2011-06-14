@@ -33,8 +33,20 @@ void PostprocessingWindow::setDisplacementsScale(double scale)
 }
 
 
+void PostprocessingWindow::setNodeRestrictionsVisibility(const bool state)
+{
+	WindowWithGhostSurfaces::setNodeRestrictionsVisibility(state);
+}
+
+
+void PostprocessingWindow::setGhostSurfacesVisibility(const bool state)
+{
+	WindowWithGhostSurfaces::setGhostSurfacesVisibility(state);
+}
 
 void PostprocessingWindow::connectSignalsToSlots()
 {
+	WindowWithGhostSurfaces::connectSignalsToSlots();
+	WindowWithScaling::connectSignalsToSlots();
 }
 

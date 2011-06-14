@@ -71,11 +71,6 @@ void SGCModelSurface<SurfacePolicy>::setReferenceSurface(fem::Surface &reference
 {
 	this->surface = &referenced_surface;
 
-	/*
-	mylog.setPrefix("SGCModelSurface::setReferenceSurface()");
-	mylog.message("yet to be implemented");
-	*/
-
 	//TODO adjust boundary to this surface
 }
 

@@ -80,7 +80,6 @@ void DisplacementsViewport::mouseMoveEvent(QMouseEvent *event)
 void DisplacementsViewport::wheelEvent(QWheelEvent *event)
 {
 	viewport_data.zoom += event->delta()/1000.0f;
-	//qWarning("viewport_data.zoom: %f, %f",viewport_data.zoom, pow(2,viewport_data.zoom));
 
 	this->resizeGL(this->width(), this->height());
 	this->updateGL();
@@ -135,18 +134,14 @@ void DisplacementsViewport::setZRotation(int angle)
 
 void DisplacementsViewport::setPosition(int x, int y)
 {
-	mylog.setPrefix("DisplacementsViewport::setPosition(int x, int y)");
 	//TODO implement this
 	viewport_data.camera.pos.x(-x);
 	viewport_data.camera.pos.y(-y);
-	//viewport_data.camera.pos.z(amount/100.0f);
-	//qWarning("pos: %f, %f, %f",viewport_data.camera.pos.x(), viewport_data.camera.pos.y(), viewport_data.camera.pos.z());
+
 	QString m;
 	mylog.message(m.sprintf("pos: %f, %f, %f",viewport_data.camera.pos.x(), viewport_data.camera.pos.y(), viewport_data.camera.pos.z()));
 
 	updateGL();
-
-	mylog.clearPrefix();
 }
 
 

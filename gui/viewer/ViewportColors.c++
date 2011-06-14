@@ -5,7 +5,7 @@ ViewportColors::ViewportColors ()
 {
 	// set helper function
 	#define INIT_ELEMENT(ELEMENT, R, G, B) \
-	ELEMENT[0] = R, ELEMENT[1] = G, ELEMENT[2] = B; ELEMENT[3] = 1; ELEMENT[3] = 1;
+	ELEMENT[0] = R, ELEMENT[1] = G, ELEMENT[2] = B; ELEMENT[3] = 1; 
 
 
 	INIT_ELEMENT(node	, 	0,	0.5,	0);

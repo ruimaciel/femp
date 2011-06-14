@@ -37,6 +37,7 @@ void FieldSurfaceQuad8::paintGL(ViewportData &, fem::Project &project, fem::Anal
 	assert(surface != NULL);
 
 	glEnable(GL_BLEND);
+	glDisable(GL_LIGHTING);
 	int partitions = 6;	//TODO implement a better code
 
 	// temp code to help with the copy/paste
@@ -146,6 +147,7 @@ void FieldSurfaceQuad8::paintGL(ViewportData &, fem::Project &project, fem::Anal
 		glEnd();
 	}
 	glDisable(GL_BLEND);
+	glEnable(GL_LIGHTING);
 }
 
 #endif

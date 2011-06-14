@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include <iostream>
+
 #include "../../fem/Project.h++"
 #include "../../fem/AnalysisResult.h++"
 #include "../../fem/Surface.h++"
@@ -38,16 +40,22 @@ class FieldComponent
 			if(value > 0)
 			{
 				x = value/max;
-				color.data[0] = color_max[0]*x - color_neutral[0]*(1-x);
-				color.data[1] = color_max[1]*x - color_neutral[1]*(1-x);
-				color.data[2] = color_max[2]*x - color_neutral[2]*(1-x);
+				color.data[0] = color_max[0]*x + color_neutral[0]*(1-x);
+				color.data[1] = color_max[1]*x + color_neutral[1]*(1-x);
+				color.data[2] = color_max[2]*x + color_neutral[2]*(1-x);
+			}
+			else if (value == 0)
+			{
+				color.data[0] = color_neutral[0];
+				color.data[1] = color_neutral[1];
+				color.data[2] = color_neutral[2];
 			}
 			else
 			{
-				x = -value/min;
-				color.data[0] = color_min[0]*x - color_neutral[0]*(1-x);
-				color.data[1] = color_min[1]*x - color_neutral[1]*(1-x);
-				color.data[2] = color_min[2]*x - color_neutral[2]*(1-x);
+				x = value/min;
+				color.data[0] = color_min[0]*x + color_neutral[0]*(1-x);
+				color.data[1] = color_min[1]*x + color_neutral[1]*(1-x);
+				color.data[2] = color_min[2]*x + color_neutral[2]*(1-x);
 			}
 		}
 };

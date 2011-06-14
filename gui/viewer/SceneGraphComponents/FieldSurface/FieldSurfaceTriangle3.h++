@@ -34,6 +34,7 @@ FieldSurfaceTriangle3::FieldSurfaceTriangle3()
 void FieldSurfaceTriangle3::paintGL(ViewportData &, fem::Project &project, fem::AnalysisResult<double> *result, FieldComponent &field, float &scale, ViewportColors &colors, fem::Surface *surface)
 {
 	glEnable(GL_BLEND);
+	glDisable(GL_LIGHTING);
 	using namespace fem;
 
 	//int partitions = 4;	//TODO implement a better code
@@ -56,6 +57,7 @@ void FieldSurfaceTriangle3::paintGL(ViewportData &, fem::Project &project, fem::
 	glVertex3dv(p3.data);
 	glEnd();
 	glDisable(GL_BLEND);
+	glEnable(GL_LIGHTING);
 }
 
 #endif

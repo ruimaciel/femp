@@ -34,6 +34,7 @@ FieldSurfaceQuad9::FieldSurfaceQuad9()
 void FieldSurfaceQuad9::paintGL(ViewportData &, fem::Project &project, fem::AnalysisResult<double> *result, FieldComponent &field, float &scale, ViewportColors &colors, fem::Surface *surface)
 {
 	glEnable(GL_BLEND);
+	glDisable(GL_LIGHTING);
 	int partitions = 6;	//TODO implement a better code
 
 	// temp code to help with the copy/paste
@@ -140,6 +141,7 @@ void FieldSurfaceQuad9::paintGL(ViewportData &, fem::Project &project, fem::Anal
 		glEnd();
 	}
 	glDisable(GL_BLEND);
+	glEnable(GL_LIGHTING);
 }
 
 #endif

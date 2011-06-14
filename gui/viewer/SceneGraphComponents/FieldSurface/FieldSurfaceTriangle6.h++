@@ -34,6 +34,8 @@ FieldSurfaceTriangle6::FieldSurfaceTriangle6()
 void FieldSurfaceTriangle6::paintGL(ViewportData &, fem::Project &project, fem::AnalysisResult<double> *result, FieldComponent &field, float &scale, ViewportColors &colors, fem::Surface *surface)
 {
 	glEnable(GL_BLEND);
+	glDisable(GL_LIGHTING);
+
 	int partitions = 6;	//TODO implement a better code
 
 	// temp code to help with the copy/paste
@@ -128,6 +130,7 @@ void FieldSurfaceTriangle6::paintGL(ViewportData &, fem::Project &project, fem::
 		nu = (nu == n_upper_row)?n_lower_row:n_upper_row;
 	}
 	glDisable(GL_BLEND);
+	glEnable(GL_LIGHTING);
 }
 
 #endif

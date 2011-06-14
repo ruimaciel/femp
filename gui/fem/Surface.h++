@@ -18,13 +18,14 @@ namespace fem
 class Surface
 {
 	public:
-		std::vector<size_t>	nodes;	// references to the nodes which define this surface
+		std::vector<size_t>	nodes;	// global references to the nodes which define this surface
 		Element::Type	type;	// type of surface
 
 		struct ReferencedElement
 		{
 			size_t reference;	// the reference to the element which shares this surface
 			unsigned char surface;	// the surface numbering.  In a hexahedron it can be [1-6]
+			std::vector<size_t>	element_local_reference;	// a list of local references to the nodes in the element's local space
 		};
 
 		std::vector<ReferencedElement> elements;	// stores 1 or 2 elements
@@ -39,7 +40,7 @@ class Surface
 		**/
 		bool set(Element::Type &type, std::vector<size_t> &nodes);
 
-		void pushElementReference(const size_t reference, const unsigned char surface);
+		void pushElementReference(const size_t reference, const Element::Type &element_type, const unsigned char surface);
 
 
 		/**

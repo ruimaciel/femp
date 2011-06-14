@@ -65,12 +65,13 @@ class Model {
 		/**
 		Pushes a new element
 		@param type	surface type
+		@param element_type	the type of the element to which this surface belongs
 		@param nodes	the set of nodes which define this surface
 		@param element_reference	the reference number of the element this surface belongs to
 		@param surface_number	the element's surface number that corresponds to this surface
 		@return		ERR_OK if all went well, ERR_NODE_NUMBER if the number of nodes is incompatible with the surface type
 		**/
-		enum Error pushSurface(Element::Type type, std::vector<size_t> &nodes, const size_t element_reference, const size_t surface_number);
+		enum Error pushSurface(Element::Type type, Element::Type element_type, std::vector<size_t> &nodes, const size_t element_reference, const size_t surface_number);
 
 		/** Specifies new node restrictions affecting a node
 		@param node	a reference for a node contained in node_list

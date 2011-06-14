@@ -794,7 +794,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Project &project, A
 			if(values.e13 < result.minimum.e13)	result.minimum.e13 = values.e13;
 			if(values.e23 < result.minimum.e23)	result.minimum.e23 = values.e23;
 
-			/*
 			std::cout << "\tnode: " << i << "{";
 			std::cout << "\te11: " << values.e11 << ", ";
 			std::cout << "\te22: " << values.e22 << ", ";
@@ -803,7 +802,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Project &project, A
 			std::cout << "\te13: " << values.e13 << ", ";
 			std::cout << "\te23: " << values.e23 << "}";
 			std::cout << std::endl;
-			*/
+			//*/
 		}
 
 	}

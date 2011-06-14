@@ -30,7 +30,7 @@ void Strain11::Quad4(std::vector<fem::point> &color_map, fem::Project &project, 
 		recovered_values = result.recovered_values[element_reference];
 
 		double value;
-		value = recovered_values.node[n].e11;
+		value = recovered_values.node[surface.elements[0].element_local_reference[n]].e11;
 
 		// Strain11: e_11 = du_1/d_x1
 		this->interpolate(color_map[n], result.maximum.e11, result.minimum.e11, value, color.field_maximum_positive, color.field_neutral, color.field_maximum_negative);

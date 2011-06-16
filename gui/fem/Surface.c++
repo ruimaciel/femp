@@ -223,6 +223,7 @@ void Surface::pushElementReference(const size_t reference, const Element::Type &
 					re.element_local_reference[8] = 24;
 					break;
 			}
+			break;
 
 		case Element::FE_TETRAHEDRON4:
 			assert(surface < 4);

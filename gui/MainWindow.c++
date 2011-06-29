@@ -489,6 +489,7 @@ void MainWindow::loadOptions()
 		else
 		{
 			file_dialog_last_directory = QDir::home();
+			QString path = file_dialog_last_directory.absolutePath();
 		}
 	}
 	else

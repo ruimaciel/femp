@@ -412,7 +412,7 @@ std:
 	integer = "-"? ("0"|[1-9][0-9]*);
 	float	= integer "." [0-9]+([eE][+-]?[0-9]+)?;
 	number	= integer|float;
-	string	= '"' [a-zA-Z0-9]* '"';
+	string	= '"' .* '"';
 
 	'.'	{ return LEX_OPTION_SEPARATOR; }
 	'='	{ lex_state = 1; return LEX_OPTION_ASSIGN; }

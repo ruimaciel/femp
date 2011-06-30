@@ -637,24 +637,25 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar
 template<typename Scalar>
 void Analysis<Scalar>::generateDisplacementsMap(Project &project, AnalysisResult<Scalar> &result)
 {
-	fem::point u;	// displacements field
+	fem::point d;	// displacements field
 	boost::tuple<size_t,size_t,size_t> references;
 
 	result.displacements.clear();
 
-	for(size_t n = 0; n < project.model.node_list.size(); n++)
+	//for(size_t n = 0; n < project.model.node_list.size(); n++)
+	for( std::map<size_t, Node>::iterator i = project.model.node_list.begin(); i != project.model.node_list.end(); i++)
 	{
-		references = result.lm[n];
+		references = result.lm[i->first];
 
-		u.data[0] = (references.get<0>() == 0)? 0 : result.d(references.get<0>()-1);
-		u.data[1] = (references.get<1>() == 0)? 0 : result.d(references.get<1>()-1);
-		u.data[2] = (references.get<2>() == 0)? 0 : result.d(references.get<2>()-1);
+		d.data[0] = (references.get<0>() == 0)? 0 : result.d(references.get<0>()-1);
+		d.data[1] = (references.get<1>() == 0)? 0 : result.d(references.get<1>()-1);
+		d.data[2] = (references.get<2>() == 0)? 0 : result.d(references.get<2>()-1);
 
-		//std::cout << "u[" << n << "]: " << u << "\n";
+		std::cout << "d[" << i->first << "]: " << d << "\n";
 
-		result.displacements[n] = u;
+		result.displacements[i->first] = d;
 	}
-	//std::cout << std::endl;
+	std::cout << std::endl;
 }
 
 
@@ -668,8 +669,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Project &project, A
 	Eigen::Matrix<Scalar,3,3> J, invJ;
 
 	result.recovered_values.resize(project.model.element_list.size());
-
-	std::cout << result.d << std::endl;
 
 	for(size_t n = 0; n < project.model.element_list.size(); n++)
 	{
@@ -794,6 +793,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Project &project, A
 			if(values.e13 < result.minimum.e13)	result.minimum.e13 = values.e13;
 			if(values.e23 < result.minimum.e23)	result.minimum.e23 = values.e23;
 
+			/*
 			std::cout << "\tnode: " << i << "{";
 			std::cout << "\te11: " << values.e11 << ", ";
 			std::cout << "\te22: " << values.e22 << ", ";
@@ -802,7 +802,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Project &project, A
 			std::cout << "\te13: " << values.e13 << ", ";
 			std::cout << "\te23: " << values.e23 << "}";
 			std::cout << std::endl;
-			//*/
+			// */
 		}
 
 	}

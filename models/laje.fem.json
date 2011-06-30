@@ -43,30 +43,31 @@
 	],
 
 	"node restrictions": [
-		{ "node": 2, "dx":true, "dy":true },
-		{ "node": 3, "dx":true},
-		{ "node": 6, "dx":true, "dy":true },
-		{ "node": 7, "dx":true},
-		{ "node": 9, "dy":true },
-		{ "node":11, "dx":true, "dy":true, "dz":true},
-		{ "node":12, "dx":true },
-		{ "node":13, "dx":true, "dy":true },
-		{ "node":15, "dx":true, "dy":true, "dz":true},
-		{ "node":16, "dx":true, "dy":true, "dz":true},
-		{ "node":17, "dy":true},
-		{ "node":19, "dx":true },
-		{ "node":22, "dx":true, "dy":true },
-		{ "node":23, "dx":true, "dy":true, "dz":true},
-		{ "node":24, "dx":true, "dy":true },
-		{ "node":25, "dx":true, "dy":true, "dz":true},
-		{ "node":27, "dx":true, "dy":true}
+		{ "node": 2, "dx":true },
+		{ "node": 3, "dx":true, "dy":true },
+		{ "node": 4, "dy":true },
+		{ "node": 6, "dx":true },
+		{ "node": 7, "dx":true, "dy":true },
+		{ "node": 8, "dy":true },
+		{ "node":11, "dx": true, "dy":true, "dz":true },
+		{ "node":12, "dx": true },
+		{ "node":13, "dx": true, "dy":true, "dz":true },
+		{ "node":14, "dy": true },
+		{ "node":15, "dx": true, "dy": true },
+		{ "node":16, "dx":true, "dy": true, "dz": true },
+		{ "node":19, "dx": true },
+		{ "node":20, "dy": true },
+		{ "node":22, "dx":true, "dy": true, "dz": true },
+		{ "node":23, "dx":true, "dy": true, "dz": true },
+		{ "node":24, "dy": true },
+		{ "node":25, "dy": true }
 	],
 
 	"load patterns":[
 		{	
 			"label": "First test pattern",
 			"domain loads":[
-				{"element":0, "force": [0,0,1]}
+				{"element":0, "force": [0,0,10000000]}
 			]
 		}
 	]

@@ -729,6 +729,7 @@ enum Document::Error Document::load()
 
 				if(cursor.top()->child == NULL) ERROR();
 
+				node_restrictions.reset();
 				switch(cursor.top()->child->type )
 				{
 					case JSON_ARRAY:
@@ -769,7 +770,6 @@ enum Document::Error Document::load()
 					case JSON_NUMBER: 
 						CURSOR_PUSH(JSON_NUMBER);	
 						// set the temps
-						node_restrictions.reset();
 
 						text = cursor.top()->text;
 						refs.push_back(text.toULongLong());
@@ -803,18 +803,13 @@ enum Document::Error Document::load()
 
 					if (cursor.top()->next == NULL)
 					{
-						// set the node restrictions
-						this->project.model.pushNodeRestrictions(ref, node_restrictions);
-
-						cursor.pop();	
-
-						state.pop();
-						break;
+						goto stop;	// nasty hack
 					}
 					CURSOR_NEXT_TEST(JSON_STRING);
 				}
 
-				if (strcmp(cursor.top()->text, "dy") == 0) {
+				if (strcmp(cursor.top()->text, "dy") == 0) 
+				{
 					switch(cursor.top()->child->type)
 					{
 						case JSON_TRUE:
@@ -828,22 +823,17 @@ enum Document::Error Document::load()
 							ERROR();
 							break;
 					}
-
-
 					if (cursor.top()->next == NULL)
 					{
-						// set the node restrictions
-						this->project.model.pushNodeRestrictions(ref, node_restrictions);
-
-						cursor.pop();	
-
-						state.pop();
-						break;
+						goto stop;	// nasty hack
 					}
+
+
 					CURSOR_NEXT_TEST(JSON_STRING);
 				}
 
-				if (strcmp(cursor.top()->text, "dz") == 0) {
+				if (strcmp(cursor.top()->text, "dz") == 0) 
+				{
 					switch(cursor.top()->child->type)
 					{
 						case JSON_TRUE:
@@ -859,6 +849,7 @@ enum Document::Error Document::load()
 					}
 				}
 
+stop:	// nasty hack
 				if (cursor.top()->next != NULL)
 					ERROR();
 

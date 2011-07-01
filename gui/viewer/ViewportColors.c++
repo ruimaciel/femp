@@ -9,7 +9,7 @@ ViewportColors::ViewportColors ()
 
 
 	INIT_ELEMENT(node	, 	0,	0.5,	0);
-	INIT_ELEMENT(restraints	, 	0,	0.5,	0);
+	INIT_ELEMENT(restraints	, 	0,	0,	0.5);
 	INIT_ELEMENT(selected	, 	1,	0,	0);
 	INIT_ELEMENT(wireframe	,	0,	0.5,	0);
 	INIT_ELEMENT(surface	, 	0,	0.5,	0);

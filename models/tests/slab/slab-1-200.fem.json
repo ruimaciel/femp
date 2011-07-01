@@ -578,20 +578,58 @@
 	], 
 
 	"node restrictions": [
-		{ "node": [122,132], "dx":true, "dy":true, "dz":true},
-		{ "node": 133, "dx":true, "dy":true, "dz":true},
-		{ "node": 144, "dx":true, "dy":true, "dz":true},
-		{ "node": 155, "dx":true, "dy":true, "dz":true},
-		{ "node": 166, "dx":true, "dy":true, "dz":true},
-		{ "node": 177, "dx":true, "dy":true, "dz":true},
-		{ "node": 188, "dx":true, "dy":true, "dz":true},
-		{ "node": 199, "dx":true, "dy":true, "dz":true},
-		{ "node": 210, "dx":true, "dy":true, "dz":true},
-		{ "node": 221, "dx":true, "dy":true, "dz":true},
-		{ "node": [232,242], "dx":true, "dy":true, "dz":true},
-		{ "node": [804,813], "dx":true, "dy":true, "dz":true},
-		{ "node": [474,483], "dx":true, "dy":true, "dz":true},
-		{ "node": [574,583], "dx":true, "dy":true, "dz":true},
+		{ "node": 132, "dx":true, "dy":true, "dz":true},
+		{ "node": 143, "dx":true, "dy":true, "dz":true},
+		{ "node": 154, "dx":true, "dy":true, "dz":true},
+		{ "node": 165, "dx":true, "dy":true, "dz":true},
+		{ "node": 176, "dx":true, "dy":true, "dz":true},
+		{ "node": 187, "dx":true, "dy":true, "dz":true},
+		{ "node": 198, "dx":true, "dy":true, "dz":true},
+		{ "node": 209, "dx":true, "dy":true, "dz":true},
+		{ "node": 220, "dx":true, "dy":true, "dz":true},
+		{ "node": 231, "dx":true, "dy":true, "dz":true},
+		{ "node": 242, "dx":true, "dy":true, "dz":true},
+
+		{ "node": [232,241], "dx":true, "dy":true, "dz":true},
+
+		{ "node":  1, "dx":true, "dy":true },
+		{ "node": [  2, 11], "dy":true },
+		{ "node": 12, "dx":true },
+		{ "node": 23, "dx":true },
+		{ "node": 34, "dx":true },
+		{ "node": 45, "dx":true },
+		{ "node": 56, "dx":true },
+		{ "node": 67, "dx":true },
+		{ "node": 78, "dx":true },
+		{ "node": 89, "dx":true },
+		{ "node":100, "dx":true },
+
+		{ "node":111, "dx":true },
+		{ "node":122, "dx":true, "dy":true},
+		{ "node":133, "dx":true },
+		{ "node":144, "dx":true },
+		{ "node":155, "dx":true },
+		{ "node":166, "dx":true },
+		{ "node":177, "dx":true },
+		{ "node":188, "dx":true },
+		{ "node":199, "dx":true },
+		{ "node":210, "dx":true },
+		{ "node":221, "dx":true },
+		{ "node":232, "dx":true, "dy":true, "dz":true },
+		{ "node":243, "dx":true, "dy":true},
+		{ "node":254, "dx":true },
+		{ "node":265, "dx":true },
+		{ "node":276, "dx":true },
+		{ "node":287, "dx":true },
+		{ "node":298, "dx":true },
+		{ "node":309, "dx":true },
+		{ "node":320, "dx":true },
+		{ "node":331, "dx":true },
+		{ "node":342, "dx":true },
+		{ "node":353, "dx":true },
+
+		{ "node": [123,131], "dy":true },
+		{ "node": [244,253], "dy":true }
 	],
 
 	"load patterns":[
@@ -796,8 +834,7 @@
 				{"element":196, "force": [0,0,1]},
 				{"element":197, "force": [0,0,1]},
 				{"element":198, "force": [0,0,1]},
-				{"element":199, "force": [0,0,1]},
-				{"element":200, "force": [0,0,1]}
+				{"element":199, "force": [0,0,1]}
 			]
 		}
 	]

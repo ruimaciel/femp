@@ -5,7 +5,7 @@
 	},
 
 	"materials": [
-		{"type": "linear elastic", "label": "Steel", "E":2e+05,"nu":0.3, "fy": 4.94066e-324}
+		{"type": "linear elastic", "label": "Steel", "E":2e+02,"nu":0.3, "fy": 4.9e-324}
 	],
 
 	"nodes": [
@@ -812,6 +812,7 @@
 		[	801,	[	0.0,	0.75,	0.0	]],
 		[	802,	[	0.0,	0.85,	0.0	]],
 		[	803,	[	0.0,	0.95,	0.0	]],
+
 		[	804,	[	1.0,	0.05,	0.1	]],
 		[	805,	[	1.0,	0.15,	0.1	]],
 		[	806,	[	1.0,	0.25,	0.1	]],
@@ -822,6 +823,7 @@
 		[	811,	[	1.0,	0.75,	0.1	]],
 		[	812,	[	1.0,	0.85,	0.1	]],
 		[	813,	[	1.0,	0.95,	0.1	]],
+
 		[	814,	[	0.9,	0.05,	0.1	]],
 		[	815,	[	0.9,	0.15,	0.1	]],
 		[	816,	[	0.9,	0.25,	0.1	]],
@@ -922,6 +924,7 @@
 		[	911,	[	0.0,	0.75,	0.1	]],
 		[	912,	[	0.0,	0.85,	0.1	]],
 		[	913,	[	0.0,	0.95,	0.1	]],
+
 		[	914,	[	1.0,	0.05,	0.2	]],
 		[	915,	[	1.0,	0.15,	0.2	]],
 		[	916,	[	1.0,	0.25,	0.2	]],
@@ -932,6 +935,7 @@
 		[	921,	[	1.0,	0.75,	0.2	]],
 		[	922,	[	1.0,	0.85,	0.2	]],
 		[	923,	[	1.0,	0.95,	0.2	]],
+
 		[	924,	[	0.9,	0.05,	0.2	]],
 		[	925,	[	0.9,	0.15,	0.2	]],
 		[	926,	[	0.9,	0.25,	0.2	]],
@@ -1032,6 +1036,7 @@
 		[	1021,	[	0.0,	0.75,	0.2	]],
 		[	1022,	[	0.0,	0.85,	0.2	]],
 		[	1023,	[	0.0,	0.95,	0.2	]],
+
 		[	1024,	[	1.0,	0.0,	0.05	]],
 		[	1025,	[	1.0,	0.0,	0.15	]],
 		[	1026,	[	0.9,	0.0,	0.05	]],
@@ -2421,22 +2426,91 @@
 	], 
 
 	"node restrictions": [
-		{ "node": [122,132], "dx":true, "dy":true, "dz":true},
-		{ "node": 133, "dx":true, "dy":true, "dz":true},
-		{ "node": 144, "dx":true, "dy":true, "dz":true},
-		{ "node": 155, "dx":true, "dy":true, "dz":true},
-		{ "node": 166, "dx":true, "dy":true, "dz":true},
-		{ "node": 177, "dx":true, "dy":true, "dz":true},
-		{ "node": 188, "dx":true, "dy":true, "dz":true},
-		{ "node": 199, "dx":true, "dy":true, "dz":true},
-		{ "node": 210, "dx":true, "dy":true, "dz":true},
-		{ "node": 221, "dx":true, "dy":true, "dz":true},
-		{ "node": [232,242], "dx":true, "dy":true, "dz":true},
-		{ "node": [804,813], "dx":true, "dy":true, "dz":true},
+		{ "node":   1, "dx":true, "dy":true },
+		{ "node":[   2,11], "dy":true },
 
-		{ "node": [474,483], "dx":true, "dy":true, "dz":true},
+		{ "node":  12, "dx":true, "dy":true },
+		{ "node":  23, "dx":true },
+		{ "node":  34, "dx":true },
+		{ "node":  45, "dx":true },
+		{ "node":  56, "dx":true },
+		{ "node":  67, "dx":true },
+		{ "node":  78, "dx":true },
+		{ "node":  89, "dx":true },
+		{ "node": 100, "dx":true },
+
+		{ "node": 111, "dx":true },
+
+		{ "node": 122, "dx":true, "dy":true},
+		{ "node": [123,132], "dy":true},
+		{ "node": 133, "dx":true},
+
+		{ "node": 143, "dx":true, "dy":true, "dz":true},
+
+		{ "node": 144, "dx":true },
+		{ "node": 154, "dx":true, "dy":true, "dz":true},
+		{ "node": 155, "dx":true },
+		{ "node": 165, "dx":true, "dy":true, "dz":true},
+		{ "node": 166, "dx":true },
+		{ "node": 176, "dx":true, "dy":true, "dz":true},
+		{ "node": 177, "dx":true },
+		{ "node": 187, "dx":true, "dy":true, "dz":true},
+		{ "node": 188, "dx":true },
+		{ "node": 198, "dx":true, "dy":true, "dz":true},
+		{ "node": 199, "dx":true },
+		{ "node": 209, "dx":true, "dy":true, "dz":true},
+		{ "node": 210, "dx":true },
+		{ "node": 220, "dx":true, "dy":true, "dz":true},
+		{ "node": 221, "dx":true },
+		{ "node": 231, "dx":true, "dy":true, "dz":true},
+		{ "node": 232, "dx":true, "dy":true, "dz":true },
+		{ "node": [233,242], "dx":true, "dy":true, "dz":true},
+		{ "node": 243, "dx":true, "dy":true },
+
+		{ "node":[ 244, 253], "dy":true },
+
+		{ "node": 254, "dx":true },
+		{ "node": 265, "dx":true },
+		{ "node": 276, "dx":true },
+		{ "node": 287, "dx":true },
+		{ "node": 298, "dx":true },
+		{ "node": 309, "dx":true },
+		{ "node": 320, "dx":true },
+		{ "node": 331, "dx":true },
+		{ "node": 342, "dx":true },
+		{ "node": 353, "dx":true },
+
+		{ "node":[ 364, 373], "dy":true },
+
+		{ "node": [474,483], "dy": true },
 
 		{ "node": [574,583], "dx":true, "dy":true, "dz":true},
+
+		{ "node": [584,593], "dy":true },
+
+		{ "node": [694,703], "dx":true },
+
+		{ "node": [804,813], "dx":true },
+		{ "node": [904,913], "dx":true, "dy":true, "dz":true},
+		{ "node": [914,923], "dx":true },
+		{ "node": [1024,1025], "dx":true, "dy":true },
+		{ "node": [1026,1043], "dy":true },
+		{ "node": [1044,1045], "dy":true },
+
+		{ "node": [1046,1047], "dx":true },
+		{ "node": [1068,1069], "dx":true },
+		{ "node": [1090,1091], "dx":true },
+		{ "node": [1112,1113], "dx":true },
+		{ "node": [1134,1135], "dx":true },
+		{ "node": [1156,1157], "dx":true },
+		{ "node": [1178,1179], "dx":true },
+		{ "node": [1200,1201], "dx":true },
+		{ "node": [1222,1223], "dx":true },
+		{ "node": [1244,1245], "dx":true },
+
+		{ "node": [1566,1585], "dy":true },
+
+		{ "node": [1786,1805], "dx":true }
 	],
 
 	"load patterns":[
@@ -2641,8 +2715,7 @@
 				{"element":196, "force": [0,0,1]},
 				{"element":197, "force": [0,0,1]},
 				{"element":198, "force": [0,0,1]},
-				{"element":199, "force": [0,0,1]},
-				{"element":200, "force": [0,0,1]}
+				{"element":199, "force": [0,0,1]}
 			]
 		}
 	]

@@ -28,105 +28,21 @@ void SGCNodeRestrictions::paintGL(ViewportData &data, fem::Project &, fem::Analy
 	glColor3fv(colors.restraints);
 	if(m_node_restrictions->dx())
 	{
-		glBegin(GL_TRIANGLES);
-		glNormal3f(1.4142f, 0, 1.4142f);
-		glVertex3i(0,0,0);
-		glVertex3i(-2,2,2);
-		glVertex3i(-2,-2,2);
-
-		glNormal3f(1.4142f,-1.4142f, 0);
-		glVertex3i(0,0,0);
-		glVertex3i(-2,-2, 2);
-		glVertex3i(-2,-2,-2);
-
-		glNormal3f(1.4142f, 0, -1.4142f);
-		glVertex3i(0,0,0);
-		glVertex3i(-2,-2,-2);
-		glVertex3i(-2, 2,-2);
-
-		glNormal3f(1.4142f, 1.4142f, 0);
-		glVertex3i(0,0,0);
-		glVertex3i(-2, 2,-2);
-		glVertex3i(-2, 2, 2);
-
-		// backface
-		glNormal3f(-1,0,0);
-		glVertex3i(-2, 2, 2);
-		glVertex3i(-2, 2,-2);
-		glVertex3i(-2,-2,-2);
-		glVertex3i(-2,-2,-2);
-		glVertex3i(-2,-2, 2);
-		glVertex3i(-2, 2, 2);
-		glEnd();
+		renderNodeRestriction();
 	}
 	if(m_node_restrictions->dy())
 	{
-		// render the pyramid
-		glBegin(GL_TRIANGLES);
-		glNormal3i( 2, 0, 2);
-		glVertex3i( 0, 0, 0);
-		glVertex3i( 2,-2,-2);
-		glVertex3i( 2, 2,-2);
-
-		glNormal3i( 0,-2, 2);
-		glVertex3i(0,0,0);
-		glVertex3i(-2,-2,-2);
-		glVertex3i( 2,-2,-2);
-
-		glNormal3i(-2, 0, 2);
-		glVertex3i(0,0,0);
-		glVertex3i(-2, 2,-2);
-		glVertex3i(-2,-2,-2);
-
-		glNormal3i( 0, 2, 2);
-		glVertex3i(0,0,0);
-		glVertex3i( 2, 2,-2);
-		glVertex3i(-2, 2,-2);
-
-		// backface
-		glNormal3f( 0,0,-1);
-		glVertex3i( 2, 2,-2);
-		glVertex3i(-2,-2,-2);
-		glVertex3i(-2, 2,-2);
-		glVertex3i(-2,-2,-2);
-		glVertex3i( 2, 2,-2);
-		glVertex3i( 2,-2,-2);
-		glEnd();
+		glPushMatrix();
+		glRotatef(-90,0,0,1);
+		renderNodeRestriction();
+		glPopMatrix();
 	}
 	if( m_node_restrictions->dz())
 	{
-		glRotatef(-90,1,0,0);
-		// render the pyramid
-		glBegin(GL_TRIANGLES);
-		glNormal3i( 2, 0, 2);
-		glVertex3i( 0, 0, 0);
-		glVertex3i( 2,-2,-2);
-		glVertex3i( 2, 2,-2);
-
-		glNormal3i( 0,-2, 2);
-		glVertex3i(0,0,0);
-		glVertex3i(-2,-2,-2);
-		glVertex3i( 2,-2,-2);
-
-		glNormal3i(-2, 0, 2);
-		glVertex3i(0,0,0);
-		glVertex3i(-2, 2,-2);
-		glVertex3i(-2,-2,-2);
-
-		glNormal3i( 0, 2, 2);
-		glVertex3i(0,0,0);
-		glVertex3i( 2, 2,-2);
-		glVertex3i(-2, 2,-2);
-
-		// backface
-		glNormal3f( 0,0,-1);
-		glVertex3i( 2, 2,-2);
-		glVertex3i(-2,-2,-2);
-		glVertex3i(-2, 2,-2);
-		glVertex3i(-2,-2,-2);
-		glVertex3i( 2, 2,-2);
-		glVertex3i( 2,-2,-2);
-		glEnd();
+		glPushMatrix();
+		glRotatef(-90,0,1,0);
+		renderNodeRestriction();
+		glPopMatrix();
 	}
 
 	// end 
@@ -137,4 +53,70 @@ void SGCNodeRestrictions::paintGL(ViewportData &data, fem::Project &, fem::Analy
 void SGCNodeRestrictions::accept(OperationsVisitor &v)
 {
 	v.visit(*this);
+}
+
+
+void SGCNodeRestrictions::renderNodeRestriction()
+{
+	glBegin(GL_TRIANGLES);
+	glNormal3f(1.4142f, 0, 1.4142f);
+	glVertex3i(0,0,0);
+	glVertex3i(-2,2,2);
+	glVertex3i(-2,-2,2);
+
+	glNormal3f(1.4142f,-1.4142f, 0);
+	glVertex3i(0,0,0);
+	glVertex3i(-2,-2, 2);
+	glVertex3i(-2,-2,-2);
+
+	glNormal3f(1.4142f, 0, -1.4142f);
+	glVertex3i(0,0,0);
+	glVertex3i(-2,-2,-2);
+	glVertex3i(-2, 2,-2);
+
+	glNormal3f(1.4142f, 1.4142f, 0);
+	glVertex3i(0,0,0);
+	glVertex3i(-2, 2,-2);
+	glVertex3i(-2, 2, 2);
+
+	// backface
+	glNormal3f(-1,0,0);
+	glVertex3i(-2, 2, 2);
+	glVertex3i(-2, 2,-2);
+	glVertex3i(-2,-2,-2);
+	glVertex3i(-2,-2,-2);
+	glVertex3i(-2,-2, 2);
+	glVertex3i(-2, 2, 2);
+	glEnd();
+
+	glBegin(GL_TRIANGLES);
+	glNormal3f(1.4142f, 0, 1.4142f);
+	glVertex3i(0,0,0);
+	glVertex3i( 2,-2,2);
+	glVertex3i( 2,2,2);
+
+	glNormal3f(1.4142f,-1.4142f, 0);
+	glVertex3i(0,0,0);
+	glVertex3i( 2,-2,-2);
+	glVertex3i( 2,-2, 2);
+
+	glNormal3f(1.4142f, 0, -1.4142f);
+	glVertex3i(0,0,0);
+	glVertex3i( 2, 2,-2);
+	glVertex3i( 2,-2,-2);
+
+	glNormal3f(1.4142f, 1.4142f, 0);
+	glVertex3i(0,0,0);
+	glVertex3i( 2, 2, 2);
+	glVertex3i( 2, 2,-2);
+
+	// backface
+	glNormal3f( 1,0,0);
+	glVertex3i( 2,-2,-2);
+	glVertex3i( 2, 2,-2);
+	glVertex3i( 2, 2, 2);
+	glVertex3i( 2, 2, 2);
+	glVertex3i( 2,-2, 2);
+	glVertex3i( 2,-2,-2);
+	glEnd();
 }

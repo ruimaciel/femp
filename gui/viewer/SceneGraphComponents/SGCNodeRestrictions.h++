@@ -35,6 +35,9 @@ class SGCNodeRestrictions
 		Visitor pattern method
 		*/
 		void accept(OperationsVisitor &v);
+	
+	protected:
+		void renderNodeRestriction();
 };
 
 #endif

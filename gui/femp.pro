@@ -10,7 +10,7 @@ QMAKE_EXT_CPP += c++
 INCLUDEPATH += /usr/include/eigen2 /usr/include/suitesparse
 LIBS += -ll -ly -lumfpack -lmetis -lblas -lamd
 
-HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.h++ NewProjectWizard.h++ \
+HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.h++ ui/NewProjectWizard.h++ \
 	ModelSelection.h++ \
 	MdiWindowProperties.h++ \
 	ui/NewProjectWizardPage1.h++ ui/NewProjectWizardPage2.h++ ui/NewProjectWizardPage3.h++ ui/NewProjectWizardPageLast.h++ \
@@ -54,7 +54,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	ui/MdiWindow.h++ ui/ModelWindow.h++ ui/DisplacementsWindow.h++ ui/PostprocessingWindow.h++ \
 	ui/WindowWith*.h++
 
-SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ NewProjectWizard.c++ \
+SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ ui/NewProjectWizard.c++ \
 	ModelSelection.c++ \
 	MdiWindowProperties.c++ \
 	ui/NewProjectWizardPage1.c++ ui/NewProjectWizardPage2.c++ ui/NewProjectWizardPage3.c++ ui/NewProjectWizardPageLast.c++  \

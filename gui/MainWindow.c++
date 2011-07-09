@@ -18,7 +18,7 @@
 
 #include "Logs.h++"	// declare the global message loggers
 
-#include "NewProjectWizard.h++"
+#include "ui/NewProjectWizard.h++"
 #include "NodeRestrainsDialog.h++"
 #include "NodeActionsDialog.h++"
 #include "DisplayOptionsDialog.h++"
@@ -507,6 +507,16 @@ void MainWindow::loadOptions()
 				colors.node[0] = temp[0]; 
 				colors.node[1] = temp[1]; 
 				colors.node[2] = temp[2]; 
+			} 
+		} 
+
+		if(options.getOption("viewport.background.color",temp) )
+		{ 
+			if(temp.size() == 3) 
+			{ 
+				colors.background[0] = temp[0]; 
+				colors.background[1] = temp[1]; 
+				colors.background[2] = temp[2]; 
 			} 
 		} 
 

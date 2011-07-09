@@ -43,6 +43,11 @@ void NewProjectWizardPage3::loadMaterialsCombo()
 	{
 		comboBoxMaterialsList->addItem(QString::fromStdString(i->label));
 	}
+	if(comboBoxMaterialsList->count() > 0)
+	{
+		lineEditFilePath->setEnabled(true);
+		toolButtonSelectFile->setEnabled(true);
+	}
 }
 
 

@@ -4,7 +4,7 @@
 		"type": "3D solid"
 	},
 	"materials": [
-		{"type":"linear elastic", "label": "Steel", "E":2e+08,"nu":0.3, "fy": 4.94066e-324}
+		{"type":"linear elastic", "label": "Steel", "E":200e+06,"nu":0.3, "fy": 4.94066e-324}
 	],
 	"nodes":[
 		[	1,[	-0.125,	-0.125,	-2	]],
@@ -245,8 +245,8 @@
 		{
 			"label": "Default",
 			"nodal loads":[
-				{"node":16, "force":[0, -1000, 0]},
-				{"node":31, "force":[0, -1000, 0]}
+				{"node": 7, "force":[0, -1000, 0]},
+				{"node": 8, "force":[0, -1000, 0]}
 			]
 		}
 		,

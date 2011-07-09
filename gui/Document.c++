@@ -28,7 +28,6 @@ Document::Document(const Document & copied)
 	{
 		this->file_name = NULL;
 	}
-	this->project.model = copied.model;
 	this->document_type = copied.document_type;
 }
 

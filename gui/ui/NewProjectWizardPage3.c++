@@ -39,7 +39,7 @@ bool NewProjectWizardPage3::validatePage()
 
 void NewProjectWizardPage3::loadMaterialsCombo()
 {
-	for(std::vector<fem::Material>::iterator i = document->model.material_list.begin(); i != document->model.material_list.end(); i++)
+	for(std::vector<fem::Material>::iterator i = document->project.model.material_list.begin(); i != document->project.model.material_list.end(); i++)
 	{
 		comboBoxMaterialsList->addItem(QString::fromStdString(i->label));
 	}
@@ -129,7 +129,7 @@ void NewProjectWizardPage3::getFileFromDialog(void)
 
 void NewProjectWizardPage3::addNewMaterial(void)
 {
-	NewMaterialDialog dialog(&document->model, this);
+	NewMaterialDialog dialog(&document->project.model, this);
 	switch(dialog.exec())
 	{
 		case QDialog::Accepted:

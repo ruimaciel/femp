@@ -838,8 +838,8 @@ void MainWindow::setNodeActions()
 		{
 			if(it->second == true)
 			{
-				document.model.load_pattern_list[na.getLoadPattern()].addNodalLoad(it->first, na.getForce());
-				document.model.load_pattern_list[na.getLoadPattern()].addNodalDisplacement(it->first, na.getDisplacement());
+				document.project.model.load_pattern_list[na.getLoadPattern()].addNodalLoad(it->first, na.getForce());
+				document.project.model.load_pattern_list[na.getLoadPattern()].addNodalDisplacement(it->first, na.getDisplacement());
 			}
 		}
 	}

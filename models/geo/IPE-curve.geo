@@ -53,14 +53,15 @@ Circle(16) = {12, 20, 11};
 // define surface
 Line Loop(17) = {12, 1, 2, 3, 14, 4, 16, 5, 6, 7, 8, 9, -15, 10, -13, 11};
 
-Plane Surface(1) = {17};
+Plane Surface(18) = {17};
 
 Transfinite Line{1:16} = 5;
 
-Transfinite Surface{1} = {1,5,7,3};
+Transfinite Surface{18};
 
-Recombine Surface{1};
+Recombine Surface{18};
 
-Extrude {0, 0, l} {
-  Surface{1}; Layers{5}; Recombine;
+Extrude { {0,1,0} , {0.75,0,0} , -Pi/2 }
+{
+  Surface{18}; Layers{5}; Recombine;
 }

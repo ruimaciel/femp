@@ -8,6 +8,9 @@
 #include "Document.h++"
 
 
+/**
+New Project Wizard section on how to load a mesh from a file
+**/
 class NewProjectWizardPage3
 	: public QWizardPage, public Ui_NewProjectWizardPage3
 {

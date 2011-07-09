@@ -4,13 +4,11 @@
 #include <QMessageBox>
 
 
-NewProjectWizard::NewProjectWizard(Document *doc, QWidget *parent)
+NewProjectWizard::NewProjectWizard(Document &doc, QWidget *parent)
 	: QWizard(parent)
 {
-	assert(doc != NULL);
-
 	// clear the model, start with a clean slate
-	doc->clear();
+	doc.clear();
 
 	// sets the pages that will be displayed by the wizard
 	/*
@@ -22,8 +20,8 @@ NewProjectWizard::NewProjectWizard(Document *doc, QWidget *parent)
 	page2 = new NewProjectWizardPage2;
 	addPage(page2);
 
-	page3 = new NewProjectWizardPage3(doc);
-	page3->document = doc;
+	page3 = new NewProjectWizardPage3(&doc);
+	page3->document = &doc;
 	addPage(page3);
 
 	/*
@@ -32,7 +30,7 @@ NewProjectWizard::NewProjectWizard(Document *doc, QWidget *parent)
 	*/
 
 	//TODO crude hack
-	doc->setProjectType(Document::TYPE_SOLID3D);
+	doc.setProjectType(Document::TYPE_SOLID3D);
 }
 
 

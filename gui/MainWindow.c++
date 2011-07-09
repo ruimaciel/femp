@@ -94,7 +94,7 @@ void MainWindow::newProject()
 	/*
 	The NewProjectWizard dialog will fill up a given document object through the steps
 	*/
-	NewProjectWizard np(&document, this);
+	NewProjectWizard np(document, this);
 	switch(np.exec())
 	{
 		case QDialog::Accepted:

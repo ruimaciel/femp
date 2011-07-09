@@ -73,9 +73,9 @@ void NewProjectWizardPage3::loadMeshFile()
 				{
 				// update the UI accordingly
 				QString temp;
-				temp.setNum(document->model.node_list.size());
+				temp.setNum(document->project.model.node_list.size());
 				labelNodesNumber->setText(temp);
-				temp.setNum(document->model.element_list.size());
+				temp.setNum(document->project.model.element_list.size());
 				labelElementsNumber->setText(temp);
 				labelError->setText("");
 
@@ -85,10 +85,10 @@ void NewProjectWizardPage3::loadMeshFile()
 
 			default:
 				// clear the model except the materials list
-				document->model.node_list.clear();
-				document->model.element_list.clear();
-				document->model.node_restrictions_list.clear();
-				document->model.load_pattern_list.clear();
+				document->project.model.node_list.clear();
+				document->project.model.element_list.clear();
+				document->project.model.node_restrictions_list.clear();
+				document->project.model.load_pattern_list.clear();
 				//TODO clear the list when exiting
 
 				// update the UI

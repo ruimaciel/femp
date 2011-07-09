@@ -1,0 +1,20 @@
+file = bar-6-04.oct ans =  422366
+file = bar-6-05.oct ans =  543047
+file = bar-6-06.oct ans =  663831
+file = bar-6-07.oct ans =  784842
+file = bar-6-08.oct ans =  905353
+file = bar-6-09.oct ans =  1026449
+file = bar-6-10.oct ans =  1146886
+file = bar-6-11.oct ans =  1268025
+file = bar-6-12.oct ans =  1388686
+file = bar-6-13.oct ans =  1509797
+file = bar-6-14.oct ans =  1630764
+file = bar-6-15.oct ans =  1751552
+file = bar-6-16.oct ans =  1872273
+file = bar-6-17.oct ans =  1993281
+file = bar-6-18.oct ans =  2114098
+file = bar-6-19.oct ans =  2235088
+file = bar-6-20.oct ans =  2355734
+file = bar-6-21.oct ans =  2476787
+file = bar-6-22.oct ans =  2597833
+file = bar-6-23.oct

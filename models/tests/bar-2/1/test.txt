@@ -1,0 +1,22 @@
+file = bar-6-04.oct ans =  21.655 d[11] = -0.043309
+file = bar-6-05.oct ans =  31.307 d[5] = -0.062614 d[8] = -0.062614
+file = bar-6-06.oct ans =  41.354 d[2] = -0.082710
+file = bar-6-07.oct ans =  51.236 d[8] = -0.102472
+file = bar-6-08.oct ans =  60.691 d[11] = -0.121382
+file = bar-6-09.oct ans =  69.496 d[2] = -0.138992
+file = bar-6-10.oct ans =  77.555 d[2] = -0.155110 d[11] = -0.155110 
+file = bar-6-11.oct ans =  84.844 d[8] = -0.169688 
+file = bar-6-12.oct ans =  91.385 d[8] = -0.182770
+file = bar-6-13.oct ans =  97.225 d[2] = -0.194451
+file = bar-6-14.oct ans =  102.43 d[8] = -0.204851
+file = bar-6-15.oct ans =  107.05 d[11] = -0.214100
+file = bar-6-16.oct ans =  111.16 d[5] = -0.222325
+file = bar-6-17.oct ans =  114.82 d[11] = -0.229644
+file = bar-6-18.oct ans =  118.08 d[11] = -0.236167
+file = bar-6-19.oct ans =  120.99 d[2] = -0.241990
+file = bar-6-20.oct ans =  123.60 d[5] = -0.247199
+file = bar-6-21.oct ans =  125.93 d[2] = -0.251870
+file = bar-6-22.oct ans =  128.03 d[8] = -0.256068
+file = bar-6-23.oct ans =  129.92 d[11] = -0.259850
+file = bar-6-24.oct ans =  131.63 d[11] = -0.263266
+file = bar-6-25.oct ans =  134.37 d[2] = -0.268760

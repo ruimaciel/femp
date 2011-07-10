@@ -29,7 +29,6 @@
 
 #include "ui/MdiWindow.h++"
 #include "ui/ModelWindow.h++"
-#include "ui/DisplacementsWindow.h++"
 #include "ui/PostprocessingWindow.h++"
 
 #include "fem_msh.h++"
@@ -1142,9 +1141,9 @@ void MainWindow::showDisplacements()
 	window = mdiArea->activeSubWindow();
 	if(window != NULL)
 	{
-		window->setWindowTitle("Displacements");
+		window->setWindowTitle("Postprocessing");
 
-		DisplacementsWindow *viewport = new DisplacementsWindow(document.project, colors, this);
+		PostprocessingWindow *viewport = new PostprocessingWindow(document.project, colors, this);
 		window->setWidget(viewport);
 	}
 	else
@@ -1214,7 +1213,7 @@ void MainWindow:: createNewViewportWindow()
 	window_gl_viewport = new QMdiSubWindow(mdiArea);
 	window_gl_viewport->setWidget(window);
 	window_gl_viewport->setAttribute(Qt::WA_DeleteOnClose);
-	window_gl_viewport->setWindowTitle(tr("model viewport"));
+	window_gl_viewport->setWindowTitle(tr("Model viewport"));
 	window_gl_viewport->showMaximized();
 }
 

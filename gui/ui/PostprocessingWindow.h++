@@ -7,6 +7,7 @@
 #include "WindowWithPostprocessing.h++"
 #include "WindowWithScaling.h++"
 
+
 #include <QWidget>
 #include <QComboBox>
 
@@ -23,6 +24,7 @@ class PostprocessingWindow
 
 	protected:
 		enum AnalysisType {
+			A_DISPLACEMENT = 0,
 			A_STRAIN_11, A_STRAIN_22, A_STRAIN_33, A_STRAIN_12,A_STRAIN_13,A_STRAIN_23,
 			A_STRESS_11, A_STRESS_22, A_STRESS_33, A_STRESS_12,A_STRESS_13,A_STRESS_23
 		};
@@ -40,6 +42,9 @@ class PostprocessingWindow
 		// this member is needed because I can't get the connect() in WindowWithGhostSurfaces to have any effect
 		void setNodeRestrictionsVisibility(const bool state);
 		void setGhostSurfacesVisibility(const bool state);
+
+		// sets the postprocessing state according
+		void setPostprocessingState(int state);
 
 	protected:
 		void connectSignalsToSlots();

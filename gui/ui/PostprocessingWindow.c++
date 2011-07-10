@@ -10,12 +10,12 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, ViewportColor
 	WindowWithGhostSurfaces(project, colors, parent),
 	WindowWithScaling(project, colors, parent)
 {
-	viewport = new PostprocessingViewport(project,  parent);
-	viewport->setAnalysisResult(project.result.back());
+	this->viewport = new PostprocessingViewport(project,  parent);
+	this->viewport->setAnalysisResult(project.result.back());
 
 	this->setCentralWidget(viewport);
 
-	viewport->setColors(colors);
+	this->viewport->setColors(colors);
 
 	WindowWithScaling::createToolbar(project);
 	WindowWithResults::createToolbar(project);
@@ -48,5 +48,33 @@ void PostprocessingWindow::connectSignalsToSlots()
 {
 	WindowWithGhostSurfaces::connectSignalsToSlots();
 	WindowWithScaling::connectSignalsToSlots();
+	WindowWithPostprocessing::connectSignalsToSlots();
+
+	connect(postprocessingComboBox,	SIGNAL(activated(int)),	this,	SLOT(setPostprocessingState(int)));
 }
 
+
+void PostprocessingWindow::setPostprocessingState(int state)
+{
+	PostprocessingViewport *current_vp = NULL;
+	current_vp = static_cast<PostprocessingViewport*>(this->viewport);
+	if(current_vp == NULL)
+	{
+		return;
+	}
+
+	switch(state)
+	{
+		case A_DISPLACEMENT:
+			current_vp->showDisplacements();
+			break;
+
+		case A_STRAIN_11:
+			current_vp->showStrain11();
+			break;
+
+		default:
+			qWarning("PostprocessingWindow::setPostprocessingState(%d), unused state", state);
+			break;
+	}
+}

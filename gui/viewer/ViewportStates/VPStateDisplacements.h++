@@ -32,13 +32,6 @@ class VPStateDisplacements
 		// void mouseMoveEvent(QMouseEvent *event);
 		void keyPressEvent ( BaseViewport *mv, QKeyEvent * event );
 
-		/**
-		Sets 
-		**/
-		template<typename scalar>
-		void setDisplacements(fem::AnalysisResult<scalar> &);
-
-
 	protected:
 		/*
 		Marks all objects which intersect with a given ray as selected

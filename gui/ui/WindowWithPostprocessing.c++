@@ -14,6 +14,7 @@ void WindowWithPostprocessing::createToolbar(fem::Project &)
 	postprocessingComboBox = new QComboBox(this);
 	QString text;
 
+	postprocessingComboBox->insertItem(P_DISPLACEMENT, "Displacements");
 	postprocessingComboBox->insertItem(P_STRAIN_11, "Strain 11");
 	postprocessingComboBox->insertItem(P_STRAIN_22, "Strain 22");
 	postprocessingComboBox->insertItem(P_STRAIN_33, "Strain 33");

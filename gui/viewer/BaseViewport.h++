@@ -49,6 +49,10 @@ class BaseViewport
 
 		/*
 		Generic method to implement a state pattern to render variants of the same model (i.e., XX tension, YY tension...)
+		This method:
+			- allocates memory for a new state object
+			- initializes the object
+			- generates the scenegraph
 		*/
 		template <class NewState>
 		void setState(NewState *);
@@ -63,7 +67,7 @@ class BaseViewport
 		void setXRotation(int angle);
 		void setYRotation(int angle);
 		void setZRotation(int angle);
-		void setPosition(int x, int y);
+		void setPosition(double x, double y, double z);
 
 		/**
 		Configures the current viewport to render new_result
@@ -81,6 +85,7 @@ class BaseViewport
 		void xRotationChanged(int angle);
 		void yRotationChanged(int angle);
 		void zRotationChanged(int angle);
+		void positionChanged( double x, double y, double z);
 
 	protected:
 		void initializeGL();

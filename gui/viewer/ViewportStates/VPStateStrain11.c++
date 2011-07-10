@@ -206,13 +206,6 @@ void VPStateStrain11::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 }
 
 
-template<typename scalar>
-void VPStateStrain11::setDisplacements(fem::AnalysisResult<scalar> &result)
-{
-	this->result = &result;
-}
-
-
 void VPStateStrain11::setField(FieldComponent *field)
 {
 	assert(field != NULL);

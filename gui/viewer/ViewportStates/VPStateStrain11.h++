@@ -37,11 +37,6 @@ class VPStateStrain11
 		// void mouseMoveEvent(QMouseEvent *event);
 		void keyPressEvent ( BaseViewport *mv, QKeyEvent * event );
 
-		/**
-		Sets 
-		**/
-		template<typename scalar>
-		void setDisplacements(fem::AnalysisResult<scalar> &);
 
 		/**
 		Sets which field this viewport will render

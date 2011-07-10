@@ -57,6 +57,8 @@ void BaseViewport::initializeGL()
 	GLfloat specularity[]= { 1.0f, 1.0f, 1.0f, 1.0f };
 	GLint specmaterial = 60;
 
+	glClearColor(colors.background[0], colors.background[1], colors.background[2], colors.background[3]);
+
 	glClearDepth(1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
@@ -191,11 +193,10 @@ void BaseViewport::setZRotation(int angle)
 }
 
 
-void BaseViewport::setPosition(int x, int y)
+void BaseViewport::setPosition(double x, double y, double z)
 {
 	//TODO implement this
-	viewport_data.camera.pos.x(-x);
-	viewport_data.camera.pos.y(-y);
+	viewport_data.camera.setPosition(x, y, z);
 
 	updateGL();
 }

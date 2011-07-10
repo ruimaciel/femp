@@ -2,6 +2,7 @@
 
 #include "SceneGraph.h++"
 
+#include "ViewportStates/VPStateDisplacements.h++"
 #include "ViewportStates/VPStateStrain11.h++"
 
 
@@ -13,10 +14,12 @@ PostprocessingViewport::PostprocessingViewport(fem::Project &project, QWidget *p
 
 	//TODO let the user choose which result to represent
 	this->project = &project;
-	this->state = NULL;
+	this->state = NULL;	// initialize the viewport state pointer
 
 	//TODO let the user select which analysis case to visualize
-	this->showStrain11(project.result.back());
+
+	// this->showStrain11(project.result.back());
+	this->showDisplacements();
 
 	// set this widget's load pattern pointer
 	if(project.model.load_pattern_list.empty())
@@ -153,10 +156,21 @@ void PostprocessingViewport::setPosition(int x, int y)
 }
 
 
-void PostprocessingViewport::showStrain11(fem::AnalysisResult<double> &)
+void PostprocessingViewport::showDisplacements()
+{
+	// set the state
+	VPStateDisplacements* state = new VPStateDisplacements;
+	state->setAnalysisResult(this->project->result.back());
+
+	this->setState(state);
+}
+
+
+void PostprocessingViewport::showStrain11()
 {
 	// set the state
 	VPStateStrain11* state = new VPStateStrain11;
+	state->setAnalysisResult(this->project->result.back());
 
 	this->setState(state);
 }

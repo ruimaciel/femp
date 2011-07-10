@@ -24,6 +24,9 @@
 #include "../fem/LinearAnalysis.h++"
 
 
+/**
+Viewport designed to represent any postprocessing being done to any given model's FEM solution.
+**/
 class PostprocessingViewport 
 	: public BaseViewport
 {
@@ -33,6 +36,9 @@ class PostprocessingViewport
 		PostprocessingViewport(fem::Project &project, QWidget *parent = NULL);
 		~PostprocessingViewport();
 
+		/*
+		Sets the starting state for the supported post-processing representations
+		*/
 		template <class NewState>
 		void setState(NewState *);
 
@@ -51,7 +57,8 @@ class PostprocessingViewport
 		void setPosition(int x, int y);
 
 		// set the viewport state
-		void showStrain11(fem::AnalysisResult<double> &);
+		void showDisplacements();
+		void showStrain11();
 
 	Q_SIGNALS:
 		void xRotationChanged(int angle);

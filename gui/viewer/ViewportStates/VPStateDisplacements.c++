@@ -204,13 +204,6 @@ void VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * e
 }
 
 
-template<typename scalar>
-void VPStateDisplacements::setDisplacements(fem::AnalysisResult<scalar> &result)
-{
-	this->result = &result;
-}
-
-
 void VPStateDisplacements::selectModelObjects(const fem::point &,const fem::point &)
 {
 	//TODO finish implementing this

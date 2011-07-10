@@ -42,7 +42,7 @@ VPStateStrain11::~VPStateStrain11()
 }
 
 
-void VPStateStrain11::initialize(BaseViewport *viewport)
+void VPStateStrain11::initialize(BaseViewport *)
 {
 	// build the displaced_nodes from the analysis
 
@@ -223,7 +223,7 @@ void VPStateStrain11::setField(FieldComponent *field)
 }
 
 
-void VPStateStrain11::selectModelObjects(const fem::point &near,const fem::point &far)
+void VPStateStrain11::selectModelObjects(const fem::point &,const fem::point &)
 {
 	//TODO finish implementing this
 

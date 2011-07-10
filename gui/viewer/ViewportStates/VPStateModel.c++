@@ -151,7 +151,7 @@ void VPStateModel::mousePressEvent(BaseViewport *mv, QMouseEvent *event)
 }
 
 
-void VPStateModel::selectModelObjects(const fem::point &near,const fem::point &far)
+void VPStateModel::selectModelObjects(const fem::point &,const fem::point &)
 {
 	//TODO finish this
 	// test nodes

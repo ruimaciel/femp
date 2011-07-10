@@ -38,7 +38,7 @@ VPStateDisplacements::~VPStateDisplacements()
 }
 
 
-void VPStateDisplacements::initialize(BaseViewport *viewport)
+void VPStateDisplacements::initialize(BaseViewport *)
 {
 	// build the displaced_nodes from the analysis
 
@@ -211,7 +211,7 @@ void VPStateDisplacements::setDisplacements(fem::AnalysisResult<scalar> &result)
 }
 
 
-void VPStateDisplacements::selectModelObjects(const fem::point &near,const fem::point &far)
+void VPStateDisplacements::selectModelObjects(const fem::point &,const fem::point &)
 {
 	//TODO finish implementing this
 

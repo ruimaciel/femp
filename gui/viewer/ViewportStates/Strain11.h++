@@ -19,7 +19,7 @@ class Strain11
 };
 
 
-void Strain11::Quad4(std::vector<fem::point> &color_map, fem::Project &project, fem::AnalysisResult<double> &result, fem::Surface &surface, ViewportColors &color)
+void Strain11::Quad4(std::vector<fem::point> &color_map, fem::Project &, fem::AnalysisResult<double> &result, fem::Surface &surface, ViewportColors &color)
 {
 	for(size_t n = 0; n < 4; n++)
 	{
@@ -38,7 +38,7 @@ void Strain11::Quad4(std::vector<fem::point> &color_map, fem::Project &project, 
 }
 
 
-void Strain11::Quad8(std::vector<fem::point> &color_map, fem::Project &project, fem::AnalysisResult<double> &result, fem::Surface &surface, ViewportColors &color)
+void Strain11::Quad8(std::vector<fem::point> &color_map, fem::Project &, fem::AnalysisResult<double> &result, fem::Surface &surface, ViewportColors &color)
 {
 	for(size_t n = 0; n < 8; n++)
 	{
@@ -57,7 +57,7 @@ void Strain11::Quad8(std::vector<fem::point> &color_map, fem::Project &project, 
 }
 
 
-void Strain11::Quad9(std::vector<fem::point> &color_map, fem::Project &project, fem::AnalysisResult<double> &result, fem::Surface &surface, ViewportColors &color)
+void Strain11::Quad9(std::vector<fem::point> &color_map, fem::Project &, fem::AnalysisResult<double> &result, fem::Surface &surface, ViewportColors &color)
 {
 	for(size_t n = 0; n < 9; n++)
 	{
@@ -76,7 +76,7 @@ void Strain11::Quad9(std::vector<fem::point> &color_map, fem::Project &project, 
 }
 
 
-void Strain11::Triangle3(std::vector<fem::point> &color_map, fem::Project &project, fem::AnalysisResult<double> &result, fem::Surface &surface, ViewportColors &color)
+void Strain11::Triangle3(std::vector<fem::point> &color_map, fem::Project &, fem::AnalysisResult<double> &result, fem::Surface &surface, ViewportColors &color)
 {
 	for(size_t n = 0; n < 3; n++)
 	{
@@ -95,7 +95,7 @@ void Strain11::Triangle3(std::vector<fem::point> &color_map, fem::Project &proje
 }
 
 
-void Strain11::Triangle6(std::vector<fem::point> &color_map, fem::Project &project, fem::AnalysisResult<double> &result, fem::Surface &surface, ViewportColors &color)
+void Strain11::Triangle6(std::vector<fem::point> &color_map, fem::Project &, fem::AnalysisResult<double> &result, fem::Surface &surface, ViewportColors &color)
 {
 	for(size_t n = 0; n < 6; n++)
 	{

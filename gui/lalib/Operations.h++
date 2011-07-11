@@ -39,6 +39,32 @@ void assign(Matrix<scalar,MatrixStoragePolicy> &lhs, Matrix<scalar, SparseDOK> &
 }
 
 
+/*
+ppmvm: pre and post matrix-vector multiplication
+**/
+template<typename scalar, template<typename> class MatrixStoragePolicy, template<typename> class VectorStoragePolicy> 
+scalar ppmvm(Vector<scalar, VectorStoragePolicy> &lhsv, Matrix<scalar,MatrixStoragePolicy> &m, Vector<scalar, VectorStoragePolicy> &rhsv)
+{
+	assert(lhsv.size() == m.rows());
+	assert(lhsv.size() == m.columns());
+
+	scalar out = 0;
+
+	for(size_t i = 0; i < m.rows(); i++)
+	{
+		scalar v = 0;
+		for(size_t j = 0; j < m.columns(); j++)
+		{
+			v += m.value(i,j)*rhsv.value(j); 
+		}
+		
+		out += lhsv.value(i)*v;
+	}
+
+	return out;
+}
+
+
 // */
 }
 

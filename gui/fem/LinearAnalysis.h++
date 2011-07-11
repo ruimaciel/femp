@@ -112,6 +112,11 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Project &project, LoadP
 	this->recoverValues(project, *result);
 	progress.markSectionEnd();
 
+	progress.markSectionStart("calculate strain energy");
+	this->calculateStrainEnergy(project, *result);
+	cout << "strain energy: " << result->energy << endl;
+	progress.markSectionEnd();
+
 	// announce the end
 	this->m_solver->cleanup(*result, &progress);
 	progress.markFinish();

@@ -5,6 +5,7 @@
 
 #include "../lalib/Matrix.h++"
 #include "../lalib/Vector.h++"
+#include "../lalib/Operations.h++"
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 #include <Eigen/LU>
@@ -122,6 +123,11 @@ class Analysis
 		Calculates a set of recovered values in every node of each individual element
 		**/
 		enum Error recoverValues(Project &project, AnalysisResult<Scalar> &result);
+
+		/**
+		Calculates a set of recovered values in every node of each individual element
+		**/
+		enum Error calculateStrainEnergy(Project &project, AnalysisResult<Scalar> &result);
 
 	protected:
 		/**
@@ -810,6 +816,13 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Project &project, A
 	return ERR_OK;
 }
 
+
+template<typename Scalar>
+enum Analysis<Scalar>::Error Analysis<Scalar>::calculateStrainEnergy(Project &, AnalysisResult<Scalar> &result)
+{
+	result.energy = 0.5*ppmvm(result.d, result.K, result.d);
+	return ERR_OK;
+}
 
 
 template<typename Scalar>

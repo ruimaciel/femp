@@ -44,6 +44,13 @@ struct AnalysisResult
 	typename RecoveredValues<Scalar>::Values maximum, minimum;
 
 
+	// the model's energy
+	Scalar energy;
+
+	// elapsed time in miliseconds (taken from Qt's qint64
+	long long int elapsed_time;	
+
+
 	void clear();
 };
 
@@ -62,6 +69,9 @@ AnalysisResult<Scalar>::AnalysisResult(const AnalysisResult<Scalar> &copied)
 	this->recovered_values = copied.recovered_values;
 	this->maximum = copied.maximum;
 	this->minimum = copied.minimum;
+
+	this->energy = copied.energy;
+	this->elapsed_time = elapsed_time;
 }
 
 
@@ -79,6 +89,9 @@ void AnalysisResult<Scalar>::clear()
 
 	maximum = {0,0,0,0,0,0};
 	minimum = {0,0,0,0,0,0};
+
+	energy = 0;
+	this->elapsed_time = 0;
 }
 
 

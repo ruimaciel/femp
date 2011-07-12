@@ -44,6 +44,7 @@ Tetrahedron10<T>::Tetrahedron10()
 	this->stiffness_degree = 2;
 	this->domain_degree = 2;
 
+	this->coordinates.resize(10);
 	this->N.resize(10);
 	this->dNdcsi.resize(10);
 	this->dNdeta.resize(10);

@@ -21,6 +21,7 @@
 #include "../SceneGraph.h++"
 #include "../SceneGraphComponents/SGCNode.h++"
 #include "../SceneGraphComponents/SGCDisplacementSurface.h++"
+#include "../SceneGraphComponents/SGCNodeRestrictions.h++"
 #include "../SceneGraphComponents/SGCDisplacementOriginalSurface.h++"
 #include "../SceneGraphComponents/OpaqueSurface/surfaces.h++"
 
@@ -56,6 +57,11 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 	for(size_t n = 0; n < viewport->project->model.node_list.size(); n++)
 	{
 		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(n, *viewport->project) );
+	}
+
+	for( std::map<size_t, fem::NodeRestrictions>::iterator i = viewport->project->model.node_restrictions_list.begin(); i != viewport->project->model.node_restrictions_list.end(); i++)
+	{
+		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, new SGCNodeRestrictions(viewport->project->model.node_list[i->first], i->second) );
 	}
 
 	// add the surfaces to the scenegraph

@@ -26,7 +26,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem/elements/Prism18.h++ \
 	viewer/ViewportData.h++ \
 	viewer/Camera.h++  viewer/DisplayOptions.h++  viewer/ViewportColors.h++  \
-	viewer/BaseViewport.h++ viewer/ModelViewport.h++ viewer/DisplacementsViewport.h++  viewer/PostprocessingViewport.h++ \
+	viewer/BaseViewport.h++ viewer/ModelViewport.h++ viewer/PostprocessingViewport.h++ \
 	viewer/ViewportStates/*.h++ \
 	viewer/SceneGraph.h++ \
 	viewer/SceneGraphComponents/*.h++ \
@@ -51,7 +51,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	ui/AnalysisDialog.h++ \
 	fem/solvers/*.h++ \
 	ui/AnalysisProgressDialog.h++ \
-	ui/MdiWindow.h++ ui/ModelWindow.h++ ui/DisplacementsWindow.h++ ui/PostprocessingWindow.h++ \
+	ui/MdiWindow.h++ ui/ModelWindow.h++ ui/PostprocessingWindow.h++ \
 	ui/WindowWith*.h++
 
 SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ ui/NewProjectWizard.c++ \
@@ -64,7 +64,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
 	viewer/ViewportData.c++ \
 	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ViewportColors.c++  \
-	viewer/BaseViewport.c++ viewer/ModelViewport.c++ viewer/DisplacementsViewport.c++  viewer/PostprocessingViewport.c++ \
+	viewer/BaseViewport.c++ viewer/ModelViewport.c++ viewer/PostprocessingViewport.c++ \
 	viewer/ViewportStates/*.c++  \
 	viewer/SceneGraph.c++ \
 	viewer/SceneGraphComponents/*.c++ \
@@ -82,7 +82,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	viewer/boundaries/CollisionDetection.c++ \
 	ui/AnalysisDialog.c++ \
 	ui/AnalysisProgressDialog.c++ \
-	ui/MdiWindow.c++ ui/ModelWindow.c++ ui/DisplacementsWindow.c++ ui/PostprocessingWindow.c++ \
+	ui/MdiWindow.c++ ui/ModelWindow.c++ ui/PostprocessingWindow.c++ \
 	ui/WindowWith*.c++
 
 FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \

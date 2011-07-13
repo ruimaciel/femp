@@ -409,7 +409,6 @@ void MainWindow::createActions()
 	connect(ui.actionShowNodalForces,	SIGNAL(triggered()),	this,	SLOT(setNodeForcesDisplay()));
 
 	connect(ui.actionViewModel,	SIGNAL(triggered()),	this,	SLOT(showModel()));
-	connect(ui.actionViewDisplacements,	SIGNAL(triggered()),	this,	SLOT(showDisplacements()));
 	connect(ui.actionViewPostprocessing,	SIGNAL(triggered()),	this,	SLOT(showPostprocessing()));
 
 	connect(ui.actionQuadrature_rules,	SIGNAL(triggered()),	this,	SLOT(editQuadratureRules()) );
@@ -980,7 +979,7 @@ void MainWindow::runAnalysis()
 		mdiArea->setActiveSubWindow(displacements_window);
 	}
 	
-	this->showDisplacements();
+	this->showPostprocessing();
 
         ui.actionDump_FEM_equation->setEnabled(true);
 
@@ -1130,25 +1129,6 @@ void MainWindow::showModel()
 	else
 	{
 		this->createNewViewportWindow();
-	}
-}
-
-
-void MainWindow::showDisplacements()
-{
-	QMdiSubWindow *window;
-
-	window = mdiArea->activeSubWindow();
-	if(window != NULL)
-	{
-		window->setWindowTitle("Postprocessing");
-
-		PostprocessingWindow *viewport = new PostprocessingWindow(document.project, colors, this);
-		window->setWidget(viewport);
-	}
-	else
-	{
-		qWarning("MainWindow::showDisplacements(): no active subwindow");
 	}
 }
 

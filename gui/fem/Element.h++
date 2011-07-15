@@ -80,10 +80,6 @@ namespace fem
 			int node_number() const;
 			
 			enum ElementFamily family() const;
-
-			//TODO remove
-			int degree() const;
-
 	};
 }
 #endif

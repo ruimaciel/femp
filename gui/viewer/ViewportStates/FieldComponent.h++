@@ -13,7 +13,7 @@
 
 
 /**
-State pattern which defines the color values in each node
+Base class for the State pattern which defines the color values in each node
 **/
 class FieldComponent
 {

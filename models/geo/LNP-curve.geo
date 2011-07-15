@@ -48,6 +48,6 @@ Recombine Surface{18};
 
 Extrude { {0,1,0}, {1,0,0} , Pi/2} 
 {
-  Surface{18}; Layers{5}; Recombine;
+  Surface{18}; Layers{3}; Recombine;
 }
 Physical Volume(96) = {1};

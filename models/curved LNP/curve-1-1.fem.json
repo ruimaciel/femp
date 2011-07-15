@@ -162,5 +162,20 @@
 		{"type":"prism6", "nodes":[86,78,82,87,79,83]},
 		{"type":"prism6", "nodes":[87,79,83,88,80,84]},
 		{"type":"prism6", "nodes":[88,80,84,28,26,27]}
+	] 
+	,
+
+	"node restrictions": [
+		{ "node":[ 1,15], "dx":true, "dy":true, "dz":true},
+		{ "node":[31,33], "dx":true, "dy":true, "dz":true}
+	],
+
+	"load patterns":[
+		{
+			"label": "Default",
+			"nodal loads":[
+				{"node": 16, "force":[0, 1, 0]},
+			]
+		}
 	]
 }

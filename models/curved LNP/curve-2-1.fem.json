@@ -616,4 +616,20 @@
 		{"type":"prism18", "nodes":[183,165,174,184,166,175,534,380,188,371,170,179,538,382,373,539,383,374]},
 		{"type":"prism18", "nodes":[184,166,175,28,26,27,538,382,189,373,171,180,413,69,68,542,384,375]}
 	]
+	,
+
+	"node restrictions": [
+		{ "node":[ 1,15], "dx":true, "dy":true, "dz":true},
+		{ "node":[31,51], "dx":true, "dy":true, "dz":true},
+		{ "node":[208,222], "dx":true, "dy":true, "dz":true}
+	],
+
+	"load patterns":[
+		{
+			"label": "Default",
+			"nodal loads":[
+				{"node": 16, "force":[0, 1, 0]},
+			]
+		}
+	]
 }

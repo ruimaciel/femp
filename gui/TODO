@@ -15,3 +15,6 @@
 - create a common base class for all OpenGL viewports (ModelViewport, DisplacementsViewport, etc..)
 - implement Iso viewport angles in DisplacementsViewport
 - implement a wireframe surface class for the displacement viewport
+- verificar se cargas no domínio fazem referência a um elemento que existe
+
+- visualização de reacções no apoio

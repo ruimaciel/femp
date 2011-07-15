@@ -3,6 +3,7 @@ project.new.default_directory	string	home folder subdirectory which acts as the 
 project.open.default_directory	string	directory where the program looks for the first time
 viewport.node.radius	number	sets the default scale for the sphere depicting the nodes
 viewport.node.color	number array	color
+viewport.background.color	number array	color
 viewport.wireframe.color	number array	the default value for the wireframe color
 
 analysis.quadrature.domain.tetrahedron4	number

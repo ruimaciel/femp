@@ -47,6 +47,11 @@ class SparseDOK
 
 
 		void resize(const size_t row, const size_t column);
+
+		/**
+		* Returns the number of non-zero coefficients
+		**/
+		size_t nnz();
 };
 
 
@@ -103,6 +108,13 @@ void SparseDOK<scalar>::resize(const size_t rows, const size_t columns)
 
 	data.t_rows = rows;
 	data.t_columns = columns;
+}
+
+
+template<typename scalar>
+size_t SparseDOK<scalar>::nnz()
+{
+	return this->data.data.size();
 }
 
 

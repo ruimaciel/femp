@@ -68,6 +68,8 @@ void assign(Matrix<scalar,SparseCCS> &lhs, Matrix<scalar, SparseDOK> &rhs)
 	}
 	lhs.data.column_pointer.push_back(lhs.data.row_index.size());
 	lhs.data.t_rows++;
+	#undef rrow
+	#undef rcol
 
 	/*
 	cout << "values: [";
@@ -118,6 +120,37 @@ scalar ppmvm(Vector<scalar, VectorStoragePolicy> &lhsv, Matrix<scalar,MatrixStor
 }
 
 
+template<typename scalar, template<typename> class VectorStoragePolicy> 
+scalar ppmvm(Vector<scalar, VectorStoragePolicy> &lhsv, Matrix<scalar,SparseDOK> &m, Vector<scalar, VectorStoragePolicy> &rhsv)
+{
+	assert(lhsv.size() == m.rows());
+	assert(lhsv.size() == m.columns());
+
+	scalar out = 0;
+	scalar v = 0;
+
+	size_t i = 0;	// row
+
+	#define rrow (c->first%m.data.t_rows)
+	#define rcol (c->first/m.data.t_rows)
+	for(typename std::map<size_t, scalar>::iterator c = m.data.data.begin(); c != m.data.data.end(); c++)
+	{
+		if(i != rrow)
+		{
+			out += lhsv.value(i)*v;
+			v = 0;
+			i = rrow;
+		}
+		v += c->second*rhsv.value(rcol);
+	}
+	out += lhsv.value(i)*v;
+	v = 0;
+	#undef rrow
+	#undef rcol
+
+
+	return out;
+}
 // */
 }
 

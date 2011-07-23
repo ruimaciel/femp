@@ -87,17 +87,21 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Project &project, LoadP
 	using namespace std;
 	using namespace Eigen;
 
+	progress.markSectionStart("build FEM equation");
 	// clear existing data structures
 	result->clear();
 
 	this->build_fem_equation(project, lp, result, progress);
 
 	result->d.resize(result->f.size());	// is this reallly necessary?
+	progress.markSectionEnd();
 
 	// temporary matrices
 	lalib::Matrix<Scalar, lalib::SparseCRS> my_k;
 
+	progress.markSectionStart("initializing equation solver");
 	this->m_solver->initialize(*result, &progress);
+	progress.markSectionEnd();
 
 	progress.markSectionStart("solve FEM equation");
 	progress.markSectionLimit(project.model.element_list.size());

@@ -676,9 +676,10 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Project &project, A
 
 	result.recovered_values.resize(project.model.element_list.size());
 
-	for(size_t n = 0; n < project.model.element_list.size(); n++)
+	// recover the set of values for each element
+	for(size_t element_number = 0; element_number < project.model.element_list.size(); element_number++)
 	{
-		switch(project.model.element_list[n].type)
+		switch(project.model.element_list[element_number].type)
 		{
 			case Element::FE_TETRAHEDRON4:
 				element = &tetra4;
@@ -718,51 +719,42 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Project &project, A
 				break;
 		}
 
+		// sets a vector with the element's local coordinates for it's nodes
 		element->setCoordinates( );
 
 
-		// cycle through this element's nodes
-		for(size_t i = 0; i < project.model.element_list[n].nodes.size(); i++)
+		// recover the values for each of the element's node
+		for(size_t element_node_number = 0; element_node_number < project.model.element_list[element_number].nodes.size(); element_node_number++)
 		{
+			size_t node_reference;
 			Scalar dx, dy, dz;	// degrees of freedom of each node
 			Scalar dNdx, dNdy, dNdz;	// degrees of freedom of each node
 
-			//TODO set dx, dy, dz;
-			dof = result.lm.find(project.model.element_list[n].nodes[i]);
-			if(dof == result.lm.end())
-			{
-				dx = dy = dz = 0;
-			}
-			else
-			{
-				size_t n = dof->second.get<0>();
-				dx = (n != 0)? result.d(n-1) : 0;
-				n = dof->second.get<1>();
-				dy = (n != 0)? result.d(n-1) : 0;
-				n = dof->second.get<2>();
-				dz = (n != 0)? result.d(n-1) : 0;
-			}
-
 			J.setZero();
 			invJ.setZero();
+			values = {0, 0, 0, 0, 0, 0};
 
-			element->setdNdcsi( element->coordinates[i] );
-			element->setdNdeta( element->coordinates[i] );
-			element->setdNdzeta( element->coordinates[i] );
+			// sets the values for the derivatives from the local coordinates
+			element->setdNdcsi( element->coordinates[element_node_number] );
+			element->setdNdeta( element->coordinates[element_node_number] );
+			element->setdNdzeta( element->coordinates[element_node_number] );
+
+			// calculate inv(J)
+			Scalar X, Y, Z;	// global coordinates of each node
 
 			// This is the loop to sum over the entire dNd* arrays
-			for(size_t j = 0; j < project.model.element_list[n].nodes.size(); j++)
+			for(size_t j = 0; j < project.model.element_list[element_number].nodes.size(); j++)
 			{
 				/* 
 				   calculate derivatives in global coordinates from expression in local coordinates
 				   dNdcsi = J*dNdx <=> dNdx = invJ*dNdcsi
-				*/
-				Scalar X, Y, Z;	// degrees of freedom of each node
-				X = element->coordinates[j].x();
-				Y = element->coordinates[j].y();
-				Z = element->coordinates[j].z();
+				 */
+				node_reference = project.model.element_list[element_number].nodes[j];
+				X = project.model.node_list[node_reference].x();
+				Y = project.model.node_list[node_reference].y();
+				Z = project.model.node_list[node_reference].z();
 
-
+				// J = dxdcsi = dNdcsi * x
 				J(0,0) += element->dNdcsi[ j]*X;	J(1,0) += element->dNdcsi[ j]*Y;	J(2,0) += element->dNdcsi[j]*Z;
 				J(0,1) += element->dNdeta[ j]*X;	J(1,1) += element->dNdeta[ j]*Y;	J(2,1) += element->dNdeta[j]*Z;
 				J(0,2) += element->dNdzeta[ j]*X;	J(1,2) += element->dNdzeta[ j]*Y;	J(2,2) += element->dNdzeta[j]*Z;
@@ -770,20 +762,32 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Project &project, A
 
 			J.computeInverse(&invJ);
 
-			// assign to temp values, to enhance code readability
-			dNdx =  invJ(0,0)*element->dNdcsi[i] + invJ(0,1)*element->dNdeta[i] + invJ(0,2)*element->dNdzeta[i];
-			dNdy =  invJ(1,0)*element->dNdcsi[i] + invJ(1,1)*element->dNdeta[i] + invJ(1,2)*element->dNdzeta[i];
-			dNdz =  invJ(2,0)*element->dNdcsi[i] + invJ(2,1)*element->dNdeta[i] + invJ(2,2)*element->dNdzeta[i];
+			dNdx = dNdy = dNdz = 0;
+			// dNdx_i = invJ_{ij} * dNdcsi_j
+			for(size_t k = 0; k < project.model.element_list[element_number].nodes.size(); k++)
+			{
 
-			// assign the values
-			values.e11 = dNdx*dx;
-			values.e22 = dNdy*dy;
-			values.e33 = dNdz*dz;
-			values.e12 = dNdx*dy + dNdy*dx;
-			values.e13 = dNdx*dz + dNdz*dx;
-			values.e23 = dNdy*dz + dNdz*dy;
+				// assign to temp values, to enhance code readability
+				dNdx +=  invJ(0,0)*element->dNdcsi[k] + invJ(0,1)*element->dNdeta[k] + invJ(0,2)*element->dNdzeta[k];
+				dNdy +=  invJ(1,0)*element->dNdcsi[k] + invJ(1,1)*element->dNdeta[k] + invJ(1,2)*element->dNdzeta[k];
+				dNdz +=  invJ(2,0)*element->dNdcsi[k] + invJ(2,1)*element->dNdeta[k] + invJ(2,2)*element->dNdzeta[k];
 
-			result.recovered_values[n].node[i] = values;
+				//set dx, dy, dz;
+				dx = result.displacements[node_reference].x();
+				dy = result.displacements[node_reference].y();
+				dz = result.displacements[node_reference].z();
+
+				// assign the values
+				values.e11 += dNdx*dx;
+				values.e22 += dNdy*dy;
+				values.e33 += dNdz*dz;
+				values.e12 += dNdx*dy + dNdy*dx;
+				values.e13 += dNdx*dz + dNdz*dx;
+				values.e23 += dNdy*dz + dNdz*dy;
+			}
+
+
+			result.recovered_values[element_number].node[element_node_number] = values;
 
 			if(values.e11 > result.maximum.e11)	result.maximum.e11 = values.e11;
 			if(values.e22 > result.maximum.e22)	result.maximum.e22 = values.e22;
@@ -798,19 +802,19 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Project &project, A
 			if(values.e12 < result.minimum.e12)	result.minimum.e12 = values.e12;
 			if(values.e13 < result.minimum.e13)	result.minimum.e13 = values.e13;
 			if(values.e23 < result.minimum.e23)	result.minimum.e23 = values.e23;
-
-			/*
-			std::cout << "\tnode: " << i << "{";
-			std::cout << "\te11: " << values.e11 << ", ";
-			std::cout << "\te22: " << values.e22 << ", ";
-			std::cout << "\te33: " << values.e33 << ", ";
-			std::cout << "\te12: " << values.e12 << ", ";
-			std::cout << "\te13: " << values.e13 << ", ";
-			std::cout << "\te23: " << values.e23 << "}";
-			std::cout << std::endl;
-			// */
 		}
 
+
+		/*
+		   std::cout << "\tnode: " << i << "{";
+		   std::cout << "\te11: " << values.e11 << ", ";
+		   std::cout << "\te22: " << values.e22 << ", ";
+		   std::cout << "\te33: " << values.e33 << ", ";
+		   std::cout << "\te12: " << values.e12 << ", ";
+		   std::cout << "\te13: " << values.e13 << ", ";
+		   std::cout << "\te23: " << values.e23 << "}";
+		   std::cout << std::endl;
+		// */
 	}
 
 	return ERR_OK;

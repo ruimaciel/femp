@@ -36,6 +36,9 @@ struct BaseElement
 		BaseElement(){};
 		~BaseElement(){};
 
+		/**
+		Sets this element's local coordinates for it's nodes
+		**/
 		virtual std::vector<fem::point> & setCoordinates() = 0;
 
 		virtual std::vector<T> & setN(const point & p) = 0;

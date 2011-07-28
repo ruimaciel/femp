@@ -5,7 +5,7 @@
 	},
 
 	"materials": [
-		{"type": "linear elastic", "label": "Steel", "E":1e+03,"nu":0.15, "fy": 4.94066e-324}
+		{"type": "linear elastic", "label": "Steel", "E":30e+06,"nu":0.2, "fy": 4.94066e-324}
 	],
 
 	"nodes": [

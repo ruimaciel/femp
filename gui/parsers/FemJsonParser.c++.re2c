@@ -5,7 +5,7 @@
 
 #include <boost/lexical_cast.hpp>
 
-#include "../fem-2.0/FemException.h++"
+#include "../fem/FemException.h++"
 
 
 FemJsonParser::FemJsonParser()
@@ -21,7 +21,7 @@ FemJsonParser::FemJsonParser()
 }
 
 
-void FemJsonParser::operator() (std::istream &file, Model &model)
+void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 {
 	ss.push(NT_START);	// initializes the symbol stack with  the start symbol
 
@@ -53,7 +53,7 @@ void FemJsonParser::operator() (std::istream &file, Model &model)
 					break;
 
 				case PR_LABEL_SET:
-					label = temp_text_string;
+					label = temp_token;
 					break;
 
 				case PR_VECTOR3D:
@@ -270,7 +270,7 @@ void FemJsonParser::operator() (std::istream &file, Model &model)
 					break;
 
 				case PR_MATERIAL_SET:
-					model.pushMaterial(material);
+					model.pushMaterial(temp_material);
 					break;
 
 				case PR_MATERIAL_FOLLOW_1:

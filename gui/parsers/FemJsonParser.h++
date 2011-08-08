@@ -19,18 +19,19 @@ class FemJsonParser
 public:
 	FemJsonParser();
 
-	void operator() (std::istream &file, Model &model);
+	void operator() (std::istream &file, fem::Model &model);
 
 
 protected:
 	// temp variables 
 	std::vector<double>		temp_float;
-	std::vector>unsigned long int>	temp_natural;
+	std::vector<unsigned long int>	temp_natural;
 	std::vector<size_t>		reference;
+	std::vector<fem::point>		temp_point;
 	bool	temp_bool;
 	std::string	temp_token;
 
-	fem::Material 	temp_point;
+	fem::Material 	temp_material;
 	fem::Node 	temp_node;
 	fem::Element	temp_element;
 	fem::NodeRestrictions	temp_node_restrictions;
@@ -110,6 +111,7 @@ protected:
 		NT_LABEL,
 		NT_LABEL_SET,		// ghost state to set the label
 		NT_VECTOR3D,
+		NT_VECTOR3D_SET,
 		NT_REFERENCE,
 		NT_REFERENCE_SET,
 		NT_MULTI_REFERENCE,	// can be either a single reference(i.e., "node" : 1) or a sequential range (i.e., "node" : [1, 5])
@@ -252,9 +254,12 @@ protected:
 		PR_LABEL,
 		PR_LABEL_SET,		// ghost label 
 		PR_VECTOR3D,
+		PR_VECTOR3D_SET,
 		PR_REFERENCE_1,
+		PR_REFERENCE_SET,
 		PR_MULTI_REFERENCE_1,
 		PR_MULTI_REFERENCE_2,
+		PR_MULTI_REFERENCE_SET,
 		PR_REFERENCE_LIST_1,
 		PR_REFERENCE_FOLLOW_1,
 		PR_REFERENCE_FOLLOW_2,

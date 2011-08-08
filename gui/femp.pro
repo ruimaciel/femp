@@ -36,7 +36,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	viewer/SceneGraphComponents/FieldSurface/*.h++ \
 	viewer/boundaries/BoundaryStrategy.h++ viewer/boundaries/SphericalBoundary.h++ \
 	fem_msh.h++ lex.msh_yy.h \
-	parsers/parser.h++ parsers/msh.h++ parsers/json.h \
+	parsers/parser.h++ parsers/msh.h++ parsers/json.h parsers/FemJsonParser.h++\
 	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
 	ui/NewMaterialDialog.h++ ui/MaterialsEditorDialog.h++\
 	fem/Analysis.h++ fem/LinearAnalysis.h++ fem/AnalysisResult.h++\
@@ -72,7 +72,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	viewer/SceneGraphComponents/OpaqueSurface/*.c++\
 	viewer/boundaries/BoundaryStrategy.c++  viewer/boundaries/SphericalBoundary.c++  \
 	fem_msh.c++ lex.msh_yy.c++ \
-	parsers/parser.c++ parsers/msh.c++ parsers/json.c \
+	parsers/parser.c++ parsers/msh.c++ parsers/json.c parsers/FemJsonParser.c++\
 	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++ \
 	ui/NewMaterialDialog.c++ ui/MaterialsEditorDialog.c++\
 	DefaultProgressIndicator.c++ \
@@ -97,6 +97,11 @@ FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
 
 UI_DIR += ./ui
 OBJECTS_DIR += ./build
+
+FemJsonParserRe2c.target = parsers/FemJsonParser.c++
+FemJsonParserRe2c.commands = re2c -o parsers/FemJsonParser.c++ parsers/FemJsonParser.c++.re2c
+FemJsonParserRe2c.depends = parsers/FemJsonParser.c++.re2c
+FemJsonParserRe2c.output = parsers/FemJsonParser.c++
 
 MshParserRe2c.target = fem/msh.c++
 MshParserRe2c.commands = re2c -o fem/msh.c++ fem/msh.c++.re2c
@@ -131,4 +136,4 @@ BisonCompile.output = msh.tab.o
 OBJECTS += msh.tab.o
 QMAKE_CLEAN += lex.msh_yy.h lex.msh_yy.c++ msh.tab.c msh.tab.h msh.tab.o
 
-QMAKE_EXTRA_TARGETS += MshParserRe2c ProgramOptionRe2c  ElementRe2c FlexOutput BisonOutput BisonCompile 
+QMAKE_EXTRA_TARGETS += FemJsonParserRe2c MshParserRe2c ProgramOptionRe2c  ElementRe2c FlexOutput BisonOutput BisonCompile 

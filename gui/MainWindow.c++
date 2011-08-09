@@ -8,6 +8,7 @@
 #include <QToolBar>
 #include <QString>
 #include <QTextStream>
+#include <QProgressDialog>
 
 #include <thread>
 #include <string>
@@ -43,6 +44,7 @@
 #include "fem/solvers/CholeskySolver.h++"
 #include "fem/solvers/CGSolver.h++"
 
+#include "parsers/FemJsonParser.h++"
 
 
 
@@ -137,38 +139,35 @@ void MainWindow::openProject()
 	document.file_name = new QString;
 	*document.file_name = sl.at(0);
 
-	// load the file and check for errors
-	switch( document.load() )
+	std::string my_file_name( sl.at(0).toUtf8() ); 
+	std::fstream file;
+	FemJsonParser parser;
+
+	file.open(my_file_name, std::fstream::in);
+	if(!file)
 	{
-		case Document::ERR_OK:
-			// tweak the UI
+		QMessageBox::critical(this, tr("Error"), tr("There was an error opening the file"));
+		document.clear();
+		return;
+	}
+
+	parser.parse(file, document.project.model);
+
+	switch(parser.error.code)
+	{
+		case FemJsonParser::Error::ERR_OK:
 			setUserInterfaceAsOpened();
-			return;
-			break;
-
-		case Document::ERR_FILE_NOT_FOUND:
-			QMessageBox::critical(this, tr("Error"), tr("File not found"));
-			break;
-
-		case Document::ERR_FILE_OPEN:
-			QMessageBox::critical(this, tr("Error"), tr("There was an error opening the file"));
-			break;
-
-		case Document::ERR_INVALID_FILE:
-			QMessageBox::critical(this, tr("Error"), tr("Invalid file"));
-			break;
-
-		case Document::ERR_PARSER_ERROR:
-			QMessageBox::critical(this, tr("Error"), tr("Malformed file"));
 			break;
 
 		default:
-			QMessageBox::critical(this, tr("Error"), tr("A misterious error occurred"));
+			std::cerr << "Error: " << parser.error.message << std::endl;
+			QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
+			document.clear();
 			break;
 	}
 
-	// clean up the mess
-	document.clear();
+
+	file.close();
 }
 
 

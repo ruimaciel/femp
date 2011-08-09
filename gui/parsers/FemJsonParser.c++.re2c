@@ -700,7 +700,16 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					break;
 
 				case PR_NODE_GROUP_SET:
-					//TODO finish this
+					{
+						fem::NodeGroup n;
+						n.label = label;
+						for(std::vector<size_t>::const_iterator i = reference.begin(); i != reference.end(); i++)
+						{
+							n.pushNode(*i);
+						}
+						reference.clear();
+						model.pushNodeGroup(n);
+					}
 					break;
 
 				case PR_NODE_GROUP_FOLLOW_1:
@@ -738,10 +747,20 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					ss.push(TT_VALUE_SEPARATOR);
 					ss.push(NT_LABEL);
 					ss.push(TT_OBJECT_OPEN);
+					reference.clear();
 					break;
 
 				case PR_ELEMENT_GROUP_SET:
-					//TODO finish this
+					{
+						fem::ElementGroup e;
+						e.label = label;
+						for(std::vector<size_t>::const_iterator i = reference.begin(); i != reference.end(); i++)
+						{
+							e.pushElement(*i);
+						}
+						reference.clear();
+						model.pushElementGroup(e);
+					}
 					break;
 
 				case PR_ELEMENT_GROUP_FOLLOW_1:

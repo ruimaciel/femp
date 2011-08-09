@@ -59,6 +59,12 @@ class Model {
 		void setNode(size_t ref, fem::point p);
 
 		void setDefaultMaterial(int material)	{ default_material = material; }
+
+		/**
+		Adds a new material to the list
+		**/
+		Model::Error pushMaterial(fem::Material &);
+
 		Model::Error pushElement(fem::Element);
 		Model::Error pushElement(fem::Element::Type type, std::vector<size_t> nodes);
 

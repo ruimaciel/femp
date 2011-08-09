@@ -64,6 +64,12 @@ void Model::setNode(size_t ref, fem::point p)
 }
 
 
+Model::Error Model::pushMaterial(fem::Material &material)
+{
+	material_list.push_back(material);
+}
+
+
 Model::Error Model::pushElement(fem::Element e)
 {
 	// push element to the element list

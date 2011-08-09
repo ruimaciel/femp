@@ -64,9 +64,11 @@ void Model::setNode(size_t ref, fem::point p)
 }
 
 
-Model::Error Model::pushMaterial(fem::Material &material)
+Model::Error 
+Model::pushMaterial(fem::Material &material)
 {
 	material_list.push_back(material);
+	return ERR_OK;
 }
 
 
@@ -567,6 +569,22 @@ enum Model::Error Model::pushLoadPattern(fem::LoadPattern lp)
 
 	load_pattern_list.push_back(lp);
 
+	return ERR_OK;
+}
+
+
+enum Model::Error 
+Model::pushNodeGroup(fem::NodeGroup &new_node_group)
+{
+	this->m_node_groups.push_back(new_node_group);
+	return ERR_OK;
+}
+
+
+enum Model::Error 
+Model::pushElementGroup(fem::ElementGroup &new_element_group)
+{
+	this->m_element_groups.push_back(new_element_group);
 	return ERR_OK;
 }
 

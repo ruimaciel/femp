@@ -18,6 +18,9 @@
 #include "LoadPattern.h++"
 #include "Surface.h++"
 
+#include "NodeGroup.h++"
+#include "ElementGroup.h++"
+
 
 namespace fem
 {
@@ -46,6 +49,10 @@ class Model {
 		std::map<size_t, NodeRestrictions>	node_restrictions_list;	// the node restrictions aren't stored in the Node class in order to save up memory
 		std::vector<LoadPattern>	load_pattern_list;
 		std::list<Surface>	surface_list;
+
+	protected:
+		std::vector<NodeGroup>		m_node_groups;
+		std::vector<ElementGroup>	m_element_groups;
 
 	public:
 		Model();
@@ -91,6 +98,17 @@ class Model {
 		@return	ERR_NONE if all went well, some other error if something went bad
 		**/
 		enum Error pushLoadPattern(fem::LoadPattern lp);
+
+
+		/** pushes a new node group to the node group list
+		@param	new_node_group	object of type fem::NodeGroup
+		**/
+		enum Error pushNodeGroup(fem::NodeGroup &new_node_group);
+
+		/** pushes a new element group to the element group list
+		@param	new_element_group	object of type fem::NodeGroup
+		**/
+		enum Error pushElementGroup(fem::ElementGroup &new_element_group);
 
 		/**
 		Performs a sanity check on the model

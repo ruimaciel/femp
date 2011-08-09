@@ -1543,7 +1543,6 @@ stop:	// nasty hack
 				DECHO();
 				//TODO
 				this->project.model.pushLoadPattern(load_pattern);
-				std::cout << "pushed " << load_pattern.label << std::endl;
 
 				// Test the FIRST
 				cursor.pop();	// JSON_OBJECT -> "force" JSON_ARRAY

@@ -646,15 +646,11 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 				case PR_GROUP_TYPE_1:
 					ss.push(NT_NODE_GROUP_LIST_FOLLOW);
 					ss.push(NT_NODE_GROUP_LIST);
-					ss.push(TT_NAME_SEPARATOR);
-					ss.push(TT_LABEL_NODES);
 					break;
 
 				case PR_GROUP_TYPE_2:
 					ss.push(NT_ELEMENT_GROUP_LIST_FOLLOW);
 					ss.push(NT_ELEMENT_GROUP_LIST);
-					ss.push(TT_NAME_SEPARATOR);
-					ss.push(TT_LABEL_ELEMENTS);
 					break;
 
 				case PR_GROUPS_LIST_FOLLOW_1:
@@ -681,6 +677,8 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					ss.push(NT_NODE_GROUP_SET);
 					ss.push(NT_NODE_GROUP);
 					ss.push(TT_ARRAY_OPEN);
+					ss.push(TT_NAME_SEPARATOR);
+					ss.push(TT_LABEL_NODES);
 					break;
 
 				case PR_NODE_GROUP_LIST_FOLLOW_1:
@@ -693,9 +691,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 
 				case PR_NODE_GROUP_1:
 					ss.push(TT_OBJECT_CLOSE);
-					ss.push(TT_ARRAY_CLOSE);
 					ss.push(NT_REFERENCE_LIST);
-					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
 					ss.push(TT_VALUE_SEPARATOR);
@@ -713,6 +709,53 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					break;
 
 				case PR_NODE_GROUP_FOLLOW_2:
+					break;
+
+				case PR_NODE_GROUP_FOLLOW_FOLLOW_1:
+					ss.push(NT_NODE_GROUP_FOLLOW);
+					ss.push(NT_NODE_GROUP_SET);
+					ss.push(NT_NODE_GROUP);
+					break;
+
+				case PR_ELEMENT_GROUP_LIST_1:
+					ss.push(TT_ARRAY_CLOSE);
+					ss.push(NT_ELEMENT_GROUP_FOLLOW);
+					ss.push(NT_ELEMENT_GROUP_SET);
+					ss.push(NT_ELEMENT_GROUP);
+					ss.push(TT_ARRAY_OPEN);
+					ss.push(TT_NAME_SEPARATOR);
+					ss.push(TT_LABEL_ELEMENTS);
+					break;
+
+				case PR_ELEMENT_GROUP_LIST_FOLLOW_1:
+					break;
+
+				case PR_ELEMENT_GROUP_1:
+					ss.push(TT_OBJECT_CLOSE);
+					ss.push(NT_REFERENCE_LIST);
+					ss.push(TT_NAME_SEPARATOR);
+					ss.push(TT_LABEL_ELEMENTS);
+					ss.push(TT_VALUE_SEPARATOR);
+					ss.push(NT_LABEL);
+					ss.push(TT_OBJECT_OPEN);
+					break;
+
+				case PR_ELEMENT_GROUP_SET:
+					//TODO finish this
+					break;
+
+				case PR_ELEMENT_GROUP_FOLLOW_1:
+					ss.push(NT_ELEMENT_GROUP_FOLLOW_FOLLOW);
+					ss.push(TT_VALUE_SEPARATOR);
+					break;
+
+				case PR_ELEMENT_GROUP_FOLLOW_2:
+					break;
+
+				case PR_ELEMENT_GROUP_FOLLOW_FOLLOW_1:
+					ss.push(NT_ELEMENT_GROUP_FOLLOW);
+					ss.push(NT_ELEMENT_GROUP_SET);
+					ss.push(NT_ELEMENT_GROUP);
 					break;
 
 				case PR_NODE_RESTRICTIONS_LIST_1:
@@ -1256,7 +1299,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 
 				default:
 					this->error.code = Error::Type::ERR_UNKNOWN;
-					this->error.message = "Unknown error while parsing line " + line_number;
+					this->error.message = "Unknown error while parsing line " + boost::lexical_cast<std::string>(line_number);
 					return this->error.code;
 					break;
 			}
@@ -1370,7 +1413,7 @@ void FemJsonParser::setParserTable()
 	table	[NT_REFERENCE_SET]	[TT_ARRAY_CLOSE]	=	PR_REFERENCE_SET;
 	table	[NT_REFERENCE_SET]	[TT_OBJECT_CLOSE]	=	PR_REFERENCE_SET;
 
-	table	[NT_REFERENCE_LIST]	[TT_NATURAL_NUMBER]	=	PR_REFERENCE_LIST_1;
+	table	[NT_REFERENCE_LIST]	[TT_ARRAY_OPEN]		=	PR_REFERENCE_LIST_1;
 
 	table	[NT_REFERENCE_FOLLOW]	[TT_VALUE_SEPARATOR]	=	PR_REFERENCE_FOLLOW_1;
 	table	[NT_REFERENCE_FOLLOW]	[TT_ARRAY_CLOSE]	=	PR_REFERENCE_FOLLOW_2;
@@ -1487,7 +1530,7 @@ void FemJsonParser::setParserTable()
 	table	[NT_GROUPS_LIST_FOLLOW_FOLLOW]		[TT_LABEL_NODE_RESTRICTIONS]	=	PR_GROUPS_LIST_FOLLOW_FOLLOW_1;
 	table	[NT_GROUPS_LIST_FOLLOW_FOLLOW]		[TT_LABEL_LOAD_PATTERNS]	=	PR_GROUPS_LIST_FOLLOW_FOLLOW_2;
 
-	table	[NT_NODE_GROUP_LIST]		[TT_OBJECT_OPEN]	=	PR_NODE_GROUP_LIST_1;
+	table	[NT_NODE_GROUP_LIST]		[TT_LABEL_NODES]	=	PR_NODE_GROUP_LIST_1;
 	table	[NT_NODE_GROUP_LIST_FOLLOW]	[TT_VALUE_SEPARATOR]	=	PR_NODE_GROUP_LIST_FOLLOW_1;
 	table	[NT_NODE_GROUP_LIST_FOLLOW]	[TT_OBJECT_CLOSE]	=	PR_NODE_GROUP_LIST_FOLLOW_2;
 
@@ -1496,11 +1539,22 @@ void FemJsonParser::setParserTable()
 	table	[NT_NODE_GROUP_SET]		[TT_VALUE_SEPARATOR]	=	PR_NODE_GROUP_SET;
 	table	[NT_NODE_GROUP_SET]		[TT_ARRAY_CLOSE]	=	PR_NODE_GROUP_SET;
 
-	table	[NT_NODE_GROUP_FOLLOW_FOLLOW]	[TT_VALUE_SEPARATOR]	=	PR_NODE_GROUP_FOLLOW_1;
-	table	[NT_NODE_GROUP_FOLLOW_FOLLOW]	[TT_ARRAY_CLOSE]	=	PR_NODE_GROUP_FOLLOW_2;
+	table	[NT_NODE_GROUP_FOLLOW]		[TT_VALUE_SEPARATOR]	=	PR_NODE_GROUP_FOLLOW_1;
+	table	[NT_NODE_GROUP_FOLLOW]		[TT_ARRAY_CLOSE]	=	PR_NODE_GROUP_FOLLOW_2;
 
-	table	[NT_ELEMENT_GROUP_LIST]		[TT_OBJECT_OPEN]	=	PR_ELEMENT_GROUP_LIST_1;
+	table	[NT_NODE_GROUP_FOLLOW_FOLLOW]	[TT_OBJECT_OPEN]	=	PR_NODE_GROUP_FOLLOW_FOLLOW_1;
+
+	table	[NT_ELEMENT_GROUP_LIST]		[TT_LABEL_ELEMENTS]	=	PR_ELEMENT_GROUP_LIST_1;
 	table	[NT_ELEMENT_GROUP_LIST_FOLLOW]	[TT_OBJECT_CLOSE]	=	PR_ELEMENT_GROUP_LIST_FOLLOW_1;
+	table	[NT_ELEMENT_GROUP]		[TT_OBJECT_OPEN]	=	PR_ELEMENT_GROUP_1;
+	table	[NT_ELEMENT_GROUP_SET]		[TT_VALUE_SEPARATOR]	=	PR_ELEMENT_GROUP_SET;
+	table	[NT_ELEMENT_GROUP_SET]		[TT_ARRAY_CLOSE]	=	PR_ELEMENT_GROUP_SET;
+	table	[NT_ELEMENT_GROUP_FOLLOW]	[TT_VALUE_SEPARATOR]	=	PR_ELEMENT_GROUP_FOLLOW_1;
+	table	[NT_ELEMENT_GROUP_FOLLOW]	[TT_ARRAY_CLOSE]	=	PR_ELEMENT_GROUP_FOLLOW_2;
+
+	table	[NT_ELEMENT_GROUP_FOLLOW_FOLLOW]	[TT_OBJECT_OPEN]	=	PR_ELEMENT_GROUP_FOLLOW_FOLLOW_1;
+
+
 
 	table	[NT_NODE_RESTRICTIONS_LIST]	[TT_LABEL_NODE_RESTRICTIONS]	=	PR_NODE_RESTRICTIONS_LIST_1;
 

@@ -22,6 +22,21 @@ public:
 	void operator() (std::istream &file, fem::Model &model);
 
 
+	/**
+	class intended to provide the error message
+	**/
+	struct Error
+	{
+		enum Type
+		{
+			ERR_OK,
+			ERR_UNKNOWN
+		} code;
+		std::string message;
+	} error;
+
+	enum Error::Type  parse(std::istream &file, fem::Model &model);
+
 protected:
 	// temp variables 
 	std::vector<double>		temp_float;

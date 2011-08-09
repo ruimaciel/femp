@@ -18,15 +18,29 @@ FemJsonParser::FemJsonParser()
 	line_number = 0;
 
 	setParserTable();
+
+	// resets the error message
+	this->error.code = Error::Type::ERR_OK;
+	this->error.message.clear();
 }
 
 
 void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 {
+	parse(file,model);
+}
+
+
+enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::Model &model)
+{
 	ss.push(NT_START);	// initializes the symbol stack with  the start symbol
 
 	enum TerminalTokens terminal_token = lexer(file);
 	int nonterminal_token;
+
+	// resets the error message
+	this->error.code = Error::Type::ERR_OK;
+	this->error.message.clear();
 
 
 	while(!ss.empty())
@@ -57,6 +71,7 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					break;
 
 				case PR_VECTOR3D:
+					ss.push(NT_VECTOR3D_SET);
 					ss.push(TT_ARRAY_CLOSE);
 					ss.push(NT_NUMBER);
 					ss.push(TT_VALUE_SEPARATOR);
@@ -86,7 +101,16 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					break;
 
 				case PR_REFERENCE_SET:
-					reference.push_back(boost::lexical_cast<size_t>(temp_token));
+					try
+					{
+						reference.push_back(boost::lexical_cast<size_t>(temp_token));
+						temp_token.clear();
+					}
+					catch(boost::bad_lexical_cast &e)
+					{
+						std::cerr << "PR_REFERENCE_SET" << e.what() << std::endl;
+						std::cerr << temp_token << std::endl;
+					}
 					break;
 
 				case PR_REFERENCE_LIST_1:
@@ -152,11 +176,29 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					break;
 
 				case PR_FLOAT_SET:
-					temp_float.push_back(boost::lexical_cast<double>(temp_token));
+					try
+					{
+						temp_float.push_back(boost::lexical_cast<double>(temp_token));
+						temp_token.clear();
+					}
+					catch(boost::bad_lexical_cast &e)
+					{
+						std::cerr << "PR_FLOAT_SET" << e.what() << std::endl;
+						std::cerr << temp_token << std::endl;
+					}
 					break;
 
 				case PR_INT_TO_FLOAT_SET:
-					temp_float.push_back(boost::lexical_cast<double>(temp_token));
+					try
+					{
+						temp_float.push_back(boost::lexical_cast<double>(temp_token));
+						temp_token.clear();
+					}
+					catch(boost::bad_lexical_cast &e)
+					{
+						std::cerr << "PR_INT_TO_FLOAT_SET" << e.what() << std::endl;
+						std::cerr << temp_token << std::endl;
+					}
 					break;
 
 				case PR_START_1:
@@ -297,7 +339,7 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					ss.push(NT_VECTOR3D);
 					ss.push(TT_VALUE_SEPARATOR);
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					break;
 
@@ -372,10 +414,10 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					for(int i = 0; i < 7; i++)
 					{
-						ss.push(TT_NATURAL_NUMBER);
+						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
 					}
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
@@ -388,10 +430,10 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					for(int i = 0; i < 19; i++)
 					{
-						ss.push(TT_NATURAL_NUMBER);
+						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
 					}
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
@@ -405,10 +447,10 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					for(int i = 0; i < 26; i++)
 					{
-						ss.push(TT_NATURAL_NUMBER);
+						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
 					}
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
@@ -422,10 +464,10 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					for(int i = 0; i < 3; i++)
 					{
-						ss.push(TT_NATURAL_NUMBER);
+						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
 					}
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
@@ -438,10 +480,10 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					for(int i = 0; i < 9; i++)
 					{
-						ss.push(TT_NATURAL_NUMBER);
+						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
 					}
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
@@ -455,10 +497,10 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					for(int i = 0; i < 5; i++)
 					{
-						ss.push(TT_NATURAL_NUMBER);
+						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
 					}
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
@@ -472,10 +514,10 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					for(int i = 0; i < 19; i++)
 					{
-						ss.push(TT_NATURAL_NUMBER);
+						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
 					}
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
@@ -489,10 +531,10 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					for(int i = 0; i < 19; i++)
 					{
-						ss.push(TT_NATURAL_NUMBER);
+						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
 					}
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
@@ -551,7 +593,7 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 
 				case PR_ELEMENT_MATERIAL_1:
 					ss.push(NT_ELEMENT_MATERIAL_SET);
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_MATERIAL);
 					break;
@@ -991,10 +1033,10 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					for(int i = 0; i < 2; i++)
 					{
-						ss.push(TT_NATURAL_NUMBER);
+						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
 					}
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
@@ -1004,10 +1046,10 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					for(int i = 0; i < 5; i++)
 					{
-						ss.push(TT_NATURAL_NUMBER);
+						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
 					}
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
@@ -1017,10 +1059,10 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					for(int i = 0; i < 3; i++)
 					{
-						ss.push(TT_NATURAL_NUMBER);
+						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
 					}
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
@@ -1030,10 +1072,10 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					for(int i = 0; i < 7; i++)
 					{
-						ss.push(TT_NATURAL_NUMBER);
+						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
 					}
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
@@ -1043,10 +1085,10 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					ss.push(TT_ARRAY_CLOSE);
 					for(int i = 0; i < 8; i++)
 					{
-						ss.push(TT_NATURAL_NUMBER);
+						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
 					}
-					ss.push(TT_NATURAL_NUMBER);
+					ss.push(NT_REFERENCE);
 					ss.push(TT_ARRAY_OPEN);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_NODES);
@@ -1213,13 +1255,18 @@ void FemJsonParser::operator() (std::istream &file, fem::Model &model)
 					break;
 
 				default:
-					throw FemException("unknown token");
-					return;
+					this->error.code = Error::Type::ERR_UNKNOWN;
+					this->error.message = "Unknown error while parsing line " + line_number;
+					return this->error.code;
 					break;
 			}
 		}
 	}
 
+	// all is good
+	this->error.code = Error::Type::ERR_OK;
+	this->error.message.clear();
+	return this->error.code;
 }
 
 
@@ -1313,6 +1360,10 @@ void FemJsonParser::setParserTable()
 	table	[NT_LABEL_SET]		[TT_OBJECT_CLOSE]	=	PR_LABEL_SET;
 
 	table	[NT_VECTOR3D]		[TT_ARRAY_OPEN]		=	PR_VECTOR3D;
+	table	[NT_VECTOR3D_SET]	[TT_VALUE_SEPARATOR]	=	PR_VECTOR3D_SET;
+	table	[NT_VECTOR3D_SET]	[TT_ARRAY_CLOSE]	=	PR_VECTOR3D_SET;
+	table	[NT_VECTOR3D_SET]	[TT_OBJECT_CLOSE]	=	PR_VECTOR3D_SET;
+
 	table	[NT_REFERENCE]		[TT_NATURAL_NUMBER]	=	PR_REFERENCE_1;
 
 	table	[NT_REFERENCE_SET]	[TT_VALUE_SEPARATOR]	=	PR_REFERENCE_SET;
@@ -1326,6 +1377,10 @@ void FemJsonParser::setParserTable()
 
 	table	[NT_MULTI_REFERENCE]	[TT_NATURAL_NUMBER]	=	PR_MULTI_REFERENCE_1;
 	table	[NT_MULTI_REFERENCE]	[TT_ARRAY_OPEN]		=	PR_MULTI_REFERENCE_2;
+
+	table	[NT_MULTI_REFERENCE_SET]	[TT_VALUE_SEPARATOR]	=	PR_MULTI_REFERENCE_SET;
+	table	[NT_MULTI_REFERENCE_SET]	[TT_ARRAY_CLOSE]	=	PR_MULTI_REFERENCE_SET;
+	table	[NT_MULTI_REFERENCE_SET]	[TT_OBJECT_CLOSE]	=	PR_MULTI_REFERENCE_SET;
 
 	table	[NT_BOOLEAN]		[TT_TRUE]		=	PR_BOOLEAN_TRUE;
 	table	[NT_BOOLEAN]		[TT_FALSE]		=	PR_BOOLEAN_FALSE;
@@ -1747,7 +1802,7 @@ void FemJsonParser::fill(std::istream &file)
 		tok = buffer;
 
 		// fill the vacant space
-		file.read(buffer + count, 1024-count);
+		file.read(buffer + count, 1024-count-1);
 		limit = buffer + count + file.gcount();
 		*limit = '\000';
 	}

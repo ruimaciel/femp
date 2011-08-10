@@ -37,3 +37,4 @@ class CommandLineDockWidget: public QDockWidget
 		void executeCommand(QString command);
 };
 
+#endif

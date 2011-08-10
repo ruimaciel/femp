@@ -1,3 +1,5 @@
+#ifndef COMMAND_LINE_DOCK_WIDGET_HPP
+#define COMMAND_LINE_DOCK_WIDGET_HPP
 #include <QDockWidget>
 
 #include "ui/ui_CommandLineDockWidget.h"

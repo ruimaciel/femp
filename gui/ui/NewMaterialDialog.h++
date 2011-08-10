@@ -1,6 +1,7 @@
 #ifndef NEW_MATERIAL_DIALOG_HPP
 #define NEW_MATERIAL_DIALOG_HPP
 
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QDialog>
 #include "ui/ui_NewMaterialDialog.h"
 

@@ -1,6 +1,7 @@
 #ifndef DEFAULT_PROGRESS_INDICATOR_HPP
 #define DEFAULT_PROGRESS_INDICATOR_HPP
 
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include <QObject>
 

@@ -2,6 +2,7 @@
 #define VIEWPORT_STATE_MODEL_HPP
 
 
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QMouseEvent>
 
 #include "ViewportState.h++"

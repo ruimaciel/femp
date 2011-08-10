@@ -1,6 +1,7 @@
 #ifndef ANALYSIS_DIALOG_HPP
 #define ANALYSIS_DIALOG_HPP
 
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QtGui/QDialog>
 
 #include "../fem/solvers/Solver.h++"

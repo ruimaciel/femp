@@ -1,8 +1,10 @@
 TEMPLATE = app
 
-CONFIG += qt debug 
+CONFIG += link_pkgconfig qt debug 
 QMAKE_CXXFLAGS += -std=c++0x
 QMAKE_CXXFLAGS_DEBUG +=-O0 -Wfatal-errors -std=c++0x
+
+PKGCONFIG += sigc++-2.0
 
 QT += opengl
 QMAKE_EXT_CPP += c++

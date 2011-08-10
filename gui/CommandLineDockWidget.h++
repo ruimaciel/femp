@@ -1,5 +1,8 @@
 #ifndef COMMAND_LINE_DOCK_WIDGET_HPP
 #define COMMAND_LINE_DOCK_WIDGET_HPP
+
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
+
 #include <QDockWidget>
 
 #include "ui/ui_CommandLineDockWidget.h"

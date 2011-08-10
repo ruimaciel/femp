@@ -2,6 +2,7 @@
 #define MODEL_VIEWPORT_HPP
 
 
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QWidget>
 #include <QGLWidget>
 

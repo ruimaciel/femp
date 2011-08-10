@@ -1,6 +1,7 @@
 #ifndef SCENE_GRAPH_HPP
 #define SCENE_GRAPH_HPP
 
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <list>
 #include <map>
 

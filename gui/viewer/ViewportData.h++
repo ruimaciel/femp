@@ -2,6 +2,7 @@
 #define VIEWPORT_DATA_HPP
 
 
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <list>
 #include <QPoint>
 #include "Camera.h++"

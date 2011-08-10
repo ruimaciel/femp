@@ -1,6 +1,7 @@
 #ifndef NEW_PROJECT_WIZAR_HPP
 #define NEW_PROJECT_WIZAR_HPP
 
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QWizard>
 #include <QWidget>
 #include <QString>

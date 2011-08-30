@@ -7,7 +7,8 @@ namespace fem
 {
 
 
-bool Surface::set(Element::Type &type, std::vector<size_t> &nodes)
+bool 
+Surface::set(Element::Type &type, std::vector<size_t> &nodes)
 {
 	if(!compatible(type,nodes))
 		return false;
@@ -19,7 +20,8 @@ bool Surface::set(Element::Type &type, std::vector<size_t> &nodes)
 }
 
 
-void Surface::pushElementReference(const size_t reference, const Element::Type &element_type, const unsigned char surface)
+void 
+Surface::pushElementReference(const size_t reference, const Element::Type &element_type, const unsigned char surface)
 {
 	ReferencedElement re;
 	re.reference = reference;
@@ -497,7 +499,8 @@ void Surface::pushElementReference(const size_t reference, const Element::Type &
 }
 
 
-bool Surface::compatible(const Element::Type &type, std::vector<size_t> &nodes)
+bool 
+Surface::compatible(const Element::Type &type, std::vector<size_t> &nodes)
 {
 	switch(type)
 	{
@@ -551,7 +554,8 @@ bool Surface::compatible(const Element::Type &type, std::vector<size_t> &nodes)
 }
 
 
-bool Surface::operator==(const Surface &other) const
+bool 
+Surface::operator==(const Surface &other) const
 {
 	using namespace std;
 

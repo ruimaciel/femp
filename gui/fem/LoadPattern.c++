@@ -23,7 +23,8 @@ namespace fem
 	}
 
 
-	void LoadPattern::clear()
+	void 
+	LoadPattern::clear()
 	{
 		label.clear();
 		nodal_loads.clear();
@@ -33,7 +34,8 @@ namespace fem
 	}
 
 
-	void LoadPattern::addNodalLoad(size_t node, point force)
+	void 
+	LoadPattern::addNodalLoad(size_t node, point force)
 	{
 		//TODO perform sanity checks
 		NodalLoad n;
@@ -41,7 +43,8 @@ namespace fem
 		nodal_loads[node] = n;
 	}
 
-	void LoadPattern::addNodalDisplacement(size_t node, point displacement)
+	void 
+	LoadPattern::addNodalDisplacement(size_t node, point displacement)
 	{
 		//TODO perform sanity checks
 		NodalDisplacement n;
@@ -49,7 +52,8 @@ namespace fem
 		nodal_displacements[node] = n;
 	}
 
-	void LoadPattern::addDomainLoad(size_t element, point force)
+	void 
+	LoadPattern::addDomainLoad(size_t element, point force)
 	{
 		//TODO perform sanity checks
 		DomainLoad n;
@@ -58,7 +62,8 @@ namespace fem
 	}
 
 
-	void LoadPattern::addSurfaceLoad(SurfaceLoad &lp)
+	void 
+	LoadPattern::addSurfaceLoad(SurfaceLoad &lp)
 	{
 		surface_loads.push_back(lp);
 	}

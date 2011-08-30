@@ -39,7 +39,8 @@ point::~point()
 /*
 	Sets the vector according to the given values
 */
-void point::set(const double& a, const double& b, const double& c)
+void 
+point::set(const double& a, const double& b, const double& c)
 {
 	this->data[0] = a;
 	this->data[1] = b;
@@ -50,7 +51,8 @@ void point::set(const double& a, const double& b, const double& c)
 /*
 	Converts the given cylindrical coordinates to regular coordinates
 */
-void point::set_cylindrical(const double& radius, const double& alfa, const double &height)
+void 
+point::set_cylindrical(const double& radius, const double& alfa, const double &height)
 {
 	// alfa is the angle the vector makes with the OX axis
 	// angle in degrees
@@ -64,7 +66,8 @@ void point::set_cylindrical(const double& radius, const double& alfa, const doub
 /*
 	Returns the vector's norm (or length);
 */
-double point::norm() const
+double 
+point::norm() const
 {
 	return sqrt(this->data[0]*this->data[0] + this->data[1]*this->data[1] + this->data[2]*this->data[2] );
 }
@@ -73,7 +76,8 @@ double point::norm() const
 /*
 	Normalizes the vector (norm == 1)
 */
-void point::normalize()
+void 
+point::normalize()
 {
     double length = norm();
     if(length != 0)
@@ -85,7 +89,8 @@ void point::normalize()
 }
 
 
-point point::director() const
+point 
+point::director() const
 {
 	point temp = *this;
 	double length = temp.norm();
@@ -98,13 +103,15 @@ point point::director() const
 }
 
 
-void point::zero()
+void 
+point::zero()
 {
     this->data[0] = this->data[1] = this->data[2];
 }
 
 
-point point::operator = (const point &other)
+point 
+point::operator = (const point &other)
 {
 	if(&other != this)
   	{
@@ -116,7 +123,8 @@ point point::operator = (const point &other)
 }
 
 
-point point::operator + (const point &other)
+point 
+point::operator + (const point &other)
 {
 	point tmp;
   	tmp.data[0] = this->data[0] + other.data[0];
@@ -126,7 +134,8 @@ point point::operator + (const point &other)
 }
 
 
-point point::operator - (const point &other)
+point 
+point::operator - (const point &other)
 {
 	point tmp;
   	tmp.data[0] = this->data[0] - other.data[0];
@@ -136,7 +145,8 @@ point point::operator - (const point &other)
 }
 
 
-point point::operator += (const point &other)
+point 
+point::operator += (const point &other)
 {
 	this->data[0] += other.data[0];
 	this->data[1] += other.data[1];
@@ -146,7 +156,8 @@ point point::operator += (const point &other)
 }
 
 
-point point::operator -= (const point &other)
+point 
+point::operator -= (const point &other)
 {
 	this->data[0] -= other.data[0];
 	this->data[1] -= other.data[1];
@@ -156,7 +167,8 @@ point point::operator -= (const point &other)
 }
 
 
-point point::operator *= (const double &scalar)
+point 
+point::operator *= (const double &scalar)
 {
 	this->data[0] *= scalar;
 	this->data[1] *= scalar;
@@ -166,7 +178,8 @@ point point::operator *= (const double &scalar)
 }
 
 
-bool point::operator == (const point &other)
+bool 
+point::operator == (const point &other)
 {
 	if(&other != this)
   	{
@@ -178,7 +191,8 @@ bool point::operator == (const point &other)
 }
 
 
-bool point::operator != (const point &other)
+bool 
+point::operator != (const point &other)
 {
 	if(&other != this)
   	{

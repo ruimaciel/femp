@@ -35,7 +35,8 @@ Model::~Model()
 }
 
 
-void Model::clear()
+void 
+Model::clear()
 {
 	node_list.clear();
 	element_list.clear();
@@ -46,7 +47,8 @@ void Model::clear()
 }
 
 
-void Model::setNode(size_t ref, double x, double y, double z)
+void 
+Model::setNode(size_t ref, double x, double y, double z)
 {
 	Node n;
 	n.set(x,y,z);
@@ -54,7 +56,8 @@ void Model::setNode(size_t ref, double x, double y, double z)
 }
 
 
-void Model::setNode(size_t ref, fem::point p)
+void 
+Model::setNode(size_t ref, fem::point p)
 {
 	Node n;
 	n.x(p.x());
@@ -72,7 +75,8 @@ Model::pushMaterial(fem::Material &material)
 }
 
 
-Model::Error Model::pushElement(fem::Element e)
+Model::Error 
+Model::pushElement(fem::Element e)
 {
 	// push element to the element list
 	e.material = default_material;
@@ -508,7 +512,8 @@ Model::Error Model::pushElement(fem::Element e)
 }
 
 
-Model::Error Model::pushElement(fem::Element::Type type, std::vector<size_t> nodes)
+Model::Error 
+Model::pushElement(fem::Element::Type type, std::vector<size_t> nodes)
 {
 	fem::Element e;
 	e.set(type,nodes);
@@ -517,7 +522,8 @@ Model::Error Model::pushElement(fem::Element::Type type, std::vector<size_t> nod
 }
 
 
-enum Model::Error Model::pushSurface(Element::Type type, Element::Type element_type, std::vector<size_t> &nodes, const size_t element_reference, const size_t surface_number)
+enum Model::Error 
+Model::pushSurface(Element::Type type, Element::Type element_type, std::vector<size_t> &nodes, const size_t element_reference, const size_t surface_number)
 {
 	Surface new_surface;
 	if(!new_surface.set(type,nodes))
@@ -547,7 +553,8 @@ enum Model::Error Model::pushSurface(Element::Type type, Element::Type element_t
 }
 
 
-enum Model::Error Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions nr)
+enum Model::Error 
+Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions nr)
 {
 	// check if node is set
 	if(node_list.find(pos) == node_list.end())
@@ -563,7 +570,8 @@ enum Model::Error Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions 
 }
 
 
-enum Model::Error Model::pushLoadPattern(fem::LoadPattern lp)
+enum Model::Error 
+Model::pushLoadPattern(fem::LoadPattern lp)
 {
 	//TODO perform error checks
 
@@ -589,7 +597,8 @@ Model::pushElementGroup(fem::ElementGroup &new_element_group)
 }
 
 
-enum Model::Error Model::sanity_check()
+enum Model::Error 
+Model::sanity_check()
 {
 	// check if the Element's nodes are right
 	for( std::vector<Element>::iterator it = element_list.begin(); it != element_list.end(); it++)
@@ -663,7 +672,8 @@ enum Model::Error Model::sanity_check()
 }
 
 
-enum Model::Error Model::import_json(FILE *file)
+enum Model::Error 
+Model::import_json(FILE *file)
 {
 	using namespace std;
 
@@ -2022,7 +2032,8 @@ unknown_error:		// some programming error happened
 }
 
 
-void Model::text_dump() const
+void 
+Model::text_dump() const
 {
 	using namespace std;
 

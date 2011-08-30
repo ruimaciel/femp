@@ -23,7 +23,8 @@ NodeRestrictions::~NodeRestrictions()
 }
 
 
-enum NodeRestrictions::Type NodeRestrictions::extractType(char *buffer)
+enum NodeRestrictions::Type 
+NodeRestrictions::extractType(char *buffer)
 {
 	char *p = buffer;
 	switch(*p)
@@ -68,7 +69,8 @@ enum NodeRestrictions::Type NodeRestrictions::extractType(char *buffer)
 }
 
 
-void NodeRestrictions::reset()
+void 
+NodeRestrictions::reset()
 {
 	this->d[0] = false;
 	this->d[1] = false;

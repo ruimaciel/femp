@@ -19,31 +19,36 @@ DisplayOptionsDialog::~DisplayOptionsDialog()
 }
 
 
-size_t DisplayOptionsDialog::getLoadPatternIndex()
+size_t
+DisplayOptionsDialog::getLoadPatternIndex()
 {
 	return this->comboBoxLoadPattern->currentIndex();
 }
 
 
-bool DisplayOptionsDialog::renderNodalForces()
+bool
+DisplayOptionsDialog::renderNodalForces()
 {
 	return(this->checkBoxNodalForces->isChecked());
 }
 
 
-bool DisplayOptionsDialog::renderSurfaceForces()
+bool
+DisplayOptionsDialog::renderSurfaceForces()
 {
 	return(this->checkBoxSurfaceForces->isChecked());
 }
 
 
-bool DisplayOptionsDialog::renderDomainForces()
+bool
+DisplayOptionsDialog::renderDomainForces()
 {
 	return(this->checkBoxDomainForces->isChecked());
 }
 
 
-bool DisplayOptionsDialog::renderNodalDisplacements()
+bool
+DisplayOptionsDialog::renderNodalDisplacements()
 {
 	return(this->checkBoxNodalDisplacements->isChecked());
 }

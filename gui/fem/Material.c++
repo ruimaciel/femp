@@ -24,7 +24,8 @@ Material::~Material()
 }
 
 
-Eigen::Matrix<double, 6, 6> Material::generateD()
+Eigen::Matrix<double, 6, 6> 
+Material::generateD()
 {
 	Eigen::Matrix<double,6,6> D;
 

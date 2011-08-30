@@ -48,6 +48,7 @@
 
 
 
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
 	ui.setupUi(this);
@@ -81,7 +82,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 }
 
 
-void MainWindow::newProject()
+void 
+MainWindow::newProject()
 {
 	// initialize a new project
 	std::string default_path, tmp;
@@ -109,7 +111,8 @@ void MainWindow::newProject()
 }
 
 
-void MainWindow::openProject()
+void 
+MainWindow::openProject()
 {
 	std::string last_path, tmp;
 
@@ -171,7 +174,8 @@ void MainWindow::openProject()
 }
 
 
-void MainWindow::reopenProject()
+void 
+MainWindow::reopenProject()
 {
 	if(document.file_name != NULL)
 	{
@@ -219,7 +223,8 @@ void MainWindow::reopenProject()
 	}
 }
 
-void MainWindow::saveProject()
+void 
+MainWindow::saveProject()
 {
 	mylog.setPrefix("MainWindow::saveProject()");
 	
@@ -276,7 +281,8 @@ void MainWindow::saveProject()
 }
 
 
-void MainWindow::saveProjectAs()
+void 
+MainWindow::saveProjectAs()
 {
 	mylog.message("MainWindow::saveProjectAs() not yet implemented");
 
@@ -307,7 +313,8 @@ void MainWindow::saveProjectAs()
 }
 
 
-void MainWindow::closeProject()
+void 
+MainWindow::closeProject()
 {
 	if(this->hasUnsavedChanges)
 	{
@@ -345,7 +352,8 @@ void MainWindow::closeProject()
 }
 
 
-void MainWindow::quit()
+void 
+MainWindow::quit()
 {
 	if(this->hasUnsavedChanges)
 	{
@@ -380,7 +388,8 @@ void MainWindow::quit()
 }
 
 
-void MainWindow::createActions()
+void 
+MainWindow::createActions()
 {
 	// connect the actions
 	connect(ui.actionNew,	SIGNAL(triggered()), this,	SLOT(newProject()));
@@ -414,20 +423,23 @@ void MainWindow::createActions()
 }
 
 
-void MainWindow::createToolBars()
+void 
+MainWindow::createToolBars()
 {
 	// build the actions toolbar
 	//TODO finish this
 }
 
 
-void MainWindow::destroyToolBars()
+void 
+MainWindow::destroyToolBars()
 {
 	//deletes all toolbars
 }
 
 
-void MainWindow::loadOptions()
+void 
+MainWindow::loadOptions()
 {
 	using namespace std;
 
@@ -745,7 +757,8 @@ void MainWindow::loadOptions()
 /*
    Imports a mesh from a mesh document 
  */
-void MainWindow::importMesh()
+void 
+MainWindow::importMesh()
 {
 	mylog.setPrefix("MainWindow::importMesh()");
 
@@ -793,7 +806,8 @@ void MainWindow::importMesh()
 }
 
 
-void MainWindow::setNodeRestraints()
+void 
+MainWindow::setNodeRestraints()
 {
 	assert(mdiArea != NULL);
 
@@ -824,7 +838,8 @@ void MainWindow::setNodeRestraints()
 }
 
 
-void MainWindow::setNodeActions()
+void 
+MainWindow::setNodeActions()
 {
 	mylog.setPrefix("MainWindow::setNodeActions()");
 
@@ -845,7 +860,8 @@ void MainWindow::setNodeActions()
 }
 
 
-void MainWindow::setDisplayOptions()
+void 
+MainWindow::setDisplayOptions()
 {
 	//TODO make this generic
 	/*
@@ -866,7 +882,8 @@ void MainWindow::setDisplayOptions()
 }
 
 
-void MainWindow::editMaterials()
+void 
+MainWindow::editMaterials()
 {
 	//TODO finish this
 	MaterialsEditorDialog dialog(&document.project.model, this);
@@ -874,24 +891,28 @@ void MainWindow::editMaterials()
 }
 
 
-void MainWindow::editQuadratureRules()
+void 
+MainWindow::editQuadratureRules()
 {
 	QuadratureRulesOptionsDialog dialog(analysis, this);
 	dialog.exec();
 }
 
 
-void MainWindow::setElementDisplay()
+void 
+MainWindow::setElementDisplay()
 {
 }
 
 
-void MainWindow::setNodeForcesDisplay()
+void 
+MainWindow::setNodeForcesDisplay()
 {
 }
 
 
-void MainWindow::runAnalysis()
+void 
+MainWindow::runAnalysis()
 {
 	mylog.setPrefix("MainWindow::runAnalysis()");
 
@@ -989,7 +1010,8 @@ void MainWindow::runAnalysis()
 }
 
 
-void MainWindow::dumpFemEquation()
+void 
+MainWindow::dumpFemEquation()
 {
 	if( document.project.result.empty() )
 	{
@@ -1112,7 +1134,8 @@ void MainWindow::dumpFemEquation()
 }
 
 
-void MainWindow::showModel()
+void 
+MainWindow::showModel()
 {
 	//TODO finish this
 	QMdiSubWindow *window;
@@ -1132,7 +1155,8 @@ void MainWindow::showModel()
 }
 
 
-void MainWindow::showPostprocessing()
+void 
+MainWindow::showPostprocessing()
 {
 	QMdiSubWindow *window;
 
@@ -1151,37 +1175,43 @@ void MainWindow::showPostprocessing()
 }
 
 
-void MainWindow::getMessage(QString message)
+void 
+MainWindow::getMessage(QString message)
 {
 	emit setMessage(message);
 }
 
 
-void MainWindow::getWarning(QString message)
+void 
+MainWindow::getWarning(QString message)
 {
 	emit setMessage(message);
 }
 
 
-void MainWindow::getError(QString message)
+void 
+MainWindow::getError(QString message)
 {
 	emit setMessage(message);
 }
 
 
-void MainWindow::setTiledWindows()
+void 
+MainWindow::setTiledWindows()
 {
 	mdiArea->tileSubWindows();
 }
 
 
-void MainWindow::setCascadeWindows()
+void 
+MainWindow::setCascadeWindows()
 {
 	mdiArea->cascadeSubWindows();
 }
 
 
-void MainWindow:: createNewViewportWindow()
+void 
+MainWindow:: createNewViewportWindow()
 {
 	ModelWindow *window;	// opengl viewport
 	window = new ModelWindow(document.project, colors, this);
@@ -1197,7 +1227,8 @@ void MainWindow:: createNewViewportWindow()
 }
 
 
-void MainWindow::setUserInterfaceAsOpened()
+void 
+MainWindow::setUserInterfaceAsOpened()
 {
 	mylog.setPrefix("MainWindow::setUserInterfaceAsOpened()");
 
@@ -1235,7 +1266,8 @@ void MainWindow::setUserInterfaceAsOpened()
 }
 
 
-void MainWindow::setUserInterfaceAsClosed()	
+void 
+MainWindow::setUserInterfaceAsClosed()	
 {
 	// set the menus
 	ui.menuProject->setDisabled(true);

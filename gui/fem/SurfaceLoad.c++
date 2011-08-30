@@ -24,7 +24,8 @@ SurfaceLoad::~SurfaceLoad()
 }
 
 
-void SurfaceLoad::clear()
+void 
+SurfaceLoad::clear()
 {
 	type = Element::FE_INVALID;
 	nodes.clear();

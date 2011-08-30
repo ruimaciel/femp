@@ -13,7 +13,8 @@ NodeRestrainsDialog::~NodeRestrainsDialog()
 }
 
 
-int NodeRestrainsDialog::getRestraints()
+int 
+NodeRestrainsDialog::getRestraints()
 {
 	int r = NONE;
 	if(checkBoxX->isChecked())

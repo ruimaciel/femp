@@ -39,7 +39,8 @@ Document::~Document()
 }
 
 
-void Document::clear()
+void
+Document::clear()
 {
 	unsaved = false;
 	if (file_name != NULL) {
@@ -54,7 +55,7 @@ void Document::clear()
 }
 
 
-	enum Document::Error
+enum Document::Error
 Document::setFileName(QString new_file)
 {
 	if (this->file_name == NULL)
@@ -75,7 +76,8 @@ Document::setFileName(QString new_file)
 }
 
 
-enum Document::Error Document::load()
+enum Document::Error 
+Document::load()
 {
 	QFile           file;
 	// TODO check if path exists
@@ -1589,7 +1591,8 @@ unknown_error:		// some programming error happened
 }
 
 
-enum Document::Error Document::save()
+enum Document::Error 
+Document::save()
 {
 	//TODO drop support for Qt's text stream objects in favour of standard containers
 
@@ -1912,7 +1915,8 @@ enum Document::Error Document::save()
 }
 
 
-enum Document::Error Document::importMesh(QString file_name)
+enum Document::Error 
+Document::importMesh(QString file_name)
 {
 	QFile           mesh_file;
 
@@ -1933,20 +1937,23 @@ enum Document::Error Document::importMesh(QString file_name)
 }
 
 
-void Document::selectNode(const size_t & node)
+void
+Document::selectNode(const size_t & node)
 {
 	model_selection.selectNode(node);
 
 }
 
 
-void Document::deselectNode(const size_t & node)
+void
+Document::deselectNode(const size_t & node)
 {
 	model_selection.deselectNode(node);
 }
 
 
-void Document::deselectAll()
+void
+Document::deselectAll()
 {
 	model_selection.deselectAll();
 }

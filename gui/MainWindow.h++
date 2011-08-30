@@ -98,6 +98,8 @@ public Q_SLOTS:
 	void setTiledWindows();
 	void setCascadeWindows();
 	void createNewViewportWindow();
+	void createNewModelWindow();
+	void createNewPostprocessingWindow();
 
 Q_SIGNALS:
 	void setMessage(QString);

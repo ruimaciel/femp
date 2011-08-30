@@ -979,26 +979,6 @@ MainWindow::runAnalysis()
 	document.project.pushAnalysisResult(analysis_result);
 
 	//TODO set the UI
-
-	QMdiSubWindow *displacements_window;
-
-	displacements_window = mdiArea->activeSubWindow();
-	if(displacements_window == NULL)
-	{
-		// no window is currently active
-		ModelViewport *viewport;	// opengl viewport
-		viewport = new ModelViewport(document.project, this);
-		viewport->setColors(colors);
-
-		// create the model's MDI window
-		displacements_window = new QMdiSubWindow(mdiArea);
-		displacements_window->setWidget(viewport);
-		displacements_window->setAttribute(Qt::WA_DeleteOnClose);
-		displacements_window->showMaximized();
-
-		mdiArea->setActiveSubWindow(displacements_window);
-	}
-	
 	this->showPostprocessing();
 
         ui.actionDump_FEM_equation->setEnabled(true);
@@ -1137,41 +1117,14 @@ MainWindow::dumpFemEquation()
 void 
 MainWindow::showModel()
 {
-	//TODO finish this
-	QMdiSubWindow *window;
-
-	window = mdiArea->activeSubWindow();
-	if(window != NULL)
-	{
-		window->setWindowTitle("Model");
-
-		ModelWindow *model_window = new ModelWindow(document.project, colors, this);
-		window->setWidget(model_window);
-	}
-	else
-	{
-		this->createNewViewportWindow();
-	}
+	this->createNewModelWindow();
 }
 
 
 void 
 MainWindow::showPostprocessing()
 {
-	QMdiSubWindow *window;
-
-	window = mdiArea->activeSubWindow();
-	if(window != NULL)
-	{
-		window->setWindowTitle("Postprocessing");
-
-		PostprocessingWindow *viewport = new PostprocessingWindow(document.project, colors, this);
-		window->setWidget(viewport);
-	}
-	else
-	{
-		qWarning("MainWindow::showPostprocessing(): no active subwindow");
-	}
+	this->createNewPostprocessingWindow();
 }
 
 
@@ -1211,7 +1164,7 @@ MainWindow::setCascadeWindows()
 
 
 void 
-MainWindow:: createNewViewportWindow()
+MainWindow::createNewViewportWindow()
 {
 	ModelWindow *window;	// opengl viewport
 	window = new ModelWindow(document.project, colors, this);
@@ -1227,6 +1180,40 @@ MainWindow:: createNewViewportWindow()
 }
 
 
+void 
+MainWindow::createNewModelWindow()
+{
+	ModelWindow *window;	// opengl viewport
+	window = new ModelWindow(document.project, colors, this);
+
+	// create the model's MDI window
+	QMdiSubWindow	* mdi_window;	// the model's opengl viewport
+
+	mdi_window = new QMdiSubWindow(mdiArea);
+	mdi_window->setWidget(window);
+	mdi_window->setAttribute(Qt::WA_DeleteOnClose);
+	mdi_window->setWindowTitle(tr("Model"));
+	mdi_window->showMaximized();
+}
+
+
+void 
+MainWindow::createNewPostprocessingWindow()
+{
+	PostprocessingWindow *window;	// opengl viewport
+	window = new PostprocessingWindow(document.project, colors, this);
+
+	// create the model's MDI window
+	QMdiSubWindow	* mdi_window;	// the model's opengl viewport
+
+	mdi_window = new QMdiSubWindow(mdiArea);
+	mdi_window->setWidget(window);
+	mdi_window->setAttribute(Qt::WA_DeleteOnClose);
+	mdi_window->setWindowTitle(tr("Postprocessing"));
+	mdi_window->showMaximized();
+}
+
+  
 void 
 MainWindow::setUserInterfaceAsOpened()
 {

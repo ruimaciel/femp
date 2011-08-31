@@ -8,13 +8,14 @@
 - seleccionar o tipo de elementos a importar
 - não interpretar matrix singular como erro
 
-- MdiArea::subWindowActivate() implica actualizar UI 
 - apontar DisplayOptions::load_pattern para o objecto LoadPattern referido pela toolbar
 - abandonar flex/bison ao escrever um analisador sintático LL para o formato MSH 
 
-- create a common base class for all OpenGL viewports (ModelViewport, DisplacementsViewport, etc..)
 - implement Iso viewport angles in DisplacementsViewport
 - implement a wireframe surface class for the displacement viewport
 - verificar se cargas no domínio fazem referência a um elemento que existe
 
 - visualização de reacções no apoio
+
+== Notas ==
+	deslocamentos prescritos podem ter outra orientação além das do referencial

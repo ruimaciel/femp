@@ -19,7 +19,7 @@ TensorFieldRepresentationPolicy::~TensorFieldRepresentationPolicy ( ) { }
 
 
 void
-TensorFieldRepresentationPolicy::tetra4 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
+TensorFieldRepresentationPolicy::tetra4 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 
@@ -27,7 +27,7 @@ TensorFieldRepresentationPolicy::tetra4 (fem::Element &element, ViewportColor &c
 /**
  */
 void
-TensorFieldRepresentationPolicy::tetra10 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
+TensorFieldRepresentationPolicy::tetra10 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
  
@@ -35,7 +35,7 @@ TensorFieldRepresentationPolicy::tetra10 (fem::Element &element, ViewportColor &
 /**
  */
 void
-TensorFieldRepresentationPolicy::hexa8 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
+TensorFieldRepresentationPolicy::hexa8 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 
@@ -43,7 +43,7 @@ TensorFieldRepresentationPolicy::hexa8 (fem::Element &element, ViewportColor &co
 /**
  */
 void
-TensorFieldRepresentationPolicy::hexa20 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
+TensorFieldRepresentationPolicy::hexa20 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 
@@ -51,7 +51,7 @@ TensorFieldRepresentationPolicy::hexa20 (fem::Element &element, ViewportColor &c
 /**
  */
 void
-TensorFieldRepresentationPolicy::hexa27 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
+TensorFieldRepresentationPolicy::hexa27 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 
@@ -59,7 +59,7 @@ TensorFieldRepresentationPolicy::hexa27 (fem::Element &element, ViewportColor &c
 /**
  */
 void
-TensorFieldRepresentationPolicy::prism6 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
+TensorFieldRepresentationPolicy::prism6 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 
@@ -67,7 +67,7 @@ TensorFieldRepresentationPolicy::prism6 (fem::Element &element, ViewportColor &c
 /**
  */
 void
-TensorFieldRepresentationPolicy::prism15 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
+TensorFieldRepresentationPolicy::prism15 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 
@@ -75,7 +75,7 @@ TensorFieldRepresentationPolicy::prism15 (fem::Element &element, ViewportColor &
 /**
  */
 void
-TensorFieldRepresentationPolicy::prism18 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
+TensorFieldRepresentationPolicy::prism18 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 

@@ -22,8 +22,6 @@
 #include "../SceneGraphComponents/SGCNode.h++"
 #include "../SceneGraphComponents/SGCFieldSurface.h++"
 #include "../SceneGraphComponents/SGCDisplacementOriginalSurface.h++"
-#include "../SceneGraphComponents/OpaqueSurface/surfaces.h++"
-#include "../SceneGraphComponents/FieldSurface/surfaces.h++"
 
 #include "Strain11.h++"
 
@@ -61,6 +59,7 @@ void VPStateStrain11::populateScenegraph(BaseViewport *viewport)
 	}
 
 	// add the surfaces to the scenegraph
+	/*
 	for(std::list<fem::Surface>::iterator i = viewport->project->model.surface_list.begin(); i != viewport->project->model.surface_list.end(); i++)
 	{
 		if(i->external())
@@ -93,8 +92,10 @@ void VPStateStrain11::populateScenegraph(BaseViewport *viewport)
 			}
 		}
 	}
+	*/
 
 	// add the transparent surfaces to the scenegraph
+	/*
 	for(std::list<fem::Surface>::iterator i = viewport->project->model.surface_list.begin(); i != viewport->project->model.surface_list.end(); i++)
 	{
 		if(i->external())
@@ -127,6 +128,7 @@ void VPStateStrain11::populateScenegraph(BaseViewport *viewport)
 			}
 		}
 	}
+	*/
 	// generate the scene graph
 	this->scenegraph.generateSceneGraph();
 }

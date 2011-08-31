@@ -1,6 +1,6 @@
 #include "NoDisplacementsPolicy.h++"
 
-#include <assert.h+>
+#include <assert.h>
 
 
 // Constructors/Destructors

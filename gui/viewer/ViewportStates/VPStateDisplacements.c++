@@ -23,7 +23,6 @@
 #include "../SceneGraphComponents/SGCDisplacementSurface.h++"
 #include "../SceneGraphComponents/SGCNodeRestrictions.h++"
 #include "../SceneGraphComponents/SGCDisplacementOriginalSurface.h++"
-#include "../SceneGraphComponents/OpaqueSurface/surfaces.h++"
 
 
 VPStateDisplacements::VPStateDisplacements()
@@ -65,6 +64,7 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 	}
 
 	// add the surfaces to the scenegraph
+	/*
 	for(std::list<fem::Surface>::iterator i = viewport->project->model.surface_list.begin(); i != viewport->project->model.surface_list.end(); i++)
 	{
 		if(i->external())
@@ -97,8 +97,10 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 			}
 		}
 	}
+	*/
 
 	// add the transparent surfaces to the scenegraph
+	/*
 	for(std::list<fem::Surface>::iterator i = viewport->project->model.surface_list.begin(); i != viewport->project->model.surface_list.end(); i++)
 	{
 		if(i->external())
@@ -131,6 +133,7 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 			}
 		}
 	}
+	*/
 	// generate the scene graph
 	this->scenegraph.generateSceneGraph();
 }

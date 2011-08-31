@@ -18,10 +18,11 @@
 #include "../SceneGraph.h++"
 #include "../SceneGraphComponents/SGCNode.h++"
 #include "../SceneGraphComponents/SGCNodeRestrictions.h++"
-#include "../SceneGraphComponents/SGCModelSurface.h++"
-#include "../SceneGraphComponents/ModelSurface/surfaces.h++"
-#include "../SceneGraphComponents/WireframeSurface/surfaces.h++"
+#include "../SceneGraphComponents/SGCElement.h++"
 
+#include "../SceneGraphComponents/SGCModelSurface.h++"
+
+#include "../SceneGraphComponents/ElementFactory.h++"
 
 
 VPStateModel::VPStateModel()
@@ -48,22 +49,36 @@ void VPStateModel::populateScenegraph(BaseViewport *mv)
 {
 	mylog.setPrefix("void VPStateModel::populateScenegraph(fem::Model *mv->project->model)");
 	mylog.message("populating");
+	SceneGraphComponent * component;
 
 	//TODO generate the scenegraph
 
 	// add the nodes to the scenegraph
 	for(std::map<size_t, fem::Node>::iterator i = mv->project->model.node_list.begin(); i != mv->project->model.node_list.end(); i++)
 	{
-		//TODO set rendering groups
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(i->first, *mv->project) );
+		component =  new SGCNode(i->first, *mv->project);
+		if(component)
+			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
 	}
 
 	for( std::map<size_t, fem::NodeRestrictions>::iterator i = mv->project->model.node_restrictions_list.begin(); i != mv->project->model.node_restrictions_list.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, new SGCNodeRestrictions(mv->project->model.node_list[i->first], i->second) );
+		component =  new SGCNodeRestrictions(mv->project->model.node_list[i->first], i->second);
+		if(component) 
+			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, component);
+	}
+
+	// add the elements to the scene graph
+	SGC::ElementFactory factory;
+	for( std::vector<fem::Element>::iterator i = mv->project->model.element_list.begin(); i != mv->project->model.element_list.end(); i++)
+	{
+		component = factory(*i);
+		if(component) 
+			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
 	}
 
 	// add the surfaces to the scenegraph
+	/*
 	for(std::list<fem::Surface>::iterator i = mv->project->model.surface_list.begin(); i != mv->project->model.surface_list.end(); i++)
 	{
 		if(i->external())
@@ -101,6 +116,7 @@ void VPStateModel::populateScenegraph(BaseViewport *mv)
 			}
 		}
 	}
+	*/
 
 	// set the visibility of the rendering groups
 	this->scenegraph.rendering_groups[2].render = false;	// hide wireframe surfaces

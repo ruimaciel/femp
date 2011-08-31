@@ -40,14 +40,16 @@ PostprocessingViewport::~PostprocessingViewport()
 }
 
 
-void PostprocessingViewport::setNodeVisibility(bool state)
+void 
+PostprocessingViewport::setNodeVisibility(bool state)
 {
 	this->state->setRenderGoupVisibility(SceneGraph::RG_NODES, state);
 	this->display_options.nodes = state;
 }
 
 
-void PostprocessingViewport::setSurfaceVisibility(bool state)
+void 
+PostprocessingViewport::setSurfaceVisibility(bool state)
 {
 	this->state->setRenderGoupVisibility(SceneGraph::RG_SURFACES, state);
 	this->state->setRenderGoupVisibility(SceneGraph::RG_WIREFRAME, !state);
@@ -55,7 +57,8 @@ void PostprocessingViewport::setSurfaceVisibility(bool state)
 }
 
 
-void PostprocessingViewport::paintGL()
+void 
+PostprocessingViewport::paintGL()
 {
 	assert(project != NULL);
 
@@ -67,7 +70,8 @@ void PostprocessingViewport::paintGL()
 }
 
 
-void PostprocessingViewport::mousePressEvent(QMouseEvent *event)
+void 
+PostprocessingViewport::mousePressEvent(QMouseEvent *event)
 {
 	state->mousePressEvent(this, event);
 
@@ -75,7 +79,8 @@ void PostprocessingViewport::mousePressEvent(QMouseEvent *event)
 }
 
 
-void PostprocessingViewport::mouseMoveEvent(QMouseEvent *event)
+void 
+PostprocessingViewport::mouseMoveEvent(QMouseEvent *event)
 {
 	state->mouseMoveEvent(this, event);
 
@@ -83,7 +88,8 @@ void PostprocessingViewport::mouseMoveEvent(QMouseEvent *event)
 }
 
 
-void PostprocessingViewport::wheelEvent(QWheelEvent *event)
+void 
+PostprocessingViewport::wheelEvent(QWheelEvent *event)
 {
 	viewport_data.zoom += event->delta()/1000.0f;
 	//qWarning("viewport_data.zoom: %f, %f",viewport_data.zoom, pow(2,viewport_data.zoom));
@@ -94,7 +100,8 @@ void PostprocessingViewport::wheelEvent(QWheelEvent *event)
 }
 
 
-void PostprocessingViewport::keyPressEvent( QKeyEvent *event)
+void 
+PostprocessingViewport::keyPressEvent( QKeyEvent *event)
 {
 	qWarning("blah not keypressed");
 	state->keyPressEvent(this, event);
@@ -102,7 +109,8 @@ void PostprocessingViewport::keyPressEvent( QKeyEvent *event)
 
 
 template <class NewState>
-void PostprocessingViewport::setState(NewState *new_state)
+void 
+PostprocessingViewport::setState(NewState *new_state)
 {
 	if(this->state != NULL) delete this->state;
 
@@ -112,7 +120,8 @@ void PostprocessingViewport::setState(NewState *new_state)
 }
 
 
-void PostprocessingViewport::setXRotation(int angle)
+void 
+PostprocessingViewport::setXRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[0] = angle;
@@ -121,7 +130,8 @@ void PostprocessingViewport::setXRotation(int angle)
 }
 
 
-void PostprocessingViewport::setYRotation(int angle)
+void 
+PostprocessingViewport::setYRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[1] = angle;
@@ -130,7 +140,8 @@ void PostprocessingViewport::setYRotation(int angle)
 }
 
 
-void PostprocessingViewport::setZRotation(int angle)
+void 
+PostprocessingViewport::setZRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[2] = angle;
@@ -139,7 +150,8 @@ void PostprocessingViewport::setZRotation(int angle)
 }
 
 
-void PostprocessingViewport::setPosition(int x, int y)
+void 
+PostprocessingViewport::setPosition(int x, int y)
 {
 	mylog.setPrefix("PostprocessingViewport::setPosition(int x, int y)");
 	//TODO implement this
@@ -156,7 +168,8 @@ void PostprocessingViewport::setPosition(int x, int y)
 }
 
 
-void PostprocessingViewport::showDisplacements()
+void 
+PostprocessingViewport::showDisplacements()
 {
 	// set the state
 	VPStateDisplacements* state = new VPStateDisplacements;
@@ -166,7 +179,8 @@ void PostprocessingViewport::showDisplacements()
 }
 
 
-void PostprocessingViewport::showStrain11()
+void 
+PostprocessingViewport::showStrain11()
 {
 	// set the state
 	VPStateStrain11* state = new VPStateStrain11;

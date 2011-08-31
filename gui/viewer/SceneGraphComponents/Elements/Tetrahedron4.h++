@@ -19,10 +19,10 @@ public:
 	/*
 	@param	reference_element	the reference to this element's fem::Element object
 	*/
-	Tetrahedron4(fem::Element &reference_element);
+	Tetrahedron4(fem::Element &reference_element, ElementRepresentationPolicy *representation, DisplacementsRepresentationPolicy *displacements);
 
 protected:
-	void paintGL(fem::Project &project, ViewportColors &colors, ElementRepresentationPolicy *representation, DisplacementsRepresentationPolicy *displacements);
+	void paintGL(ViewportData &data, ViewportColors &colors);
 
 };
 

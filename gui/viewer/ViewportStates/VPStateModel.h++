@@ -9,6 +9,9 @@
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"
 
+#include "../SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationFlyweightFactory.h++"
+#include "../SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.h++"
+#include "../SceneGraphComponents/ElementFactory.h++"
 
 
 class BaseViewport;
@@ -20,7 +23,10 @@ class VPStateModel
 :public ViewportState<BaseViewport>
 {
 protected:
-	
+	ElementRepresentationFlyweightFactory		m_element_representation_factory;
+	NoDisplacementsPolicy 	m_no_displacements;	// the model view doesn't render displacements
+	SGC::ElementFactory m_factory;
+
 public:
 	VPStateModel();
 	~VPStateModel();

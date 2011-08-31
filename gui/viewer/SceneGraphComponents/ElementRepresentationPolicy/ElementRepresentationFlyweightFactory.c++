@@ -22,3 +22,18 @@ ElementRepresentationFlyweightFactory::setDisplacementsRepresentationPolicy(Disp
 	m_color_policy.setDisplacementPolicy(displacements);
 	//m_tensor_policy.setDisplacementPolicy(displacements);
 }
+
+ElementRepresentationPolicy * 
+ElementRepresentationFlyweightFactory::opaque()
+{
+	return &m_opaque_policy;
+}
+
+
+ElementRepresentationPolicy * 
+ElementRepresentationFlyweightFactory::gradient()
+{
+	return &m_color_policy;
+}
+
+

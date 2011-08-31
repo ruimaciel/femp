@@ -39,7 +39,7 @@ class SceneGraphComponent
 		/*
 		Render the content of this Scenegraph component
 		*/
-		virtual void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> *result, float &scale, ViewportColors &colors);
+		virtual void paintGL(ViewportData &data, ViewportColors &colors);
 
 		/*
 		Pushes a new scenegraph component to this component's children's list

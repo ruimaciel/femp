@@ -62,7 +62,7 @@ void SceneGraph::paint(ViewportData &viewport_data, fem::Project &project, fem::
 	for(map<int, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
 	{
 		if(i->second.render)
-			i->second.scenegraph.paintGL(viewport_data, project, result, scale, colors);
+			i->second.scenegraph.paintGL(viewport_data, colors);
 	}
 }
 

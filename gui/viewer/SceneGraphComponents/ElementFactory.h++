@@ -5,6 +5,8 @@
 #include "SGCElement.h++"
 #include "../../fem/Element.h++"
 
+#include "ElementRepresentationPolicy/ElementRepresentationPolicy.h++"
+#include "DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++"
 
 namespace SGC	// namespace for all scene graph components
 {
@@ -14,7 +16,13 @@ Defines a factory class which creates objects of type Element given an object of
 **/
 class ElementFactory
 {
+protected:
+	ElementRepresentationPolicy *m_representation;
+	DisplacementsRepresentationPolicy *m_displacement;
+	
 public:
+	void setElementRepresentationPolicy(ElementRepresentationPolicy *representation);
+	void setDisplacementsPolicy(DisplacementsRepresentationPolicy *displacements);
 	
 	/**
 	Factory method

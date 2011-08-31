@@ -34,7 +34,7 @@ public:
 
 	ElementRepresentationPolicy * opaque();
 	ElementRepresentationPolicy * gradient();
-	ElementRepresentationPolicy * tensor();
+	//ElementRepresentationPolicy * tensor();
 
 };
 

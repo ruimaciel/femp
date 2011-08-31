@@ -26,28 +26,32 @@ class Element
 {
 	protected:
 		fem::Element *m_element;
+		ElementRepresentationPolicy *m_representation;
+		DisplacementsRepresentationPolicy *m_displacements;
 
 	public:
 		/*
 		@param	reference_element	the reference to this element's fem::Element object
 		@param	reference_nodes	a map which links this element's nodes to their displaced value
 		*/
-		Element(fem::Element &reference_element);
+		Element(fem::Element &reference_element, ElementRepresentationPolicy *representation, DisplacementsRepresentationPolicy *displacements);
 		~Element();
 
 		
 		/*
 		Renders this element according to the element type and the detail factor
 		*/
-		virtual void paintGL(fem::Project &project, ViewportColors &colors, ElementRepresentationPolicy *representation, DisplacementsRepresentationPolicy *displacements) = 0;
+		virtual void paintGL(ViewportData &data, ViewportColors &colors) = 0;
 
 
 		//void setFramePolicy(FrameState *state);
 
+		void setElementRepresentationPolicy(ElementRepresentationPolicy *representation);
+		void setDisplacementsPolicy(DisplacementsRepresentationPolicy *displacements);
+
 	protected:
 
 		void setReferenceElement(fem::Element &);
-
 		/*
 		Visitor pattern method
 		*/

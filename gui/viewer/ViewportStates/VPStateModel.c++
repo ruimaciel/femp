@@ -22,12 +22,12 @@
 
 #include "../SceneGraphComponents/SGCModelSurface.h++"
 
-#include "../SceneGraphComponents/ElementFactory.h++"
-
 
 VPStateModel::VPStateModel()
 	: ViewportState<BaseViewport>()
 { 
+	this->m_factory.setElementRepresentationPolicy(m_element_representation_factory.opaque());
+	this->m_factory.setDisplacementsPolicy(&m_no_displacements);
 }
 
 
@@ -56,6 +56,7 @@ void VPStateModel::populateScenegraph(BaseViewport *mv)
 	// add the nodes to the scenegraph
 	for(std::map<size_t, fem::Node>::iterator i = mv->project->model.node_list.begin(); i != mv->project->model.node_list.end(); i++)
 	{
+		//TODO rewrite the SGCNode class
 		component =  new SGCNode(i->first, *mv->project);
 		if(component)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
@@ -63,16 +64,16 @@ void VPStateModel::populateScenegraph(BaseViewport *mv)
 
 	for( std::map<size_t, fem::NodeRestrictions>::iterator i = mv->project->model.node_restrictions_list.begin(); i != mv->project->model.node_restrictions_list.end(); i++)
 	{
+		//TODO rewrite the SGCNodeRestrictions class
 		component =  new SGCNodeRestrictions(mv->project->model.node_list[i->first], i->second);
 		if(component) 
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, component);
 	}
 
 	// add the elements to the scene graph
-	SGC::ElementFactory factory;
 	for( std::vector<fem::Element>::iterator i = mv->project->model.element_list.begin(); i != mv->project->model.element_list.end(); i++)
 	{
-		component = factory(*i);
+		component = this->m_factory(*i);
 		if(component) 
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
 	}

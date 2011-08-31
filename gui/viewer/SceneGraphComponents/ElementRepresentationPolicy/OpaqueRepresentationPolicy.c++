@@ -21,7 +21,7 @@ OpaqueRepresentationPolicy::~OpaqueRepresentationPolicy ( ) { }
 // Other methods
 //  
 void
-OpaqueRepresentationPolicy::tri3(fem::point &p1, fem::point &p2, fem::point &p3, ViewportColor &color)
+OpaqueRepresentationPolicy::tri3(fem::point &p1, fem::point &p2, fem::point &p3, ViewportColors &color)
 {
 	glEnable(GL_BLEND);
 
@@ -31,7 +31,7 @@ OpaqueRepresentationPolicy::tri3(fem::point &p1, fem::point &p2, fem::point &p3,
 	temp = fem::getNormalVector(p1,p2,p3);
 	
 	glBegin(GL_TRIANGLES);
-	glColor4f(color.surface);
+	glColor4fv(color.surface);
 	glNormal3dv(temp.data);
 	glVertex3dv(p1.data);
 	glVertex3dv(p2.data);
@@ -42,10 +42,10 @@ OpaqueRepresentationPolicy::tri3(fem::point &p1, fem::point &p2, fem::point &p3,
 
 
 void
-OpaqueRepresentationPolicy::tri6(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4,fem::point &p5, fem::point &p6, ViewportColor &color)
+OpaqueRepresentationPolicy::tri6(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4,fem::point &p5, fem::point &p6, ViewportColors &color)
 {
 	glEnable(GL_BLEND);
-	//int partitions = 6;	//TODO implement a better code
+	int partitions = 6;	//TODO implement a better code
 
 /*
      v
@@ -101,7 +101,7 @@ OpaqueRepresentationPolicy::tri6(fem::point &p1, fem::point &p2, fem::point &p3,
 		y = (double)j/partitions;
 		// and now let's render
 		glBegin(GL_TRIANGLE_STRIP);  
-		glColor4f(color.surface);
+		glColor4fv(color.surface);
 		for (i = 0; i <= (partitions-j); i++)  
 		{ 
 			// get the upper row points and normal vectors
@@ -135,7 +135,7 @@ OpaqueRepresentationPolicy::tri6(fem::point &p1, fem::point &p2, fem::point &p3,
 
 
 void
-OpaqueRepresentationPolicy::quad4(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, ViewportColor &color)
+OpaqueRepresentationPolicy::quad4(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, ViewportColors &color)
 {
 	glEnable(GL_BLEND);
 	int partitions = 3;	//TODO implement a better code
@@ -183,7 +183,7 @@ OpaqueRepresentationPolicy::quad4(fem::point &p1, fem::point &p2, fem::point &p3
 		n_lower_row[i] = fem::cross_product(dndx, dndy);
 	}
 
-	glColor4f(color.surface);
+	glColor4fv(color.surface);
 
 	// the rest of the loop
 	for (int j = 1; j <= partitions; j++)  
@@ -222,10 +222,10 @@ OpaqueRepresentationPolicy::quad4(fem::point &p1, fem::point &p2, fem::point &p3
 
 
 void
-OpaqueRepresentationPolicy::quad8(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, fem::point &p5, fem::point &p6, fem::point &p7, fem::point &p8, ViewportColor &color)
+OpaqueRepresentationPolicy::quad8(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, fem::point &p5, fem::point &p6, fem::point &p7, fem::point &p8, ViewportColors &color)
 {
 	glEnable(GL_BLEND);
-	// int partitions = 6;	//TODO implement a better code
+	int partitions = 6;	//TODO implement a better code
 
 /*
 	^ y
@@ -257,7 +257,7 @@ OpaqueRepresentationPolicy::quad8(fem::point &p1, fem::point &p2, fem::point &p3
 	nu = n_upper_row;
 	nl = n_lower_row;
 
-	glColor4f(color.surface);
+	glColor4fv(color.surface);
 
 	// initialize the bottom row
 	y = 0;
@@ -311,10 +311,10 @@ OpaqueRepresentationPolicy::quad8(fem::point &p1, fem::point &p2, fem::point &p3
 
 
 void
-OpaqueRepresentationPolicy::quad9(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, fem::point &p5, fem::point &p6, fem::point &p7, fem::point &p8, fem::point &p9, ViewportColor &color)
+OpaqueRepresentationPolicy::quad9(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, fem::point &p5, fem::point &p6, fem::point &p7, fem::point &p8, fem::point &p9, ViewportColors &color)
 {
 	glEnable(GL_BLEND);
-	// int partitions = 6;	//TODO implement a better code
+	int partitions = 6;	//TODO implement a better code
 
 /*
 	^ y
@@ -359,7 +359,7 @@ OpaqueRepresentationPolicy::quad9(fem::point &p1, fem::point &p2, fem::point &p3
 		n_lower_row[i] = fem::cross_product(dndx, dndy);
 	}
 
-	glColor4f(color.surface);
+	glColor4fv(color.surface);
 
 	// the rest of the loop
 	for (int j = 1; j <= partitions; j++)  
@@ -399,7 +399,7 @@ OpaqueRepresentationPolicy::quad9(fem::point &p1, fem::point &p2, fem::point &p3
 /**
  */
 void
-OpaqueRepresentationPolicy::tetra4 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::tetra4 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_TETRAHEDRON4);
 	assert(element.nodes.size() == 4);
@@ -412,17 +412,17 @@ OpaqueRepresentationPolicy::tetra4 (fem::Element &element, ViewportColor &color,
 	}
 
 	// render each surface
-	tri3( m_temp_p[0], m_temp_p[3], m_temp_p[2]);
-	tri3( m_temp_p[1], m_temp_p[0], m_temp_p[2]);
-	tri3( m_temp_p[3], m_temp_p[1], m_temp_p[2]);
-	tri3( m_temp_p[0], m_temp_p[1], m_temp_p[3]);
+	tri3( m_temp_p[0], m_temp_p[3], m_temp_p[2], color);
+	tri3( m_temp_p[1], m_temp_p[0], m_temp_p[2], color);
+	tri3( m_temp_p[3], m_temp_p[1], m_temp_p[2], color);
+	tri3( m_temp_p[0], m_temp_p[1], m_temp_p[3], color);
 }
 
 
 /**
  */
 void
-OpaqueRepresentationPolicy::tetra10 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::tetra10 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_TETRAHEDRON10);
 	assert(element.nodes.size() == 10);
@@ -435,17 +435,17 @@ OpaqueRepresentationPolicy::tetra10 (fem::Element &element, ViewportColor &color
 	}
 
 	// render each surface
-	tri6( m_temp_p[0], m_temp_p[3], m_temp_p[2], m_temp_p[7], m_temp_p[8], m_temp_p[6] );
-	tri6( m_temp_p[1], m_temp_p[0], m_temp_p[2], m_temp_p[4], m_temp_p[6], m_temp_p[5] );
-	tri6( m_temp_p[3], m_temp_p[1], m_temp_p[2], m_temp_p[9], m_temp_p[5], m_temp_p[8]);
-	tri6( m_temp_p[0], m_temp_p[1], m_temp_p[3], m_temp_p[4], m_temp_p[9], m_temp_p[7]);
+	tri6( m_temp_p[0], m_temp_p[3], m_temp_p[2], m_temp_p[7], m_temp_p[8], m_temp_p[6], color);
+	tri6( m_temp_p[1], m_temp_p[0], m_temp_p[2], m_temp_p[4], m_temp_p[6], m_temp_p[5], color);
+	tri6( m_temp_p[3], m_temp_p[1], m_temp_p[2], m_temp_p[9], m_temp_p[5], m_temp_p[8], color);
+	tri6( m_temp_p[0], m_temp_p[1], m_temp_p[3], m_temp_p[4], m_temp_p[9], m_temp_p[7], color);
 }
  
 
 /**
  */
 void
-OpaqueRepresentationPolicy::hexa8 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::hexa8 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON8);
 	assert(element.nodes.size() == 8);
@@ -458,19 +458,19 @@ OpaqueRepresentationPolicy::hexa8 (fem::Element &element, ViewportColor &color, 
 	}
 
 	// render each surface
-	quad4( m_temp_p[0], m_temp_p[4], m_temp_p[7], m_temp_p[3]);
-	quad4( m_temp_p[4], m_temp_p[5], m_temp_p[6], m_temp_p[7]);
-	quad4( m_temp_p[5], m_temp_p[1], m_temp_p[2], m_temp_p[6]);
-	quad4( m_temp_p[1], m_temp_p[0], m_temp_p[3], m_temp_p[2]);
-	quad4( m_temp_p[2], m_temp_p[3], m_temp_p[7], m_temp_p[6]);
-	quad4( m_temp_p[0], m_temp_p[1], m_temp_p[5], m_temp_p[4]);
+	quad4( m_temp_p[0], m_temp_p[4], m_temp_p[7], m_temp_p[3], color);
+	quad4( m_temp_p[4], m_temp_p[5], m_temp_p[6], m_temp_p[7], color);
+	quad4( m_temp_p[5], m_temp_p[1], m_temp_p[2], m_temp_p[6], color);
+	quad4( m_temp_p[1], m_temp_p[0], m_temp_p[3], m_temp_p[2], color);
+	quad4( m_temp_p[2], m_temp_p[3], m_temp_p[7], m_temp_p[6], color);
+	quad4( m_temp_p[0], m_temp_p[1], m_temp_p[5], m_temp_p[4], color);
 }
 
 
 /**
  */
 void
-OpaqueRepresentationPolicy::hexa20 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::hexa20 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON20);
 	assert(element.nodes.size() == 20);
@@ -482,19 +482,19 @@ OpaqueRepresentationPolicy::hexa20 (fem::Element &element, ViewportColor &color,
 		m_temp_p[i] = (*displacement)[element.nodes[i]];
 	}
 
-	quad4( m_temp_p[0], m_temp_p[4], m_temp_p[7], m_temp_p[3], m_temp_p[10], m_temp_p[17], m_temp_p[15], m_temp_p[9]);
-	quad4( m_temp_p[4], m_temp_p[5], m_temp_p[6], m_temp_p[7], m_temp_p[16], m_temp_p[18], m_temp_p[19], m_temp_p[17]);
-	quad4( m_temp_p[5], m_temp_p[1], m_temp_p[2], m_temp_p[6], m_temp_p[12], m_temp_p[11], m_temp_p[14], m_temp_p[18]);
-	quad4( m_temp_p[1], m_temp_p[0], m_temp_p[3], m_temp_p[2], m_temp_p[8], m_temp_p[9], m_temp_p[13], m_temp_p[11]);
-	quad4( m_temp_p[2], m_temp_p[3], m_temp_p[7], m_temp_p[6], m_temp_p[13], m_temp_p[15], m_temp_p[19], m_temp_p[14]);
-	quad4( m_temp_p[0], m_temp_p[1], m_temp_p[5], m_temp_p[4], m_temp_p[8], m_temp_p[12], m_temp_p[16], m_temp_p[10]);
+	quad8( m_temp_p[0], m_temp_p[4], m_temp_p[7], m_temp_p[3], m_temp_p[10], m_temp_p[17], m_temp_p[15], m_temp_p[9], color);
+	quad8( m_temp_p[4], m_temp_p[5], m_temp_p[6], m_temp_p[7], m_temp_p[16], m_temp_p[18], m_temp_p[19], m_temp_p[17], color);
+	quad8( m_temp_p[5], m_temp_p[1], m_temp_p[2], m_temp_p[6], m_temp_p[12], m_temp_p[11], m_temp_p[14], m_temp_p[18], color);
+	quad8( m_temp_p[1], m_temp_p[0], m_temp_p[3], m_temp_p[2], m_temp_p[8], m_temp_p[9], m_temp_p[13], m_temp_p[11], color);
+	quad8( m_temp_p[2], m_temp_p[3], m_temp_p[7], m_temp_p[6], m_temp_p[13], m_temp_p[15], m_temp_p[19], m_temp_p[14], color);
+	quad8( m_temp_p[0], m_temp_p[1], m_temp_p[5], m_temp_p[4], m_temp_p[8], m_temp_p[12], m_temp_p[16], m_temp_p[10], color);
 }
 
 
 /**
  */
 void
-OpaqueRepresentationPolicy::hexa27 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::hexa27 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON27);
 	assert(element.nodes.size() == 27);
@@ -506,19 +506,19 @@ OpaqueRepresentationPolicy::hexa27 (fem::Element &element, ViewportColor &color,
 		m_temp_p[i] = (*displacement)[element.nodes[i]];
 	}
 
-	quad4( m_temp_p[0], m_temp_p[4], m_temp_p[7], m_temp_p[3], m_temp_p[10], m_temp_p[17], m_temp_p[15], m_temp_p[9], m_temp_p[22]);
-	quad4( m_temp_p[4], m_temp_p[5], m_temp_p[6], m_temp_p[7], m_temp_p[16], m_temp_p[18], m_temp_p[19], m_temp_p[17], m_temp_p[25]);
-	quad4( m_temp_p[5], m_temp_p[1], m_temp_p[2], m_temp_p[6], m_temp_p[12], m_temp_p[11], m_temp_p[14], m_temp_p[18], m_temp_p[23]);
-	quad4( m_temp_p[1], m_temp_p[0], m_temp_p[3], m_temp_p[2], m_temp_p[8], m_temp_p[9], m_temp_p[13], m_temp_p[11], m_temp_p[20]);
-	quad4( m_temp_p[2], m_temp_p[3], m_temp_p[7], m_temp_p[6], m_temp_p[13], m_temp_p[15], m_temp_p[19], m_temp_p[14], m_temp_p[24]);
-	quad4( m_temp_p[0], m_temp_p[1], m_temp_p[5], m_temp_p[4], m_temp_p[8], m_temp_p[12], m_temp_p[16], m_temp_p[10], m_temp_p[21]);
+	quad9( m_temp_p[0], m_temp_p[4], m_temp_p[7], m_temp_p[3], m_temp_p[10], m_temp_p[17], m_temp_p[15], m_temp_p[9], m_temp_p[22], color);
+	quad9( m_temp_p[4], m_temp_p[5], m_temp_p[6], m_temp_p[7], m_temp_p[16], m_temp_p[18], m_temp_p[19], m_temp_p[17], m_temp_p[25], color);
+	quad9( m_temp_p[5], m_temp_p[1], m_temp_p[2], m_temp_p[6], m_temp_p[12], m_temp_p[11], m_temp_p[14], m_temp_p[18], m_temp_p[23], color);
+	quad9( m_temp_p[1], m_temp_p[0], m_temp_p[3], m_temp_p[2], m_temp_p[8], m_temp_p[9], m_temp_p[13], m_temp_p[11], m_temp_p[20], color);
+	quad9( m_temp_p[2], m_temp_p[3], m_temp_p[7], m_temp_p[6], m_temp_p[13], m_temp_p[15], m_temp_p[19], m_temp_p[14], m_temp_p[24], color);
+	quad9( m_temp_p[0], m_temp_p[1], m_temp_p[5], m_temp_p[4], m_temp_p[8], m_temp_p[12], m_temp_p[16], m_temp_p[10], m_temp_p[21], color);
 }
 
 
 /**
  */
 void
-OpaqueRepresentationPolicy::prism6 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::prism6 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM6);
 }
@@ -527,7 +527,7 @@ OpaqueRepresentationPolicy::prism6 (fem::Element &element, ViewportColor &color,
 /**
  */
 void
-OpaqueRepresentationPolicy::prism15 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::prism15 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM15);
 }
@@ -536,7 +536,7 @@ OpaqueRepresentationPolicy::prism15 (fem::Element &element, ViewportColor &color
 /**
  */
 void
-OpaqueRepresentationPolicy::prism18 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::prism18 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM18);
 }

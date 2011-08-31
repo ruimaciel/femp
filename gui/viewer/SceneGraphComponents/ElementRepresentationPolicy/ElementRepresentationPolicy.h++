@@ -22,35 +22,35 @@ public:
 
 	/**
 	 */
-	virtual void tetra4 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement) = 0;
+	virtual void tetra4 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement) = 0;
 
 	/**
 	 */
-	virtual void tetra10 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement) = 0; 
+	virtual void tetra10 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement) = 0; 
 
 	/**
 	 */
-	virtual void hexa8 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement) = 0;
+	virtual void hexa8 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement) = 0;
 
 	/**
 	 */
-	virtual void hexa20 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement) = 0;
+	virtual void hexa20 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement) = 0;
 
 	/**
 	 */
-	virtual void hexa27 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement) = 0;
+	virtual void hexa27 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement) = 0;
 
 	/**
 	 */
-	virtual void prism6 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement) = 0;
+	virtual void prism6 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement) = 0;
 
 	/**
 	 */
-	virtual void prism15 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement) = 0;
+	virtual void prism15 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement) = 0;
 
 	/**
 	 */
-	virtual void prism18 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacement) = 0;
+	virtual void prism18 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement) = 0;
 
 };
 

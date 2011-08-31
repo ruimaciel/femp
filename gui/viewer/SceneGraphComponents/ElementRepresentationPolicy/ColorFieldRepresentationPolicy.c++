@@ -19,7 +19,7 @@ ColorFieldRepresentationPolicy::~ColorFieldRepresentationPolicy ( ) { }
 
 
 void
-ColorFieldRepresentationPolicy::tetra4 (fem::Element &element, ViewportColor &color)
+ColorFieldRepresentationPolicy::tetra4 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 
@@ -27,7 +27,7 @@ ColorFieldRepresentationPolicy::tetra4 (fem::Element &element, ViewportColor &co
 /**
  */
 void
-ColorFieldRepresentationPolicy::tetra10 (fem::Element &element, ViewportColor &color)
+ColorFieldRepresentationPolicy::tetra10 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
  
@@ -35,7 +35,7 @@ ColorFieldRepresentationPolicy::tetra10 (fem::Element &element, ViewportColor &c
 /**
  */
 void
-ColorFieldRepresentationPolicy::hexa8 (fem::Element &element, ViewportColor &color)
+ColorFieldRepresentationPolicy::hexa8 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 
@@ -43,7 +43,7 @@ ColorFieldRepresentationPolicy::hexa8 (fem::Element &element, ViewportColor &col
 /**
  */
 void
-ColorFieldRepresentationPolicy::hexa20 (fem::Element &element, ViewportColor &color)
+ColorFieldRepresentationPolicy::hexa20 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 
@@ -51,7 +51,7 @@ ColorFieldRepresentationPolicy::hexa20 (fem::Element &element, ViewportColor &co
 /**
  */
 void
-ColorFieldRepresentationPolicy::hexa27 (fem::Element &element, ViewportColor &color)
+ColorFieldRepresentationPolicy::hexa27 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 
@@ -59,7 +59,7 @@ ColorFieldRepresentationPolicy::hexa27 (fem::Element &element, ViewportColor &co
 /**
  */
 void
-ColorFieldRepresentationPolicy::prism6 (fem::Element &element, ViewportColor &color)
+ColorFieldRepresentationPolicy::prism6 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 
@@ -67,7 +67,7 @@ ColorFieldRepresentationPolicy::prism6 (fem::Element &element, ViewportColor &co
 /**
  */
 void
-ColorFieldRepresentationPolicy::prism15 (fem::Element &element, ViewportColor &color)
+ColorFieldRepresentationPolicy::prism15 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 
@@ -75,7 +75,7 @@ ColorFieldRepresentationPolicy::prism15 (fem::Element &element, ViewportColor &c
 /**
  */
 void
-ColorFieldRepresentationPolicy::prism18 (fem::Element &element, ViewportColor &color)
+ColorFieldRepresentationPolicy::prism18 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements)
 {
 }
 

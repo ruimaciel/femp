@@ -32,35 +32,35 @@ protected:
 public:
 	/**
 	 */
-	void tetra4 (fem::Element &element, ViewportColor &color);
+	void tetra4 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements);
 
 	/**
 	 */
-	void tetra10 (fem::Element &element, ViewportColor &color); 
+	void tetra10 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements); 
 
 	/**
 	 */
-	void hexa8 (fem::Element &element, ViewportColor &color);
+	void hexa8 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements);
 
 	/**
 	 */
-	void hexa20 (fem::Element &element, ViewportColor &color);
+	void hexa20 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements);
 
 	/**
 	 */
-	void hexa27 (fem::Element &element, ViewportColor &color);
+	void hexa27 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements);
 
 	/**
 	 */
-	void prism6 (fem::Element &element, ViewportColor &color);
+	void prism6 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements);
 
 	/**
 	 */
-	void prism15 (fem::Element &element, ViewportColor &color);
+	void prism15 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements);
 
 	/**
 	 */
-	void prism18 (fem::Element &element, ViewportColor &color);
+	void prism18 (fem::Element &element, ViewportColor &color, DisplacementsRepresentationPolicy *displacements);
 
 
 };

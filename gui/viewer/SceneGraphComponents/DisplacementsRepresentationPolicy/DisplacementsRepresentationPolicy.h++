@@ -19,6 +19,9 @@ public:
 protected:
 
 public:
+	/**
+	Must set a reference to a fem::Model class in order to obtain displacements
+	**/
 	void setModel(fem::Model &model);
 
 	/**

@@ -38,10 +38,14 @@ VPStateModel::~VPStateModel()
 }
 
 
-void VPStateModel::initialize(BaseViewport *)
+void VPStateModel::initialize(BaseViewport *mv)
 {
 	mylog.setPrefix("VPStateModel::initialize()");
-	mylog.message("yet to be implemented");
+	mylog.message("initializing");
+
+	assert(mv != NULL);
+
+	this->m_no_displacements.setModel(mv->project->model);
 }
 
 
@@ -49,6 +53,9 @@ void VPStateModel::populateScenegraph(BaseViewport *mv)
 {
 	mylog.setPrefix("void VPStateModel::populateScenegraph(fem::Model *mv->project->model)");
 	mylog.message("populating");
+
+	assert(mv != NULL);
+
 	SceneGraphComponent * component;
 
 	//TODO generate the scenegraph

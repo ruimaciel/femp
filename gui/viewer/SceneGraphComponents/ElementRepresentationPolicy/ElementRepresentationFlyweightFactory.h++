@@ -5,7 +5,7 @@
 #include "ElementRepresentationPolicy.h++"
 #include "OpaqueRepresentationPolicy.h++"
 #include "ColorFieldRepresentationPolicy.h++"
-#include "TensorFieldRepresentationPolicy.h++"
+//#include "TensorFieldRepresentationPolicy.h++"
 
 
 /**
@@ -16,7 +16,7 @@ class ElementRepresentationFlyweightFactory
 protected:
 	OpaqueRepresentationPolicy 	m_opaque_policy;
 	ColorFieldRepresentationPolicy	m_color_policy;
-	TensorFieldRepresentationPolicy	m_tensor_policy;
+	//TensorFieldRepresentationPolicy	m_tensor_policy;
 
 public:
 	ElementRepresentationFlyweightFactory ( );

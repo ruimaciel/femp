@@ -24,6 +24,9 @@
 
 #include "../fem/LinearAnalysis.h++"
 
+#include "ViewportStates/VPStateDisplacements.h++"
+#include "ViewportStates/VPStateGradients.h++"
+
 
 /**
 Viewport designed to represent any postprocessing being done to any given model's FEM solution.
@@ -32,6 +35,10 @@ class PostprocessingViewport
 	: public BaseViewport
 {
 	Q_OBJECT
+
+	protected:
+		VPStateDisplacements 	m_vp_state_displacements;
+		VPStateGradients	m_vp_state_gradients;
 
 	public:
 		PostprocessingViewport(fem::Project &project, QWidget *parent = NULL);
@@ -56,6 +63,12 @@ class PostprocessingViewport
 		void setYRotation(int angle);
 		void setZRotation(int angle);
 		void setPosition(int x, int y);
+
+		/**
+		Sets this viewport to represent a given analysis result 
+		@param	result	an analysis result
+		**/
+		void setAnalysisResult(fem::AnalysisResult<double> &result);
 
 		// set the viewport state
 		void showDisplacements();

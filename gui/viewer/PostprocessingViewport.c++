@@ -2,9 +2,6 @@
 
 #include "SceneGraph.h++"
 
-#include "ViewportStates/VPStateDisplacements.h++"
-#include "ViewportStates/VPStateStrain11.h++"
-
 
 PostprocessingViewport::PostprocessingViewport(fem::Project &project, QWidget *parent)
 	: BaseViewport(project, parent)
@@ -12,9 +9,10 @@ PostprocessingViewport::PostprocessingViewport(fem::Project &project, QWidget *p
 	mylog.setPrefix("PostprocessingViewport::PostprocessingViewport(fem::Model *model, QWidget *parent)");
 	mylog.message("constructor");
 
+
 	//TODO let the user choose which result to represent
 	this->project = &project;
-	this->state = NULL;	// initialize the viewport state pointer
+	this->setAnalysisResult(this->project->result.back());
 
 	//TODO let the user select which analysis case to visualize
 
@@ -112,8 +110,6 @@ template <class NewState>
 void 
 PostprocessingViewport::setState(NewState *new_state)
 {
-	if(this->state != NULL) delete this->state;
-
 	this->state = new_state;
 	this->state->initialize(this);
 	this->state->populateScenegraph(this);
@@ -168,25 +164,26 @@ PostprocessingViewport::setPosition(int x, int y)
 }
 
 
+void
+PostprocessingViewport::setAnalysisResult(fem::AnalysisResult<double> &result)
+{
+	this->m_vp_state_displacements.setAnalysisResult(result);
+	this->m_vp_state_gradients.setAnalysisResult(result);
+}
+
+
 void 
 PostprocessingViewport::showDisplacements()
 {
-	// set the state
-	VPStateDisplacements* state = new VPStateDisplacements;
-	state->setAnalysisResult(this->project->result.back());
-
-	this->setState(state);
+	this->setState(&this->m_vp_state_displacements);
 }
 
 
 void 
 PostprocessingViewport::showStrain11()
 {
-	// set the state
-	VPStateStrain11* state = new VPStateStrain11;
-	state->setAnalysisResult(this->project->result.back());
-
-	this->setState(state);
+	this->m_vp_state_gradients.renderStrains11();
+	this->setState(&this->m_vp_state_gradients);
 }
 
 

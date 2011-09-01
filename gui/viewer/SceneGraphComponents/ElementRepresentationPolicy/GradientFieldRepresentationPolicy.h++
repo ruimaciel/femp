@@ -1,13 +1,13 @@
 
-#ifndef COLORFIELDREPRESENTATIONPOLICY_H
-#define COLORFIELDREPRESENTATIONPOLICY_H
+#ifndef GRADIENT_FIELDREPRESENTATIONPOLICY_H
+#define GRADIENT_FIELDREPRESENTATIONPOLICY_H
 
 #include "ElementRepresentationPolicy.h++"
 #include "../../../fem/Element.h++"
 #include "../../ViewportColors.h++"
 
 
-class ColorFieldRepresentationPolicy 
+class GradientFieldRepresentationPolicy 
 	: virtual public ElementRepresentationPolicy
 {
 public:
@@ -19,12 +19,12 @@ public:
 	/**
 	 * Empty Constructor
 	 */
-	ColorFieldRepresentationPolicy ( );
+	GradientFieldRepresentationPolicy ( );
 
 	/**
 	 * Empty Destructor
 	 */
-	virtual ~ColorFieldRepresentationPolicy ( );
+	virtual ~GradientFieldRepresentationPolicy ( );
 
 
 protected:

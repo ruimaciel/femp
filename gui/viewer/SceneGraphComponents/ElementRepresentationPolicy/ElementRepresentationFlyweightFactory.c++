@@ -19,7 +19,7 @@ ElementRepresentationFlyweightFactory::setDisplacementsRepresentationPolicy(Disp
 	assert(displacements != NULL);
 
 	m_opaque_policy.setDisplacementPolicy(displacements);
-	m_color_policy.setDisplacementPolicy(displacements);
+	m_gradient_policy.setDisplacementPolicy(displacements);
 	//m_tensor_policy.setDisplacementPolicy(displacements);
 }
 
@@ -33,7 +33,7 @@ ElementRepresentationFlyweightFactory::opaque()
 ElementRepresentationPolicy * 
 ElementRepresentationFlyweightFactory::gradient()
 {
-	return &m_color_policy;
+	return &m_gradient_policy;
 }
 
 

@@ -513,7 +513,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 				case PR_ELEMENT_PRISM15_1:
 					ss.push(NT_ELEMENT_PRISM15);
 					ss.push(TT_ARRAY_CLOSE);
-					for(int i = 0; i < 19; i++)
+					for(int i = 0; i < 14; i++)
 					{
 						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);
@@ -530,7 +530,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 				case PR_ELEMENT_PRISM18_1:
 					ss.push(NT_ELEMENT_PRISM18);
 					ss.push(TT_ARRAY_CLOSE);
-					for(int i = 0; i < 19; i++)
+					for(int i = 0; i < 17; i++)
 					{
 						ss.push(NT_REFERENCE);
 						ss.push(TT_VALUE_SEPARATOR);

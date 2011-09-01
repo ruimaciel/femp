@@ -26,7 +26,7 @@
 VPStateGradients::VPStateGradients()
 	: ViewportState<BaseViewport>()
 { 
-	this->m_factory.setElementRepresentationPolicy(m_element_representation_factory.opaque());
+	this->m_factory.setElementRepresentationPolicy(m_element_representation_factory.gradient());
 	this->m_factory.setDisplacementsPolicy(&m_displacements);
 }
 
@@ -169,6 +169,12 @@ void VPStateGradients::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event
 		default:
 			break;
 	}
+}
+
+
+void VPStateGradients::renderStrains11()
+{
+	//TODO finish this
 }
 
 

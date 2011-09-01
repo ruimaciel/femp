@@ -47,6 +47,10 @@ public:
 	// void mouseMoveEvent(QMouseEvent *event);
 	void keyPressEvent ( BaseViewport *mv, QKeyEvent * event );
 
+public:
+	// set which gradient field to render
+	void renderStrains11();
+
 protected:
 	/*
 	Marks all objects which intersect with a given ray as selected

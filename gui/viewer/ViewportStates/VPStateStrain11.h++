@@ -15,7 +15,7 @@
 
 #include "../SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationFlyweightFactory.h++"
 #include "../SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.h++"
-#include "../SceneGraphComponents/ElementFactory.h++"
+#include "../SceneGraphComponents/SceneComponentFactory.h++"
 
 
 
@@ -30,7 +30,7 @@ class VPStateStrain11
 	protected:
 		ElementRepresentationFlyweightFactory	m_element_representation_factory;
 		DisplacementsPolicy 	m_displacements;	// the displacements view renders displacements
-		SGC::ElementFactory	m_factory;
+		SGC::SceneComponentFactory	m_factory;
 
 	public:
 		VPStateStrain11();

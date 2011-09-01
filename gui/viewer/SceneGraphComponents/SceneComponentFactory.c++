@@ -1,4 +1,4 @@
-#include "ElementFactory.h++"
+#include "SceneComponentFactory.h++"
 
 #include "SceneGraphException.h++"
 
@@ -16,7 +16,7 @@ namespace SGC	// namespace for all scene graph components
 {
 
 Element *
-ElementFactory::operator() (fem::Element &element)
+SceneComponentFactory::operator() (fem::Element &element)
 {
 	Element *scene_graph_element;
 	switch(element.type)
@@ -64,7 +64,7 @@ ElementFactory::operator() (fem::Element &element)
 
 
 void 
-ElementFactory::setElementRepresentationPolicy(ElementRepresentationPolicy *representation)
+SceneComponentFactory::setElementRepresentationPolicy(ElementRepresentationPolicy *representation)
 {
 	assert(representation != NULL);
 	this->m_representation = representation;
@@ -72,7 +72,7 @@ ElementFactory::setElementRepresentationPolicy(ElementRepresentationPolicy *repr
 
 
 void 
-ElementFactory::setDisplacementsPolicy(DisplacementsRepresentationPolicy *displacements)
+SceneComponentFactory::setDisplacementsPolicy(DisplacementsRepresentationPolicy *displacements)
 {
 	assert(displacements != NULL);
 	this->m_displacement = displacements;

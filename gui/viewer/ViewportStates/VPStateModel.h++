@@ -11,7 +11,7 @@
 
 #include "../SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationFlyweightFactory.h++"
 #include "../SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.h++"
-#include "../SceneGraphComponents/ElementFactory.h++"
+#include "../SceneGraphComponents/SceneComponentFactory.h++"
 
 
 class BaseViewport;
@@ -25,7 +25,7 @@ class VPStateModel
 protected:
 	ElementRepresentationFlyweightFactory		m_element_representation_factory;
 	NoDisplacementsPolicy 	m_no_displacements;	// the model view doesn't render displacements
-	SGC::ElementFactory m_factory;
+	SGC::SceneComponentFactory m_factory;
 
 public:
 	VPStateModel();

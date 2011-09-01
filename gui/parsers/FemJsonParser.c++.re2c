@@ -15,7 +15,7 @@ FemJsonParser::FemJsonParser()
 	pos = limit;
 	marker = limit;
 	*limit = '\000';
-	line_number = 0;
+	line_number = 1;
 
 	setParserTable();
 

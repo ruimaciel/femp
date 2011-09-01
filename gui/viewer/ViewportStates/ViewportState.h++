@@ -43,7 +43,7 @@ class ViewportState
 		**/
 		virtual void setAnalysisResult(fem::AnalysisResult<double> &new_result);
 
-		void setDisplacementsScale(float new_scale);
+		virtual void setDisplacementsScale(float new_scale);
 
 		/**
 		Sets the visibility of a SceneGraph render group

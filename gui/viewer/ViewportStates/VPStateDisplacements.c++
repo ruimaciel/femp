@@ -166,6 +166,8 @@ void VPStateDisplacements::setAnalysisResult(fem::AnalysisResult<double> &new_re
 
 void VPStateDisplacements::setDisplacementsScale(float new_scale)
 {
+	mylog.setPrefix("VPStateDisplacements::setDisplacementsScale()");
+	mylog.message("set scale");
 	this->m_displacements.setDisplacementsScale(new_scale);
 }
 

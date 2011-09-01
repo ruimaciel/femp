@@ -617,3 +617,31 @@ GradientFieldRepresentationPolicy::prism18 (fem::Element &element, ViewportColor
 	quad9( 0, 3, 5, 2, 8, 13, 11, 7, 16, color);
 }
 
+
+void 
+GradientFieldRepresentationPolicy::renderNeutral()
+{
+	m_gradient = m_gradient_flyweight_factory.neutral();
+}
+
+
+void 
+GradientFieldRepresentationPolicy::renderConstant(float value)
+{
+	m_gradient = m_gradient_flyweight_factory.constant(value);
+}
+
+
+void 
+GradientFieldRepresentationPolicy::setMaximumGradientValue (float new_maximum)
+{
+	this->m_gradient_flyweight_factory.setMaximumGradientValue(new_maximum);
+}
+
+
+void 
+GradientFieldRepresentationPolicy::setMinimumGradientValue (float new_minimum)
+{
+	this->m_gradient_flyweight_factory.setMinimumGradientValue(new_minimum);
+}
+

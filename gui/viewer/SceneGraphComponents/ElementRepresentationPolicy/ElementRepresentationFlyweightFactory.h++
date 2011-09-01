@@ -5,6 +5,7 @@
 #include "ElementRepresentationPolicy.h++"
 #include "OpaqueRepresentationPolicy.h++"
 #include "GradientFieldRepresentationPolicy.h++"
+#include "GradientFieldPolicy/GradientFieldPolicy.h++"
 //#include "TensorFieldRepresentationPolicy.h++"
 
 

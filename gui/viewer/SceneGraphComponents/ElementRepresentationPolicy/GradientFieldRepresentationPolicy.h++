@@ -11,6 +11,9 @@
 #include "GradientFieldPolicy/GradientFieldFlyweightFactory.h++"
 
 
+/**
+Represents elements in the scene with a gradient field defined by GradientFieldPolicy, a policy pattern
+**/
 class GradientFieldRepresentationPolicy 
 	: virtual public ElementRepresentationPolicy
 {
@@ -20,7 +23,7 @@ protected:
 	typedef unsigned int p_index_t;	// syntactically convenient helper identifier
 
 	GradientFieldPolicy	*m_gradient;	// policy pattern used to calculate and set the gradient values
-	GradientFieldFlyweightFactory m_gradient_factory;
+	GradientFieldFlyweightFactory m_gradient_flyweight_factory;
 
 public:
 
@@ -51,35 +54,25 @@ public:
 	/**
 	 */
 	void tetra4 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
-
-	/**
-	 */
 	void tetra10 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements); 
-
-	/**
-	 */
 	void hexa8 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
-
-	/**
-	 */
 	void hexa20 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
-
-	/**
-	 */
 	void hexa27 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
-
-	/**
-	 */
 	void prism6 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
-
-	/**
-	 */
 	void prism15 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
-
-	/**
-	 */
 	void prism18 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
 
+	/**
+	sets the gradient rendering policy 
+	**/
+	void renderNeutral();
+	void renderConstant(float value);
+
+	/**
+	Sets the rendering limits
+	**/
+	void setMaximumGradientValue (float new_maximum);
+	void setMinimumGradientValue (float new_minimum);
 
 };
 

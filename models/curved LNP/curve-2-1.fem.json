@@ -628,7 +628,7 @@
 		{
 			"label": "Default",
 			"nodal loads":[
-				{"node": 16, "force":[0, 1, 0]},
+				{"node": 16, "force":[0, 1, 0]}
 			]
 		}
 	]

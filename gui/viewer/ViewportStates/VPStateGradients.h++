@@ -10,7 +10,7 @@
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"
 
-#include "../SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationFlyweightFactory.h++"
+#include "../SceneGraphComponents/ElementRepresentationPolicy/GradientFieldRepresentationPolicy.h++"
 #include "../SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.h++"
 #include "../SceneGraphComponents/SceneComponentFactory.h++"
 
@@ -24,7 +24,7 @@ class VPStateGradients
 	:public ViewportState<BaseViewport>
 {
 protected:
-	ElementRepresentationFlyweightFactory	m_element_representation_factory;
+	GradientFieldRepresentationPolicy	m_gradient_representation;
 	DisplacementsPolicy 	m_displacements;	// the displacements view renders displacements
 	SGC::SceneComponentFactory	m_factory;
 

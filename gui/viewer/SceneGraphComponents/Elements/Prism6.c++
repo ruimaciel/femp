@@ -18,7 +18,7 @@ Prism6::paintGL(ViewportData &data, ViewportColors &colors)
 	assert(m_representation != NULL);
 	assert(m_displacements != NULL);
 
-	m_representation->tetra4(*m_element, colors, m_displacements);
+	m_representation->prism6(*m_element, colors, m_displacements);
 }
 
 

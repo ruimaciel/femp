@@ -521,6 +521,21 @@ void
 OpaqueRepresentationPolicy::prism6 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM6);
+	assert(element.nodes.size() == 6);
+
+	// generate a temporary list of all nodes
+	m_temp_p.resize(6);
+	for(int i = 0; i < 6; i++)
+	{
+		m_temp_p[i] = (*displacement)[element.nodes[i]];
+	}
+
+	tri3( m_temp_p[0], m_temp_p[2], m_temp_p[1], color);
+	tri3( m_temp_p[3], m_temp_p[4], m_temp_p[5], color);
+
+	quad4( m_temp_p[3], m_temp_p[0], m_temp_p[1], m_temp_p[4], color);
+	quad4( m_temp_p[4], m_temp_p[1], m_temp_p[2], m_temp_p[5], color);
+	quad4( m_temp_p[0], m_temp_p[3], m_temp_p[5], m_temp_p[2], color);
 }
 
 
@@ -530,6 +545,21 @@ void
 OpaqueRepresentationPolicy::prism15 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM15);
+	assert(element.nodes.size() == 15);
+
+	// generate a temporary list of all nodes
+	m_temp_p.resize(15);
+	for(int i = 0; i < 15; i++)
+	{
+		m_temp_p[i] = (*displacement)[element.nodes[i]];
+	}
+
+	tri6( m_temp_p[0], m_temp_p[2], m_temp_p[1], m_temp_p[7], m_temp_p[9], m_temp_p[6], color);
+	tri6( m_temp_p[3], m_temp_p[4], m_temp_p[5], m_temp_p[12], m_temp_p[14], m_temp_p[13], color);
+
+	quad8( m_temp_p[3], m_temp_p[0], m_temp_p[1], m_temp_p[4], m_temp_p[8], m_temp_p[6], m_temp_p[10], m_temp_p[12], color);
+	quad8( m_temp_p[4], m_temp_p[1], m_temp_p[2], m_temp_p[5], m_temp_p[10], m_temp_p[9], m_temp_p[11], m_temp_p[14], color);
+	quad8( m_temp_p[0], m_temp_p[3], m_temp_p[5], m_temp_p[2], m_temp_p[8], m_temp_p[13], m_temp_p[11], m_temp_p[7], color);
 }
 
 
@@ -539,5 +569,20 @@ void
 OpaqueRepresentationPolicy::prism18 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM18);
+	assert(element.nodes.size() == 18);
+
+	// generate a temporary list of all nodes
+	m_temp_p.resize(18);
+	for(int i = 0; i < 18; i++)
+	{
+		m_temp_p[i] = (*displacement)[element.nodes[i]];
+	}
+
+	tri6( m_temp_p[0], m_temp_p[2], m_temp_p[1], m_temp_p[7], m_temp_p[9], m_temp_p[6], color);
+	tri6( m_temp_p[3], m_temp_p[4], m_temp_p[5], m_temp_p[12], m_temp_p[14], m_temp_p[13], color);
+
+	quad9( m_temp_p[3], m_temp_p[0], m_temp_p[1], m_temp_p[4], m_temp_p[8], m_temp_p[6], m_temp_p[10], m_temp_p[12], m_temp_p[15], color);
+	quad9( m_temp_p[4], m_temp_p[1], m_temp_p[2], m_temp_p[5], m_temp_p[10], m_temp_p[9], m_temp_p[11], m_temp_p[14], m_temp_p[17], color);
+	quad9( m_temp_p[0], m_temp_p[3], m_temp_p[5], m_temp_p[2], m_temp_p[8], m_temp_p[13], m_temp_p[11], m_temp_p[7], m_temp_p[16], color);
 }
 

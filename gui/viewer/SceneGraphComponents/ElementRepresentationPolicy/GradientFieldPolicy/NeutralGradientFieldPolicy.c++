@@ -2,8 +2,7 @@
 
 #include "../../SceneGraphException.h++"
 
-NeutralGradientFieldPolicy::NeutralGradientFieldPolicy(ViewportColors &colors)
-	: GradientFieldPolicy(colors)
+NeutralGradientFieldPolicy::NeutralGradientFieldPolicy()
 {
 }
 

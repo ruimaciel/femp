@@ -20,7 +20,7 @@ GradientFieldRepresentationPolicy::~GradientFieldRepresentationPolicy ( )
 // Other methods
 //  
 void
-GradientFieldRepresentationPolicy::tri3(p_index_t p1, p_index_t p2, p_index_t p3, ViewportColors &color)
+GradientFieldRepresentationPolicy::tri3(p_index_t p1, p_index_t p2, p_index_t p3, ViewportColors &colors)
 {
 	glEnable(GL_BLEND);
 
@@ -33,15 +33,15 @@ GradientFieldRepresentationPolicy::tri3(p_index_t p1, p_index_t p2, p_index_t p3
 	glBegin(GL_TRIANGLES);
 	glNormal3dv(temp.data);
 	ptemp.set(0,0);  
-	glColor3fv( m_gradient->tri3(p1, p2, p3, ptemp ) );
+	glColor3fv( m_gradient->tri3(p1, p2, p3, ptemp, colors) );
 	glVertex3dv(m_temp_p[p1].data);
 
 	ptemp.set(1,0);  
-	glColor3fv( m_gradient->tri3(p1, p2, p3, ptemp ) );
+	glColor3fv( m_gradient->tri3(p1, p2, p3, ptemp, colors) );
 	glVertex3dv(m_temp_p[p2].data);
 
 	ptemp.set(0,1);  
-	glColor3fv( m_gradient->tri3(p1, p2, p3, ptemp ) );
+	glColor3fv( m_gradient->tri3(p1, p2, p3, ptemp, colors) );
 	glVertex3dv(m_temp_p[p3].data);
 
 	glEnd();

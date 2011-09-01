@@ -11,7 +11,7 @@ class NeutralGradientFieldPolicy
 	: public GradientFieldPolicy
 {
 public:
-	NeutralGradientFieldPolicy(ViewportColors &colors);
+	NeutralGradientFieldPolicy();
 
 	void calculateGradientValues (fem::Element &element);
 };

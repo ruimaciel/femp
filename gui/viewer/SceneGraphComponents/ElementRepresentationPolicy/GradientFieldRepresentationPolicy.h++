@@ -8,6 +8,7 @@
 #include "../../ViewportColors.h++"
 
 #include "GradientFieldPolicy/GradientFieldPolicy.h++"
+#include "GradientFieldPolicy/GradientFieldFlyweightFactory.h++"
 
 
 class GradientFieldRepresentationPolicy 
@@ -19,6 +20,7 @@ protected:
 	typedef unsigned int p_index_t;	// syntactically convenient helper identifier
 
 	GradientFieldPolicy	*m_gradient;	// policy pattern used to calculate and set the gradient values
+	GradientFieldFlyweightFactory m_gradient_factory;
 
 public:
 
@@ -38,11 +40,11 @@ public:
 
 
 protected:
-	inline void tri3 (p_index_t p1, p_index_t p2, p_index_t p3, ViewportColors &color);
-	inline void tri6 (p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, ViewportColors &color);
-	inline void quad4(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, ViewportColors &color);
-	inline void quad8(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, ViewportColors &color);
-	inline void quad9(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, p_index_t p9, ViewportColors &color);
+	inline void tri3 (p_index_t p1, p_index_t p2, p_index_t p3, ViewportColors &colors);
+	inline void tri6 (p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, ViewportColors &colors);
+	inline void quad4(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, ViewportColors &colors);
+	inline void quad8(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, ViewportColors &colors);
+	inline void quad9(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, p_index_t p9, ViewportColors &colors);
 
 
 public:

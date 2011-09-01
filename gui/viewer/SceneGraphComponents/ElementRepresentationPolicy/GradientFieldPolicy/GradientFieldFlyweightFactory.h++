@@ -17,8 +17,8 @@ protected:
 	ConstantGradientFieldPolicy m_constant_policy;
 
 public:
-	GradientFieldPolicy * neutral()	{ return &m_neutral_policy; }
-	GradientFieldPolicy * constant(float value)	{ m_constant_policy.value = value; return &m_constantl_policy; }
+	GradientFieldPolicy * neutral();
+	GradientFieldPolicy * constant(float value);
 
 	void setMaximumGradientValue (float new_maximum);
 	void setMinimumGradientValue (float new_minimum);

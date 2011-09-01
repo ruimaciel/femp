@@ -11,7 +11,8 @@ GradientFieldFlyweightFactory::neutral()
 GradientFieldPolicy * 
 GradientFieldFlyweightFactory::constant(float value)	
 { 
-	m_constant_policy.value = value; return &m_constantl_policy; 
+	m_constant_policy.value = value; 
+	return &m_constant_policy; 
 }
 
 

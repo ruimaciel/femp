@@ -28,14 +28,13 @@
 			"nodal loads":[
 				{"node":1, "force":[0, 0, 0]},
 				{"node":3, "force":[6, 4, 1]}
-			]
-,
-			"domain loads":[
-				{"element":0, "force": [1,1,1]}
-			] ,
+			],
 			"surface loads":[
 				{"type": "triangle3", "nodes": [1,2,3], "forces": [[1,0,0],[1,0,0],[1,0,0]]}
-			]
+			],
+			"domain loads":[
+				{"element":0, "force": [1,1,1]}
+			] 
 		}
 	]
 

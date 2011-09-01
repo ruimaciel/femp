@@ -29,7 +29,8 @@ void SGCNode::paintGL(ViewportData &data, ViewportColors &colors)
 	glPushMatrix();
 	fem::point u = (*m_displacements)[this->node_label];
 
-	glTranslated(this->m_node->data[0], this->m_node->data[1], this->m_node->data[2]);
+	//glTranslated(this->m_node->data[0], this->m_node->data[1], this->m_node->data[2]);
+	glTranslated(u.data[0], u.data[1], u.data[2]);
 	
 	glScalef(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
 

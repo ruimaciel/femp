@@ -8,14 +8,13 @@
 GradientFieldRepresentationPolicy::GradientFieldRepresentationPolicy ( ) 
 {
 	m_temp_p.reserve(27);	// to accomodate the maximum number of points
+	m_gradient = NULL;
 }
 
-GradientFieldRepresentationPolicy::~GradientFieldRepresentationPolicy ( ) { }
 
-//  
-// Methods
-//  
-
+GradientFieldRepresentationPolicy::~GradientFieldRepresentationPolicy ( ) 
+{ 
+}
 
 
 // Other methods
@@ -28,14 +27,23 @@ GradientFieldRepresentationPolicy::tri3(p_index_t p1, p_index_t p2, p_index_t p3
 	//int partitions = 4;	//TODO implement a better code
 
 	fem::point temp;
+	fem::point ptemp;
 	temp = fem::getNormalVector(m_temp_p[p1],m_temp_p[p2],m_temp_p[p3]);
 	
 	glBegin(GL_TRIANGLES);
-	glColor4fv(color.surface);
 	glNormal3dv(temp.data);
+	ptemp.set(0,0);  
+	glColor3fv( m_gradient->tri3(p1, p2, p3, ptemp ) );
 	glVertex3dv(m_temp_p[p1].data);
+
+	ptemp.set(1,0);  
+	glColor3fv( m_gradient->tri3(p1, p2, p3, ptemp ) );
 	glVertex3dv(m_temp_p[p2].data);
+
+	ptemp.set(0,1);  
+	glColor3fv( m_gradient->tri3(p1, p2, p3, ptemp ) );
 	glVertex3dv(m_temp_p[p3].data);
+
 	glEnd();
 	glDisable(GL_BLEND);
 }
@@ -403,6 +411,9 @@ GradientFieldRepresentationPolicy::tetra4 (fem::Element &element, ViewportColors
 {
 	assert(element.type == fem::Element::FE_TETRAHEDRON4);
 	assert(element.nodes.size() == 4);
+	assert(m_gradient != NULL);
+
+	m_gradient->calculateGradientValues(element);
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(4);
@@ -426,6 +437,10 @@ GradientFieldRepresentationPolicy::tetra10 (fem::Element &element, ViewportColor
 {
 	assert(element.type == fem::Element::FE_TETRAHEDRON10);
 	assert(element.nodes.size() == 10);
+	assert(m_gradient != NULL);
+
+	m_gradient->calculateGradientValues(element);
+
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(10);
@@ -449,6 +464,10 @@ GradientFieldRepresentationPolicy::hexa8 (fem::Element &element, ViewportColors 
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON8);
 	assert(element.nodes.size() == 8);
+	assert(m_gradient != NULL);
+
+	m_gradient->calculateGradientValues(element);
+
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(8);
@@ -474,6 +493,10 @@ GradientFieldRepresentationPolicy::hexa20 (fem::Element &element, ViewportColors
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON20);
 	assert(element.nodes.size() == 20);
+	assert(m_gradient != NULL);
+
+	m_gradient->calculateGradientValues(element);
+
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(20);
@@ -498,6 +521,10 @@ GradientFieldRepresentationPolicy::hexa27 (fem::Element &element, ViewportColors
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON27);
 	assert(element.nodes.size() == 27);
+	assert(m_gradient != NULL);
+
+	m_gradient->calculateGradientValues(element);
+
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(27);
@@ -570,6 +597,10 @@ GradientFieldRepresentationPolicy::prism18 (fem::Element &element, ViewportColor
 {
 	assert(element.type == fem::Element::FE_PRISM18);
 	assert(element.nodes.size() == 18);
+	assert(m_gradient != NULL);
+
+	m_gradient->calculateGradientValues(element);
+
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(18);

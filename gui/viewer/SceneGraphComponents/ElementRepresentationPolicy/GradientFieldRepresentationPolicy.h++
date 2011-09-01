@@ -7,13 +7,18 @@
 #include "../../../fem/Element.h++"
 #include "../../ViewportColors.h++"
 
+#include "GradientFieldPolicy/GradientFieldPolicy.h++"
+
 
 class GradientFieldRepresentationPolicy 
 	: virtual public ElementRepresentationPolicy
 {
 protected:
 	std::vector<fem::point> m_temp_p;
-	typedef std::vector<fem::point>::size_type p_index_t;	// syntactically convenient helper identifier
+	//typedef std::vector<fem::point>::size_type p_index_t;	// syntactically convenient helper identifier
+	typedef unsigned int p_index_t;	// syntactically convenient helper identifier
+
+	GradientFieldPolicy	*m_gradient;	// policy pattern used to calculate and set the gradient values
 
 public:
 

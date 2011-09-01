@@ -53,7 +53,7 @@ void SceneGraph::clear()
 }
 
 
-void SceneGraph::paint(ViewportData &viewport_data, fem::Project &project, fem::AnalysisResult<double> *result, float &scale, ViewportColors &colors)
+void SceneGraph::paint(ViewportData &viewport_data, ViewportColors &colors)
 {
 	using namespace std;
 	// get the model

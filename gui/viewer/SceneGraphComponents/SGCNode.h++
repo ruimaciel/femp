@@ -5,28 +5,33 @@
 #include "SceneGraphComponent.h++"
 #include "../OperationsVisitor.h++"
 
-#include "../../fem/Project.h++"
 #include "../../fem/Node.h++"
 #include "../../fem/NodeRestrictions.h++"
 #include "../../fem/LinearAnalysis.h++"
 
+#include "DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++"
 
+
+/**
+Scene graph component which renders a node
+**/
 class SGCNode
 	: public SceneGraphComponent
 {
 	protected:
 		size_t node_label;
-		fem::Node *node;
+		fem::Node *m_node;
+		DisplacementsRepresentationPolicy *m_displacements;
 
 	public:
-		SGCNode(size_t, fem::Project &project);
+		SGCNode(size_t, fem::Node &node, DisplacementsRepresentationPolicy *displacements);
 		~SGCNode();
 
 
 		/*
 		Renders this node
 		*/
-		void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> *result, float &scale, ViewportColors &colors);
+		void paintGL(ViewportData &data, ViewportColors &colors);
 
 		/*
 		Visitor pattern method

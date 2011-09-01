@@ -13,7 +13,10 @@
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"
 
-#include "../../fem/AnalysisResult.h++"
+#include "../SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationFlyweightFactory.h++"
+#include "../SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.h++"
+#include "../SceneGraphComponents/ElementFactory.h++"
+
 
 
 class BaseViewport;
@@ -25,7 +28,9 @@ class VPStateStrain11
 	:public ViewportState<BaseViewport>
 {
 	protected:
-		FieldComponent	*field;	// pointer used for a state pattern that sets which recovered field to represent
+		ElementRepresentationFlyweightFactory	m_element_representation_factory;
+		DisplacementsPolicy 	m_displacements;	// the displacements view renders displacements
+		SGC::ElementFactory	m_factory;
 
 	public:
 		VPStateStrain11();

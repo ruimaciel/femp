@@ -28,6 +28,8 @@
 VPStateDisplacements::VPStateDisplacements()
 	: ViewportState<BaseViewport>()
 { 
+	this->m_factory.setElementRepresentationPolicy(m_element_representation_factory.opaque());
+	this->m_factory.setDisplacementsPolicy(&m_displacements);
 }
 
 
@@ -38,32 +40,49 @@ VPStateDisplacements::~VPStateDisplacements()
 }
 
 
-void VPStateDisplacements::initialize(BaseViewport *)
+void VPStateDisplacements::initialize(BaseViewport *mv)
 {
+	mylog.setPrefix("VPStateDisplacements::initialize()");
+	mylog.message("initializing");
 	// build the displaced_nodes from the analysis
+	assert(mv != NULL);
 
 	this->setDisplacementsScale(1.0);	//TODO tweak this value 
+	this->m_displacements.setModel(mv->project->model);
 }
 
 
 void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 {
 	mylog.setPrefix("void VPStateDisplacements::populateScenegraph(fem::Model *viewport->project->model)");
+	mylog.message("populating");
 
-	//TODO generate the scenegraph
+	assert(viewport != NULL);
+
+	SceneGraphComponent * component;
 
 	// add the nodes to the scenegraph
-	for(size_t n = 0; n < viewport->project->model.node_list.size(); n++)
+	for(std::map<size_t, fem::Node>::iterator i = viewport->project->model.node_list.begin(); i != viewport->project->model.node_list.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(n, *viewport->project) );
+		component =  new SGCNode(i->first, i->second, &this->m_displacements);
+		if(component)
+			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
 	}
 
+	/**
 	for( std::map<size_t, fem::NodeRestrictions>::iterator i = viewport->project->model.node_restrictions_list.begin(); i != viewport->project->model.node_restrictions_list.end(); i++)
 	{
 		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, new SGCNodeRestrictions(viewport->project->model.node_list[i->first], i->second) );
 	}
+	**/
 
-	// add the surfaces to the scenegraph
+	// add the elements to the scenegraph
+	for( std::vector<fem::Element>::iterator i = viewport->project->model.element_list.begin(); i != viewport->project->model.element_list.end(); i++)
+	{
+		component = this->m_factory(*i);
+		if(component) 
+			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
+	}
 	/*
 	for(std::list<fem::Surface>::iterator i = viewport->project->model.surface_list.begin(); i != viewport->project->model.surface_list.end(); i++)
 	{
@@ -139,10 +158,21 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 }
 
 
+void VPStateDisplacements::setAnalysisResult(fem::AnalysisResult<double> &new_result)
+{
+	this->m_displacements.setAnalysisResult(new_result);
+}
+
+
+void VPStateDisplacements::setDisplacementsScale(float new_scale)
+{
+	this->m_displacements.setDisplacementsScale(new_scale);
+}
+
+
 void VPStateDisplacements::paintGL(BaseViewport *viewport)
 {
 	assert(viewport != NULL);
-	assert(this->result != NULL);
 
 	mylog.setPrefix("VPStateDisplacements::paintGL()");
 
@@ -152,9 +182,7 @@ void VPStateDisplacements::paintGL(BaseViewport *viewport)
 
 	viewport->viewport_data.camera.reposition();
 
-	//mylog.message("painting");
-
-	this->scenegraph.paint(viewport->viewport_data, *viewport->project, this->result, this->scale, viewport->colors);
+	this->scenegraph.paint(viewport->viewport_data,  viewport->colors);
 
 }
 

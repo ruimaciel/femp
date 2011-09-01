@@ -29,9 +29,8 @@
 VPStateStrain11::VPStateStrain11()
 	: ViewportState<BaseViewport>()
 { 
-	field = NULL;	
-
-	field = new Strain11;
+	this->m_factory.setElementRepresentationPolicy(m_element_representation_factory.opaque());
+	this->m_factory.setDisplacementsPolicy(&m_displacements);
 }
 
 
@@ -40,95 +39,40 @@ VPStateStrain11::~VPStateStrain11()
 }
 
 
-void VPStateStrain11::initialize(BaseViewport *)
+void VPStateStrain11::initialize(BaseViewport *viewport)
 {
 	// build the displaced_nodes from the analysis
 
+	assert(viewport != NULL);
+
 	this->setDisplacementsScale(1.0);	//TODO tweak this value 
+	this->m_displacements.setModel(viewport->project->model);
 }
 
 
 void VPStateStrain11::populateScenegraph(BaseViewport *viewport)
 {
-	//TODO generate the scenegraph
+	assert(viewport != NULL);
+
+	SceneGraphComponent * component;
 
 	// add the nodes to the scenegraph
-	for(size_t n = 0; n < viewport->project->model.node_list.size(); n++)
+	for(std::map<size_t, fem::Node>::iterator i = viewport->project->model.node_list.begin(); i != viewport->project->model.node_list.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, new SGCNode(n, *viewport->project) );
+		component =  new SGCNode(i->first, i->second, &this->m_displacements);
+		if(component)
+			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
 	}
 
-	// add the surfaces to the scenegraph
-	/*
-	for(std::list<fem::Surface>::iterator i = viewport->project->model.surface_list.begin(); i != viewport->project->model.surface_list.end(); i++)
+	//TODO render node restrictions
+
+	// add the elements to the scenegraph
+	for( std::vector<fem::Element>::iterator i = viewport->project->model.element_list.begin(); i != viewport->project->model.element_list.end(); i++)
 	{
-		if(i->external())
-		{
-			switch(i->getType())
-			{
-				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCFieldSurface<FieldSurfaceTriangle3>(*i, field) );
-					break;
-
-				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCFieldSurface<FieldSurfaceTriangle6>(*i, field) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCFieldSurface<FieldSurfaceQuad4>(*i, field) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCFieldSurface<FieldSurfaceQuad8>(*i, field) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCFieldSurface<FieldSurfaceQuad9>(*i, field) );
-					break;
-
-				default:
-					mylog.message("unknown surface type");
-					break;
-			}
-		}
+		component = this->m_factory(*i);
+		if(component) 
+			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
 	}
-	*/
-
-	// add the transparent surfaces to the scenegraph
-	/*
-	for(std::list<fem::Surface>::iterator i = viewport->project->model.surface_list.begin(); i != viewport->project->model.surface_list.end(); i++)
-	{
-		if(i->external())
-		{
-			switch(i->getType())
-			{
-				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceTriangle3>(*i) );
-					break;
-
-				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceTriangle6>(*i) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad4>(*i) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad8>(*i) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad9>(*i) );
-					break;
-
-				default:
-					mylog.message("unknown surface type");
-					break;
-			}
-		}
-	}
-	*/
 	// generate the scene graph
 	this->scenegraph.generateSceneGraph();
 }
@@ -137,7 +81,6 @@ void VPStateStrain11::populateScenegraph(BaseViewport *viewport)
 void VPStateStrain11::paintGL(BaseViewport *viewport)
 {
 	assert(viewport != NULL);
-	assert(this->result != NULL);
 
 	mylog.setPrefix("VPStateStrain11::paintGL()");
 
@@ -147,10 +90,7 @@ void VPStateStrain11::paintGL(BaseViewport *viewport)
 
 	viewport->viewport_data.camera.reposition();
 
-	//mylog.message("painting");
-
-	this->scenegraph.paint(viewport->viewport_data, *viewport->project, this->result, this->scale, viewport->colors);
-
+	this->scenegraph.paint(viewport->viewport_data,  viewport->colors);
 }
 
 
@@ -212,9 +152,6 @@ void VPStateStrain11::setField(FieldComponent *field)
 {
 	assert(field != NULL);
 	//TODO finish this
-	if(this->field != NULL)
-		delete this->field;
-	this->field = field;
 }
 
 

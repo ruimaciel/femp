@@ -3,14 +3,19 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
+#include <assert.h>
+
 #include "../Logs.h++"	// declare the global message loggers
 
 
-SGCNode::SGCNode(size_t reference_node_label, fem::Project &project)
+SGCNode::SGCNode(size_t reference_node_label, fem::Node &node, DisplacementsRepresentationPolicy *displacements)
 	: SceneGraphComponent()
 {
+	assert(displacements != NULL);
+
 	this->node_label = reference_node_label;
-	this->node = &project.model.node_list[reference_node_label];
+	this->m_node = &node;
+	this->m_displacements = displacements;
 }
 
 
@@ -19,14 +24,12 @@ SGCNode::~SGCNode()
 }
 
 
-void SGCNode::paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> *result, float &scale,  ViewportColors &colors)
+void SGCNode::paintGL(ViewportData &data, ViewportColors &colors)
 {
 	glPushMatrix();
-	fem::point u;
-	if(result != NULL)
-		u =  result->displacements[this->node_label];
+	fem::point u = (*m_displacements)[this->node_label];
 
-	glTranslated(node->data[0] + scale*u.data[0],node->data[1] + scale*u.data[1], node->data[2] + scale*u.data[2]);
+	glTranslated(this->m_node->data[0], this->m_node->data[1], this->m_node->data[2]);
 	
 	glScalef(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
 

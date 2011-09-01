@@ -67,7 +67,7 @@ class SceneGraph
 		void clear();
 
 
-		void paint(ViewportData &viewport_data, fem::Project &project, fem::AnalysisResult<double> *result, float &scale, ViewportColors &colors);
+		void paint(ViewportData &viewport_data, ViewportColors &colors);
 
 		/*
 		Generic routine to add a primitive component to this scenegraph

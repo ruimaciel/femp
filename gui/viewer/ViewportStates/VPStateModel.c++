@@ -49,6 +49,7 @@ void VPStateModel::initialize(BaseViewport *mv)
 }
 
 
+
 void VPStateModel::populateScenegraph(BaseViewport *mv)
 {
 	mylog.setPrefix("void VPStateModel::populateScenegraph(fem::Model *mv->project->model)");
@@ -58,13 +59,10 @@ void VPStateModel::populateScenegraph(BaseViewport *mv)
 
 	SceneGraphComponent * component;
 
-	//TODO generate the scenegraph
-
 	// add the nodes to the scenegraph
 	for(std::map<size_t, fem::Node>::iterator i = mv->project->model.node_list.begin(); i != mv->project->model.node_list.end(); i++)
 	{
-		//TODO rewrite the SGCNode class
-		component =  new SGCNode(i->first, *mv->project);
+		component =  new SGCNode(i->first, i->second, &this->m_no_displacements);
 		if(component)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
 	}
@@ -136,6 +134,8 @@ void VPStateModel::populateScenegraph(BaseViewport *mv)
 
 void VPStateModel::paintGL(BaseViewport *mv)
 {
+	assert(mv != NULL);
+
 	mylog.setPrefix("VPStateModel::paintGL()");
 
 	glMatrixMode(GL_MODELVIEW);
@@ -144,9 +144,8 @@ void VPStateModel::paintGL(BaseViewport *mv)
 
 	mv->viewport_data.camera.reposition();
 
-
 	//TODO finish implementing this
-	this->scenegraph.paint(mv->viewport_data, *mv->project, this->result, this->scale, mv->colors);
+	this->scenegraph.paint(mv->viewport_data, mv->colors);
 }
 
 

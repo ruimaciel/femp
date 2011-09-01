@@ -22,7 +22,6 @@ class ViewportState
 {
 	protected:
 		SceneGraph scenegraph;
-		fem::AnalysisResult<double> *result;
 		float scale;
 		
 	public:
@@ -42,7 +41,7 @@ class ViewportState
 		/**
 		Configures the viewport to render the scene according to new_result
 		**/
-		void setAnalysisResult(fem::AnalysisResult<double> &new_result);
+		virtual void setAnalysisResult(fem::AnalysisResult<double> &new_result);
 
 		void setDisplacementsScale(float new_scale);
 
@@ -66,14 +65,12 @@ class ViewportState
 template <class Viewport>
 ViewportState<Viewport>::ViewportState()
 {
-	result = NULL;
 }
 
 
 template <class Viewport>
 void ViewportState<Viewport>::setAnalysisResult(fem::AnalysisResult<double> &new_result)
 {
-	this->result = &new_result;
 }
 
 template<class Viewport>

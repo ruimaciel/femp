@@ -19,8 +19,6 @@
 #include "../SceneGraphComponents/SGCNode.h++"
 #include "../SceneGraphComponents/SGCNodeRestrictions.h++"
 
-#include "../SceneGraphComponents/SGCModelSurface.h++"
-
 
 VPStateModel::VPStateModel()
 	: ViewportState<BaseViewport>()

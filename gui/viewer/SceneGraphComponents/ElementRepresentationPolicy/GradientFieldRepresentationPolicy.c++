@@ -1,5 +1,6 @@
 #include "GradientFieldRepresentationPolicy.h++"
 
+#include <assert.h>
 #include <GL/gl.h>
 
 // Constructors/Destructors
@@ -22,6 +23,8 @@ GradientFieldRepresentationPolicy::~GradientFieldRepresentationPolicy ( )
 void
 GradientFieldRepresentationPolicy::tri3(p_index_t p1, p_index_t p2, p_index_t p3, ViewportColors &colors)
 {
+	assert(m_gradient != NULL);
+
 	glEnable(GL_BLEND);
 
 	//int partitions = 4;	//TODO implement a better code
@@ -50,8 +53,10 @@ GradientFieldRepresentationPolicy::tri3(p_index_t p1, p_index_t p2, p_index_t p3
 
 
 void
-GradientFieldRepresentationPolicy::tri6(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4,p_index_t p5, p_index_t p6, ViewportColors &color)
+GradientFieldRepresentationPolicy::tri6(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4,p_index_t p5, p_index_t p6, ViewportColors &colors)
 {
+	assert(m_gradient != NULL);
+
 	glEnable(GL_BLEND);
 	int partitions = 6;	//TODO implement a better code
 
@@ -71,10 +76,15 @@ GradientFieldRepresentationPolicy::tri6(p_index_t p1, p_index_t p2, p_index_t p3
 	// defining temporary structures for points and normal vectors
 	fem::point p_upper_row[partitions+1];
 	fem::point *pu;
+	fem::point p_local_upper_row[partitions+1];
+	fem::point *plu;
 	fem::point n_upper_row[partitions+1];
 	fem::point *nu;
+
 	fem::point p_lower_row[partitions+1];
 	fem::point *pl;
+	fem::point p_local_lower_row[partitions+1];
+	fem::point *pll;
 	fem::point n_lower_row[partitions+1];
 	fem::point *nl;
 
@@ -86,6 +96,9 @@ GradientFieldRepresentationPolicy::tri6(p_index_t p1, p_index_t p2, p_index_t p3
 	pu = p_upper_row;
 	pl = p_lower_row;
 
+	plu = p_local_upper_row;
+	pll = p_local_lower_row;
+
 	nu = n_upper_row;
 	nl = n_lower_row;
 
@@ -95,6 +108,7 @@ GradientFieldRepresentationPolicy::tri6(p_index_t p1, p_index_t p2, p_index_t p3
 	{
 		x = ((double)i)/partitions;
 		p_lower_row[i] = m_temp_p[p3]*y*(2*y-1)+4*m_temp_p[p6]*(-y-x+1)*y+4*m_temp_p[p5]*x*y+m_temp_p[p1]*(2*(-y-x+1)-1)*(-y-x+1)+4*m_temp_p[p4]*x*(-y-x+1)+m_temp_p[p2]*x*(2*x-1);
+		p_local_lower_row[i] = fem::point(x,y);
 
 		// and now set the normal vector
 		dndx = -4*m_temp_p[p6]*y+4*m_temp_p[p5]*y+4*m_temp_p[p4]*(-y-x+1)-2*m_temp_p[p1]*(-y-x+1)-m_temp_p[p1]*(2*(-y-x+1)-1)+m_temp_p[p2]*(2*x-1)-4*m_temp_p[p4]*x+2*m_temp_p[p2]*x;
@@ -109,12 +123,12 @@ GradientFieldRepresentationPolicy::tri6(p_index_t p1, p_index_t p2, p_index_t p3
 		y = (double)j/partitions;
 		// and now let's render
 		glBegin(GL_TRIANGLE_STRIP);  
-		glColor4fv(color.surface);
 		for (i = 0; i <= (partitions-j); i++)  
 		{ 
 			// get the upper row points and normal vectors
 			x = (double)i/partitions;
 			pu[i] = m_temp_p[p3]*y*(2*y-1)+4*m_temp_p[p6]*(-y-x+1)*y+4*m_temp_p[p5]*x*y+m_temp_p[p1]*(2*(-y-x+1)-1)*(-y-x+1)+4*m_temp_p[p4]*x*(-y-x+1)+m_temp_p[p2]*x*(2*x-1);
+			plu[i] = fem::point(x,y);
 
 			// and now set the normal vector for the upper row
 			dndx = -4*m_temp_p[p6]*y+4*m_temp_p[p5]*y+4*m_temp_p[p4]*(-y-x+1)-2*m_temp_p[p1]*(-y-x+1)-m_temp_p[p1]*(2*(-y-x+1)-1)+m_temp_p[p2]*(2*x-1)-4*m_temp_p[p4]*x+2*m_temp_p[p2]*x;
@@ -123,17 +137,23 @@ GradientFieldRepresentationPolicy::tri6(p_index_t p1, p_index_t p2, p_index_t p3
 
 			// draw the triangles
 			glNormal3dv(nu[i].data);
+			glColor3fv( m_gradient->tri6(p1, p2, p3, p4, p5, p6, plu[i], colors) );
 			glVertex3dv(pu[i].data);
 			glNormal3dv(nl[i].data);
+			glColor3fv( m_gradient->tri6(p1, p2, p3, p4, p5, p6, pll[i], colors) );
 			glVertex3dv(pl[i].data);
 		} 
 		glNormal3dv(nl[i].data);
+		glColor3fv( m_gradient->tri6(p1, p2, p3, p4, p5, p6, pll[i], colors) );
 		glVertex3dv(pl[i].data);
 		glEnd(); 
 
 		// swap buffer pointes
 		pl = pu;
 		pu = (pu == p_upper_row)?p_lower_row:p_upper_row;
+
+		pll = plu;
+		plu = (plu == p_local_upper_row)?p_local_lower_row:p_local_upper_row;
 
 		nl = nu;
 		nu = (nu == n_upper_row)?n_lower_row:n_upper_row;

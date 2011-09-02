@@ -84,6 +84,13 @@ GradientFieldPolicy::tri6 (gradient_index_t p1, gradient_index_t p2, gradient_in
 
 	// interpolate between the values p1..p6
 	//TODO finish this
+	float N1 = (2*(1-pos.x() - pos.y()) - 1)*(1- pos.x() - pos.y() ) ;
+	float N2 = pos.x()*(2* pos.x() - 1);
+	float N3 = pos.y()*(2* pos.y() - 1);
+	float N4 = 4*pos.x()*(1-pos.x() - pos.y());
+	float N5 = 4*pos.x()*pos.y();
+	float N6 = 4*pos.y()*(1-pos.x() - pos.y());
+	gradient = m_gradient_value[p1]*N1 + m_gradient_value[p2]*N2 + m_gradient_value[p3]*N3 + m_gradient_value[p4]*N4 + m_gradient_value[p5]*N5 + m_gradient_value[p6]*N6 ;
 
 	// return the color
 	return this->getColor(gradient, colors);

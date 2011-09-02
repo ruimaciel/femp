@@ -20,9 +20,7 @@
 
 #include "../SceneGraph.h++"
 #include "../SceneGraphComponents/SGCNode.h++"
-#include "../SceneGraphComponents/SGCDisplacementSurface.h++"
 #include "../SceneGraphComponents/SGCNodeRestrictions.h++"
-#include "../SceneGraphComponents/SGCDisplacementOriginalSurface.h++"
 
 
 VPStateDisplacements::VPStateDisplacements()
@@ -40,7 +38,8 @@ VPStateDisplacements::~VPStateDisplacements()
 }
 
 
-void VPStateDisplacements::initialize(BaseViewport *mv)
+void
+VPStateDisplacements::initialize(BaseViewport *mv)
 {
 	mylog.setPrefix("VPStateDisplacements::initialize()");
 	mylog.message("initializing");
@@ -52,7 +51,8 @@ void VPStateDisplacements::initialize(BaseViewport *mv)
 }
 
 
-void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
+void
+VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 {
 	mylog.setPrefix("void VPStateDisplacements::populateScenegraph(fem::Model *viewport->project->model)");
 	mylog.message("populating");
@@ -83,88 +83,21 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 		if(component) 
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
 	}
-	/*
-	for(std::list<fem::Surface>::iterator i = viewport->project->model.surface_list.begin(); i != viewport->project->model.surface_list.end(); i++)
-	{
-		if(i->external())
-		{
-			switch(i->getType())
-			{
-				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceTriangle3>(*i) );
-					break;
 
-				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceTriangle6>(*i) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad4>(*i) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad8>(*i) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCDisplacementSurface<SurfaceQuad9>(*i) );
-					break;
-
-				default:
-					mylog.message("unknown surface type");
-					break;
-			}
-		}
-	}
-	*/
-
-	// add the transparent surfaces to the scenegraph
-	/*
-	for(std::list<fem::Surface>::iterator i = viewport->project->model.surface_list.begin(); i != viewport->project->model.surface_list.end(); i++)
-	{
-		if(i->external())
-		{
-			switch(i->getType())
-			{
-				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceTriangle3>(*i) );
-					break;
-
-				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceTriangle6>(*i) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad4>(*i) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad8>(*i) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_GHOST_SURFACES, new SGCDisplacementOriginalSurface<SurfaceQuad9>(*i) );
-					break;
-
-				default:
-					mylog.message("unknown surface type");
-					break;
-			}
-		}
-	}
-	*/
 	// generate the scene graph
 	this->scenegraph.generateSceneGraph();
 }
 
 
-void VPStateDisplacements::setAnalysisResult(fem::AnalysisResult<double> &new_result)
+void
+VPStateDisplacements::setAnalysisResult(fem::AnalysisResult<double> &new_result)
 {
 	this->m_displacements.setAnalysisResult(new_result);
 }
 
 
-void VPStateDisplacements::setDisplacementsScale(float new_scale)
+void
+VPStateDisplacements::setDisplacementsScale(float new_scale)
 {
 	mylog.setPrefix("VPStateDisplacements::setDisplacementsScale()");
 	mylog.message("set scale");
@@ -172,7 +105,8 @@ void VPStateDisplacements::setDisplacementsScale(float new_scale)
 }
 
 
-void VPStateDisplacements::paintGL(BaseViewport *viewport)
+void
+VPStateDisplacements::paintGL(BaseViewport *viewport)
 {
 	assert(viewport != NULL);
 
@@ -189,7 +123,8 @@ void VPStateDisplacements::paintGL(BaseViewport *viewport)
 }
 
 
-void VPStateDisplacements::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
+void
+VPStateDisplacements::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
 {
 	viewport->viewport_data.lastPos = event->pos();
 	// process left clicks
@@ -214,7 +149,8 @@ void VPStateDisplacements::mousePressEvent(BaseViewport *viewport, QMouseEvent *
 }
 
 
-void VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
+void
+VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 {
 	qWarning("keypressed");
 	switch( event->key() )
@@ -243,7 +179,8 @@ void VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * e
 }
 
 
-void VPStateDisplacements::selectModelObjects(const fem::point &,const fem::point &)
+void
+VPStateDisplacements::selectModelObjects(const fem::point &,const fem::point &)
 {
 	//TODO finish implementing this
 

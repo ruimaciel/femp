@@ -18,7 +18,6 @@
 #include "../SceneGraph.h++"
 #include "../SceneGraphComponents/SGCNode.h++"
 #include "../SceneGraphComponents/SGCNodeRestrictions.h++"
-#include "../SceneGraphComponents/SGCElement.h++"
 
 #include "../SceneGraphComponents/SGCModelSurface.h++"
 
@@ -38,7 +37,8 @@ VPStateModel::~VPStateModel()
 }
 
 
-void VPStateModel::initialize(BaseViewport *mv)
+void
+VPStateModel::initialize(BaseViewport *mv)
 {
 	mylog.setPrefix("VPStateModel::initialize()");
 	mylog.message("initializing");
@@ -50,7 +50,8 @@ void VPStateModel::initialize(BaseViewport *mv)
 
 
 
-void VPStateModel::populateScenegraph(BaseViewport *mv)
+void
+VPStateModel::populateScenegraph(BaseViewport *mv)
 {
 	mylog.setPrefix("void VPStateModel::populateScenegraph(fem::Model *mv->project->model)");
 	mylog.message("populating");
@@ -83,47 +84,6 @@ void VPStateModel::populateScenegraph(BaseViewport *mv)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
 	}
 
-	// add the surfaces to the scenegraph
-	/*
-	for(std::list<fem::Surface>::iterator i = mv->project->model.surface_list.begin(); i != mv->project->model.surface_list.end(); i++)
-	{
-		if(i->external())
-		{
-			switch(i->getType())
-			{
-				case fem::Element::FE_TRIANGLE3:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<ModelSurfaceTriangle3>(*i, mv->project->model.node_list) );
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceTriangle3>(*i, mv->project->model.node_list) );
-					break;
-
-				case fem::Element::FE_TRIANGLE6:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<ModelSurfaceTriangle6>(*i, mv->project->model.node_list) );
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceTriangle6>(*i, mv->project->model.node_list) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE4:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<ModelSurfaceQuad4>(*i, mv->project->model.node_list) );
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceQuad4>(*i, mv->project->model.node_list) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE8:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<ModelSurfaceQuad8>(*i, mv->project->model.node_list) );
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceQuad8>(*i, mv->project->model.node_list) );
-					break;
-
-				case fem::Element::FE_QUADRANGLE9:
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, new SGCModelSurface<ModelSurfaceQuad9>(*i, mv->project->model.node_list) );
-					this->scenegraph.addPrimitiveComponent(SceneGraph::RG_WIREFRAME, new SGCModelSurface<WireframeSurfaceQuad9>(*i, mv->project->model.node_list) );
-					break;
-
-				default:
-					mylog.message("unknown surface type");
-					break;
-			}
-		}
-	}
-	*/
-
 	// set the visibility of the rendering groups
 	this->scenegraph.rendering_groups[2].render = false;	// hide wireframe surfaces
 
@@ -132,7 +92,8 @@ void VPStateModel::populateScenegraph(BaseViewport *mv)
 }
 
 
-void VPStateModel::paintGL(BaseViewport *mv)
+void
+VPStateModel::paintGL(BaseViewport *mv)
 {
 	assert(mv != NULL);
 
@@ -149,7 +110,8 @@ void VPStateModel::paintGL(BaseViewport *mv)
 }
 
 
-void VPStateModel::mousePressEvent(BaseViewport *mv, QMouseEvent *event)
+void
+VPStateModel::mousePressEvent(BaseViewport *mv, QMouseEvent *event)
 {
 	mv->viewport_data.lastPos = event->pos();
 	// process left clicks
@@ -166,15 +128,12 @@ void VPStateModel::mousePressEvent(BaseViewport *mv, QMouseEvent *event)
 		glGetIntegerv(GL_VIEWPORT, viewport);
 		gluUnProject(pos.x(), viewport[3]-pos.y(), 0, modelview, projection, viewport, &near.data[0], &near.data[1], &near.data[2]);
 		gluUnProject(pos.x(), viewport[3]-pos.y(), 1, modelview, projection, viewport, &far.data[0], &far.data[1], &far.data[2]);
-
-		// push the line
-		// selectModelObjects(near, far); 	//TODO finish this
-
 	}
 }
 
 
-void VPStateModel::selectModelObjects(const fem::point &,const fem::point &)
+void
+VPStateModel::selectModelObjects(const fem::point &,const fem::point &)
 {
 	//TODO finish this
 	// test nodes

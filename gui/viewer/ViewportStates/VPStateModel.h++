@@ -20,7 +20,7 @@ class BaseViewport;
 A pattern for the State pattern which is used to render the model space
 */
 class VPStateModel
-:public ViewportState<BaseViewport>
+	:public ViewportState<BaseViewport>
 {
 protected:
 	ElementRepresentationFlyweightFactory		m_element_representation_factory;

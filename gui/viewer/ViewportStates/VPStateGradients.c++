@@ -43,7 +43,8 @@ VPStateGradients::~VPStateGradients()
 }
 
 
-void VPStateGradients::initialize(BaseViewport *mv)
+void
+VPStateGradients::initialize(BaseViewport *mv)
 {
 	mylog.setPrefix("VPStateGradients::initialize()");
 	mylog.message("initializing");
@@ -55,7 +56,8 @@ void VPStateGradients::initialize(BaseViewport *mv)
 }
 
 
-void VPStateGradients::populateScenegraph(BaseViewport *viewport)
+void
+VPStateGradients::populateScenegraph(BaseViewport *viewport)
 {
 	mylog.setPrefix("void VPStateGradients::populateScenegraph(fem::Model *viewport->project->model)");
 	mylog.message("populating");
@@ -92,13 +94,15 @@ void VPStateGradients::populateScenegraph(BaseViewport *viewport)
 }
 
 
-void VPStateGradients::setAnalysisResult(fem::AnalysisResult<double> &new_result)
+void
+VPStateGradients::setAnalysisResult(fem::AnalysisResult<double> &new_result)
 {
 	this->m_displacements.setAnalysisResult(new_result);
 }
 
 
-void VPStateGradients::setDisplacementsScale(float new_scale)
+void
+VPStateGradients::setDisplacementsScale(float new_scale)
 {
 	mylog.setPrefix("VPStateGradients::setDisplacementsScale()");
 	mylog.message("set scale");
@@ -106,7 +110,8 @@ void VPStateGradients::setDisplacementsScale(float new_scale)
 }
 
 
-void VPStateGradients::paintGL(BaseViewport *viewport)
+void
+VPStateGradients::paintGL(BaseViewport *viewport)
 {
 	assert(viewport != NULL);
 
@@ -123,7 +128,8 @@ void VPStateGradients::paintGL(BaseViewport *viewport)
 }
 
 
-void VPStateGradients::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
+void
+VPStateGradients::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
 {
 	viewport->viewport_data.lastPos = event->pos();
 	// process left clicks
@@ -140,15 +146,12 @@ void VPStateGradients::mousePressEvent(BaseViewport *viewport, QMouseEvent *even
 		glGetIntegerv(GL_VIEWPORT, viewport);
 		gluUnProject(pos.x(), viewport[3]-pos.y(), 0, modelview, projection, viewport, &near.data[0], &near.data[1], &near.data[2]);
 		gluUnProject(pos.x(), viewport[3]-pos.y(), 1, modelview, projection, viewport, &far.data[0], &far.data[1], &far.data[2]);
-
-		// push the line
-		// selectModelObjects(near, far); 	//TODO finish this
-
 	}
 }
 
 
-void VPStateGradients::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
+void
+VPStateGradients::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 {
 	qWarning("keypressed");
 	switch( event->key() )
@@ -177,7 +180,8 @@ void VPStateGradients::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event
 }
 
 
-void VPStateGradients::renderStrains11()
+void
+VPStateGradients::renderStrains11()
 {
 	qWarning("void VPStateGradients::renderStrains11()");
 	//TODO test only. change this
@@ -186,7 +190,8 @@ void VPStateGradients::renderStrains11()
 }
 
 
-void VPStateGradients::selectModelObjects(const fem::point &,const fem::point &)
+void
+VPStateGradients::selectModelObjects(const fem::point &,const fem::point &)
 {
 	//TODO finish implementing this
 

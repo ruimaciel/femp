@@ -1,9 +1,13 @@
 #include "ConstantGradientFieldPolicy.h++"
 
+#include <iostream>
+
 #include "../../SceneGraphException.h++"
+
 
 ConstantGradientFieldPolicy::ConstantGradientFieldPolicy()
 {
+	this->value = 0;
 }
 
 
@@ -54,6 +58,16 @@ ConstantGradientFieldPolicy::calculateGradientValues (fem::Element &element)
 	
 	// sets all values to m_max_value
 	std::fill(m_gradient_value.begin(), m_gradient_value.end(), value);
+
+	std::cout << "gradient values - max: ";
+	std::cout << m_max_value;
+	std::cout << " min: ";
+	std::cout << m_min_value;
+	std::cout << " = ";
+
+	for(std::vector<float>::iterator i = m_gradient_value.begin(); i != m_gradient_value.end(); i++)
+		std::cout << *i << " ";
+	std::cout << std::endl;
 }
 
 

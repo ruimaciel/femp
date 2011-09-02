@@ -32,3 +32,22 @@ GradientFieldFlyweightFactory::setMinimumGradientValue (float new_minimum)
 }
 
 
+void 
+GradientFieldFlyweightFactory::setModel(fem::Model &model)
+{
+	m_neutral_policy.setModel(model);	// test pattern
+	m_constant_policy.setModel(model);
+
+	m_strain11_policy.setModel(model);
+}
+
+
+void 
+GradientFieldFlyweightFactory::setAnalysisResult(fem::AnalysisResult<double> &result)
+{
+	m_neutral_policy.setAnalysisResult(result);	// test pattern
+	m_constant_policy.setAnalysisResult(result);
+
+	m_strain11_policy.setAnalysisResult(result);
+}
+

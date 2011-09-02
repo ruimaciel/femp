@@ -1,5 +1,7 @@
 #include "SceneComponentFactory.h++"
 
+#include <assert.h>
+
 #include "SceneGraphException.h++"
 
 #include "Elements/Tetrahedron4.h++"
@@ -18,6 +20,9 @@ namespace SGC	// namespace for all scene graph components
 Element *
 SceneComponentFactory::operator() (fem::Element &element)
 {
+	assert(this->m_representation != NULL);
+	assert(this->m_displacement != NULL);
+
 	Element *scene_graph_element;
 	switch(element.type)
 	{

@@ -25,8 +25,8 @@ class VPStateGradients
 {
 protected:
 	GradientFieldRepresentationPolicy	m_gradient_representation;
-	DisplacementsPolicy 	m_displacements;	// the displacements view renders displacements
-	SGC::SceneComponentFactory	m_factory;
+	DisplacementsPolicy			m_displacements;	// the displacements view renders displacements
+	SGC::SceneComponentFactory		m_factory;
 
 public:
 	VPStateGradients();

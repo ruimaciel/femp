@@ -28,8 +28,8 @@ VPStateGradients::VPStateGradients()
 { 
 	//TODO test only. remove.
 	this->m_gradient_representation.setMaximumGradientValue(1);
-	this->m_gradient_representation.setMaximumGradientValue(-1);
-	this->m_gradient_representation.renderConstant(0);
+	this->m_gradient_representation.setMinimumGradientValue(-1);
+	this->m_gradient_representation.renderConstant(1);
 
 	this->m_factory.setElementRepresentationPolicy(&m_gradient_representation);
 	this->m_factory.setDisplacementsPolicy(&m_displacements);
@@ -182,7 +182,7 @@ void VPStateGradients::renderStrains11()
 	qWarning("void VPStateGradients::renderStrains11()");
 	//TODO test only. change this
 	//this->m_gradient_representation.renderNeutral();
-	this->m_gradient_representation.renderConstant(0);
+	this->m_gradient_representation.renderConstant(-0.5);
 }
 
 

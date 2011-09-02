@@ -714,3 +714,17 @@ GradientFieldRepresentationPolicy::setMinimumGradientValue (float new_minimum)
 	this->m_gradient_flyweight_factory.setMinimumGradientValue(new_minimum);
 }
 
+
+void 
+GradientFieldRepresentationPolicy::setModel(fem::Model &model)
+{
+	m_gradient_flyweight_factory.setModel(model);
+}
+
+
+void 
+GradientFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult<double> &result)
+{
+	m_gradient_flyweight_factory.setAnalysisResult(result);
+}
+

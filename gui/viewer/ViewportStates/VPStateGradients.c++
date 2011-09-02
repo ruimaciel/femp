@@ -52,6 +52,8 @@ VPStateGradients::initialize(BaseViewport *mv)
 	assert(mv != NULL);
 
 	this->setDisplacementsScale(1.0);	//TODO tweak this value 
+
+	this->m_gradient_representation.setModel(mv->project->model);
 	this->m_displacements.setModel(mv->project->model);
 }
 
@@ -97,6 +99,7 @@ VPStateGradients::populateScenegraph(BaseViewport *viewport)
 void
 VPStateGradients::setAnalysisResult(fem::AnalysisResult<double> &new_result)
 {
+	this->m_gradient_representation.setAnalysisResult(new_result);
 	this->m_displacements.setAnalysisResult(new_result);
 }
 

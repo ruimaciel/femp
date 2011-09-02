@@ -26,19 +26,7 @@ protected:
 	GradientFieldFlyweightFactory m_gradient_flyweight_factory;
 
 public:
-
-	// Constructors/Destructors
-	//  
-
-
-	/**
-	 * Empty Constructor
-	 */
 	GradientFieldRepresentationPolicy ( );
-
-	/**
-	 * Empty Destructor
-	 */
 	virtual ~GradientFieldRepresentationPolicy ( );
 
 
@@ -74,6 +62,11 @@ public:
 	void setMaximumGradientValue (float new_maximum);
 	void setMinimumGradientValue (float new_minimum);
 
+	/**
+	Sets the objects that are needed to access displacements fields and material info
+	**/
+	void setModel(fem::Model &model);
+	void setAnalysisResult(fem::AnalysisResult<double> &result);
 };
 
 #endif // COLORFIELDREPRESENTATIONPOLICY_H

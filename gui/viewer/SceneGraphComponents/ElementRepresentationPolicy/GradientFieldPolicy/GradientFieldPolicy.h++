@@ -6,6 +6,8 @@
 
 #include "../../../../fem/point.h++"
 #include "../../../../fem/Element.h++"
+#include "../../../../fem/Model.h++"
+#include "../../../../fem/AnalysisResult.h++"
 #include "../../../ViewportColors.h++"
 
 
@@ -25,6 +27,8 @@ protected:
 
 	GLfloat m_temp_color[3];	// temporary value used to set a color
 
+	fem::Model	*m_model;	// pointer to the fem::Model structure, in order to access the materials list
+	fem::AnalysisResult<double>	*m_analysis_result;	// pointer to the current analysis result, needed to access the displacements field
 		
 public:
 	GradientFieldPolicy();
@@ -38,6 +42,9 @@ public:
 	**/
 	virtual void calculateGradientValues (fem::Element &element) = 0;
 		
+	void setModel(fem::Model &model);
+	void setAnalysisResult(fem::AnalysisResult<double> &result);
+
 	void setMaximumGradientValue (float new_maximum);
 	void setMinimumGradientValue (float new_minimum);
 

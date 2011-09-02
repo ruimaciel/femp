@@ -7,6 +7,8 @@
 GradientFieldPolicy::GradientFieldPolicy()
 {
 	this->m_gradient_value.reserve(27);	// maximum number of values used to render each element
+	this->m_model	= NULL;
+	this->m_analysis_result = NULL;
 }
 
 
@@ -20,6 +22,20 @@ GradientFieldPolicy::setMaximumGradientValue (float new_maximum)
 
 
 void 
+GradientFieldPolicy::setModel(fem::Model &model)
+{
+	this->m_model = &model;
+}
+
+
+void 
+GradientFieldPolicy::setAnalysisResult(fem::AnalysisResult<double> &result)
+{
+	this->m_analysis_result = &result;
+}
+
+
+void 
 GradientFieldPolicy::setMinimumGradientValue (float new_minimum)
 {
 	this->m_min_value = new_minimum;
@@ -29,6 +45,9 @@ GradientFieldPolicy::setMinimumGradientValue (float new_minimum)
 GLfloat *
 GradientFieldPolicy::getColor(float &gradient, ViewportColors &colors)
 {
+	assert(m_model != NULL);
+	assert(m_analysis_result != NULL);
+
 	if(gradient > this->m_max_value)
 	{
 		this->m_temp_color[0] = colors.field_maximum_positive[0];

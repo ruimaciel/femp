@@ -20,9 +20,6 @@
 #include "LoadPattern.h++"
 
 
-#include "../lalib/Matrix.h++"
-#include "../lalib/Vector.h++"
-
 #include "AnalysisResult.h++"
 
 #include "../Logs.h++"

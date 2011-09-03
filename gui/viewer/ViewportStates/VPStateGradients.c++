@@ -187,6 +187,14 @@ void
 VPStateGradients::renderStrains11()
 {
 	qWarning("void VPStateGradients::renderStrains11()");
+	this->m_gradient_representation.renderStrains11();
+}
+
+
+void
+VPStateGradients::renderStrains22()
+{
+	qWarning("void VPStateGradients::renderStrains22()");
 	//TODO test only. change this
 	//this->m_gradient_representation.renderNeutral();
 	this->m_gradient_representation.renderConstant(-0.5);

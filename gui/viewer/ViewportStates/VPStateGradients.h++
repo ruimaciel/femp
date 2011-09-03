@@ -50,6 +50,7 @@ public:
 public:
 	// set which gradient field to render
 	void renderStrains11();
+	void renderStrains22();
 
 protected:
 	/*

@@ -73,6 +73,7 @@ class PostprocessingViewport
 		// set the viewport state
 		void showDisplacements();
 		void showStrain11();
+		void showStrain22();
 
 	Q_SIGNALS:
 		void xRotationChanged(int angle);

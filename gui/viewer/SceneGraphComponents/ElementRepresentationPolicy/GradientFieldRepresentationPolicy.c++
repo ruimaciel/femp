@@ -702,6 +702,12 @@ GradientFieldRepresentationPolicy::renderConstant(float value)
 
 
 void 
+GradientFieldRepresentationPolicy::renderStrains11()
+{
+	m_gradient = m_gradient_flyweight_factory.strains11();
+}
+
+void 
 GradientFieldRepresentationPolicy::setMaximumGradientValue (float new_maximum)
 {
 	this->m_gradient_flyweight_factory.setMaximumGradientValue(new_maximum);

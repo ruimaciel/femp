@@ -65,6 +65,8 @@ class Model {
 		void setNode(size_t ref, double x, double y, double z);
 		void setNode(size_t ref, fem::point p);
 
+		fem::Node & getNode(size_t ref)	{ return this->node_list[ref]; }
+
 		void setDefaultMaterial(int material)	{ default_material = material; }
 
 		/**

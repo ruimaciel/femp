@@ -16,6 +16,13 @@ GradientFieldFlyweightFactory::constant(float value)
 }
 
 
+GradientFieldPolicy * 
+GradientFieldFlyweightFactory::strains11()
+{ 
+	return &m_strain11_policy; 
+}
+
+
 void 
 GradientFieldFlyweightFactory::setMaximumGradientValue (float new_maximum)
 {

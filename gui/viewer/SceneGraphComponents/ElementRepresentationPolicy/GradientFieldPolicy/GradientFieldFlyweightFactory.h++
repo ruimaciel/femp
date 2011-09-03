@@ -21,6 +21,7 @@ protected:
 public:
 	GradientFieldPolicy * neutral();
 	GradientFieldPolicy * constant(float value);
+	GradientFieldPolicy * strains11();
 
 	void setMaximumGradientValue (float new_maximum);
 	void setMinimumGradientValue (float new_minimum);

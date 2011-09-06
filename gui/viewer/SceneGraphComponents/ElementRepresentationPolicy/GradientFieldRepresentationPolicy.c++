@@ -486,11 +486,13 @@ GradientFieldRepresentationPolicy::tetra4 (fem::Element &element, ViewportColors
 		m_temp_p[i] = (*displacement)[element.nodes[i]];
 	}
 
+	glDisable(GL_LIGHTING);
 	// render each surface
 	tri3( 0, 3, 2, colors);
 	tri3( 1, 0, 2, colors);
 	tri3( 3, 1, 2, colors);
 	tri3( 0, 1, 3, colors);
+	glEnable(GL_LIGHTING);
 }
 
 
@@ -513,11 +515,13 @@ GradientFieldRepresentationPolicy::tetra10 (fem::Element &element, ViewportColor
 		m_temp_p[i] = (*displacement)[element.nodes[i]];
 	}
 
+	glDisable(GL_LIGHTING);
 	// render each surface
 	tri6( 0, 3, 2, 7, 8, 6, colors);
 	tri6( 1, 0, 2, 4, 6, 5, colors);
 	tri6( 3, 1, 2, 9, 5, 8, colors);
 	tri6( 0, 1, 3, 4, 9, 7, colors);
+	glEnable(GL_LIGHTING);
 }
  
 
@@ -540,6 +544,7 @@ GradientFieldRepresentationPolicy::hexa8 (fem::Element &element, ViewportColors 
 		m_temp_p[i] = (*displacement)[element.nodes[i]];
 	}
 
+	glDisable(GL_LIGHTING);
 	// render each surface
 	quad4( 0, 4, 7, 3, colors);
 	quad4( 4, 5, 6, 7, colors);
@@ -547,6 +552,7 @@ GradientFieldRepresentationPolicy::hexa8 (fem::Element &element, ViewportColors 
 	quad4( 1, 0, 3, 2, colors);
 	quad4( 2, 3, 7, 6, colors);
 	quad4( 0, 1, 5, 4, colors);
+	glEnable(GL_LIGHTING);
 }
 
 
@@ -569,12 +575,14 @@ GradientFieldRepresentationPolicy::hexa20 (fem::Element &element, ViewportColors
 		m_temp_p[i] = (*displacement)[element.nodes[i]];
 	}
 
+	glDisable(GL_LIGHTING);
 	quad8( 0, 4, 7, 3, 10, 17, 15, 9, colors);
 	quad8( 4, 5, 6, 7, 16, 18, 19, 17, colors);
 	quad8( 5, 1, 2, 6, 12, 11, 14, 18, colors);
 	quad8( 1, 0, 3, 2, 8, 9, 13, 11, colors);
 	quad8( 2, 3, 7, 6, 13, 15, 19, 14, colors);
 	quad8( 0, 1, 5, 4, 8, 12, 16, 10, colors);
+	glEnable(GL_LIGHTING);
 }
 
 
@@ -597,12 +605,14 @@ GradientFieldRepresentationPolicy::hexa27 (fem::Element &element, ViewportColors
 		m_temp_p[i] = (*displacement)[element.nodes[i]];
 	}
 
+	glDisable(GL_LIGHTING);
 	quad9( 0, 4, 7, 3, 10, 17, 15, 9, 22, colors);
 	quad9( 4, 5, 6, 7, 16, 18, 19, 17, 25, colors);
 	quad9( 5, 1, 2, 6, 12, 11, 14, 18, 23, colors);
 	quad9( 1, 0, 3, 2, 8, 9, 13, 11, 20, colors);
 	quad9( 2, 3, 7, 6, 13, 15, 19, 14, 24, colors);
 	quad9( 0, 1, 5, 4, 8, 12, 16, 10, 21, colors);
+	glEnable(GL_LIGHTING);
 }
 
 
@@ -624,12 +634,14 @@ GradientFieldRepresentationPolicy::prism6 (fem::Element &element, ViewportColors
 		m_temp_p[i] = (*displacement)[element.nodes[i]];
 	}
 
+	glDisable(GL_LIGHTING);
 	tri3( 0, 2, 1, colors);
 	tri3( 3, 4, 5, colors);
 
 	quad4( 3, 0, 1, 4, colors);
 	quad4( 4, 1, 2, 5, colors);
 	quad4( 0, 3, 5, 2, colors);
+	glEnable(GL_LIGHTING);
 }
 
 
@@ -651,12 +663,14 @@ GradientFieldRepresentationPolicy::prism15 (fem::Element &element, ViewportColor
 		m_temp_p[i] = (*displacement)[element.nodes[i]];
 	}
 
+	glDisable(GL_LIGHTING);
 	tri6( 0, 2, 1, 7, 9, 6, colors);
 	tri6( 3, 4, 5, 12, 14, 13, colors);
 
 	quad8( 3, 0, 1, 4, 8, 6, 10, 12, colors);
 	quad8( 4, 1, 2, 5, 10, 9, 11, 14, colors);
 	quad8( 0, 3, 5, 2, 8, 13, 11, 7, colors);
+	glEnable(GL_LIGHTING);
 }
 
 
@@ -678,12 +692,14 @@ GradientFieldRepresentationPolicy::prism18 (fem::Element &element, ViewportColor
 		m_temp_p[i] = (*displacement)[element.nodes[i]];
 	}
 
+	glDisable(GL_LIGHTING);
 	tri6( 0, 2, 1, 7, 9, 6, colors);
 	tri6( 3, 4, 5, 12, 14, 13, colors);
 
 	quad9( 3, 0, 1, 4, 8, 6, 10, 12, 15, colors);
 	quad9( 4, 1, 2, 5, 10, 9, 11, 14, 17, colors);
 	quad9( 0, 3, 5, 2, 8, 13, 11, 7, 16, colors);
+	glEnable(GL_LIGHTING);
 }
 
 

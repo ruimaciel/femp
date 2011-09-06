@@ -69,9 +69,10 @@ ViewportState<Viewport>::ViewportState()
 
 
 template <class Viewport>
-void ViewportState<Viewport>::setAnalysisResult(fem::AnalysisResult<double> &new_result)
+void ViewportState<Viewport>::setAnalysisResult(fem::AnalysisResult<double> &)
 {
 }
+
 
 template<class Viewport>
 void ViewportState<Viewport>::setDisplacementsScale(float new_scale)

@@ -51,4 +51,5 @@ void Element::accept(OperationsVisitor &v)
 	v.visit(*this);
 }
 
-}
+
+}	// namespace SGC

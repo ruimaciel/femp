@@ -11,7 +11,7 @@ Prism6::Prism6(fem::Element &reference_element, ElementRepresentationPolicy *rep
 
 
 void 
-Prism6::paintGL(ViewportData &data, ViewportColors &colors)
+Prism6::paintGL(ViewportData &, ViewportColors &colors)
 {
 	assert(m_element != NULL);
 	assert(m_element->type == fem::Element::FE_PRISM6);

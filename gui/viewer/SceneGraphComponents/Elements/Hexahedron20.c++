@@ -11,7 +11,7 @@ Hexahedron20::Hexahedron20(fem::Element &reference_element, ElementRepresentatio
 
 
 void 
-Hexahedron20::paintGL(ViewportData &data, ViewportColors &colors)
+Hexahedron20::paintGL(ViewportData &, ViewportColors &colors)
 {
 	assert(m_element != NULL);
 	assert(m_element->type == fem::Element::FE_HEXAHEDRON20);

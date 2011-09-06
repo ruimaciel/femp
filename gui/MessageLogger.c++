@@ -14,8 +14,8 @@ MessageLogger::~MessageLogger()
 }
 
 
-//void MessageLogger::message(QString new_message, ...)
-void MessageLogger::message(QString new_message)
+void 
+MessageLogger::message(QString new_message)
 {
 	using namespace std;
 
@@ -25,7 +25,8 @@ void MessageLogger::message(QString new_message)
 }
 
 
-void MessageLogger::message(const char * new_message)
+void 
+MessageLogger::message(const char * new_message)
 {
 	using namespace std;
 
@@ -35,14 +36,17 @@ void MessageLogger::message(const char * new_message)
 }
 
 
-void MessageLogger::setPrefix(QString new_prefix)
+void 
+MessageLogger::setPrefix(QString new_prefix)
 {
 	this->prefix = new_prefix;
 }
 
 
-void MessageLogger::clearPrefix()
+void 
+MessageLogger::clearPrefix()
 {
 	this->prefix.clear();
 }
+
 

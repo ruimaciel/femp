@@ -11,7 +11,7 @@ Tetrahedron10::Tetrahedron10(fem::Element &reference_element, ElementRepresentat
 
 
 void 
-Tetrahedron10::paintGL(ViewportData &data, ViewportColors &colors)
+Tetrahedron10::paintGL(ViewportData &, ViewportColors &colors)
 {
 	assert(m_element != NULL);
 	assert(m_element->type == fem::Element::FE_TETRAHEDRON10);

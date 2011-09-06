@@ -120,3 +120,5 @@ void SGCNodeRestrictions::renderNodeRestriction()
 	glVertex3i( 2,-2,-2);
 	glEnd();
 }
+
+

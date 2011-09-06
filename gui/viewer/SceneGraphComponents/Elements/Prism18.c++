@@ -11,7 +11,7 @@ Prism18::Prism18(fem::Element &reference_element, ElementRepresentationPolicy *r
 
 
 void 
-Prism18::paintGL(ViewportData &data, ViewportColors &colors)
+Prism18::paintGL(ViewportData &, ViewportColors &colors)
 {
 	assert(m_element != NULL);
 	assert(m_element->type == fem::Element::FE_PRISM18);

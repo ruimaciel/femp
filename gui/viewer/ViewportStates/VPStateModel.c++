@@ -130,26 +130,3 @@ VPStateModel::mousePressEvent(BaseViewport *mv, QMouseEvent *event)
 }
 
 
-void
-VPStateModel::selectModelObjects(const fem::point &,const fem::point &)
-{
-	//TODO finish this
-	// test nodes
-	/*
-	float a, b, c;
-	float x2x1, y2y1, z2z1; // helper temp variables to avoid remultiplying
-	std::map<size_t,float> distance_map;
-
-	//for(std::map<size_t,fem::Node>::iterator i = document->model.node_list.begin(); i != document->model.node_list.end(); i++)
-	for(std::list<SceneGraphComponent *>::iterator i = this->scenegraph.primitive_components.begin(); i != this->scenegraph.primitive_components.end(); i++)
-	{
-
-		if(b*b - 4*a*c > 0)
-		{
-			(*i)->selected = true;
-		}
-	}
-	*/
-	// select the nearest hit
-	// document->selectNode(std::min_element(distance_map.begin(), distance_map.end(), distance_map.value_comp())->first);
-}

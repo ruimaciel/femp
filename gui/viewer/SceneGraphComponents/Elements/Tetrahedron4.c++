@@ -11,7 +11,7 @@ Tetrahedron4::Tetrahedron4(fem::Element &reference_element, ElementRepresentatio
 
 
 void 
-Tetrahedron4::paintGL(ViewportData &data, ViewportColors &colors)
+Tetrahedron4::paintGL(ViewportData &, ViewportColors &colors)
 {
 	assert(m_element != NULL);
 	assert(m_element->type == fem::Element::FE_TETRAHEDRON4);

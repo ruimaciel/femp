@@ -17,26 +17,26 @@
 class SGCNodeRestrictions
 	: public SceneGraphComponent
 {
-	protected:
-		fem::Node	* m_node;
-		fem::NodeRestrictions *m_node_restrictions;
+protected:
+	fem::Node	* m_node;
+	fem::NodeRestrictions *m_node_restrictions;
 
-	public:
-		SGCNodeRestrictions(fem::Node &node, fem::NodeRestrictions &node_restrictions);
-		~SGCNodeRestrictions();
+public:
+	SGCNodeRestrictions(fem::Node &node, fem::NodeRestrictions &node_restrictions);
+	~SGCNodeRestrictions();
 
 
-		/*
-		Renders this node
-		*/
-		void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> * result,  float &scale, ViewportColors &colors);
+	/*
+	Renders this node
+	*/
+	void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> * result,  float &scale, ViewportColors &colors);
 
-		/*
-		Visitor pattern method
-		*/
-		void accept(OperationsVisitor &v);
-	
-	protected:
+	/*
+	Visitor pattern method
+	*/
+	void accept(OperationsVisitor &v);
+
+protected:
 		void renderNodeRestriction();
 };
 

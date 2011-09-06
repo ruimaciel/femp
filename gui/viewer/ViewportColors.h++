@@ -4,7 +4,12 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <GL/gl.h>
 
-struct ViewportColors {
+
+/**
+Stores all the color information which is used by the program
+**/
+struct ViewportColors 
+{
 	ViewportColors ();
 
 	// set of color options

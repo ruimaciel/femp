@@ -20,45 +20,45 @@ The base state pattern that is used to implement the Viewport's model rendering 
 template <class Viewport>
 class ViewportState
 {
-	protected:
-		SceneGraph scenegraph;
-		float scale;
-		
-	public:
-		ViewportState();
+protected:
+	SceneGraph scenegraph;
+	float scale;
+	
+public:
+	ViewportState();
 
-		/*
-		Initializes everything needed in a ViewportState once the focus is placed on it
-		*/
-		virtual void initialize(Viewport *viewport) = 0;
+	/*
+	Initializes everything needed in a ViewportState once the focus is placed on it
+	*/
+	virtual void initialize(Viewport *viewport) = 0;
 
-		/*
-		Adds to the scenegraph all the objects being rendered 
-		*/
-		virtual void populateScenegraph(Viewport *viewport) = 0;
+	/*
+	Adds to the scenegraph all the objects being rendered 
+	*/
+	virtual void populateScenegraph(Viewport *viewport) = 0;
 
 
-		/**
-		Configures the viewport to render the scene according to new_result
-		**/
-		virtual void setAnalysisResult(fem::AnalysisResult<double> &new_result);
+	/**
+	Configures the viewport to render the scene according to new_result
+	**/
+	virtual void setAnalysisResult(fem::AnalysisResult<double> &new_result);
 
-		virtual void setDisplacementsScale(float new_scale);
+	virtual void setDisplacementsScale(float new_scale);
 
-		/**
-		Sets the visibility of a SceneGraph render group
-		@param	group	scene graph render group code, as defined in class SceneGraph
-		@param	state	true if visible, false if invisible
-		**/
-		void setRenderGoupVisibility(SceneGraph::Groups group, bool state);
+	/**
+	Sets the visibility of a SceneGraph render group
+	@param	group	scene graph render group code, as defined in class SceneGraph
+	@param	state	true if visible, false if invisible
+	**/
+	void setRenderGoupVisibility(SceneGraph::Groups group, bool state);
 
-		/*
-		Routine which will paint each OpenGL scene
-		*/
-		virtual void paintGL(Viewport *viewport)	= 0;
-		virtual void mousePressEvent(Viewport *viewport, QMouseEvent *event) = 0;
-		virtual void mouseMoveEvent(Viewport *viewport, QMouseEvent *event);
-		virtual void keyPressEvent ( Viewport *viewport, QKeyEvent * event );
+	/*
+	Routine which will paint each OpenGL scene
+	*/
+	virtual void paintGL(Viewport *viewport)	= 0;
+	virtual void mousePressEvent(Viewport *viewport, QMouseEvent *event) = 0;
+	virtual void mouseMoveEvent(Viewport *viewport, QMouseEvent *event);
+	virtual void keyPressEvent ( Viewport *viewport, QKeyEvent * event );
 };
 
 
@@ -69,26 +69,31 @@ ViewportState<Viewport>::ViewportState()
 
 
 template <class Viewport>
-void ViewportState<Viewport>::setAnalysisResult(fem::AnalysisResult<double> &)
+void
+ViewportState<Viewport>::setAnalysisResult(fem::AnalysisResult<double> &)
 {
 }
 
 
 template<class Viewport>
-void ViewportState<Viewport>::setDisplacementsScale(float new_scale)
+void
+ViewportState<Viewport>::setDisplacementsScale(float new_scale)
 {
 	this->scale = new_scale;
 }
 
+
 template<class Viewport>
-void ViewportState<Viewport>::setRenderGoupVisibility(SceneGraph::Groups group, bool state)
+void
+ViewportState<Viewport>::setRenderGoupVisibility(SceneGraph::Groups group, bool state)
 {
 	this->scenegraph.rendering_groups[group].render = state;
 }
 
 
 template <class Viewport>
-void ViewportState<Viewport>::mouseMoveEvent(Viewport *viewport, QMouseEvent *event)
+void
+ViewportState<Viewport>::mouseMoveEvent(Viewport *viewport, QMouseEvent *event)
 {
 	assert(viewport != NULL);
 
@@ -109,9 +114,12 @@ void ViewportState<Viewport>::mouseMoveEvent(Viewport *viewport, QMouseEvent *ev
 
 
 template <class Viewport>
-void ViewportState<Viewport>::keyPressEvent ( Viewport *, QKeyEvent * event )
+void
+ViewportState<Viewport>::keyPressEvent ( Viewport *, QKeyEvent * event )
 {
 	qWarning("not keypressed");
 	event->ignore();
 }
+
+
 #endif

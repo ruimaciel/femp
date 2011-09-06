@@ -10,21 +10,21 @@ class MessageLogger
 {
 	Q_OBJECT
 
-	private:
-		QString prefix;
+private:
+	QString prefix;
 
-	public:
-		MessageLogger();
-		~MessageLogger();
+public:
+	MessageLogger();
+	~MessageLogger();
 
-		//void message(const char *, ...);
-		void message(const char *);
-		void message(QString );
-		void setPrefix(QString new_prefix);
-		void clearPrefix();
+	//void message(const char *, ...);
+	void message(const char *);
+	void message(QString );
+	void setPrefix(QString new_prefix);
+	void clearPrefix();
 
-	signals:
-		void newMessage(QString message);
+signals:
+	void newMessage(QString message);
 };
 
 #endif

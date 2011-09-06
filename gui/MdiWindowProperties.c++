@@ -10,3 +10,5 @@ MdiWindowProperties::MdiWindowProperties(enum WindowType type )
 MdiWindowProperties::~MdiWindowProperties()
 {
 }
+
+

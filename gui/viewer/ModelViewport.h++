@@ -26,48 +26,51 @@
 #include "../fem/LinearAnalysis.h++"
 
 
+/**
+The viewport class which is designed to render the model and enact changes on it
+**/
 class ModelViewport 
 	: public BaseViewport
 {
 	Q_OBJECT
 
-	public:
-		ModelViewport(fem::Project &project, QWidget *parent = NULL);
-		~ModelViewport();
+public:
+	ModelViewport(fem::Project &project, QWidget *parent = NULL);
+	~ModelViewport();
 
-		template <class NewState>
-		void setState(NewState *);
+	template <class NewState>
+	void setState(NewState *);
 
-		/*
-		sets if the element nodes are visible
-		@param	state	true if nodes should be visible, false if they shouldn't be rendered
-		*/
-		void setNodeVisibility(bool state);
-		void setSurfaceVisibility(bool state);
+	/*
+	sets if the element nodes are visible
+	@param	state	true if nodes should be visible, false if they shouldn't be rendered
+	*/
+	void setNodeVisibility(bool state);
+	void setSurfaceVisibility(bool state);
 
 
-	public Q_SLOTS:
-		void setXRotation(int angle);
-		void setYRotation(int angle);
-		void setZRotation(int angle);
-		void setPosition(int x, int y);
+public Q_SLOTS:
+	void setXRotation(int angle);
+	void setYRotation(int angle);
+	void setZRotation(int angle);
+	void setPosition(int x, int y);
 
-		// set the viewport state
-		void showModel();
+	// set the viewport state
+	void showModel();
 
-	Q_SIGNALS:
-		void xRotationChanged(int angle);
-		void yRotationChanged(int angle);
-		void zRotationChanged(int angle);
+Q_SIGNALS:
+	void xRotationChanged(int angle);
+	void yRotationChanged(int angle);
+	void zRotationChanged(int angle);
 
-	protected:
-		void paintGL();
+protected:
+	void paintGL();
 
-		// routines to handle input
-		void mousePressEvent(QMouseEvent *event);
-		void mouseMoveEvent(QMouseEvent *event);
-		void wheelEvent(QWheelEvent *event);
-		void keyPressEvent ( QKeyEvent * event );
+	// routines to handle input
+	void mousePressEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
+	void wheelEvent(QWheelEvent *event);
+	void keyPressEvent ( QKeyEvent * event );
 };
 
 #endif

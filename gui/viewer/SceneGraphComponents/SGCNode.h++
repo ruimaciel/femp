@@ -18,25 +18,25 @@ Scene graph component which renders a node
 class SGCNode
 	: public SceneGraphComponent
 {
-	protected:
-		size_t node_label;
-		fem::Node *m_node;
-		DisplacementsRepresentationPolicy *m_displacements;
+protected:
+	size_t node_label;
+	fem::Node *m_node;
+	DisplacementsRepresentationPolicy *m_displacements;
 
-	public:
-		SGCNode(size_t, fem::Node &node, DisplacementsRepresentationPolicy *displacements);
-		~SGCNode();
+public:
+	SGCNode(size_t, fem::Node &node, DisplacementsRepresentationPolicy *displacements);
+	~SGCNode();
 
 
-		/*
-		Renders this node
-		*/
-		void paintGL(ViewportData &data, ViewportColors &colors);
+	/*
+	Renders this node
+	*/
+	void paintGL(ViewportData &data, ViewportColors &colors);
 
-		/*
-		Visitor pattern method
-		*/
-		void accept(OperationsVisitor &v);
+	/*
+	Visitor pattern method
+	*/
+	void accept(OperationsVisitor &v);
 };
 
 #endif

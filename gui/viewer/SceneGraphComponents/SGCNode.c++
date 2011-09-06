@@ -56,3 +56,5 @@ void SGCNode::accept(OperationsVisitor &v)
 {
 	v.visit(*this);
 }
+
+

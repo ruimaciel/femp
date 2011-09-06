@@ -8,7 +8,8 @@
 Helper class belonging to glwidget (a has-a relationship) that states what model properties should be rendered
 **/
 
-struct DisplayOptions {
+struct DisplayOptions 
+{
 	fem::LoadPattern	*load_pattern;	//	pointer to the load pattern to be displayed
 
 	// boolean

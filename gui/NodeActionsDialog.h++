@@ -9,18 +9,19 @@
 #include "ui/ui_NodeActionsDialog.h"
 
 
-class NodeActionsDialog: public QDialog, private Ui_NodeActionsDialog
+class NodeActionsDialog
+	: public QDialog, private Ui_NodeActionsDialog
 {
-	private:
-		size_t load_pattern;
+private:
+	size_t load_pattern;
 
-	public:
-		NodeActionsDialog(fem::Model &model, QWidget *parent = NULL);
-		~NodeActionsDialog();
+public:
+	NodeActionsDialog(fem::Model &model, QWidget *parent = NULL);
+	~NodeActionsDialog();
 
-		size_t	getLoadPattern();
-		fem::point getForce();
-		fem::point getDisplacement();
+	size_t	getLoadPattern();
+	fem::point getForce();
+	fem::point getDisplacement();
 
 };
 

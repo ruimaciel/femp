@@ -47,11 +47,6 @@ public:
 	// void mouseMoveEvent(QMouseEvent *event);
 	void keyPressEvent ( BaseViewport *mv, QKeyEvent * event );
 
-protected:
-	/*
-	Marks all objects which intersect with a given ray as selected
-	*/
-	void selectModelObjects(const fem::point &near,const fem::point &far);
 };
 
 #endif

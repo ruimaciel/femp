@@ -48,3 +48,5 @@ void SceneGraphComponent::accept(OperationsVisitor &)
 	mylog.setPrefix("void SceneGraphComponent::Accept(OperationsVisitor &v)");
 	mylog.message("error: base class element being called");
 }
+
+

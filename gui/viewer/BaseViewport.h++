@@ -28,81 +28,81 @@ Base class for all Qt widgets that provide an opengl viewports to render the mod
 class BaseViewport 
 	: public QGLWidget
 {
-	Q_OBJECT
+Q_OBJECT
 
-	public:
-		ViewportData viewport_data;
-		ViewportColors colors;	// color definitions
-		DisplayOptions display_options;	// options list to be used by the render routine
+public:
+	ViewportData viewport_data;
+	ViewportColors colors;	// color definitions
+	DisplayOptions display_options;	// options list to be used by the render routine
 
-		fem::Project *project;
+	fem::Project *project;
 
-		ViewportState<BaseViewport>	*state;	// pointer to object used for the State pattern
+	ViewportState<BaseViewport>	*state;	// pointer to object used for the State pattern
 
-	public:
-		BaseViewport(fem::Project &project, QWidget *parent);
-
-
-		void setColors(ViewportColors &new_colors);
-
-		QSize minimumSizeHint() const;
-		QSize sizeHint() const;
-
-		/*
-		Generic method to implement a state pattern to render variants of the same model (i.e., XX tension, YY tension...)
-		This method:
-			- allocates memory for a new state object
-			- initializes the object
-			- generates the scenegraph
-		*/
-		template <class NewState>
-		void setState(NewState *);
-
-		/**
-		Method to refresh the scene
-		**/
-		void refresh(void);
+public:
+	BaseViewport(fem::Project &project, QWidget *parent);
 
 
-	public Q_SLOTS:
-		void setXRotation(int angle);
-		void setYRotation(int angle);
-		void setZRotation(int angle);
-		void setPosition(double x, double y, double z);
+	void setColors(ViewportColors &new_colors);
 
-		/**
-		Configures the current viewport to render new_result
-		**/
-		void setAnalysisResult(fem::AnalysisResult<double> &new_result);
+	QSize minimumSizeHint() const;
+	QSize sizeHint() const;
 
-		void setDisplacementsScale(float scale);
+	/*
+	Generic method to implement a state pattern to render variants of the same model (i.e., XX tension, YY tension...)
+	This method:
+		- allocates memory for a new state object
+		- initializes the object
+		- generates the scenegraph
+	*/
+	template <class NewState>
+	void setState(NewState *);
 
-		/**
-		Sets the visibility state of any scenegraph group of the current viewport state
-		**/
-		void setRenderGoupVisibility(SceneGraph::Groups group, bool state);
+	/**
+	Method to refresh the scene
+	**/
+	void refresh(void);
 
-	Q_SIGNALS:
-		void xRotationChanged(int angle);
-		void yRotationChanged(int angle);
-		void zRotationChanged(int angle);
-		void positionChanged( double x, double y, double z);
 
-	protected:
-		void initializeGL();
-		void resizeGL(int width, int height);
-		virtual void paintGL();
+public Q_SLOTS:
+	void setXRotation(int angle);
+	void setYRotation(int angle);
+	void setZRotation(int angle);
+	void setPosition(double x, double y, double z);
 
-		// routines to handle input
-		void mousePressEvent(QMouseEvent *event);
-		void mouseMoveEvent(QMouseEvent *event);
-		void wheelEvent(QWheelEvent *event);
-		void keyPressEvent ( QKeyEvent * event );
+	/**
+	Configures the current viewport to render new_result
+	**/
+	void setAnalysisResult(fem::AnalysisResult<double> &new_result);
 
-		void setState(ViewportState<BaseViewport> *new_state);
+	void setDisplacementsScale(float scale);
 
-	protected:
-		void normalizeAngle(int *angle);
+	/**
+	Sets the visibility state of any scenegraph group of the current viewport state
+	**/
+	void setRenderGoupVisibility(SceneGraph::Groups group, bool state);
+
+Q_SIGNALS:
+	void xRotationChanged(int angle);
+	void yRotationChanged(int angle);
+	void zRotationChanged(int angle);
+	void positionChanged( double x, double y, double z);
+
+protected:
+	void initializeGL();
+	void resizeGL(int width, int height);
+	virtual void paintGL();
+
+	// routines to handle input
+	void mousePressEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
+	void wheelEvent(QWheelEvent *event);
+	void keyPressEvent ( QKeyEvent * event );
+
+	void setState(ViewportState<BaseViewport> *new_state);
+
+protected:
+	void normalizeAngle(int *angle);
 
 };
 

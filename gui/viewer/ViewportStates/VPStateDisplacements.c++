@@ -141,10 +141,6 @@ VPStateDisplacements::mousePressEvent(BaseViewport *viewport, QMouseEvent *event
 		glGetIntegerv(GL_VIEWPORT, viewport);
 		gluUnProject(pos.x(), viewport[3]-pos.y(), 0, modelview, projection, viewport, &near.data[0], &near.data[1], &near.data[2]);
 		gluUnProject(pos.x(), viewport[3]-pos.y(), 1, modelview, projection, viewport, &far.data[0], &far.data[1], &far.data[2]);
-
-		// push the line
-		// selectModelObjects(near, far); 	//TODO finish this
-
 	}
 }
 
@@ -179,27 +175,3 @@ VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 }
 
 
-void
-VPStateDisplacements::selectModelObjects(const fem::point &,const fem::point &)
-{
-	//TODO finish implementing this
-
-	/*
-	// test nodes
-	float a, b, c;
-	float x2x1, y2y1, z2z1; // helper temp variables to avoid remultiplying
-	std::map<size_t,float> distance_map;
-
-	//for(std::map<size_t,fem::Node>::iterator i = document->model.node_list.begin(); i != document->model.node_list.end(); i++)
-	for(std::list<SceneGraphComponent *>::iterator i = this->scenegraph.primitive_components.begin(); i != this->scenegraph.primitive_components.end(); i++)
-	{
-
-		if(b*b - 4*a*c > 0)
-		{
-			(*i)->selected = true;
-		}
-	}
-	// select the nearest hit
-	// document->selectNode(std::min_element(distance_map.begin(), distance_map.end(), distance_map.value_comp())->first);
-	*/
-}

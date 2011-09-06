@@ -53,11 +53,6 @@ public:
 	void renderStrains22();
 	void renderStrains33();
 
-protected:
-	/*
-	Marks all objects which intersect with a given ray as selected
-	*/
-	void selectModelObjects(const fem::point &near,const fem::point &far);
 };
 
 #endif

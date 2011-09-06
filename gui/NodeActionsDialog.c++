@@ -26,14 +26,16 @@ NodeActionsDialog::~NodeActionsDialog()
 }
 
 
-size_t NodeActionsDialog::getLoadPattern()
+size_t
+NodeActionsDialog::getLoadPattern()
 {
 	//TODO must get some sort of sanity check
 	return this->comboBoxLoadPattern->currentIndex();
 }
 
 
-fem::point NodeActionsDialog::getForce()
+fem::point
+NodeActionsDialog::getForce()
 {
 	fem::point p;
 	p.data[0] = this->doubleSpinBoxFx->value();
@@ -43,7 +45,8 @@ fem::point NodeActionsDialog::getForce()
 }
 
 
-fem::point NodeActionsDialog::getDisplacement()
+fem::point
+NodeActionsDialog::getDisplacement()
 {
 	fem::point p;
 	p.data[0] = this->doubleSpinBoxDx->value();
@@ -51,4 +54,5 @@ fem::point NodeActionsDialog::getDisplacement()
 	p.data[2] = this->doubleSpinBoxDz->value();
 	return p;
 }
+
 

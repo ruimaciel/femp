@@ -6,6 +6,8 @@
 
 namespace fem
 {
+	typedef size_t element_ref_t;
+
 	class Element {
 		public:
 			enum Error {

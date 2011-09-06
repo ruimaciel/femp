@@ -6,6 +6,7 @@
 
 namespace fem
 {
+typedef size_t node_ref_t;
 
 class Node: public point 
 {

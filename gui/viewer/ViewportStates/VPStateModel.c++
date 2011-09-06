@@ -66,7 +66,7 @@ VPStateModel::populateScenegraph(BaseViewport *mv)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
 	}
 
-	for( std::map<size_t, fem::NodeRestrictions>::iterator i = mv->project->model.node_restrictions_list.begin(); i != mv->project->model.node_restrictions_list.end(); i++)
+	for( std::map<fem::node_restriction_ref_t, fem::NodeRestrictions>::iterator i = mv->project->model.node_restrictions_list.begin(); i != mv->project->model.node_restrictions_list.end(); i++)
 	{
 		//TODO rewrite the SGCNodeRestrictions class
 		component =  new SGCNodeRestrictions(mv->project->model.node_list[i->first], i->second);

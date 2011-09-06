@@ -1652,7 +1652,7 @@ Document::save()
 
 	// dump the nodes list
 	out << "\t\"nodes\":[";
-	for (std::map < size_t, fem::Node >::iterator it = this->project.model.node_list.begin(); it != this->project.model.node_list.end(); it++) 
+	for (std::map < fem::node_ref_t, fem::Node >::iterator it = this->project.model.node_list.begin(); it != this->project.model.node_list.end(); it++) 
 	{
 		if (it != this->project.model.node_list.begin())
 			out << ",\n\t";
@@ -1739,7 +1739,7 @@ Document::save()
 		out << ",\n\n";
 		// dump the load restrictions list
 		out << "\t\"node restrictions\": [";
-		for (std::map < size_t, fem::NodeRestrictions >::iterator it = this->project.model.node_restrictions_list.begin(); it != this->project.model.node_restrictions_list.end(); it++) 
+		for (std::map < fem::node_restriction_ref_t, fem::NodeRestrictions >::iterator it = this->project.model.node_restrictions_list.begin(); it != this->project.model.node_restrictions_list.end(); it++) 
 		{
 			// TODO test this
 			if (it != this->project.model.node_restrictions_list.begin())

@@ -42,10 +42,10 @@ class Model {
 			ERR_UNKNOWN	// a bug somewhere. Never should happen
 		};
 
-		std::map<size_t, Node> 	node_list;
+		std::map<node_ref_t, Node> 	node_list;
 		std::vector<Element> 	element_list;
 		std::vector<Material> 	material_list;
-		std::map<size_t, NodeRestrictions>	node_restrictions_list;	// the node restrictions aren't stored in the Node class in order to save up memory
+		std::map<node_restriction_ref_t, NodeRestrictions>	node_restrictions_list;	// the node restrictions aren't stored in the Node class in order to save up memory
 		std::vector<LoadPattern>	load_pattern_list;
 
 	protected:

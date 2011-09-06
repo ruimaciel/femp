@@ -32,6 +32,7 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	viewer/BaseViewport.h++ viewer/ModelViewport.h++ viewer/PostprocessingViewport.h++ \
 	viewer/ViewportStates/*.h++ \
 	viewer/SceneGraph.h++ \
+	viewer/RenderGroup.h++ \
 	viewer/SceneGraphComponents/*.h++ \
 	viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/*.h++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/*.h++ \
@@ -71,6 +72,7 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	viewer/BaseViewport.c++ viewer/ModelViewport.c++ viewer/PostprocessingViewport.c++ \
 	viewer/ViewportStates/*.c++  \
 	viewer/SceneGraph.c++ \
+	viewer/RenderGroup.c++ \
 	viewer/SceneGraphComponents/*.c++ \
 	viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/*.c++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/*.c++ \

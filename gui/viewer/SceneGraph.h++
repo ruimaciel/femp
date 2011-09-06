@@ -12,6 +12,7 @@
 #include "ViewportData.h++"
 #include "ViewportColors.h++"
 #include "../fem/Project.h++"
+#include "RenderGroup.h++"
 
 
 /*
@@ -19,24 +20,6 @@ Facade pattern for the scenegraph structure
 */
 class SceneGraph
 {
-protected:
-	struct RenderGroup
-	{
-
-		bool render;	// should this group be rendered?
-		bool selectable;	// are the elements in this group selectable?
-
-		std::list<SceneGraphComponent *> primitive_components;	// list of primitive components included in this group
-
-		SceneGraphComponent scenegraph;
-
-		RenderGroup();
-
-		/*
-		   Generate a new scenegraph tree from the current list of primitive components
-		*/
-		void generateSceneGraph();
-	};
 public:
 	enum Groups 	// common groups for all scenegraphs
 	{
@@ -68,6 +51,16 @@ public:
 
 
 	void paint(ViewportData &viewport_data, ViewportColors &colors);
+
+	/**
+	Generates all the display lists
+	**/
+	void generateDisplayLists();
+
+	/**
+	Renders the openGL scene, which consists of the list of display lists and 2D elements
+	**/
+	void paintGL();
 
 	/*
 	Generic routine to add a primitive component to this scenegraph

@@ -196,4 +196,11 @@ PostprocessingViewport::showStrain22()
 }
 
 
+void 
+PostprocessingViewport::showStrain33()
+{
+	this->m_vp_state_gradients.renderStrains33();
+	this->setState(&this->m_vp_state_gradients);
+}
+
 

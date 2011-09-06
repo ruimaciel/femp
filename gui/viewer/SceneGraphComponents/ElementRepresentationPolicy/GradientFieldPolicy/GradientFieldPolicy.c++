@@ -9,6 +9,7 @@ GradientFieldPolicy::GradientFieldPolicy()
 	this->m_gradient_value.reserve(27);	// maximum number of values used to render each element
 	this->m_model	= NULL;
 	this->m_analysis_result = NULL;
+	this->m_max_value = this->m_min_value = 0;
 }
 
 

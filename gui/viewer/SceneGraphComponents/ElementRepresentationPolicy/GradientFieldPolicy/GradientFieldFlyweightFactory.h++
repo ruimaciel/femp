@@ -6,6 +6,8 @@
 #include "NeutralGradientFieldPolicy.h++"
 #include "ConstantGradientFieldPolicy.h++"
 #include "Strain11GradientFieldPolicy.h++"
+#include "Strain22GradientFieldPolicy.h++"
+#include "Strain33GradientFieldPolicy.h++"
 
 
 /**
@@ -17,11 +19,15 @@ protected:
 	NeutralGradientFieldPolicy m_neutral_policy;	// test pattern
 	ConstantGradientFieldPolicy m_constant_policy;
 	Strain11GradientFieldPolicy m_strain11_policy;
+	Strain22GradientFieldPolicy m_strain22_policy;
+	Strain33GradientFieldPolicy m_strain33_policy;
 
 public:
 	GradientFieldPolicy * neutral();
 	GradientFieldPolicy * constant(float value);
 	GradientFieldPolicy * strains11();
+	GradientFieldPolicy * strains22();
+	GradientFieldPolicy * strains33();
 
 	void setMaximumGradientValue (float new_maximum);
 	void setMinimumGradientValue (float new_minimum);

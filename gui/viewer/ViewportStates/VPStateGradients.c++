@@ -26,10 +26,7 @@
 VPStateGradients::VPStateGradients()
 	: ViewportState<BaseViewport>()
 { 
-	//TODO test only. remove.
-	this->m_gradient_representation.setMaximumGradientValue(1);
-	this->m_gradient_representation.setMinimumGradientValue(-1);
-	this->m_gradient_representation.renderConstant(1);
+	this->m_gradient_representation.renderStrains11();
 
 	this->m_factory.setElementRepresentationPolicy(&m_gradient_representation);
 	this->m_factory.setDisplacementsPolicy(&m_displacements);
@@ -197,7 +194,17 @@ VPStateGradients::renderStrains22()
 	qWarning("void VPStateGradients::renderStrains22()");
 	//TODO test only. change this
 	//this->m_gradient_representation.renderNeutral();
-	this->m_gradient_representation.renderConstant(-0.5);
+	this->m_gradient_representation.renderStrains22();
+}
+
+
+void
+VPStateGradients::renderStrains33()
+{
+	qWarning("void VPStateGradients::renderStrains22()");
+	//TODO test only. change this
+	//this->m_gradient_representation.renderConstant(-0.5);
+	this->m_gradient_representation.renderStrains33();
 }
 
 

@@ -77,6 +77,10 @@ void PostprocessingWindow::setPostprocessingState(int state)
 			current_vp->showStrain22();
 			break;
 
+		case A_STRAIN_33:
+			current_vp->showStrain33();
+			break;
+
 		default:
 			qWarning("PostprocessingWindow::setPostprocessingState(%d), unused state", state);
 			break;

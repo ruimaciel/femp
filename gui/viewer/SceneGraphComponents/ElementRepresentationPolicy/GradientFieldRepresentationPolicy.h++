@@ -56,6 +56,8 @@ public:
 	void renderNeutral();
 	void renderConstant(float value);
 	void renderStrains11();
+	void renderStrains22();
+	void renderStrains33();
 
 	/**
 	Sets the rendering limits

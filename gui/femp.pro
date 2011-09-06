@@ -12,11 +12,10 @@ QMAKE_EXT_CPP += c++
 INCLUDEPATH += /usr/include/eigen2 /usr/include/suitesparse
 LIBS += -ll -ly -lumfpack -lmetis -lblas -lamd
 
-HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.h++ ui/NewProjectWizard.h++ \
+HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	ModelSelection.h++ \
 	MdiWindowProperties.h++ \
-	ui/NewProjectWizardPage1.h++ ui/NewProjectWizardPage2.h++ ui/NewProjectWizardPage3.h++ ui/NewProjectWizardPageLast.h++ \
-	ui/QuadratureRulesOptionsDialog.h++ \
+	ui/*.h++ \
 	fem/Project.h++ \
 	fem/Model.h++ fem/Node.h++ fem/Element.h++ fem/Material.h++ fem/LoadPattern.h++ fem/NodalLoad.h++ fem/NodalDisplacement.h++ fem/point.h++ fem/NodeRestrictions.h++ \
 	fem/DomainLoad.h++ fem/SurfaceLoad.h++ \
@@ -42,27 +41,20 @@ HEADERS += MainWindow.h++ CommandLineDockWidget.h++ Document.h++ ProgramOptions.
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h parsers/FemJsonParser.h++\
 	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
-	ui/NewMaterialDialog.h++ ui/MaterialsEditorDialog.h++\
 	fem/Analysis.h++ fem/LinearAnalysis.h++ fem/AnalysisResult.h++\
 	fem/ProgressIndicatorStrategy.h++ \
 	fem/solvers/Solver.h++ fem/solvers/CholeskySolver.h++ fem/solvers/CGSolver.h++ fem/solvers/UmfpackSolver.h++\
 	DefaultProgressIndicator.h++ \
-	ui/DialogScale.h++ \
 	MessageLogger.h++ Logs.h++ \
 	fem/Surface.h++ \
 	viewer/boundaries/CollisionDetection.h++ \
 	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++ \
-	ui/AnalysisDialog.h++ \
-	fem/solvers/*.h++ \
-	ui/AnalysisProgressDialog.h++ \
-	ui/MdiWindow.h++ ui/ModelWindow.h++ ui/PostprocessingWindow.h++ \
-	ui/WindowWith*.h++
+	fem/solvers/*.h++
 
-SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ ProgramOptions.c++ ui/NewProjectWizard.c++ \
+SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	ModelSelection.c++ \
 	MdiWindowProperties.c++ \
-	ui/NewProjectWizardPage1.c++ ui/NewProjectWizardPage2.c++ ui/NewProjectWizardPage3.c++ ui/NewProjectWizardPageLast.c++  \
-	ui/QuadratureRulesOptionsDialog.c++ \
+	ui/*.c++ \
 	fem/Project.c++ \
 	fem/Model.c++ fem/Node.c++ fem/Element.c++ fem/Material.c++ fem/LoadPattern.c++ fem/NodalLoad.c++ fem/NodalDisplacement.c++ fem/point.c++ fem/NodeRestrictions.c++ \
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
@@ -82,26 +74,12 @@ SOURCES += main.c++ MainWindow.c++ CommandLineDockWidget.c++ Document.c++ Progra
 	fem_msh.c++ lex.msh_yy.c++ \
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c parsers/FemJsonParser.c++\
 	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++ \
-	ui/NewMaterialDialog.c++ ui/MaterialsEditorDialog.c++\
 	DefaultProgressIndicator.c++ \
-	ui/DialogScale.c++ \
 	MessageLogger.c++ \
 	fem/Surface.c++ \
-	viewer/boundaries/CollisionDetection.c++ \
-	ui/AnalysisDialog.c++ \
-	ui/AnalysisProgressDialog.c++ \
-	ui/MdiWindow.c++ ui/ModelWindow.c++ ui/PostprocessingWindow.c++ \
-	ui/WindowWith*.c++
+	viewer/boundaries/CollisionDetection.c++ 
 
-FORMS += ui/MainWindow.ui ui/CommandLineDockWidget.ui \
-	ui/NewProjectWizardPage1.ui ui/NewProjectWizardPage2.ui ui/NewProjectWizardPage3.ui  ui/NewProjectWizardPageLast.ui \
-	ui/NodeRestrainDialog.ui ui/NodeActionsDialog.ui ui/DisplayOptionsDialog.ui \
-	ui/NewMaterialDialog.ui ui/MaterialsEditorDialog.ui \
-	ui/DialogScale.ui \
-	ui/QuadratureRulesOptionsDialog.ui \
-	ui/AnalysisDialog.ui \
-	ui/AnalysisProgressDialog.ui \
-	ui/MdiWindow.ui
+FORMS += ui/*.ui
 
 UI_DIR += ./ui
 OBJECTS_DIR += ./build

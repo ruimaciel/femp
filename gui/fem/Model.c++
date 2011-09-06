@@ -43,7 +43,6 @@ Model::clear()
 	material_list.clear();
 	node_restrictions_list.clear();
 	load_pattern_list.clear();
-	surface_list.clear();
 }
 
 
@@ -94,22 +93,22 @@ Model::pushElement(fem::Element e)
 			nodes[0] = e.nodes[0];
 			nodes[1] = e.nodes[2];
 			nodes[2] = e.nodes[1];
-			pushSurface(Element::FE_TRIANGLE3,Element::FE_TETRAHEDRON4, nodes, element_list.size() -1, 0);
+			
 			// face 2:
 			nodes[0] = e.nodes[0];
 			nodes[1] = e.nodes[3];
 			nodes[2] = e.nodes[2];
-			pushSurface(Element::FE_TRIANGLE3,Element::FE_TETRAHEDRON4, nodes, element_list.size() -1, 1);
+			
 			// face 3:
 			nodes[0] = e.nodes[0];
 			nodes[1] = e.nodes[1];
 			nodes[2] = e.nodes[3];
-			pushSurface(Element::FE_TRIANGLE3,Element::FE_TETRAHEDRON4, nodes, element_list.size() -1, 2);
+			
 			// face 4:
 			nodes[0] = e.nodes[1];
 			nodes[1] = e.nodes[2];
 			nodes[2] = e.nodes[3];
-			pushSurface(Element::FE_TRIANGLE3,Element::FE_TETRAHEDRON4, nodes, element_list.size() -1, 3);
+			
 			break;
 
 		case Element::FE_TETRAHEDRON10:
@@ -121,7 +120,7 @@ Model::pushElement(fem::Element e)
 			nodes[3] = e.nodes[4];
 			nodes[4] = e.nodes[6];
 			nodes[5] = e.nodes[5];
-			pushSurface(Element::FE_TRIANGLE6,Element::FE_TETRAHEDRON10, nodes, element_list.size() -1, 0);
+			
 			// face 2:
 			nodes[0] = e.nodes[0];
 			nodes[1] = e.nodes[3];
@@ -129,7 +128,7 @@ Model::pushElement(fem::Element e)
 			nodes[3] = e.nodes[7];
 			nodes[4] = e.nodes[8];
 			nodes[5] = e.nodes[6];
-			pushSurface(Element::FE_TRIANGLE6,Element::FE_TETRAHEDRON10, nodes, element_list.size() -1, 1);
+			
 			// face 3:
 			nodes[0] = e.nodes[0];
 			nodes[1] = e.nodes[1];
@@ -137,7 +136,7 @@ Model::pushElement(fem::Element e)
 			nodes[3] = e.nodes[4];
 			nodes[4] = e.nodes[9];
 			nodes[5] = e.nodes[7];
-			pushSurface(Element::FE_TRIANGLE6,Element::FE_TETRAHEDRON10, nodes, element_list.size() -1, 2);
+			
 			// face 4:
 			nodes[0] = e.nodes[1];
 			nodes[1] = e.nodes[2];
@@ -145,7 +144,7 @@ Model::pushElement(fem::Element e)
 			nodes[3] = e.nodes[5];
 			nodes[4] = e.nodes[8];
 			nodes[5] = e.nodes[9];
-			pushSurface(Element::FE_TRIANGLE6,Element::FE_TETRAHEDRON10, nodes, element_list.size() -1, 3);
+			
 			break;
 
 		case Element::FE_HEXAHEDRON8:
@@ -164,41 +163,41 @@ Model::pushElement(fem::Element e)
 			nodes[1] = e.nodes[0];
 			nodes[2] = e.nodes[3];
 			nodes[3] = e.nodes[2];
-			pushSurface(Element::FE_QUADRANGLE4,Element::FE_HEXAHEDRON8, nodes, element_list.size() -1, 0);
+			
 			// face 2:
 			nodes[0] = e.nodes[0];
 			nodes[1] = e.nodes[4];
 			nodes[2] = e.nodes[7];
 			nodes[3] = e.nodes[3];
-			pushSurface(Element::FE_QUADRANGLE4,Element::FE_HEXAHEDRON8, nodes, element_list.size() -1, 1);
+			
 
 			// face 3:
 			nodes[0] = e.nodes[4];
 			nodes[1] = e.nodes[5];
 			nodes[2] = e.nodes[6];
 			nodes[3] = e.nodes[7];
-			pushSurface(Element::FE_QUADRANGLE4,Element::FE_HEXAHEDRON8, nodes, element_list.size() -1, 2);
+			
 
 			// face 4:
 			nodes[0] = e.nodes[5];
 			nodes[1] = e.nodes[1];
 			nodes[2] = e.nodes[2];
 			nodes[3] = e.nodes[6];
-			pushSurface(Element::FE_QUADRANGLE4,Element::FE_HEXAHEDRON8, nodes, element_list.size() -1, 3);
+			
 
 			// face 5:
 			nodes[0] = e.nodes[0];
 			nodes[1] = e.nodes[1];
 			nodes[2] = e.nodes[5];
 			nodes[3] = e.nodes[4];
-			pushSurface(Element::FE_QUADRANGLE4,Element::FE_HEXAHEDRON8, nodes, element_list.size() -1, 4);
+			
 
 			// face 6:
 			nodes[0] = e.nodes[2];
 			nodes[1] = e.nodes[3];
 			nodes[2] = e.nodes[7];
 			nodes[3] = e.nodes[6];
-			pushSurface(Element::FE_QUADRANGLE4,Element::FE_HEXAHEDRON8, nodes, element_list.size() -1, 5);
+			
 			break;
 
 		case Element::FE_HEXAHEDRON20:
@@ -212,7 +211,7 @@ Model::pushElement(fem::Element e)
 			nodes[5] = e.nodes[9];
 			nodes[6] = e.nodes[13];
 			nodes[7] = e.nodes[11];
-			pushSurface(Element::FE_QUADRANGLE8,Element::FE_HEXAHEDRON20, nodes, element_list.size() -1, 0);
+			
 			// face 2:
 			nodes[0] = e.nodes[0];
 			nodes[1] = e.nodes[4];
@@ -222,7 +221,7 @@ Model::pushElement(fem::Element e)
 			nodes[5] = e.nodes[17];
 			nodes[6] = e.nodes[15];
 			nodes[7] = e.nodes[9];
-			pushSurface(Element::FE_QUADRANGLE8,Element::FE_HEXAHEDRON20, nodes, element_list.size() -1, 1);
+			
 
 			// face 3:
 			nodes[0] = e.nodes[4];
@@ -233,7 +232,7 @@ Model::pushElement(fem::Element e)
 			nodes[5] = e.nodes[18];
 			nodes[6] = e.nodes[19];
 			nodes[7] = e.nodes[17];
-			pushSurface(Element::FE_QUADRANGLE8,Element::FE_HEXAHEDRON20, nodes, element_list.size() -1, 2);
+			
 
 			// face 4:
 			nodes[0] = e.nodes[5];
@@ -244,7 +243,7 @@ Model::pushElement(fem::Element e)
 			nodes[5] = e.nodes[11];
 			nodes[6] = e.nodes[14];
 			nodes[7] = e.nodes[18];
-			pushSurface(Element::FE_QUADRANGLE8,Element::FE_HEXAHEDRON20, nodes, element_list.size() -1, 3);
+			
 
 			// face 5:
 			nodes[0] = e.nodes[0];
@@ -255,7 +254,7 @@ Model::pushElement(fem::Element e)
 			nodes[5] = e.nodes[12];
 			nodes[6] = e.nodes[16];
 			nodes[7] = e.nodes[10];
-			pushSurface(Element::FE_QUADRANGLE8,Element::FE_HEXAHEDRON20, nodes, element_list.size() -1, 4);
+			
 
 			// face 6:
 			nodes[0] = e.nodes[2];
@@ -266,7 +265,7 @@ Model::pushElement(fem::Element e)
 			nodes[5] = e.nodes[15];
 			nodes[6] = e.nodes[19];
 			nodes[7] = e.nodes[14];
-			pushSurface(Element::FE_QUADRANGLE8,Element::FE_HEXAHEDRON20, nodes, element_list.size() -1, 5);
+			
 			break;
 
 		case Element::FE_HEXAHEDRON27:
@@ -281,7 +280,7 @@ Model::pushElement(fem::Element e)
 			nodes[6] = e.nodes[13];
 			nodes[7] = e.nodes[11];
 			nodes[8] = e.nodes[20];
-			pushSurface(Element::FE_QUADRANGLE9,Element::FE_HEXAHEDRON27, nodes, element_list.size() -1, 0);
+			
 			// face 2:
 			nodes[0] = e.nodes[0];
 			nodes[1] = e.nodes[4];
@@ -292,7 +291,7 @@ Model::pushElement(fem::Element e)
 			nodes[6] = e.nodes[15];
 			nodes[7] = e.nodes[9];
 			nodes[8] = e.nodes[22];
-			pushSurface(Element::FE_QUADRANGLE9,Element::FE_HEXAHEDRON27, nodes, element_list.size() -1, 1);
+			
 
 			// face 3:
 			nodes[0] = e.nodes[4];
@@ -304,7 +303,7 @@ Model::pushElement(fem::Element e)
 			nodes[6] = e.nodes[19];
 			nodes[7] = e.nodes[17];
 			nodes[8] = e.nodes[25];
-			pushSurface(Element::FE_QUADRANGLE9,Element::FE_HEXAHEDRON27, nodes, element_list.size() -1, 2);
+			
 
 			// face 4:
 			nodes[0] = e.nodes[5];
@@ -316,7 +315,7 @@ Model::pushElement(fem::Element e)
 			nodes[6] = e.nodes[14];
 			nodes[7] = e.nodes[18];
 			nodes[8] = e.nodes[23];
-			pushSurface(Element::FE_QUADRANGLE9,Element::FE_HEXAHEDRON27, nodes, element_list.size() -1, 3);
+			
 
 			// face 5:
 			nodes[0] = e.nodes[0];
@@ -328,7 +327,7 @@ Model::pushElement(fem::Element e)
 			nodes[6] = e.nodes[16];
 			nodes[7] = e.nodes[10];
 			nodes[8] = e.nodes[21];
-			pushSurface(Element::FE_QUADRANGLE9,Element::FE_HEXAHEDRON27, nodes, element_list.size() -1, 4);
+			
 
 			// face 6:
 			nodes[0] = e.nodes[2];
@@ -340,7 +339,6 @@ Model::pushElement(fem::Element e)
 			nodes[6] = e.nodes[19];
 			nodes[7] = e.nodes[14];
 			nodes[8] = e.nodes[24];
-			pushSurface(Element::FE_QUADRANGLE9,Element::FE_HEXAHEDRON27, nodes, element_list.size() -1, 5);
 			break;
 
 		case Element::FE_PRISM6:
@@ -350,21 +348,19 @@ Model::pushElement(fem::Element e)
 			nodes[1] = e.nodes[1];
 			nodes[2] = e.nodes[4];
 			nodes[3] = e.nodes[3];
-			pushSurface(Element::FE_QUADRANGLE4,Element::FE_PRISM6, nodes, element_list.size() -1, 0);
 
 			// face 2: quadrangle with the coplanar YY
 			nodes[0] = e.nodes[0];
 			nodes[1] = e.nodes[3];
 			nodes[2] = e.nodes[5];
 			nodes[3] = e.nodes[2];
-			pushSurface(Element::FE_QUADRANGLE4,Element::FE_PRISM6, nodes, element_list.size() -1, 1);
 
 			// face 3: quadrangle with the diagonal
 			nodes[0] = e.nodes[1];
 			nodes[1] = e.nodes[2];
 			nodes[2] = e.nodes[5];
 			nodes[3] = e.nodes[4];
-			pushSurface(Element::FE_QUADRANGLE4,Element::FE_PRISM6, nodes, element_list.size() -1, 2);
+
 			/*
 			prism faces: 3 quadrangles, 2 triangles 
 			*/
@@ -373,14 +369,11 @@ Model::pushElement(fem::Element e)
 			nodes[0] = e.nodes[0];
 			nodes[1] = e.nodes[2];
 			nodes[2] = e.nodes[1];
-			pushSurface(Element::FE_TRIANGLE3,Element::FE_PRISM6, nodes, element_list.size() -1, 3);
 
 			// face 6: far triangle
 			nodes[0] = e.nodes[3];
 			nodes[1] = e.nodes[4];
 			nodes[2] = e.nodes[5];
-			pushSurface(Element::FE_TRIANGLE3,Element::FE_PRISM6, nodes, element_list.size() -1, 4);
-
 			break;
 
 		case Element::FE_PRISM15:
@@ -394,7 +387,6 @@ Model::pushElement(fem::Element e)
 			nodes[5] = e.nodes[10];
 			nodes[6] = e.nodes[12];
 			nodes[7] = e.nodes[8];
-			pushSurface(Element::FE_QUADRANGLE8,Element::FE_PRISM15, nodes, element_list.size() -1, 0);
 
 			// face 2: quadrangle with the coplanar YY
 			nodes[0] = e.nodes[0];
@@ -405,7 +397,6 @@ Model::pushElement(fem::Element e)
 			nodes[5] = e.nodes[13];
 			nodes[6] = e.nodes[11];
 			nodes[7] = e.nodes[7];
-			pushSurface(Element::FE_QUADRANGLE8,Element::FE_PRISM15, nodes, element_list.size() -1, 1);
 
 			// face 3: quadrangle with the diagonal
 			nodes[0] = e.nodes[1];
@@ -416,7 +407,6 @@ Model::pushElement(fem::Element e)
 			nodes[5] = e.nodes[11];
 			nodes[6] = e.nodes[14];
 			nodes[7] = e.nodes[10];
-			pushSurface(Element::FE_QUADRANGLE8,Element::FE_PRISM15, nodes, element_list.size() -1, 2);
 			/*
 			prism faces: 3 quadrangles, 2 triangles 
 			*/
@@ -428,7 +418,6 @@ Model::pushElement(fem::Element e)
 			nodes[3] = e.nodes[7];
 			nodes[4] = e.nodes[9];
 			nodes[5] = e.nodes[6];
-			pushSurface(Element::FE_TRIANGLE6,Element::FE_PRISM15, nodes, element_list.size() -1, 3);
 
 			// face 6: far triangle
 			nodes[0] = e.nodes[3];
@@ -437,8 +426,6 @@ Model::pushElement(fem::Element e)
 			nodes[3] = e.nodes[12];
 			nodes[4] = e.nodes[14];
 			nodes[5] = e.nodes[13];
-			pushSurface(Element::FE_TRIANGLE6,Element::FE_PRISM15, nodes, element_list.size() -1, 4);
-
 			break;
 
 		case Element::FE_PRISM18:
@@ -453,7 +440,6 @@ Model::pushElement(fem::Element e)
 			nodes[6] = e.nodes[12];
 			nodes[7] = e.nodes[8];
 			nodes[8] = e.nodes[15];
-			pushSurface(Element::FE_QUADRANGLE9,Element::FE_PRISM18, nodes, element_list.size() -1, 0);
 
 			// face 2: quadrangle with the coplanar YY
 			nodes[0] = e.nodes[0];
@@ -465,7 +451,6 @@ Model::pushElement(fem::Element e)
 			nodes[6] = e.nodes[11];
 			nodes[7] = e.nodes[7];
 			nodes[8] = e.nodes[16];
-			pushSurface(Element::FE_QUADRANGLE9,Element::FE_PRISM18, nodes, element_list.size() -1, 1);
 
 			// face 3: quadrangle with the diagonal
 			nodes[0] = e.nodes[1];
@@ -477,7 +462,6 @@ Model::pushElement(fem::Element e)
 			nodes[6] = e.nodes[14];
 			nodes[7] = e.nodes[10];
 			nodes[8] = e.nodes[17];
-			pushSurface(Element::FE_QUADRANGLE9,Element::FE_PRISM18, nodes, element_list.size() -1, 2);
 			/*
 			prism faces: 3 quadrangles, 2 triangles 
 			*/
@@ -489,7 +473,6 @@ Model::pushElement(fem::Element e)
 			nodes[3] = e.nodes[7];
 			nodes[4] = e.nodes[9];
 			nodes[5] = e.nodes[6];
-			pushSurface(Element::FE_TRIANGLE6,Element::FE_PRISM18, nodes, element_list.size() -1, 3);
 
 			// face 6: far triangle
 			nodes[0] = e.nodes[3];
@@ -498,8 +481,6 @@ Model::pushElement(fem::Element e)
 			nodes[3] = e.nodes[12];
 			nodes[4] = e.nodes[14];
 			nodes[5] = e.nodes[13];
-			pushSurface(Element::FE_TRIANGLE6,Element::FE_PRISM18, nodes, element_list.size() -1, 4);
-
 			break;
 
 		default:
@@ -519,37 +500,6 @@ Model::pushElement(fem::Element::Type type, std::vector<size_t> nodes)
 	e.set(type,nodes);
 
 	return this->pushElement(e);
-}
-
-
-enum Model::Error 
-Model::pushSurface(Element::Type type, Element::Type element_type, std::vector<size_t> &nodes, const size_t element_reference, const size_t surface_number)
-{
-	Surface new_surface;
-	if(!new_surface.set(type,nodes))
-	{
-		// number of nodes incompatible with surface type
-		return ERR_NODE_NUMBER;
-	}
-
-	// test if surface was already added to the list
-	std::list<Surface>::iterator i;
-	for( i = surface_list.begin(); i != surface_list.end(); i++)
-	{
-		if(*i == new_surface)
-		{
-			// surface was already added.  Update the references of the existing node
-			i->pushElementReference(element_reference, element_type, surface_number);
-			break;
-		}
-	}
-	if(i == surface_list.end())
-	{
-		// surface is unique.  Therefore, add it to the list as such
-		new_surface.pushElementReference(element_reference, element_type, surface_number);
-		surface_list.push_back(new_surface);
-	}
-	return ERR_OK;
 }
 
 

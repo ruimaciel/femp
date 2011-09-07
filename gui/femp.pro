@@ -15,6 +15,7 @@ LIBS += -ll -ly -lumfpack -lmetis -lblas -lamd
 HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	ModelSelection.h++ \
 	MdiWindowProperties.h++ \
+	Selection*.h++ \
 	ui/*.h++ \
 	fem/Project.h++ \
 	fem/Model.h++ fem/Node.h++ fem/Element.h++ fem/Material.h++ fem/LoadPattern.h++ fem/NodalLoad.h++ fem/NodalDisplacement.h++ fem/point.h++ fem/NodeRestrictions.h++ \
@@ -54,6 +55,7 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	ModelSelection.c++ \
 	MdiWindowProperties.c++ \
+	Selection*.c++ \
 	ui/*.c++ \
 	fem/Project.c++ \
 	fem/Model.c++ fem/Node.c++ fem/Element.c++ fem/Material.c++ fem/LoadPattern.c++ fem/NodalLoad.c++ fem/NodalDisplacement.c++ fem/point.c++ fem/NodeRestrictions.c++ \

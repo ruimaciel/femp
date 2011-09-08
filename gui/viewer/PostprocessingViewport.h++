@@ -29,7 +29,7 @@
 
 
 /**
-Viewport designed to represent any postprocessing being done to any given model's FEM solution.
+QGLWidget subclass designed to represent any postprocessing being done to any given model's FEM solution.
 **/
 class PostprocessingViewport 
 	: public BaseViewport

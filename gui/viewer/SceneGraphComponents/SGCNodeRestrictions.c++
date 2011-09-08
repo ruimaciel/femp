@@ -20,7 +20,7 @@ NodeRestrictions::~NodeRestrictions()
 }
 
 
-void NodeRestrictions::paintGL(ViewportData &data, fem::Project &, fem::AnalysisResult<double> * result, float &scale,  ViewportColors &colors)
+void NodeRestrictions::paintGL(ViewportData &data, fem::Project &, fem::AnalysisResult<double> * , float &,  ViewportColors &colors)
 {
 	glPushMatrix();
 	glTranslated(m_node->data[0],m_node->data[1],m_node->data[2]);

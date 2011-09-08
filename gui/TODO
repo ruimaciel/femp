@@ -17,5 +17,8 @@
 adicionar opção para escolher cores dos campos de tensões
 partilhar camaras por viewports
 
+SceneGraph: eliminar RenderGroups em favor de uma operação a operar nos bool SceneGraphComponent::render
+MainWindow: ligar view->Postprocessing apenas depois de pelo menos uma análise ser corrida
+
 == Notas ==
 	deslocamentos prescritos podem ter outra orientação além das do referencial

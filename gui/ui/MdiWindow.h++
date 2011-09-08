@@ -13,11 +13,15 @@
 
 #include "ui/ui_MdiWindow.h"
 
+#include "Selection.h++"
+#include "SelectionManager.h++"
+
+
 /**
 Base class for all the MDI windows 
 **/
 class MdiWindow 
-	: public QMainWindow, protected Ui_MdiWindow
+	:  public QMainWindow, protected Ui_MdiWindow, public sigc::trackable
 {
 	Q_OBJECT
 
@@ -68,6 +72,19 @@ class MdiWindow
 
 		void normalizeAngle(int *angle);
 
+	public:
+		// libsigc++ signals
+		sigc::signal<void, Selection>	selection_changed;	// signals that this window originated a change of item selection
+		sigc::signal<void>		selection_cleared;	// signals that this window cleared the selection
+
+		// libsigc++ slots
+		virtual void setSelection(Selection);	// sets the selection
+		virtual void clearSelection();		// clears the selection
+
+		/**
+		Handles all libsigc++ connections between this window and an object of type SelectionManager
+		**/
+		virtual void connectToSelectionManager(SelectionManager &);
 };	
 
 #endif

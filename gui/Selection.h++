@@ -14,17 +14,17 @@ protected:
 
 public:
 	//crude hack.  must implement some iterator of sorts
-	std::set<fem::element_ref_t>	m_elements_seleted;
-	std::set<fem::node_ref_t>	m_nodes_seleted;
+	std::set<fem::element_ref_t>	m_elements_selected;
+	std::set<fem::node_ref_t>	m_nodes_selected;
 
 public:
-	Selection(fem::Project *project);
+	Selection();
+	
+	void setProject(fem::Project &project);
 
-	/**
-	Methods to add references to objects
-	**/
-	void addElement(const fem::element_ref_t &);
-	void addNode(const fem::node_ref_t &);
+	void clear();
+
+	void setSelection(Selection);
 };
 
 #endif

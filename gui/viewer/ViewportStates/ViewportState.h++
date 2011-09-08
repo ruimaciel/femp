@@ -8,6 +8,8 @@
 #include "../../fem/Model.h++"
 #include "../../fem/AnalysisResult.h++"
 
+#include "../../Selection.h++"
+
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"
 #include "../Camera.h++"
@@ -59,6 +61,10 @@ public:
 	virtual void mousePressEvent(Viewport *viewport, QMouseEvent *event) = 0;
 	virtual void mouseMoveEvent(Viewport *viewport, QMouseEvent *event);
 	virtual void keyPressEvent ( Viewport *viewport, QKeyEvent * event );
+
+	// libsigc++ slots
+	virtual void setSelection(Selection);	// sets the selection
+	virtual void clearSelection();		// clears the selection list representation
 };
 
 
@@ -119,6 +125,20 @@ ViewportState<Viewport>::keyPressEvent ( Viewport *, QKeyEvent * event )
 {
 	qWarning("not keypressed");
 	event->ignore();
+}
+
+
+template <class Viewport>
+void
+ViewportState<Viewport>::setSelection(Selection)
+{
+}
+
+
+template <class Viewport>
+void 
+ViewportState<Viewport>::clearSelection()
+{
 }
 
 

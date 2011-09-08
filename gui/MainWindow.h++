@@ -9,12 +9,15 @@
 #include "ui/ui_MainWindow.h"
 
 #include "CommandLineDockWidget.h++"
+#include "SelectionDockWidget.h++"
+
 #include "ProgramOptions.h++"
 #include "viewer/ViewportColors.h++"
 
 #include "viewer/ModelViewport.h++"
 
 #include "Document.h++"
+#include "SelectionManager.h++"
 
 #include "fem/LinearAnalysis.h++"
 #include "fem/AnalysisResult.h++"
@@ -34,6 +37,7 @@ protected:
 	fem::LinearAnalysis<double> analysis;
 
 	CommandLineDockWidget *commandLineDockWidget;
+	SelectionDockWidget *selectionDockWidget;
 
 	QMdiArea	* mdiArea;
 
@@ -41,6 +45,7 @@ protected:
 	bool 	hasUnsavedChanges;	// true if the document has unsaved changes
 
 	Document document;	// the FEM document
+	SelectionManager m_selection_manager;	// object which handles object selection
 
 	ViewportColors colors;	// the elements' viewport colors
 
@@ -66,6 +71,11 @@ public Q_SLOTS:
 	void setDisplayOptions();
 	void editMaterials();
 	void editQuadratureRules();
+
+	/**
+	Calls the dialog which is used to fine tune the object selection list
+	**/
+	void editSelection();
 
 	/**
 	Sets DisplayOption's options refering to the element visualization
@@ -109,6 +119,7 @@ Q_SIGNALS:
 private:
 	void createActions();	// creates the actions and connects them
 	void createToolBars();
+	void createDockWidgets();
 	void destroyToolBars();
 	void loadOptions();	// loads global options from the options files
 	void setUserInterfaceAsOpened();	// sets the user interface in it's "opened document" state

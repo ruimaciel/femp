@@ -3,24 +3,31 @@
 #include <assert.h>
 
 
-Selection::Selection(fem::Project *project)
+Selection::Selection()
 {
-	assert(project != NULL);
-	m_project = project;
+	m_project = NULL;
+}
+
+void 
+Selection::setProject(fem::Project &project)
+{
+	this->m_project = &project;
+}
+
+void 
+Selection::clear()
+{
+	this->m_elements_selected.clear();
+	this->m_nodes_selected.clear();
 }
 
 
 void 
-Selection::addElement(const fem::element_ref_t &ref)
+Selection::setSelection(Selection selection)
 {
-	this->m_elements_seleted.insert(ref);
-}
-
-
-void 
-Selection::addNode(const fem::node_ref_t &ref)
-{
-	this->m_nodes_seleted.insert(ref);
+	this->m_project = selection.m_project;
+	this->m_elements_selected = selection.m_elements_selected;
+	this->m_nodes_selected = selection.m_nodes_selected;
 }
 
 

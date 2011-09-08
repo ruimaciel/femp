@@ -19,6 +19,8 @@
 
 #include "ViewportData.h++"
 
+#include "Selection.h++"
+
 #include "ViewportStates/ViewportState.h++"	// for the vieport's state pattern base class
 
 
@@ -87,6 +89,11 @@ Q_SIGNALS:
 	void yRotationChanged(int angle);
 	void zRotationChanged(int angle);
 	void positionChanged( double x, double y, double z);
+
+public:
+	// libsigc++ slots
+	void setSelection(Selection);	// sets the selection
+	void clearSelection();		// clears the selection list representation
 
 protected:
 	void initializeGL();

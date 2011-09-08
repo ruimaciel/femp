@@ -3,6 +3,7 @@
 #include <map>
 #include <list>
 #include <algorithm>
+#include <iostream>
 
 #include <GL/gl.h>
 #include <GL/glu.h>	// for gluQuadric()
@@ -87,6 +88,13 @@ VPStateModel::populateScenegraph(BaseViewport *mv)
 
 	// generate the scene graph
 	this->scenegraph.generateSceneGraph();
+}
+
+
+void 
+VPStateModel::setSelection(Selection)
+{
+	std::cout << "VPStateModel::setSelection(Selection)" << std::endl;
 }
 
 

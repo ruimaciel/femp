@@ -229,4 +229,14 @@ void BaseViewport::normalizeAngle(int *angle)
 }
 
 
+void BaseViewport::setSelection(Selection selection)
+{
+	this->state->setSelection(selection);
+}
+
+
+void BaseViewport::clearSelection()
+{
+	this->state->clearSelection();
+}
 

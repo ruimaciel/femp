@@ -3,6 +3,7 @@
 #include <map>
 #include <list>
 #include <algorithm>
+#include <iostream>
 
 #include <assert.h>
 
@@ -107,6 +108,13 @@ VPStateGradients::setDisplacementsScale(float new_scale)
 	mylog.setPrefix("VPStateGradients::setDisplacementsScale()");
 	mylog.message("set scale");
 	this->m_displacements.setDisplacementsScale(new_scale);
+}
+
+
+void 
+VPStateGradients::setSelection(Selection)
+{
+	std::cout << "VPStateGradients::setSelection(Selection)" << std::endl;
 }
 
 

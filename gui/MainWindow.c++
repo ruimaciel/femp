@@ -25,6 +25,7 @@
 #include "DisplayOptionsDialog.h++"
 #include "ui/MaterialsEditorDialog.h++"
 #include "ui/QuadratureRulesOptionsDialog.h++"
+#include "ui/SelectionDialog.h++"
 #include "ui/AnalysisProgressDialog.h++"
 #include "ui/AnalysisDialog.h++"
 
@@ -63,22 +64,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	// initialize the member attributes
 	this->hasUnsavedChanges = false;
 
-	// initialize the Docks
-	commandLineDockWidget = new CommandLineDockWidget(this);
-	connect(this, SIGNAL(setMessage(QString)), commandLineDockWidget, SLOT(getMessage(QString)));
-	connect(this, SIGNAL(setWarning(QString)), commandLineDockWidget, SLOT(getWarning(QString)));
-	connect(this, SIGNAL(setError(QString)), commandLineDockWidget, SLOT(getError(QString)));
-
-	// set the MainWindow connections
-	connect(&mylog,	SIGNAL(newMessage(QString)),	commandLineDockWidget, SLOT(getMessage(QString)));
-
 	// create actions and connect signals to slots
 	this->createActions();
 	this->createToolBars();
+	this->createDockWidgets();
 
 	// set the user interface
 	setUserInterfaceAsClosed();
 
+	m_selection_manager.setProject(document.project);
 }
 
 
@@ -416,6 +410,7 @@ MainWindow::createActions()
 	connect(ui.actionViewPostprocessing,	SIGNAL(triggered()),	this,	SLOT(showPostprocessing()));
 
 	connect(ui.actionQuadrature_rules,	SIGNAL(triggered()),	this,	SLOT(editQuadratureRules()) );
+	connect(ui.actionSelection,		SIGNAL(triggered()),	this,	SLOT(editSelection()) );
 }
 
 
@@ -424,6 +419,24 @@ MainWindow::createToolBars()
 {
 	// build the actions toolbar
 	//TODO finish this
+}
+
+
+void 
+MainWindow::createDockWidgets()
+{
+	// initialize the Docks
+	commandLineDockWidget = new CommandLineDockWidget(this);
+	connect(this, SIGNAL(setMessage(QString)), commandLineDockWidget, SLOT(getMessage(QString)));
+	connect(this, SIGNAL(setWarning(QString)), commandLineDockWidget, SLOT(getWarning(QString)));
+	connect(this, SIGNAL(setError(QString)), commandLineDockWidget, SLOT(getError(QString)));
+
+	// set the MainWindow connections
+	connect(&mylog,	SIGNAL(newMessage(QString)),	commandLineDockWidget, SLOT(getMessage(QString)));
+
+	this->addDockWidget(Qt::RightDockWidgetArea, commandLineDockWidget);
+
+	//TODO add selection dock widget
 }
 
 
@@ -896,6 +909,14 @@ MainWindow::editQuadratureRules()
 
 
 void 
+MainWindow::editSelection()
+{
+	SelectionDialog dialog(document.project, m_selection_manager, this);
+	dialog.exec();
+}
+
+
+void 
 MainWindow::setElementDisplay()
 {
 }
@@ -1173,6 +1194,7 @@ MainWindow::createNewViewportWindow()
 	window_gl_viewport->setAttribute(Qt::WA_DeleteOnClose);
 	window_gl_viewport->setWindowTitle(tr("Model viewport"));
 	window_gl_viewport->showMaximized();
+	window->connectToSelectionManager(this->m_selection_manager);
 }
 
 
@@ -1190,6 +1212,7 @@ MainWindow::createNewModelWindow()
 	mdi_window->setAttribute(Qt::WA_DeleteOnClose);
 	mdi_window->setWindowTitle(tr("Model"));
 	mdi_window->showMaximized();
+	window->connectToSelectionManager(this->m_selection_manager);
 }
 
 
@@ -1207,6 +1230,7 @@ MainWindow::createNewPostprocessingWindow()
 	mdi_window->setAttribute(Qt::WA_DeleteOnClose);
 	mdi_window->setWindowTitle(tr("Postprocessing"));
 	mdi_window->showMaximized();
+	window->connectToSelectionManager(this->m_selection_manager);
 }
 
   

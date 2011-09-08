@@ -7,12 +7,15 @@
 #include "WindowWithPostprocessing.h++"
 #include "WindowWithScaling.h++"
 
-
 #include <QWidget>
 #include <QComboBox>
 
 #include "../fem/Project.h++"
 #include "../viewer/ViewportColors.h++"
+
+#include "Selection.h++"
+#include "SelectionManager.h++"
+
 
 /**
 MDI window designed to represent the model
@@ -48,6 +51,16 @@ class PostprocessingWindow
 
 	protected:
 		void connectSignalsToSlots();
+
+	public:
+		// libsigc++ slots
+		void setSelection(Selection);	// sets the selection
+		void clearSelection();		// clears the selection
+
+		/**
+		Handles all libsigc++ connections between this window and an object of type SelectionManager
+		**/
+		void connectToSelectionManager(SelectionManager &);
 };	
 
 #endif

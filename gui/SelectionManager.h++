@@ -16,31 +16,24 @@ class SelectionManager
 	: public sigc::trackable
 {
 protected:
-	fem::Project	*m_project;
-	std::set<fem::element_ref_t>	m_elements_selected;
-	std::set<fem::node_ref_t>	m_nodes_selected;
+	Selection m_selection;
 
 public:
-	SelectionManager(fem::Project &project);
-
+	void setProject(fem::Project &project);
 
 	// libsigc++ signals
-	sigc::signal<void, fem::element_ref_t, bool>	element_selected;
-	sigc::signal<void, fem::node_ref_t, bool>	node_selected;
-	sigc::signal<void>				selection_cleared;
-
+	sigc::signal<void, Selection>	selection_changed;
+	sigc::signal<void>		selection_cleared;
 
 	// libsigc++ slots
-	void selectElement(fem::element_ref_t, bool state = true);
-	void selectNode(fem::node_ref_t, bool state = true);
-
+	void setSelection(Selection);
 	void clearSelection();
 
 	/**
 	returns a pointer to an object of type Selection which stores a set of references to selected objects
-	@return	pointer to an object of type Selection, which must be freed by the function which receives it
+	@return	an object of type Selection
 	**/
-	Selection *getSelection();
+	Selection getSelection();
 
 };
 

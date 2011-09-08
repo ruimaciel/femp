@@ -91,6 +91,7 @@
     <addaction name="actionPreferences"/>
     <addaction name="actionEditMaterials"/>
     <addaction name="actionQuadrature_rules"/>
+    <addaction name="actionSelection"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -330,6 +331,11 @@
    </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="actionSelection">
+   <property name="text">
+    <string>Selection</string>
    </property>
   </action>
  </widget>

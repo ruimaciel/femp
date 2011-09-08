@@ -42,6 +42,11 @@ public:
 
 	void setDisplacementsScale(float new_scale);
 
+	/**
+	Tweaks the way the viewport is rendered according to the current selection
+	**/
+	void setSelection(Selection);
+
 	void paintGL(BaseViewport *mv);
 	void mousePressEvent(BaseViewport *mv, QMouseEvent *event);
 	// void mouseMoveEvent(QMouseEvent *event);

@@ -29,6 +29,7 @@ public:
 
 public:
 	bool selected;
+	bool render;
 
 public:
 	SceneGraphComponent();

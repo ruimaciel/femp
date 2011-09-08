@@ -9,6 +9,7 @@
 SceneGraphComponent::SceneGraphComponent()
 {
 	selected = false;
+	render = true;
 }
 
 
@@ -22,7 +23,10 @@ void SceneGraphComponent::paintGL(ViewportData &data, ViewportColors &colors)
 {
 	for(std::list<SceneGraphComponent *>::iterator i = this->children.begin(); i != this->children.end(); i++)
 	{
-		(*i)->paintGL(data, colors);
+		if( (*i)->render )
+		{
+			(*i)->paintGL(data, colors);
+		}
 	}
 }
 
@@ -43,10 +47,14 @@ void SceneGraphComponent::pushComponent(SceneGraphComponent *new_component)
 }
 
 
-void SceneGraphComponent::accept(OperationsVisitor &)
+void SceneGraphComponent::accept(OperationsVisitor &visitor)
 {
 	mylog.setPrefix("void SceneGraphComponent::Accept(OperationsVisitor &v)");
 	mylog.message("error: base class element being called");
+	for(std::list<SceneGraphComponent *>::iterator i = this->children.begin(); i != this->children.end(); i++)
+	{
+		(*i)->accept(visitor);
+	}
 }
 
 

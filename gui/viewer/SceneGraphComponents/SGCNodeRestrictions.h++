@@ -3,7 +3,7 @@
 
 
 #include "SceneGraphComponent.h++"
-#include "../OperationsVisitor.h++"
+#include "Operations/OperationsVisitor.h++"
 
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"
@@ -34,7 +34,7 @@ public:
 	/*
 	Visitor pattern method
 	*/
-	void accept(OperationsVisitor &v);
+	void accept(OperationsVisitor &visitor);
 
 protected:
 		void renderNodeRestriction();

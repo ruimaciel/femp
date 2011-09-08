@@ -52,9 +52,9 @@ void SGCNode::paintGL(ViewportData &data, ViewportColors &colors)
 }
 
 
-void SGCNode::accept(OperationsVisitor &v)
+void SGCNode::accept(OperationsVisitor &visitor)
 {
-	v.visit(*this);
+	visitor.visit(*this);
 }
 
 

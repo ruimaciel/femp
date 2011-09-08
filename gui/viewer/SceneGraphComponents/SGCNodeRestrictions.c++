@@ -50,9 +50,9 @@ void SGCNodeRestrictions::paintGL(ViewportData &data, fem::Project &, fem::Analy
 }
 
 
-void SGCNodeRestrictions::accept(OperationsVisitor &v)
+void SGCNodeRestrictions::accept(OperationsVisitor &visitor)
 {
-	v.visit(*this);
+	visitor.visit(*this);
 }
 
 

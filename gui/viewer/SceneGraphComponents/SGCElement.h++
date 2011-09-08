@@ -5,6 +5,8 @@
 #include <vector>
 
 #include "SceneGraphComponent.h++"
+#include "Operations/OperationsVisitor.h++"
+
 #include "FrameStates/FrameState.h++"
 
 #include "../ViewportColors.h++"
@@ -49,13 +51,14 @@ public:
 	void setElementRepresentationPolicy(ElementRepresentationPolicy *representation);
 	void setDisplacementsPolicy(DisplacementsRepresentationPolicy *displacements);
 
-protected:
-
-	void setReferenceElement(fem::Element &);
 	/*
 	Visitor pattern method
+	@param	visitor	Object of base class OperationsVisitor, which will act on this class
 	*/
-	virtual void accept(OperationsVisitor &v);
+	virtual void accept(OperationsVisitor &visitor);
+
+protected:
+	void setReferenceElement(fem::Element &);
 };
 
 

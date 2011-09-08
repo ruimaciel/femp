@@ -22,15 +22,6 @@ Element::~Element()
 
 
 void 
-Element::setReferenceElement(fem::Element &referenced_element)
-{
-	this->m_element = &referenced_element;
-
-	//TODO adjust boundary to this surface
-}
-
-
-void 
 Element::setElementRepresentationPolicy(ElementRepresentationPolicy *representation)
 {
 	assert(representation != NULL);
@@ -46,9 +37,18 @@ Element::setDisplacementsPolicy(DisplacementsRepresentationPolicy *displacements
 }
 
 
-void Element::accept(OperationsVisitor &v)
+void Element::accept(OperationsVisitor &visitor)
 {
-	v.visit(*this);
+	visitor.visit(*this);
+}
+
+
+void 
+Element::setReferenceElement(fem::Element &referenced_element)
+{
+	this->m_element = &referenced_element;
+
+	//TODO adjust boundary to this surface
 }
 
 

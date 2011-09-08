@@ -90,8 +90,8 @@ void AnalysisDialog::loadLoadPatternList(fem::Model &model)
 	QString temp;
 	for(std::vector<fem::LoadPattern>::iterator i =  model.load_pattern_list.begin(); i != model.load_pattern_list.end(); i++)
 	{
-		//TODO this has a bug, and doesn't work
-		temp.fromStdString(i->label);
+		//nasty hack, as QString(i->label) doesn't work, nor temp.fromStdString()
+		temp = QString(i->label.c_str());
 		
 		comboBoxLoadPattern->addItem(temp);
 	}

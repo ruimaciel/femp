@@ -12,10 +12,13 @@
 #include "DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++"
 
 
+namespace SGC
+{
+
 /**
 Scene graph component which renders a node
 **/
-class SGCNode
+class Node
 	: public SceneGraphComponent
 {
 protected:
@@ -24,8 +27,8 @@ protected:
 	DisplacementsRepresentationPolicy *m_displacements;
 
 public:
-	SGCNode(size_t, fem::Node &node, DisplacementsRepresentationPolicy *displacements);
-	~SGCNode();
+	Node(size_t, fem::Node &node, DisplacementsRepresentationPolicy *displacements);
+	~Node();
 
 
 	/*
@@ -38,5 +41,7 @@ public:
 	*/
 	void accept(OperationsVisitor &visitor);
 };
+
+}	// namespace SGC
 
 #endif

@@ -8,7 +8,11 @@
 #include "../Logs.h++"	// declare the global message loggers
 
 
-SGCNode::SGCNode(size_t reference_node_label, fem::Node &node, DisplacementsRepresentationPolicy *displacements)
+namespace SGC
+{
+
+
+Node::Node(size_t reference_node_label, fem::Node &node, DisplacementsRepresentationPolicy *displacements)
 	: SceneGraphComponent()
 {
 	assert(displacements != NULL);
@@ -19,12 +23,12 @@ SGCNode::SGCNode(size_t reference_node_label, fem::Node &node, DisplacementsRepr
 }
 
 
-SGCNode::~SGCNode()
+Node::~Node()
 {
 }
 
 
-void SGCNode::paintGL(ViewportData &data, ViewportColors &colors)
+void Node::paintGL(ViewportData &data, ViewportColors &colors)
 {
 	glPushMatrix();
 	fem::point u = (*m_displacements)[this->node_label];
@@ -52,9 +56,12 @@ void SGCNode::paintGL(ViewportData &data, ViewportColors &colors)
 }
 
 
-void SGCNode::accept(OperationsVisitor &visitor)
+void Node::accept(OperationsVisitor &visitor)
 {
 	visitor.visit(*this);
 }
+
+
+}	// namespace SGC
 
 

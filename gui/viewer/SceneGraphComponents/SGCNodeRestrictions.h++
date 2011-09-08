@@ -14,7 +14,10 @@
 #include "../../fem/LinearAnalysis.h++"
 
 
-class SGCNodeRestrictions
+namespace SGC
+{
+
+class NodeRestrictions
 	: public SceneGraphComponent
 {
 protected:
@@ -22,8 +25,8 @@ protected:
 	fem::NodeRestrictions *m_node_restrictions;
 
 public:
-	SGCNodeRestrictions(fem::Node &node, fem::NodeRestrictions &node_restrictions);
-	~SGCNodeRestrictions();
+	NodeRestrictions(fem::Node &node, fem::NodeRestrictions &node_restrictions);
+	~NodeRestrictions();
 
 
 	/*
@@ -37,7 +40,9 @@ public:
 	void accept(OperationsVisitor &visitor);
 
 protected:
-		void renderNodeRestriction();
+	void renderNodeRestriction();
 };
+
+}	// namespace SGC
 
 #endif

@@ -4,7 +4,10 @@
 #include <GL/glu.h>
 
 
-SGCNodeRestrictions::SGCNodeRestrictions(fem::Node &node, fem::NodeRestrictions &node_restrictions)
+namespace SGC
+{
+
+NodeRestrictions::NodeRestrictions(fem::Node &node, fem::NodeRestrictions &node_restrictions)
 	: SceneGraphComponent()
 {
 	m_node= &node;
@@ -12,12 +15,12 @@ SGCNodeRestrictions::SGCNodeRestrictions(fem::Node &node, fem::NodeRestrictions 
 }
 
 
-SGCNodeRestrictions::~SGCNodeRestrictions()
+NodeRestrictions::~NodeRestrictions()
 {
 }
 
 
-void SGCNodeRestrictions::paintGL(ViewportData &data, fem::Project &, fem::AnalysisResult<double> * result, float &scale,  ViewportColors &colors)
+void NodeRestrictions::paintGL(ViewportData &data, fem::Project &, fem::AnalysisResult<double> * result, float &scale,  ViewportColors &colors)
 {
 	glPushMatrix();
 	glTranslated(m_node->data[0],m_node->data[1],m_node->data[2]);
@@ -50,13 +53,13 @@ void SGCNodeRestrictions::paintGL(ViewportData &data, fem::Project &, fem::Analy
 }
 
 
-void SGCNodeRestrictions::accept(OperationsVisitor &visitor)
+void NodeRestrictions::accept(OperationsVisitor &visitor)
 {
 	visitor.visit(*this);
 }
 
 
-void SGCNodeRestrictions::renderNodeRestriction()
+void NodeRestrictions::renderNodeRestriction()
 {
 	glBegin(GL_TRIANGLES);
 	glNormal3f(1.4142f, 0, 1.4142f);
@@ -120,5 +123,8 @@ void SGCNodeRestrictions::renderNodeRestriction()
 	glVertex3i( 2,-2,-2);
 	glEnd();
 }
+
+
+}	// namespace SGC
 
 

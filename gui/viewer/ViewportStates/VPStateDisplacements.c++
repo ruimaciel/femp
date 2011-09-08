@@ -65,7 +65,7 @@ VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 	// add the nodes to the scenegraph
 	for(std::map<size_t, fem::Node>::iterator i = viewport->project->model.node_list.begin(); i != viewport->project->model.node_list.end(); i++)
 	{
-		component =  new SGCNode(i->first, i->second, &this->m_displacements);
+		component =  new SGC::Node(i->first, i->second, &this->m_displacements);
 		if(component)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
 	}
@@ -73,7 +73,7 @@ VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 	/**
 	for( std::map<size_t, fem::NodeRestrictions>::iterator i = viewport->project->model.node_restrictions_list.begin(); i != viewport->project->model.node_restrictions_list.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, new SGCNodeRestrictions(viewport->project->model.node_list[i->first], i->second) );
+		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, new SGC::NodeRestrictions(viewport->project->model.node_list[i->first], i->second) );
 	}
 	**/
 

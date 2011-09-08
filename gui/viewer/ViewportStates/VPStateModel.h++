@@ -31,16 +31,16 @@ public:
 	VPStateModel();
 	~VPStateModel();
 
-	void initialize(BaseViewport *mv);
-	void populateScenegraph(BaseViewport *mv);
+	void initialize(BaseViewport *viewport);
+	void populateScenegraph(BaseViewport *viewport);
 
 	/**
 	Tweaks the way the viewport is rendered according to the current selection
 	**/
 	void setSelection(Selection);
 
-	void paintGL(BaseViewport *mv);
-	void mousePressEvent(BaseViewport *mv, QMouseEvent *event);
+	void paintGL(BaseViewport *viewport);
+	void mousePressEvent(BaseViewport *viewport, QMouseEvent *event);
 	// void mouseMoveEvent(QMouseEvent *event);
 
 };

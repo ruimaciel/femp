@@ -37,48 +37,48 @@ VPStateModel::~VPStateModel()
 
 
 void
-VPStateModel::initialize(BaseViewport *mv)
+VPStateModel::initialize(BaseViewport *viewport)
 {
 	mylog.setPrefix("VPStateModel::initialize()");
 	mylog.message("initializing");
 
-	assert(mv != NULL);
+	assert(viewport != NULL);
 
-	this->m_no_displacements.setModel(mv->project->model);
+	this->m_no_displacements.setModel(viewport->project->model);
 }
 
 
 
 void
-VPStateModel::populateScenegraph(BaseViewport *mv)
+VPStateModel::populateScenegraph(BaseViewport *viewport)
 {
-	mylog.setPrefix("void VPStateModel::populateScenegraph(fem::Model *mv->project->model)");
+	mylog.setPrefix("void VPStateModel::populateScenegraph(fem::Model *viewport->project->model)");
 	mylog.message("populating");
 
-	assert(mv != NULL);
+	assert(viewport != NULL);
 
 	scenegraph.clear();
 
 	SceneGraphComponent * component;
 
 	// add the nodes to the scenegraph
-	for(std::map<size_t, fem::Node>::iterator i = mv->project->model.node_list.begin(); i != mv->project->model.node_list.end(); i++)
+	for(std::map<size_t, fem::Node>::iterator i = viewport->project->model.node_list.begin(); i != viewport->project->model.node_list.end(); i++)
 	{
 		component =  new SGC::Node(i->first, i->second, &this->m_no_displacements);
 		if(component)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
 	}
 
-	for( std::map<fem::node_restriction_ref_t, fem::NodeRestrictions>::iterator i = mv->project->model.node_restrictions_list.begin(); i != mv->project->model.node_restrictions_list.end(); i++)
+	for( std::map<fem::node_restriction_ref_t, fem::NodeRestrictions>::iterator i = viewport->project->model.node_restrictions_list.begin(); i != viewport->project->model.node_restrictions_list.end(); i++)
 	{
 		//TODO rewrite the SGC::NodeRestrictions class
-		component =  new SGC::NodeRestrictions(mv->project->model.node_list[i->first], i->second);
+		component = new SGC::NodeRestrictions(i->first, i->first, i->second, &this->m_no_displacements);
 		if(component) 
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, component);
 	}
 
 	// add the elements to the scene graph
-	for( std::vector<fem::Element>::iterator i = mv->project->model.element_list.begin(); i != mv->project->model.element_list.end(); i++)
+	for( std::vector<fem::Element>::iterator i = viewport->project->model.element_list.begin(); i != viewport->project->model.element_list.end(); i++)
 	{
 		component = this->m_factory(*i);
 		if(component) 
@@ -101,9 +101,9 @@ VPStateModel::setSelection(Selection)
 
 
 void
-VPStateModel::paintGL(BaseViewport *mv)
+VPStateModel::paintGL(BaseViewport *viewport)
 {
-	assert(mv != NULL);
+	assert(viewport != NULL);
 
 	mylog.setPrefix("VPStateModel::paintGL()");
 
@@ -111,17 +111,17 @@ VPStateModel::paintGL(BaseViewport *mv)
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	mv->viewport_data.camera.reposition();
+	viewport->viewport_data.camera.reposition();
 
 	//TODO finish implementing this
-	this->scenegraph.paint(mv->viewport_data, mv->colors);
+	this->scenegraph.paint(viewport->viewport_data, viewport->colors);
 }
 
 
 void
-VPStateModel::mousePressEvent(BaseViewport *mv, QMouseEvent *event)
+VPStateModel::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
 {
-	mv->viewport_data.lastPos = event->pos();
+	viewport->viewport_data.lastPos = event->pos();
 	// process left clicks
 	if(event->buttons() & Qt::LeftButton)
 	{

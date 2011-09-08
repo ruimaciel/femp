@@ -7,11 +7,14 @@
 namespace SGC
 {
 
-NodeRestrictions::NodeRestrictions(fem::Node &node, fem::NodeRestrictions &node_restrictions)
+NodeRestrictions::NodeRestrictions(const fem::node_ref_t &node_reference, const fem::node_restriction_ref_t &node_restrictions_reference, fem::NodeRestrictions &node_restrictions, DisplacementsRepresentationPolicy *displacements)
 	: SceneGraphComponent()
+
 {
-	m_node= &node;
+	m_node_reference = node_reference;
+	m_node_restrictions_reference = node_restrictions_reference;
 	m_node_restrictions = &node_restrictions;
+	m_displacements = displacements;
 }
 
 
@@ -20,10 +23,12 @@ NodeRestrictions::~NodeRestrictions()
 }
 
 
-void NodeRestrictions::paintGL(ViewportData &data, fem::Project &, fem::AnalysisResult<double> * , float &,  ViewportColors &colors)
+//void NodeRestrictions::paintGL(ViewportData &data, fem::Project &, fem::AnalysisResult<double> * , float &,  ViewportColors &colors)
+void NodeRestrictions::paintGL(ViewportData &data, ViewportColors &colors)
 {
+	fem::point u = (*m_displacements)[this->m_node_reference];
 	glPushMatrix();
-	glTranslated(m_node->data[0],m_node->data[1],m_node->data[2]);
+	glTranslated(u.data[0],u.data[1],u.data[2]);
 
 	glScalef(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
 

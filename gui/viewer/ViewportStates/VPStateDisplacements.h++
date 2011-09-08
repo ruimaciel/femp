@@ -32,8 +32,8 @@ public:
 	VPStateDisplacements();
 	~VPStateDisplacements();
 
-	void initialize(BaseViewport *mv);
-	void populateScenegraph(BaseViewport *mv);
+	void initialize(BaseViewport *viewport);
+	void populateScenegraph(BaseViewport *viewport);
 
 	/**
 	  Configures the viewport to render the scene according to new_result
@@ -47,10 +47,10 @@ public:
 	**/
 	void setSelection(Selection);
 
-	void paintGL(BaseViewport *mv);
-	void mousePressEvent(BaseViewport *mv, QMouseEvent *event);
+	void paintGL(BaseViewport *viewport);
+	void mousePressEvent(BaseViewport *viewport, QMouseEvent *event);
 	// void mouseMoveEvent(QMouseEvent *event);
-	void keyPressEvent ( BaseViewport *mv, QKeyEvent * event );
+	void keyPressEvent ( BaseViewport *viewport, QKeyEvent * event );
 
 };
 

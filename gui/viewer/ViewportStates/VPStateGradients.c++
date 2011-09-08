@@ -76,12 +76,12 @@ VPStateGradients::populateScenegraph(BaseViewport *viewport)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
 	}
 
-	/**
-	for( std::map<size_t, fem::NodeRestrictions>::iterator i = viewport->project->model.node_restrictions_list.begin(); i != viewport->project->model.node_restrictions_list.end(); i++)
+	for( std::map<fem::node_restriction_ref_t, fem::NodeRestrictions>::iterator i = viewport->project->model.node_restrictions_list.begin(); i != viewport->project->model.node_restrictions_list.end(); i++)
 	{
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, new SGC::NodeRestrictions(viewport->project->model.node_list[i->first], i->second) );
+		component = new SGC::NodeRestrictions(i->first, i->first, i->second, &this->m_displacements);
+		if(component) 
+			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, component);
 	}
-	**/
 
 	// add the elements to the scenegraph
 	for( std::vector<fem::Element>::iterator i = viewport->project->model.element_list.begin(); i != viewport->project->model.element_list.end(); i++)

@@ -7,7 +7,6 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, ViewportColor
 	: MdiWindow(parent), 
 	WindowWithResults(project, colors, parent), 
 	WindowWithPostprocessing(project, colors, parent) ,
-	WindowWithGhostSurfaces(project, colors, parent),
 	WindowWithScaling(project, colors, parent)
 {
 	this->viewport = new PostprocessingViewport(project,  parent);
@@ -19,7 +18,6 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, ViewportColor
 
 	WindowWithScaling::createToolbar(project);
 	WindowWithResults::createToolbar(project);
-	WindowWithGhostSurfaces::createToolbar();
 	WindowWithPostprocessing::createToolbar(project);
 
 	connectSignalsToSlots();
@@ -33,20 +31,18 @@ void PostprocessingWindow::setDisplacementsScale(double scale)
 }
 
 
-void PostprocessingWindow::setNodeRestrictionsVisibility(const bool state)
+void PostprocessingWindow::setNodeRestrictionsVisibility(const bool )
 {
-	WindowWithGhostSurfaces::setNodeRestrictionsVisibility(state);
+	//TODO run a scenegraph operation
 }
 
 
-void PostprocessingWindow::setGhostSurfacesVisibility(const bool state)
+void PostprocessingWindow::setGhostSurfacesVisibility(const bool )
 {
-	WindowWithGhostSurfaces::setGhostSurfacesVisibility(state);
 }
 
 void PostprocessingWindow::connectSignalsToSlots()
 {
-	WindowWithGhostSurfaces::connectSignalsToSlots();
 	WindowWithScaling::connectSignalsToSlots();
 	WindowWithPostprocessing::connectSignalsToSlots();
 

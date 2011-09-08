@@ -124,6 +124,9 @@ private:
 	void loadOptions();	// loads global options from the options files
 	void setUserInterfaceAsOpened();	// sets the user interface in it's "opened document" state
 	void setUserInterfaceAsClosed();	// sets the user interface in it's "closed document" state
+
+	// set all signal and slots connections
+	void setSignalsAndSlotsConnections(ModelWindow *window);
 };
 
 

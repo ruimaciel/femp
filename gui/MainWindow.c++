@@ -1213,6 +1213,9 @@ MainWindow::createNewModelWindow()
 	mdi_window->setWindowTitle(tr("Model"));
 	mdi_window->showMaximized();
 	window->connectToSelectionManager(this->m_selection_manager);
+
+	// connect signals and slots
+	setSignalsAndSlotsConnections(window);
 }
 
 
@@ -1303,4 +1306,12 @@ MainWindow::setUserInterfaceAsClosed()
 	// set the window name
 	this->setWindowTitle("Femp");
 }
+
+
+void 
+MainWindow::setSignalsAndSlotsConnections(ModelWindow *window)
+{
+	assert(window != NULL);
+}
+
 

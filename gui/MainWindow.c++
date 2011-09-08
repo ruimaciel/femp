@@ -1183,18 +1183,7 @@ MainWindow::setCascadeWindows()
 void 
 MainWindow::createNewViewportWindow()
 {
-	ModelWindow *window;	// opengl viewport
-	window = new ModelWindow(document.project, colors, this);
-
-	// create the model's MDI window
-	QMdiSubWindow	* window_gl_viewport;	// the model's opengl viewport
-
-	window_gl_viewport = new QMdiSubWindow(mdiArea);
-	window_gl_viewport->setWidget(window);
-	window_gl_viewport->setAttribute(Qt::WA_DeleteOnClose);
-	window_gl_viewport->setWindowTitle(tr("Model viewport"));
-	window_gl_viewport->showMaximized();
-	window->connectToSelectionManager(this->m_selection_manager);
+	this->createNewModelWindow();
 }
 
 

@@ -14,6 +14,8 @@
 #include "ProgramOptions.h++"
 #include "viewer/ViewportColors.h++"
 
+#include "ui/ModelWindow.h++"
+
 #include "viewer/ModelViewport.h++"
 
 #include "Document.h++"

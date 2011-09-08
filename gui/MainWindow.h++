@@ -95,16 +95,16 @@ public Q_SLOTS:
 	**/
 	void dumpFemEquation();
 
-	// set current ModelViewport
-	void showModel();
-	void showPostprocessing();
-
 	/**
 	Logging slots
 	**/
 	void getMessage(QString);
 	void getWarning(QString);
 	void getError(QString);
+
+	// sets the current MDI window's viewport
+	void setModelViewport();
+	void setPostprocessingViewport();
 
 	// set MDI subwindow configuration
 	void setTiledWindows();

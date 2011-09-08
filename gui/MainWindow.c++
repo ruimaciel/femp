@@ -406,8 +406,8 @@ MainWindow::createActions()
 
 	connect(ui.actionShowNodalForces,	SIGNAL(triggered()),	this,	SLOT(setNodeForcesDisplay()));
 
-	connect(ui.actionViewModel,	SIGNAL(triggered()),	this,	SLOT(showModel()));
-	connect(ui.actionViewPostprocessing,	SIGNAL(triggered()),	this,	SLOT(showPostprocessing()));
+	connect(ui.actionSetModelViewport,		SIGNAL(triggered()),	this,	SLOT(setModelViewport()));
+	connect(ui.actionSetPostprocessingViewport,	SIGNAL(triggered()),	this,	SLOT(setPostprocessingViewport()));
 
 	connect(ui.actionQuadrature_rules,	SIGNAL(triggered()),	this,	SLOT(editQuadratureRules()) );
 	connect(ui.actionSelection,		SIGNAL(triggered()),	this,	SLOT(editSelection()) );
@@ -996,7 +996,7 @@ MainWindow::runAnalysis()
 	document.project.pushAnalysisResult(analysis_result);
 
 	//TODO set the UI
-	this->showPostprocessing();
+	this->setPostprocessingViewport();
 
         ui.actionDump_FEM_equation->setEnabled(true);
 
@@ -1132,16 +1132,34 @@ MainWindow::dumpFemEquation()
 
 
 void 
-MainWindow::showModel()
+MainWindow::setModelViewport()
 {
-	this->createNewModelWindow();
+	// this->createNewModelWindow();
+	QMdiSubWindow *mdi_window;
+	mdi_window = mdiArea->currentSubWindow();
+	if(mdi_window != NULL)
+	{
+		// there is an active subwindow
+		ModelWindow *window;	// opengl viewport
+		window = new ModelWindow(document.project, colors, this);
+		mdi_window->setWidget(window);
+	}
 }
 
 
 void 
-MainWindow::showPostprocessing()
+MainWindow::setPostprocessingViewport()
 {
-	this->createNewPostprocessingWindow();
+	// this->createNewPostprocessingWindow();
+	QMdiSubWindow *mdi_window;
+	mdi_window = mdiArea->currentSubWindow();
+	if(mdi_window != NULL)
+	{
+		// there is an active subwindow
+		PostprocessingWindow *window;	// opengl viewport
+		window = new PostprocessingWindow(document.project, colors, this);
+		mdi_window->setWidget(window);
+	}
 }
 
 

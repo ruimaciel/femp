@@ -52,9 +52,19 @@
     <property name="title">
      <string>Window</string>
     </property>
+    <widget class="QMenu" name="menuSet">
+     <property name="title">
+      <string>Set</string>
+     </property>
+     <addaction name="actionSetModelViewport"/>
+     <addaction name="actionSetPostprocessingViewport"/>
+    </widget>
+    <addaction name="actionNewViewportWindow"/>
+    <addaction name="separator"/>
+    <addaction name="menuSet"/>
+    <addaction name="separator"/>
     <addaction name="actionWindowTile"/>
     <addaction name="actionWindowCascade"/>
-    <addaction name="actionNewViewportWindow"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -68,8 +78,6 @@
     <property name="title">
      <string>View</string>
     </property>
-    <addaction name="actionViewModel"/>
-    <addaction name="actionViewPostprocessing"/>
     <addaction name="actionViewSelection"/>
    </widget>
    <widget class="QMenu" name="menuProject">
@@ -342,6 +350,16 @@
   <action name="actionViewSelection">
    <property name="text">
     <string>Selection</string>
+   </property>
+  </action>
+  <action name="actionSetModelViewport">
+   <property name="text">
+    <string>Model</string>
+   </property>
+  </action>
+  <action name="actionSetPostprocessingViewport">
+   <property name="text">
+    <string>Postprocessing</string>
    </property>
   </action>
  </widget>

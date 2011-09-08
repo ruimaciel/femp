@@ -28,6 +28,7 @@ protected:
 	
 public:
 	ViewportState();
+	~ViewportState();
 
 	/*
 	Initializes everything needed in a ViewportState once the focus is placed on it
@@ -62,6 +63,11 @@ public:
 	virtual void mouseMoveEvent(Viewport *viewport, QMouseEvent *event);
 	virtual void keyPressEvent ( Viewport *viewport, QKeyEvent * event );
 
+	/** 
+	visitor pattern for the scenegraph
+	**/
+	void runSceneGraphOperation(OperationsVisitor &);
+
 	// libsigc++ slots
 	virtual void setSelection(Selection);	// sets the selection
 	virtual void clearSelection();		// clears the selection list representation
@@ -73,6 +79,13 @@ ViewportState<Viewport>::ViewportState()
 {
 }
 
+
+template <class Viewport>
+ViewportState<Viewport>::~ViewportState()
+{
+	this->scenegraph.clear();
+
+}
 
 template <class Viewport>
 void
@@ -125,6 +138,14 @@ ViewportState<Viewport>::keyPressEvent ( Viewport *, QKeyEvent * event )
 {
 	qWarning("not keypressed");
 	event->ignore();
+}
+
+
+template <class Viewport>
+void 
+ViewportState<Viewport>::runSceneGraphOperation(OperationsVisitor &visitor)
+{
+	scenegraph.runOperation(visitor);
 }
 
 

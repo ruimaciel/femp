@@ -28,6 +28,14 @@ void SceneGraph::clear()
 	//TODO finish this
 
 	// frees the primitives included in the list
+	for(std::list<SceneGraphComponent *>::iterator j = primitive_components.begin(); j != primitive_components.end(); j++)
+	{
+		delete(*j);
+	}
+	primitive_components.clear();
+
+	this->rendering_groups.clear();
+	/*
 	for(map<int, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
 	{
 		for(std::list<SceneGraphComponent *>::iterator j = i->second.primitive_components.begin(); j != i->second.primitive_components.end(); j++)
@@ -35,6 +43,7 @@ void SceneGraph::clear()
 			delete(*j);
 		}
 	}
+	*/
 }
 
 
@@ -55,8 +64,9 @@ void SceneGraph::paint(ViewportData &viewport_data, ViewportColors &colors)
 void SceneGraph::addPrimitiveComponent(int group, SceneGraphComponent *new_component)
 {
 	assert(new_component != NULL);
-	//this->primitive_components.push_back(new_component);
-	rendering_groups[group].primitive_components.push_back(new_component);
+
+	this->primitive_components.push_back(new_component);
+	this->rendering_groups[group].primitive_components.push_back(new_component);
 }
 
 
@@ -65,6 +75,15 @@ void SceneGraph::generateSceneGraph()
 	for(std::map<int, RenderGroup>::iterator i = this->rendering_groups.begin(); i!= this->rendering_groups.end(); i++)
 	{
 		i->second.generateSceneGraph();
+	}
+}
+
+
+void SceneGraph::runOperation(OperationsVisitor &visitor)
+{
+	for(std::list<SceneGraphComponent *>::iterator i = this->primitive_components.begin(); i != this->primitive_components.end(); i++)
+	{
+		(*i)->accept(visitor);
 	}
 }
 

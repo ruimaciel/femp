@@ -64,6 +64,8 @@ VPStateGradients::populateScenegraph(BaseViewport *viewport)
 
 	assert(viewport != NULL);
 
+	scenegraph.clear();
+
 	SceneGraphComponent * component;
 
 	// add the nodes to the scenegraph

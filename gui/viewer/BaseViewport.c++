@@ -1,5 +1,7 @@
 #include "BaseViewport.h++"
 
+#include "SceneGraphComponents/Operations/ToggleRenderOperation.h++"
+
 
 BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
 	: QGLWidget(parent)
@@ -163,6 +165,14 @@ void BaseViewport::setState(ViewportState<BaseViewport> *new_state)
 void BaseViewport::refresh(void)
 {
 	this->updateGL();
+}
+
+
+void BaseViewport::setViewSelection(Selection selection)
+{
+	//TODO finish this
+	ToggleRenderOperation operation(selection, true);
+	this->state->runSceneGraphOperation(operation);
 }
 
 

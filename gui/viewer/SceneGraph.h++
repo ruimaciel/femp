@@ -74,6 +74,12 @@ public:
 	Generate a new scenegraph tree from the current list of primitive components
 	*/
 	void generateSceneGraph();
+
+	/** 
+	visitor pattern for the scenegraph
+	@param	visitor	class which will act on each object 
+	**/
+	void runOperation(OperationsVisitor &);
 };
 
 #endif

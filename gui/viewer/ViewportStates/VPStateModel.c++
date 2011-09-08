@@ -57,6 +57,8 @@ VPStateModel::populateScenegraph(BaseViewport *mv)
 
 	assert(mv != NULL);
 
+	scenegraph.clear();
+
 	SceneGraphComponent * component;
 
 	// add the nodes to the scenegraph

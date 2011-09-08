@@ -70,6 +70,7 @@
     </property>
     <addaction name="actionViewModel"/>
     <addaction name="actionViewPostprocessing"/>
+    <addaction name="actionViewSelection"/>
    </widget>
    <widget class="QMenu" name="menuProject">
     <property name="enabled">
@@ -334,6 +335,11 @@
    </property>
   </action>
   <action name="actionSelection">
+   <property name="text">
+    <string>Selection</string>
+   </property>
+  </action>
+  <action name="actionViewSelection">
    <property name="text">
     <string>Selection</string>
    </property>

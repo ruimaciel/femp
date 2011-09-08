@@ -38,6 +38,7 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/*.h++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/*.h++ \
 	viewer/SceneGraphComponents/Elements/*.h++ \
+	viewer/SceneGraphComponents/Operations/*.h++ \
 	viewer/boundaries/BoundaryStrategy.h++ viewer/boundaries/SphericalBoundary.h++ \
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h parsers/FemJsonParser.h++\
@@ -72,6 +73,7 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/*.c++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/*.c++ \
 	viewer/SceneGraphComponents/Elements/*.c++ \
+	viewer/SceneGraphComponents/Operations/*.c++ \
 	viewer/boundaries/BoundaryStrategy.c++  viewer/boundaries/SphericalBoundary.c++  \
 	fem_msh.c++ lex.msh_yy.c++ \
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c parsers/FemJsonParser.c++\

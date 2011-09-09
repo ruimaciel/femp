@@ -72,6 +72,7 @@ Strain11GradientFieldPolicy::calculateGradientValues (fem::Element &reference_el
 
 	fem::point dxdcsi, dxdeta, dxdzeta;
 	
+	// cycle to calculate a gradient value for each node
 	for(unsigned int coord = 0; coord < element->coordinates.size(); coord++)
 	{
 		fem::point local = element->coordinates[coord];	// point in element in \xi, the local coordinates
@@ -104,13 +105,16 @@ Strain11GradientFieldPolicy::calculateGradientValues (fem::Element &reference_el
 		m_gradient_value[coord] = 0;
 
 		// set \epsilon_11
+		float dNdx = 0;
 		for(unsigned int node = 0; node < element->coordinates.size(); node++)
 		{
 			fem::point d; // displacements
 			d = this->m_analysis_result->displacements[ reference_element.nodes[node] ];	// displacements calculated in this node
 
 			// calculate \epsilon_{11} = dNdx_1*d1
-			m_gradient_value[coord] += (invDg(0,0)*element->dNdcsi[node] + invDg(1,0)*element->dNdeta[node] + invDg(2,0)*element->dNdzeta[node])*d.x();
+			dNdx  = invDg(0,0)*element->dNdcsi[node] + invDg(0,1)*element->dNdeta[node] + invDg(0,2)*element->dNdzeta[node];
+			// m_gradient_value[coord] += (invDg(0,0)*element->dNdcsi[node] + invDg(1,0)*element->dNdeta[node] + invDg(2,0)*element->dNdzeta[node])*d.x();
+			m_gradient_value[coord] += dNdx*d.x(); // du_1/dx_1 = sum( dN_i/dx * d_i)
 		}
 
 		// adjust max and min values

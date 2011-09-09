@@ -104,13 +104,15 @@ Strain33GradientFieldPolicy::calculateGradientValues (fem::Element &reference_el
 		m_gradient_value[coord] = 0;
 
 		// set \epsilon_22
+		float dNdz = 0;
 		for(unsigned int node = 0; node < element->coordinates.size(); node++)
 		{
 			fem::point d; // displacements
 			d = this->m_analysis_result->displacements[ reference_element.nodes[node] ];	// displacements calculated in this node
 
 			// calculate \epsilon_{zz} = dNdz*d_z
-			m_gradient_value[coord] += (invDg(0,2)*element->dNdcsi[node] + invDg(1,2)*element->dNdeta[node] + invDg(2,2)*element->dNdzeta[node])*d.z();
+			dNdz =  invDg(2,0)*element->dNdcsi[node] + invDg(2,1)*element->dNdeta[node] + invDg(2,2)*element->dNdzeta[node];
+			m_gradient_value[coord] += dNdz*d.z();
 		}
 
 		// adjust max and min values

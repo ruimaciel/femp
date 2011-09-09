@@ -126,12 +126,14 @@ Strain33GradientFieldPolicy::calculateGradientValues (fem::Element &reference_el
 			m_min_value = m_gradient_value[coord];
 	}
 
+	/*
 	std::cout << "Strain 33: [\t";
 	for( std::vector<float>::iterator i = m_gradient_value.begin();	i != m_gradient_value.end(); i++)// gradient value on each node
 	{
 		std::cout << *i << "\t";
 	}
 	std::cout << "]" << std::endl;
+	*/
 }
 
 

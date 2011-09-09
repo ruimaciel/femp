@@ -35,6 +35,27 @@ GradientFieldFlyweightFactory::strains33()
 }
 
 
+GradientFieldPolicy * 
+GradientFieldFlyweightFactory::strains12()
+{ 
+	return &m_strain12_policy; 
+}
+
+
+GradientFieldPolicy * 
+GradientFieldFlyweightFactory::strains23()
+{ 
+	return &m_strain23_policy; 
+}
+
+
+GradientFieldPolicy * 
+GradientFieldFlyweightFactory::strains13()
+{ 
+	return &m_strain13_policy; 
+}
+
+
 void 
 GradientFieldFlyweightFactory::setMaximumGradientValue (float new_maximum)
 {
@@ -43,6 +64,9 @@ GradientFieldFlyweightFactory::setMaximumGradientValue (float new_maximum)
 	m_strain11_policy.setMaximumGradientValue(new_maximum);
 	m_strain22_policy.setMaximumGradientValue(new_maximum);
 	m_strain33_policy.setMaximumGradientValue(new_maximum);
+	m_strain12_policy.setMaximumGradientValue(new_maximum);
+	m_strain23_policy.setMaximumGradientValue(new_maximum);
+	m_strain13_policy.setMaximumGradientValue(new_maximum);
 }
 
 
@@ -54,6 +78,9 @@ GradientFieldFlyweightFactory::setMinimumGradientValue (float new_minimum)
 	m_strain11_policy.setMinimumGradientValue(new_minimum);
 	m_strain22_policy.setMinimumGradientValue(new_minimum);
 	m_strain33_policy.setMinimumGradientValue(new_minimum);
+	m_strain12_policy.setMinimumGradientValue(new_minimum);
+	m_strain23_policy.setMinimumGradientValue(new_minimum);
+	m_strain13_policy.setMinimumGradientValue(new_minimum);
 }
 
 
@@ -66,6 +93,9 @@ GradientFieldFlyweightFactory::setModel(fem::Model &model)
 	m_strain11_policy.setModel(model);
 	m_strain22_policy.setModel(model);
 	m_strain33_policy.setModel(model);
+	m_strain12_policy.setModel(model);
+	m_strain23_policy.setModel(model);
+	m_strain13_policy.setModel(model);
 }
 
 
@@ -78,5 +108,9 @@ GradientFieldFlyweightFactory::setAnalysisResult(fem::AnalysisResult<double> &re
 	m_strain11_policy.setAnalysisResult(result);
 	m_strain22_policy.setAnalysisResult(result);
 	m_strain33_policy.setAnalysisResult(result);
+	m_strain12_policy.setAnalysisResult(result);
+	m_strain23_policy.setAnalysisResult(result);
+	m_strain13_policy.setAnalysisResult(result);
 }
+
 

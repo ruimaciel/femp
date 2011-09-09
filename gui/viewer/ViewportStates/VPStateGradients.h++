@@ -57,6 +57,9 @@ public:
 	void renderStrains11();
 	void renderStrains22();
 	void renderStrains33();
+	void renderStrains12();
+	void renderStrains23();
+	void renderStrains13();
 
 };
 

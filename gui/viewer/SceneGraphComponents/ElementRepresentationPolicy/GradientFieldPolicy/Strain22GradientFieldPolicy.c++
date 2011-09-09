@@ -4,6 +4,8 @@
 
 #include "../../../../fem/point.h++"
 
+#include <iostream>	// debugging purposes. remove
+
 
 Strain22GradientFieldPolicy::Strain22GradientFieldPolicy()
 {
@@ -95,9 +97,9 @@ Strain22GradientFieldPolicy::calculateGradientValues (fem::Element &reference_el
 			dxdzeta += element->dNdzeta[node]*global;
 		}
 
-		Dg(0,0) = dxdcsi.x();	Dg(1,0) = dxdcsi.y();	Dg(2,0) = dxdcsi.z();
-		Dg(0,1) = dxdeta.x();	Dg(1,1) = dxdeta.y();	Dg(2,1) = dxdeta.z();
-		Dg(0,2) = dxdzeta.x();	Dg(1,2) = dxdzeta.y();	Dg(2,2) = dxdzeta.z();
+		Dg(0,0) = dxdcsi.x();	Dg(0,1) = dxdcsi.y();	Dg(0,2) = dxdcsi.z();
+		Dg(1,0) = dxdeta.x();	Dg(1,1) = dxdeta.y();	Dg(1,2) = dxdeta.z();
+		Dg(2,0) = dxdzeta.x();	Dg(2,1) = dxdzeta.y();	Dg(2,2) = dxdzeta.z();
 
 		Dg.computeInverse(&invDg);
 
@@ -121,6 +123,13 @@ Strain22GradientFieldPolicy::calculateGradientValues (fem::Element &reference_el
 		if(m_gradient_value[coord] < m_min_value)
 			m_min_value = m_gradient_value[coord];
 	}
+
+	std::cout << "Strain 22: [\t";
+	for( std::vector<float>::iterator i = m_gradient_value.begin();	i != m_gradient_value.end(); i++)// gradient value on each node
+	{
+		std::cout << *i << "\t";
+	}
+	std::cout << "]" << std::endl;
 }
 
 

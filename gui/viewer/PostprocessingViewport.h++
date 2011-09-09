@@ -75,6 +75,9 @@ public Q_SLOTS:
 	void showStrain11();
 	void showStrain22();
 	void showStrain33();
+	void showStrain12();
+	void showStrain23();
+	void showStrain13();
 
 Q_SIGNALS:
 	void xRotationChanged(int angle);

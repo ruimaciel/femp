@@ -204,3 +204,27 @@ PostprocessingViewport::showStrain33()
 }
 
 
+void 
+PostprocessingViewport::showStrain12()
+{
+	this->m_vp_state_gradients.renderStrains12();
+	this->setState(&this->m_vp_state_gradients);
+}
+
+
+void 
+PostprocessingViewport::showStrain23()
+{
+	this->m_vp_state_gradients.renderStrains23();
+	this->setState(&this->m_vp_state_gradients);
+}
+
+
+void 
+PostprocessingViewport::showStrain13()
+{
+	this->m_vp_state_gradients.renderStrains13();
+	this->setState(&this->m_vp_state_gradients);
+}
+
+

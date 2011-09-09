@@ -211,10 +211,40 @@ VPStateGradients::renderStrains22()
 void
 VPStateGradients::renderStrains33()
 {
-	qWarning("void VPStateGradients::renderStrains22()");
+	qWarning("void VPStateGradients::renderStrains33()");
 	//TODO test only. change this
 	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStrains33();
+}
+
+
+void
+VPStateGradients::renderStrains12()
+{
+	qWarning("void VPStateGradients::renderStrains12()");
+	//TODO test only. change this
+	//this->m_gradient_representation.renderConstant(-0.5);
+	this->m_gradient_representation.renderStrains12();
+}
+
+
+void
+VPStateGradients::renderStrains23()
+{
+	qWarning("void VPStateGradients::renderStrains23()");
+	//TODO test only. change this
+	//this->m_gradient_representation.renderConstant(-0.5);
+	this->m_gradient_representation.renderStrains23();
+}
+
+
+void
+VPStateGradients::renderStrains13()
+{
+	qWarning("void VPStateGradients::renderStrains13()");
+	//TODO test only. change this
+	//this->m_gradient_representation.renderConstant(-0.5);
+	this->m_gradient_representation.renderStrains13();
 }
 
 

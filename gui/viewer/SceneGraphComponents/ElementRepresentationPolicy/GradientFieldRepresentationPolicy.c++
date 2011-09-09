@@ -739,6 +739,27 @@ GradientFieldRepresentationPolicy::renderStrains33()
 
 
 void 
+GradientFieldRepresentationPolicy::renderStrains12()
+{
+	m_gradient = m_gradient_flyweight_factory.strains12();
+}
+
+
+void 
+GradientFieldRepresentationPolicy::renderStrains23()
+{
+	m_gradient = m_gradient_flyweight_factory.strains23();
+}
+
+
+void 
+GradientFieldRepresentationPolicy::renderStrains13()
+{
+	m_gradient = m_gradient_flyweight_factory.strains13();
+}
+
+
+void 
 GradientFieldRepresentationPolicy::setMaximumGradientValue (float new_maximum)
 {
 	this->m_gradient_flyweight_factory.setMaximumGradientValue(new_maximum);

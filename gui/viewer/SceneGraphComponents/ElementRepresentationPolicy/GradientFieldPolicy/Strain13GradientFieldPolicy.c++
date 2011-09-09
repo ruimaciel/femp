@@ -1,17 +1,17 @@
-#include "Strain12GradientFieldPolicy.h++"
+#include "Strain13GradientFieldPolicy.h++"
 
 #include "../../SceneGraphException.h++"
 
 #include "../../../../fem/point.h++"
 
 
-Strain12GradientFieldPolicy::Strain12GradientFieldPolicy()
+Strain13GradientFieldPolicy::Strain13GradientFieldPolicy()
 {
 }
 
 
 void 
-Strain12GradientFieldPolicy::calculateGradientValues (fem::Element &reference_element)
+Strain13GradientFieldPolicy::calculateGradientValues (fem::Element &reference_element)
 {
 	assert(this->m_model != NULL);
 	assert(this->m_analysis_result != NULL);
@@ -104,19 +104,21 @@ Strain12GradientFieldPolicy::calculateGradientValues (fem::Element &reference_el
 
 		m_gradient_value[coord] = 0;
 
-		// set \epsilon_12
+		// set \epsilon_13
 		float dNdx = 0;
-		float dNdy = 0;
+		//float dNdy = 0;
+		float dNdz = 0;
 		for(unsigned int node = 0; node < element->coordinates.size(); node++)
 		{
 			fem::point d; // displacements
 			d = this->m_analysis_result->displacements[ reference_element.nodes[node] ];	// displacements calculated in this node
 
-			// calculate \epsilon_{12} = dNdx_1*d1
+			// calculate \epsilon_{13} = dNdx_1*d1
 			dNdx  = invDg(0,0)*element->dNdcsi[node] + invDg(0,1)*element->dNdeta[node] + invDg(0,2)*element->dNdzeta[node];
-			dNdy  = invDg(1,0)*element->dNdcsi[node] + invDg(1,1)*element->dNdeta[node] + invDg(1,2)*element->dNdzeta[node];
+			//dNdy  = invDg(1,0)*element->dNdcsi[node] + invDg(1,1)*element->dNdeta[node] + invDg(1,2)*element->dNdzeta[node];
+			dNdz  = invDg(2,0)*element->dNdcsi[node] + invDg(2,1)*element->dNdeta[node] + invDg(2,2)*element->dNdzeta[node];
 			// m_gradient_value[coord] += (invDg(0,0)*element->dNdcsi[node] + invDg(1,0)*element->dNdeta[node] + invDg(2,0)*element->dNdzeta[node])*d.x();
-			m_gradient_value[coord] += dNdx*d.y() + dNdy*d.x(); // e_12 = du_1/dx_2 + du_2/dx_1 
+			m_gradient_value[coord] += dNdx*d.z() + dNdz*d.x(); // e_13 = du_1/dx_3 + du_3/dx_1 
 		}
 
 		// adjust max and min values
@@ -125,7 +127,8 @@ Strain12GradientFieldPolicy::calculateGradientValues (fem::Element &reference_el
 		if(m_gradient_value[coord] < m_min_value)
 			m_min_value = m_gradient_value[coord];
 	}
-	std::cout << "Strain 12: [\t";
+
+	std::cout << "Strain 13: [\t";
 	for( std::vector<float>::iterator i = m_gradient_value.begin();	i != m_gradient_value.end(); i++)// gradient value on each node
 	{
 		std::cout << *i << "\t";

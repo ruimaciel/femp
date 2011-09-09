@@ -3,6 +3,7 @@
 #include "../../SceneGraphException.h++"
 
 #include "../../../../fem/point.h++"
+#include <iostream>
 
 
 Strain33GradientFieldPolicy::Strain33GradientFieldPolicy()
@@ -13,6 +14,7 @@ Strain33GradientFieldPolicy::Strain33GradientFieldPolicy()
 void 
 Strain33GradientFieldPolicy::calculateGradientValues (fem::Element &reference_element)
 {
+	using namespace std;
 	assert(this->m_model != NULL);
 	assert(this->m_analysis_result != NULL);
 
@@ -92,19 +94,21 @@ Strain33GradientFieldPolicy::calculateGradientValues (fem::Element &reference_el
 
 			dxdcsi += element->dNdcsi[node]*global;
 			dxdeta += element->dNdeta[node]*global;
-			dxdzeta += element->dNdzeta[node]*global;
+			dxdzeta += element->dNdzeta[node]*global; // <-- erro
 		}
 
-		Dg(0,0) = dxdcsi.x();	Dg(1,0) = dxdcsi.y();	Dg(2,0) = dxdcsi.z();
-		Dg(0,1) = dxdeta.x();	Dg(1,1) = dxdeta.y();	Dg(2,1) = dxdeta.z();
-		Dg(0,2) = dxdzeta.x();	Dg(1,2) = dxdzeta.y();	Dg(2,2) = dxdzeta.z();
+		Dg(0,0) = dxdcsi.x();	Dg(0,1) = dxdcsi.y();	Dg(0,2) = dxdcsi.z();
+		Dg(1,0) = dxdeta.x();	Dg(1,1) = dxdeta.y();	Dg(1,2) = dxdeta.z();
+		Dg(2,0) = dxdzeta.x();	Dg(2,1) = dxdzeta.y();	Dg(2,2) = dxdzeta.z();
 
+		invDg.setZero();
 		Dg.computeInverse(&invDg);
 
 		m_gradient_value[coord] = 0;
 
-		// set \epsilon_22
+		// set \epsilon_33
 		float dNdz = 0;
+		
 		for(unsigned int node = 0; node < element->coordinates.size(); node++)
 		{
 			fem::point d; // displacements
@@ -121,6 +125,13 @@ Strain33GradientFieldPolicy::calculateGradientValues (fem::Element &reference_el
 		if(m_gradient_value[coord] < m_min_value)
 			m_min_value = m_gradient_value[coord];
 	}
+
+	std::cout << "Strain 33: [\t";
+	for( std::vector<float>::iterator i = m_gradient_value.begin();	i != m_gradient_value.end(); i++)// gradient value on each node
+	{
+		std::cout << *i << "\t";
+	}
+	std::cout << "]" << std::endl;
 }
 
 

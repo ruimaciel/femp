@@ -8,6 +8,9 @@
 #include "Strain11GradientFieldPolicy.h++"
 #include "Strain22GradientFieldPolicy.h++"
 #include "Strain33GradientFieldPolicy.h++"
+#include "Strain12GradientFieldPolicy.h++"
+#include "Strain23GradientFieldPolicy.h++"
+#include "Strain13GradientFieldPolicy.h++"
 
 
 /**
@@ -21,6 +24,9 @@ protected:
 	Strain11GradientFieldPolicy m_strain11_policy;
 	Strain22GradientFieldPolicy m_strain22_policy;
 	Strain33GradientFieldPolicy m_strain33_policy;
+	Strain12GradientFieldPolicy m_strain12_policy;
+	Strain23GradientFieldPolicy m_strain23_policy;
+	Strain13GradientFieldPolicy m_strain13_policy;
 
 public:
 	GradientFieldPolicy * neutral();
@@ -28,6 +34,9 @@ public:
 	GradientFieldPolicy * strains11();
 	GradientFieldPolicy * strains22();
 	GradientFieldPolicy * strains33();
+	GradientFieldPolicy * strains12();
+	GradientFieldPolicy * strains23();
+	GradientFieldPolicy * strains13();
 
 	void setMaximumGradientValue (float new_maximum);
 	void setMinimumGradientValue (float new_minimum);

@@ -106,7 +106,9 @@ point::director() const
 void 
 point::zero()
 {
-    this->data[0] = this->data[1] = this->data[2];
+    this->data[0] = 0;
+    this->data[1] = 0;
+    this->data[2] = 0;
 }
 
 

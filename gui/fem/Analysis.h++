@@ -42,6 +42,9 @@
 #include "elements/Prism15.h++"
 #include "elements/Prism18.h++"
 
+#include "ElementResults/ElementResults.h++"
+#include "ElementResults/ElementResultsFactory.h++"
+
 
 namespace fem
 {
@@ -119,7 +122,7 @@ class Analysis
 		/**
 		Calculates a set of recovered values in every node of each individual element
 		**/
-		enum Error recoverValues(Project &project, AnalysisResult<Scalar> &result);
+		enum Error recoverValues(Model &model, AnalysisResult<Scalar> &result);
 
 		/**
 		Calculates a set of recovered values in every node of each individual element
@@ -189,7 +192,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 	Matrix<Scalar,Dynamic,Dynamic> Bt;
 	Matrix<Scalar,6,6> D = project.model.material_list[0].generateD().cast<Scalar>();
 
-	int material_index = 0;
+	material_ref_t material_index = 0;
 
 	BaseElement<Scalar> *element = NULL;	// points to the current element class
 
@@ -663,154 +666,50 @@ void Analysis<Scalar>::generateDisplacementsMap(Project &project, AnalysisResult
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error Analysis<Scalar>::recoverValues(Project &project, AnalysisResult<Scalar> &result)
+enum Analysis<Scalar>::Error 
+Analysis<Scalar>::recoverValues(Model &model, AnalysisResult<Scalar> &result)
 {
-	BaseElement<Scalar> *element = NULL;	// points to the current element class
-	typename RecoveredValues<Scalar>::Values values;
-	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
-
-	Eigen::Matrix<Scalar,3,3> J, invJ;
-
-	result.recovered_values.resize(project.model.element_list.size());
-
-	// recover the set of values for each element
-	for(size_t element_number = 0; element_number < project.model.element_list.size(); element_number++)
+	ElementResultsFactory<Scalar> factory(model, result);
+	ElementResults<Scalar> *element_results;
+	//for(std::vector<Element>::iterator i = model.element_list.begin(); i != model.element_list.end(); i++)
+	for(element_ref_t n = 0; n < model.element_list.size(); n++)
 	{
-		switch(project.model.element_list[element_number].type)
-		{
-			case Element::FE_TETRAHEDRON4:
-				element = &tetra4;
-				break;
-
-			case Element::FE_TETRAHEDRON10:
-				element = &tetra10;
-				break;
-
-			case Element::FE_HEXAHEDRON8:
-				element = &hexa8;
-				break;
-
-			case Element::FE_HEXAHEDRON20:
-				element = &hexa20;
-				break;
-
-			case Element::FE_HEXAHEDRON27:
-				element = &hexa27;
-				break;
-
-			case Element::FE_PRISM6:
-				element = &prism6;
-				break;
-
-			case Element::FE_PRISM15:
-				element = &prism15;
-				break;
-
-			case Element::FE_PRISM18:
-				element = &prism18;
-				break;
-
-			default:
-				mylog.message("unsupported element");
-				return ERR_UNSUPPORTED_ELEMENT;
-				break;
-		}
-
-		// sets a vector with the element's local coordinates for it's nodes
-		element->setCoordinates( );
-
-
-		// recover the values for each of the element's node
-		for(size_t element_node_number = 0; element_node_number < project.model.element_list[element_number].nodes.size(); element_node_number++)
-		{
-			size_t node_reference;
-			Scalar dx, dy, dz;	// degrees of freedom of each node
-			Scalar dNdx, dNdy, dNdz;	// degrees of freedom of each node
-
-			J.setZero();
-			invJ.setZero();
-			values = {0, 0, 0, 0, 0, 0};
-
-			// sets the values for the derivatives from the local coordinates
-			element->setdNdcsi( element->coordinates[element_node_number] );
-			element->setdNdeta( element->coordinates[element_node_number] );
-			element->setdNdzeta( element->coordinates[element_node_number] );
-
-			// calculate inv(J)
-			Scalar X, Y, Z;	// global coordinates of each node
-
-			// This is the loop to sum over the entire dNd* arrays
-			for(size_t j = 0; j < project.model.element_list[element_number].nodes.size(); j++)
-			{
-				/* 
-				   calculate derivatives in global coordinates from expression in local coordinates
-				   dNdcsi = J*dNdx <=> dNdx = invJ*dNdcsi
-				 */
-				node_reference = project.model.element_list[element_number].nodes[j];
-				X = project.model.node_list[node_reference].x();
-				Y = project.model.node_list[node_reference].y();
-				Z = project.model.node_list[node_reference].z();
-
-				// J = dxdcsi = dNdcsi * x
-				J(0,0) += element->dNdcsi[ j]*X;	J(1,0) += element->dNdcsi[ j]*Y;	J(2,0) += element->dNdcsi[j]*Z;
-				J(0,1) += element->dNdeta[ j]*X;	J(1,1) += element->dNdeta[ j]*Y;	J(2,1) += element->dNdeta[j]*Z;
-				J(0,2) += element->dNdzeta[ j]*X;	J(1,2) += element->dNdzeta[ j]*Y;	J(2,2) += element->dNdzeta[j]*Z;
-			}
-
-			J.computeInverse(&invJ);
-
-			dNdx = dNdy = dNdz = 0;
-			// dNdx_i = invJ_{ij} * dNdcsi_j
-			for(size_t k = 0; k < project.model.element_list[element_number].nodes.size(); k++)
-			{
-
-				// assign to temp values, to enhance code readability
-				dNdx +=  invJ(0,0)*element->dNdcsi[k] + invJ(0,1)*element->dNdeta[k] + invJ(0,2)*element->dNdzeta[k];
-				dNdy +=  invJ(1,0)*element->dNdcsi[k] + invJ(1,1)*element->dNdeta[k] + invJ(1,2)*element->dNdzeta[k];
-				dNdz +=  invJ(2,0)*element->dNdcsi[k] + invJ(2,1)*element->dNdeta[k] + invJ(2,2)*element->dNdzeta[k];
-
-				//set dx, dy, dz;
-				dx = result.displacements[node_reference].x();
-				dy = result.displacements[node_reference].y();
-				dz = result.displacements[node_reference].z();
-
-				// assign the values
-				values.e11 += dNdx*dx;
-				values.e22 += dNdy*dy;
-				values.e33 += dNdz*dz;
-				values.e12 += dNdx*dy + dNdy*dx;
-				values.e13 += dNdx*dz + dNdz*dx;
-				values.e23 += dNdy*dz + dNdz*dy;
-			}
-
-
-			result.recovered_values[element_number].node[element_node_number] = values;
-
-			if(values.e11 > result.maximum.e11)	result.maximum.e11 = values.e11;
-			if(values.e22 > result.maximum.e22)	result.maximum.e22 = values.e22;
-			if(values.e33 > result.maximum.e33)	result.maximum.e33 = values.e33;
-			if(values.e12 > result.maximum.e12)	result.maximum.e12 = values.e12;
-			if(values.e13 > result.maximum.e13)	result.maximum.e13 = values.e13;
-			if(values.e23 > result.maximum.e23)	result.maximum.e23 = values.e23;
-
-			if(values.e11 < result.minimum.e11)	result.minimum.e11 = values.e11;
-			if(values.e22 < result.minimum.e22)	result.minimum.e22 = values.e22;
-			if(values.e33 < result.minimum.e33)	result.minimum.e33 = values.e33;
-			if(values.e12 < result.minimum.e12)	result.minimum.e12 = values.e12;
-			if(values.e13 < result.minimum.e13)	result.minimum.e13 = values.e13;
-			if(values.e23 < result.minimum.e23)	result.minimum.e23 = values.e23;
-		}
-
+		element_results = factory(model.element_list[n]);
+		// TODO test memory allocation
+		result.results[n] = element_results;
 
 		/*
-		   std::cout << "\tnode: " << i << "{";
-		   std::cout << "\te11: " << values.e11 << ", ";
-		   std::cout << "\te22: " << values.e22 << ", ";
-		   std::cout << "\te33: " << values.e33 << ", ";
-		   std::cout << "\te12: " << values.e12 << ", ";
-		   std::cout << "\te13: " << values.e13 << ", ";
-		   std::cout << "\te23: " << values.e23 << "}";
-		   std::cout << std::endl;
+		//TODO remove this
+		std::cout << "element " << n << "\n";
+		std::cout << "\t strain:\n";
+		for(typename std::vector<Strains<Scalar> >::const_iterator i = element_results->strains.begin(); i != element_results->strains.end(); i++)	// strains calculated in each of the element's nodes
+		{
+			std::cout << "\t\te_11: " << i->e11;
+			std::cout << "\te_22: " << i->e22;
+			std::cout << "\te_33: " << i->e33;
+			std::cout << "\te_12: " << i->e12;
+			std::cout << "\te_23: " << i->e23;
+			std::cout << "\te_13: " << i->e13;
+			std::cout << "\n";
+		}
+		std::cout << "\t stress:\n";
+		for(typename std::vector<Stresses<Scalar> >::const_iterator i = element_results->stresses.begin(); i != element_results->stresses.end(); i++)	// stresses calculated in each of the element's nodes
+		{
+			std::cout << "\t\ts_11: " << i->s11;
+			std::cout << "\ts_22: " << i->s22;
+			std::cout << "\ts_33: " << i->s33;
+			std::cout << "\ts_12: " << i->s12;
+			std::cout << "\ts_23: " << i->s23;
+			std::cout << "\ts_13: " << i->s13;
+			std::cout << "\n";
+		}
+		std::cout << "\t von mises:\n";
+		for(typename std::vector<Scalar>::const_iterator i = element_results->von_mises.begin(); i != element_results->von_mises.end(); i++)	// stresses calculated in each of the element's nodes
+		{
+			std::cout << "\t\tv: " << *i;
+			std::cout << "\n";
+		}
+		std::cout << std::endl;
 		// */
 	}
 

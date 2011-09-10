@@ -2,6 +2,7 @@
 #define ELEMENT_HPP
 
 #include <vector>
+#include "Material.h++"
 
 
 namespace fem
@@ -63,7 +64,7 @@ namespace fem
 
 
 		public:
-			int material;		// reference to a material in Model's material map
+			material_ref_t material;		// reference to a material in Model's material map
 			std::vector<size_t> nodes;	// nodes that define this element
 			Type type;
 

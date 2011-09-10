@@ -1665,7 +1665,7 @@ Document::save()
 
 	// dump the elements list
 	out << "\t\"elements\":[";
-	int             material = 0;
+	fem::material_ref_t material = 0;
 	for (std::vector < fem::Element >::iterator it = this->project.model.element_list.begin(); it != this->project.model.element_list.end(); it++)
 	{
 		if (it != this->project.model.element_list.begin())

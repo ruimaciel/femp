@@ -105,14 +105,6 @@ class Model {
 		**/
 		enum Model::Error sanity_check();
 
-
-		/**
-		Imports a model from a fem.json document which will be available through a given opened file stream
-		@param file	a pointer to an opened file stream
-		@return	ERR_OK if all went well, a relevant error code according to the error
-		**/
-		enum Model::Error import_json(FILE *file);
-
 		void text_dump() const;
 };
 

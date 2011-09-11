@@ -44,8 +44,11 @@ public:
 	void clear();	// clears/frees everything
 	enum Error setFileName(QString file);	// points to a file
 	void setProjectType(Type type)	{ document_type = type; }
-	enum Error load();	// loads the project
-	enum Error save();	// saves project in it's path
+
+	/**
+	Saves the project in it's path
+	**/
+	enum Error save();
 	enum Error importMesh(QString file_name);
 
 	// object selection routines

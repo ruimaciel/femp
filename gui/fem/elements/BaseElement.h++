@@ -8,70 +8,69 @@
 #include "../point.h++"
 
 
-/*
-Base class for all classes which are used to describe specific FEM element types
-*/
-
 namespace fem
 {
 
+
+/*
+Base class for all classes which are used to describe specific FEM element types
+*/
 template <typename T>
 struct BaseElement
 {
-	public:
-		int stiffness_degree;	// Quadrature rule degree to integrate stiffness matrices
-		int domain_degree;	// Quadrature rule degree to integrate domain loads
+public:
+	int stiffness_degree;	// Quadrature rule degree to integrate stiffness matrices
+	int domain_degree;	// Quadrature rule degree to integrate domain loads
 
-	public:
-		std::map<int, std::vector<boost::tuple<fem::point, T> > > ipwpl;	// integration points/weights pair list
+public:
+	std::map<int, std::vector<boost::tuple<fem::point, T> > > ipwpl;	// integration points/weights pair list
 
-		std::vector<fem::point>	coordinates;
+	std::vector<fem::point>	coordinates;
 
-		std::vector<T>	N;
-		std::vector<T>	dNdcsi;
-		std::vector<T>	dNdeta;
-		std::vector<T>	dNdzeta;
+	std::vector<T>	N;
+	std::vector<T>	dNdcsi;
+	std::vector<T>	dNdeta;
+	std::vector<T>	dNdzeta;
 
-	public:
-		BaseElement(){};
-		~BaseElement(){};
+public:
+	BaseElement(){};
+	~BaseElement(){};
 
-		/**
-		Sets this element's local coordinates for it's nodes
-		**/
-		virtual std::vector<fem::point> & setCoordinates() = 0;
+	/**
+	Sets this element's local coordinates for it's nodes
+	**/
+	virtual std::vector<fem::point> & setCoordinates() = 0;
 
-		virtual std::vector<T> & setN(const point & p) = 0;
-		virtual std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0) = 0;
-		virtual std::vector<T> & setdNdcsi(const point &p) = 0;
-		virtual std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0) = 0;
-		virtual std::vector<T> & setdNdeta(const point &p) = 0;
-		virtual std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0) = 0;
-		virtual std::vector<T> & setdNdzeta(const point &p) = 0;
-		virtual std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0) = 0;
+	virtual std::vector<T> & setN(const point & p) = 0;
+	virtual std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0) = 0;
+	virtual std::vector<T> & setdNdcsi(const point &p) = 0;
+	virtual std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0) = 0;
+	virtual std::vector<T> & setdNdeta(const point &p) = 0;
+	virtual std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0) = 0;
+	virtual std::vector<T> & setdNdzeta(const point &p) = 0;
+	virtual std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0) = 0;
 
-		/**
-		Returns a list of
-		**/
-		// virtual std::vector<boost::tuple<fem::point, T> > & ipwp(unsigned int degree) = 0;
-		std::vector<boost::tuple<fem::point, T> > &stiffness_quadrature()	{ return this->ipwpl[stiffness_degree]; }
-		std::vector<boost::tuple<fem::point, T> > &domain_quadrature()	{ return this->ipwpl[domain_degree]; }
+	/**
+	Returns a list of
+	**/
+	std::vector<boost::tuple<fem::point, T> > &stiffness_quadrature()	{ return this->ipwpl[stiffness_degree]; }
+	std::vector<boost::tuple<fem::point, T> > &domain_quadrature()	{ return this->ipwpl[domain_degree]; }
 
-	protected:
-		/**
-		  Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
-		  (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and
-		  B.P. Flannery
-		@param x	array of T, stores the abcissa of the integration point
-		@param w	array of T, stores the weights of the integration points
-		@param n	the number of Gauss points
-		*/
-		void gauleg (T x[], T w[], int n);
+protected:
+	/**
+	  Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
+	  (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and
+	  B.P. Flannery
+	@param x	array of T, stores the abcissa of the integration point
+	@param w	array of T, stores the weights of the integration points
+	@param n	the number of Gauss points
+	*/
+	void gauleg (T x[], T w[], int n);
 
-		/*
-		Generates the lists of integration points/weights for this type of element
-		*/
-		virtual void generateQuadratureData() = 0;
+	/*
+	Generates the lists of integration points/weights for this type of element
+	*/
+	virtual void generateQuadratureData() = 0;
 };
 
 
@@ -86,7 +85,8 @@ routine returns arrays x[1..n] and w[1..n] of length n, containing the abscissas
 and weights of the Gauss-Legendre n-point quadrature formula.
 *******************************************************************************/
 template<typename T>
-void BaseElement<T>::gauleg (T x[], T w[], int n)
+void 
+BaseElement<T>::gauleg (T x[], T w[], int n)
 {
 	int m,j,i;
 	T z1,z,pp,p3,p2,p1;
@@ -119,5 +119,8 @@ void BaseElement<T>::gauleg (T x[], T w[], int n)
 	}
 }
 
+
 }
+
+
 #endif

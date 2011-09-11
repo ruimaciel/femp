@@ -399,7 +399,7 @@ OpaqueRepresentationPolicy::quad9(fem::point &p1, fem::point &p2, fem::point &p3
 /**
  */
 void
-OpaqueRepresentationPolicy::tetra4 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::tetra4 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_TETRAHEDRON4);
 	assert(element.nodes.size() == 4);
@@ -422,7 +422,7 @@ OpaqueRepresentationPolicy::tetra4 (fem::Element &element, ViewportColors &color
 /**
  */
 void
-OpaqueRepresentationPolicy::tetra10 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::tetra10 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_TETRAHEDRON10);
 	assert(element.nodes.size() == 10);
@@ -445,7 +445,7 @@ OpaqueRepresentationPolicy::tetra10 (fem::Element &element, ViewportColors &colo
 /**
  */
 void
-OpaqueRepresentationPolicy::hexa8 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::hexa8 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON8);
 	assert(element.nodes.size() == 8);
@@ -470,7 +470,7 @@ OpaqueRepresentationPolicy::hexa8 (fem::Element &element, ViewportColors &color,
 /**
  */
 void
-OpaqueRepresentationPolicy::hexa20 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::hexa20 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON20);
 	assert(element.nodes.size() == 20);
@@ -494,7 +494,7 @@ OpaqueRepresentationPolicy::hexa20 (fem::Element &element, ViewportColors &color
 /**
  */
 void
-OpaqueRepresentationPolicy::hexa27 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::hexa27 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON27);
 	assert(element.nodes.size() == 27);
@@ -518,7 +518,7 @@ OpaqueRepresentationPolicy::hexa27 (fem::Element &element, ViewportColors &color
 /**
  */
 void
-OpaqueRepresentationPolicy::prism6 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::prism6 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM6);
 	assert(element.nodes.size() == 6);
@@ -542,7 +542,7 @@ OpaqueRepresentationPolicy::prism6 (fem::Element &element, ViewportColors &color
 /**
  */
 void
-OpaqueRepresentationPolicy::prism15 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::prism15 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM15);
 	assert(element.nodes.size() == 15);
@@ -566,7 +566,7 @@ OpaqueRepresentationPolicy::prism15 (fem::Element &element, ViewportColors &colo
 /**
  */
 void
-OpaqueRepresentationPolicy::prism18 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
+OpaqueRepresentationPolicy::prism18 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM18);
 	assert(element.nodes.size() == 18);

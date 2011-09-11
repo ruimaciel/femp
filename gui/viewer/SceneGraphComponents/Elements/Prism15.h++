@@ -19,7 +19,7 @@ public:
 	/*
 	@param	reference_element	the reference to this element's fem::Element object
 	*/
-	Prism15(fem::Element &reference_element, ElementRepresentationPolicy *representation, DisplacementsRepresentationPolicy *displacements);
+	Prism15(fem::element_ref_t const &,fem::Element &reference_element, ElementRepresentationPolicy *representation, DisplacementsRepresentationPolicy *displacements);
 
 protected:
 	void paintGL(ViewportData &data, ViewportColors &colors);

@@ -84,9 +84,10 @@ VPStateGradients::populateScenegraph(BaseViewport *viewport)
 	}
 
 	// add the elements to the scenegraph
-	for( std::vector<fem::Element>::iterator i = viewport->project->model.element_list.begin(); i != viewport->project->model.element_list.end(); i++)
+	//for( std::vector<fem::Element>::iterator i = viewport->project->model.element_list.begin(); i != viewport->project->model.element_list.end(); i++)
+	for( std::vector<fem::Element>::size_type n = 0; n < viewport->project->model.element_list.size(); n++)
 	{
-		component = this->m_factory(*i);
+		component = this->m_factory(n, viewport->project->model.element_list[n]);
 		if(component) 
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
 	}

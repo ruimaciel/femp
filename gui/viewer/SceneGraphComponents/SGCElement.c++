@@ -7,10 +7,10 @@ namespace SGC	// namespace for all scene graph components
 {
 
 
-Element::Element(fem::Element &reference_element, ElementRepresentationPolicy *representation, DisplacementsRepresentationPolicy *displacements)
+Element::Element(fem::element_ref_t const &ref, fem::Element &reference_element, ElementRepresentationPolicy *representation, DisplacementsRepresentationPolicy *displacements)
 	: SceneGraphComponent()
 {
-	this->setReferenceElement(reference_element);
+	this->setReferenceElement(ref, reference_element);
 	this->setElementRepresentationPolicy(representation);
 	this->setDisplacementsPolicy(displacements);
 }
@@ -45,8 +45,9 @@ Element::accept(OperationsVisitor &visitor)
 
 
 void 
-Element::setReferenceElement(fem::Element &referenced_element)
+Element::setReferenceElement(fem::element_ref_t const &ref,fem::Element &referenced_element)
 {
+	this->m_element_reference = ref;
 	this->m_element = &referenced_element;
 
 	//TODO adjust boundary to this surface

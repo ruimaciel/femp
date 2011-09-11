@@ -18,7 +18,7 @@ namespace SGC	// namespace for all scene graph components
 {
 
 Element *
-SceneComponentFactory::operator() (fem::Element &element)
+SceneComponentFactory::operator() (fem::element_ref_t const &ref, fem::Element &element)
 {
 	assert(this->m_representation != NULL);
 	assert(this->m_displacement != NULL);
@@ -27,35 +27,35 @@ SceneComponentFactory::operator() (fem::Element &element)
 	switch(element.type)
 	{
 		case fem::Element::FE_TETRAHEDRON4:
-			scene_graph_element = new Tetrahedron4(element, m_representation, m_displacement);
+			scene_graph_element = new Tetrahedron4(ref, element, m_representation, m_displacement);
 			break;
 
 		case fem::Element::FE_TETRAHEDRON10:
-			scene_graph_element = new Tetrahedron10(element, m_representation, m_displacement);
+			scene_graph_element = new Tetrahedron10(ref, element, m_representation, m_displacement);
 			break;
 
 		case fem::Element::FE_HEXAHEDRON8:
-			scene_graph_element = new Hexahedron8(element, m_representation, m_displacement);
+			scene_graph_element = new Hexahedron8(ref, element, m_representation, m_displacement);
 			break;
 
 		case fem::Element::FE_HEXAHEDRON20:
-			scene_graph_element = new Hexahedron20(element, m_representation, m_displacement);
+			scene_graph_element = new Hexahedron20(ref, element, m_representation, m_displacement);
 			break;
 
 		case fem::Element::FE_HEXAHEDRON27:
-			scene_graph_element = new Hexahedron27(element, m_representation, m_displacement);
+			scene_graph_element = new Hexahedron27(ref, element, m_representation, m_displacement);
 			break;
 
 		case fem::Element::FE_PRISM6:
-			scene_graph_element = new Prism6(element, m_representation, m_displacement);
+			scene_graph_element = new Prism6(ref, element, m_representation, m_displacement);
 			break;
 
 		case fem::Element::FE_PRISM15:
-			scene_graph_element = new Prism15(element, m_representation, m_displacement);
+			scene_graph_element = new Prism15(ref, element, m_representation, m_displacement);
 			break;
 
 		case fem::Element::FE_PRISM18:
-			scene_graph_element = new Prism18(element, m_representation, m_displacement);
+			scene_graph_element = new Prism18(ref, element, m_representation, m_displacement);
 			break;
 
 		default:

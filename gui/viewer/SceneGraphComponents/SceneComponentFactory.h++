@@ -27,7 +27,7 @@ public:
 	/**
 	Factory method
 	**/
-	virtual Element * operator() (fem::Element &element);
+	virtual Element * operator() (fem::element_ref_t const &, fem::Element &element);
 
 };
 

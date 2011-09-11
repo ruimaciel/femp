@@ -41,35 +41,35 @@ protected:
 public:
 	/**
 	 */
-	void tetra4 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
+	void tetra4 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
 
 	/**
 	 */
-	void tetra10 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement); 
+	void tetra10 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement); 
 
 	/**
 	 */
-	void hexa8 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
+	void hexa8 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
 
 	/**
 	 */
-	void hexa20 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
+	void hexa20 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
 
 	/**
 	 */
-	void hexa27 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
+	void hexa27 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
 
 	/**
 	 */
-	void prism6 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
+	void prism6 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
 
 	/**
 	 */
-	void prism15 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
+	void prism15 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
 
 	/**
 	 */
-	void prism18 (fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
+	void prism18 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
 
 
 };

@@ -4,8 +4,8 @@
 namespace SGC	// namespace for all scene graph components
 {
 
-Hexahedron27::Hexahedron27(fem::Element &reference_element, ElementRepresentationPolicy *representation, DisplacementsRepresentationPolicy *displacements)
-	: Element(reference_element, representation, displacements)
+Hexahedron27::Hexahedron27(fem::element_ref_t const &ref,fem::Element &reference_element, ElementRepresentationPolicy *representation, DisplacementsRepresentationPolicy *displacements)
+	: Element(ref ,reference_element, representation, displacements)
 {
 }
 
@@ -18,7 +18,7 @@ Hexahedron27::paintGL(ViewportData &, ViewportColors &colors)
 	assert(m_representation != NULL);
 	assert(m_displacements != NULL);
 
-	m_representation->hexa27(*m_element, colors, m_displacements);
+	m_representation->hexa27(m_element_reference, *m_element, colors, m_displacements);
 }
 
 

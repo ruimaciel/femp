@@ -471,7 +471,7 @@ GradientFieldRepresentationPolicy::quad9(p_index_t p1, p_index_t p2, p_index_t p
 /**
  */
 void
-GradientFieldRepresentationPolicy::tetra4 (fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
+GradientFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_TETRAHEDRON4);
 	assert(element.nodes.size() == 4);
@@ -499,7 +499,7 @@ GradientFieldRepresentationPolicy::tetra4 (fem::Element &element, ViewportColors
 /**
  */
 void
-GradientFieldRepresentationPolicy::tetra10 (fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
+GradientFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_TETRAHEDRON10);
 	assert(element.nodes.size() == 10);
@@ -528,7 +528,7 @@ GradientFieldRepresentationPolicy::tetra10 (fem::Element &element, ViewportColor
 /**
  */
 void
-GradientFieldRepresentationPolicy::hexa8 (fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
+GradientFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON8);
 	assert(element.nodes.size() == 8);
@@ -559,7 +559,7 @@ GradientFieldRepresentationPolicy::hexa8 (fem::Element &element, ViewportColors 
 /**
  */
 void
-GradientFieldRepresentationPolicy::hexa20 (fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
+GradientFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON20);
 	assert(element.nodes.size() == 20);
@@ -589,7 +589,7 @@ GradientFieldRepresentationPolicy::hexa20 (fem::Element &element, ViewportColors
 /**
  */
 void
-GradientFieldRepresentationPolicy::hexa27 (fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
+GradientFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON27);
 	assert(element.nodes.size() == 27);
@@ -619,7 +619,7 @@ GradientFieldRepresentationPolicy::hexa27 (fem::Element &element, ViewportColors
 /**
  */
 void
-GradientFieldRepresentationPolicy::prism6 (fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
+GradientFieldRepresentationPolicy::prism6 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM6);
 	assert(element.nodes.size() == 6);
@@ -648,7 +648,7 @@ GradientFieldRepresentationPolicy::prism6 (fem::Element &element, ViewportColors
 /**
  */
 void
-GradientFieldRepresentationPolicy::prism15 (fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
+GradientFieldRepresentationPolicy::prism15 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM15);
 	assert(element.nodes.size() == 15);
@@ -677,7 +677,7 @@ GradientFieldRepresentationPolicy::prism15 (fem::Element &element, ViewportColor
 /**
  */
 void
-GradientFieldRepresentationPolicy::prism18 (fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
+GradientFieldRepresentationPolicy::prism18 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM18);
 	assert(element.nodes.size() == 18);

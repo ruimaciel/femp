@@ -8,7 +8,6 @@
 
 
 
-
 namespace fem
 {
 
@@ -34,6 +33,14 @@ struct Quadrangle8
 		std::vector<T> & setdNdzeta(const point &p);
 		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
+public: // merging with fem::Element
+        enum BaseElement<T>::Error set(std::vector<size_t> &nodes);
+
+        /** 
+        return the number of nodes that an element of this particular type has
+        @return the number of nodes
+        **/
+        int node_number() const	{ return 8; };
 };
 
 
@@ -150,11 +157,22 @@ std::vector<T> & Quadrangle8<T>::setdNdzeta(const T &, const T &, const T &)
 	return this->dNdzeta;
 }
 
+
 template<typename T>
 std::vector<fem::point> & Quadrangle8<T>::setCoordinates()
 {
 
 	return this->coordinates;
+}
+
+
+template<typename T>
+enum BaseElement<T>::Error 
+Quadrangle8<T>::set(std::vector<size_t> &nodes)
+{
+	assert(nodes.size() == 8);
+	this->nodes = nodes;
+	return BaseElement<T>::ERR_OK;
 }
 
 }

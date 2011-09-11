@@ -18,9 +18,11 @@ Element::Element(const Element &copied)
 	this->type = copied.type;
 }
 
+
 Element::~Element()
 {
 }
+
 
 enum Element::Error Element::set(Type type, std::vector<size_t> nodes)
 {

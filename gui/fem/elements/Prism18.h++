@@ -34,12 +34,21 @@ struct Prism18
 		std::vector<T> & setdNdzeta(const point &p);
 		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
+public: // merging with fem::Element
+        enum BaseElement<T>::Error set(std::vector<size_t> &nodes);
+
+        /** 
+        return the number of nodes that an element of this particular type has
+        @return the number of nodes
+        **/
+        int node_number() const	{ return 18; };
 };
 
 
 template<typename T>
 Prism18<T>::Prism18()
 {
+	this->type = BaseElement<T>::FE_PRISM18;
 	this->stiffness_degree = 5;
 	this->domain_degree = 2;
 
@@ -220,6 +229,19 @@ std::vector<fem::point> & Prism18<T>::setCoordinates()
 
 	return this->coordinates;
 }
+
+
+template<typename T>
+enum BaseElement<T>::Error 
+Prism18<T>::set(std::vector<size_t> &nodes)
+{
+	assert(nodes.size() == 18);
+	this->nodes = nodes;
+	return BaseElement<T>::ERR_OK;
 }
+
+
+}
+
 
 #endif

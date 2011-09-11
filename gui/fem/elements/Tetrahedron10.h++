@@ -35,12 +35,21 @@ struct Tetrahedron10
 		std::vector<T> & setdNdzeta(const point &p);
 		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
+public: // merging with fem::Element
+        enum BaseElement<T>::Error set(std::vector<size_t> &nodes);
+
+        /** 
+        return the number of nodes that an element of this particular type has
+        @return the number of nodes
+        **/
+        int node_number() const	{ return 10; };
 };
 
 
 template<typename T>
 Tetrahedron10<T>::Tetrahedron10()
 {
+	this->type = BaseElement<T>::FE_TETRAHEDRON10;
 	this->stiffness_degree = 2;
 	this->domain_degree = 2;
 
@@ -175,6 +184,16 @@ std::vector<fem::point> & Tetrahedron10<T>::setCoordinates()
 	this->coordinates[9] = point(	0.5,	0.5,	0.5	);
 
 	return this->coordinates;
+}
+
+
+template<typename T>
+enum BaseElement<T>::Error 
+Tetrahedron10<T>::set(std::vector<size_t> &nodes)
+{
+	assert(nodes.size() == 10);
+	this->nodes = nodes;
+	return BaseElement<T>::ERR_OK;
 }
 
 

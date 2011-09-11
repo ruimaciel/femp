@@ -17,7 +17,8 @@ namespace fem
 				ERR_INVALID_TYPE
 			};
 
-			enum Type {
+			enum Type 
+			{
 				FE_INVALID	= 0,	/* test entry */
 				FE_LINE2        = 1,    /* 2-node line */
 				FE_TRIANGLE3    = 2,    /* 3-node triangle */

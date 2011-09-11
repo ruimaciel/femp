@@ -34,12 +34,21 @@ struct Prism15
 		std::vector<T> & setdNdzeta(const point &p);
 		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
+public: // merging with fem::Element
+        enum BaseElement<T>::Error set(std::vector<size_t> &nodes);
+
+        /** 
+        return the number of nodes that an element of this particular type has
+        @return the number of nodes
+        **/
+        int node_number() const	{ return 15; };
 };
 
 
 template<typename T>
 Prism15<T>::Prism15()
 {
+	this->type = BaseElement<T>::FE_PRISM15;
 	this->stiffness_degree = 5;
 	this->domain_degree = 2;
 
@@ -205,6 +214,15 @@ std::vector<fem::point> & Prism15<T>::setCoordinates()
 	return this->coordinates;
 }
 
+
+template<typename T>
+enum BaseElement<T>::Error 
+Prism15<T>::set(std::vector<size_t> &nodes)
+{
+	assert(nodes.size() == 15);
+	this->nodes = nodes;
+	return BaseElement<T>::ERR_OK;
+}
 
 }
 

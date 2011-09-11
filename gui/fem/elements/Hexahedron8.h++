@@ -8,7 +8,6 @@
 
 
 
-
 namespace fem
 {
 
@@ -16,24 +15,32 @@ template <typename T>
 struct Hexahedron8
 	: public HexahedronFamily<T>
 {
-	public:
-		Hexahedron8();
-		~Hexahedron8()	{};
+public:
+	Hexahedron8();
+	~Hexahedron8()	{};
 
-		std::vector<fem::point> & setCoordinates();
+	std::vector<fem::point> & setCoordinates();
 
-		std::vector<T> & setN(const point & p);
-		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<T> & setN(const point & p);
+	std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdcsi(const point &p);
-		std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<T> & setdNdcsi(const point &p);
+	std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdeta(const point &p);
-		std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<T> & setdNdeta(const point &p);
+	std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdzeta(const point &p);
-		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<T> & setdNdzeta(const point &p);
+	std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
+public: // merging with fem::Element
+        enum BaseElement<T>::Error set(std::vector<size_t> &nodes);
+
+        /** 
+        return the number of nodes that an element of this particular type has
+        @return the number of nodes
+        **/
+        int node_number() const	{ return 8; };
 };
 
 
@@ -41,6 +48,7 @@ template<typename T>
 Hexahedron8<T>::Hexahedron8()
 	: HexahedronFamily<T>()
 {
+	this->type = BaseElement<T>::FE_HEXAHEDRON8;
 	this->stiffness_degree = 2;
 	this->domain_degree = 1;
 
@@ -54,14 +62,16 @@ Hexahedron8<T>::Hexahedron8()
 
 
 template<typename T>
-std::vector<T> & Hexahedron8<T>::setN(const point &p)
+std::vector<T> & 
+Hexahedron8<T>::setN(const point &p)
 {
 	return this->setN(p.data[0], p.data[1], p.data[2]);
 }
 
 
 template<typename T>
-std::vector<T> & Hexahedron8<T>::setN(const T &csi, const T &eta, const T &zeta)
+std::vector<T> & 
+Hexahedron8<T>::setN(const T &csi, const T &eta, const T &zeta)
 {
 	this->N[0] = (1-csi)*(1-eta)*(1-zeta)/8;
 	this->N[1] = (csi+1)*(1-eta)*(1-zeta)/8;
@@ -77,14 +87,16 @@ std::vector<T> & Hexahedron8<T>::setN(const T &csi, const T &eta, const T &zeta)
 
 
 template<typename T>
-std::vector<T> & Hexahedron8<T>::setdNdcsi(const point &p)
+std::vector<T> & 
+Hexahedron8<T>::setdNdcsi(const point &p)
 {
 	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
 }
 
 
 template<typename T>
-std::vector<T> & Hexahedron8<T>::setdNdcsi(const T &, const T &eta, const T &zeta)
+std::vector<T> & 
+Hexahedron8<T>::setdNdcsi(const T &, const T &eta, const T &zeta)
 {
 	// this->dNdcsi
 	this->dNdcsi[ 0] = -(1-eta)*(1-zeta)/8;
@@ -101,14 +113,16 @@ std::vector<T> & Hexahedron8<T>::setdNdcsi(const T &, const T &eta, const T &zet
 
 
 template<typename T>
-std::vector<T> & Hexahedron8<T>::setdNdeta(const point &p)
+std::vector<T> & 
+Hexahedron8<T>::setdNdeta(const point &p)
 {
 	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
 template<typename T>
-std::vector<T> & Hexahedron8<T>::setdNdeta(const T &csi, const T &, const T &zeta)
+std::vector<T> & 
+Hexahedron8<T>::setdNdeta(const T &csi, const T &, const T &zeta)
 {
 	// this->dNdeta
 	this->dNdeta[ 0] = -(1-csi)*(1-zeta)/8;
@@ -125,14 +139,16 @@ std::vector<T> & Hexahedron8<T>::setdNdeta(const T &csi, const T &, const T &zet
 
 
 template<typename T>
-std::vector<T> & Hexahedron8<T>::setdNdzeta(const point &p)
+std::vector<T> & 
+Hexahedron8<T>::setdNdzeta(const point &p)
 {
 	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
 template<typename T>
-std::vector<T> & Hexahedron8<T>::setdNdzeta(const T &csi, const T &eta, const T &)
+std::vector<T> & 
+Hexahedron8<T>::setdNdzeta(const T &csi, const T &eta, const T &)
 {
 	// this->dNdzeta
 	this->dNdzeta[ 0] = -(1-csi)*(1-eta)/8;
@@ -149,7 +165,8 @@ std::vector<T> & Hexahedron8<T>::setdNdzeta(const T &csi, const T &eta, const T 
 
 
 template<typename T>
-std::vector<fem::point> & Hexahedron8<T>::setCoordinates()
+std::vector<fem::point> & 
+Hexahedron8<T>::setCoordinates()
 {
 	this->coordinates[0] = point(	-1,	-1,	-1	);
 	this->coordinates[1] = point(	1,	-1,	-1	);
@@ -164,6 +181,15 @@ std::vector<fem::point> & Hexahedron8<T>::setCoordinates()
 	return this->coordinates;
 }
 
+
+template<typename T>
+enum BaseElement<T>::Error 
+Hexahedron8<T>::set(std::vector<size_t> &nodes)
+{
+	assert(nodes.size() == 8);
+	this->nodes = nodes;
+	return BaseElement<T>::ERR_OK;
+}
 
 
 }

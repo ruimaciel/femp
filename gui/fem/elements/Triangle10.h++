@@ -15,24 +15,32 @@ template <typename T>
 struct Triangle10
 	: public TriangleFamily<T>
 {
-	public:
-		Triangle10();
-		~Triangle10()	{};
+public:
+	Triangle10();
+	~Triangle10()	{};
 
-		std::vector<fem::point> & setCoordinates();
+	std::vector<fem::point> & setCoordinates();
 
-		std::vector<T> & setN(const point & p);
-		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<T> & setN(const point & p);
+	std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdcsi(const point &p);
-		std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<T> & setdNdcsi(const point &p);
+	std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdeta(const point &p);
-		std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<T> & setdNdeta(const point &p);
+	std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdzeta(const point &p);
-		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<T> & setdNdzeta(const point &p);
+	std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
+public: // merging with fem::Element
+	enum BaseElement<T>::Error set(std::vector<size_t> &nodes);
+
+	/** 
+	return the number of nodes that an element of this particular type has
+	@return the number of nodes
+	**/
+	int node_number() const	{ return 10; };
 };
 
 
@@ -52,14 +60,16 @@ Triangle10<T>::Triangle10()
 
 
 template<typename T>
-std::vector<T> & Triangle10<T>::setN(const point &p)
+std::vector<T> & 
+Triangle10<T>::setN(const point &p)
 {
 	return this->setN(p.data[0], p.data[1], p.data[2]);
 }
 
 
 template<typename T>
-std::vector<T> & Triangle10<T>::setN(const T &csi, const T &eta, const T &)
+std::vector<T> & 
+Triangle10<T>::setN(const T &csi, const T &eta, const T &)
 {
 	//TODO test this
 	this->N[0] = 4.5*(-eta-csi+1.0/3)*(-eta-csi+2.0/3)*(-eta-csi+1);
@@ -78,14 +88,16 @@ std::vector<T> & Triangle10<T>::setN(const T &csi, const T &eta, const T &)
 
 
 template<typename T>
-std::vector<T> & Triangle10<T>::setdNdcsi(const point &p)
+std::vector<T> & 
+Triangle10<T>::setdNdcsi(const point &p)
 {
 	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
 }
 
 
 template<typename T>
-std::vector<T> & Triangle10<T>::setdNdcsi(const T &csi, const T &eta, const T &)
+std::vector<T> & 
+Triangle10<T>::setdNdcsi(const T &csi, const T &eta, const T &)
 {
 	//TODO test this
 	// this->dNdcsi
@@ -105,14 +117,16 @@ std::vector<T> & Triangle10<T>::setdNdcsi(const T &csi, const T &eta, const T &)
 
 
 template<typename T>
-std::vector<T> & Triangle10<T>::setdNdeta(const point &p)
+std::vector<T> & 
+Triangle10<T>::setdNdeta(const point &p)
 {
 	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
 template<typename T>
-std::vector<T> & Triangle10<T>::setdNdeta(const T &csi, const T &eta, const T &)
+std::vector<T> & 
+Triangle10<T>::setdNdeta(const T &csi, const T &eta, const T &)
 {
 	//TODO test this
 	// this->dNdeta
@@ -132,14 +146,16 @@ std::vector<T> & Triangle10<T>::setdNdeta(const T &csi, const T &eta, const T &)
 
 
 template<typename T>
-std::vector<T> & Triangle10<T>::setdNdzeta(const point &p)
+std::vector<T> & 
+Triangle10<T>::setdNdzeta(const point &p)
 {
 	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
 template<typename T>
-std::vector<T> & Triangle10<T>::setdNdzeta(const T &, const T &, const T &)
+std::vector<T> & 
+Triangle10<T>::setdNdzeta(const T &, const T &, const T &)
 {
 	//TODO finish this
 	// this->dNdzeta
@@ -159,10 +175,21 @@ std::vector<T> & Triangle10<T>::setdNdzeta(const T &, const T &, const T &)
 
 
 template<typename T>
-std::vector<fem::point> & Triangle10<T>::setCoordinates()
+std::vector<fem::point> & 
+Triangle10<T>::setCoordinates()
 {
 	//TODO finish
 	return this->coordinates;
+}
+
+
+template<typename T>
+enum BaseElement<T>::Error 
+Triangle10<T>::set(std::vector<size_t> &nodes)
+{
+	assert(nodes.size() == 10);
+	this->nodes = nodes;
+	return BaseElement<T>::ERR_OK;
 }
 
 

@@ -33,6 +33,14 @@ struct Triangle6
 		std::vector<T> & setdNdzeta(const point &p);
 		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
+public: // merging with fem::Element
+	enum BaseElement<T>::Error set(std::vector<size_t> &nodes);
+
+	/** 
+	return the number of nodes that an element of this particular type has
+	@return the number of nodes
+	**/
+	int node_number() const	{ return 6; };
 };
 
 
@@ -148,6 +156,16 @@ std::vector<fem::point> & Triangle6<T>::setCoordinates()
 	//TODO finish
 
 	return this->coordinates;
+}
+
+
+template<typename T>
+enum BaseElement<T>::Error 
+Triangle6<T>::set(std::vector<size_t> &nodes)
+{
+	assert(nodes.size() == 6);
+	this->nodes = nodes;
+	return BaseElement<T>::ERR_OK;
 }
 
 

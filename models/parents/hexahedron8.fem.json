@@ -1,11 +1,14 @@
 {
-	"fem": {
+	"fem": 
+	{
 		"version": "1.0",
 		"type": "3D solid"
 	},
+
 	"materials": [
 		{"type":"linear elastic", "label": "Steel", "E":2e+08,"nu":0.3, "fy": 4.94066e-324}
 	],
+
 	"nodes":[
 		[1,[-1,-1,-1]],
 		[2,[1,-1,-1]],

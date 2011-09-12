@@ -13,8 +13,6 @@
 
 #include "point.h++"
 
-#include "RecoveredValues.h++"
-
 
 namespace fem
 {

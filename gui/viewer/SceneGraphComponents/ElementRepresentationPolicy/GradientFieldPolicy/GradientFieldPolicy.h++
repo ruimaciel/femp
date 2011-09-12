@@ -33,15 +33,6 @@ protected:
 public:
 	GradientFieldPolicy();
 
-	// Fields
-	// Accessor Methods
-	// Operations
-	
-	/**
-	Fills m_gradient_value with the gradients that are attributted to each node
-	**/
-	virtual void calculateGradientValues (fem::Element &element) = 0;
-		
 	void setModel(fem::Model &model);
 	void setAnalysisResult(fem::AnalysisResult<double> &result);
 
@@ -57,12 +48,20 @@ public:
 	
 	/**
 	Returns the gradient color according to a point in local coordinates
+	@param p[1-9]	index
+	@param pos	point in local coordinate system
+	@param colors	object of type ViewportColors
 	**/
-	GLfloat * tri3 (gradient_index_t p1, gradient_index_t p2, gradient_index_t p3,   fem::point &pos, ViewportColors &colors);
-	GLfloat * tri6 (gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, fem::point &pos, ViewportColors &colors);
-	GLfloat * quad4 (gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, fem::point &pos, ViewportColors &colors);
-	GLfloat * quad8 (gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, gradient_index_t p7, gradient_index_t p8, fem::point &pos, ViewportColors &colors);
-	GLfloat * quad9 (gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, gradient_index_t p7, gradient_index_t p8, gradient_index_t p9, fem::point &pos, ViewportColors &colors);
+	GLfloat * tri3 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3,   fem::point &pos, ViewportColors &colors);
+	GLfloat * tri6 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, fem::point &pos, ViewportColors &colors);
+	GLfloat * quad4 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, fem::point &pos, ViewportColors &colors);
+	GLfloat * quad8 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, gradient_index_t p7, gradient_index_t p8, fem::point &pos, ViewportColors &colors);
+	GLfloat * quad9 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, gradient_index_t p7, gradient_index_t p8, gradient_index_t p9, fem::point &pos, ViewportColors &colors);
+
+protected:
+	/** returns the gradient value for each result
+	**/
+	virtual float val(fem::element_ref_t const &ref, gradient_index_t const &p) = 0;
 
 };
 

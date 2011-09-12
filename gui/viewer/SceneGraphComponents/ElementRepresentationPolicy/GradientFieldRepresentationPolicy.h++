@@ -31,11 +31,11 @@ public:
 
 
 protected:
-	inline void tri3 (p_index_t p1, p_index_t p2, p_index_t p3, ViewportColors &colors);
-	inline void tri6 (p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, ViewportColors &colors);
-	inline void quad4(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, ViewportColors &colors);
-	inline void quad8(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, ViewportColors &colors);
-	inline void quad9(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, p_index_t p9, ViewportColors &colors);
+	inline void tri3 (fem::element_ref_t const &ref, p_index_t p1, p_index_t p2, p_index_t p3, ViewportColors &colors);
+	inline void tri6 (fem::element_ref_t const &ref, p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, ViewportColors &colors);
+	inline void quad4(fem::element_ref_t const &ref, p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, ViewportColors &colors);
+	inline void quad8(fem::element_ref_t const &ref, p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, ViewportColors &colors);
+	inline void quad9(fem::element_ref_t const &ref, p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, p_index_t p9, ViewportColors &colors);
 
 
 public:

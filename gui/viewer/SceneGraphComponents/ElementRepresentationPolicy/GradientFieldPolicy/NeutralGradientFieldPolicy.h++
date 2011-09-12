@@ -13,7 +13,11 @@ class NeutralGradientFieldPolicy
 public:
 	NeutralGradientFieldPolicy();
 
-	void calculateGradientValues (fem::Element &element);
+protected:
+	/** returns the gradient value for each result
+	**/
+	float val(fem::element_ref_t const &ref, gradient_index_t const &p);
+
 };
 
 

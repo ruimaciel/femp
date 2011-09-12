@@ -41,7 +41,8 @@ protected:
 public:
 	Strain12GradientFieldPolicy();
 
-	void calculateGradientValues (fem::Element &element);
+protected:
+	float val(fem::element_ref_t const &ref, gradient_index_t const &p);
 };
 
 

@@ -12,11 +12,15 @@ class ConstantGradientFieldPolicy
 {
 public:
 	float value;	// value which is set in all nodes
-	
+
 public:
 	ConstantGradientFieldPolicy();
+	
+protected:
+	/** returns the gradient value for each result
+	**/
+	float val(fem::element_ref_t const &ref, gradient_index_t const &p);
 
-	void calculateGradientValues (fem::Element &element);
 };
 
 

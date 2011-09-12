@@ -21,7 +21,7 @@ GradientFieldRepresentationPolicy::~GradientFieldRepresentationPolicy ( )
 // Other methods
 //  
 void
-GradientFieldRepresentationPolicy::tri3(p_index_t p1, p_index_t p2, p_index_t p3, ViewportColors &colors)
+GradientFieldRepresentationPolicy::tri3(fem::element_ref_t const &ref,p_index_t p1, p_index_t p2, p_index_t p3, ViewportColors &colors)
 {
 	assert(m_gradient != NULL);
 
@@ -36,15 +36,15 @@ GradientFieldRepresentationPolicy::tri3(p_index_t p1, p_index_t p2, p_index_t p3
 	glBegin(GL_TRIANGLES);
 	glNormal3dv(temp.data);
 	ptemp.set(0,0);  
-	glColor3fv( m_gradient->tri3(p1, p2, p3, ptemp, colors) );
+	glColor3fv( m_gradient->tri3(ref, p1, p2, p3, ptemp, colors) );
 	glVertex3dv(m_temp_p[p1].data);
 
 	ptemp.set(1,0);  
-	glColor3fv( m_gradient->tri3(p1, p2, p3, ptemp, colors) );
+	glColor3fv( m_gradient->tri3(ref, p1, p2, p3, ptemp, colors) );
 	glVertex3dv(m_temp_p[p2].data);
 
 	ptemp.set(0,1);  
-	glColor3fv( m_gradient->tri3(p1, p2, p3, ptemp, colors) );
+	glColor3fv( m_gradient->tri3(ref, p1, p2, p3, ptemp, colors) );
 	glVertex3dv(m_temp_p[p3].data);
 
 	glEnd();
@@ -53,7 +53,7 @@ GradientFieldRepresentationPolicy::tri3(p_index_t p1, p_index_t p2, p_index_t p3
 
 
 void
-GradientFieldRepresentationPolicy::tri6(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4,p_index_t p5, p_index_t p6, ViewportColors &colors)
+GradientFieldRepresentationPolicy::tri6(fem::element_ref_t const &ref,p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4,p_index_t p5, p_index_t p6, ViewportColors &colors)
 {
 	assert(m_gradient != NULL);
 
@@ -137,14 +137,14 @@ GradientFieldRepresentationPolicy::tri6(p_index_t p1, p_index_t p2, p_index_t p3
 
 			// draw the triangles
 			glNormal3dv(nu[i].data);
-			glColor3fv( m_gradient->tri6(p1, p2, p3, p4, p5, p6, plu[i], colors) );
+			glColor3fv( m_gradient->tri6(ref, p1, p2, p3, p4, p5, p6, plu[i], colors) );
 			glVertex3dv(pu[i].data);
 			glNormal3dv(nl[i].data);
-			glColor3fv( m_gradient->tri6(p1, p2, p3, p4, p5, p6, pll[i], colors) );
+			glColor3fv( m_gradient->tri6(ref, p1, p2, p3, p4, p5, p6, pll[i], colors) );
 			glVertex3dv(pl[i].data);
 		} 
 		glNormal3dv(nl[i].data);
-		glColor3fv( m_gradient->tri6(p1, p2, p3, p4, p5, p6, pll[i], colors) );
+		glColor3fv( m_gradient->tri6(ref, p1, p2, p3, p4, p5, p6, pll[i], colors) );
 		glVertex3dv(pl[i].data);
 		glEnd(); 
 
@@ -163,7 +163,7 @@ GradientFieldRepresentationPolicy::tri6(p_index_t p1, p_index_t p2, p_index_t p3
 
 
 void
-GradientFieldRepresentationPolicy::quad4(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, ViewportColors &colors)
+GradientFieldRepresentationPolicy::quad4(fem::element_ref_t const &ref,p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, ViewportColors &colors)
 {
 	glEnable(GL_BLEND);
 	int partitions = 3;	//TODO implement a better code
@@ -241,11 +241,11 @@ GradientFieldRepresentationPolicy::quad4(p_index_t p1, p_index_t p2, p_index_t p
 
 			// draw the triangles
 			glNormal3dv(nu[i].data);
-			glColor3fv( m_gradient->quad4(p1, p2, p3, p4, plu[i], colors) );
+			glColor3fv( m_gradient->quad4(ref, p1, p2, p3, p4, plu[i], colors) );
 			glVertex3dv(pu[i].data);
 
 			glNormal3dv(nl[i].data);
-			glColor3fv( m_gradient->quad4(p1, p2, p3, p4, pll[i], colors) );
+			glColor3fv( m_gradient->quad4(ref, p1, p2, p3, p4, pll[i], colors) );
 			glVertex3dv(pl[i].data);
 		} 
 		// swap buffer pointes
@@ -265,7 +265,7 @@ GradientFieldRepresentationPolicy::quad4(p_index_t p1, p_index_t p2, p_index_t p
 
 
 void
-GradientFieldRepresentationPolicy::quad8(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, ViewportColors &colors)
+GradientFieldRepresentationPolicy::quad8(fem::element_ref_t const &ref,p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, ViewportColors &colors)
 {
 	glEnable(GL_BLEND);
 	int partitions = 6;	//TODO implement a better code
@@ -345,10 +345,10 @@ GradientFieldRepresentationPolicy::quad8(p_index_t p1, p_index_t p2, p_index_t p
 
 			// draw the triangles
 			glNormal3dv(nu[i].data);
-			glColor3fv( m_gradient->quad8(p1, p2, p3, p4, p5, p6, p7, p8, plu[i], colors) );
+			glColor3fv( m_gradient->quad8(ref, p1, p2, p3, p4, p5, p6, p7, p8, plu[i], colors) );
 			glVertex3dv(pu[i].data);
 			glNormal3dv(nl[i].data);
-			glColor3fv( m_gradient->quad8(p1, p2, p3, p4, p5, p6, p7, p8, pll[i], colors) );
+			glColor3fv( m_gradient->quad8(ref, p1, p2, p3, p4, p5, p6, p7, p8, pll[i], colors) );
 			glVertex3dv(pl[i].data);
 		} 
 		// swap buffer pointes
@@ -367,7 +367,7 @@ GradientFieldRepresentationPolicy::quad8(p_index_t p1, p_index_t p2, p_index_t p
 
 
 void
-GradientFieldRepresentationPolicy::quad9(p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, p_index_t p9, ViewportColors &colors)
+GradientFieldRepresentationPolicy::quad9(fem::element_ref_t const &ref,p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, p_index_t p9, ViewportColors &colors)
 {
 	glEnable(GL_BLEND);
 	int partitions = 6;	//TODO implement a better code
@@ -446,11 +446,11 @@ GradientFieldRepresentationPolicy::quad9(p_index_t p1, p_index_t p2, p_index_t p
 
 			// draw the triangles
 			glNormal3dv(nu[i].data);
-			glColor3fv( m_gradient->quad9(p1, p2, p3, p4, p5, p6, p7, p8, p9, plu[i], colors) );
+			glColor3fv( m_gradient->quad9(ref, p1, p2, p3, p4, p5, p6, p7, p8, p9, plu[i], colors) );
 			glVertex3dv(pu[i].data);
 
 			glNormal3dv(nl[i].data);
-			glColor3fv( m_gradient->quad9(p1, p2, p3, p4, p5, p6, p7, p8, p9, pll[i], colors) );
+			glColor3fv( m_gradient->quad9(ref, p1, p2, p3, p4, p5, p6, p7, p8, p9, pll[i], colors) );
 			glVertex3dv(pl[i].data);
 		} 
 		// swap buffer pointes
@@ -477,8 +477,6 @@ GradientFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &element_ref
 	assert(element.nodes.size() == 4);
 	assert(m_gradient != NULL);
 
-	m_gradient->calculateGradientValues(element);
-
 	// generate a temporary list of all nodes
 	m_temp_p.resize(4);
 	for(int i = 0; i < 4; i++)
@@ -488,10 +486,10 @@ GradientFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &element_ref
 
 	glDisable(GL_LIGHTING);
 	// render each surface
-	tri3( 0, 3, 2, colors);
-	tri3( 1, 0, 2, colors);
-	tri3( 3, 1, 2, colors);
-	tri3( 0, 1, 3, colors);
+	tri3( element_reference, 0, 3, 2, colors);
+	tri3( element_reference, 1, 0, 2, colors);
+	tri3( element_reference, 3, 1, 2, colors);
+	tri3( element_reference, 0, 1, 3, colors);
 	glEnable(GL_LIGHTING);
 }
 
@@ -505,8 +503,6 @@ GradientFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &element_re
 	assert(element.nodes.size() == 10);
 	assert(m_gradient != NULL);
 
-	m_gradient->calculateGradientValues(element);
-
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(10);
@@ -517,10 +513,10 @@ GradientFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &element_re
 
 	glDisable(GL_LIGHTING);
 	// render each surface
-	tri6( 0, 3, 2, 7, 8, 6, colors);
-	tri6( 1, 0, 2, 4, 6, 5, colors);
-	tri6( 3, 1, 2, 9, 5, 8, colors);
-	tri6( 0, 1, 3, 4, 9, 7, colors);
+	tri6( element_reference, 0, 3, 2, 7, 8, 6, colors);
+	tri6( element_reference, 1, 0, 2, 4, 6, 5, colors);
+	tri6( element_reference, 3, 1, 2, 9, 5, 8, colors);
+	tri6( element_reference, 0, 1, 3, 4, 9, 7, colors);
 	glEnable(GL_LIGHTING);
 }
  
@@ -534,9 +530,6 @@ GradientFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &element_refe
 	assert(element.nodes.size() == 8);
 	assert(m_gradient != NULL);
 
-	m_gradient->calculateGradientValues(element);
-
-
 	// generate a temporary list of all nodes
 	m_temp_p.resize(8);
 	for(int i = 0; i < 8; i++)
@@ -546,12 +539,12 @@ GradientFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &element_refe
 
 	glDisable(GL_LIGHTING);
 	// render each surface
-	quad4( 0, 4, 7, 3, colors);
-	quad4( 4, 5, 6, 7, colors);
-	quad4( 5, 1, 2, 6, colors);
-	quad4( 1, 0, 3, 2, colors);
-	quad4( 2, 3, 7, 6, colors);
-	quad4( 0, 1, 5, 4, colors);
+	quad4( element_reference, 0, 4, 7, 3, colors);
+	quad4( element_reference, 4, 5, 6, 7, colors);
+	quad4( element_reference,  5, 1, 2, 6, colors);
+	quad4( element_reference, 1, 0, 3, 2, colors);
+	quad4( element_reference, 2, 3, 7, 6, colors);
+	quad4( element_reference, 0, 1, 5, 4, colors);
 	glEnable(GL_LIGHTING);
 }
 
@@ -565,9 +558,6 @@ GradientFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &element_ref
 	assert(element.nodes.size() == 20);
 	assert(m_gradient != NULL);
 
-	m_gradient->calculateGradientValues(element);
-
-
 	// generate a temporary list of all nodes
 	m_temp_p.resize(20);
 	for(int i = 0; i < 20; i++)
@@ -576,12 +566,12 @@ GradientFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &element_ref
 	}
 
 	glDisable(GL_LIGHTING);
-	quad8( 0, 4, 7, 3, 10, 17, 15, 9, colors);
-	quad8( 4, 5, 6, 7, 16, 18, 19, 17, colors);
-	quad8( 5, 1, 2, 6, 12, 11, 14, 18, colors);
-	quad8( 1, 0, 3, 2, 8, 9, 13, 11, colors);
-	quad8( 2, 3, 7, 6, 13, 15, 19, 14, colors);
-	quad8( 0, 1, 5, 4, 8, 12, 16, 10, colors);
+	quad8( element_reference,  0, 4, 7, 3, 10, 17, 15, 9, colors);
+	quad8( element_reference,  4, 5, 6, 7, 16, 18, 19, 17, colors);
+	quad8( element_reference,  5, 1, 2, 6, 12, 11, 14, 18, colors);
+	quad8( element_reference,  1, 0, 3, 2, 8, 9, 13, 11, colors);
+	quad8( element_reference,  2, 3, 7, 6, 13, 15, 19, 14, colors);
+	quad8( element_reference,  0, 1, 5, 4, 8, 12, 16, 10, colors);
 	glEnable(GL_LIGHTING);
 }
 
@@ -595,9 +585,6 @@ GradientFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &element_ref
 	assert(element.nodes.size() == 27);
 	assert(m_gradient != NULL);
 
-	m_gradient->calculateGradientValues(element);
-
-
 	// generate a temporary list of all nodes
 	m_temp_p.resize(27);
 	for(int i = 0; i < 27; i++)
@@ -606,12 +593,12 @@ GradientFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &element_ref
 	}
 
 	glDisable(GL_LIGHTING);
-	quad9( 0, 4, 7, 3, 10, 17, 15, 9, 22, colors);
-	quad9( 4, 5, 6, 7, 16, 18, 19, 17, 25, colors);
-	quad9( 5, 1, 2, 6, 12, 11, 14, 18, 23, colors);
-	quad9( 1, 0, 3, 2, 8, 9, 13, 11, 20, colors);
-	quad9( 2, 3, 7, 6, 13, 15, 19, 14, 24, colors);
-	quad9( 0, 1, 5, 4, 8, 12, 16, 10, 21, colors);
+	quad9( element_reference,  0, 4, 7, 3, 10, 17, 15, 9, 22, colors);
+	quad9( element_reference,  4, 5, 6, 7, 16, 18, 19, 17, 25, colors);
+	quad9( element_reference,  5, 1, 2, 6, 12, 11, 14, 18, 23, colors);
+	quad9( element_reference,  1, 0, 3, 2, 8, 9, 13, 11, 20, colors);
+	quad9( element_reference,  2, 3, 7, 6, 13, 15, 19, 14, 24, colors);
+	quad9( element_reference,  0, 1, 5, 4, 8, 12, 16, 10, 21, colors);
 	glEnable(GL_LIGHTING);
 }
 
@@ -625,8 +612,6 @@ GradientFieldRepresentationPolicy::prism6 (fem::element_ref_t const &element_ref
 	assert(element.nodes.size() == 6);
 	assert(m_gradient != NULL);
 
-	m_gradient->calculateGradientValues(element);
-
 	// generate a temporary list of all nodes
 	m_temp_p.resize(6);
 	for(int i = 0; i < 6; i++)
@@ -635,12 +620,12 @@ GradientFieldRepresentationPolicy::prism6 (fem::element_ref_t const &element_ref
 	}
 
 	glDisable(GL_LIGHTING);
-	tri3( 0, 2, 1, colors);
-	tri3( 3, 4, 5, colors);
+	tri3( element_reference, 0, 2, 1, colors);
+	tri3( element_reference, 3, 4, 5, colors);
 
-	quad4( 3, 0, 1, 4, colors);
-	quad4( 4, 1, 2, 5, colors);
-	quad4( 0, 3, 5, 2, colors);
+	quad4(element_reference,  3, 0, 1, 4, colors);
+	quad4(element_reference,  4, 1, 2, 5, colors);
+	quad4(element_reference,  0, 3, 5, 2, colors);
 	glEnable(GL_LIGHTING);
 }
 
@@ -654,8 +639,6 @@ GradientFieldRepresentationPolicy::prism15 (fem::element_ref_t const &element_re
 	assert(element.nodes.size() == 15);
 	assert(m_gradient != NULL);
 
-	m_gradient->calculateGradientValues(element);
-
 	// generate a temporary list of all nodes
 	m_temp_p.resize(15);
 	for(int i = 0; i < 15; i++)
@@ -664,12 +647,12 @@ GradientFieldRepresentationPolicy::prism15 (fem::element_ref_t const &element_re
 	}
 
 	glDisable(GL_LIGHTING);
-	tri6( 0, 2, 1, 7, 9, 6, colors);
-	tri6( 3, 4, 5, 12, 14, 13, colors);
+	tri6(element_reference,  0, 2, 1, 7, 9, 6, colors);
+	tri6(element_reference,  3, 4, 5, 12, 14, 13, colors);
 
-	quad8( 3, 0, 1, 4, 8, 6, 10, 12, colors);
-	quad8( 4, 1, 2, 5, 10, 9, 11, 14, colors);
-	quad8( 0, 3, 5, 2, 8, 13, 11, 7, colors);
+	quad8(element_reference,  3, 0, 1, 4, 8, 6, 10, 12, colors);
+	quad8(element_reference,  4, 1, 2, 5, 10, 9, 11, 14, colors);
+	quad8(element_reference,  0, 3, 5, 2, 8, 13, 11, 7, colors);
 	glEnable(GL_LIGHTING);
 }
 
@@ -683,8 +666,6 @@ GradientFieldRepresentationPolicy::prism18 (fem::element_ref_t const &element_re
 	assert(element.nodes.size() == 18);
 	assert(m_gradient != NULL);
 
-	m_gradient->calculateGradientValues(element);
-
 	// generate a temporary list of all nodes
 	m_temp_p.resize(18);
 	for(int i = 0; i < 18; i++)
@@ -693,12 +674,12 @@ GradientFieldRepresentationPolicy::prism18 (fem::element_ref_t const &element_re
 	}
 
 	glDisable(GL_LIGHTING);
-	tri6( 0, 2, 1, 7, 9, 6, colors);
-	tri6( 3, 4, 5, 12, 14, 13, colors);
+	tri6(element_reference, 0, 2, 1, 7, 9, 6, colors);
+	tri6(element_reference, 3, 4, 5, 12, 14, 13, colors);
 
-	quad9( 3, 0, 1, 4, 8, 6, 10, 12, 15, colors);
-	quad9( 4, 1, 2, 5, 10, 9, 11, 14, 17, colors);
-	quad9( 0, 3, 5, 2, 8, 13, 11, 7, 16, colors);
+	quad9(element_reference, 3, 0, 1, 4, 8, 6, 10, 12, 15, colors);
+	quad9(element_reference, 4, 1, 2, 5, 10, 9, 11, 14, 17, colors);
+	quad9(element_reference, 0, 3, 5, 2, 8, 13, 11, 7, 16, colors);
 	glEnable(GL_LIGHTING);
 }
 

@@ -103,20 +103,20 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Project &project, LoadP
 	this->m_solver->initialize(*result, &progress);
 	progress.markSectionEnd();
 
-	progress.markSectionStart("solve FEM equation");
+	progress.markSectionStart("solving FEM equation");
 	progress.markSectionLimit(project.model.element_list.size());
 	this->m_solver->solve(*result, &progress);
 	progress.markSectionEnd();
 
-	progress.markSectionStart("generate displacements list");
+	progress.markSectionStart("generating displacements list");
 	this->generateDisplacementsMap(project, *result);
 	progress.markSectionEnd();
 
-	progress.markSectionStart("recover values");
+	progress.markSectionStart("recovering values");
 	this->recoverValues(project.model, *result);
 	progress.markSectionEnd();
 
-	progress.markSectionStart("calculate strain energy");
+	progress.markSectionStart("calculating strain energy");
 	this->calculateStrainEnergy(project, *result);
 	cout << "strain energy: " << result->energy << endl;
 	progress.markSectionEnd();

@@ -230,3 +230,11 @@ PostprocessingViewport::showStrain13()
 }
 
 
+void 
+PostprocessingViewport::showVonMises()
+{
+	this->m_vp_state_gradients.renderVonMises();
+	this->setState(&this->m_vp_state_gradients);
+}
+
+

@@ -249,3 +249,13 @@ VPStateGradients::renderStrains13()
 }
 
 
+void
+VPStateGradients::renderVonMises()
+{
+	qWarning("void VPStateGradients::renderStrains13()");
+	//TODO test only. change this
+	//this->m_gradient_representation.renderConstant(-0.5);
+	this->m_gradient_representation.renderVonMises();
+}
+
+

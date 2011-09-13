@@ -98,6 +98,10 @@ void PostprocessingWindow::setPostprocessingState(int state)
 			current_vp->showStrain13();
 			break;
 
+		case A_VON_MISES:
+			current_vp->showVonMises();
+			break;
+
 		default:
 			qWarning("PostprocessingWindow::setPostprocessingState(%d), unused state", state);
 			break;

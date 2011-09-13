@@ -741,6 +741,13 @@ GradientFieldRepresentationPolicy::renderStrains13()
 
 
 void 
+GradientFieldRepresentationPolicy::renderVonMises()
+{
+	m_gradient = m_gradient_flyweight_factory.vonMises();
+}
+
+
+void 
 GradientFieldRepresentationPolicy::setModel(fem::Model &model)
 {
 	m_gradient_flyweight_factory.setModel(model);

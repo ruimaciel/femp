@@ -61,6 +61,8 @@ public:
 	void renderStrains23();
 	void renderStrains13();
 
+	void renderVonMises();
+
 };
 
 #endif

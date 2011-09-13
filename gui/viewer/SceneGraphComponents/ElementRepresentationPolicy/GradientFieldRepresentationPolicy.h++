@@ -62,6 +62,8 @@ public:
 	void renderStrains23();
 	void renderStrains13();
 
+	void renderVonMises();
+
 	/**
 	Sets the objects that are needed to access displacements fields and material info
 	**/

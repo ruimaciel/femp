@@ -58,6 +58,14 @@ GradientFieldFlyweightFactory::strains13()
 }
 
 
+GradientFieldPolicy * 
+GradientFieldFlyweightFactory::vonMises()
+{ 
+	return &m_von_mises_policy; 
+}
+
+
+
 void 
 GradientFieldFlyweightFactory::setModel(fem::Model &model)
 {
@@ -70,6 +78,8 @@ GradientFieldFlyweightFactory::setModel(fem::Model &model)
 	m_strain12_policy.setModel(model);
 	m_strain23_policy.setModel(model);
 	m_strain13_policy.setModel(model);
+
+	m_von_mises_policy.setModel(model);
 }
 
 
@@ -86,6 +96,8 @@ GradientFieldFlyweightFactory::setAnalysisResult(fem::AnalysisResult<double> &re
 	m_strain12_policy.setAnalysisResult(result);
 	m_strain23_policy.setAnalysisResult(result);
 	m_strain13_policy.setAnalysisResult(result);
+
+	m_von_mises_policy.setAnalysisResult(result);
 }
 
 

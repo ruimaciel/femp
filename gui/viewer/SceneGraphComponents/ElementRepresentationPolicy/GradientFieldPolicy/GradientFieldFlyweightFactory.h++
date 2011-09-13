@@ -12,6 +12,8 @@
 #include "Strain23GradientFieldPolicy.h++"
 #include "Strain13GradientFieldPolicy.h++"
 
+#include "VonMisesGradientFieldPolicy.h++"
+
 
 /**
 Flyweight actory pattern to store all gradient field policy classes
@@ -28,6 +30,8 @@ protected:
 	Strain23GradientFieldPolicy m_strain23_policy;
 	Strain13GradientFieldPolicy m_strain13_policy;
 
+	VonMisesGradientFieldPolicy m_von_mises_policy;
+
 public:
 	GradientFieldPolicy * neutral();
 	GradientFieldPolicy * constant(float value);
@@ -37,6 +41,7 @@ public:
 	GradientFieldPolicy * strains12();
 	GradientFieldPolicy * strains23();
 	GradientFieldPolicy * strains13();
+	GradientFieldPolicy * vonMises();
 
 	/**
 	Sets the objects that are needed to access displacements fields and material info

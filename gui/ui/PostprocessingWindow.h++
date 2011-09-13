@@ -29,7 +29,8 @@ class PostprocessingWindow
 		enum AnalysisType {
 			A_DISPLACEMENT = 0,
 			A_STRAIN_11, A_STRAIN_22, A_STRAIN_33, A_STRAIN_12,A_STRAIN_13,A_STRAIN_23,
-			A_STRESS_11, A_STRESS_22, A_STRESS_33, A_STRESS_12,A_STRESS_13,A_STRESS_23
+			A_STRESS_11, A_STRESS_22, A_STRESS_33, A_STRESS_12,A_STRESS_13,A_STRESS_23,
+			A_VON_MISES
 		};
 
 		QToolBar *analysisToolBar;	// toolbar to select which value to represent

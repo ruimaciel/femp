@@ -98,6 +98,30 @@ void PostprocessingWindow::setPostprocessingState(int state)
 			current_vp->showStrain13();
 			break;
 
+		case A_STRESS_11:
+			current_vp->showStress11();
+			break;
+
+		case A_STRESS_22:
+			current_vp->showStress22();
+			break;
+
+		case A_STRESS_33:
+			current_vp->showStress33();
+			break;
+
+		case A_STRESS_12:
+			current_vp->showStress12();
+			break;
+
+		case A_STRESS_23:
+			current_vp->showStress23();
+			break;
+
+		case A_STRESS_13:
+			current_vp->showStress13();
+			break;
+
 		case A_VON_MISES:
 			current_vp->showVonMises();
 			break;

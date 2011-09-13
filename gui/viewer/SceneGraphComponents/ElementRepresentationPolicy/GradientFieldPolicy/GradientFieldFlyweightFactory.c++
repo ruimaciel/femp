@@ -59,10 +59,51 @@ GradientFieldFlyweightFactory::strains13()
 
 
 GradientFieldPolicy * 
+GradientFieldFlyweightFactory::stresses11()
+{ 
+	return &m_stress11_policy; 
+}
+
+GradientFieldPolicy * 
+GradientFieldFlyweightFactory::stresses22()
+{ 
+	return &m_stress22_policy; 
+}
+
+GradientFieldPolicy * 
+GradientFieldFlyweightFactory::stresses33()
+{ 
+	return &m_stress33_policy; 
+}
+
+
+GradientFieldPolicy * 
+GradientFieldFlyweightFactory::stresses12()
+{ 
+	return &m_stress12_policy; 
+}
+
+
+GradientFieldPolicy * 
+GradientFieldFlyweightFactory::stresses23()
+{ 
+	return &m_stress23_policy; 
+}
+
+
+GradientFieldPolicy * 
+GradientFieldFlyweightFactory::stresses13()
+{ 
+	return &m_stress13_policy; 
+}
+
+
+GradientFieldPolicy * 
 GradientFieldFlyweightFactory::vonMises()
 { 
 	return &m_von_mises_policy; 
 }
+
 
 
 
@@ -78,6 +119,13 @@ GradientFieldFlyweightFactory::setModel(fem::Model &model)
 	m_strain12_policy.setModel(model);
 	m_strain23_policy.setModel(model);
 	m_strain13_policy.setModel(model);
+
+	m_stress11_policy.setModel(model);
+	m_stress22_policy.setModel(model);
+	m_stress33_policy.setModel(model);
+	m_stress12_policy.setModel(model);
+	m_stress23_policy.setModel(model);
+	m_stress13_policy.setModel(model);
 
 	m_von_mises_policy.setModel(model);
 }
@@ -96,6 +144,13 @@ GradientFieldFlyweightFactory::setAnalysisResult(fem::AnalysisResult<double> &re
 	m_strain12_policy.setAnalysisResult(result);
 	m_strain23_policy.setAnalysisResult(result);
 	m_strain13_policy.setAnalysisResult(result);
+
+	m_stress11_policy.setAnalysisResult(result);
+	m_stress22_policy.setAnalysisResult(result);
+	m_stress33_policy.setAnalysisResult(result);
+	m_stress12_policy.setAnalysisResult(result);
+	m_stress23_policy.setAnalysisResult(result);
+	m_stress13_policy.setAnalysisResult(result);
 
 	m_von_mises_policy.setAnalysisResult(result);
 }

@@ -81,6 +81,13 @@ public Q_SLOTS:
 	void showStrain23();
 	void showStrain13();
 
+	void showStress11();
+	void showStress22();
+	void showStress33();
+	void showStress12();
+	void showStress23();
+	void showStress13();
+
 	void showVonMises();
 
 Q_SIGNALS:

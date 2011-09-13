@@ -61,6 +61,13 @@ public:
 	void renderStrains23();
 	void renderStrains13();
 
+	void renderStresses11();
+	void renderStresses22();
+	void renderStresses33();
+	void renderStresses12();
+	void renderStresses23();
+	void renderStresses13();
+
 	void renderVonMises();
 
 };

@@ -12,6 +12,13 @@
 #include "Strain23GradientFieldPolicy.h++"
 #include "Strain13GradientFieldPolicy.h++"
 
+#include "Stress11GradientFieldPolicy.h++"
+#include "Stress22GradientFieldPolicy.h++"
+#include "Stress33GradientFieldPolicy.h++"
+#include "Stress12GradientFieldPolicy.h++"
+#include "Stress23GradientFieldPolicy.h++"
+#include "Stress13GradientFieldPolicy.h++"
+
 #include "VonMisesGradientFieldPolicy.h++"
 
 
@@ -30,6 +37,13 @@ protected:
 	Strain23GradientFieldPolicy m_strain23_policy;
 	Strain13GradientFieldPolicy m_strain13_policy;
 
+	Stress11GradientFieldPolicy m_stress11_policy;
+	Stress22GradientFieldPolicy m_stress22_policy;
+	Stress33GradientFieldPolicy m_stress33_policy;
+	Stress12GradientFieldPolicy m_stress12_policy;
+	Stress23GradientFieldPolicy m_stress23_policy;
+	Stress13GradientFieldPolicy m_stress13_policy;
+
 	VonMisesGradientFieldPolicy m_von_mises_policy;
 
 public:
@@ -41,6 +55,14 @@ public:
 	GradientFieldPolicy * strains12();
 	GradientFieldPolicy * strains23();
 	GradientFieldPolicy * strains13();
+
+	GradientFieldPolicy * stresses11();
+	GradientFieldPolicy * stresses22();
+	GradientFieldPolicy * stresses33();
+	GradientFieldPolicy * stresses12();
+	GradientFieldPolicy * stresses23();
+	GradientFieldPolicy * stresses13();
+
 	GradientFieldPolicy * vonMises();
 
 	/**

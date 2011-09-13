@@ -231,6 +231,56 @@ PostprocessingViewport::showStrain13()
 
 
 void 
+PostprocessingViewport::showStress11()
+{
+	this->m_vp_state_gradients.renderStresses11();
+	this->setState(&this->m_vp_state_gradients);
+}
+
+
+
+void 
+PostprocessingViewport::showStress22()
+{
+	this->m_vp_state_gradients.renderStresses22();
+	this->setState(&this->m_vp_state_gradients);
+}
+
+
+void 
+PostprocessingViewport::showStress33()
+{
+	this->m_vp_state_gradients.renderStresses33();
+	this->setState(&this->m_vp_state_gradients);
+}
+
+
+void 
+PostprocessingViewport::showStress12()
+{
+	this->m_vp_state_gradients.renderStresses12();
+	this->setState(&this->m_vp_state_gradients);
+}
+
+
+void 
+PostprocessingViewport::showStress23()
+{
+	this->m_vp_state_gradients.renderStresses23();
+	this->setState(&this->m_vp_state_gradients);
+}
+
+
+void 
+PostprocessingViewport::showStress13()
+{
+	this->m_vp_state_gradients.renderStresses13();
+	this->setState(&this->m_vp_state_gradients);
+}
+
+
+
+void 
 PostprocessingViewport::showVonMises()
 {
 	this->m_vp_state_gradients.renderVonMises();

@@ -740,6 +740,49 @@ GradientFieldRepresentationPolicy::renderStrains13()
 }
 
 
+
+void 
+GradientFieldRepresentationPolicy::renderStresses11()
+{
+	m_gradient = m_gradient_flyweight_factory.stresses11();
+}
+
+
+void 
+GradientFieldRepresentationPolicy::renderStresses22()
+{
+	m_gradient = m_gradient_flyweight_factory.stresses22();
+}
+
+
+void 
+GradientFieldRepresentationPolicy::renderStresses33()
+{
+	m_gradient = m_gradient_flyweight_factory.stresses33();
+}
+
+
+void 
+GradientFieldRepresentationPolicy::renderStresses12()
+{
+	m_gradient = m_gradient_flyweight_factory.stresses12();
+}
+
+
+void 
+GradientFieldRepresentationPolicy::renderStresses23()
+{
+	m_gradient = m_gradient_flyweight_factory.stresses23();
+}
+
+
+void 
+GradientFieldRepresentationPolicy::renderStresses13()
+{
+	m_gradient = m_gradient_flyweight_factory.stresses13();
+}
+
+
 void 
 GradientFieldRepresentationPolicy::renderVonMises()
 {

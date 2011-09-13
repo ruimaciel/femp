@@ -1,6 +1,7 @@
 #include "GradientFieldPolicy.h++"
 
 #include <assert.h>
+#include <iostream>
 
 
 // Constructors/Destructors
@@ -48,21 +49,26 @@ GradientFieldPolicy::getColor(float &gradient, ViewportColors &colors)
 	else if(gradient > 0)
 	{
 		// interpolate between neutral and maximum
-		float xf = (gradient - 0)/(this->maxVal());
-		float xi = (this->maxVal() - gradient)/this->maxVal();
-		this->m_temp_color[0] = colors.field_maximum_positive[0]*xf + colors.field_neutral[0]*xi;
-		this->m_temp_color[1] = colors.field_maximum_positive[1]*xf + colors.field_neutral[1]*xi;
-		this->m_temp_color[2] = colors.field_maximum_positive[2]*xf + colors.field_neutral[2]*xi;
+		float csi[3] = { 0, maxVal()/3, maxVal() };
+		float N1 = ( (gradient - csi[0])/(csi[2]-csi[0]) )*( (gradient - csi[1])/(csi[2]-csi[1]));
+		float N2 = ( (gradient - csi[0])/(csi[1]-csi[0]) )*( (gradient - csi[2])/(csi[1]-csi[2]));
+		float N3 = ( (gradient - csi[2])/(csi[0]-csi[2]) )*( (gradient - csi[1])/(csi[0]-csi[1]));
+		this->m_temp_color[0] = colors.field_maximum_positive[0]*N1 + colors.field_semi_maximum_positive[0]*N2 + colors.field_neutral[0]*N3;
+		this->m_temp_color[1] = colors.field_maximum_positive[1]*N1 + colors.field_semi_maximum_positive[1]*N2 + colors.field_neutral[1]*N3;
+		this->m_temp_color[2] = colors.field_maximum_positive[2]*N1 + colors.field_semi_maximum_positive[2]*N2 + colors.field_neutral[2]*N3;
 	}
 	else
 	{
 		// interpolate between neutral and minimum
-		float xf = (gradient - 0)/(this->minVal());
-		float xi = (this->minVal() - gradient)/this->minVal();
-		this->m_temp_color[0] = colors.field_maximum_negative[0]*xf + colors.field_neutral[0]*xi;
-		this->m_temp_color[1] = colors.field_maximum_negative[1]*xf + colors.field_neutral[1]*xi;
-		this->m_temp_color[2] = colors.field_maximum_negative[2]*xf + colors.field_neutral[2]*xi;
+		float csi[3] = { 0, minVal()/3, minVal() };
+		float N1 = ( (gradient - csi[0])/(csi[2]-csi[0]) )*( (gradient - csi[1])/(csi[2]-csi[1]));
+		float N2 = ( (gradient - csi[0])/(csi[1]-csi[0]) )*( (gradient - csi[2])/(csi[1]-csi[2]));
+		float N3 = ( (gradient - csi[2])/(csi[0]-csi[2]) )*( (gradient - csi[1])/(csi[0]-csi[1]));
+		this->m_temp_color[0] = colors.field_maximum_negative[0]*N1 + colors.field_semi_maximum_negative[0]*N2 + colors.field_neutral[0]*N3;
+		this->m_temp_color[1] = colors.field_maximum_negative[1]*N1 + colors.field_semi_maximum_negative[1]*N2 + colors.field_neutral[1]*N3;
+		this->m_temp_color[2] = colors.field_maximum_negative[2]*N1 + colors.field_semi_maximum_negative[2]*N2 + colors.field_neutral[2]*N3;
 	}
+
 
 	return this->m_temp_color;
 }

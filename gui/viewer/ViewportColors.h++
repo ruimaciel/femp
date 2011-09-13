@@ -27,8 +27,10 @@ struct ViewportColors
 
 	// field colors
 	GLfloat field_maximum_positive[4];
+	GLfloat field_semi_maximum_positive[4];
 	GLfloat field_neutral[4];
 	GLfloat field_maximum_negative[4];
+	GLfloat field_semi_maximum_negative[4];
 };
 
 

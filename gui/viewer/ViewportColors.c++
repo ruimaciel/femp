@@ -19,9 +19,11 @@ ViewportColors::ViewportColors ()
 
 	INIT_ELEMENT(background, 0.52,0.52,0.68);
 
-	INIT_ELEMENT(field_maximum_positive	, 	1, 	0, 	0);
-	INIT_ELEMENT(field_maximum_negative	, 	0, 	0, 	1);
-	INIT_ELEMENT(field_neutral	, 	1, 	1, 	1);
+	INIT_ELEMENT(field_maximum_positive		, 	1, 	0, 	0);	// red
+	INIT_ELEMENT(field_semi_maximum_positive	, 	1, 	1, 	0);	// yellow
+	INIT_ELEMENT(field_maximum_negative		, 	0, 	0, 	1);	// blue
+	INIT_ELEMENT(field_semi_maximum_negative	, 	0, 	1, 	1);	// cyan
+	INIT_ELEMENT(field_neutral			, 	0, 	1, 	0);
 	#undef INIT_ELEMENT
 }
 

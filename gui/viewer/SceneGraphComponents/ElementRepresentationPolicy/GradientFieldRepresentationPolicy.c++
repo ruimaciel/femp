@@ -741,20 +741,6 @@ GradientFieldRepresentationPolicy::renderStrains13()
 
 
 void 
-GradientFieldRepresentationPolicy::setMaximumGradientValue (float new_maximum)
-{
-	this->m_gradient_flyweight_factory.setMaximumGradientValue(new_maximum);
-}
-
-
-void 
-GradientFieldRepresentationPolicy::setMinimumGradientValue (float new_minimum)
-{
-	this->m_gradient_flyweight_factory.setMinimumGradientValue(new_minimum);
-}
-
-
-void 
 GradientFieldRepresentationPolicy::setModel(fem::Model &model)
 {
 	m_gradient_flyweight_factory.setModel(model);

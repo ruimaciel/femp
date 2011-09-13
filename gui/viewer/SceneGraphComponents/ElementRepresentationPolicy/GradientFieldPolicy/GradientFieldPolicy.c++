@@ -6,21 +6,12 @@
 // Constructors/Destructors
 GradientFieldPolicy::GradientFieldPolicy()
 {
-	this->m_gradient_value.reserve(27);	// maximum number of values used to render each element
 	this->m_model	= NULL;
 	this->m_analysis_result = NULL;
-	this->m_max_value = this->m_min_value = 0;
 }
 
 
 // Methods
-
-void 
-GradientFieldPolicy::setMaximumGradientValue (float new_maximum)
-{
-	this->m_max_value = new_maximum;
-}
-
 
 void 
 GradientFieldPolicy::setModel(fem::Model &model)
@@ -36,26 +27,19 @@ GradientFieldPolicy::setAnalysisResult(fem::AnalysisResult<double> &result)
 }
 
 
-void 
-GradientFieldPolicy::setMinimumGradientValue (float new_minimum)
-{
-	this->m_min_value = new_minimum;
-}
-
-
 GLfloat *
 GradientFieldPolicy::getColor(float &gradient, ViewportColors &colors)
 {
 	assert(m_model != NULL);
 	assert(m_analysis_result != NULL);
 
-	if(gradient > this->m_max_value)
+	if(gradient > this->maxVal())
 	{
 		this->m_temp_color[0] = colors.field_maximum_positive[0];
 		this->m_temp_color[1] = colors.field_maximum_positive[1];
 		this->m_temp_color[2] = colors.field_maximum_positive[2];
 	}
-	else if(gradient < this->m_min_value)
+	else if(gradient < this->minVal())
 	{
 		this->m_temp_color[0] = colors.field_maximum_negative[0];
 		this->m_temp_color[1] = colors.field_maximum_negative[1];
@@ -64,8 +48,8 @@ GradientFieldPolicy::getColor(float &gradient, ViewportColors &colors)
 	else if(gradient > 0)
 	{
 		// interpolate between neutral and maximum
-		float xf = (gradient - 0)/(this->m_max_value);
-		float xi = (this->m_max_value - gradient)/this->m_max_value;
+		float xf = (gradient - 0)/(this->maxVal());
+		float xi = (this->maxVal() - gradient)/this->maxVal();
 		this->m_temp_color[0] = colors.field_maximum_positive[0]*xf + colors.field_neutral[0]*xi;
 		this->m_temp_color[1] = colors.field_maximum_positive[1]*xf + colors.field_neutral[1]*xi;
 		this->m_temp_color[2] = colors.field_maximum_positive[2]*xf + colors.field_neutral[2]*xi;
@@ -73,8 +57,8 @@ GradientFieldPolicy::getColor(float &gradient, ViewportColors &colors)
 	else
 	{
 		// interpolate between neutral and minimum
-		float xf = (gradient - 0)/(this->m_min_value);
-		float xi = (this->m_min_value - gradient)/this->m_min_value;
+		float xf = (gradient - 0)/(this->minVal());
+		float xi = (this->minVal() - gradient)/this->minVal();
 		this->m_temp_color[0] = colors.field_maximum_negative[0]*xf + colors.field_neutral[0]*xi;
 		this->m_temp_color[1] = colors.field_maximum_negative[1]*xf + colors.field_neutral[1]*xi;
 		this->m_temp_color[2] = colors.field_maximum_negative[2]*xf + colors.field_neutral[2]*xi;

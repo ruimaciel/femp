@@ -7,8 +7,10 @@
 
 Strain23GradientFieldPolicy::Strain23GradientFieldPolicy()
 {
+	/*
 	m_max_value = this->m_analysis_result->max_strains.e23;
 	m_min_value = this->m_analysis_result->min_strains.e23;
+	*/
 }
 
 
@@ -20,4 +22,18 @@ Strain23GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 	return this->m_analysis_result->results[ref]->strains[p].e23;
 }
 
+
+
+float 
+Strain23GradientFieldPolicy::maxVal()
+{
+	return this->m_analysis_result->max_strains.e23;
+}
+
+
+float 
+Strain23GradientFieldPolicy::minVal()
+{
+	return this->m_analysis_result->min_strains.e23;
+}
 

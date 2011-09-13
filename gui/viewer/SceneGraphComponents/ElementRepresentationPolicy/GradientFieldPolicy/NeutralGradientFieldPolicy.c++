@@ -16,4 +16,16 @@ NeutralGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t 
 }
 
 
+float 
+NeutralGradientFieldPolicy::maxVal()
+{
+	return 1;
+}
+
+
+float 
+NeutralGradientFieldPolicy::minVal()
+{
+	return -1;
+}
 

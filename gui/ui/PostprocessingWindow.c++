@@ -2,15 +2,24 @@
 
 #include "../viewer/PostprocessingViewport.h++"
 
+#include <map>
+#include "../fem/ElementResults/ElementResults.h++"
 
-PostprocessingWindow::PostprocessingWindow (fem::Project &project, ViewportColors &colors, QWidget *parent)
+PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent)
 	: MdiWindow(parent), 
 	WindowWithResults(project, colors, parent), 
 	WindowWithPostprocessing(project, colors, parent) ,
 	WindowWithScaling(project, colors, parent)
 {
-	this->viewport = new PostprocessingViewport(project,  parent);
-	this->viewport->setAnalysisResult(project.result.back());
+	this->viewport = new PostprocessingViewport(project, result,  parent);
+	//TODO remove this
+	for( std::map<fem::element_ref_t, fem::ElementResults<double> *>::iterator i = result.results.begin(); i != result.results.end(); i++)
+	{
+		std::cout << "element " << i->first << "\n";
+		//std::cout << *element_results;
+		std::cout << *i->second;
+		// */
+	}
 
 	this->setCentralWidget(viewport);
 

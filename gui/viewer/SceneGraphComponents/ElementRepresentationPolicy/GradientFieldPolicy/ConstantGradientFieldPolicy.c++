@@ -20,3 +20,16 @@ ConstantGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 }
 
 
+float 
+ConstantGradientFieldPolicy::maxVal()
+{
+	return 1;
+}
+
+
+float 
+ConstantGradientFieldPolicy::minVal()
+{
+	return -1;
+}
+

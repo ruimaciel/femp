@@ -10,6 +10,7 @@
 #include <QComboBox>
 
 #include "../fem/Project.h++"
+#include "../fem/AnalysisResult.h++"
 #include "../viewer/ViewportColors.h++"
 
 #include "Selection.h++"
@@ -35,7 +36,7 @@ class PostprocessingWindow
 		QComboBox *analysisComboBox;
 
 	public:
-		PostprocessingWindow (fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
+		PostprocessingWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent = 0);
 
 
 	public slots:

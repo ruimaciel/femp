@@ -1150,16 +1150,24 @@ MainWindow::setModelViewport()
 void 
 MainWindow::setPostprocessingViewport()
 {
-	// this->createNewPostprocessingWindow();
-	QMdiSubWindow *mdi_window;
-	mdi_window = mdiArea->currentSubWindow();
-	if(mdi_window != NULL)
+	if(document.project.result.empty())
 	{
-		// there is an active subwindow
-		PostprocessingWindow *window;	// opengl viewport
-		window = new PostprocessingWindow(document.project, colors, this);
-		mdi_window->setWidget(window);
+		qWarning("MainWindow::setPostprocessingViewport(): tried to set a postprocessing viewport although there is no result available");
 	}
+	else
+	{
+		// this->createNewPostprocessingWindow();
+		QMdiSubWindow *mdi_window;
+		mdi_window = mdiArea->currentSubWindow();
+		if(mdi_window != NULL)
+		{
+			// there is an active subwindow
+			PostprocessingWindow *window;	// opengl viewport
+			window = new PostprocessingWindow(document.project, document.project.result.back(), colors, this);
+			mdi_window->setWidget(window);
+		}
+	}
+
 }
 
 
@@ -1229,18 +1237,25 @@ MainWindow::createNewModelWindow()
 void 
 MainWindow::createNewPostprocessingWindow()
 {
-	PostprocessingWindow *window;	// opengl viewport
-	window = new PostprocessingWindow(document.project, colors, this);
+	if(document.project.result.empty())
+	{
+		qWarning("MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing viewport although there is no result available");
+	}
+	else
+	{
+		PostprocessingWindow *window;	// opengl viewport
+		window = new PostprocessingWindow(document.project, document.project.result.back(), colors, this);
 
-	// create the model's MDI window
-	QMdiSubWindow	* mdi_window;	// the model's opengl viewport
+		// create the model's MDI window
+		QMdiSubWindow	* mdi_window;	// the model's opengl viewport
 
-	mdi_window = new QMdiSubWindow(mdiArea);
-	mdi_window->setWidget(window);
-	mdi_window->setAttribute(Qt::WA_DeleteOnClose);
-	mdi_window->setWindowTitle(tr("Postprocessing"));
-	mdi_window->showMaximized();
-	window->connectToSelectionManager(this->m_selection_manager);
+		mdi_window = new QMdiSubWindow(mdiArea);
+		mdi_window->setWidget(window);
+		mdi_window->setAttribute(Qt::WA_DeleteOnClose);
+		mdi_window->setWindowTitle(tr("Postprocessing"));
+		mdi_window->showMaximized();
+		window->connectToSelectionManager(this->m_selection_manager);
+	}
 }
 
   

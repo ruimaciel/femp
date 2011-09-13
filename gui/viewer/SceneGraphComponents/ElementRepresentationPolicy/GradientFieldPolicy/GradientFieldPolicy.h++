@@ -18,10 +18,6 @@ Defines the policy which is employed by GradientFieldRepresentationPolicy to ren
 class GradientFieldPolicy 
 {
 protected:
-	float m_max_value;	// the maximum gradient value which 
-	float m_min_value;	
-	std::vector<float>	m_gradient_value;	// gradient value on each node
-
 	//typedef std::vector<float>::size_type gradient_index_t;
 	typedef unsigned int gradient_index_t;
 
@@ -35,9 +31,6 @@ public:
 
 	void setModel(fem::Model &model);
 	void setAnalysisResult(fem::AnalysisResult<double> &result);
-
-	void setMaximumGradientValue (float new_maximum);
-	void setMinimumGradientValue (float new_minimum);
 
 	/**
 	Converts a gradient value into a GLfloat [3]
@@ -62,6 +55,8 @@ protected:
 	/** returns the gradient value for each result
 	**/
 	virtual float val(fem::element_ref_t const &ref, gradient_index_t const &p) = 0;
+	virtual float maxVal() = 0;
+	virtual float minVal() = 0;
 
 };
 

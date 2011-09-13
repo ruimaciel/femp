@@ -678,38 +678,9 @@ Analysis<Scalar>::recoverValues(Model &model, AnalysisResult<Scalar> &result)
 		// TODO test memory allocation
 		result.results[n] = element_results;
 
-		/*
-		//TODO remove this
 		std::cout << "element " << n << "\n";
-		std::cout << "\t strain:\n";
-		for(typename std::vector<Strains<Scalar> >::const_iterator i = element_results->strains.begin(); i != element_results->strains.end(); i++)	// strains calculated in each of the element's nodes
-		{
-			std::cout << "\t\te_11: " << i->e11;
-			std::cout << "\te_22: " << i->e22;
-			std::cout << "\te_33: " << i->e33;
-			std::cout << "\te_12: " << i->e12;
-			std::cout << "\te_23: " << i->e23;
-			std::cout << "\te_13: " << i->e13;
-			std::cout << "\n";
-		}
-		std::cout << "\t stress:\n";
-		for(typename std::vector<Stresses<Scalar> >::const_iterator i = element_results->stresses.begin(); i != element_results->stresses.end(); i++)	// stresses calculated in each of the element's nodes
-		{
-			std::cout << "\t\ts_11: " << i->s11;
-			std::cout << "\ts_22: " << i->s22;
-			std::cout << "\ts_33: " << i->s33;
-			std::cout << "\ts_12: " << i->s12;
-			std::cout << "\ts_23: " << i->s23;
-			std::cout << "\ts_13: " << i->s13;
-			std::cout << "\n";
-		}
-		std::cout << "\t von mises:\n";
-		for(typename std::vector<Scalar>::const_iterator i = element_results->von_mises.begin(); i != element_results->von_mises.end(); i++)	// stresses calculated in each of the element's nodes
-		{
-			std::cout << "\t\tv: " << *i;
-			std::cout << "\n";
-		}
-		std::cout << std::endl;
+		//std::cout << *element_results;
+		std::cout << *result.results[n];
 		// */
 	}
 

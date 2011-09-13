@@ -74,6 +74,11 @@ AnalysisResult<Scalar>::AnalysisResult(const AnalysisResult<Scalar> &copied)
 
 	this->displacements = copied.displacements;
 
+	this->results = copied.results;
+	this->max_stresses = copied.max_stresses; this->min_stresses = copied.min_stresses;
+	this->max_strains = copied.max_strains; this->min_strains = copied.min_strains;
+	this->max_von_mises = copied.max_von_mises; this->min_von_mises = copied.min_von_mises;
+
 	this->energy = copied.energy;
 	this->elapsed_time = elapsed_time;
 }

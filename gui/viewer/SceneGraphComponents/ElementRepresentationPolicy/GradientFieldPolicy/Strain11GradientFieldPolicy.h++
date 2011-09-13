@@ -43,6 +43,9 @@ public:
 
 protected:
 	float val(fem::element_ref_t const &ref, gradient_index_t const &p);
+	float maxVal();
+	float minVal();
+
 };
 
 

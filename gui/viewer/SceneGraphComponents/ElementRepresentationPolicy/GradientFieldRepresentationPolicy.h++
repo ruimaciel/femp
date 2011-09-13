@@ -63,12 +63,6 @@ public:
 	void renderStrains13();
 
 	/**
-	Sets the rendering limits
-	**/
-	void setMaximumGradientValue (float new_maximum);
-	void setMinimumGradientValue (float new_minimum);
-
-	/**
 	Sets the objects that are needed to access displacements fields and material info
 	**/
 	void setModel(fem::Model &model);

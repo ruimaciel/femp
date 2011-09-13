@@ -38,9 +38,6 @@ public:
 	GradientFieldPolicy * strains23();
 	GradientFieldPolicy * strains13();
 
-	void setMaximumGradientValue (float new_maximum);
-	void setMinimumGradientValue (float new_minimum);
-
 	/**
 	Sets the objects that are needed to access displacements fields and material info
 	**/

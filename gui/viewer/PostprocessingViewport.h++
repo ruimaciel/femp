@@ -22,6 +22,7 @@
 
 #include "ViewportStates/ViewportState.h++"	// for the vieport's state pattern base class
 
+#include "../fem/AnalysisResult.h++"
 #include "../fem/LinearAnalysis.h++"
 
 #include "ViewportStates/VPStateDisplacements.h++"
@@ -37,11 +38,12 @@ class PostprocessingViewport
 	Q_OBJECT
 
 protected:
+	fem::AnalysisResult<double> *m_analysis_result;
 	VPStateDisplacements 	m_vp_state_displacements;
 	VPStateGradients	m_vp_state_gradients;
 
 public:
-	PostprocessingViewport(fem::Project &project, QWidget *parent = NULL);
+	PostprocessingViewport(fem::Project &project, fem::AnalysisResult<double> &result, QWidget *parent = NULL);
 	~PostprocessingViewport();
 
 	/*

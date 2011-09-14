@@ -134,11 +134,11 @@ GradientFieldPolicy::quad8 (fem::element_ref_t const &ref,gradient_index_t p1, g
 	float gradient = 0;
 
 	// interpolate between the values p1, p2 and p3
-	float N1 = (pos.x()-1)*(1-pos.y())*(1+pos.x()+pos.y())/4;
+	float N1 = (X1-1)*(1-X2)*(1+X1+X2)/4;
 	float N2 = (X1 + 1)*(X2-1)*(X2-X1+1)/4.0;
 	float N3 = (X1 + 1)*(X2 + 1)*(X2 + X1 - 1)/4.0;
 	float N4 = (1 - X1)*(X2 + 1)*(X2 - X1 - 1)/4.0;
-	float N5 = (1-X1*X2)*(1-X2)/2.0;
+	float N5 = (1-X1*X1)*(1-X2)/2.0;
 	float N6 = (X1 + 1)*(1 - X2*X2)/2.0;
 	float N7 = (1 - X1*X1)*(X2 + 1)/2.0;
 	float N8 = (1-X1)*(1-X2*X2)/2.0;

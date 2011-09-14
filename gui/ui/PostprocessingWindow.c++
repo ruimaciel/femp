@@ -12,14 +12,6 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::Analysis
 	WindowWithScaling(project, colors, parent)
 {
 	this->viewport = new PostprocessingViewport(project, result,  parent);
-	//TODO remove this
-	for( std::map<fem::element_ref_t, fem::ElementResults<double> *>::iterator i = result.results.begin(); i != result.results.end(); i++)
-	{
-		std::cout << "element " << i->first << "\n";
-		//std::cout << *element_results;
-		std::cout << *i->second;
-		// */
-	}
 
 	this->setCentralWidget(viewport);
 

@@ -2,6 +2,7 @@
 #define ELEMENT_RESULTS_FACTORY_HPP
 
 #include <cmath>	// sqrt
+#include <iostream>	// cout
 #include "../Element.h++"
 #include "../Model.h++"
 #include "../AnalysisResult.h++"
@@ -197,6 +198,7 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 		Scalar E, nu;
 		E = this->m_model->material_list[reference_element.material].E;
 		nu = this->m_model->material_list[reference_element.material].nu;
+
 		results->stresses[coord].s11 = ( (1-nu)*results->strains[coord].e11 + nu*results->strains[coord].e22 + nu*results->strains[coord].e33 )*E/((1+nu)*(1-2*nu)) ;
 		results->stresses[coord].s22 = ( nu*results->strains[coord].e11 + (1-nu)*results->strains[coord].e22 + nu*results->strains[coord].e33 )*E/((1+nu)*(1-2*nu)) ;
 		results->stresses[coord].s33 = ( nu*results->strains[coord].e11 + nu*results->strains[coord].e22 + (1-nu)*results->strains[coord].e33 )*E/((1+nu)*(1-2*nu)) ;
@@ -215,7 +217,7 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 		// */
 
 		//STRAINS
-		// adjust max and min values
+		// adjust max values
 		if(results->strains[coord].e11 > m_analysis_result->max_strains.e11)
 			m_analysis_result->max_strains.e11 =results->strains[coord].e11;
 		if(results->strains[coord].e22 > m_analysis_result->max_strains.e22)
@@ -229,7 +231,7 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 		if(results->strains[coord].e13 > m_analysis_result->max_strains.e13)
 			m_analysis_result->max_strains.e13 =results->strains[coord].e13;
 
-		// adjust max and min values
+		// adjust min values
 		if(results->strains[coord].e11 < m_analysis_result->min_strains.e11)
 			m_analysis_result->min_strains.e11 =results->strains[coord].e11;
 		if(results->strains[coord].e22 < m_analysis_result->min_strains.e22)
@@ -244,7 +246,7 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 			m_analysis_result->min_strains.e13 =results->strains[coord].e13;
 
 		//STRESSES
-		// adjust max and min values
+		// adjust max values
 		if(results->stresses[coord].s11 > m_analysis_result->max_stresses.s11)
 			m_analysis_result->max_stresses.s11 =results->stresses[coord].s11;
 		if(results->stresses[coord].s22 > m_analysis_result->max_stresses.s22)
@@ -258,7 +260,7 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 		if(results->stresses[coord].s13 > m_analysis_result->max_stresses.s13)
 			m_analysis_result->max_stresses.s13 =results->stresses[coord].s13;
 
-		// adjust max and min values
+		// adjust min values
 		if(results->stresses[coord].s11 < m_analysis_result->min_stresses.s11)
 			m_analysis_result->min_stresses.s11 =results->stresses[coord].s11;
 		if(results->stresses[coord].s22 < m_analysis_result->min_stresses.s22)
@@ -272,6 +274,7 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 		if(results->stresses[coord].s13 < m_analysis_result->min_stresses.s13)
 			m_analysis_result->min_stresses.s13 =results->stresses[coord].s13;
 
+		//VON MISES
 		if(results->von_mises[coord] > m_analysis_result->max_von_mises)
 			m_analysis_result->max_von_mises = results->von_mises[coord];
 	}

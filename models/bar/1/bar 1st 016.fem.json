@@ -94,8 +94,8 @@
 		{"type":"hexahedron8", "nodes":[21,36,51,66,22,37,52,67]},
 		{"type":"hexahedron8", "nodes":[22,37,52,67,23,38,53,68]},
 		{"type":"hexahedron8", "nodes":[23,38,53,68,5,6,7,8]}
-	],
-
+	]
+	,
 	"node restrictions": [
 		{ "node":1, "dx":true, "dy":true, "dz":true},
 		{ "node":2, "dx":true, "dy":true, "dz":true},
@@ -105,19 +105,19 @@
 
 	"load patterns":[
 		{
-			"label": "Point load",
-			"nodal loads":[
-				{"node":7, "force":[0, -1000, 0]},
-				{"node":8, "force":[0, -1000, 0]}
-			]
-		} ,
-		{
 			"label": "distributed domain load",
 
 			"domain loads":[
 				{"element":[0,15], "force": [0,-1000,0]}
 			]
 
+		},
+		{
+			"label": "Point load",
+			"nodal loads":[
+				{"node":7, "force":[0, -1000, 0]},
+				{"node":8, "force":[0, -1000, 0]}
+			]
 		}
 
 	]

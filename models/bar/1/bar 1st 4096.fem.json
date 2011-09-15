@@ -9378,10 +9378,8 @@
 		{ "node":3, "dx":true, "dy":true, "dz":true},
 		{ "node":4, "dx":true, "dy":true, "dz":true},
 		
-		{ "node":9, "dx":true, "dy":true, "dz":true},
-		{ "node":10, "dx":true, "dy":true, "dz":true},
-		{ "node":11, "dx":true, "dy":true, "dz":true},
-		{ "node":12, "dx":true, "dy":true, "dz":true}
+		{ "node":[  9,  36], "dx":true, "dy":true, "dz":true},
+		{ "node":[317,365], "dx":true, "dy":true, "dz":true}
 	],
 
 	"load patterns":[

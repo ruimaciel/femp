@@ -3,7 +3,9 @@
 #include "../viewer/PostprocessingViewport.h++"
 
 #include <map>
+#include "ResultsRangeDialog.h++"
 #include "../fem/ElementResults/ElementResults.h++"
+
 
 PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent)
 	: MdiWindow(parent), 
@@ -59,6 +61,7 @@ void PostprocessingWindow::connectSignalsToSlots()
 
 	connect(postprocessingComboBox,	SIGNAL(activated(int)),	this,	SLOT(setPostprocessingState(int)));
 	connect(actionMenuVisibility,	SIGNAL(toggled(bool)),	this,	SLOT(toggleMenuBarVisibility(bool) ) );
+	connect(actionSetTensionRanges,	SIGNAL(triggered()),	this,	SLOT(setResultsRanges()));
 }
 
 
@@ -85,6 +88,14 @@ void PostprocessingWindow::toggleMenuBarVisibility(bool visibility)
 {
 	qWarning("void PostprocessingWindow::toggleMenuBarVisibility(bool visibility) ");
 	this->menuBar()->setVisible(visibility);
+}
+
+
+void PostprocessingWindow::setResultsRanges()
+{
+	ResultsRangeDialog dialog(this);
+	//TODO finish this
+	dialog.exec();
 }
 
 

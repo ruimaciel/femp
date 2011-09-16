@@ -59,6 +59,7 @@ class PostprocessingWindow
 		void toggleMenuBarVisibility(bool);
 
 		void setAnalysisResult(fem::AnalysisResult<double> &result);
+		void setResultsRanges();
 
 	protected:
 		void connectSignalsToSlots();

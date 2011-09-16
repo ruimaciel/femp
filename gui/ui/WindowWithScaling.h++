@@ -5,6 +5,8 @@
 
 #include <QWidget>
 #include <QDoubleSpinBox>
+#include <QMenuBar>
+#include <QMenu>
 #include <QToolBar>
 
 #include "../fem/Project.h++"
@@ -17,18 +19,21 @@ class WindowWithScaling
 	: public virtual MdiWindow
 {
 	protected:
-		enum PostprocessingType {
-			P_STRAIN_11, P_STRAIN_22, P_STRAIN_33, P_STRAIN_12, P_STRAIN_13, P_STRAIN_23, 
-			P_STRESS_11, P_STRESS_22, P_STRESS_33, P_STRESS_12, P_STRESS_13, P_STRESS_23
-		};
-
 		QToolBar *scalingToolBar;	// toolbar to provide a user to select which result to run
 		QDoubleSpinBox *scalingDoubleSpinBox;
+		QAction *actionSetTensionRanges;	// action to call a dialog which sets the values for the max an min values of any given field
+
+		QMenu * m_scaling_menu;
 
 	public:
 		WindowWithScaling(fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
 
 		void createToolbar(fem::Project &results);
+
+		/**
+		Adds menu entries to the window's menu bar
+		**/
+		void createMenuBar(QMenuBar *);
 
 	public slots:
 		void setDisplacementsScale(double);

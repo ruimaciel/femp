@@ -44,6 +44,14 @@ void PostprocessingWindow::setGhostSurfacesVisibility(const bool )
 {
 }
 
+
+void PostprocessingWindow::setAnalysisResult(fem::AnalysisResult<double> &result)
+{
+	this->m_result = &result;
+	this->viewport->setAnalysisResult(result);
+}
+
+
 void PostprocessingWindow::connectSignalsToSlots()
 {
 	WindowWithScaling::connectSignalsToSlots();
@@ -63,6 +71,17 @@ void PostprocessingWindow::createToolBars(fem::Project &project)
 	// create
 	toggleMenuBarVisibilityToolBar = addToolBar(tr("Menu bar visibility"));
 	toggleMenuBarVisibilityToolBar->addAction(actionMenuVisibility);
+}
+
+
+void PostprocessingWindow::setGradientValuesFromAnalysisResult(const fem::AnalysisResult<double> &result)
+{
+	//TODO finish this
+	max_strains = result.max_strains; min_strains = result.min_strains;
+	max_stresses = result.max_stresses;
+	min_stresses = result.min_stresses;
+	max_von_mises = result.max_von_mises;
+	min_von_mises = result.min_von_mises;
 }
 
 

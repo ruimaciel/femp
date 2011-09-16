@@ -10,7 +10,8 @@
 
 #include "viewer/BaseViewport.h++"
 
-#include "viewer/ViewportColors.h++"
+#include "../viewer/ViewportData.h++"
+#include "../viewer/ViewportColors.h++"
 
 #include "ui/ui_MdiWindow.h"
 

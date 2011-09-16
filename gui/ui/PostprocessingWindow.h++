@@ -14,6 +14,9 @@
 #include "../fem/AnalysisResult.h++"
 #include "../viewer/ViewportColors.h++"
 
+#include "../fem/ElementResults/Strains.h++"
+#include "../fem/ElementResults/Stresses.h++"
+
 #include "Selection.h++"
 #include "SelectionManager.h++"
 
@@ -37,6 +40,13 @@ class PostprocessingWindow
 		QToolBar *toggleMenuBarVisibilityToolBar;	
 		QComboBox *analysisComboBox;
 
+		fem::AnalysisResult<double> *m_result;	// pointer to the current analysis result, which will point to a reference
+
+		//gradient values
+		fem::Strains<double>	max_strains, min_strains;
+		fem::Stresses<double>	max_stresses, min_stresses;
+		float max_von_mises, min_von_mises;
+
 	public:
 		PostprocessingWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent = 0);
 
@@ -52,10 +62,14 @@ class PostprocessingWindow
 		void setPostprocessingState(int state);
 		void toggleMenuBarVisibility(bool);
 
+		void setAnalysisResult(fem::AnalysisResult<double> &result);
+
 	protected:
 		void connectSignalsToSlots();
 
 		void createToolBars(fem::Project &);
+
+		void setGradientValuesFromAnalysisResult(const fem::AnalysisResult<double> &result);
 
 
 	public:

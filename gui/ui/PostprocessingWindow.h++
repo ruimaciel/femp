@@ -12,10 +12,8 @@
 
 #include "../fem/Project.h++"
 #include "../fem/AnalysisResult.h++"
+#include "../fem/ElementResults/ResultsRanges.h++"
 #include "../viewer/ViewportColors.h++"
-
-#include "../fem/ElementResults/Strains.h++"
-#include "../fem/ElementResults/Stresses.h++"
 
 #include "Selection.h++"
 #include "SelectionManager.h++"
@@ -43,9 +41,7 @@ class PostprocessingWindow
 		fem::AnalysisResult<double> *m_result;	// pointer to the current analysis result, which will point to a reference
 
 		//gradient values
-		fem::Strains<double>	max_strains, min_strains;
-		fem::Stresses<double>	max_stresses, min_stresses;
-		float max_von_mises, min_von_mises;
+		fem::ResultsRanges<double> m_results_ranges;	// used to set values for representation
 
 	public:
 		PostprocessingWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent = 0);
@@ -69,7 +65,7 @@ class PostprocessingWindow
 
 		void createToolBars(fem::Project &);
 
-		void setGradientValuesFromAnalysisResult(const fem::AnalysisResult<double> &result);
+		void setGradientValuesRange(const fem::AnalysisResult<double> &result);
 
 
 	public:

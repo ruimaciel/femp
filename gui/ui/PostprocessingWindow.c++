@@ -74,14 +74,10 @@ void PostprocessingWindow::createToolBars(fem::Project &project)
 }
 
 
-void PostprocessingWindow::setGradientValuesFromAnalysisResult(const fem::AnalysisResult<double> &result)
+void PostprocessingWindow::setGradientValuesRange(const fem::AnalysisResult<double> &result)
 {
 	//TODO finish this
-	max_strains = result.max_strains; min_strains = result.min_strains;
-	max_stresses = result.max_stresses;
-	min_stresses = result.min_stresses;
-	max_von_mises = result.max_von_mises;
-	min_von_mises = result.min_von_mises;
+	this->m_results_ranges = result.ranges;
 }
 
 

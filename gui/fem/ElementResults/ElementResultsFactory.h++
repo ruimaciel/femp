@@ -218,65 +218,65 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 
 		//STRAINS
 		// adjust max values
-		if(results->strains[coord].e11 > m_analysis_result->max_strains.e11)
-			m_analysis_result->max_strains.e11 =results->strains[coord].e11;
-		if(results->strains[coord].e22 > m_analysis_result->max_strains.e22)
-			m_analysis_result->max_strains.e22 =results->strains[coord].e22;
-		if(results->strains[coord].e33 > m_analysis_result->max_strains.e33)
-			m_analysis_result->max_strains.e33 =results->strains[coord].e33;
-		if(results->strains[coord].e12 > m_analysis_result->max_strains.e12)
-			m_analysis_result->max_strains.e12 =results->strains[coord].e12;
-		if(results->strains[coord].e23 > m_analysis_result->max_strains.e23)
-			m_analysis_result->max_strains.e23 =results->strains[coord].e23;
-		if(results->strains[coord].e13 > m_analysis_result->max_strains.e13)
-			m_analysis_result->max_strains.e13 =results->strains[coord].e13;
+		if(results->strains[coord].e11 > m_analysis_result->ranges.max_strain11)
+			m_analysis_result->ranges.max_strain11 =results->strains[coord].e11;
+		if(results->strains[coord].e22 > m_analysis_result->ranges.max_strain22)
+			m_analysis_result->ranges.max_strain22 =results->strains[coord].e22;
+		if(results->strains[coord].e33 > m_analysis_result->ranges.max_strain33)
+			m_analysis_result->ranges.max_strain33 =results->strains[coord].e33;
+		if(results->strains[coord].e12 > m_analysis_result->ranges.max_strain12)
+			m_analysis_result->ranges.max_strain12 =results->strains[coord].e12;
+		if(results->strains[coord].e23 > m_analysis_result->ranges.max_strain23)
+			m_analysis_result->ranges.max_strain23 =results->strains[coord].e23;
+		if(results->strains[coord].e13 > m_analysis_result->ranges.max_strain13)
+			m_analysis_result->ranges.max_strain13 =results->strains[coord].e13;
 
 		// adjust min values
-		if(results->strains[coord].e11 < m_analysis_result->min_strains.e11)
-			m_analysis_result->min_strains.e11 =results->strains[coord].e11;
-		if(results->strains[coord].e22 < m_analysis_result->min_strains.e22)
-			m_analysis_result->min_strains.e22 =results->strains[coord].e22;
-		if(results->strains[coord].e33 < m_analysis_result->min_strains.e33)
-			m_analysis_result->min_strains.e33 =results->strains[coord].e33;
-		if(results->strains[coord].e12 < m_analysis_result->min_strains.e12)
-			m_analysis_result->min_strains.e12 =results->strains[coord].e12;
-		if(results->strains[coord].e23 < m_analysis_result->min_strains.e23)
-			m_analysis_result->min_strains.e23 =results->strains[coord].e23;
-		if(results->strains[coord].e13 < m_analysis_result->min_strains.e13)
-			m_analysis_result->min_strains.e13 =results->strains[coord].e13;
+		if(results->strains[coord].e11 < m_analysis_result->ranges.min_strain11)
+			m_analysis_result->ranges.min_strain11 =results->strains[coord].e11;
+		if(results->strains[coord].e22 < m_analysis_result->ranges.min_strain22)
+			m_analysis_result->ranges.min_strain22 =results->strains[coord].e22;
+		if(results->strains[coord].e33 < m_analysis_result->ranges.min_strain33)
+			m_analysis_result->ranges.min_strain33 =results->strains[coord].e33;
+		if(results->strains[coord].e12 < m_analysis_result->ranges.min_strain12)
+			m_analysis_result->ranges.min_strain12 =results->strains[coord].e12;
+		if(results->strains[coord].e23 < m_analysis_result->ranges.min_strain23)
+			m_analysis_result->ranges.min_strain23 =results->strains[coord].e23;
+		if(results->strains[coord].e13 < m_analysis_result->ranges.min_strain13)
+			m_analysis_result->ranges.min_strain13 =results->strains[coord].e13;
 
 		//STRESSES
 		// adjust max values
-		if(results->stresses[coord].s11 > m_analysis_result->max_stresses.s11)
-			m_analysis_result->max_stresses.s11 =results->stresses[coord].s11;
-		if(results->stresses[coord].s22 > m_analysis_result->max_stresses.s22)
-			m_analysis_result->max_stresses.s22 =results->stresses[coord].s22;
-		if(results->stresses[coord].s33 > m_analysis_result->max_stresses.s33)
-			m_analysis_result->max_stresses.s33 =results->stresses[coord].s33;
-		if(results->stresses[coord].s12 > m_analysis_result->max_stresses.s12)
-			m_analysis_result->max_stresses.s12 =results->stresses[coord].s12;
-		if(results->stresses[coord].s23 > m_analysis_result->max_stresses.s23)
-			m_analysis_result->max_stresses.s23 =results->stresses[coord].s23;
-		if(results->stresses[coord].s13 > m_analysis_result->max_stresses.s13)
-			m_analysis_result->max_stresses.s13 =results->stresses[coord].s13;
+		if(results->stresses[coord].s11 > m_analysis_result->ranges.max_stress11)
+			m_analysis_result->ranges.max_stress11 =results->stresses[coord].s11;
+		if(results->stresses[coord].s22 > m_analysis_result->ranges.max_stress22)
+			m_analysis_result->ranges.max_stress22 =results->stresses[coord].s22;
+		if(results->stresses[coord].s33 > m_analysis_result->ranges.max_stress33)
+			m_analysis_result->ranges.max_stress33 =results->stresses[coord].s33;
+		if(results->stresses[coord].s12 > m_analysis_result->ranges.max_stress12)
+			m_analysis_result->ranges.max_stress12 =results->stresses[coord].s12;
+		if(results->stresses[coord].s23 > m_analysis_result->ranges.max_stress23)
+			m_analysis_result->ranges.max_stress23 =results->stresses[coord].s23;
+		if(results->stresses[coord].s13 > m_analysis_result->ranges.max_stress13)
+			m_analysis_result->ranges.max_stress13 =results->stresses[coord].s13;
 
 		// adjust min values
-		if(results->stresses[coord].s11 < m_analysis_result->min_stresses.s11)
-			m_analysis_result->min_stresses.s11 =results->stresses[coord].s11;
-		if(results->stresses[coord].s22 < m_analysis_result->min_stresses.s22)
-			m_analysis_result->min_stresses.s22 =results->stresses[coord].s22;
-		if(results->stresses[coord].s33 < m_analysis_result->min_stresses.s33)
-			m_analysis_result->min_stresses.s33 =results->stresses[coord].s33;
-		if(results->stresses[coord].s12 < m_analysis_result->min_stresses.s12)
-			m_analysis_result->min_stresses.s12 =results->stresses[coord].s12;
-		if(results->stresses[coord].s23 < m_analysis_result->min_stresses.s23)
-			m_analysis_result->min_stresses.s23 =results->stresses[coord].s23;
-		if(results->stresses[coord].s13 < m_analysis_result->min_stresses.s13)
-			m_analysis_result->min_stresses.s13 =results->stresses[coord].s13;
+		if(results->stresses[coord].s11 < m_analysis_result->ranges.min_stress11)
+			m_analysis_result->ranges.min_stress11 =results->stresses[coord].s11;
+		if(results->stresses[coord].s22 < m_analysis_result->ranges.min_stress22)
+			m_analysis_result->ranges.min_stress22 =results->stresses[coord].s22;
+		if(results->stresses[coord].s33 < m_analysis_result->ranges.min_stress33)
+			m_analysis_result->ranges.min_stress33 =results->stresses[coord].s33;
+		if(results->stresses[coord].s12 < m_analysis_result->ranges.min_stress12)
+			m_analysis_result->ranges.min_stress12 =results->stresses[coord].s12;
+		if(results->stresses[coord].s23 < m_analysis_result->ranges.min_stress23)
+			m_analysis_result->ranges.min_stress23 =results->stresses[coord].s23;
+		if(results->stresses[coord].s13 < m_analysis_result->ranges.min_stress13)
+			m_analysis_result->ranges.min_stress13 =results->stresses[coord].s13;
 
 		//VON MISES
-		if(results->von_mises[coord] > m_analysis_result->max_von_mises)
-			m_analysis_result->max_von_mises = results->von_mises[coord];
+		if(results->von_mises[coord] > m_analysis_result->ranges.max_von_mises)
+			m_analysis_result->ranges.max_von_mises = results->von_mises[coord];
 	}
 
 	return results;

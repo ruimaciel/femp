@@ -22,14 +22,14 @@ VonMisesGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 float 
 VonMisesGradientFieldPolicy::maxVal()
 {
-	return this->m_analysis_result->max_von_mises;
+	return this->m_analysis_result->ranges.max_von_mises;
 }
 
 
 float 
 VonMisesGradientFieldPolicy::minVal()
 {
-	return this->m_analysis_result->min_von_mises;
+	return this->m_analysis_result->ranges.min_von_mises;
 }
 
 

@@ -8,6 +8,7 @@
 
 #include "Element.h++"
 #include "ElementResults/ElementResults.h++"
+#include "ElementResults/ResultsRanges.h++"
 #include "../lalib/Matrix.h++"
 #include "../lalib/Vector.h++"
 
@@ -40,9 +41,9 @@ struct AnalysisResult
 
 	// map between a element reference and the element's recovered values
 	std::map<element_ref_t, ElementResults<Scalar> *> results;
-	Stresses<Scalar>	max_stresses, min_stresses;
-	Strains<Scalar>		max_strains, min_strains;
-	Scalar	max_von_mises, min_von_mises;
+
+	// this replaces the above code
+	ResultsRanges<Scalar>	ranges;
 
 
 	// the model's energy
@@ -75,9 +76,8 @@ AnalysisResult<Scalar>::AnalysisResult(const AnalysisResult<Scalar> &copied)
 	this->displacements = copied.displacements;
 
 	this->results = copied.results;
-	this->max_stresses = copied.max_stresses; this->min_stresses = copied.min_stresses;
-	this->max_strains = copied.max_strains; this->min_strains = copied.min_strains;
-	this->max_von_mises = copied.max_von_mises; this->min_von_mises = copied.min_von_mises;
+
+	this->ranges = copied.ranges;
 
 	this->energy = copied.energy;
 	this->elapsed_time = elapsed_time;
@@ -100,12 +100,7 @@ void AnalysisResult<Scalar>::clear()
 	}
 	results.clear();
 
-	max_stresses.setZero();
-	min_stresses.setZero();
-	max_strains.setZero();
-	min_strains.setZero();
-	max_von_mises = 0;
-	min_von_mises = 0;
+	ranges.setZero();
 
 	energy = 0;
 	this->elapsed_time = 0;

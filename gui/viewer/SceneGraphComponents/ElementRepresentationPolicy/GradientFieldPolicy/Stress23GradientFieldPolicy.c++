@@ -22,13 +22,13 @@ Stress23GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 float 
 Stress23GradientFieldPolicy::maxVal()
 {
-	return this->m_analysis_result->max_stresses.s23;
+	return this->m_analysis_result->ranges.max_stress23;
 }
 
 
 float 
 Stress23GradientFieldPolicy::minVal()
 {
-	return this->m_analysis_result->min_stresses.s23;
+	return this->m_analysis_result->ranges.min_stress23;
 }
 

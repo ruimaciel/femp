@@ -8,8 +8,8 @@
 Strain33GradientFieldPolicy::Strain33GradientFieldPolicy()
 {
 	/*
-	m_max_value = this->m_analysis_result->max_strains.e33;
-	m_min_value = this->m_analysis_result->min_strains.e33;
+	m_max_value = this->m_analysis_result->ranges.max_strain33;
+	m_min_value = this->m_analysis_result->ranges.min_strain33;
 	*/
 }
 
@@ -27,13 +27,13 @@ Strain33GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 float 
 Strain33GradientFieldPolicy::maxVal()
 {
-	return this->m_analysis_result->max_strains.e33;
+	return this->m_analysis_result->ranges.max_strain33;
 }
 
 
 float 
 Strain33GradientFieldPolicy::minVal()
 {
-	return this->m_analysis_result->min_strains.e33;
+	return this->m_analysis_result->ranges.min_strain33;
 }
 

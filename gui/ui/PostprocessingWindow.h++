@@ -7,6 +7,7 @@
 #include "WindowWithScaling.h++"
 
 #include <QWidget>
+#include <QToolBar>
 #include <QComboBox>
 
 #include "../fem/Project.h++"
@@ -33,7 +34,7 @@ class PostprocessingWindow
 			A_VON_MISES
 		};
 
-		QToolBar *analysisToolBar;	// toolbar to select which value to represent
+		QToolBar *toggleMenuBarVisibilityToolBar;	
 		QComboBox *analysisComboBox;
 
 	public:
@@ -49,9 +50,13 @@ class PostprocessingWindow
 
 		// sets the postprocessing state according
 		void setPostprocessingState(int state);
+		void toggleMenuBarVisibility(bool);
 
 	protected:
 		void connectSignalsToSlots();
+
+		void createToolBars(fem::Project &);
+
 
 	public:
 		// libsigc++ slots

@@ -4,6 +4,7 @@
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QMainWindow>
+#include <QMenuBar>
 #include <QToolBar>
 #include <QAction>
 
@@ -31,6 +32,8 @@ class MdiWindow
 	protected:
 		QToolBar *viewportToolBar;	// toolbar to set camera angles
 		QToolBar *visibilityToolBar;	// toolbar to set which rendering group (i.e., nodes, surfaces, etc...) is visible
+
+		QAction	*actionMenuVisibility;
 
 		QAction *actionViewportXY;	// places the camera displaying the XY plane
 		QAction *actionViewportYZ;	// places the camera displaying the XY plane

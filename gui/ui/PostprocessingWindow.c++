@@ -17,9 +17,10 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::Analysis
 
 	this->viewport->setColors(colors);
 
-	WindowWithScaling::createToolbar(project);
-	WindowWithResults::createToolbar(project);
-	WindowWithPostprocessing::createToolbar(project);
+
+	WindowWithScaling::createMenuBar(this->menuBar());
+
+	this->createToolBars(project);
 
 	connectSignalsToSlots();
 }
@@ -35,6 +36,7 @@ void PostprocessingWindow::setDisplacementsScale(double scale)
 void PostprocessingWindow::setNodeRestrictionsVisibility(const bool )
 {
 	//TODO run a scenegraph operation
+	qWarning(" void PostprocessingWindow::setNodeRestrictionsVisibility(const bool )");
 }
 
 
@@ -48,6 +50,26 @@ void PostprocessingWindow::connectSignalsToSlots()
 	WindowWithPostprocessing::connectSignalsToSlots();
 
 	connect(postprocessingComboBox,	SIGNAL(activated(int)),	this,	SLOT(setPostprocessingState(int)));
+	connect(actionMenuVisibility,	SIGNAL(toggled(bool)),	this,	SLOT(toggleMenuBarVisibility(bool) ) );
+}
+
+
+void PostprocessingWindow::createToolBars(fem::Project &project)
+{
+	WindowWithScaling::createToolbar(project);
+	WindowWithResults::createToolbar(project);
+	WindowWithPostprocessing::createToolbar(project);
+
+	// create
+	toggleMenuBarVisibilityToolBar = addToolBar(tr("Menu bar visibility"));
+	toggleMenuBarVisibilityToolBar->addAction(actionMenuVisibility);
+}
+
+
+void PostprocessingWindow::toggleMenuBarVisibility(bool visibility)
+{
+	qWarning("void PostprocessingWindow::toggleMenuBarVisibility(bool visibility) ");
+	this->menuBar()->setVisible(visibility);
 }
 
 

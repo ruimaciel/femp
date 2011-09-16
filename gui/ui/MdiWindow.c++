@@ -13,6 +13,13 @@ MdiWindow::MdiWindow (QWidget *parent)
 
 	this->viewport = NULL;
 
+	// create the menu
+	this->actionMenuVisibility = new QAction(tr("Menu visibility"), this);
+	this->actionMenuVisibility->setCheckable(true);
+	this->actionMenuVisibility->setChecked(false);
+	this->actionMenuVisibility->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_M));
+	this->menuBar()->hide();
+
 	this->createViewportToolbar();
 	this->createVisibilityToolbar();
 

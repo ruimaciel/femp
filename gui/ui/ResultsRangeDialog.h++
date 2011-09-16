@@ -7,8 +7,8 @@
 #include <QDialogButtonBox>
 
 #include "ui_ResultsRangeDialog.h"
-#include "../fem/ElementResults/Stresses.h++"
-#include "../fem/ElementResults/Strains.h++"
+
+#include "../fem/ElementResults/ResultsRanges.h++"
 
 
 /**
@@ -25,31 +25,9 @@ protected:
 public:
 	ResultsRangeDialog(QWidget *parent = NULL);
 
-	void setStresses(const fem::Stresses<double> &min, const fem::Stresses<double> &max);
-	/*
-	void setStress11(const double);
-	void setStress22(const double);
-	void setStress33(const double);
-	void setStress12(const double);
-	void setStress23(const double);
-	void setStress13(const double);
-	*/
+	void setValueRanges(const fem::ResultsRanges<double> &);
 
-	void setStrains(const fem::Strains<double> &min, const fem::Strains<double> &max);
-	/*
-	void setStrain11(const double);
-	void setStrain22(const double);
-	void setStrain33(const double);
-	void setStrain12(const double);
-	void setStrain23(const double);
-	void setStrain13(const double);
-	*/
-
-	void setVonMises(const double, const double);
-
-	bool getStresses(fem::Stresses<double> &, fem::Stresses<double> &) const;
-	bool getStrains(fem::Strains<double> &, fem::Strains<double> &) const;
-	void getVonMises(double &, double &) const;
+	bool getValueRanges(fem::ResultsRanges<double> &) const;
 
 protected:
 	void connectSignalsToSlots();

@@ -59,6 +59,10 @@ class PostprocessingWindow
 		void toggleMenuBarVisibility(bool);
 
 		void setAnalysisResult(fem::AnalysisResult<double> &result);
+
+		/**
+		Calls ResultsRangeDialog and sets m_results_ranges accordingly
+		**/
 		void setResultsRanges();
 
 	protected:

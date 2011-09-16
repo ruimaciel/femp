@@ -14,6 +14,7 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::Analysis
 	WindowWithScaling(project, colors, parent)
 {
 	this->viewport = new PostprocessingViewport(project, result,  parent);
+	this->setGradientValuesRange(result);
 
 	this->setCentralWidget(viewport);
 
@@ -50,6 +51,7 @@ void PostprocessingWindow::setGhostSurfacesVisibility(const bool )
 void PostprocessingWindow::setAnalysisResult(fem::AnalysisResult<double> &result)
 {
 	this->m_result = &result;
+	this->setGradientValuesRange(result);
 	this->viewport->setAnalysisResult(result);
 }
 
@@ -94,8 +96,17 @@ void PostprocessingWindow::toggleMenuBarVisibility(bool visibility)
 void PostprocessingWindow::setResultsRanges()
 {
 	ResultsRangeDialog dialog(this);
-	//TODO finish this
-	dialog.exec();
+	dialog.setValueRanges(this->m_results_ranges);
+
+	switch(dialog.exec())
+	{
+		case QDialog::Accepted:
+			dialog.getValueRanges(this->m_results_ranges);
+			break;
+
+		default:
+			break;
+	};
 }
 
 

@@ -11,6 +11,8 @@ Convenience structure to store the representation ranges for all quantities whic
 template<typename Scalar>
 struct ResultsRanges
 {
+	ResultsRanges();
+
 	Scalar max_strain11; Scalar max_strain22; Scalar max_strain33; Scalar max_strain12; Scalar max_strain23; Scalar max_strain13;
 	Scalar min_strain11; Scalar min_strain22; Scalar min_strain33; Scalar min_strain12; Scalar min_strain23; Scalar min_strain13;
 
@@ -21,6 +23,13 @@ struct ResultsRanges
 
 	void setZero();
 };
+
+
+template<typename Scalar>
+ResultsRanges<Scalar>::ResultsRanges()
+{
+	this->setZero();
+}
 
 
 template<typename Scalar>

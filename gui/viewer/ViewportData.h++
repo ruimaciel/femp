@@ -5,7 +5,10 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <list>
 #include <QPoint>
+
 #include "Camera.h++"
+#include "../fem/ElementResults/Strains.h++"
+#include "../fem/ElementResults/Stresses.h++"
 
 /*
 Struct intended to encapsulate all viewport data to be used by all ViewportState subclasses
@@ -26,6 +29,11 @@ struct ViewportData
 	QPoint lastPos;
 
 	std::list<size_t> selected_node_list;
+
+	//gradient values
+	fem::Strains<float>	max_strains, min_strains;
+	fem::Stresses<float>	max_stresses, min_stresses;
+	float max_von_mises, min_von_mises;
 
 	void reset();
 };

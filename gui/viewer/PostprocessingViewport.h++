@@ -23,6 +23,7 @@
 #include "ViewportStates/ViewportState.h++"	// for the vieport's state pattern base class
 
 #include "../fem/AnalysisResult.h++"
+#include "../fem/ElementResults/ResultsRanges.h++"
 #include "../fem/LinearAnalysis.h++"
 
 #include "ViewportStates/VPStateDisplacements.h++"
@@ -43,7 +44,7 @@ protected:
 	VPStateGradients	m_vp_state_gradients;
 
 public:
-	PostprocessingViewport(fem::Project &project, fem::AnalysisResult<double> &result, QWidget *parent = NULL);
+	PostprocessingViewport(fem::Project &project, fem::AnalysisResult<double> &result, fem::ResultsRanges<double> &ranges, QWidget *parent = NULL);
 	~PostprocessingViewport();
 
 	/*
@@ -71,6 +72,8 @@ public Q_SLOTS:
 	@param	result	an analysis result
 	**/
 	void setAnalysisResult(fem::AnalysisResult<double> &result);
+
+	void setResultsRanges(fem::ResultsRanges<double> &ranges);
 
 	// set the viewport state
 	void showDisplacements();

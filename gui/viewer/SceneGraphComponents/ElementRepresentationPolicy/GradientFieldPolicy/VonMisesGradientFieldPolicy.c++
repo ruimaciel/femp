@@ -19,17 +19,17 @@ VonMisesGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 }
 
 
-float 
-VonMisesGradientFieldPolicy::maxVal()
+float const & 
+VonMisesGradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges)
 {
-	return this->m_analysis_result->ranges.max_von_mises;
+	return ranges.max_von_mises;
 }
 
 
-float 
-VonMisesGradientFieldPolicy::minVal()
+float const & 
+VonMisesGradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges)
 {
-	return this->m_analysis_result->ranges.min_von_mises;
+	return ranges.min_von_mises;
 }
 
 

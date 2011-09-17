@@ -20,15 +20,15 @@ ConstantGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 }
 
 
-float 
-ConstantGradientFieldPolicy::maxVal()
+float const & 
+ConstantGradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges)
 {
 	return 1;
 }
 
 
-float 
-ConstantGradientFieldPolicy::minVal()
+float const & 
+ConstantGradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges)
 {
 	return -1;
 }

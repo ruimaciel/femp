@@ -13,8 +13,8 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::Analysis
 	WindowWithPostprocessing(project, colors, parent) ,
 	WindowWithScaling(project, colors, parent)
 {
-	this->viewport = new PostprocessingViewport(project, result,  parent);
 	this->setGradientValuesRange(result);
+	this->viewport = new PostprocessingViewport(project, result, m_results_ranges,  parent);
 
 	this->setCentralWidget(viewport);
 

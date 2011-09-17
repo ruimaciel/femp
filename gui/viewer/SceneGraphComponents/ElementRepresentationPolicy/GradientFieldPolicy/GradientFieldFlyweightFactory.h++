@@ -3,6 +3,7 @@
 
 #include "GradientFieldPolicy.h++"
 
+
 #include "NeutralGradientFieldPolicy.h++"
 #include "ConstantGradientFieldPolicy.h++"
 #include "Strain11GradientFieldPolicy.h++"
@@ -20,6 +21,10 @@
 #include "Stress13GradientFieldPolicy.h++"
 
 #include "VonMisesGradientFieldPolicy.h++"
+
+#include "../../../../fem/Model.h++"
+#include "../../../../fem/AnalysisResult.h++"
+#include "../../../../fem/ElementResults/ResultsRanges.h++"
 
 
 /**
@@ -70,6 +75,7 @@ public:
 	**/
 	void setModel(fem::Model &model);
 	void setAnalysisResult(fem::AnalysisResult<double> &result);
+	void setResultsRanges(fem::ResultsRanges<double> &ranges);
 };
 
 #endif

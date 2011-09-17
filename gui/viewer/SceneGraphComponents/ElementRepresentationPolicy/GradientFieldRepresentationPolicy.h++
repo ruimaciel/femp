@@ -10,6 +10,10 @@
 #include "GradientFieldPolicy/GradientFieldPolicy.h++"
 #include "GradientFieldPolicy/GradientFieldFlyweightFactory.h++"
 
+#include "../../../fem/Model.h++"
+#include "../../../fem/AnalysisResult.h++"
+#include "../../../fem/ElementResults/ResultsRanges.h++"
+
 
 /**
 Represents elements in the scene with a gradient field defined by GradientFieldPolicy, a policy pattern
@@ -76,6 +80,7 @@ public:
 	**/
 	void setModel(fem::Model &model);
 	void setAnalysisResult(fem::AnalysisResult<double> &result);
+	void setResultsRanges(fem::ResultsRanges<double> &ranges);
 };
 
 #endif // COLORFIELDREPRESENTATIONPOLICY_H

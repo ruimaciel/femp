@@ -3,7 +3,7 @@
 #include "SceneGraph.h++"
 
 
-PostprocessingViewport::PostprocessingViewport(fem::Project &project, fem::AnalysisResult<double> &result, QWidget *parent)
+PostprocessingViewport::PostprocessingViewport(fem::Project &project, fem::AnalysisResult<double> &result, fem::ResultsRanges<double> &ranges, QWidget *parent)
 	: BaseViewport(project, parent)
 {
 	mylog.setPrefix("PostprocessingViewport::PostprocessingViewport(fem::Model *model, QWidget *parent)");
@@ -14,6 +14,7 @@ PostprocessingViewport::PostprocessingViewport(fem::Project &project, fem::Analy
 	this->project = &project;
 	this->m_analysis_result = NULL;
 	this->setAnalysisResult(result);
+	this->setResultsRanges(ranges);
 
 	//TODO let the user select which analysis case to visualize
 
@@ -171,6 +172,13 @@ PostprocessingViewport::setAnalysisResult(fem::AnalysisResult<double> &result)
 	this->m_analysis_result = &result;
 	this->m_vp_state_displacements.setAnalysisResult(result);
 	this->m_vp_state_gradients.setAnalysisResult(result);
+}
+
+
+void
+PostprocessingViewport::setResultsRanges(fem::ResultsRanges<double> &ranges)
+{
+	this->m_vp_state_gradients.setResultsRanges(ranges);
 }
 
 

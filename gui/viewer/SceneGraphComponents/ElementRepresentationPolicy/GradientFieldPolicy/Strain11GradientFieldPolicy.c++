@@ -11,8 +11,8 @@ Strain11GradientFieldPolicy::Strain11GradientFieldPolicy()
 {
 	/*
 	assert(m_analysis_result != NULL);
-	m_max_value = this->m_analysis_result->ranges.max_strain11;
-	m_min_value = this->m_analysis_result->ranges.min_strain11;
+	m_max_value = ranges.max_strain11;
+	m_min_value = ranges.min_strain11;
 	*/
 }
 
@@ -26,16 +26,16 @@ Strain11GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 }
 
 
-float 
-Strain11GradientFieldPolicy::maxVal()
+float const & 
+Strain11GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges)
 {
-	return this->m_analysis_result->ranges.max_strain11;
+	return ranges.max_strain11;
 }
 
 
-float 
-Strain11GradientFieldPolicy::minVal()
+float const & 
+Strain11GradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges)
 {
-	return this->m_analysis_result->ranges.min_strain11;
+	return ranges.min_strain11;
 }
 

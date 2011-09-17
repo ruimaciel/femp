@@ -156,3 +156,29 @@ GradientFieldFlyweightFactory::setAnalysisResult(fem::AnalysisResult<double> &re
 }
 
 
+void 
+GradientFieldFlyweightFactory::setResultsRanges(fem::ResultsRanges<double> &ranges)
+{
+	std::cout << "GradientFieldFlyweightFactory::setResultsRanges(fem::ResultsRanges<double> &ranges)" << std::endl;
+
+	m_neutral_policy.setResultsRanges(ranges);	// test pattern
+	m_constant_policy.setResultsRanges(ranges);
+
+	m_strain11_policy.setResultsRanges(ranges);
+	m_strain22_policy.setResultsRanges(ranges);
+	m_strain33_policy.setResultsRanges(ranges);
+	m_strain12_policy.setResultsRanges(ranges);
+	m_strain23_policy.setResultsRanges(ranges);
+	m_strain13_policy.setResultsRanges(ranges);
+
+	m_stress11_policy.setResultsRanges(ranges);
+	m_stress22_policy.setResultsRanges(ranges);
+	m_stress33_policy.setResultsRanges(ranges);
+	m_stress12_policy.setResultsRanges(ranges);
+	m_stress23_policy.setResultsRanges(ranges);
+	m_stress13_policy.setResultsRanges(ranges);
+
+	m_von_mises_policy.setResultsRanges(ranges);
+}
+
+

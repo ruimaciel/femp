@@ -803,3 +803,11 @@ GradientFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult<double>
 	m_gradient_flyweight_factory.setAnalysisResult(result);
 }
 
+
+void 
+GradientFieldRepresentationPolicy::setResultsRanges(fem::ResultsRanges<double> &ranges)
+{
+	m_gradient_flyweight_factory.setResultsRanges(ranges);
+}
+
+

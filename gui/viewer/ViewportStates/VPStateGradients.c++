@@ -106,6 +106,13 @@ VPStateGradients::setAnalysisResult(fem::AnalysisResult<double> &new_result)
 
 
 void
+VPStateGradients::setResultsRanges(fem::ResultsRanges<double> &ranges)
+{
+	this->m_gradient_representation.setResultsRanges(ranges);
+}
+
+
+void
 VPStateGradients::setDisplacementsScale(float new_scale)
 {
 	mylog.setPrefix("VPStateGradients::setDisplacementsScale()");

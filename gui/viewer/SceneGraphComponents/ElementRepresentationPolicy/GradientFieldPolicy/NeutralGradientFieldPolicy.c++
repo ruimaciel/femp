@@ -16,15 +16,15 @@ NeutralGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t 
 }
 
 
-float 
-NeutralGradientFieldPolicy::maxVal()
+float const &
+NeutralGradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges)
 {
 	return 1;
 }
 
 
-float 
-NeutralGradientFieldPolicy::minVal()
+float const & 
+NeutralGradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges)
 {
 	return -1;
 }

@@ -8,8 +8,8 @@
 Strain13GradientFieldPolicy::Strain13GradientFieldPolicy()
 {
 	/*
-	m_max_value = this->m_analysis_result->ranges.max_strain13;
-	m_min_value = this->m_analysis_result->ranges.min_strain13;
+	m_max_value = ranges.max_strain13;
+	m_min_value = ranges.min_strain13;
 	*/
 }
 
@@ -24,16 +24,16 @@ Strain13GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 
 
 
-float 
-Strain13GradientFieldPolicy::maxVal()
+float const & 
+Strain13GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges)
 {
-	return this->m_analysis_result->ranges.max_strain13;
+	return ranges.max_strain13;
 }
 
 
-float 
-Strain13GradientFieldPolicy::minVal()
+float const & 
+Strain13GradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges)
 {
-	return this->m_analysis_result->ranges.min_strain13;
+	return ranges.min_strain13;
 }
 

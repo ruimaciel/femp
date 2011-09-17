@@ -20,8 +20,8 @@ protected:
 	/** returns the gradient value for each result
 	**/
 	float val(fem::element_ref_t const &ref, gradient_index_t const &p);
-	float maxVal();
-	float minVal();
+	float const & maxVal(fem::ResultsRanges<double> const &);
+	float const & minVal(fem::ResultsRanges<double> const &);
 
 
 };

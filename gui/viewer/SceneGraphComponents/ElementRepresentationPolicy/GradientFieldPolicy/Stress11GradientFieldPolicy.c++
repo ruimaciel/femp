@@ -19,16 +19,16 @@ Stress11GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 }
 
 
-float 
-Stress11GradientFieldPolicy::maxVal()
+float const & 
+Stress11GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges)
 {
-	return this->m_analysis_result->ranges.max_stress11;
+	return ranges.max_stress11;
 }
 
 
-float 
-Stress11GradientFieldPolicy::minVal()
+float const & 
+Stress11GradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges)
 {
-	return this->m_analysis_result->ranges.min_stress11;
+	return ranges.min_stress11;
 }
 

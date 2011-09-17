@@ -8,6 +8,7 @@
 #include "../../../../fem/Element.h++"
 #include "../../../../fem/Model.h++"
 #include "../../../../fem/AnalysisResult.h++"
+#include "../../../../fem/ElementResults/ResultsRanges.h++"
 #include "../../../ViewportColors.h++"
 
 
@@ -25,12 +26,14 @@ protected:
 
 	fem::Model	*m_model;	// pointer to the fem::Model structure, in order to access the materials list
 	fem::AnalysisResult<double>	*m_analysis_result;	// pointer to the current analysis result, needed to access the displacements field
+	fem::ResultsRanges<double>	*m_results_ranges;	// pointer to the current results ranges
 		
 public:
 	GradientFieldPolicy();
 
 	void setModel(fem::Model &model);
 	void setAnalysisResult(fem::AnalysisResult<double> &result);
+	void setResultsRanges(fem::ResultsRanges<double> &ranges);
 
 	/**
 	Converts a gradient value into a GLfloat [3]
@@ -55,8 +58,8 @@ protected:
 	/** returns the gradient value for each result
 	**/
 	virtual float val(fem::element_ref_t const &ref, gradient_index_t const &p) = 0;
-	virtual float maxVal() = 0;
-	virtual float minVal() = 0;
+	virtual float const & maxVal(fem::ResultsRanges<double> const &) = 0;
+	virtual float const & minVal(fem::ResultsRanges<double> const &) = 0;
 
 };
 

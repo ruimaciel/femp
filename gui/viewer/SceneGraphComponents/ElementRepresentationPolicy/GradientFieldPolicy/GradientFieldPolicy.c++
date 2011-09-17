@@ -9,6 +9,7 @@ GradientFieldPolicy::GradientFieldPolicy()
 {
 	this->m_model	= NULL;
 	this->m_analysis_result = NULL;
+	this->m_results_ranges = NULL;
 }
 
 
@@ -28,19 +29,27 @@ GradientFieldPolicy::setAnalysisResult(fem::AnalysisResult<double> &result)
 }
 
 
+void 
+GradientFieldPolicy::setResultsRanges(fem::ResultsRanges<double> &ranges)
+{
+	this->m_results_ranges = &ranges;
+}
+
+
 GLfloat *
 GradientFieldPolicy::getColor(float &gradient, ViewportColors &colors)
 {
 	assert(m_model != NULL);
 	assert(m_analysis_result != NULL);
+	assert(m_results_ranges != NULL);
 
-	if(gradient > this->maxVal())
+	if(gradient > this->maxVal(*m_results_ranges))
 	{
 		this->m_temp_color[0] = colors.field_maximum_positive[0];
 		this->m_temp_color[1] = colors.field_maximum_positive[1];
 		this->m_temp_color[2] = colors.field_maximum_positive[2];
 	}
-	else if(gradient < this->minVal())
+	else if(gradient < this->minVal(*m_results_ranges))
 	{
 		this->m_temp_color[0] = colors.field_maximum_negative[0];
 		this->m_temp_color[1] = colors.field_maximum_negative[1];
@@ -49,7 +58,7 @@ GradientFieldPolicy::getColor(float &gradient, ViewportColors &colors)
 	else if(gradient > 0)
 	{
 		// interpolate between neutral and maximum
-		float csi[3] = { 0, maxVal()/3, maxVal() };
+		float csi[3] = { 0, maxVal(*m_results_ranges)/3, maxVal(*m_results_ranges) };
 		float N1 = ( (gradient - csi[0])/(csi[2]-csi[0]) )*( (gradient - csi[1])/(csi[2]-csi[1]));
 		float N2 = ( (gradient - csi[0])/(csi[1]-csi[0]) )*( (gradient - csi[2])/(csi[1]-csi[2]));
 		float N3 = ( (gradient - csi[2])/(csi[0]-csi[2]) )*( (gradient - csi[1])/(csi[0]-csi[1]));
@@ -60,7 +69,7 @@ GradientFieldPolicy::getColor(float &gradient, ViewportColors &colors)
 	else
 	{
 		// interpolate between neutral and minimum
-		float csi[3] = { 0, minVal()/3, minVal() };
+		float csi[3] = { 0, minVal(*m_results_ranges)/3, minVal(*m_results_ranges) };
 		float N1 = ( (gradient - csi[0])/(csi[2]-csi[0]) )*( (gradient - csi[1])/(csi[2]-csi[1]));
 		float N2 = ( (gradient - csi[0])/(csi[1]-csi[0]) )*( (gradient - csi[2])/(csi[1]-csi[2]));
 		float N3 = ( (gradient - csi[2])/(csi[0]-csi[2]) )*( (gradient - csi[1])/(csi[0]-csi[1]));

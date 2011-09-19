@@ -7,7 +7,8 @@ ViewportData::ViewportData()
 };
 
 
-void ViewportData::reset()
+void 
+ViewportData::reset()
 {
 	zoom = 0; 
 	aspect_ratio = 1;

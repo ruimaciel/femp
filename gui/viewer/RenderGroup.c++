@@ -8,7 +8,8 @@ RenderGroup::RenderGroup()
 }
 
 
-void RenderGroup::generateSceneGraph()
+void 
+RenderGroup::generateSceneGraph()
 {
 	//TODO implement a better scenegraph structure
 

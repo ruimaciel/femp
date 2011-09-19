@@ -8,9 +8,6 @@
 #include "ModelViewport.h++"
 
 
-
-
-
 SceneGraph::SceneGraph()
 {
 }
@@ -22,7 +19,8 @@ SceneGraph::~SceneGraph()
 }
 
 
-void SceneGraph::clear()
+void 
+SceneGraph::clear()
 {
 	using namespace std;
 	//TODO finish this
@@ -47,7 +45,8 @@ void SceneGraph::clear()
 }
 
 
-void SceneGraph::paint(ViewportData &viewport_data, ViewportColors &colors)
+void 
+SceneGraph::paint(ViewportData &viewport_data, ViewportColors &colors)
 {
 	using namespace std;
 	// get the model
@@ -61,7 +60,8 @@ void SceneGraph::paint(ViewportData &viewport_data, ViewportColors &colors)
 }
 
 
-void SceneGraph::addPrimitiveComponent(int group, SceneGraphComponent *new_component)
+void 
+SceneGraph::addPrimitiveComponent(int group, SceneGraphComponent *new_component)
 {
 	assert(new_component != NULL);
 
@@ -70,7 +70,8 @@ void SceneGraph::addPrimitiveComponent(int group, SceneGraphComponent *new_compo
 }
 
 
-void SceneGraph::generateSceneGraph()
+void 
+SceneGraph::generateSceneGraph()
 {
 	for(std::map<int, RenderGroup>::iterator i = this->rendering_groups.begin(); i!= this->rendering_groups.end(); i++)
 	{
@@ -79,7 +80,8 @@ void SceneGraph::generateSceneGraph()
 }
 
 
-void SceneGraph::runOperation(OperationsVisitor &visitor)
+void 
+SceneGraph::runOperation(OperationsVisitor &visitor)
 {
 	for(std::list<SceneGraphComponent *>::iterator i = this->primitive_components.begin(); i != this->primitive_components.end(); i++)
 	{

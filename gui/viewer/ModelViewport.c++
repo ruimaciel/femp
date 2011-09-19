@@ -3,6 +3,7 @@
 #include "SceneGraph.h++"
 
 
+
 ModelViewport::ModelViewport(fem::Project &project, QWidget *parent)
 	: BaseViewport(project, parent)
 {
@@ -34,14 +35,16 @@ ModelViewport::~ModelViewport()
 }
 
 
-void ModelViewport::setNodeVisibility(bool state)
+void 
+ModelViewport::setNodeVisibility(bool state)
 {
 	this->state->setRenderGoupVisibility(SceneGraph::RG_NODES, state);
 	this->display_options.nodes = state;
 }
 
 
-void ModelViewport::setSurfaceVisibility(bool state)
+void 
+ModelViewport::setSurfaceVisibility(bool state)
 {
 	this->state->setRenderGoupVisibility(SceneGraph::RG_SURFACES, state);
 	this->state->setRenderGoupVisibility(SceneGraph::RG_WIREFRAME, !state);
@@ -49,7 +52,8 @@ void ModelViewport::setSurfaceVisibility(bool state)
 }
 
 
-void ModelViewport::paintGL()
+void 
+ModelViewport::paintGL()
 {
 	assert(project != NULL);
 
@@ -61,7 +65,8 @@ void ModelViewport::paintGL()
 }
 
 
-void ModelViewport::mousePressEvent(QMouseEvent *event)
+void 
+ModelViewport::mousePressEvent(QMouseEvent *event)
 {
 	state->mousePressEvent(this, event);
 
@@ -69,7 +74,8 @@ void ModelViewport::mousePressEvent(QMouseEvent *event)
 }
 
 
-void ModelViewport::mouseMoveEvent(QMouseEvent *event)
+void 
+ModelViewport::mouseMoveEvent(QMouseEvent *event)
 {
 	state->mouseMoveEvent(this, event);
 
@@ -77,7 +83,8 @@ void ModelViewport::mouseMoveEvent(QMouseEvent *event)
 }
 
 
-void ModelViewport::wheelEvent(QWheelEvent *event)
+void 
+ModelViewport::wheelEvent(QWheelEvent *event)
 {
 	viewport_data.zoom += event->delta()/1000.0f;
 
@@ -87,14 +94,16 @@ void ModelViewport::wheelEvent(QWheelEvent *event)
 }
 
 
-void ModelViewport::keyPressEvent( QKeyEvent *event)
+void 
+ModelViewport::keyPressEvent( QKeyEvent *event)
 {
 	state->keyPressEvent(this, event);
 }
 
 
 template <class NewState>
-void ModelViewport::setState(NewState *new_state)
+void 
+ModelViewport::setState(NewState *new_state)
 {
 	if(this->state != NULL) delete this->state;
 
@@ -104,7 +113,8 @@ void ModelViewport::setState(NewState *new_state)
 }
 
 
-void ModelViewport::setXRotation(int angle)
+void 
+ModelViewport::setXRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[0] = angle;
@@ -113,7 +123,8 @@ void ModelViewport::setXRotation(int angle)
 }
 
 
-void ModelViewport::setYRotation(int angle)
+void 
+ModelViewport::setYRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[1] = angle;
@@ -122,7 +133,8 @@ void ModelViewport::setYRotation(int angle)
 }
 
 
-void ModelViewport::setZRotation(int angle)
+void 
+ModelViewport::setZRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[2] = angle;
@@ -131,7 +143,8 @@ void ModelViewport::setZRotation(int angle)
 }
 
 
-void ModelViewport::setPosition(int x, int y)
+void 
+ModelViewport::setPosition(int x, int y)
 {
 	//TODO implement this
 	viewport_data.camera.pos.x(-x);
@@ -144,7 +157,8 @@ void ModelViewport::setPosition(int x, int y)
 }
 
 
-void ModelViewport::showModel()
+void 
+ModelViewport::showModel()
 {
 	// set the state
 	VPStateModel* state = new VPStateModel;

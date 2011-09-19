@@ -3,6 +3,7 @@
 #include "SceneGraphComponents/Operations/ToggleRenderOperation.h++"
 
 
+
 BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
 	: QGLWidget(parent)
 {
@@ -17,25 +18,29 @@ BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
 }
 
 
-void BaseViewport::setColors(ViewportColors &new_colors)
+void 
+BaseViewport::setColors(ViewportColors &new_colors)
 {
 	colors = new_colors;
 }
 
 
-QSize BaseViewport::minimumSizeHint() const
+QSize 
+BaseViewport::minimumSizeHint() const
 {
 	return QSize(50, 50);
 }
 
 
-QSize BaseViewport::sizeHint() const
+QSize 
+BaseViewport::sizeHint() const
 {
 	return QSize(600, 400);
 }
 
 
-void BaseViewport::initializeGL()
+void 
+BaseViewport::initializeGL()
 {
 	// set the state->camera position according to the nodal center
 	double pos[3] = {0};
@@ -95,7 +100,8 @@ void BaseViewport::initializeGL()
 }
 
 
-void BaseViewport::resizeGL(int width, int height)
+void 
+BaseViewport::resizeGL(int width, int height)
 {
 	viewport_data.aspect_ratio = qMin(width, height);
 	glViewport(0, 0, width, height);
@@ -109,7 +115,8 @@ void BaseViewport::resizeGL(int width, int height)
 }
 
 
-void BaseViewport::paintGL()
+void 
+BaseViewport::paintGL()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -119,7 +126,8 @@ void BaseViewport::paintGL()
 }
 
 
-void BaseViewport::mousePressEvent(QMouseEvent *event)
+void 
+BaseViewport::mousePressEvent(QMouseEvent *event)
 {
 	state->mousePressEvent(this, event);
 
@@ -127,7 +135,8 @@ void BaseViewport::mousePressEvent(QMouseEvent *event)
 }
 
 
-void BaseViewport::mouseMoveEvent(QMouseEvent *event)
+void 
+BaseViewport::mouseMoveEvent(QMouseEvent *event)
 {
 	state->mouseMoveEvent(this, event);
 
@@ -135,7 +144,8 @@ void BaseViewport::mouseMoveEvent(QMouseEvent *event)
 }
 
 
-void BaseViewport::wheelEvent(QWheelEvent *event)
+void 
+BaseViewport::wheelEvent(QWheelEvent *event)
 {
 	viewport_data.zoom += event->delta()/1000.0f;
 	//qWarning("viewport_data.zoom: %f, %f",viewport_data.zoom, pow(2,viewport_data.zoom));
@@ -146,13 +156,15 @@ void BaseViewport::wheelEvent(QWheelEvent *event)
 }
 
 
-void BaseViewport::keyPressEvent( QKeyEvent *event)
+void 
+BaseViewport::keyPressEvent( QKeyEvent *event)
 {
 	state->keyPressEvent(this, event);
 }
 
 
-void BaseViewport::setState(ViewportState<BaseViewport> *new_state)
+void 
+BaseViewport::setState(ViewportState<BaseViewport> *new_state)
 {
 	if(this->state != NULL) delete this->state;
 
@@ -162,13 +174,15 @@ void BaseViewport::setState(ViewportState<BaseViewport> *new_state)
 }
 
 
-void BaseViewport::refresh(void)
+void 
+BaseViewport::refresh(void)
 {
 	this->updateGL();
 }
 
 
-void BaseViewport::setViewSelection(Selection selection)
+void 
+BaseViewport::setViewSelection(Selection selection)
 {
 	//TODO finish this
 	ToggleRenderOperation operation(selection, true);
@@ -176,7 +190,8 @@ void BaseViewport::setViewSelection(Selection selection)
 }
 
 
-void BaseViewport::setXRotation(int angle)
+void 
+BaseViewport::setXRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[0] = angle;
@@ -185,7 +200,8 @@ void BaseViewport::setXRotation(int angle)
 }
 
 
-void BaseViewport::setYRotation(int angle)
+void 
+BaseViewport::setYRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[1] = angle;
@@ -194,7 +210,8 @@ void BaseViewport::setYRotation(int angle)
 }
 
 
-void BaseViewport::setZRotation(int angle)
+void 
+BaseViewport::setZRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[2] = angle;
@@ -203,7 +220,8 @@ void BaseViewport::setZRotation(int angle)
 }
 
 
-void BaseViewport::setPosition(double x, double y, double z)
+void 
+BaseViewport::setPosition(double x, double y, double z)
 {
 	//TODO implement this
 	viewport_data.camera.setPosition(x, y, z);
@@ -212,25 +230,29 @@ void BaseViewport::setPosition(double x, double y, double z)
 }
 
 
-void BaseViewport::setAnalysisResult(fem::AnalysisResult<double> &new_result)
+void 
+BaseViewport::setAnalysisResult(fem::AnalysisResult<double> &new_result)
 {
 	this->state->setAnalysisResult(new_result);
 }
 
 
-void BaseViewport::setDisplacementsScale(float scale)
+void 
+BaseViewport::setDisplacementsScale(float scale)
 {
 	this->state->setDisplacementsScale(scale);
 }
 
 
-void BaseViewport::setRenderGoupVisibility(SceneGraph::Groups group, bool state)
+void 
+BaseViewport::setRenderGoupVisibility(SceneGraph::Groups group, bool state)
 {
 	this->state->setRenderGoupVisibility(group, state);
 }
 
 
-void BaseViewport::normalizeAngle(int *angle)
+void 
+BaseViewport::normalizeAngle(int *angle)
 {
 	while (*angle < 0)
 		*angle += 360 * 16;
@@ -239,13 +261,15 @@ void BaseViewport::normalizeAngle(int *angle)
 }
 
 
-void BaseViewport::setSelection(Selection selection)
+void 
+BaseViewport::setSelection(Selection selection)
 {
 	this->state->setSelection(selection);
 }
 
 
-void BaseViewport::clearSelection()
+void 
+BaseViewport::clearSelection()
 {
 	this->state->clearSelection();
 }

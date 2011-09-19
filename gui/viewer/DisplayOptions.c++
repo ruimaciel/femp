@@ -13,7 +13,8 @@ DisplayOptions::~DisplayOptions()
 }
 
 
-void DisplayOptions::setDefaultOptions()
+void 
+DisplayOptions::setDefaultOptions()
 {
 	nodes = 1;
 	surfaces = 1;

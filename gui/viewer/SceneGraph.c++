@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <iostream>
+#include <map>
 
 #include "Logs.h++"
 
@@ -55,7 +56,22 @@ SceneGraph::paint(ViewportData &viewport_data, ViewportColors &colors)
 	for(map<int, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
 	{
 		if(i->second.render)
+		{
 			i->second.scenegraph.paintGL(viewport_data, colors);
+		}
+	}
+}
+
+
+void 
+SceneGraph::generateDisplayLists(ViewportData &viewport_data, ViewportColors &colors)
+{
+	for(std::map<int, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
+	{
+		if(i->second.render)
+		{
+			i->second.generateDisplayList(viewport_data, colors);
+		}
 	}
 }
 

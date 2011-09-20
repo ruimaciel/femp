@@ -55,12 +55,12 @@ public:
 	/**
 	Generates all the display lists
 	**/
-	void generateDisplayLists();
+	void generateDisplayLists(ViewportData &viewport_data, ViewportColors &colors);
 
 	/**
 	Renders the openGL scene, which consists of the list of display lists and 2D elements
 	**/
-	void paintGL();
+	// void paintGL();
 
 	/*
 	Generic routine to add a primitive component to this scenegraph

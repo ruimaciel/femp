@@ -31,7 +31,7 @@ public:
 	@param	selection	a set of model objects
 	@param	state	rendering state
 	**/
-	ToggleRenderOperation(Selection selection, bool state);
+	ToggleRenderOperation(Selection selection, bool state = true);
 
 	// Visitor pattern operations
 	void visit(SceneGraphComponent &element) {}

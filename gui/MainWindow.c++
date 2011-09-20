@@ -409,6 +409,8 @@ MainWindow::createActions()
 	connect(ui.actionSetModelViewport,		SIGNAL(triggered()),	this,	SLOT(setModelViewport()));
 	connect(ui.actionSetPostprocessingViewport,	SIGNAL(triggered()),	this,	SLOT(setPostprocessingViewport()));
 
+	connect(ui.actionViewSelection,	SIGNAL(triggered()),	this,	SLOT(showSelection()));
+
 	connect(ui.actionQuadrature_rules,	SIGNAL(triggered()),	this,	SLOT(editQuadratureRules()) );
 	connect(ui.actionSelection,		SIGNAL(triggered()),	this,	SLOT(editSelection()) );
 }
@@ -1168,6 +1170,27 @@ MainWindow::setPostprocessingViewport()
 		}
 	}
 
+}
+
+
+void 
+MainWindow::showSelection()
+{
+	qWarning(" MainWindow::showSelection()");
+	Selection selection = m_selection_manager.getSelection();
+	{
+		// this->createNewPostprocessingWindow();
+		QMdiSubWindow *mdi_window;
+		mdi_window = mdiArea->currentSubWindow();
+		if(mdi_window != NULL)
+		{
+			MdiWindow *window = static_cast<MdiWindow*>(mdi_window->widget() );
+			if(window != NULL)
+			{
+				window->showSelection(selection);
+			}
+		}
+	}
 }
 
 

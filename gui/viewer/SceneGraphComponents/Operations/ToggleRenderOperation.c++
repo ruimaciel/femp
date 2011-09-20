@@ -9,16 +9,23 @@ ToggleRenderOperation::ToggleRenderOperation(Selection selection, bool state)
 
 
 void 
-ToggleRenderOperation::visit(SGC::Node &element)
+ToggleRenderOperation::visit(SGC::Node &node)
 {
-	element.render = m_render_state;
+	if( m_selection.m_nodes_selected.find(node.reference()) != m_selection.m_nodes_selected.end())
+		node.render = m_render_state;
+	else
+		node.render = !m_render_state;
 }
 
 
 void 
 ToggleRenderOperation::visit(SGC::Element &element)
 {
-	element.render = m_render_state;
+	// if element is selected
+	if( m_selection.m_elements_selected.find(element.reference()) != m_selection.m_elements_selected.end())
+		element.render = m_render_state;
+	else
+		element.render = !m_render_state;
 }
 
 

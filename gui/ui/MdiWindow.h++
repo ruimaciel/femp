@@ -84,6 +84,7 @@ class MdiWindow
 		// libsigc++ slots
 		virtual void setSelection(Selection);	// sets the selection
 		virtual void clearSelection();		// clears the selection
+		void showSelection(const Selection);	// sets the viewport so that only the selected items are shown
 
 		/**
 		Handles all libsigc++ connections between this window and an object of type SelectionManager

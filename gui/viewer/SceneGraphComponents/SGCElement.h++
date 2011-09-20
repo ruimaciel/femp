@@ -47,6 +47,12 @@ public:
 	virtual void paintGL(ViewportData &data, ViewportColors &colors) = 0;
 
 
+	/**
+	returns this element's reference 
+	**/
+	fem::element_ref_t reference() const	{ return m_element_reference; }
+
+
 	//void setFramePolicy(FrameState *state);
 
 	void setElementRepresentationPolicy(ElementRepresentationPolicy *representation);

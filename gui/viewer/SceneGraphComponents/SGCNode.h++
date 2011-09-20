@@ -22,7 +22,7 @@ class Node
 	: public SceneGraphComponent
 {
 protected:
-	size_t node_label;
+	fem::node_ref_t node_label;
 	fem::Node *m_node;
 	DisplacementsRepresentationPolicy *m_displacements;
 
@@ -35,6 +35,8 @@ public:
 	Renders this node
 	*/
 	void paintGL(ViewportData &data, ViewportColors &colors);
+
+	fem::node_ref_t reference() const	{ return node_label; }
 
 	/*
 	Visitor pattern method

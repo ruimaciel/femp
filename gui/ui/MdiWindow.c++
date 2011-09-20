@@ -133,12 +133,20 @@ void MdiWindow::setColors(ViewportColors &colors)
 
 void MdiWindow::setSelection(Selection)
 {
-	std::cout << "void MdiWindow::setSelection(Selection)" << std::endl;
+	std::cout << "void MdiWindow::setSelection(Selection): hasn't been implemented" << std::endl;
 }
 
 
 void MdiWindow::clearSelection()
 {
+	std::cout << "void MdiWindow::setSelection(Selection): hasn't been implemented" << std::endl;
+}
+
+
+void MdiWindow::showSelection(const Selection selection)
+{
+	std::cout << "MdiWindow::viewSelection(const Selection selection)" << std::endl;
+	this->viewport->showSelection(selection);
 }
 
 

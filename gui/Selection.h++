@@ -3,6 +3,8 @@
 
 #include <set>
 #include "fem/Project.h++"
+#include "fem/Element.h++"
+#include "fem/Node.h++"
 
 /**
 A set of objects contained in a given fem::Project object which have been selected

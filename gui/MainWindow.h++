@@ -106,6 +106,11 @@ public Q_SLOTS:
 	void setModelViewport();
 	void setPostprocessingViewport();
 
+	/**
+	Sets the current MdiViewport to show only the selected objects
+	**/
+	void showSelection();
+
 	// set MDI subwindow configuration
 	void setTiledWindows();
 	void setCascadeWindows();

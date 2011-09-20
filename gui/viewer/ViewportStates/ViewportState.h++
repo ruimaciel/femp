@@ -3,6 +3,7 @@
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <assert.h>
+#include <iostream>
 #include <QMouseEvent>
 
 #include "../../fem/Model.h++"
@@ -71,6 +72,8 @@ public:
 	// libsigc++ slots
 	virtual void setSelection(Selection);	// sets the selection
 	virtual void clearSelection();		// clears the selection list representation
+
+	virtual void showSelection(const Selection);	// only displays the selected objects
 };
 
 
@@ -160,6 +163,14 @@ template <class Viewport>
 void 
 ViewportState<Viewport>::clearSelection()
 {
+}
+
+
+template <class Viewport>
+void 
+ViewportState<Viewport>::showSelection(const Selection)
+{
+	std::cout << "ViewportState::showSelection(const Selection selection)" << std::endl;
 }
 
 

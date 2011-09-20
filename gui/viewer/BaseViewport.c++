@@ -3,7 +3,6 @@
 #include "SceneGraphComponents/Operations/ToggleRenderOperation.h++"
 
 
-
 BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
 	: QGLWidget(parent)
 {
@@ -273,4 +272,14 @@ BaseViewport::clearSelection()
 {
 	this->state->clearSelection();
 }
+
+
+void 
+BaseViewport::showSelection(const Selection selection)
+{
+	//this->state->showSelection(selection);
+	ToggleRenderOperation op(selection);
+	this->state->runSceneGraphOperation(op);
+}
+
 

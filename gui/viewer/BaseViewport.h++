@@ -99,6 +99,7 @@ public:
 	// libsigc++ slots
 	void setSelection(Selection);	// sets the selection
 	void clearSelection();		// clears the selection list representation
+	void showSelection(const Selection);
 
 protected:
 	void initializeGL();

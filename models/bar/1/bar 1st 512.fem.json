@@ -1374,7 +1374,8 @@
 		{ "node":161, "dx":true, "dy":true, "dz":true},
 		{ "node":162, "dx":true, "dy":true, "dz":true},
 		{ "node":163, "dx":true, "dy":true, "dz":true},
-		{ "node":164, "dx":true, "dy":true, "dz":true}
+		{ "node":164, "dx":true, "dy":true, "dz":true},
+		{ "node":165, "dx":true, "dy":true, "dz":true}
 	],
 
 	"load patterns":[

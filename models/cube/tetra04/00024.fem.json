@@ -1,0 +1,65 @@
+{
+	"fem": {
+		"version": "1.0",
+		"type": "3D solid"
+	},
+	"materials": [
+		{"type":"linear elastic", "label": "Mat", "E":1000,"nu":0.25, "fy": 4.94066e-324}
+	],
+	"nodes":[
+		[	1,[	-0.5,	-0.5,	-0.5	]],
+		[	2,[	0.5,	-0.5,	-0.5	]],
+		[	3,[	0.5,	0.5,	-0.5	]],
+		[	4,[	-0.5,	0.5,	-0.5	]],
+		[	5,[	-0.5,	-0.5,	0.5	]],
+		[	6,[	0.5,	-0.5,	0.5	]],
+		[	7,[	0.5,	0.5,	0.5	]],
+		[	8,[	-0.5,	0.5,	0.5	]],
+		[	9,[	0,	0.5,	0	]],
+		[	10,[	-0.5,	0,	0	]],
+		[	11,[	0,	0,	0.5	]],
+		[	12,[	0.5,	0,	0	]],
+		[	13,[	0,	0,	-0.5	]],
+		[	14,[	0,	-0.5,	0	]]
+	],
+	"elements":[
+		{"type":"tetrahedron4", "nodes":[4,13,9,10], "material": 0},
+		{"type":"tetrahedron4", "nodes":[14,11,5,6]},
+		{"type":"tetrahedron4", "nodes":[13,1,14,10]},
+		{"type":"tetrahedron4", "nodes":[14,1,5,10]},
+		{"type":"tetrahedron4", "nodes":[3,12,7,9]},
+		{"type":"tetrahedron4", "nodes":[2,12,14,6]},
+		{"type":"tetrahedron4", "nodes":[12,14,11,10]},
+		{"type":"tetrahedron4", "nodes":[2,13,14,12]},
+		{"type":"tetrahedron4", "nodes":[11,8,9,10]},
+		{"type":"tetrahedron4", "nodes":[13,4,1,10]},
+		{"type":"tetrahedron4", "nodes":[14,12,11,6]},
+		{"type":"tetrahedron4", "nodes":[2,3,13,12]},
+		{"type":"tetrahedron4", "nodes":[8,11,5,10]},
+		{"type":"tetrahedron4", "nodes":[13,3,9,12]},
+		{"type":"tetrahedron4", "nodes":[12,11,9,10]},
+		{"type":"tetrahedron4", "nodes":[11,8,7,9]},
+		{"type":"tetrahedron4", "nodes":[12,13,14,10]},
+		{"type":"tetrahedron4", "nodes":[13,12,9,10]},
+		{"type":"tetrahedron4", "nodes":[8,4,9,10]},
+		{"type":"tetrahedron4", "nodes":[4,3,9,13]},
+		{"type":"tetrahedron4", "nodes":[14,11,10,5]},
+		{"type":"tetrahedron4", "nodes":[13,2,14,1]},
+		{"type":"tetrahedron4", "nodes":[11,12,7,6]},
+		{"type":"tetrahedron4", "nodes":[11,12,9,7]}
+	]
+	,
+	"node restrictions": [
+		{ "node":[  1,  4], "dx":true, "dy":true, "dz":true},
+		{ "node":13, "dx":true, "dy":true, "dz":true}
+	],
+
+	"load patterns":[
+		{
+			"label": "distributed domain load",
+			"domain loads":[
+				{"element":[0,23], "force": [0,-1,0]}
+			]
+		}
+	]
+}

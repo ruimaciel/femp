@@ -186,7 +186,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 
 		// set up the temporary variables for the elementary matrix and vector
 	Matrix<Scalar,Dynamic, Dynamic> k_elem;
-	Matrix<Scalar,Dynamic, Dynamic> k_test;	//TODO testing purposes only. remove.
 	Matrix<Scalar,Dynamic,1> f_elem;
 	Matrix<Scalar,Dynamic,Dynamic> B;
 	Matrix<Scalar,Dynamic,Dynamic> Bt;
@@ -251,14 +250,12 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 
 			// resize the elementary matrices to fit the new node size
 		k_elem.resize(nnodes*3,nnodes*3);
-		k_test.resize(nnodes*3,nnodes*3);	//TODO testing only. remove.
 		f_elem.resize(nnodes*3);
 		B.resize(6,3*nnodes);
 		Bt.resize(3*nnodes,6);
 
 			// initialize variables
 		k_elem.setZero();
-		k_test.setZero();
 		f_elem.setZero();
 		B.setZero();
 

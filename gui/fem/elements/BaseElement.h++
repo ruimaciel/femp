@@ -2,6 +2,7 @@
 #define BASE_ELEMENT_HPP
 
 #include <vector>
+#include <map>
 #include <math.h>
 #include <boost/tuple/tuple.hpp>
 

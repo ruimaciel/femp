@@ -6,6 +6,7 @@
 /**
 Base class for all MDI windows which render a model
 **/
+
 MdiWindow::MdiWindow (QWidget *parent)
 	: QMainWindow(parent)
 {
@@ -27,7 +28,8 @@ MdiWindow::MdiWindow (QWidget *parent)
 }
 
 
-void MdiWindow::createViewportToolbar()
+void 
+MdiWindow::createViewportToolbar()
 {
 	// create actions
 	actionViewportXY = new QAction("XY", this);
@@ -44,7 +46,8 @@ void MdiWindow::createViewportToolbar()
 }
 
 
-void MdiWindow::createVisibilityToolbar()
+void 
+MdiWindow::createVisibilityToolbar()
 {
 	actionVisibleNodes = new QAction("Nodes",this);
 	actionVisibleNodes->setCheckable(true);
@@ -60,7 +63,8 @@ void MdiWindow::createVisibilityToolbar()
 }
 
 
-void MdiWindow::setViewportXY()
+void 
+MdiWindow::setViewportXY()
 {
 	viewport->setXRotation(0);
 	viewport->setYRotation(0);
@@ -68,7 +72,8 @@ void MdiWindow::setViewportXY()
 }
 
 
-void MdiWindow::setViewportYZ()
+void 
+MdiWindow::setViewportYZ()
 {
 	viewport->setXRotation(0);
 	viewport->setYRotation(90);
@@ -76,14 +81,17 @@ void MdiWindow::setViewportYZ()
 }
 
 
-void MdiWindow::setViewportXZ()
+void 
+MdiWindow::setViewportXZ()
 {
 	viewport->setXRotation(90);
 	viewport->setYRotation(0);
 	viewport->setZRotation(0);
 }
 
-void MdiWindow::setViewportIso()
+
+void 
+MdiWindow::setViewportIso()
 {
 	viewport->setXRotation(45);
 	viewport->setYRotation(45);
@@ -91,20 +99,24 @@ void MdiWindow::setViewportIso()
 }
 
 
-void MdiWindow::setNodeVisibility(const bool state)
+void 
+MdiWindow::setNodeVisibility(const bool state)
 {
 	this->viewport->setRenderGoupVisibility(SceneGraph::RG_NODES, state);
 	this->viewport->refresh();
 }
 
-void MdiWindow::setNodeRestrictionsVisibility(const bool state)
+
+void 
+MdiWindow::setNodeRestrictionsVisibility(const bool state)
 {
 	this->viewport->setRenderGoupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, state);
 	this->viewport->refresh();
 }
 
 
-void MdiWindow::connectSignalsToSlots()
+void 
+MdiWindow::connectSignalsToSlots()
 {
 	//signals and slots
 	connect(actionViewportXY, SIGNAL(triggered()),	this,	SLOT(setViewportXY()));
@@ -116,7 +128,8 @@ void MdiWindow::connectSignalsToSlots()
 }
 
 
-void MdiWindow::normalizeAngle(int *angle)
+void 
+MdiWindow::normalizeAngle(int *angle)
 {
 	while (*angle < 0)
 		*angle += 360 * 16;
@@ -125,37 +138,42 @@ void MdiWindow::normalizeAngle(int *angle)
 }
 
 
-void MdiWindow::setColors(ViewportColors &colors)
+void 
+MdiWindow::setColors(ViewportColors &colors)
 {
 	viewport->setColors(colors);
 }
 
 
-void MdiWindow::setSelection(Selection)
+void 
+MdiWindow::setSelection(Selection)
 {
 	std::cout << "void MdiWindow::setSelection(Selection): hasn't been implemented" << std::endl;
 }
 
 
-void MdiWindow::clearSelection()
+void 
+MdiWindow::clearSelection()
 {
 	std::cout << "void MdiWindow::setSelection(Selection): hasn't been implemented" << std::endl;
 }
 
 
-void MdiWindow::showSelection(const Selection selection)
+void 
+MdiWindow::showSelection(const Selection selection)
 {
 	std::cout << "MdiWindow::viewSelection(const Selection selection)" << std::endl;
 	this->viewport->showSelection(selection);
 }
 
 
-void MdiWindow::connectToSelectionManager(SelectionManager &selection_manager)
+void 
+MdiWindow::connectToSelectionManager(SelectionManager &selection_manager)
 {
 	// connects signals to slots
 	std::cout << "void MdiWindow::connectToSelectionManager(SelectionManager &selection_manager)" << std::endl;
 
-	selection_manager.selection_changed.connect( sigc::mem_fun(this, &MdiWindow::setSelection));
+	selection_manager.selection_changed.connect( sigc::mem_fun(this, & MdiWindow::setSelection));
 	this->selection_changed.connect( sigc::mem_fun(selection_manager, &SelectionManager::setSelection));
 }
 

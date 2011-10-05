@@ -16,24 +16,28 @@ ModelWindow::ModelWindow (fem::Project &project, ViewportColors &colors, QWidget
 }
 
 
-void ModelWindow::connectSignalsToSlots()
+void 
+ModelWindow::connectSignalsToSlots()
 {
 }
 
 
-void ModelWindow::setSelection(Selection)
+void 
+ModelWindow::setSelection(Selection)
 {
 	std::cout << "void ModelWindow::setSelection(Selection)" << std::endl;
 }
 
 
-void ModelWindow::clearSelection()
+void 
+ModelWindow::clearSelection()
 {
 	std::cout << "void ModelWindow::clearSelection()" << std::endl;
 }
 
 
-void ModelWindow::connectToSelectionManager(SelectionManager &selection_manager)
+void 
+ModelWindow::connectToSelectionManager(SelectionManager &selection_manager)
 {
 	// connects signals to slots
 	std::cout << "void ModelWindow::connectToSectionManager(SelectionManager &selection_manager)" << std::endl;
@@ -41,4 +45,5 @@ void ModelWindow::connectToSelectionManager(SelectionManager &selection_manager)
 	selection_manager.selection_changed.connect( sigc::mem_fun(this, &ModelWindow::setSelection));
 	this->selection_changed.connect( sigc::mem_fun(selection_manager, &SelectionManager::setSelection));
 }
+
 

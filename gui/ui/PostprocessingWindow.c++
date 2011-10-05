@@ -7,6 +7,7 @@
 #include "../fem/ElementResults/ElementResults.h++"
 
 
+
 PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent)
 	: MdiWindow(parent), 
 	WindowWithResults(project, colors, parent), 
@@ -29,26 +30,30 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::Analysis
 }
 
 
-void PostprocessingWindow::setDisplacementsScale(double scale)
+void 
+PostprocessingWindow::setDisplacementsScale(double scale)
 {
 	this->viewport->setDisplacementsScale((float)scale);
 	this->viewport->refresh();
 }
 
 
-void PostprocessingWindow::setNodeRestrictionsVisibility(const bool )
+void 
+PostprocessingWindow::setNodeRestrictionsVisibility(const bool )
 {
 	//TODO run a scenegraph operation
 	qWarning(" void PostprocessingWindow::setNodeRestrictionsVisibility(const bool )");
 }
 
 
-void PostprocessingWindow::setGhostSurfacesVisibility(const bool )
+void 
+PostprocessingWindow::setGhostSurfacesVisibility(const bool )
 {
 }
 
 
-void PostprocessingWindow::setAnalysisResult(fem::AnalysisResult<double> &result)
+void 
+PostprocessingWindow::setAnalysisResult(fem::AnalysisResult<double> &result)
 {
 	this->m_result = &result;
 	this->setGradientValuesRange(result);
@@ -56,7 +61,8 @@ void PostprocessingWindow::setAnalysisResult(fem::AnalysisResult<double> &result
 }
 
 
-void PostprocessingWindow::connectSignalsToSlots()
+void 
+PostprocessingWindow::connectSignalsToSlots()
 {
 	WindowWithScaling::connectSignalsToSlots();
 	WindowWithPostprocessing::connectSignalsToSlots();
@@ -67,7 +73,8 @@ void PostprocessingWindow::connectSignalsToSlots()
 }
 
 
-void PostprocessingWindow::createToolBars(fem::Project &project)
+void 
+PostprocessingWindow::createToolBars(fem::Project &project)
 {
 	WindowWithScaling::createToolbar(project);
 	WindowWithResults::createToolbar(project);
@@ -79,21 +86,24 @@ void PostprocessingWindow::createToolBars(fem::Project &project)
 }
 
 
-void PostprocessingWindow::setGradientValuesRange(const fem::AnalysisResult<double> &result)
+void 
+PostprocessingWindow::setGradientValuesRange(const fem::AnalysisResult<double> &result)
 {
 	//TODO finish this
 	this->m_results_ranges = result.ranges;
 }
 
 
-void PostprocessingWindow::toggleMenuBarVisibility(bool visibility)
+void 
+PostprocessingWindow::toggleMenuBarVisibility(bool visibility)
 {
 	qWarning("void PostprocessingWindow::toggleMenuBarVisibility(bool visibility) ");
 	this->menuBar()->setVisible(visibility);
 }
 
 
-void PostprocessingWindow::setResultsRanges()
+void 
+PostprocessingWindow::setResultsRanges()
 {
 	ResultsRangeDialog dialog(this);
 	dialog.setValueRanges(this->m_results_ranges);
@@ -110,7 +120,8 @@ void PostprocessingWindow::setResultsRanges()
 }
 
 
-void PostprocessingWindow::setPostprocessingState(int state)
+void 
+PostprocessingWindow::setPostprocessingState(int state)
 {
 	PostprocessingViewport *current_vp = NULL;
 	current_vp = static_cast<PostprocessingViewport*>(this->viewport);
@@ -178,28 +189,31 @@ void PostprocessingWindow::setPostprocessingState(int state)
 			break;
 
 		default:
-			qWarning("PostprocessingWindow::setPostprocessingState(%d), unused state", state);
+			qWarning(" PostprocessingWindow::setPostprocessingState(%d), unused state", state);
 			break;
 	}
 }
 
 
-void PostprocessingWindow::setSelection(Selection)
+void 
+PostprocessingWindow::setSelection(Selection)
 {
 }
 
 
-void PostprocessingWindow::clearSelection()
+void 
+PostprocessingWindow::clearSelection()
 {
 }
 
 
-void PostprocessingWindow::connectToSelectionManager(SelectionManager &selection_manager)
+void 
+PostprocessingWindow::connectToSelectionManager(SelectionManager &selection_manager)
 {
 	// connects signals to slots
 	std::cout << "void PostprocessingWindow::connectToSelectionManager(SelectionManager &selection_manager)" << std::endl;
 
-	selection_manager.selection_changed.connect( sigc::mem_fun(this, &PostprocessingWindow::setSelection));
+	selection_manager.selection_changed.connect( sigc::mem_fun(this, & PostprocessingWindow::setSelection));
 	this->selection_changed.connect( sigc::mem_fun(selection_manager, &SelectionManager::setSelection));
 }
 

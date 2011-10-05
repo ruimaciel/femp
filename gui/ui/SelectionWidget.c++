@@ -97,13 +97,13 @@ SelectionWidget::updateSelection()
 		if(i->second->isSelected())
 			new_selection.m_elements_selected.insert(i->first);
 	}
-	/*
+
 	for(std::map<fem::node_ref_t, QTreeWidgetItem *>::iterator i = m_node_map.begin(); i != m_node_map.end(); i++)
 	{
 		if(i->second->isSelected())
 			new_selection.m_nodes_selected.insert(i->first);
 	}
-	/ */
+	// */
 
 	//this->selection_changed.emit(new_selection); // this doesn't work, due to Qt
 	this->selection_changed(new_selection);

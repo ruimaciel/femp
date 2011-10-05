@@ -34,7 +34,7 @@ public:
 	ToggleRenderOperation(Selection selection, bool state = true);
 
 	// Visitor pattern operations
-	void visit(SceneGraphComponent &element) {}
+	void visit(SceneGraphComponent &);
 	void visit(SGC::Node &element);
 	void visit(SGC::Element &element);
 };

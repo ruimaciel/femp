@@ -8,6 +8,8 @@
 #include "ui_SelectionWidget.h"
 
 #include "../fem/Project.h++"
+#include "../fem/Group.h++"
+#include "../Selection.h++"
 #include "../SelectionManager.h++"
 
 
@@ -26,6 +28,8 @@ protected:
 
 	QTreeWidgetItem *m_node_item;
 	std::map<fem::node_ref_t, QTreeWidgetItem *>	m_node_map;	// list of all element references
+
+	std::vector<fem::Group>	m_selection_groups;
 
 public:
 	SelectionWidget(fem::Project &project, SelectionManager &, QWidget *parent = 0);
@@ -50,6 +54,11 @@ protected Q_SLOTS:
 	**/
 	void updateSelection();
 
+	/**
+	Changes the current selection to a specific group selection
+	**/
+	void changeGroupList(int);
+
 protected:
 	/**
 	initializes the widget by filling all the revevant values
@@ -57,6 +66,12 @@ protected:
 	@param selection_manager
 	**/
 	void initializeWidget(fem::Project &project, SelectionManager &selection_manager);
+
+	/**
+	Initializes the fem::Group list according to the group definitions stored in a given fem::Project object
+	**/
+	void initializeSelectionGroups(fem::Project &project);
+
 
 };
 

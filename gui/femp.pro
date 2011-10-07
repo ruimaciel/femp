@@ -18,6 +18,7 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	Selection*.h++ \
 	ui/*.h++ \
 	fem/Project.h++ \
+	fem/Group.h++ \
 	fem/Model.h++ fem/Node.h++ fem/Element.h++ fem/Material.h++ fem/LoadPattern.h++ fem/NodalLoad.h++ fem/NodalDisplacement.h++ fem/point.h++ fem/NodeRestrictions.h++ \
 	fem/DomainLoad.h++ fem/SurfaceLoad.h++ \
 	fem/ElementGroup.h++ fem/NodeGroup.h++ \
@@ -59,6 +60,7 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	Selection*.c++ \
 	ui/*.c++ \
 	fem/Project.c++ \
+	fem/Group.c++ \
 	fem/Model.c++ fem/Node.c++ fem/Element.c++ fem/Material.c++ fem/LoadPattern.c++ fem/NodalLoad.c++ fem/NodalDisplacement.c++ fem/point.c++ fem/NodeRestrictions.c++ \
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
 	fem/ElementGroup.c++ fem/NodeGroup.c++ \

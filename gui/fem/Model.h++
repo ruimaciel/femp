@@ -48,7 +48,7 @@ class Model {
 		std::map<node_restriction_ref_t, NodeRestrictions>	node_restrictions_list;	// the node restrictions aren't stored in the Node class in order to save up memory
 		std::vector<LoadPattern>	load_pattern_list;
 
-	protected:
+	public:	// rethink this
 		std::vector<NodeGroup>		m_node_groups;
 		std::vector<ElementGroup>	m_element_groups;
 

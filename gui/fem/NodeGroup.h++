@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#include "Node.h++"
+
 
 namespace fem
 {

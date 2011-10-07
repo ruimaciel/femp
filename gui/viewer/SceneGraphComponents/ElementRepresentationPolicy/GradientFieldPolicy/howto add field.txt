@@ -1,0 +1,8 @@
+Add a new GradientFieldRepresentationPolicy class
+	add renderblah() method
+Add attributes to GradientFieldFlyweightFactory
+	add methods to set{Maximum,Minimum}GradientValue, setModel and setAnalysisResult
+Update VPStateGradient
+Update PostProcessingViewport
+Update PostProcessingWindow
+Update WindowWithPostprocessing

@@ -3,10 +3,10 @@ b = 0.046;
 t_w = 0.0038;
 t_f = 0.0052;
 r = 0.005;
-l = 2.0;
+l = 1.0;
 
-div = 32;
-div_t = 2;
+div = 2*32;
+div_t = 3;
 div_b = div_t*3;
 div_w = div_b*2;
 div_r = div_t*2;
@@ -94,7 +94,7 @@ Line Loop(46) = {28, -20, 29, 22};
 Plane Surface(47) = {46};
 
 // set transfinite lines
-Transfinite Line{2, 4, 5, 7, 9, 11, 13, 15} = div_t;
+Transfinite Line{2, 4, 5, 7, 9, 11, 13, 15, 18, 20} = div_t;
 Transfinite Line{1,3,6,8,10,12,14,16,21,22,23,24} = div_b;
 Transfinite Line{17,19} = div_w;
 Transfinite Line{26,27,28,29} = div_r;
@@ -105,11 +105,12 @@ Transfinite Surface{35} = {9,11,21,22};
 Transfinite Surface{37} = {5, 6, 15, 24};
 Transfinite Surface{39} = {7,8,13,23};
 Transfinite Surface{41} = {13,15,23,24};
+Transfinite Surface{43} = {10, 12, 14, 16};
 
 Recombine Surface{31,33,35,37,39,41,43,45,47};
 
 // extruding
-Extrude {0, 0, 1} {
+Extrude {0, 0, l} {
   Surface{37, 41, 39, 45, 43, 47, 33, 35, 31};Layers{ 1*div}; Recombine;
 }
 Physical Volume(246) = {9, 8, 7, 6, 5, 4, 2, 3, 1};

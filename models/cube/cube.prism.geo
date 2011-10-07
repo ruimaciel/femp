@@ -1,11 +1,11 @@
-Mesh.ElementOrder = 2;
+Mesh.ElementOrder = 1;
 Mesh.SecondOrderIncomplete = 0;
 
 b = 1;
 h = 1;
 l = 1;
 
-div = 1;
+div = 2;
 
 Point(1) = {	-b/2,	 -h/2, -l/2, 1e+22};
 Point(2) = {	 b/2,	 -h/2, -l/2, 1e+22};

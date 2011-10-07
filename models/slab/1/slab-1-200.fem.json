@@ -576,6 +576,26 @@
 		{ "type": "hexahedron8", "nodes": [	230,	229,	240,	241,	351,	350,	361,	362] },
 		{ "type": "hexahedron8", "nodes": [	231,	230,	241,	242,	352,	351,	362,	363] }
 	], 
+	"groups": {
+		"nodes": [
+			{
+				"label": "corner nodes",
+				"nodes": [1, 122, 243]
+			},
+			{
+				"label": "symmetry",
+				"nodes": [1,2,3,4,5,6,7,8,9,10,11, 122,123,124,125,126,127,128,129,130,131,132,243,244,245,246,247,248,249,250,251,252,253]
+			}
+
+		]
+		,
+		"elements": [
+			{
+				"label": "corner elements",
+				"elements": [ 0, 100]
+			}
+		]
+	},
 
 	"node restrictions": [
 		{ "node": 132, "dx":true, "dy":true, "dz":true},

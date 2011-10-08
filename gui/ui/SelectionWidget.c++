@@ -18,8 +18,9 @@ SelectionWidget::SelectionWidget(fem::Project &project, SelectionManager &select
 	initializeSelectionGroups(project);
 	initializeWidget(project, selection_manager);
 
-	connect(this->selectPushButton, SIGNAL(clicked()), this, SLOT(updateSelection()));
-	connect(this->groupsComboBox,	SIGNAL(currentIndexChanged(int)),	this,	SLOT(changeGroupList(int)) );
+	connect(this->selectPushButton, SIGNAL(clicked()),	this,	SLOT(updateSelection()));
+	connect(this->toolButtonSet,	SIGNAL(clicked()),	this,	SLOT(setGroupList()));
+	connect(this->toolButtonAdd,	SIGNAL(clicked()),	this,	SLOT(unionGroupList()) );
 }
 
 
@@ -122,20 +123,57 @@ SelectionWidget::updateSelection()
 
 
 void 
-SelectionWidget::changeGroupList(int index)
+SelectionWidget::setGroupList()
 {
-	std::cout <<  "SelectionWidget::changeGroupList(int index)" << std::endl;
+	//TODO finish this
+	std::cout <<  "SelectionWidget::setGroupList()" << std::endl;
+
+	// get current index
+	int index = groupsComboBox->currentIndex();
+
 	if(index == -1)
 	{
-		std::cerr << "SelectionWidget::changedGroupList(int index): passed a -1" << std::endl;
+		std::cerr <<  "SelectionWidget::setGroupList(): combo box is empty" << std::cerr;
 		return;
 	}
 
+	// set selection group
 	Selection new_selection;
 	new_selection.m_nodes_selected = m_selection_groups[index].m_node_references;
 	new_selection.m_elements_selected = m_selection_groups[index].m_element_references;
 
 	this->selection_changed(new_selection);
+}
+
+
+void 
+SelectionWidget::unionGroupList()
+{
+	//TODO finish this
+	std::cout <<  "SelectionWidget::unionGroupList()" << std::endl;
+
+	// get current index
+	int index = groupsComboBox->currentIndex();
+
+	if(index == -1)
+	{
+		std::cerr <<  "SelectionWidget::unionGroupList(): combo box is empty" << std::cerr;
+		return;
+	}
+
+	fem::Group *group = &m_selection_groups[index];
+	
+	for(std::set<fem::element_ref_t>::iterator i =	group->m_element_references.begin(); i != group->m_element_references.end(); i++)
+	{
+		this->m_element_map[*i]->setSelected(true);
+	}
+	for(std::set<fem::node_ref_t>::iterator i =	group->m_node_references.begin(); i != group->m_node_references.end(); i++)
+	{
+		this->m_node_map[*i]->setSelected(true);
+	}
+
+	// set selection group
+	updateSelection();
 }
 
 

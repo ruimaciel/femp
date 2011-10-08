@@ -57,7 +57,8 @@ protected Q_SLOTS:
 	/**
 	Changes the current selection to a specific group selection
 	**/
-	void changeGroupList(int);
+	void setGroupList();
+	void unionGroupList();
 
 protected:
 	/**

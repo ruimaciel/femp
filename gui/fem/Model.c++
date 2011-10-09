@@ -43,6 +43,9 @@ Model::clear()
 	material_list.clear();
 	node_restrictions_list.clear();
 	load_pattern_list.clear();
+
+	m_node_groups.clear();
+	m_element_groups.clear();
 }
 
 

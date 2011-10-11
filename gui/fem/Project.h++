@@ -16,17 +16,17 @@ namespace fem
 
 class Project
 {
-	public:
-		Model model;	// the FEM model
-		std::vector<AnalysisResult<double> > result;	// a list with all analysis
+public:
+	Model model;	// the FEM model
+	std::vector<AnalysisResult<double> > result;	// a list with all analysis
 		
-	public:
-		void clear();
+public:
+	void clear();
 	
-		/**
-		Adds the result of a new analysis process to the result list
-		**/
-		void pushAnalysisResult(fem::AnalysisResult<double> &new_result);
+	/**
+	Adds the result of a new analysis process to the result list
+	**/
+	void pushAnalysisResult(fem::AnalysisResult<double> &new_result);
 };
 
 }

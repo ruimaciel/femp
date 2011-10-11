@@ -3,6 +3,7 @@
 
 #include "Model.h++"
 #include "AnalysisResult.h++"
+#include "ProjectVisitor/ProjectVisitor.h++"
 
 #include <vector>
 
@@ -27,6 +28,11 @@ public:
 	Adds the result of a new analysis process to the result list
 	**/
 	void pushAnalysisResult(fem::AnalysisResult<double> &new_result);
+
+	/**
+	Implements a Visitor design pattern
+	**/
+	void Accept(ProjectVisitor &visitor);
 };
 
 }

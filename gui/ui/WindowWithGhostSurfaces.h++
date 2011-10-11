@@ -16,19 +16,19 @@ Enhances MdiWindow's visibility toolbar to also toggle ghost surfaces (i.e., tra
 class WindowWithGhostSurfaces
 	: public virtual MdiWindow
 {
-	protected:
-		QAction *actionVisibleGhostSurfaces;	// used in the visibility toolbar, to refer to the translucent surfaces which represent the original configuration
+protected:
+	QAction *actionVisibleGhostSurfaces;	// used in the visibility toolbar, to refer to the translucent surfaces which represent the original configuration
 
-	public:
-		WindowWithGhostSurfaces(fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
+public:
+	WindowWithGhostSurfaces(fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
 
-		void createToolbar();
+	void createToolbar();
 	
-	public slots:
-		void setGhostSurfacesVisibility(const bool);
+public slots:
+	void setGhostSurfacesVisibility(const bool);
 
-	protected:
-		void connectSignalsToSlots() ;
+protected:
+	void connectSignalsToSlots() ;
 
 };
 

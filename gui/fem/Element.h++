@@ -7,7 +7,7 @@
 
 namespace fem
 {
-	typedef size_t element_ref_t;
+	// typedef size_t element_ref_t; // new definition bellow
 
 class Element 
 {
@@ -87,6 +87,11 @@ public:
 	int node_number() const;
 	
 	enum ElementFamily family() const;
-	};
+};
+
+
+typedef std::vector<Element>::size_type  element_ref_t; // current definition
+
 }
+
 #endif

@@ -26,8 +26,8 @@ public:
 	enum Type {VAL_NUMBER = 0, VAL_STRING = 1, VAL_BOOL = 2, VAL_NUMBER_LIST};
 
 private:
-	enum Level option_level:	2;
-	enum Type type:	3;
+	enum Level option_level;
+	enum Type type;
 	union u_value {
 		double number;
 		bool b;

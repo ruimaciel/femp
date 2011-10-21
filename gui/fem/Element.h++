@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Material.h++"
+#include "Node.h++"
 
 
 namespace fem
@@ -69,7 +70,7 @@ public:
 
 public:
 	material_ref_t material;		// reference to a material in Model's material map
-	std::vector<size_t> nodes;	// nodes that define this element
+	std::vector<node_ref_t> nodes;	// nodes that define this element
 	Type type;
 
 	Element();

@@ -32,7 +32,7 @@ public:
 	/**
 	Implements a Visitor design pattern
 	**/
-	void Accept(ProjectVisitor &visitor);
+	void accept(ProjectVisitor &visitor);
 };
 
 }

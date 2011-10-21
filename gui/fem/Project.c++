@@ -21,7 +21,7 @@ Project::pushAnalysisResult(fem::AnalysisResult<double> &new_result)
 
 
 void 
-Project::Accept(ProjectVisitor &visitor)
+Project::accept(ProjectVisitor &visitor)
 {
 	visitor.visit(model,result);
 }

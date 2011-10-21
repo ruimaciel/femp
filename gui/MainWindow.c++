@@ -45,6 +45,8 @@
 #include "fem/solvers/CholeskySolver.h++"
 #include "fem/solvers/CGSolver.h++"
 
+#include "fem/ProjectVisitor/OutputResultsInNodesVisitor.h++"
+
 #include "parsers/FemJsonParser.h++"
 
 
@@ -413,6 +415,7 @@ MainWindow::createActions()
 
 	connect(ui.actionQuadrature_rules,	SIGNAL(triggered()),	this,	SLOT(editQuadratureRules()) );
 	connect(ui.actionSelection,		SIGNAL(triggered()),	this,	SLOT(editSelection()) );
+	connect(ui.actionResults_from_selection,		SIGNAL(triggered()),	this,	SLOT(dumpResultsFromSelection()) );
 }
 
 
@@ -1000,7 +1003,9 @@ MainWindow::runAnalysis()
 	//TODO set the UI
 	this->setPostprocessingViewport();
 
+        ui.menuDump->setEnabled(true);
         ui.actionDump_FEM_equation->setEnabled(true);
+        ui.actionResults_from_selection->setEnabled(true);
 
 	delete solver;
 
@@ -1133,6 +1138,41 @@ MainWindow::dumpFemEquation()
 }
 
 
+void
+MainWindow::dumpResultsFromSelection(fem::AnalysisResult<double> *result)
+{
+	//TODO this currently doesn't work, as no signal emits a *result
+	if(result == NULL)
+	{
+		std::cerr << "MainWindow::dumpResultsFromSelection(fem::AnalysisResult<double> *result): result == NULL" << std::endl;
+		return;
+	}
+
+	/*
+	//TODO finish this
+	OutputResultsInNodesVisitor visitor(result);
+
+	document.project.accept(visitor);
+	*/
+}
+
+
+void
+MainWindow::dumpResultsFromSelection()
+{
+	//TODO finish this
+	fem::AnalysisResult<double> * result;
+	result = &this->document.project.result.back();	// nasty hack
+
+	Selection selection;
+	selection = m_selection_manager.getSelection();
+
+	OutputResultsInNodesVisitor visitor(selection, result);
+
+	document.project.accept(visitor);
+}
+
+
 void 
 MainWindow::setModelViewport()
 {
@@ -1166,6 +1206,11 @@ MainWindow::setPostprocessingViewport()
 			// there is an active subwindow
 			PostprocessingWindow *window;	// opengl viewport
 			window = new PostprocessingWindow(document.project, document.project.result.back(), colors, this);
+
+			// set connections
+			connect(window,	SIGNAL(dumpResultsFromSelection(fem::AnalysisResult<double> *)),	this,	SLOT(dumpResultsFromSelection(fem::AnalysisResult<double> *) ) );
+
+			// set the widget
 			mdi_window->setWidget(window);
 		}
 	}
@@ -1328,6 +1373,8 @@ MainWindow::setUserInterfaceAsClosed()
 	ui.menuProject->setDisabled(true);
 	ui.menuView->setDisabled(true);
 	ui.menuWindow->setDisabled(true);
+        ui.menuDump->setDisabled(true);
+
 	ui.actionReopen->setDisabled(true);
 	ui.actionSave->setDisabled(true);
 	ui.actionSaveAs->setDisabled(true);
@@ -1337,6 +1384,7 @@ MainWindow::setUserInterfaceAsClosed()
 	ui.actionEditMaterials->setDisabled(true);
 	ui.actionQuadrature_rules->setDisabled(true);
         ui.actionDump_FEM_equation->setDisabled(true);
+        ui.actionResults_from_selection->setDisabled(true);
 
 	// close all MDI windows
 	mdiArea->closeAllSubWindows();

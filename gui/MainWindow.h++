@@ -94,6 +94,17 @@ public Q_SLOTS:
 	Dumps the FEM equation (K matrix, d and f vectors) to a file following the Matlab format
 	**/
 	void dumpFemEquation();
+	
+	/**
+	Dumps the results from the objects which are currently selected
+	@param	result	the result which will be dumped
+	**/
+	void dumpResultsFromSelection(fem::AnalysisResult<double> *result);
+
+	/**
+	Dumps the results taken from the last analysis from the objects which are currently selected
+	**/
+	void dumpResultsFromSelection();
 
 	/**
 	Logging slots

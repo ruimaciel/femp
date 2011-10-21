@@ -22,6 +22,7 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	fem/Model.h++ fem/Node.h++ fem/Element.h++ fem/Material.h++ fem/LoadPattern.h++ fem/NodalLoad.h++ fem/NodalDisplacement.h++ fem/point.h++ fem/NodeRestrictions.h++ \
 	fem/DomainLoad.h++ fem/SurfaceLoad.h++ \
 	fem/ElementGroup.h++ fem/NodeGroup.h++ \
+	fem/ProjectVisitor/*.h++ \
 	fem/elements/Triangle3.h++ fem/elements/Triangle6.h++ \
 	fem/elements/Quadrangle4.h++ fem/elements/Quadrangle8.h++ fem/elements/Quadrangle9.h++ \
 	fem/elements/Hexahedron8.h++ fem/elements/Hexahedron20.h++ fem/elements/Hexahedron27.h++ \
@@ -64,6 +65,7 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	fem/Model.c++ fem/Node.c++ fem/Element.c++ fem/Material.c++ fem/LoadPattern.c++ fem/NodalLoad.c++ fem/NodalDisplacement.c++ fem/point.c++ fem/NodeRestrictions.c++ \
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
 	fem/ElementGroup.c++ fem/NodeGroup.c++ \
+	fem/ProjectVisitor/*.c++ \
 	viewer/ViewportData.c++ \
 	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ViewportColors.c++  \
 	viewer/BaseViewport.c++ viewer/ModelViewport.c++ viewer/PostprocessingViewport.c++ \

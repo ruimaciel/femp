@@ -47,7 +47,7 @@ public:
 	PostprocessingWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent = 0);
 
 
-public slots:
+public Q_SLOTS:
 	void setDisplacementsScale(double scale);
 
 	// this member is needed because I can't get the connect() in WindowWithGhostSurfaces to have any effect
@@ -65,6 +65,12 @@ public slots:
 	**/
 	void setResultsRanges();
 
+Q_SIGNALS:
+	/**
+	emits a signal to dump the results from a given set of project objets
+	**/
+	void dumpResultsFromSelection(fem::AnalysisResult<double> *result);
+	
 protected:
 	void connectSignalsToSlots();
 

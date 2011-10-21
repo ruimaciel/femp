@@ -1,6 +1,7 @@
 #ifndef MODEL_SELECTION_HPP
 #define MODEL_SELECTION_HPP
 
+#include <cstddef>	// for size_t
 #include <map>
 
 /*

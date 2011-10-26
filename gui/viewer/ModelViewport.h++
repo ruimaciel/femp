@@ -34,6 +34,9 @@ class ModelViewport
 {
 	Q_OBJECT
 
+protected:
+	VPStateModel 	m_vp_state_model;
+
 public:
 	ModelViewport(fem::Project &project, QWidget *parent = NULL);
 	~ModelViewport();

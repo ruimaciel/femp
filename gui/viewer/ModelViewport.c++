@@ -14,7 +14,7 @@ ModelViewport::ModelViewport(fem::Project &project, QWidget *parent)
 	this->project = &project;
 	this->state = NULL;
 
-	this->setState(new VPStateModel);	// set the current viewport state
+	this->setState(&m_vp_state_model);	// set the current viewport state
 
 	// set this widget's load pattern pointer
 	if(project.model.load_pattern_list.empty())
@@ -161,7 +161,7 @@ void
 ModelViewport::showModel()
 {
 	// set the state
-	VPStateModel* state = new VPStateModel;
+	VPStateModel* state = &m_vp_state_model;
 
 	this->setState(state);
 

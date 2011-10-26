@@ -41,6 +41,8 @@ OutputResultsInNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisR
 				*m_out << "\tnode[" << n << "]:" << element->nodes[n];
 				*m_out << "\n";
 
+				*m_out << model.node_list[element->nodes[n]] << "\n";
+
 				element_results = m_result->results[e.first];
 
 				*m_out << "\te11:" << element_results->strains[n].e11;

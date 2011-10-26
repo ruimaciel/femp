@@ -57,11 +57,11 @@ Plane Surface(18) = {17};
 
 Transfinite Line{1:16} = 5;
 
-Transfinite Surface{18};
+Transfinite Surface{18} = {1, 3, 5, 7};
 
 Recombine Surface{18};
 
 Extrude { {0,1,0} , {0.75,0,0} , -Pi/2 }
 {
-  Surface{18}; Layers{5}; Recombine;
+  Surface{18}; Layers{2}; Recombine;
 }

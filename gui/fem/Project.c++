@@ -4,6 +4,7 @@
 namespace fem
 {
 
+
 void 
 Project::clear()
 {
@@ -16,6 +17,13 @@ void
 Project::pushAnalysisResult(fem::AnalysisResult<double> &new_result)
 {
 	this->result.push_back(new_result);
+}
+
+
+void 
+Project::accept(ProjectVisitor &visitor)
+{
+	visitor.visit(model,result);
 }
 
 

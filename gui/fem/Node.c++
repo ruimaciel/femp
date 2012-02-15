@@ -3,6 +3,7 @@
 namespace fem
 {
 
+
 Node::Node()
 {
 }
@@ -24,4 +25,6 @@ Node::~Node()
 {
 }
 
+
 }
+

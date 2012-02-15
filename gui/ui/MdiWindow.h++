@@ -27,69 +27,69 @@ class MdiWindow
 {
 	Q_OBJECT
 
-	public:
-		BaseViewport *viewport;
+public:
+	BaseViewport *viewport;
 
-	protected:
-		QToolBar *viewportToolBar;	// toolbar to set camera angles
-		QToolBar *visibilityToolBar;	// toolbar to set which rendering group (i.e., nodes, surfaces, etc...) is visible
+protected:
+	QToolBar *viewportToolBar;	// toolbar to set camera angles
+	QToolBar *visibilityToolBar;	// toolbar to set which rendering group (i.e., nodes, surfaces, etc...) is visible
 
-		QAction	*actionMenuVisibility;
+	QAction	*actionMenuVisibility;	// toolbar menu button that toggles the menu bar visibility
 
-		QAction *actionViewportXY;	// places the camera displaying the XY plane
-		QAction *actionViewportYZ;	// places the camera displaying the XY plane
-		QAction *actionViewportXZ;	// places the camera displaying the XZ plane
-		QAction *actionViewportIso;	// places the camera on an isometric view angle
+	QAction *actionViewportXY;	// places the camera displaying the XY plane
+	QAction *actionViewportYZ;	// places the camera displaying the XY plane
+	QAction *actionViewportXZ;	// places the camera displaying the XZ plane
+	QAction *actionViewportIso;	// places the camera on an isometric view angle
 
-		QAction *actionVisibleNodes;
-		QAction *actionVisibleRestrictions;
+	QAction *actionVisibleNodes;
+	QAction *actionVisibleRestrictions;
 
-	public:
-		MdiWindow (QWidget *parent = 0);
+public:
+	MdiWindow (QWidget *parent = 0);
 
 
-		/**
-		Sets the toolbar which provides buttons to set camera angles
-		**/
-		void createViewportToolbar();
-		void createVisibilityToolbar();
+	/**
+	Sets the toolbar which provides buttons to set camera angles
+	**/
+	void createViewportToolbar();
+	void createVisibilityToolbar();
 
-		/**
-		Sets the colors which are used by the viewports
-		**/
-		void setColors(ViewportColors &colors);
+	/**
+	Sets the colors which are used by the viewports
+	**/
+	void setColors(ViewportColors &colors);
 
-	public slots:
-		void setViewportXY();
-		void setViewportXZ();
-		void setViewportYZ();
-		void setViewportIso();
+public slots:
+	void setViewportXY();
+	void setViewportXZ();
+	void setViewportYZ();
+	void setViewportIso();
 
-		/**
-		Sets the visibility of the nodes
-		**/
-		void setNodeVisibility(const bool);
-		void setNodeRestrictionsVisibility(const bool);
+	/**
+	Sets the visibility of the nodes
+	**/
+	void setNodeVisibility(const bool);
+	void setNodeRestrictionsVisibility(const bool);
 
-	protected:
-		virtual void connectSignalsToSlots() ;
+protected:
+	virtual void connectSignalsToSlots() ;
 
-		void normalizeAngle(int *angle);
+	void normalizeAngle(int *angle);
 
-	public:
-		// libsigc++ signals
-		sigc::signal<void, Selection>	selection_changed;	// signals that this window originated a change of item selection
-		sigc::signal<void>		selection_cleared;	// signals that this window cleared the selection
+public:
+	// libsigc++ signals
+	sigc::signal<void, Selection>	selection_changed;	// signals that this window originated a change of item selection
+	sigc::signal<void>		selection_cleared;	// signals that this window cleared the selection
 
-		// libsigc++ slots
-		virtual void setSelection(Selection);	// sets the selection
-		virtual void clearSelection();		// clears the selection
-		void showSelection(const Selection);	// sets the viewport so that only the selected items are shown
+	// libsigc++ slots
+	virtual void setSelection(Selection);	// sets the selection
+	virtual void clearSelection();		// clears the selection
+	void showSelection(const Selection);	// sets the viewport so that only the selected items are shown
 
-		/**
-		Handles all libsigc++ connections between this window and an object of type SelectionManager
-		**/
-		virtual void connectToSelectionManager(SelectionManager &);
+	/**
+	Handles all libsigc++ connections between this window and an object of type SelectionManager
+	**/
+	virtual void connectToSelectionManager(SelectionManager &);
 };	
 
 #endif

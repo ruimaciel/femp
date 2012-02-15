@@ -16,14 +16,14 @@ Provides a window with the ability to select which AnalysisResults<> object to u
 class WindowWithResults
 	: public virtual MdiWindow
 {
-	protected:
-		QToolBar *resultsToolBar;	// toolbar to provide a user to select which result to run
-		QComboBox *resultsComboBox;
+protected:
+	QToolBar *resultsToolBar;	// toolbar to provide a user to select which result to run
+	QComboBox *resultsComboBox;
 
-	public:
-		WindowWithResults(fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
+public:
+	WindowWithResults(fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
 
-		void createToolbar(fem::Project &results);
+	void createToolbar(fem::Project &results);
 };
 
 

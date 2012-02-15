@@ -706,7 +706,13 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 						n.label = label;
 						for(std::vector<size_t>::const_iterator i = reference.begin(); i != reference.end(); i++)
 						{
-							n.pushNode(*i);
+							if(*i < model.node_list.size())
+								n.pushNode(*i);
+							else
+							{
+								//TODO warning message
+								std::cerr << "FemJsonParser: node group " << label << " refers to invalid node: " << *i << std::endl;
+							}
 						}
 						reference.clear();
 						model.pushNodeGroup(n);

@@ -87,8 +87,18 @@
     <property name="title">
      <string>Project</string>
     </property>
+    <widget class="QMenu" name="menuDump">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Dump</string>
+     </property>
+     <addaction name="actionDump_FEM_equation"/>
+     <addaction name="actionResults_from_selection"/>
+    </widget>
     <addaction name="actionRun"/>
-    <addaction name="actionDump_FEM_equation"/>
+    <addaction name="menuDump"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -328,7 +338,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Dump FEM equation</string>
+    <string>FEM equation</string>
    </property>
   </action>
   <action name="actionReopen">
@@ -360,6 +370,14 @@
   <action name="actionSetPostprocessingViewport">
    <property name="text">
     <string>Postprocessing</string>
+   </property>
+  </action>
+  <action name="actionResults_from_selection">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Results from selection</string>
    </property>
   </action>
  </widget>

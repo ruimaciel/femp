@@ -8,3 +8,5 @@ lex.msh_yy.*
 msh.tab.*
 *.oct
 .*
+*.msh
+models/*

@@ -656,6 +656,7 @@
 		{
 			"label": "Default",
 			"domain loads":[
+				{"element":0, "force": [0,0,5]},
 				{"element":1, "force": [0,0,5]},
 				{"element":2, "force": [0,0,5]},
 				{"element":3, "force": [0,0,5]},

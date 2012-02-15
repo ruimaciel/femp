@@ -4,6 +4,7 @@
 
 #include "../Node.h++"
 #include "../Element.h++"
+#include "../AnalysisResult.h++"
 
 
 OutputResultsInNodesVisitor::OutputResultsInNodesVisitor(Selection &selection, fem::AnalysisResult<double> *result, std::ostream &os)
@@ -23,11 +24,12 @@ OutputResultsInNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisR
 
 	*m_out << "test\n";
 
-	for(auto e: m_result->results)
+	//for(auto e: m_result->results)
+	for( std::map<fem::element_ref_t, fem::ElementResults<double> *>::iterator e = m_result->results.begin(); e != m_result->results.end(); e++)
 	{
 		fem::Element *element;
 		fem::ElementResults<double> *element_results;
-		element = &model.element_list[e.first];
+		element = &model.element_list[e->first];
 
 		
 		for(size_t n = 0; n < element->nodes.size(); n++)	
@@ -37,13 +39,13 @@ OutputResultsInNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisR
 			if(i != m_selection->m_nodes_selected.end())
 			{
 				// element has a selected node.  Let's output the result
-				*m_out << "element:" << e.first;
+				*m_out << "element:" << e->first;
 				*m_out << "\tnode[" << n << "]:" << element->nodes[n];
 				*m_out << "\n";
 
 				*m_out << model.node_list[element->nodes[n]] << "\n";
 
-				element_results = m_result->results[e.first];
+				element_results = m_result->results[e->first];
 
 				*m_out << "\te11:" << element_results->strains[n].e11;
 				*m_out << "\te22:" << element_results->strains[n].e22;

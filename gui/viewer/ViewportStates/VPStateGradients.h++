@@ -21,7 +21,7 @@ class BaseViewport;
 A pattern for the State pattern which is used to render the gradients (stresses, strains...)
 */
 class VPStateGradients
-	:public ViewportState<BaseViewport>
+	:public ViewportState
 {
 protected:
 	GradientFieldRepresentationPolicy	m_gradient_representation;

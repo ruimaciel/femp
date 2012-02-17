@@ -13,6 +13,7 @@
 #include "../fem/AnalysisResult.h++"
 
 #include "BaseViewport.h++"
+#include "SceneGraph.h++"
 #include "Camera.h++"
 #include "ViewportColors.h++"
 #include "DisplayOptions.h++"
@@ -23,6 +24,8 @@
 
 #include "ViewportStates/ViewportState.h++"	// for the vieport's state pattern base class
 
+
+class ViewportState;
 
 /*
 QGLidget subclass designed for a Base class for all Qt widgets that provide an opengl viewports to render the model 
@@ -39,7 +42,7 @@ public:
 
 	fem::Project *project;
 
-	ViewportState<BaseViewport>	*state;	// pointer to object used for the State pattern
+	ViewportState	*state;	// pointer to object used for the State pattern
 
 public:
 	BaseViewport(fem::Project &project, QWidget *parent);
@@ -112,7 +115,7 @@ protected:
 	void wheelEvent(QWheelEvent *event);
 	void keyPressEvent ( QKeyEvent * event );
 
-	void setState(ViewportState<BaseViewport> *new_state);
+	void setState(ViewportState *new_state);
 
 protected:
 	void normalizeAngle(int *angle);

@@ -22,7 +22,7 @@
 
 
 VPStateModel::VPStateModel()
-	: ViewportState<BaseViewport>()
+	: ViewportState()
 { 
 	this->m_factory.setElementRepresentationPolicy(m_element_representation_factory.opaque());
 	this->m_factory.setDisplacementsPolicy(&m_no_displacements);

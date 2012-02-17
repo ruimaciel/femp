@@ -21,7 +21,7 @@ class BaseViewport;
 A pattern for the State pattern which is used to render the displacements
 */
 class VPStateDisplacements
-	:public ViewportState<BaseViewport>
+	:public ViewportState
 {
 protected:
 	ElementRepresentationFlyweightFactory	m_element_representation_factory;

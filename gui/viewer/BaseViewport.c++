@@ -163,7 +163,7 @@ BaseViewport::keyPressEvent( QKeyEvent *event)
 
 
 void 
-BaseViewport::setState(ViewportState<BaseViewport> *new_state)
+BaseViewport::setState(ViewportState *new_state)
 {
 	if(this->state != NULL) delete this->state;
 

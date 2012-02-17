@@ -25,7 +25,7 @@
 
 
 VPStateGradients::VPStateGradients()
-	: ViewportState<BaseViewport>()
+	: ViewportState()
 { 
 	this->m_gradient_representation.renderStrains11();
 

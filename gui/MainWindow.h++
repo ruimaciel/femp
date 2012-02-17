@@ -113,10 +113,6 @@ public Q_SLOTS:
 	void getWarning(QString);
 	void getError(QString);
 
-	// sets the current MDI window's viewport
-	void setModelViewport();
-	void setPostprocessingViewport();
-
 	/**
 	Sets the current MdiViewport to show only the selected objects
 	**/

@@ -396,12 +396,12 @@ MainWindow::createActions()
 
 	connect(ui.actionWindowTile,	SIGNAL(triggered()), this,	SLOT(setTiledWindows()));
 	connect(ui.actionWindowCascade,	SIGNAL(triggered()), this,	SLOT(setCascadeWindows()));
-	connect(ui.actionNewViewportWindow,	SIGNAL(triggered()), this,	SLOT(createNewViewportWindow()));
 
 	connect(ui.actionShowNodalForces,	SIGNAL(triggered()),	this,	SLOT(setNodeForcesDisplay()));
 
-	connect(ui.actionSetModelViewport,		SIGNAL(triggered()),	this,	SLOT(setModelViewport()));
-	connect(ui.actionSetPostprocessingViewport,	SIGNAL(triggered()),	this,	SLOT(setPostprocessingViewport()));
+	// MDI window creation 
+	connect(ui.actionNewModelWindow,	SIGNAL(triggered()),	this,	SLOT(createNewModelWindow()));
+	connect(ui.actionNewPostprocessingWindow,	SIGNAL(triggered()),	this,	SLOT(createNewPostprocessingWindow()));
 
 	connect(ui.actionViewSelection,	SIGNAL(triggered()),	this,	SLOT(showSelection()));
 
@@ -981,7 +981,7 @@ MainWindow::runAnalysis()
 	document.project.pushAnalysisResult(analysis_result);
 
 	//TODO set the UI
-	this->setPostprocessingViewport();
+	this->createNewPostprocessingWindow();
 
         ui.menuDump->setEnabled(true);
         ui.actionDump_FEM_equation->setEnabled(true);
@@ -1145,54 +1145,6 @@ MainWindow::dumpResultsFromSelection()
 	OutputResultsInNodesVisitor visitor(selection, result);
 
 	document.project.accept(visitor);
-}
-
-
-void 
-MainWindow::setModelViewport()
-{
-	std::cerr << "MainWindow::setModelViewport()" << std::endl;
-	/*
-	// this->createNewModelWindow();
-	QMdiSubWindow *mdi_window;
-	mdi_window = mdiArea->currentSubWindow();
-	if(mdi_window != NULL)
-	{
-		// there is an active subwindow
-		ModelWindow *window;	// opengl viewport
-		window = new ModelWindow(document.project, colors, this);
-		mdi_window->setWidget(window);
-	}
-	*/
-}
-
-
-void 
-MainWindow::setPostprocessingViewport()
-{
-	if(document.project.result.empty())
-	{
-		std::cerr << "MainWindow::setPostprocessingViewport(): tried to set a postprocessing viewport although there is no result available" << std::endl;
-	}
-	else
-	{
-		// this->createNewPostprocessingWindow();
-		QMdiSubWindow *mdi_window;
-		mdi_window = mdiArea->currentSubWindow();
-		if(mdi_window != NULL)
-		{
-			// there is an active subwindow
-			PostprocessingWindow *window;	// opengl viewport
-			window = new PostprocessingWindow(document.project, document.project.result.back(), colors, this);
-
-			// set connections
-			connect(window,	SIGNAL(dumpResultsFromSelection(fem::AnalysisResult<double> *)),	this,	SLOT(dumpResultsFromSelection(fem::AnalysisResult<double> *) ) );
-
-			// set the widget
-			mdi_window->setWidget(window);
-		}
-	}
-
 }
 
 

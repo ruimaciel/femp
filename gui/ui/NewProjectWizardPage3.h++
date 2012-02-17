@@ -13,7 +13,7 @@
 New Project Wizard section on how to load a mesh from a file
 **/
 class NewProjectWizardPage3
-	: public QWizardPage, public Ui_NewProjectWizardPage3
+	: public QWizardPage, public Ui::NewProjectWizardPage3
 {
 	Q_OBJECT
 

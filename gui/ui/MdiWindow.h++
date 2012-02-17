@@ -23,7 +23,7 @@
 Base class for all the MDI windows 
 **/
 class MdiWindow 
-	:  public QMainWindow, protected Ui_MdiWindow, public sigc::trackable
+	:  public QMainWindow, protected Ui::MdiWindow, public sigc::trackable
 {
 	Q_OBJECT
 

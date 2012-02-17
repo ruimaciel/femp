@@ -14,7 +14,7 @@
 Dialog box designed to input information needed to run the analysis, such as solver
 */
 class AnalysisDialog
-	: public QDialog, private Ui_AnalysisDialog
+	: public QDialog, private Ui::AnalysisDialog
 {
 	Q_OBJECT
 

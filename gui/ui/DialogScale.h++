@@ -11,7 +11,7 @@
 Dialog used by GLDisplacementsWidget to input a new displacements scale
 **/
 class DialogScale
-	: public QDialog, private Ui_DialogScale
+	: public QDialog, private Ui::DialogScale
 {
 	Q_OBJECT
 

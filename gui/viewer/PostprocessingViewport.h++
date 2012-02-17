@@ -48,12 +48,6 @@ public:
 	~PostprocessingViewport();
 
 	/*
-	Sets the starting state for the supported post-processing representations
-	*/
-	template <class NewState>
-	void setState(NewState *);
-
-	/*
 	sets if the element nodes are visible
 	@param	state	true if nodes should be visible, false if they shouldn't be rendered
 	*/

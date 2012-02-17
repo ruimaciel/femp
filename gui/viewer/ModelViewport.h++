@@ -41,9 +41,6 @@ public:
 	ModelViewport(fem::Project &project, QWidget *parent = NULL);
 	~ModelViewport();
 
-	template <class NewState>
-	void setState(NewState *);
-
 	/*
 	sets if the element nodes are visible
 	@param	state	true if nodes should be visible, false if they shouldn't be rendered

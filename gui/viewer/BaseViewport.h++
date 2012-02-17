@@ -60,8 +60,7 @@ public:
 		- initializes the object
 		- generates the scenegraph
 	*/
-	template <class NewState>
-	void setState(NewState *);
+	void setState(ViewportState *new_state);
 
 	/**
 	Method to refresh the scene
@@ -115,7 +114,6 @@ protected:
 	void wheelEvent(QWheelEvent *event);
 	void keyPressEvent ( QKeyEvent * event );
 
-	void setState(ViewportState *new_state);
 
 protected:
 	void normalizeAngle(int *angle);

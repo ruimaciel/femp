@@ -101,18 +101,6 @@ ModelViewport::keyPressEvent( QKeyEvent *event)
 }
 
 
-template <class NewState>
-void 
-ModelViewport::setState(NewState *new_state)
-{
-	if(this->state != NULL) delete this->state;
-
-	this->state = new_state;	// the state's default starting point is Model
-	this->state->initialize(this);
-	this->state->populateScenegraph(this);
-}
-
-
 void 
 ModelViewport::setXRotation(int angle)
 {

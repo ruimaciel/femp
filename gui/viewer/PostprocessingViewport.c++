@@ -108,16 +108,6 @@ PostprocessingViewport::keyPressEvent( QKeyEvent *event)
 }
 
 
-template <class NewState>
-void 
-PostprocessingViewport::setState(NewState *new_state)
-{
-	this->state = new_state;
-	this->state->initialize(this);
-	this->state->populateScenegraph(this);
-}
-
-
 void 
 PostprocessingViewport::setXRotation(int angle)
 {

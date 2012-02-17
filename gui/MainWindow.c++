@@ -17,8 +17,6 @@
 #include <string>
 #include <stdlib.h>	// getenv()
 
-#include "Logs.h++"	// declare the global message loggers
-
 #include "ui/NewProjectWizard.h++"
 #include "NodeRestrainsDialog.h++"
 #include "NodeActionsDialog.h++"
@@ -218,8 +216,6 @@ MainWindow::reopenProject()
 void 
 MainWindow::saveProject()
 {
-	mylog.setPrefix("MainWindow::saveProject()");
-	
 	if(document.file_name == NULL)
 	{
 		QFileDialog dialog(this);
@@ -253,12 +249,10 @@ MainWindow::saveProject()
 			msgBox.setDefaultButton(QMessageBox::No);
 			if(msgBox.exec() == QMessageBox::No)
 			{
-				mylog.message("rejected");
 				delete document.file_name;
 				document.file_name = NULL;
 				return;
 			}
-				mylog.message("accepted");
 		}
 
 		// set a new file name for this file
@@ -268,15 +262,13 @@ MainWindow::saveProject()
 	}
 	document.save();
 	hasUnsavedChanges = false;
-
-	mylog.clearPrefix();
 }
 
 
 void 
 MainWindow::saveProjectAs()
 {
-	mylog.message("MainWindow::saveProjectAs() not yet implemented");
+	std::cerr << "MainWindow::saveProjectAs() not yet implemented" << std::endl;
 
 	QFileDialog dialog(this);
 	QStringList sl;
@@ -437,7 +429,7 @@ MainWindow::createDockWidgets()
 	connect(this, SIGNAL(setError(QString)), commandLineDockWidget, SLOT(getError(QString)));
 
 	// set the MainWindow connections
-	connect(&mylog,	SIGNAL(newMessage(QString)),	commandLineDockWidget, SLOT(getMessage(QString)));
+	//connect(&mylog,	SIGNAL(newMessage(QString)),	commandLineDockWidget, SLOT(getMessage(QString)));
 
 	this->addDockWidget(Qt::RightDockWidgetArea, commandLineDockWidget);
 
@@ -774,8 +766,6 @@ MainWindow::loadOptions()
 void 
 MainWindow::importMesh()
 {
-	mylog.setPrefix("MainWindow::importMesh()");
-
 	QStringList files;
 	QFile mesh_file;
 	QFileDialog dialog(this);
@@ -793,8 +783,6 @@ MainWindow::importMesh()
 		if(!mesh_file.open(QIODevice::ReadOnly | QIODevice::Text) )
 		{	// failed to open file
 			//TODO implement variadic method to emulate printf()
-			//mylog.message("unable to open file %s" + qPrintable(mesh_file.fileName()));
-			mylog.message("unable to open file");
 
 			QMessageBox msgBox(this);
 			msgBox.setIcon(QMessageBox::Warning);
@@ -815,8 +803,6 @@ MainWindow::importMesh()
 	}
 	// now this document has unsaved changes
 	hasUnsavedChanges = true;
-	
-	mylog.clearPrefix();
 }
 
 
@@ -855,8 +841,6 @@ MainWindow::setNodeRestraints()
 void 
 MainWindow::setNodeActions()
 {
-	mylog.setPrefix("MainWindow::setNodeActions()");
-
 	NodeActionsDialog na(document.project.model, this);
 	if(na.exec() == QDialog::Accepted)
 	{
@@ -869,8 +853,6 @@ MainWindow::setNodeActions()
 			}
 		}
 	}
-
-	mylog.clearPrefix();
 }
 
 
@@ -936,8 +918,6 @@ MainWindow::setNodeForcesDisplay()
 void 
 MainWindow::runAnalysis()
 {
-	mylog.setPrefix("MainWindow::runAnalysis()");
-
 	using namespace std;
 
 	// check if ther is a load pattern
@@ -1008,9 +988,6 @@ MainWindow::runAnalysis()
         ui.actionResults_from_selection->setEnabled(true);
 
 	delete solver;
-
-
-	mylog.clearPrefix();
 }
 
 
@@ -1054,12 +1031,10 @@ MainWindow::dumpFemEquation()
 			msgBox.setDefaultButton(QMessageBox::No);
 			if(msgBox.exec() == QMessageBox::No)
 			{
-				mylog.message("rejected");
 				delete document.file_name;
 				document.file_name = NULL;
 				return;
 			}
-			mylog.message("accepted");
 		}
 
 		// set a new file name for this file
@@ -1176,6 +1151,8 @@ MainWindow::dumpResultsFromSelection()
 void 
 MainWindow::setModelViewport()
 {
+	std::cerr << "MainWindow::setModelViewport()" << std::endl;
+	/*
 	// this->createNewModelWindow();
 	QMdiSubWindow *mdi_window;
 	mdi_window = mdiArea->currentSubWindow();
@@ -1186,6 +1163,7 @@ MainWindow::setModelViewport()
 		window = new ModelWindow(document.project, colors, this);
 		mdi_window->setWidget(window);
 	}
+	*/
 }
 
 
@@ -1194,7 +1172,7 @@ MainWindow::setPostprocessingViewport()
 {
 	if(document.project.result.empty())
 	{
-		qWarning("MainWindow::setPostprocessingViewport(): tried to set a postprocessing viewport although there is no result available");
+		std::cerr << "MainWindow::setPostprocessingViewport(): tried to set a postprocessing viewport although there is no result available" << std::endl;
 	}
 	else
 	{
@@ -1221,7 +1199,7 @@ MainWindow::setPostprocessingViewport()
 void 
 MainWindow::showSelection()
 {
-	qWarning(" MainWindow::showSelection()");
+	std::cerr << " MainWindow::showSelection()" << std::endl;
 	Selection selection = m_selection_manager.getSelection();
 	{
 		// this->createNewPostprocessingWindow();
@@ -1307,7 +1285,7 @@ MainWindow::createNewPostprocessingWindow()
 {
 	if(document.project.result.empty())
 	{
-		qWarning("MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing viewport although there is no result available");
+		std::cerr << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing viewport although there is no result available" << std::endl;
 	}
 	else
 	{
@@ -1330,8 +1308,6 @@ MainWindow::createNewPostprocessingWindow()
 void 
 MainWindow::setUserInterfaceAsOpened()
 {
-	mylog.setPrefix("MainWindow::setUserInterfaceAsOpened()");
-
 	// set the menus
 	ui.menuProject->setEnabled(true);
 	ui.menuView->setEnabled(true);
@@ -1361,8 +1337,6 @@ MainWindow::setUserInterfaceAsOpened()
 		this->setWindowTitle("Femp - [unnamed.fem.json]");
 	else
 		this->setWindowTitle("Femp - " + *document.file_name);
-
-	mylog.clearPrefix();
 }
 
 

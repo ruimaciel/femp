@@ -47,14 +47,6 @@ public:
 	PostprocessingViewport(fem::Project &project, fem::AnalysisResult<double> &result, fem::ResultsRanges<double> &ranges, QWidget *parent = NULL);
 	~PostprocessingViewport();
 
-	/*
-	sets if the element nodes are visible
-	@param	state	true if nodes should be visible, false if they shouldn't be rendered
-	*/
-	void setNodeVisibility(bool state);
-	void setSurfaceVisibility(bool state);
-
-
 public Q_SLOTS:
 	void setXRotation(int angle);
 	void setYRotation(int angle);

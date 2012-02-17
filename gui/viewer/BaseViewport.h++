@@ -35,6 +35,7 @@ class BaseViewport
 {
 Q_OBJECT
 
+
 public:
 	ViewportData viewport_data;
 	ViewportColors colors;	// color definitions
@@ -66,6 +67,14 @@ public:
 	Method to refresh the scene
 	**/
 	void refresh(void);
+
+	/*
+	sets if the element nodes are visible
+	@param	state	true if nodes should be visible, false if they shouldn't be rendered
+	*/
+	void setNodeVisibility(bool const state);
+	void setNodeRestrictionsVisibility(bool const state);
+	void setSurfaceVisibility(bool const state);
 
 
 public Q_SLOTS:

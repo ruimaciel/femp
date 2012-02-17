@@ -165,9 +165,14 @@ BaseViewport::keyPressEvent( QKeyEvent *event)
 void 
 BaseViewport::setState(ViewportState *new_state)
 {
+	qWarning("BaseViewport::setState(ViewportState *new_state) %d",display_options.nodes);
 	this->state = new_state;
 	this->state->initialize(this);
 	this->state->populateScenegraph(this);
+
+	// toggle the visibility states
+	this->state->setRenderGoupVisibility(SceneGraph::RG_NODES, display_options.nodes);
+	this->state->setRenderGoupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, display_options.node_restrictions);
 }
 
 
@@ -175,6 +180,33 @@ void
 BaseViewport::refresh(void)
 {
 	this->updateGL();
+}
+
+
+void
+BaseViewport::setNodeVisibility(bool const state)
+{
+	qWarning("BaseViewport::setNodeVisibility(bool const state) %d",state);
+	this->state->setRenderGoupVisibility(SceneGraph::RG_NODES, state);
+	this->display_options.nodes = state;
+}
+
+
+void
+BaseViewport::setNodeRestrictionsVisibility(bool const state)
+{
+	qWarning("BaseViewport::setNodeRestrictionsVisibility(bool const state) %d",state);
+	this->state->setRenderGoupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, state);
+	this->display_options.node_restrictions = state;
+}
+
+
+void 
+BaseViewport::setSurfaceVisibility(bool const state)
+{
+	this->state->setRenderGoupVisibility(SceneGraph::RG_SURFACES, state);
+	this->state->setRenderGoupVisibility(SceneGraph::RG_WIREFRAME, !state);
+	this->display_options.surfaces = state;
 }
 
 

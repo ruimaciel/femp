@@ -59,6 +59,7 @@
      <addaction name="actionNewModelWindow"/>
      <addaction name="actionNewPostprocessingWindow"/>
      <addaction name="actionNewAnalysisResultsWindow"/>
+     <addaction name="actionNewFemEquationWindow"/>
     </widget>
     <addaction name="menuNew"/>
     <addaction name="separator"/>
@@ -387,6 +388,11 @@
   <action name="actionNewAnalysisResultsWindow">
    <property name="text">
     <string>Analysis results</string>
+   </property>
+  </action>
+  <action name="actionNewFemEquationWindow">
+   <property name="text">
+    <string>FEM equation</string>
    </property>
   </action>
  </widget>

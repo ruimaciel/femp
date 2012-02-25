@@ -31,6 +31,7 @@
 #include "ui/ModelWindow.h++"
 #include "ui/PostprocessingWindow.h++"
 #include "ui/AnalysisResultsWindow.h++"
+#include "ui/MatrixWindow.h++"
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
@@ -404,6 +405,7 @@ MainWindow::createActions()
 	connect(ui.actionNewModelWindow,		SIGNAL(triggered()),	this,	SLOT(createNewModelWindow()));
 	connect(ui.actionNewPostprocessingWindow,	SIGNAL(triggered()),	this,	SLOT(createNewPostprocessingWindow()));
 	connect(ui.actionNewAnalysisResultsWindow,	SIGNAL(triggered()),	this,	SLOT(createNewAnalysisResultsWindow()));
+	connect(ui.actionNewFemEquationWindow,		SIGNAL(triggered()),	this,	SLOT(createNewFemEquationWindow()));
 
 	connect(ui.actionViewSelection,	SIGNAL(triggered()),	this,	SLOT(showSelection()));
 
@@ -1271,6 +1273,22 @@ MainWindow::createNewAnalysisResultsWindow()
 
 	AnalysisResultsWindow *mdi_window;
 	mdi_window = new AnalysisResultsWindow(document.project, mdiArea);
+	mdi_window->showMaximized();
+}
+
+
+void 
+MainWindow::createNewFemEquationWindow()
+{
+	std::cerr << "MainWindow::createNewFemEquationWindow()" << std::endl;
+	if(document.project.result.empty())
+	{
+		std::cerr << "MainWindow::createNewFemEquationWindow(): tried to set a results window although there is no result available" << std::endl;
+		return;
+	}
+
+	MatrixWindow *mdi_window;
+	mdi_window = new MatrixWindow(document.project, mdiArea);
 	mdi_window->showMaximized();
 }
 

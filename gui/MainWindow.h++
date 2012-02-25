@@ -125,6 +125,7 @@ public Q_SLOTS:
 	void createNewModelWindow();
 	void createNewPostprocessingWindow();
 	void createNewAnalysisResultsWindow();
+	void createNewFemEquationWindow();
 
 Q_SIGNALS:
 	void setMessage(QString);

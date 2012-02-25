@@ -215,6 +215,7 @@ MainWindow::reopenProject()
 	}
 }
 
+
 void 
 MainWindow::saveProject()
 {
@@ -984,12 +985,10 @@ MainWindow::runAnalysis()
 
 	document.project.pushAnalysisResult(analysis_result);
 
-	//TODO set the UI
+	// set the UI
+	this->setUserInterfacePostAnalysis();
 	this->createNewPostprocessingWindow();
 
-        ui.menuDump->setEnabled(true);
-        ui.actionDump_FEM_equation->setEnabled(true);
-        ui.actionResults_from_selection->setEnabled(true);
 
 	delete solver;
 }
@@ -1308,6 +1307,7 @@ MainWindow::setUserInterfaceAsOpened()
 	ui.actionNodeActions->setEnabled(true);
 	ui.actionEditMaterials->setEnabled(true);
 	ui.actionQuadrature_rules->setEnabled(true);
+	ui.actionSelection->setEnabled(true);
 
 	ui.actionDisplayNodes->setChecked(true);
 	ui.actionDisplaySurfaces->setChecked(true);
@@ -1335,7 +1335,7 @@ MainWindow::setUserInterfaceAsClosed()
 	ui.menuProject->setDisabled(true);
 	ui.menuView->setDisabled(true);
 	ui.menuWindow->setDisabled(true);
-        ui.menuDump->setDisabled(true);
+	ui.menuDump->setDisabled(true);
 
 	ui.actionReopen->setDisabled(true);
 	ui.actionSave->setDisabled(true);
@@ -1345,8 +1345,13 @@ MainWindow::setUserInterfaceAsClosed()
 	ui.actionNodeActions->setDisabled(true);
 	ui.actionEditMaterials->setDisabled(true);
 	ui.actionQuadrature_rules->setDisabled(true);
-        ui.actionDump_FEM_equation->setDisabled(true);
-        ui.actionResults_from_selection->setDisabled(true);
+	ui.actionSelection->setDisabled(true);
+	ui.actionDump_FEM_equation->setDisabled(true);
+	ui.actionResults_from_selection->setDisabled(true);
+
+	ui.actionNewPostprocessingWindow->setDisabled(true);
+	ui.actionNewAnalysisResultsWindow->setDisabled(true);
+	ui.actionNewFemEquationWindow->setDisabled(true);
 
 	// close all MDI windows
 	mdiArea->closeAllSubWindows();
@@ -1360,6 +1365,18 @@ MainWindow::setUserInterfaceAsClosed()
 
 	// set the window name
 	this->setWindowTitle("Femp");
+}
+
+
+void 
+MainWindow::setUserInterfacePostAnalysis()
+{
+	ui.menuDump->setEnabled(true);
+	ui.actionDump_FEM_equation->setEnabled(true);
+	ui.actionResults_from_selection->setEnabled(true);
+	ui.actionNewPostprocessingWindow->setEnabled(true);
+	ui.actionNewAnalysisResultsWindow->setEnabled(true);
+	ui.actionNewFemEquationWindow->setEnabled(true);
 }
 
 

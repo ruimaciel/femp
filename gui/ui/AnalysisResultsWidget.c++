@@ -15,9 +15,6 @@ AnalysisResultsWidget::AnalysisResultsWidget(fem::Project &project, QWidget *par
 	this->tableView->setModel(m_model);
 	m_project = &project;
 	m_result = &project.result[0];	//CRUDE HACK
-
-	setupUi(this);
-
 }
 
 

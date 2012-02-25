@@ -58,6 +58,7 @@
      </property>
      <addaction name="actionNewModelWindow"/>
      <addaction name="actionNewPostprocessingWindow"/>
+     <addaction name="actionNewAnalysisResultsWindow"/>
     </widget>
     <addaction name="menuNew"/>
     <addaction name="separator"/>
@@ -381,6 +382,11 @@
   <action name="actionNewPostprocessingWindow">
    <property name="text">
     <string>Viewport</string>
+   </property>
+  </action>
+  <action name="actionNewAnalysisResultsWindow">
+   <property name="text">
+    <string>Analysis results</string>
    </property>
   </action>
  </widget>

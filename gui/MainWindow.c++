@@ -30,6 +30,7 @@
 #include "ui/MdiWindow.h++"
 #include "ui/ModelWindow.h++"
 #include "ui/PostprocessingWindow.h++"
+#include "ui/AnalysisResultsWindow.h++"
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
@@ -400,8 +401,9 @@ MainWindow::createActions()
 	connect(ui.actionShowNodalForces,	SIGNAL(triggered()),	this,	SLOT(setNodeForcesDisplay()));
 
 	// MDI window creation 
-	connect(ui.actionNewModelWindow,	SIGNAL(triggered()),	this,	SLOT(createNewModelWindow()));
+	connect(ui.actionNewModelWindow,		SIGNAL(triggered()),	this,	SLOT(createNewModelWindow()));
 	connect(ui.actionNewPostprocessingWindow,	SIGNAL(triggered()),	this,	SLOT(createNewPostprocessingWindow()));
+	connect(ui.actionNewAnalysisResultsWindow,	SIGNAL(triggered()),	this,	SLOT(createNewAnalysisResultsWindow()));
 
 	connect(ui.actionViewSelection,	SIGNAL(triggered()),	this,	SLOT(showSelection()));
 
@@ -1237,7 +1239,7 @@ MainWindow::createNewPostprocessingWindow()
 {
 	if(document.project.result.empty())
 	{
-		std::cerr << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing viewport although there is no result available" << std::endl;
+		std::cerr << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available" << std::endl;
 	}
 	else
 	{
@@ -1254,6 +1256,22 @@ MainWindow::createNewPostprocessingWindow()
 		mdi_window->showMaximized();
 		window->connectToSelectionManager(this->m_selection_manager);
 	}
+}
+
+
+void 
+MainWindow::createNewAnalysisResultsWindow()
+{
+	std::cerr << "MainWindow::createNewAnalysisResultsWindow()" << std::endl;
+	if(document.project.result.empty())
+	{
+		std::cerr << "MainWindow::createNewAnalysisResultWindow(): tried to set a results window although there is no result available" << std::endl;
+		return;
+	}
+
+	AnalysisResultsWindow *mdi_window;
+	mdi_window = new AnalysisResultsWindow(document.project, mdiArea);
+	mdi_window->showMaximized();
 }
 
   

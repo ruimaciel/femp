@@ -434,7 +434,6 @@ MainWindow::createDockWidgets()
 	connect(this, SIGNAL(setError(QString)), commandLineDockWidget, SLOT(getError(QString)));
 
 	// set the MainWindow connections
-	//connect(&mylog,	SIGNAL(newMessage(QString)),	commandLineDockWidget, SLOT(getMessage(QString)));
 
 	this->addDockWidget(Qt::RightDockWidgetArea, commandLineDockWidget);
 
@@ -1046,12 +1045,6 @@ MainWindow::dumpFemEquation()
 		QTextStream     out(&file);
 		out.setRealNumberNotation(QTextStream::ScientificNotation);
 		out.setRealNumberPrecision(16);
-		// */
-		/*
-		   ofstream out(file.fileName().toStdString () );
-		   out << "test" << endl;
-		 */
-
 
 		out << "# Created by lalib\n";
 		out << "# name: K\n";
@@ -1069,22 +1062,6 @@ MainWindow::dumpFemEquation()
 		}
 		out << endl;
 		// */
-		/*
-		   out << "# Created by lalib\n";
-		   out << "# name: K\n";
-		   out << "# type: sparse matrix\n";
-		   out << "# nnz: " << document.project.result.back().K.data.data.size() << "\n";
-		   out << "# rows: " << document.project.result.back().K.rows() << "\n";
-		   out << "# columns: " << document.project.result.back().K.columns() << "\n";
-
-		   for( std::map< size_t, double>::iterator i = document.project.result.back().K.data.data.begin(); i != document.project.result.back().K.data.data.end(); i++)
-		   {
-		   out << i->first/document.project.result.back().K.columns() << " " << i->first%document.project.result.back().K.columns() << " " << i->second << "\n";
-		   }
-		   out << endl;
-		// */
-
-		//lalib::dump_octave(out, "f", document.project.result.back().f);
 		out << "# Created by lalib\n";
 		out << "# name: f\n";
 		out << "# type: matrix\n";
@@ -1095,7 +1072,6 @@ MainWindow::dumpFemEquation()
 			out << " " << document.project.result.back().f.value(i) << "\n";
 		}
 		out << endl;
-		//*/
 
 		//lalib::dump_octave(out, "d", document.project.result.back().d);
 
@@ -1109,7 +1085,6 @@ MainWindow::dumpFemEquation()
 			out << " " << document.project.result.back().d.value(i) << "\n";
 		}
 		out << endl;
-		//*/
 		//out.close();
 		file.close();
 	}

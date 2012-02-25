@@ -23,7 +23,6 @@ NodeRestrictions::~NodeRestrictions()
 }
 
 
-//void NodeRestrictions::paintGL(ViewportData &data, fem::Project &, fem::AnalysisResult<double> * , float &,  ViewportColors &colors)
 void NodeRestrictions::paintGL(ViewportData &data, ViewportColors &colors)
 {
 	fem::point u = (*m_displacements)[this->m_node_reference];

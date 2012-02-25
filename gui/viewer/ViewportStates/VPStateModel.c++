@@ -42,7 +42,6 @@ VPStateModel::initialize(BaseViewport *viewport)
 }
 
 
-
 void
 VPStateModel::populateScenegraph(BaseViewport *viewport)
 {

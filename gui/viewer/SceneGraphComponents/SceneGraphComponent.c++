@@ -34,14 +34,6 @@ void SceneGraphComponent::pushComponent(SceneGraphComponent *new_component)
 {
 	assert(new_component != NULL);
 
-	/*
-	SceneGraphComponent *c = new SceneGraphComponent;
-
-	// initialize the new object
-	c->children 	= new_component->children;
-	c->boundary 	= new_component->boundary;
-	*/
-
 	this->children.push_back(new_component);
 }
 

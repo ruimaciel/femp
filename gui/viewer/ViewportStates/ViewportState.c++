@@ -57,7 +57,6 @@ ViewportState::mouseMoveEvent(BaseViewport *viewport, QMouseEvent *event)
 void
 ViewportState::keyPressEvent ( BaseViewport *, QKeyEvent * event )
 {
-	qWarning("not keypressed");
 	event->ignore();
 }
 
@@ -86,4 +85,5 @@ ViewportState::showSelection(const Selection)
 {
 	std::cout << "ViewportState::showSelection(const Selection selection)" << std::endl;
 }
+
 

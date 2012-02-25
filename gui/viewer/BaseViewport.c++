@@ -147,7 +147,6 @@ void
 BaseViewport::wheelEvent(QWheelEvent *event)
 {
 	viewport_data.zoom += event->delta()/1000.0f;
-	//qWarning("viewport_data.zoom: %f, %f",viewport_data.zoom, pow(2,viewport_data.zoom));
 
 	this->resizeGL(this->width(), this->height());
 	this->updateGL();
@@ -165,7 +164,6 @@ BaseViewport::keyPressEvent( QKeyEvent *event)
 void 
 BaseViewport::setState(ViewportState *new_state)
 {
-	qWarning("BaseViewport::setState(ViewportState *new_state) %d",display_options.nodes);
 	this->state = new_state;
 	this->state->initialize(this);
 	this->state->populateScenegraph(this);
@@ -186,7 +184,6 @@ BaseViewport::refresh(void)
 void
 BaseViewport::setNodeVisibility(bool const state)
 {
-	qWarning("BaseViewport::setNodeVisibility(bool const state) %d",state);
 	this->state->setRenderGoupVisibility(SceneGraph::RG_NODES, state);
 	this->display_options.nodes = state;
 }
@@ -195,7 +192,6 @@ BaseViewport::setNodeVisibility(bool const state)
 void
 BaseViewport::setNodeRestrictionsVisibility(bool const state)
 {
-	qWarning("BaseViewport::setNodeRestrictionsVisibility(bool const state) %d",state);
 	this->state->setRenderGoupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, state);
 	this->display_options.node_restrictions = state;
 }

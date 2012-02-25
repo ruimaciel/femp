@@ -194,7 +194,6 @@ void
 VPStateGradients::renderStrains22()
 {
 	//TODO test only. change this
-	//this->m_gradient_representation.renderNeutral();
 	this->m_gradient_representation.renderStrains22();
 }
 
@@ -203,7 +202,6 @@ void
 VPStateGradients::renderStrains33()
 {
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStrains33();
 }
 
@@ -212,7 +210,6 @@ void
 VPStateGradients::renderStrains12()
 {
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStrains12();
 }
 
@@ -221,7 +218,6 @@ void
 VPStateGradients::renderStrains23()
 {
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStrains23();
 }
 
@@ -230,7 +226,6 @@ void
 VPStateGradients::renderStrains13()
 {
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStrains13();
 }
 
@@ -246,7 +241,6 @@ void
 VPStateGradients::renderStresses22()
 {
 	//TODO test only. change this
-	//this->m_gradient_representation.renderNeutral();
 	this->m_gradient_representation.renderStresses22();
 }
 
@@ -254,9 +248,7 @@ VPStateGradients::renderStresses22()
 void
 VPStateGradients::renderStresses33()
 {
-	qWarning("void VPStateGradients::renderStresses33()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStresses33();
 }
 
@@ -264,9 +256,7 @@ VPStateGradients::renderStresses33()
 void
 VPStateGradients::renderStresses12()
 {
-	qWarning("void VPStateGradients::renderStresses12()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStresses12();
 }
 
@@ -274,9 +264,7 @@ VPStateGradients::renderStresses12()
 void
 VPStateGradients::renderStresses23()
 {
-	qWarning("void VPStateGradients::renderStresses23()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStresses23();
 }
 
@@ -284,9 +272,7 @@ VPStateGradients::renderStresses23()
 void
 VPStateGradients::renderStresses13()
 {
-	qWarning("void VPStateGradients::renderStresses13()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStresses13();
 }
 
@@ -294,9 +280,7 @@ VPStateGradients::renderStresses13()
 void
 VPStateGradients::renderVonMises()
 {
-	qWarning("void VPStateGradients::renderStrains13()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderVonMises();
 }
 

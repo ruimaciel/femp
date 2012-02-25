@@ -143,7 +143,6 @@ VPStateDisplacements::mousePressEvent(BaseViewport *viewport, QMouseEvent *event
 void
 VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 {
-	qWarning("keypressed");
 	switch( event->key() )
 	{
 		case Qt::Key_S:	// change the displacements scale
@@ -168,5 +167,4 @@ VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 			break;
 	}
 }
-
 

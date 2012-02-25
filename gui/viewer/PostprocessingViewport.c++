@@ -14,7 +14,6 @@ PostprocessingViewport::PostprocessingViewport(fem::Project &project, fem::Analy
 
 	//TODO let the user select which analysis case to visualize
 
-	// this->showStrain11(project.result.back());
 	this->showDisplacements();
 
 	// set this widget's load pattern pointer
@@ -82,7 +81,6 @@ PostprocessingViewport::wheelEvent(QWheelEvent *event)
 void 
 PostprocessingViewport::keyPressEvent( QKeyEvent *event)
 {
-	qWarning("blah not keypressed");
 	state->keyPressEvent(this, event);
 }
 
@@ -124,7 +122,6 @@ PostprocessingViewport::setPosition(int x, int y)
 	viewport_data.camera.pos.x(-x);
 	viewport_data.camera.pos.y(-y);
 	//viewport_data.camera.pos.z(amount/100.0f);
-	//qWarning("pos: %f, %f, %f",viewport_data.camera.pos.x(), viewport_data.camera.pos.y(), viewport_data.camera.pos.z());
 	QString m;
 
 	updateGL();

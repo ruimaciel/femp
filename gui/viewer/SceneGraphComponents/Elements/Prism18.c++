@@ -22,5 +22,4 @@ Prism18::paintGL(ViewportData &, ViewportColors &colors)
 }
 
 
-
 }

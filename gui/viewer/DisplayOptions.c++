@@ -25,3 +25,4 @@ DisplayOptions::setDefaultOptions()
 	domain_forces =  0;
 	nodal_displacements = 0;
 }
+

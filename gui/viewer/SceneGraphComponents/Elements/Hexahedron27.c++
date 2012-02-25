@@ -22,5 +22,4 @@ Hexahedron27::paintGL(ViewportData &, ViewportColors &colors)
 }
 
 
-
 }

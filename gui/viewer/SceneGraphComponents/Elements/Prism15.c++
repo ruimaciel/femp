@@ -22,5 +22,4 @@ Prism15::paintGL(ViewportData &, ViewportColors &colors)
 }
 
 
-
 }

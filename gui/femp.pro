@@ -49,7 +49,6 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	fem/ProgressIndicatorStrategy.h++ \
 	fem/solvers/Solver.h++ fem/solvers/CholeskySolver.h++ fem/solvers/CGSolver.h++ fem/solvers/UmfpackSolver.h++\
 	DefaultProgressIndicator.h++ \
-	MessageLogger.h++ Logs.h++ \
 	fem/Surface.h++ \
 	viewer/boundaries/CollisionDetection.h++ \
 	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++ \
@@ -83,7 +82,6 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c parsers/FemJsonParser.c++\
 	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++ \
 	DefaultProgressIndicator.c++ \
-	MessageLogger.c++ \
 	fem/Surface.c++ \
 	viewer/boundaries/CollisionDetection.c++ 
 

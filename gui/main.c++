@@ -4,13 +4,10 @@
 // #include <ecl/ecl.h>
 #include "MainWindow.h++"
 #include "ProgramOptions.h++"
-#include "MessageLogger.h++"
 
 #include <string>
 #include <iostream>
 #include <fstream>
-
-MessageLogger mylog;
 
 
 Q_DECLARE_METATYPE(size_t);

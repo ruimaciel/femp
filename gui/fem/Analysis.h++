@@ -22,8 +22,6 @@
 
 #include "AnalysisResult.h++"
 
-#include "../Logs.h++"
-
 #include "elements/BaseElement.h++"
 
 #include "ProgressIndicatorStrategy.h++"
@@ -166,8 +164,6 @@ Analysis<Scalar>::~Analysis()
 template<typename Scalar>
 enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &project, const LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
 {
-	mylog.setPrefix("Analysis<Scalar>::build_fem_equation()");
-
 	using namespace std;
 	using namespace Eigen;
 
@@ -240,7 +236,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 				break;
 
 			default:
-				mylog.message("unsupported element");
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "Analysis<Scalar>::build_fem_equation(): unsupported element" << std::endl;
 				return ERR_UNSUPPORTED_ELEMENT;
 				break;
 		}
@@ -285,9 +282,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 				// return error if we stumble on a negative determinant
 			if(detJ <= 0)
 			{
-				QString m;
-				m.sprintf("stumbled on a negative determinant on element_iterator %ld", distance(project.model.element_list.begin(), element_iterator));
-				mylog.message(m);
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << " Analysis<Scalar>::build_fem_equation(): stumbled on a negative determinant on element_iterator " << distance(project.model.element_list.begin(), element_iterator) << std::endl;
 				
 				return ERR_NEGATIVE_DETERMINANT;
 			}
@@ -384,7 +380,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 				break;
 
 			default:
-				mylog.message("unsupported element");
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "Analysis<Scalar>::build_fem_equation(): unsupported element" << std::endl;
 				return ERR_UNSUPPORTED_ELEMENT;
 				break;
 		}
@@ -416,9 +413,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 			detJ = J.determinant();
 			if(detJ <= 0)
 			{
-				QString m;
-				m.sprintf("stumbled on a negative determinant on element_reference %ld", domain_load->first);
-				mylog.message(m);
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "stumbled on a negative determinant on element_reference " <<  domain_load->first << std::endl;
 
 				// quit
 				return ERR_NEGATIVE_DETERMINANT;
@@ -493,7 +489,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 				break;
 
 			default:
-				mylog.message("unsupported element");
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "unsupported element" << std::endl;
 				return ERR_UNSUPPORTED_ELEMENT;
 				break;
 		}
@@ -527,7 +524,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 
 			if(detJ <= 0)
 			{
-				mylog.message("stumbled on a negative determinant on the surface load");
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "stumbled on a negative determinant on the surface load" << std::endl;
 
 				// quit
 				return ERR_NEGATIVE_DETERMINANT;

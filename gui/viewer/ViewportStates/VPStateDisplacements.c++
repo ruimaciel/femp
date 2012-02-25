@@ -10,8 +10,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>	// for gluQuadric()
 
-#include "Logs.h++"	// declare the global message loggers
-
 #include "../../fem/Model.h++"
 #include "../../fem/Surface.h++"
 
@@ -34,16 +32,12 @@ VPStateDisplacements::VPStateDisplacements()
 
 VPStateDisplacements::~VPStateDisplacements()
 {
-	mylog.setPrefix("VPStateDisplacements::~VPStateDisplacements()");
-	mylog.message("destructor called");
 }
 
 
 void
 VPStateDisplacements::initialize(BaseViewport *viewport)
 {
-	mylog.setPrefix("VPStateDisplacements::initialize()");
-	mylog.message("initializing");
 	// build the displaced_nodes from the analysis
 	assert(viewport != NULL);
 
@@ -55,9 +49,6 @@ VPStateDisplacements::initialize(BaseViewport *viewport)
 void
 VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 {
-	mylog.setPrefix("void VPStateDisplacements::populateScenegraph(fem::Model *viewport->project->model)");
-	mylog.message("populating");
-
 	assert(viewport != NULL);
 
 	scenegraph.clear();
@@ -101,8 +92,6 @@ VPStateDisplacements::setAnalysisResult(fem::AnalysisResult<double> &new_result)
 void
 VPStateDisplacements::setDisplacementsScale(float new_scale)
 {
-	mylog.setPrefix("VPStateDisplacements::setDisplacementsScale()");
-	mylog.message("set scale");
 	this->m_displacements.setDisplacementsScale(new_scale);
 }
 
@@ -110,7 +99,6 @@ VPStateDisplacements::setDisplacementsScale(float new_scale)
 void 
 VPStateDisplacements::setSelection(Selection)
 {
-	std::cout << "VPStateDisplacements::setSelection(Selection)" << std::endl;
 }
 
 
@@ -118,8 +106,6 @@ void
 VPStateDisplacements::paintGL(BaseViewport *viewport)
 {
 	assert(viewport != NULL);
-
-	mylog.setPrefix("VPStateDisplacements::paintGL()");
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

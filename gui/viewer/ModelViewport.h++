@@ -6,8 +6,6 @@
 #include <QWidget>
 #include <QGLWidget>
 
-#include "Logs.h++"
-
 #include "../MdiWindowProperties.h++"
 
 #include "../fem/Project.h++"

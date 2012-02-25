@@ -6,10 +6,6 @@
 PostprocessingViewport::PostprocessingViewport(fem::Project &project, fem::AnalysisResult<double> &result, fem::ResultsRanges<double> &ranges, QWidget *parent)
 	: BaseViewport(project, parent)
 {
-	mylog.setPrefix("PostprocessingViewport::PostprocessingViewport(fem::Model *model, QWidget *parent)");
-	mylog.message("constructor");
-
-
 	//TODO let the user choose which result to represent
 	this->project = &project;
 	this->m_analysis_result = NULL;
@@ -124,18 +120,14 @@ PostprocessingViewport::setZRotation(int angle)
 void 
 PostprocessingViewport::setPosition(int x, int y)
 {
-	mylog.setPrefix("PostprocessingViewport::setPosition(int x, int y)");
 	//TODO implement this
 	viewport_data.camera.pos.x(-x);
 	viewport_data.camera.pos.y(-y);
 	//viewport_data.camera.pos.z(amount/100.0f);
 	//qWarning("pos: %f, %f, %f",viewport_data.camera.pos.x(), viewport_data.camera.pos.y(), viewport_data.camera.pos.z());
 	QString m;
-	mylog.message(m.sprintf("pos: %f, %f, %f",viewport_data.camera.pos.x(), viewport_data.camera.pos.y(), viewport_data.camera.pos.z()));
 
 	updateGL();
-
-	mylog.clearPrefix();
 }
 
 

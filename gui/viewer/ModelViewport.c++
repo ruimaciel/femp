@@ -7,9 +7,6 @@
 ModelViewport::ModelViewport(fem::Project &project, QWidget *parent)
 	: BaseViewport(project, parent)
 {
-	mylog.setPrefix("ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)");
-	mylog.message("constructor");
-
 	// initialize the dangling pointers
 	this->project = &project;
 	this->state = NULL;
@@ -137,9 +134,6 @@ ModelViewport::setPosition(int x, int y)
 	//TODO implement this
 	viewport_data.camera.pos.x(-x);
 	viewport_data.camera.pos.y(-y);
-
-	QString m;
-	mylog.message(m.sprintf("pos: %f, %f, %f",viewport_data.camera.pos.x(), viewport_data.camera.pos.y(), viewport_data.camera.pos.z()));
 
 	updateGL();
 }

@@ -4,8 +4,6 @@
 #include <iostream>
 #include <map>
 
-#include "Logs.h++"
-
 #include "ModelViewport.h++"
 
 

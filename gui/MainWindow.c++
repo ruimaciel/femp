@@ -159,6 +159,7 @@ MainWindow::openProject()
 			break;
 
 		default:
+			std::cerr << __FILE__ << ":" << __LINE__ ;
 			std::cerr << "Error: " << parser.error.message << std::endl;
 			QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
 			document.clear();
@@ -200,6 +201,7 @@ MainWindow::reopenProject()
 				break;
 
 			default:
+				std::cerr << __FILE__ << ":" << __LINE__ ;
 				std::cerr << "Error: " << parser.error.message << std::endl;
 				QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
 				document.clear();
@@ -271,6 +273,7 @@ MainWindow::saveProject()
 void 
 MainWindow::saveProjectAs()
 {
+	std::cerr << __FILE__ << ":" << __LINE__ ;
 	std::cerr << "MainWindow::saveProjectAs() not yet implemented" << std::endl;
 
 	QFileDialog dialog(this);
@@ -1097,6 +1100,7 @@ MainWindow::dumpResultsFromSelection(fem::AnalysisResult<double> *result)
 	//TODO this currently doesn't work, as no signal emits a *result
 	if(result == NULL)
 	{
+		std::cerr << __FILE__ << ":" << __LINE__ ;
 		std::cerr << "MainWindow::dumpResultsFromSelection(fem::AnalysisResult<double> *result): result == NULL" << std::endl;
 		return;
 	}
@@ -1129,6 +1133,7 @@ MainWindow::dumpResultsFromSelection()
 void 
 MainWindow::showSelection()
 {
+	std::cerr << __FILE__ << ":" << __LINE__ ;
 	std::cerr << " MainWindow::showSelection()" << std::endl;
 	Selection selection = m_selection_manager.getSelection();
 	{
@@ -1215,6 +1220,7 @@ MainWindow::createNewPostprocessingWindow()
 {
 	if(document.project.result.empty())
 	{
+		std::cerr << __FILE__ << ":" << __LINE__ ;
 		std::cerr << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available" << std::endl;
 	}
 	else
@@ -1238,9 +1244,11 @@ MainWindow::createNewPostprocessingWindow()
 void 
 MainWindow::createNewAnalysisResultsWindow()
 {
+	std::cerr << __FILE__ << ":" << __LINE__ ;
 	std::cerr << "MainWindow::createNewAnalysisResultsWindow()" << std::endl;
 	if(document.project.result.empty())
 	{
+		std::cerr << __FILE__ << ":" << __LINE__ ;
 		std::cerr << "MainWindow::createNewAnalysisResultWindow(): tried to set a results window although there is no result available" << std::endl;
 		return;
 	}
@@ -1254,6 +1262,7 @@ MainWindow::createNewAnalysisResultsWindow()
 void 
 MainWindow::createNewFemEquationWindow()
 {
+	std::cerr << __FILE__ << ":" << __LINE__ ;
 	std::cerr << "MainWindow::createNewFemEquationWindow()" << std::endl;
 	if(document.project.result.empty())
 	{

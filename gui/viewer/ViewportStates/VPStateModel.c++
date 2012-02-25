@@ -8,8 +8,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>	// for gluQuadric()
 
-#include "../Logs.h++"	// declare the global message loggers
-
 #include "../../fem/Model.h++"
 #include "../../fem/NodeRestrictions.h++"
 #include "../../fem/Surface.h++"
@@ -31,16 +29,12 @@ VPStateModel::VPStateModel()
 
 VPStateModel::~VPStateModel()
 {
-	mylog.setPrefix("VPStateModel::~VPStateModel()");
-	mylog.message("destructor called");
 }
 
 
 void
 VPStateModel::initialize(BaseViewport *viewport)
 {
-	mylog.setPrefix("VPStateModel::initialize()");
-	mylog.message("initializing");
 
 	assert(viewport != NULL);
 
@@ -52,9 +46,6 @@ VPStateModel::initialize(BaseViewport *viewport)
 void
 VPStateModel::populateScenegraph(BaseViewport *viewport)
 {
-	mylog.setPrefix("void VPStateModel::populateScenegraph(fem::Model *viewport->project->model)");
-	mylog.message("populating");
-
 	assert(viewport != NULL);
 
 	scenegraph.clear();
@@ -105,8 +96,6 @@ void
 VPStateModel::paintGL(BaseViewport *viewport)
 {
 	assert(viewport != NULL);
-
-	mylog.setPrefix("VPStateModel::paintGL()");
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

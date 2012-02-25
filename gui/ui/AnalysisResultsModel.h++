@@ -27,6 +27,8 @@ protected:
 public:
 	AnalysisResultsModel(fem::Project &project, QObject *parent = nullptr);
 
+	QVariant headerData ( int section, Qt::Orientation orientation, int role) const;
+
 	int rowCount(const QModelIndex &parent = QModelIndex()) const ;
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;

@@ -18,7 +18,6 @@ AnalysisResultsModel::AnalysisResultsModel(fem::Project &project, QObject *paren
 	for(std::vector<fem::Element>::iterator e = project.model.element_list.begin(); e != project.model.element_list.end(); e++)
 	{
 		m_line_map[m_rows] = std::distance(project.model.element_list.begin(), e);
-		std::cerr << "(" << m_rows << ", " << m_line_map[m_rows] << ")" << std::endl;
 		m_rows += e->nodes.size();
 	}
 }

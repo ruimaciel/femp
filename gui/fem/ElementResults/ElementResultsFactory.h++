@@ -54,15 +54,6 @@ public:
 	**/
 	ElementResults<Scalar> *operator() (const fem::Element &);
 
-protected:
-	ElementResults<Scalar> * Tetrahedron4Result(const fem::Element &element);
-	ElementResults<Scalar> * Tetrahedron10Result(const fem::Element &element);
-	ElementResults<Scalar> * Hexahedron8Result(const fem::Element &element);
-	ElementResults<Scalar> * Hexahedron20Result(const fem::Element &element);
-	ElementResults<Scalar> * Hexahedron27Result(const fem::Element &element);
-	ElementResults<Scalar> * Prism6Result(const fem::Element &element);
-	ElementResults<Scalar> * Prism15Result(const fem::Element &element);
-	ElementResults<Scalar> * Prism18Result(const fem::Element &element);
 };
 
 

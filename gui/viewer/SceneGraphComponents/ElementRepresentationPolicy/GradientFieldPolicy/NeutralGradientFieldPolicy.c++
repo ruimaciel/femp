@@ -8,7 +8,7 @@ NeutralGradientFieldPolicy::NeutralGradientFieldPolicy()
 
 
 float 
-NeutralGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &p)
+NeutralGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &)
 {
 	assert(m_analysis_result != NULL);
 	assert(m_analysis_result->results[ref] != NULL);
@@ -17,14 +17,14 @@ NeutralGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t 
 
 
 float const &
-NeutralGradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges)
+NeutralGradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &)
 {
 	return 1;
 }
 
 
 float const & 
-NeutralGradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges)
+NeutralGradientFieldPolicy::minVal(fem::ResultsRanges<double> const &)
 {
 	return -1;
 }

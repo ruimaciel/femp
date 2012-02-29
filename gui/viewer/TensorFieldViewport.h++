@@ -45,12 +45,6 @@ public:
 	TensorFieldViewport(fem::Project &project, fem::AnalysisResult<double> &result, fem::ResultsRanges<double> &ranges, QWidget *parent = NULL);
 	~TensorFieldViewport();
 
-public Q_SLOTS:
-	void setXRotation(int angle);
-	void setYRotation(int angle);
-	void setZRotation(int angle);
-	void setPosition(int x, int y);
-
 	/**
 	Sets this viewport to represent a given analysis result 
 	@param	result	an analysis result
@@ -62,19 +56,11 @@ public Q_SLOTS:
 	// set the viewport state
 	void showTensionField();
 
-Q_SIGNALS:
-	void xRotationChanged(int angle);
-	void yRotationChanged(int angle);
-	void zRotationChanged(int angle);
-
 protected:
-	void paintGL();
-
 	// routines to handle input
 	void mousePressEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
 	void wheelEvent(QWheelEvent *event);
-	void keyPressEvent ( QKeyEvent * event );
 };
 
 #endif

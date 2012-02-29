@@ -36,19 +36,6 @@ PostprocessingViewport::~PostprocessingViewport()
 
 
 void 
-PostprocessingViewport::paintGL()
-{
-	assert(project != NULL);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	state->paintGL(this);
-}
-
-
-void 
 PostprocessingViewport::mousePressEvent(QMouseEvent *event)
 {
 	state->mousePressEvent(this, event);
@@ -70,61 +57,10 @@ void
 PostprocessingViewport::wheelEvent(QWheelEvent *event)
 {
 	viewport_data.zoom += event->delta()/1000.0f;
-	//qWarning("viewport_data.zoom: %f, %f",viewport_data.zoom, pow(2,viewport_data.zoom));
 
 	this->resizeGL(this->width(), this->height());
 	this->updateGL();
 	event->accept();
-}
-
-
-void 
-PostprocessingViewport::keyPressEvent( QKeyEvent *event)
-{
-	state->keyPressEvent(this, event);
-}
-
-
-void 
-PostprocessingViewport::setXRotation(int angle)
-{
-	normalizeAngle(&angle);
-	viewport_data.camera.rotation.data[0] = angle;
-	Q_EMIT xRotationChanged(angle);
-	updateGL();
-}
-
-
-void 
-PostprocessingViewport::setYRotation(int angle)
-{
-	normalizeAngle(&angle);
-	viewport_data.camera.rotation.data[1] = angle;
-	Q_EMIT yRotationChanged(angle);
-	updateGL();
-}
-
-
-void 
-PostprocessingViewport::setZRotation(int angle)
-{
-	normalizeAngle(&angle);
-	viewport_data.camera.rotation.data[2] = angle;
-	Q_EMIT zRotationChanged(angle);
-	updateGL();
-}
-
-
-void 
-PostprocessingViewport::setPosition(int x, int y)
-{
-	//TODO implement this
-	viewport_data.camera.pos.x(-x);
-	viewport_data.camera.pos.y(-y);
-	//viewport_data.camera.pos.z(amount/100.0f);
-	QString m;
-
-	updateGL();
 }
 
 

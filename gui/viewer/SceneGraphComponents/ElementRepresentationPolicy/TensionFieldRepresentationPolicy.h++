@@ -3,13 +3,18 @@
 #define TENSORFIELDREPRESENTATIONPOLICY_H
 
 #include "ElementRepresentationPolicy.h++"
+#include "../../../fem/AnalysisResult.h++"
 #include "../../../fem/Element.h++"
 #include "../../ViewportColors.h++"
 
 
-class TensorFieldRepresentationPolicy 
+class TensionFieldRepresentationPolicy 
 	: virtual public ElementRepresentationPolicy
 {
+protected:
+	fem::Model *m_model;
+	fem::AnalysisResult<double> *m_result;
+
 public:
 
 	// Constructors/Destructors
@@ -19,15 +24,16 @@ public:
 	/**
 	 * Empty Constructor
 	 */
-	TensorFieldRepresentationPolicy ( );
+	TensionFieldRepresentationPolicy ( );
 
 	/**
 	 * Empty Destructor
 	 */
-	virtual ~TensorFieldRepresentationPolicy ( );
+	virtual ~TensionFieldRepresentationPolicy ( );
 
 
 protected:
+	void renderTensor(fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color);
 
 public:
 	/**
@@ -61,6 +67,11 @@ public:
 	/**
 	 */
 	void prism18 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
+
+
+	void setModel(fem::Model &model);
+	void setAnalysisResult(fem::AnalysisResult<double> &result);
+
 
 };
 

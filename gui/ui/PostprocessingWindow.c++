@@ -188,6 +188,10 @@ PostprocessingWindow::setPostprocessingState(int state)
 			current_vp->showVonMises();
 			break;
 
+		case A_TENSION_FIELD:
+			current_vp->showTensionField();
+			break;
+
 		default:
 			qWarning(" PostprocessingWindow::setPostprocessingState(%d), unused state", state);
 			break;

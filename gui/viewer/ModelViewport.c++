@@ -50,35 +50,6 @@ ModelViewport::setSurfaceVisibility(bool state)
 
 
 void 
-ModelViewport::mousePressEvent(QMouseEvent *event)
-{
-	state->mousePressEvent(this, event);
-
-	updateGL();
-}
-
-
-void 
-ModelViewport::mouseMoveEvent(QMouseEvent *event)
-{
-	state->mouseMoveEvent(this, event);
-
-	updateGL();
-}
-
-
-void 
-ModelViewport::wheelEvent(QWheelEvent *event)
-{
-	viewport_data.zoom += event->delta()/1000.0f;
-
-	this->resizeGL(this->width(), this->height());
-	this->updateGL();
-	event->accept();
-}
-
-
-void 
 ModelViewport::showModel()
 {
 	// set the state

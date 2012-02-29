@@ -16,6 +16,7 @@ protected:
 public:
 	void leftClick();
 	void leftRelease();
+	void move();
 
 protected:
 	friend class InputState;

@@ -18,6 +18,13 @@ Input::leftRelease()
 
 
 void 
+Input::move()
+{
+	m_current_state->move(this);
+}
+
+
+void 
 Input::changeState(InputState *state)
 {
 	this->m_current_state = state;

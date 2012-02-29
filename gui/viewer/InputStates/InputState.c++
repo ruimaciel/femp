@@ -20,6 +20,14 @@ InputState::leftRelease(Input *input)
 
 
 void 
+InputState::move(Input *input)
+{
+	// remove after debug
+	std::cerr << "InputState::move(Input *input) defaulted" << std::endl;
+}
+
+
+void 
 InputState::changeState(Input &input, InputState *new_state)
 {
 	input.changeState(new_state);

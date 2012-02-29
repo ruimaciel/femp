@@ -13,6 +13,7 @@ class InputState
 public:
 	virtual void leftClick(Input *input);
 	virtual void leftRelease(Input *input);
+	virtual void move(Input *input);
 
 protected:
 	void changeState(Input &input, InputState *new_state);

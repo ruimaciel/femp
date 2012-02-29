@@ -47,8 +47,6 @@ public:
 	**/
 	void setSelection(Selection);
 
-	void mousePressEvent(BaseViewport *viewport, QMouseEvent *event);
-	// void mouseMoveEvent(QMouseEvent *event);
 	void keyPressEvent ( BaseViewport *viewport, QKeyEvent * event );
 
 };

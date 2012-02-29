@@ -43,8 +43,6 @@ public:
 
 	void setDisplacementsScale(float new_scale);
 
-	void mousePressEvent(BaseViewport *mv, QMouseEvent *event);
-	// void mouseMoveEvent(QMouseEvent *event);
 	void keyPressEvent ( BaseViewport *mv, QKeyEvent * event );
 
 	void showNegativePrincipalStressesVisibility(bool state);

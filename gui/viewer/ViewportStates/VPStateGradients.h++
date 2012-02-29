@@ -39,6 +39,7 @@ public:
 	  Configures the viewport to render the scene according to new_result
 	 **/
 	void setAnalysisResult(fem::AnalysisResult<double> &new_result);
+
 	void setResultsRanges(fem::ResultsRanges<double> &ranges);
 
 	void setDisplacementsScale(float new_scale);
@@ -48,8 +49,6 @@ public:
 	**/
 	void setSelection(Selection);
 
-	void mousePressEvent(BaseViewport *mv, QMouseEvent *event);
-	// void mouseMoveEvent(QMouseEvent *event);
 	void keyPressEvent ( BaseViewport *mv, QKeyEvent * event );
 
 public:

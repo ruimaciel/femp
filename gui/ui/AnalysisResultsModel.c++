@@ -98,14 +98,14 @@ AnalysisResultsModel::headerData ( int section, Qt::Orientation orientation, int
 
 
 int 
-AnalysisResultsModel::rowCount(const QModelIndex &parent) const 
+AnalysisResultsModel::rowCount(const QModelIndex &) const 
 {
 	return m_rows;
 }
 
 
 int 
-AnalysisResultsModel::columnCount(const QModelIndex &parent ) const
+AnalysisResultsModel::columnCount(const QModelIndex &) const
 {
 	/*
 	column count:

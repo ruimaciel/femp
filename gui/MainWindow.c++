@@ -30,6 +30,7 @@
 #include "ui/MdiWindow.h++"
 #include "ui/ModelWindow.h++"
 #include "ui/PostprocessingWindow.h++"
+#include "ui/TensorFieldWindow.h++"
 #include "ui/AnalysisResultsWindow.h++"
 #include "ui/MatrixWindow.h++"
 
@@ -408,6 +409,7 @@ MainWindow::createActions()
 	// MDI window creation 
 	connect(ui.actionNewModelWindow,		SIGNAL(triggered()),	this,	SLOT(createNewModelWindow()));
 	connect(ui.actionNewPostprocessingWindow,	SIGNAL(triggered()),	this,	SLOT(createNewPostprocessingWindow()));
+	connect(ui.actionNewTensorFieldWindow,		SIGNAL(triggered()),	this,	SLOT(createNewTensorFieldWindow()));
 	connect(ui.actionNewAnalysisResultsWindow,	SIGNAL(triggered()),	this,	SLOT(createNewAnalysisResultsWindow()));
 	connect(ui.actionNewFemEquationWindow,		SIGNAL(triggered()),	this,	SLOT(createNewFemEquationWindow()));
 
@@ -1235,6 +1237,32 @@ MainWindow::createNewPostprocessingWindow()
 		mdi_window->setWidget(window);
 		mdi_window->setAttribute(Qt::WA_DeleteOnClose);
 		mdi_window->setWindowTitle(tr("Postprocessing"));
+		mdi_window->showMaximized();
+		window->connectToSelectionManager(this->m_selection_manager);
+	}
+}
+
+
+void 
+MainWindow::createNewTensorFieldWindow()
+{
+	if(document.project.result.empty())
+	{
+		std::cerr << __FILE__ << ":" << __LINE__ ;
+		std::cerr << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available" << std::endl;
+	}
+	else
+	{
+		TensorFieldWindow *window;	// MDI viewport
+		window = new TensorFieldWindow(document.project, document.project.result.back(), colors, this);
+
+		// create the model's MDI window
+		QMdiSubWindow	* mdi_window;
+
+		mdi_window = new QMdiSubWindow(mdiArea);
+		mdi_window->setWidget(window);
+		mdi_window->setAttribute(Qt::WA_DeleteOnClose);
+		mdi_window->setWindowTitle(tr("Tensor field"));
 		mdi_window->showMaximized();
 		window->connectToSelectionManager(this->m_selection_manager);
 	}

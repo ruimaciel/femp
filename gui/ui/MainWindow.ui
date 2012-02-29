@@ -58,6 +58,7 @@
      </property>
      <addaction name="actionNewModelWindow"/>
      <addaction name="actionNewPostprocessingWindow"/>
+     <addaction name="actionNewTensorFieldWindow"/>
      <addaction name="actionNewAnalysisResultsWindow"/>
      <addaction name="actionNewFemEquationWindow"/>
     </widget>
@@ -382,7 +383,7 @@
   </action>
   <action name="actionNewPostprocessingWindow">
    <property name="text">
-    <string>Viewport</string>
+    <string>Gradient</string>
    </property>
   </action>
   <action name="actionNewAnalysisResultsWindow">
@@ -393,6 +394,11 @@
   <action name="actionNewFemEquationWindow">
    <property name="text">
     <string>FEM equation</string>
+   </property>
+  </action>
+  <action name="actionNewTensorFieldWindow">
+   <property name="text">
+    <string>Tensor field</string>
    </property>
   </action>
  </widget>

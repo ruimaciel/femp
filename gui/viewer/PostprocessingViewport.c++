@@ -250,19 +250,11 @@ PostprocessingViewport::showStress13()
 }
 
 
-
 void 
 PostprocessingViewport::showVonMises()
 {
 	this->m_vp_state_gradients.renderVonMises();
 	this->setState(&this->m_vp_state_gradients);
-}
-
-
-void 
-PostprocessingViewport::showTensionField()
-{
-	this->setState(&this->m_vp_state_tension_fields);
 }
 
 

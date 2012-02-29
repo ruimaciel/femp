@@ -31,7 +31,10 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	fem/elements/Prism18.h++ \
 	viewer/ViewportData.h++ \
 	viewer/Camera.h++  viewer/DisplayOptions.h++  viewer/ViewportColors.h++  \
-	viewer/BaseViewport.h++ viewer/ModelViewport.h++ viewer/PostprocessingViewport.h++ \
+	viewer/BaseViewport.h++ \
+	viewer/ModelViewport.h++ \
+	viewer/PostprocessingViewport.h++ \
+	viewer/TensorFieldViewport.h++ \
 	viewer/ViewportStates/*.h++ \
 	viewer/SceneGraph.h++ \
 	viewer/RenderGroup.h++ \
@@ -67,7 +70,10 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	fem/ProjectVisitor/*.c++ \
 	viewer/ViewportData.c++ \
 	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ViewportColors.c++  \
-	viewer/BaseViewport.c++ viewer/ModelViewport.c++ viewer/PostprocessingViewport.c++ \
+	viewer/BaseViewport.c++ \
+	viewer/ModelViewport.c++ \
+	viewer/PostprocessingViewport.c++ \
+	viewer/TensorFieldViewport.c++ \
 	viewer/ViewportStates/*.c++  \
 	viewer/SceneGraph.c++ \
 	viewer/RenderGroup.c++ \

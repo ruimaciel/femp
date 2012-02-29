@@ -124,6 +124,7 @@ public Q_SLOTS:
 	void createNewViewportWindow();
 	void createNewModelWindow();
 	void createNewPostprocessingWindow();
+	void createNewTensorFieldWindow();
 	void createNewAnalysisResultsWindow();
 	void createNewFemEquationWindow();
 

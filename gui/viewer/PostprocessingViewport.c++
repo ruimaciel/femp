@@ -70,7 +70,6 @@ PostprocessingViewport::setAnalysisResult(fem::AnalysisResult<double> &result)
 	this->m_analysis_result = &result;
 	this->m_vp_state_displacements.setAnalysisResult(result);
 	this->m_vp_state_gradients.setAnalysisResult(result);
-	this->m_vp_state_tension_fields.setAnalysisResult(result);
 }
 
 

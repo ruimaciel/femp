@@ -26,7 +26,6 @@
 
 #include "ViewportStates/VPStateDisplacements.h++"
 #include "ViewportStates/VPStateGradients.h++"
-#include "ViewportStates/VPStateTensionFields.h++"
 
 
 /**
@@ -41,7 +40,6 @@ protected:
 	fem::AnalysisResult<double> *m_analysis_result;
 	VPStateDisplacements 	m_vp_state_displacements;
 	VPStateGradients	m_vp_state_gradients;
-	VPStateTensionFields	m_vp_state_tension_fields;
 
 public:
 	PostprocessingViewport(fem::Project &project, fem::AnalysisResult<double> &result, fem::ResultsRanges<double> &ranges, QWidget *parent = NULL);

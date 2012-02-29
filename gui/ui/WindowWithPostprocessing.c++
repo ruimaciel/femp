@@ -28,7 +28,6 @@ void WindowWithPostprocessing::createToolbar(fem::Project &)
 	postprocessingComboBox->insertItem(P_STRESS_13, "Stress 13");
 	postprocessingComboBox->insertItem(P_STRESS_23, "Stress 23");
 	postprocessingComboBox->insertItem(P_VON_MISES, "Von Mises");
-	postprocessingComboBox->insertItem(P_TENSION_FIELD, "Tension field");
 
 	postprocessingToolBar = addToolBar(tr("Postprocessing"));
 	postprocessingToolBar->addWidget(postprocessingComboBox);

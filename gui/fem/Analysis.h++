@@ -638,6 +638,8 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar
 template<typename Scalar>
 void Analysis<Scalar>::generateDisplacementsMap(Project &project, AnalysisResult<Scalar> &result)
 {
+	std::cerr << "void Analysis<Scalar>::generateDisplacementsMap(Project &project, AnalysisResult<Scalar> &result)" << std::endl;
+
 	fem::point d;	// displacements field
 	boost::tuple<size_t,size_t,size_t> references;
 
@@ -652,11 +654,11 @@ void Analysis<Scalar>::generateDisplacementsMap(Project &project, AnalysisResult
 		d.data[1] = (references.get<1>() == 0)? 0 : result.d(references.get<1>()-1);
 		d.data[2] = (references.get<2>() == 0)? 0 : result.d(references.get<2>()-1);
 
-		std::cout << "d[" << i->first << "]: " << d << "\n";
+		// std::cout << "d[" << i->first << "]: " << d << "\n";
 
 		result.displacements[i->first] = d;
 	}
-	std::cout << std::endl;
+	//std::cout << std::endl;
 }
 
 
@@ -666,15 +668,15 @@ Analysis<Scalar>::recoverValues(Model &model, AnalysisResult<Scalar> &result)
 {
 	ElementResultsFactory<Scalar> factory(model, result);
 	ElementResults<Scalar> *element_results;
-	//for(std::vector<Element>::iterator i = model.element_list.begin(); i != model.element_list.end(); i++)
+
 	for(element_ref_t n = 0; n < model.element_list.size(); n++)
 	{
 		element_results = factory(model.element_list[n]);
 		// TODO test memory allocation
 		result.results[n] = element_results;
 
+		/*	// used for testing purposes
 		std::cout << "element " << n << "\n";
-		//std::cout << *element_results;
 		std::cout << *result.results[n];
 		// */
 	}

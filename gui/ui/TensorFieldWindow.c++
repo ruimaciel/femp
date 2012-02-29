@@ -10,18 +10,18 @@
 
 TensorFieldWindow::TensorFieldWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent)
 	: MdiWindow(parent), 
-	WindowWithResults(project, colors, parent), 
-	WindowWithScaling(project, colors, parent)
+	WindowWithResults(project, colors, parent)
 {
 	this->setGradientValuesRange(result);
-	this->viewport = new TensorFieldViewport(project, result, m_results_ranges,  parent);
+
+	m_tensor_field_viewport = new TensorFieldViewport(project, result, m_results_ranges,  parent);
+
+	this->viewport = m_tensor_field_viewport;
 
 	this->setCentralWidget(viewport);
 
 	this->viewport->setColors(colors);
 
-
-	WindowWithScaling::createMenuBar(this->menuBar());
 
 	this->createToolBars(project);
 
@@ -48,6 +48,7 @@ TensorFieldWindow::setNodeRestrictionsVisibility(const bool )
 void 
 TensorFieldWindow::setGhostSurfacesVisibility(const bool )
 {
+	//TODO remove this
 }
 
 
@@ -63,22 +64,35 @@ TensorFieldWindow::setAnalysisResult(fem::AnalysisResult<double> &result)
 void 
 TensorFieldWindow::connectSignalsToSlots()
 {
-	WindowWithScaling::connectSignalsToSlots();
 
 	connect(actionMenuVisibility,	SIGNAL(toggled(bool)),	this,	SLOT(toggleMenuBarVisibility(bool) ) );
-	connect(actionSetTensionRanges,	SIGNAL(triggered()),	this,	SLOT(setResultsRanges()));
+	//connect(actionSetTensionRanges,	SIGNAL(triggered()),	this,	SLOT(setResultsRanges()));
+	connect(actionVisibleNegativePrincipalStresses,	SIGNAL(toggled(bool)),	this,	SLOT(setNegativePrincipalStressesVisibility(bool)));
+	connect(actionVisiblePositivePrincipalStresses,	SIGNAL(toggled(bool)),	this,	SLOT(setPositivePrincipalStressesVisibility(bool)));
 }
 
 
 void 
 TensorFieldWindow::createToolBars(fem::Project &project)
 {
-	WindowWithScaling::createToolbar(project);
 	WindowWithResults::createToolbar(project);
 
 	// create
+	/*
 	toggleMenuBarVisibilityToolBar = addToolBar(tr("Menu bar visibility"));
 	toggleMenuBarVisibilityToolBar->addAction(actionMenuVisibility);
+	*/
+	m_tensor_field_visualization = addToolBar(tr("Tensor field visualization"));
+
+	actionVisibleNegativePrincipalStresses = new QAction( tr("Negative"),this);
+	actionVisibleNegativePrincipalStresses->setCheckable(true);
+	actionVisibleNegativePrincipalStresses->setChecked(true);
+	m_tensor_field_visualization->addAction(actionVisibleNegativePrincipalStresses);
+
+	actionVisiblePositivePrincipalStresses = new QAction( tr("Positive"),this);
+	actionVisiblePositivePrincipalStresses->setCheckable(true);
+	actionVisiblePositivePrincipalStresses->setChecked(true);
+	m_tensor_field_visualization->addAction(actionVisiblePositivePrincipalStresses);
 }
 
 
@@ -93,8 +107,29 @@ TensorFieldWindow::setGradientValuesRange(const fem::AnalysisResult<double> &res
 void 
 TensorFieldWindow::toggleMenuBarVisibility(bool visibility)
 {
+	//TODO replace qWarnings with calls to cerr
 	qWarning("void TensorFieldWindow::toggleMenuBarVisibility(bool visibility) ");
 	this->menuBar()->setVisible(visibility);
+}
+
+
+void 
+TensorFieldWindow::setNegativePrincipalStressesVisibility(const bool state)
+{
+	std::cerr << "TensorFieldWindow::setNegativePrincipalStressesVisibility(const bool state)" << std::endl;
+	
+	this->m_tensor_field_viewport->showNegativePrincipalStressesVisibility(state);
+	this->viewport->refresh();
+}
+
+
+void 
+TensorFieldWindow::setPositivePrincipalStressesVisibility(const bool state)
+{
+	std::cerr << "TensorFieldWindow::setPositivePrincipalStressesVisibility(const bool state)" << std::endl;
+	
+	this->m_tensor_field_viewport->showPositivePrincipalStressesVisibility(state);
+	this->viewport->refresh();
 }
 
 

@@ -9,6 +9,8 @@ TensionFieldRepresentationPolicy::TensionFieldRepresentationPolicy ( )
 {
 	m_model = nullptr;
 	m_result = nullptr;
+	m_negative_principal_tension_visible = true;
+	m_positive_principal_tension_visible = true;
 }
 
 TensionFieldRepresentationPolicy::~TensionFieldRepresentationPolicy ( ) 
@@ -41,13 +43,17 @@ TensionFieldRepresentationPolicy::renderTensor( fem::element_ref_t const &ref, f
 	glBegin(GL_LINES);
 	for(int k = 0; k < 3; k++)
 	{
-		float dim = m_result->results[ref]->eig_vec[0][k]*m_result->results[ref]->eig_vec[0][k] + m_result->results[ref]->eig_vec[1][k]*m_result->results[ref]->eig_vec[1][k]+ m_result->results[ref]->eig_vec[2][k]*m_result->results[ref]->eig_vec[2][k];
-		p.data[0] = m_result->results[ref]->eig_vec[0][k]*diameter/dim;
-		p.data[1] = m_result->results[ref]->eig_vec[1][k]*diameter/dim;
-		p.data[2] = m_result->results[ref]->eig_vec[2][k]*diameter/dim;
+		if( ( (m_result->results[ref]->eig_val[k] > 0) && m_positive_principal_tension_visible ) || 
+				( (m_result->results[ref]->eig_val[k] < 0) && m_negative_principal_tension_visible ) )
+		{
+			float dim = m_result->results[ref]->eig_vec[0][k]*m_result->results[ref]->eig_vec[0][k] + m_result->results[ref]->eig_vec[1][k]*m_result->results[ref]->eig_vec[1][k]+ m_result->results[ref]->eig_vec[2][k]*m_result->results[ref]->eig_vec[2][k];
+			p.data[0] = m_result->results[ref]->eig_vec[0][k]*diameter/dim;
+			p.data[1] = m_result->results[ref]->eig_vec[1][k]*diameter/dim;
+			p.data[2] = m_result->results[ref]->eig_vec[2][k]*diameter/dim;
 
-		glVertex3dv((c-p).data);
-		glVertex3dv((c+p).data);
+			glVertex3dv((c-p).data);
+			glVertex3dv((c+p).data);
+		}
 	}
 	glEnd();
 	glDisable(GL_BLEND);
@@ -144,6 +150,20 @@ void
 TensionFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult<double> &result)
 {
 	m_result = &result;
+}
+
+
+void 
+TensionFieldRepresentationPolicy::showNegativePrincipalStressesVisibility(bool state)
+{
+	m_negative_principal_tension_visible = state;
+}
+
+
+void
+TensionFieldRepresentationPolicy::showPositivePrincipalStressesVisibility(bool state)
+{
+	m_positive_principal_tension_visible = state;
 }
 
 

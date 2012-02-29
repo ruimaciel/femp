@@ -13,6 +13,7 @@
 #include "../fem/AnalysisResult.h++"
 #include "../fem/ElementResults/ResultsRanges.h++"
 #include "../viewer/ViewportColors.h++"
+#include "../viewer/TensorFieldViewport.h++"
 
 #include "Selection.h++"
 #include "SelectionManager.h++"
@@ -22,12 +23,19 @@
 MDI window designed to represent a tensor field of a given analysis result
 **/
 class TensorFieldWindow 
-	: virtual public MdiWindow, virtual public WindowWithResults,  virtual public WindowWithScaling
+	: virtual public MdiWindow, virtual public WindowWithResults
 {
 	Q_OBJECT
 
 protected:
+	TensorFieldViewport *m_tensor_field_viewport;
+
 	QToolBar *toggleMenuBarVisibilityToolBar;	
+
+	QAction *actionVisibleNegativePrincipalStresses;
+	QAction *actionVisiblePositivePrincipalStresses;
+
+	QToolBar *m_tensor_field_visualization;	
 	QComboBox *analysisComboBox;
 
 	fem::AnalysisResult<double> *m_result;	// pointer to the current analysis result, which will point to a reference
@@ -47,6 +55,8 @@ public Q_SLOTS:
 	void setGhostSurfacesVisibility(const bool state);
 
 	void toggleMenuBarVisibility(bool);
+	void setNegativePrincipalStressesVisibility(const bool state);
+	void setPositivePrincipalStressesVisibility(const bool state);
 
 	void setAnalysisResult(fem::AnalysisResult<double> &result);
 

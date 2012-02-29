@@ -86,3 +86,17 @@ TensorFieldViewport::showTensionField()
 }
 
 
+void 
+TensorFieldViewport::showNegativePrincipalStressesVisibility(bool state)
+{
+	m_vp_state_tension_fields.showNegativePrincipalStressesVisibility(state);
+}
+
+
+void 
+TensorFieldViewport::showPositivePrincipalStressesVisibility(bool state)
+{
+	m_vp_state_tension_fields.showPositivePrincipalStressesVisibility(state);
+}
+
+

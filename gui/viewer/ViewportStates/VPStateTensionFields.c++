@@ -174,3 +174,17 @@ VPStateTensionFields::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 }
 
 
+void 
+VPStateTensionFields::showNegativePrincipalStressesVisibility(bool state)
+{
+	m_tension_representation.showNegativePrincipalStressesVisibility(state);
+}
+
+
+void 
+VPStateTensionFields::showPositivePrincipalStressesVisibility(bool state)
+{
+	m_tension_representation.showPositivePrincipalStressesVisibility(state);
+}
+
+

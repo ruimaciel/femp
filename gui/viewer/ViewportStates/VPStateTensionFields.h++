@@ -48,6 +48,9 @@ public:
 	// void mouseMoveEvent(QMouseEvent *event);
 	void keyPressEvent ( BaseViewport *mv, QKeyEvent * event );
 
+	void showNegativePrincipalStressesVisibility(bool state);
+	void showPositivePrincipalStressesVisibility(bool state);
+
 };
 
 #endif

@@ -35,35 +35,6 @@ PostprocessingViewport::~PostprocessingViewport()
 }
 
 
-void 
-PostprocessingViewport::mousePressEvent(QMouseEvent *event)
-{
-	state->mousePressEvent(this, event);
-
-	updateGL();
-}
-
-
-void 
-PostprocessingViewport::mouseMoveEvent(QMouseEvent *event)
-{
-	state->mouseMoveEvent(this, event);
-
-	updateGL();
-}
-
-
-void 
-PostprocessingViewport::wheelEvent(QWheelEvent *event)
-{
-	viewport_data.zoom += event->delta()/1000.0f;
-
-	this->resizeGL(this->width(), this->height());
-	this->updateGL();
-	event->accept();
-}
-
-
 void
 PostprocessingViewport::setAnalysisResult(fem::AnalysisResult<double> &result)
 {

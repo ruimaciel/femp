@@ -35,35 +35,6 @@ TensorFieldViewport::~TensorFieldViewport()
 }
 
 
-void 
-TensorFieldViewport::mousePressEvent(QMouseEvent *event)
-{
-	state->mousePressEvent(this, event);
-
-	updateGL();
-}
-
-
-void 
-TensorFieldViewport::mouseMoveEvent(QMouseEvent *event)
-{
-	state->mouseMoveEvent(this, event);
-
-	updateGL();
-}
-
-
-void 
-TensorFieldViewport::wheelEvent(QWheelEvent *event)
-{
-	viewport_data.zoom += event->delta()/1000.0f;
-
-	this->resizeGL(this->width(), this->height());
-	this->updateGL();
-	event->accept();
-}
-
-
 void
 TensorFieldViewport::setAnalysisResult(fem::AnalysisResult<double> &result)
 {

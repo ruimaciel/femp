@@ -61,8 +61,8 @@ public:
 	/*
 	Routine which will paint each OpenGL scene
 	*/
-	virtual void paintGL(BaseViewport *viewport)	= 0;
-	virtual void mousePressEvent(BaseViewport *viewport, QMouseEvent *event) = 0;
+	virtual void paintGL(BaseViewport *viewport);
+	virtual void mousePressEvent(BaseViewport *viewport, QMouseEvent *event);
 	virtual void mouseMoveEvent(BaseViewport *viewport, QMouseEvent *event);
 	virtual void keyPressEvent ( BaseViewport *viewport, QKeyEvent * event );
 

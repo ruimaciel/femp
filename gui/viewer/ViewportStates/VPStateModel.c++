@@ -68,7 +68,6 @@ VPStateModel::populateScenegraph(BaseViewport *viewport)
 	}
 
 	// add the elements to the scene graph
-	//for( std::vector<fem::Element>::iterator i = viewport->project->model.element_list.begin(); i != viewport->project->model.element_list.end(); i++)
 	for( std::vector<fem::Element>::size_type n = 0; n < viewport->project->model.element_list.size(); n++)
 	{
 		component = this->m_factory(n, viewport->project->model.element_list[n]);
@@ -88,44 +87,6 @@ void
 VPStateModel::setSelection(Selection)
 {
 	std::cout << "VPStateModel::setSelection(Selection)" << std::endl;
-}
-
-
-void
-VPStateModel::paintGL(BaseViewport *viewport)
-{
-	assert(viewport != NULL);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	viewport->viewport_data.camera.reposition();
-
-	//TODO finish implementing this
-	this->scenegraph.paint(viewport->viewport_data, viewport->colors);
-}
-
-
-void
-VPStateModel::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
-{
-	viewport->viewport_data.lastPos = event->pos();
-	// process left clicks
-	if(event->buttons() & Qt::LeftButton)
-	{
-		fem::point near, far;
-		QPoint pos = event->pos();
-		GLdouble modelview[16];
-		GLdouble projection[16];
-		GLint viewport[4];
-
-		glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-		glGetDoublev(GL_PROJECTION_MATRIX, projection);
-		glGetIntegerv(GL_VIEWPORT, viewport);
-		gluUnProject(pos.x(), viewport[3]-pos.y(), 0, modelview, projection, viewport, &near.data[0], &near.data[1], &near.data[2]);
-		gluUnProject(pos.x(), viewport[3]-pos.y(), 1, modelview, projection, viewport, &far.data[0], &far.data[1], &far.data[2]);
-	}
 }
 
 

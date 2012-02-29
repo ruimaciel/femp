@@ -1,9 +1,8 @@
-#ifndef POSTPROCESSING__WINDOW_HPP
-#define POSTPROCESSING__WINDOW_HPP
+#ifndef TENSOR_FIELD__WINDOW_HPP
+#define TENSOR_FIELD__WINDOW_HPP
 
 #include "MdiWindow.h++"
 #include "WindowWithResults.h++"
-#include "WindowWithPostprocessing.h++"
 #include "WindowWithScaling.h++"
 
 #include <QWidget>
@@ -14,28 +13,29 @@
 #include "../fem/AnalysisResult.h++"
 #include "../fem/ElementResults/ResultsRanges.h++"
 #include "../viewer/ViewportColors.h++"
+#include "../viewer/TensorFieldViewport.h++"
 
 #include "Selection.h++"
 #include "SelectionManager.h++"
 
 
 /**
-MDI window designed to represent the model
+MDI window designed to represent a tensor field of a given analysis result
 **/
-class PostprocessingWindow 
-	: virtual public MdiWindow, virtual public WindowWithResults, virtual public WindowWithPostprocessing, virtual public WindowWithScaling
+class TensorFieldWindow 
+	: virtual public MdiWindow, virtual public WindowWithResults
 {
 	Q_OBJECT
 
 protected:
-	enum AnalysisType {
-		A_DISPLACEMENT = 0,
-		A_STRAIN_11, A_STRAIN_22, A_STRAIN_33, A_STRAIN_12,A_STRAIN_13,A_STRAIN_23,
-		A_STRESS_11, A_STRESS_22, A_STRESS_33, A_STRESS_12,A_STRESS_13,A_STRESS_23,
-		A_VON_MISES
-	};
+	TensorFieldViewport *m_tensor_field_viewport;
 
 	QToolBar *toggleMenuBarVisibilityToolBar;	
+
+	QAction *actionVisibleNegativePrincipalStresses;
+	QAction *actionVisiblePositivePrincipalStresses;
+
+	QToolBar *m_tensor_field_visualization;	
 	QComboBox *analysisComboBox;
 
 	fem::AnalysisResult<double> *m_result;	// pointer to the current analysis result, which will point to a reference
@@ -44,7 +44,7 @@ protected:
 	fem::ResultsRanges<double> m_results_ranges;	// used to set values for representation
 
 public:
-	PostprocessingWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent = 0);
+	TensorFieldWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent = 0);
 
 
 public Q_SLOTS:
@@ -54,9 +54,9 @@ public Q_SLOTS:
 	void setNodeRestrictionsVisibility(const bool state);
 	void setGhostSurfacesVisibility(const bool state);
 
-	// sets the postprocessing state according
-	void setPostprocessingState(int state);
 	void toggleMenuBarVisibility(bool);
+	void setNegativePrincipalStressesVisibility(const bool state);
+	void setPositivePrincipalStressesVisibility(const bool state);
 
 	void setAnalysisResult(fem::AnalysisResult<double> &result);
 

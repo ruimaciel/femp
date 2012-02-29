@@ -34,6 +34,42 @@ ViewportState::setRenderGoupVisibility(SceneGraph::Groups group, bool state)
 
 
 void
+ViewportState::paintGL(BaseViewport *viewport)
+{
+	assert(viewport != NULL);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	viewport->viewport_data.camera.reposition();
+
+	this->scenegraph.paint(viewport->viewport_data,  viewport->colors);
+}
+
+
+void
+ViewportState::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
+{
+	viewport->viewport_data.lastPos = event->pos();
+	// process left clicks
+	if(event->buttons() & Qt::LeftButton)
+	{
+		fem::point near, far;
+		QPoint pos = event->pos();
+		
+		GLint vport[4];
+
+		glGetDoublev(GL_MODELVIEW_MATRIX, viewport->viewport_data.modelview);
+		glGetDoublev(GL_PROJECTION_MATRIX, viewport->viewport_data.projection);
+		glGetIntegerv(GL_VIEWPORT, vport);
+		gluUnProject(pos.x(), vport[3]-pos.y(), 0, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &near.data[0], &near.data[1], &near.data[2]);
+		gluUnProject(pos.x(), vport[3]-pos.y(), 1, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &far.data[0], &far.data[1], &far.data[2]);
+	}
+}
+
+
+void
 ViewportState::mouseMoveEvent(BaseViewport *viewport, QMouseEvent *event)
 {
 	assert(viewport != NULL);

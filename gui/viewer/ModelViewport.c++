@@ -50,19 +50,6 @@ ModelViewport::setSurfaceVisibility(bool state)
 
 
 void 
-ModelViewport::paintGL()
-{
-	assert(project != NULL);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	state->paintGL(this);
-}
-
-
-void 
 ModelViewport::mousePressEvent(QMouseEvent *event)
 {
 	state->mousePressEvent(this, event);
@@ -88,54 +75,6 @@ ModelViewport::wheelEvent(QWheelEvent *event)
 	this->resizeGL(this->width(), this->height());
 	this->updateGL();
 	event->accept();
-}
-
-
-void 
-ModelViewport::keyPressEvent( QKeyEvent *event)
-{
-	state->keyPressEvent(this, event);
-}
-
-
-void 
-ModelViewport::setXRotation(int angle)
-{
-	normalizeAngle(&angle);
-	viewport_data.camera.rotation.data[0] = angle;
-	Q_EMIT xRotationChanged(angle);
-	updateGL();
-}
-
-
-void 
-ModelViewport::setYRotation(int angle)
-{
-	normalizeAngle(&angle);
-	viewport_data.camera.rotation.data[1] = angle;
-	Q_EMIT yRotationChanged(angle);
-	updateGL();
-}
-
-
-void 
-ModelViewport::setZRotation(int angle)
-{
-	normalizeAngle(&angle);
-	viewport_data.camera.rotation.data[2] = angle;
-	Q_EMIT zRotationChanged(angle);
-	updateGL();
-}
-
-
-void 
-ModelViewport::setPosition(int x, int y)
-{
-	//TODO implement this
-	viewport_data.camera.pos.x(-x);
-	viewport_data.camera.pos.y(-y);
-
-	updateGL();
 }
 
 

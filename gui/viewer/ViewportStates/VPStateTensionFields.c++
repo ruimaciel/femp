@@ -108,44 +108,6 @@ VPStateTensionFields::setDisplacementsScale(float new_scale)
 
 
 void
-VPStateTensionFields::paintGL(BaseViewport *viewport)
-{
-	assert(viewport != NULL);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	viewport->viewport_data.camera.reposition();
-
-	this->scenegraph.paint(viewport->viewport_data,  viewport->colors);
-
-}
-
-
-void
-VPStateTensionFields::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
-{
-	viewport->viewport_data.lastPos = event->pos();
-	// process left clicks
-	if(event->buttons() & Qt::LeftButton)
-	{
-		fem::point near, far;
-		QPoint pos = event->pos();
-		GLdouble modelview[16];
-		GLdouble projection[16];
-		GLint viewport[4];
-
-		glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-		glGetDoublev(GL_PROJECTION_MATRIX, projection);
-		glGetIntegerv(GL_VIEWPORT, viewport);
-		gluUnProject(pos.x(), viewport[3]-pos.y(), 0, modelview, projection, viewport, &near.data[0], &near.data[1], &near.data[2]);
-		gluUnProject(pos.x(), viewport[3]-pos.y(), 1, modelview, projection, viewport, &far.data[0], &far.data[1], &far.data[2]);
-	}
-}
-
-
-void
 VPStateTensionFields::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 {
 	switch( event->key() )
@@ -171,6 +133,20 @@ VPStateTensionFields::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 		default:
 			break;
 	}
+}
+
+
+void 
+VPStateTensionFields::showNegativePrincipalStressesVisibility(bool state)
+{
+	m_tension_representation.showNegativePrincipalStressesVisibility(state);
+}
+
+
+void 
+VPStateTensionFields::showPositivePrincipalStressesVisibility(bool state)
+{
+	m_tension_representation.showPositivePrincipalStressesVisibility(state);
 }
 
 

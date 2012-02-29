@@ -14,6 +14,8 @@ class TensionFieldRepresentationPolicy
 protected:
 	fem::Model *m_model;
 	fem::AnalysisResult<double> *m_result;
+	bool	m_negative_principal_tension_visible;
+	bool	m_positive_principal_tension_visible;
 
 public:
 
@@ -72,6 +74,8 @@ public:
 	void setModel(fem::Model &model);
 	void setAnalysisResult(fem::AnalysisResult<double> &result);
 
+	void showNegativePrincipalStressesVisibility(bool state);
+	void showPositivePrincipalStressesVisibility(bool state);
 
 };
 

@@ -3,24 +3,43 @@
 #include "InputState.h++"
 
 
-void 
-Input::leftClick()
+Input::Input()
 {
-	m_current_state->leftClick(this);
 }
 
 
 void 
-Input::leftRelease()
+Input::leftClick(BaseViewport *viewport, QMouseEvent *event)
 {
-	m_current_state->leftRelease(this);
+	m_current_state->leftClick(viewport, event, this);
 }
 
 
 void 
-Input::move()
+Input::leftRelease(BaseViewport *viewport, QMouseEvent *event)
 {
-	m_current_state->move(this);
+	m_current_state->leftRelease(viewport,  event,this);
+}
+
+
+void 
+Input::rightClick(BaseViewport *viewport, QMouseEvent *event)
+{
+	m_current_state->rightClick(viewport, event, this);
+}
+
+
+void 
+Input::rightRelease(BaseViewport *viewport, QMouseEvent *event)
+{
+	m_current_state->rightRelease(viewport,  event,this);
+}
+
+
+void 
+Input::move(BaseViewport *viewport, QMouseEvent *event)
+{
+	m_current_state->move(viewport, event, this);
 }
 
 

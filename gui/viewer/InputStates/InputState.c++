@@ -4,7 +4,7 @@
 
 
 void 
-InputState::leftClick(Input *input)
+InputState::leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
 	// remove after debug
 	std::cerr << "InputState::leftClick(Input *input) defaulted" << std::endl;
@@ -12,7 +12,7 @@ InputState::leftClick(Input *input)
 
 
 void 
-InputState::leftRelease(Input *input)
+InputState::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
 	// remove after debug
 	std::cerr << "InputState::leftRelease(Input *input) defaulted" << std::endl;
@@ -20,7 +20,23 @@ InputState::leftRelease(Input *input)
 
 
 void 
-InputState::move(Input *input)
+InputState::rightClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
+{
+	// remove after debug
+	std::cerr << "InputState::rightClick(Input *input) defaulted" << std::endl;
+}
+
+
+void 
+InputState::rightRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
+{
+	// remove after debug
+	std::cerr << "InputState::rightRelease(Input *input) defaulted" << std::endl;
+}
+
+
+void 
+InputState::move(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
 	// remove after debug
 	std::cerr << "InputState::move(Input *input) defaulted" << std::endl;

@@ -1,8 +1,12 @@
 #ifndef INPUT_HPP
 #define INPUT_HPP
 
-#include "InputState.h++"
+#include <Qt>	// for QMouseEvent
 
+#include "InputState.h++"
+#include "../BaseViewport.h++"
+
+class BaseViewport;
 class InputState;
 
 /**
@@ -14,9 +18,13 @@ protected:
 	InputState *m_current_state;
 
 public:
-	void leftClick();
-	void leftRelease();
-	void move();
+	Input();
+
+	void leftClick(BaseViewport *, QMouseEvent *event);
+	void leftRelease(BaseViewport *, QMouseEvent *event);
+	void rightClick(BaseViewport *, QMouseEvent *event);
+	void rightRelease(BaseViewport *, QMouseEvent *event);
+	void move(BaseViewport *, QMouseEvent *event);
 
 protected:
 	friend class InputState;

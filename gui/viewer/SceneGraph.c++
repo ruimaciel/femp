@@ -39,8 +39,6 @@ void
 SceneGraph::paint(ViewportData &viewport_data, ViewportColors &colors)
 {
 	using namespace std;
-	// get the model
-	glGetFloatv(GL_PROJECTION_MATRIX, viewport_data.modelview) ;
 
 	for(map<int, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
 	{

@@ -57,15 +57,14 @@ ViewportState::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
 	{
 		fem::point near, far;
 		QPoint pos = event->pos();
-		GLdouble modelview[16];
-		GLdouble projection[16];
-		GLint viewport[4];
+		
+		GLint vport[4];
 
-		glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-		glGetDoublev(GL_PROJECTION_MATRIX, projection);
-		glGetIntegerv(GL_VIEWPORT, viewport);
-		gluUnProject(pos.x(), viewport[3]-pos.y(), 0, modelview, projection, viewport, &near.data[0], &near.data[1], &near.data[2]);
-		gluUnProject(pos.x(), viewport[3]-pos.y(), 1, modelview, projection, viewport, &far.data[0], &far.data[1], &far.data[2]);
+		glGetDoublev(GL_MODELVIEW_MATRIX, viewport->viewport_data.modelview);
+		glGetDoublev(GL_PROJECTION_MATRIX, viewport->viewport_data.projection);
+		glGetIntegerv(GL_VIEWPORT, vport);
+		gluUnProject(pos.x(), vport[3]-pos.y(), 0, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &near.data[0], &near.data[1], &near.data[2]);
+		gluUnProject(pos.x(), vport[3]-pos.y(), 1, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &far.data[0], &far.data[1], &far.data[2]);
 	}
 }
 

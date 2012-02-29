@@ -47,7 +47,6 @@ public:
 	**/
 	void setSelection(Selection);
 
-	void paintGL(BaseViewport *viewport);
 	void mousePressEvent(BaseViewport *viewport, QMouseEvent *event);
 	// void mouseMoveEvent(QMouseEvent *event);
 	void keyPressEvent ( BaseViewport *viewport, QKeyEvent * event );

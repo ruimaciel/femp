@@ -34,6 +34,21 @@ ViewportState::setRenderGoupVisibility(SceneGraph::Groups group, bool state)
 
 
 void
+ViewportState::paintGL(BaseViewport *viewport)
+{
+	assert(viewport != NULL);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	viewport->viewport_data.camera.reposition();
+
+	this->scenegraph.paint(viewport->viewport_data,  viewport->colors);
+}
+
+
+void
 ViewportState::mouseMoveEvent(BaseViewport *viewport, QMouseEvent *event)
 {
 	assert(viewport != NULL);

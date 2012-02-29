@@ -69,7 +69,6 @@ VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 	}
 
 	// add the elements to the scenegraph
-	//for( std::vector<fem::Element>::iterator i = viewport->project->model.element_list.begin(); i != viewport->project->model.element_list.end(); i++)
 	for( std::vector<fem::Element>::size_type n = 0; n < viewport->project->model.element_list.size(); n++)
 	{
 		component = this->m_factory(n, viewport->project->model.element_list[n]);
@@ -99,22 +98,6 @@ VPStateDisplacements::setDisplacementsScale(float new_scale)
 void 
 VPStateDisplacements::setSelection(Selection)
 {
-}
-
-
-void
-VPStateDisplacements::paintGL(BaseViewport *viewport)
-{
-	assert(viewport != NULL);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	viewport->viewport_data.camera.reposition();
-
-	this->scenegraph.paint(viewport->viewport_data,  viewport->colors);
-
 }
 
 

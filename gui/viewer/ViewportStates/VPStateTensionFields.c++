@@ -108,22 +108,6 @@ VPStateTensionFields::setDisplacementsScale(float new_scale)
 
 
 void
-VPStateTensionFields::paintGL(BaseViewport *viewport)
-{
-	assert(viewport != NULL);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	viewport->viewport_data.camera.reposition();
-
-	this->scenegraph.paint(viewport->viewport_data,  viewport->colors);
-
-}
-
-
-void
 VPStateTensionFields::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
 {
 	viewport->viewport_data.lastPos = event->pos();

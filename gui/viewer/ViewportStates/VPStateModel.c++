@@ -68,7 +68,6 @@ VPStateModel::populateScenegraph(BaseViewport *viewport)
 	}
 
 	// add the elements to the scene graph
-	//for( std::vector<fem::Element>::iterator i = viewport->project->model.element_list.begin(); i != viewport->project->model.element_list.end(); i++)
 	for( std::vector<fem::Element>::size_type n = 0; n < viewport->project->model.element_list.size(); n++)
 	{
 		component = this->m_factory(n, viewport->project->model.element_list[n]);
@@ -88,22 +87,6 @@ void
 VPStateModel::setSelection(Selection)
 {
 	std::cout << "VPStateModel::setSelection(Selection)" << std::endl;
-}
-
-
-void
-VPStateModel::paintGL(BaseViewport *viewport)
-{
-	assert(viewport != NULL);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	viewport->viewport_data.camera.reposition();
-
-	//TODO finish implementing this
-	this->scenegraph.paint(viewport->viewport_data, viewport->colors);
 }
 
 

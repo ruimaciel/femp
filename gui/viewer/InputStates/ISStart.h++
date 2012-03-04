@@ -1,6 +1,7 @@
 #ifndef INPUT_STATE_START_HPP 
 #define INPUT_STATE_START_HPP 
 
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include "InputState.h++"
 

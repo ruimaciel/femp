@@ -8,12 +8,20 @@ BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
 {
 	assert(parent != NULL);
 
+	m_input = new Input;	// to avoid circular dependencies
+
 	// initialize the dangling pointers
 	this->project = &project;
 
 	this->state = NULL;
 
 	this->setFocusPolicy(Qt::StrongFocus);
+}
+
+
+BaseViewport::~BaseViewport()
+{
+	delete m_input;
 }
 
 
@@ -128,8 +136,18 @@ BaseViewport::paintGL()
 void 
 BaseViewport::mousePressEvent(QMouseEvent *event)
 {
-	state->mousePressEvent(this, event);
+	std::cerr << "BaseViewport::mousePressEvent(QMouseEvent *event)" << std::endl;
 
+	m_input->press(this, event);
+
+	updateGL();
+}
+
+
+void 
+BaseViewport::mouseReleaseEvent(QMouseEvent *event)
+{
+	m_input->release(this, event);
 	updateGL();
 }
 
@@ -137,7 +155,8 @@ BaseViewport::mousePressEvent(QMouseEvent *event)
 void 
 BaseViewport::mouseMoveEvent(QMouseEvent *event)
 {
-	state->mouseMoveEvent(this, event);
+	//state->mouseMoveEvent(this, event);
+	m_input->move(this, event);
 
 	updateGL();
 }

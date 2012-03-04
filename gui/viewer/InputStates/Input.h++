@@ -1,10 +1,12 @@
 #ifndef INPUT_HPP
 #define INPUT_HPP
 
-#include <Qt>	// for QMouseEvent
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
+#include <QMouseEvent>
 
 #include "InputState.h++"
-#include "../BaseViewport.h++"
+
+#include "ISStart.h++"
 
 class BaseViewport;
 class InputState;
@@ -17,14 +19,16 @@ class Input
 protected:
 	InputState *m_current_state;
 
+	InputStates::Start m_s_start;
+
 public:
 	Input();
 
-	void leftClick(BaseViewport *, QMouseEvent *event);
-	void leftRelease(BaseViewport *, QMouseEvent *event);
-	void rightClick(BaseViewport *, QMouseEvent *event);
-	void rightRelease(BaseViewport *, QMouseEvent *event);
+	void press(BaseViewport *, QMouseEvent *event);
+	void release(BaseViewport *, QMouseEvent *event);
+
 	void move(BaseViewport *, QMouseEvent *event);
+
 
 protected:
 	friend class InputState;

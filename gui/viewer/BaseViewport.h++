@@ -23,9 +23,11 @@
 #include "Selection.h++"
 
 #include "ViewportStates/ViewportState.h++"	// for the vieport's state pattern base class
+#include "InputStates/Input.h++"		// for the state pattern that handles user input
 
 
 class ViewportState;
+class Input;
 
 /*
 QGLidget subclass designed for a Base class for all Qt widgets that provide an opengl viewports to render the model 
@@ -35,6 +37,9 @@ class BaseViewport
 {
 Q_OBJECT
 
+
+protected:
+	Input *m_input;	// state pattern that handles user input
 
 public:
 	ViewportData viewport_data;
@@ -47,6 +52,7 @@ public:
 
 public:
 	BaseViewport(fem::Project &project, QWidget *parent);
+	~BaseViewport();
 
 
 	void setColors(ViewportColors &new_colors);
@@ -119,6 +125,7 @@ protected:
 
 	// routines to handle input
 	void mousePressEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
 	void wheelEvent(QWheelEvent *event);
 	void keyPressEvent ( QKeyEvent * event );

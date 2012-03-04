@@ -1,5 +1,6 @@
 #include "ISStart.h++"
 
+#include <iostream>
 
 namespace InputStates
 {

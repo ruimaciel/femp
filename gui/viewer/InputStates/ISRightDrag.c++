@@ -48,6 +48,14 @@ void
 RightDrag::move(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
 	std::cerr << "RightDrag::move(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
+
+	int dx = event->x() - viewport->viewport_data.lastPos.x();
+	int dy = event->y() - viewport->viewport_data.lastPos.y();
+
+	viewport->viewport_data.camera.rotation.data[0] += dy/pow(2,viewport->viewport_data.zoom);
+	viewport->viewport_data.camera.rotation.data[1] += dx/pow(2,viewport->viewport_data.zoom);
+
+	viewport->viewport_data.lastPos = event->pos();
 }
 
 

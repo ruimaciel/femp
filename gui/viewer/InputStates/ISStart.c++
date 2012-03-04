@@ -54,6 +54,7 @@ void
 Start::rightClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
 	std::cerr << "Start::rightClick(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
+	viewport->viewport_data.lastPos = event->pos(); // for the rotate
 	input->changeState(&viewport->m_is_right_click);
 }
 

@@ -50,6 +50,7 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	viewer/InputStates/InputState.h++ \
 	viewer/InputStates/ISStart.h++ \
 	viewer/InputStates/ISLeftClick.h++ \
+	viewer/InputStates/ISLeftDrag.h++ \
 	viewer/InputStates/ISRightClick.h++ \
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h parsers/FemJsonParser.h++\
@@ -94,6 +95,7 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	viewer/InputStates/InputState.c++ \
 	viewer/InputStates/ISStart.c++ \
 	viewer/InputStates/ISLeftClick.c++ \
+	viewer/InputStates/ISLeftDrag.c++ \
 	viewer/InputStates/ISRightClick.c++ \
 	fem_msh.c++ lex.msh_yy.c++ \
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c parsers/FemJsonParser.c++\

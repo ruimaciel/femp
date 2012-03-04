@@ -23,6 +23,7 @@ public:
 	//void leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input);
 	//void rightClick(BaseViewport *viewport, QMouseEvent *event, Input *input);
 	void rightRelease(BaseViewport *viewport, QMouseEvent *event, Input *input);
+
 	void move(BaseViewport *viewport, QMouseEvent *event, Input *input);
 };
 

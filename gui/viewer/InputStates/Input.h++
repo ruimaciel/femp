@@ -30,7 +30,7 @@ public:
 	void move(BaseViewport *, QMouseEvent *event);
 
 
-protected:
+//protected:
 	friend class InputState;
 	void changeState(InputState *new_state);
 };

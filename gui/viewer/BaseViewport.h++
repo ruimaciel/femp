@@ -24,6 +24,11 @@
 
 #include "ViewportStates/ViewportState.h++"	// for the vieport's state pattern base class
 #include "InputStates/Input.h++"		// for the state pattern that handles user input
+#include "InputStates/ISStart.h++"		// for the state pattern that handles user input
+#include "InputStates/ISLeftClick.h++"		// for the state pattern that handles user input
+#include "InputStates/ISLeftDrag.h++"		// for the state pattern that handles user input
+#include "InputStates/ISRightClick.h++"		// for the state pattern that handles user input
+#include "InputStates/ISRightDrag.h++"		// for the state pattern that handles user input
 
 
 class ViewportState;
@@ -37,6 +42,13 @@ class BaseViewport
 {
 Q_OBJECT
 
+
+public:
+	InputStates::Start 	m_is_start;
+	InputStates::LeftClick	m_is_left_click;
+	InputStates::LeftDrag	m_is_left_drag;
+	InputStates::RightClick	m_is_right_click;
+	InputStates::RightDrag	m_is_right_drag;
 
 protected:
 	Input *m_input;	// state pattern that handles user input

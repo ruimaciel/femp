@@ -12,11 +12,11 @@ InputState::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
 	switch(event->buttons() )
 	{ 
 		case Qt::LeftButton:
-			std::cerr << "left" << std::endl;
+			this->leftClick(viewport, event, input);
 			break;
 
 		case Qt::RightButton:
-			std::cerr << "right" << std::endl;
+			this->rightClick(viewport, event, input);
 			break;
 
 		/*

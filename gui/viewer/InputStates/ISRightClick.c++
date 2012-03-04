@@ -48,6 +48,7 @@ void
 RightClick::move(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
 	std::cerr << "RightClick::move(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
+	input->changeState(&viewport->m_is_right_drag);
 }
 
 

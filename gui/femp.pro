@@ -52,6 +52,7 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	viewer/InputStates/ISLeftClick.h++ \
 	viewer/InputStates/ISLeftDrag.h++ \
 	viewer/InputStates/ISRightClick.h++ \
+	viewer/InputStates/ISRightDrag.h++ \
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h parsers/FemJsonParser.h++\
 	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
@@ -97,6 +98,7 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	viewer/InputStates/ISLeftClick.c++ \
 	viewer/InputStates/ISLeftDrag.c++ \
 	viewer/InputStates/ISRightClick.c++ \
+	viewer/InputStates/ISRightDrag.c++ \
 	fem_msh.c++ lex.msh_yy.c++ \
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c parsers/FemJsonParser.c++\
 	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++ \

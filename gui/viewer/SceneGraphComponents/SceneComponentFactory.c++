@@ -84,7 +84,6 @@ SceneComponentFactory::setDisplacementsPolicy(DisplacementsRepresentationPolicy 
 }
 
 
-
 }
 
 

@@ -21,7 +21,7 @@ class BaseViewport;
 A pattern for the State pattern which is used to render the displacements
 */
 class VPStateDisplacements
-	:public ViewportState<BaseViewport>
+	:public ViewportState
 {
 protected:
 	ElementRepresentationFlyweightFactory	m_element_representation_factory;
@@ -47,9 +47,6 @@ public:
 	**/
 	void setSelection(Selection);
 
-	void paintGL(BaseViewport *viewport);
-	void mousePressEvent(BaseViewport *viewport, QMouseEvent *event);
-	// void mouseMoveEvent(QMouseEvent *event);
 	void keyPressEvent ( BaseViewport *viewport, QKeyEvent * event );
 
 };

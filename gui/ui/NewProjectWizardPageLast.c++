@@ -9,6 +9,7 @@ NewProjectWizardPageLast::NewProjectWizardPageLast()
 	//TODO find a way to pass the project type
 }
 
+
 NewProjectWizardPageLast::~NewProjectWizardPageLast()
 {
 }

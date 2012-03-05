@@ -8,12 +8,20 @@ BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
 {
 	assert(parent != NULL);
 
+	m_input = new Input;	// to avoid circular dependencies
+
 	// initialize the dangling pointers
 	this->project = &project;
 
 	this->state = NULL;
 
 	this->setFocusPolicy(Qt::StrongFocus);
+}
+
+
+BaseViewport::~BaseViewport()
+{
+	delete m_input;
 }
 
 
@@ -128,8 +136,18 @@ BaseViewport::paintGL()
 void 
 BaseViewport::mousePressEvent(QMouseEvent *event)
 {
-	state->mousePressEvent(this, event);
+	std::cerr << "BaseViewport::mousePressEvent(QMouseEvent *event)" << std::endl;
 
+	m_input->press(this, event);
+
+	updateGL();
+}
+
+
+void 
+BaseViewport::mouseReleaseEvent(QMouseEvent *event)
+{
+	m_input->release(this, event);
 	updateGL();
 }
 
@@ -137,7 +155,8 @@ BaseViewport::mousePressEvent(QMouseEvent *event)
 void 
 BaseViewport::mouseMoveEvent(QMouseEvent *event)
 {
-	state->mouseMoveEvent(this, event);
+	//state->mouseMoveEvent(this, event);
+	m_input->move(this, event);
 
 	updateGL();
 }
@@ -147,7 +166,6 @@ void
 BaseViewport::wheelEvent(QWheelEvent *event)
 {
 	viewport_data.zoom += event->delta()/1000.0f;
-	//qWarning("viewport_data.zoom: %f, %f",viewport_data.zoom, pow(2,viewport_data.zoom));
 
 	this->resizeGL(this->width(), this->height());
 	this->updateGL();
@@ -163,13 +181,15 @@ BaseViewport::keyPressEvent( QKeyEvent *event)
 
 
 void 
-BaseViewport::setState(ViewportState<BaseViewport> *new_state)
+BaseViewport::setState(ViewportState *new_state)
 {
-	if(this->state != NULL) delete this->state;
-
 	this->state = new_state;
 	this->state->initialize(this);
 	this->state->populateScenegraph(this);
+
+	// toggle the visibility states
+	this->state->setRenderGoupVisibility(SceneGraph::RG_NODES, display_options.nodes);
+	this->state->setRenderGoupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, display_options.node_restrictions);
 }
 
 
@@ -177,6 +197,31 @@ void
 BaseViewport::refresh(void)
 {
 	this->updateGL();
+}
+
+
+void
+BaseViewport::setNodeVisibility(bool const state)
+{
+	this->state->setRenderGoupVisibility(SceneGraph::RG_NODES, state);
+	this->display_options.nodes = state;
+}
+
+
+void
+BaseViewport::setNodeRestrictionsVisibility(bool const state)
+{
+	this->state->setRenderGoupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, state);
+	this->display_options.node_restrictions = state;
+}
+
+
+void 
+BaseViewport::setSurfaceVisibility(bool const state)
+{
+	this->state->setRenderGoupVisibility(SceneGraph::RG_SURFACES, state);
+	this->state->setRenderGoupVisibility(SceneGraph::RG_WIREFRAME, !state);
+	this->display_options.surfaces = state;
 }
 
 

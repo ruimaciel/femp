@@ -17,8 +17,6 @@
 #include <string>
 #include <stdlib.h>	// getenv()
 
-#include "Logs.h++"	// declare the global message loggers
-
 #include "ui/NewProjectWizard.h++"
 #include "NodeRestrainsDialog.h++"
 #include "NodeActionsDialog.h++"
@@ -32,6 +30,9 @@
 #include "ui/MdiWindow.h++"
 #include "ui/ModelWindow.h++"
 #include "ui/PostprocessingWindow.h++"
+#include "ui/TensorFieldWindow.h++"
+#include "ui/AnalysisResultsWindow.h++"
+#include "ui/MatrixWindow.h++"
 
 #include "fem_msh.h++"
 #include "parsers/json.h"
@@ -159,6 +160,7 @@ MainWindow::openProject()
 			break;
 
 		default:
+			std::cerr << __FILE__ << ":" << __LINE__ ;
 			std::cerr << "Error: " << parser.error.message << std::endl;
 			QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
 			document.clear();
@@ -200,6 +202,7 @@ MainWindow::reopenProject()
 				break;
 
 			default:
+				std::cerr << __FILE__ << ":" << __LINE__ ;
 				std::cerr << "Error: " << parser.error.message << std::endl;
 				QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
 				document.clear();
@@ -215,11 +218,10 @@ MainWindow::reopenProject()
 	}
 }
 
+
 void 
 MainWindow::saveProject()
 {
-	mylog.setPrefix("MainWindow::saveProject()");
-	
 	if(document.file_name == NULL)
 	{
 		QFileDialog dialog(this);
@@ -253,12 +255,10 @@ MainWindow::saveProject()
 			msgBox.setDefaultButton(QMessageBox::No);
 			if(msgBox.exec() == QMessageBox::No)
 			{
-				mylog.message("rejected");
 				delete document.file_name;
 				document.file_name = NULL;
 				return;
 			}
-				mylog.message("accepted");
 		}
 
 		// set a new file name for this file
@@ -268,15 +268,14 @@ MainWindow::saveProject()
 	}
 	document.save();
 	hasUnsavedChanges = false;
-
-	mylog.clearPrefix();
 }
 
 
 void 
 MainWindow::saveProjectAs()
 {
-	mylog.message("MainWindow::saveProjectAs() not yet implemented");
+	std::cerr << __FILE__ << ":" << __LINE__ ;
+	std::cerr << "MainWindow::saveProjectAs() not yet implemented" << std::endl;
 
 	QFileDialog dialog(this);
 	QStringList sl;
@@ -404,12 +403,15 @@ MainWindow::createActions()
 
 	connect(ui.actionWindowTile,	SIGNAL(triggered()), this,	SLOT(setTiledWindows()));
 	connect(ui.actionWindowCascade,	SIGNAL(triggered()), this,	SLOT(setCascadeWindows()));
-	connect(ui.actionNewViewportWindow,	SIGNAL(triggered()), this,	SLOT(createNewViewportWindow()));
 
 	connect(ui.actionShowNodalForces,	SIGNAL(triggered()),	this,	SLOT(setNodeForcesDisplay()));
 
-	connect(ui.actionSetModelViewport,		SIGNAL(triggered()),	this,	SLOT(setModelViewport()));
-	connect(ui.actionSetPostprocessingViewport,	SIGNAL(triggered()),	this,	SLOT(setPostprocessingViewport()));
+	// MDI window creation 
+	connect(ui.actionNewModelWindow,		SIGNAL(triggered()),	this,	SLOT(createNewModelWindow()));
+	connect(ui.actionNewPostprocessingWindow,	SIGNAL(triggered()),	this,	SLOT(createNewPostprocessingWindow()));
+	connect(ui.actionNewTensorFieldWindow,		SIGNAL(triggered()),	this,	SLOT(createNewTensorFieldWindow()));
+	connect(ui.actionNewAnalysisResultsWindow,	SIGNAL(triggered()),	this,	SLOT(createNewAnalysisResultsWindow()));
+	connect(ui.actionNewFemEquationWindow,		SIGNAL(triggered()),	this,	SLOT(createNewFemEquationWindow()));
 
 	connect(ui.actionViewSelection,	SIGNAL(triggered()),	this,	SLOT(showSelection()));
 
@@ -437,7 +439,6 @@ MainWindow::createDockWidgets()
 	connect(this, SIGNAL(setError(QString)), commandLineDockWidget, SLOT(getError(QString)));
 
 	// set the MainWindow connections
-	connect(&mylog,	SIGNAL(newMessage(QString)),	commandLineDockWidget, SLOT(getMessage(QString)));
 
 	this->addDockWidget(Qt::RightDockWidgetArea, commandLineDockWidget);
 
@@ -774,8 +775,6 @@ MainWindow::loadOptions()
 void 
 MainWindow::importMesh()
 {
-	mylog.setPrefix("MainWindow::importMesh()");
-
 	QStringList files;
 	QFile mesh_file;
 	QFileDialog dialog(this);
@@ -793,8 +792,6 @@ MainWindow::importMesh()
 		if(!mesh_file.open(QIODevice::ReadOnly | QIODevice::Text) )
 		{	// failed to open file
 			//TODO implement variadic method to emulate printf()
-			//mylog.message("unable to open file %s" + qPrintable(mesh_file.fileName()));
-			mylog.message("unable to open file");
 
 			QMessageBox msgBox(this);
 			msgBox.setIcon(QMessageBox::Warning);
@@ -815,8 +812,6 @@ MainWindow::importMesh()
 	}
 	// now this document has unsaved changes
 	hasUnsavedChanges = true;
-	
-	mylog.clearPrefix();
 }
 
 
@@ -855,8 +850,6 @@ MainWindow::setNodeRestraints()
 void 
 MainWindow::setNodeActions()
 {
-	mylog.setPrefix("MainWindow::setNodeActions()");
-
 	NodeActionsDialog na(document.project.model, this);
 	if(na.exec() == QDialog::Accepted)
 	{
@@ -869,8 +862,6 @@ MainWindow::setNodeActions()
 			}
 		}
 	}
-
-	mylog.clearPrefix();
 }
 
 
@@ -936,8 +927,6 @@ MainWindow::setNodeForcesDisplay()
 void 
 MainWindow::runAnalysis()
 {
-	mylog.setPrefix("MainWindow::runAnalysis()");
-
 	using namespace std;
 
 	// check if ther is a load pattern
@@ -1000,17 +989,12 @@ MainWindow::runAnalysis()
 
 	document.project.pushAnalysisResult(analysis_result);
 
-	//TODO set the UI
-	this->setPostprocessingViewport();
+	// set the UI
+	this->setUserInterfacePostAnalysis();
+	this->createNewPostprocessingWindow();
 
-        ui.menuDump->setEnabled(true);
-        ui.actionDump_FEM_equation->setEnabled(true);
-        ui.actionResults_from_selection->setEnabled(true);
 
 	delete solver;
-
-
-	mylog.clearPrefix();
 }
 
 
@@ -1054,12 +1038,10 @@ MainWindow::dumpFemEquation()
 			msgBox.setDefaultButton(QMessageBox::No);
 			if(msgBox.exec() == QMessageBox::No)
 			{
-				mylog.message("rejected");
 				delete document.file_name;
 				document.file_name = NULL;
 				return;
 			}
-			mylog.message("accepted");
 		}
 
 		// set a new file name for this file
@@ -1068,12 +1050,6 @@ MainWindow::dumpFemEquation()
 		QTextStream     out(&file);
 		out.setRealNumberNotation(QTextStream::ScientificNotation);
 		out.setRealNumberPrecision(16);
-		// */
-		/*
-		   ofstream out(file.fileName().toStdString () );
-		   out << "test" << endl;
-		 */
-
 
 		out << "# Created by lalib\n";
 		out << "# name: K\n";
@@ -1091,22 +1067,6 @@ MainWindow::dumpFemEquation()
 		}
 		out << endl;
 		// */
-		/*
-		   out << "# Created by lalib\n";
-		   out << "# name: K\n";
-		   out << "# type: sparse matrix\n";
-		   out << "# nnz: " << document.project.result.back().K.data.data.size() << "\n";
-		   out << "# rows: " << document.project.result.back().K.rows() << "\n";
-		   out << "# columns: " << document.project.result.back().K.columns() << "\n";
-
-		   for( std::map< size_t, double>::iterator i = document.project.result.back().K.data.data.begin(); i != document.project.result.back().K.data.data.end(); i++)
-		   {
-		   out << i->first/document.project.result.back().K.columns() << " " << i->first%document.project.result.back().K.columns() << " " << i->second << "\n";
-		   }
-		   out << endl;
-		// */
-
-		//lalib::dump_octave(out, "f", document.project.result.back().f);
 		out << "# Created by lalib\n";
 		out << "# name: f\n";
 		out << "# type: matrix\n";
@@ -1117,7 +1077,6 @@ MainWindow::dumpFemEquation()
 			out << " " << document.project.result.back().f.value(i) << "\n";
 		}
 		out << endl;
-		//*/
 
 		//lalib::dump_octave(out, "d", document.project.result.back().d);
 
@@ -1131,7 +1090,6 @@ MainWindow::dumpFemEquation()
 			out << " " << document.project.result.back().d.value(i) << "\n";
 		}
 		out << endl;
-		//*/
 		//out.close();
 		file.close();
 	}
@@ -1144,6 +1102,7 @@ MainWindow::dumpResultsFromSelection(fem::AnalysisResult<double> *result)
 	//TODO this currently doesn't work, as no signal emits a *result
 	if(result == NULL)
 	{
+		std::cerr << __FILE__ << ":" << __LINE__ ;
 		std::cerr << "MainWindow::dumpResultsFromSelection(fem::AnalysisResult<double> *result): result == NULL" << std::endl;
 		return;
 	}
@@ -1174,54 +1133,10 @@ MainWindow::dumpResultsFromSelection()
 
 
 void 
-MainWindow::setModelViewport()
-{
-	// this->createNewModelWindow();
-	QMdiSubWindow *mdi_window;
-	mdi_window = mdiArea->currentSubWindow();
-	if(mdi_window != NULL)
-	{
-		// there is an active subwindow
-		ModelWindow *window;	// opengl viewport
-		window = new ModelWindow(document.project, colors, this);
-		mdi_window->setWidget(window);
-	}
-}
-
-
-void 
-MainWindow::setPostprocessingViewport()
-{
-	if(document.project.result.empty())
-	{
-		qWarning("MainWindow::setPostprocessingViewport(): tried to set a postprocessing viewport although there is no result available");
-	}
-	else
-	{
-		// this->createNewPostprocessingWindow();
-		QMdiSubWindow *mdi_window;
-		mdi_window = mdiArea->currentSubWindow();
-		if(mdi_window != NULL)
-		{
-			// there is an active subwindow
-			PostprocessingWindow *window;	// opengl viewport
-			window = new PostprocessingWindow(document.project, document.project.result.back(), colors, this);
-
-			// set connections
-			connect(window,	SIGNAL(dumpResultsFromSelection(fem::AnalysisResult<double> *)),	this,	SLOT(dumpResultsFromSelection(fem::AnalysisResult<double> *) ) );
-
-			// set the widget
-			mdi_window->setWidget(window);
-		}
-	}
-
-}
-
-
-void 
 MainWindow::showSelection()
 {
-	qWarning(" MainWindow::showSelection()");
+	std::cerr << __FILE__ << ":" << __LINE__ ;
+	std::cerr << " MainWindow::showSelection()" << std::endl;
 	Selection selection = m_selection_manager.getSelection();
 	{
 		// this->createNewPostprocessingWindow();
@@ -1307,7 +1222,8 @@ MainWindow::createNewPostprocessingWindow()
 {
 	if(document.project.result.empty())
 	{
-		qWarning("MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing viewport although there is no result available");
+		std::cerr << __FILE__ << ":" << __LINE__ ;
+		std::cerr << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available" << std::endl;
 	}
 	else
 	{
@@ -1326,12 +1242,71 @@ MainWindow::createNewPostprocessingWindow()
 	}
 }
 
+
+void 
+MainWindow::createNewTensorFieldWindow()
+{
+	if(document.project.result.empty())
+	{
+		std::cerr << __FILE__ << ":" << __LINE__ ;
+		std::cerr << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available" << std::endl;
+	}
+	else
+	{
+		TensorFieldWindow *window;	// MDI viewport
+		window = new TensorFieldWindow(document.project, document.project.result.back(), colors, this);
+
+		// create the model's MDI window
+		QMdiSubWindow	* mdi_window;
+
+		mdi_window = new QMdiSubWindow(mdiArea);
+		mdi_window->setWidget(window);
+		mdi_window->setAttribute(Qt::WA_DeleteOnClose);
+		mdi_window->setWindowTitle(tr("Tensor field"));
+		mdi_window->showMaximized();
+		window->connectToSelectionManager(this->m_selection_manager);
+	}
+}
+
+
+void 
+MainWindow::createNewAnalysisResultsWindow()
+{
+	std::cerr << __FILE__ << ":" << __LINE__ ;
+	std::cerr << "MainWindow::createNewAnalysisResultsWindow()" << std::endl;
+	if(document.project.result.empty())
+	{
+		std::cerr << __FILE__ << ":" << __LINE__ ;
+		std::cerr << "MainWindow::createNewAnalysisResultWindow(): tried to set a results window although there is no result available" << std::endl;
+		return;
+	}
+
+	AnalysisResultsWindow *mdi_window;
+	mdi_window = new AnalysisResultsWindow(document.project, mdiArea);
+	mdi_window->showMaximized();
+}
+
+
+void 
+MainWindow::createNewFemEquationWindow()
+{
+	std::cerr << __FILE__ << ":" << __LINE__ ;
+	std::cerr << "MainWindow::createNewFemEquationWindow()" << std::endl;
+	if(document.project.result.empty())
+	{
+		std::cerr << "MainWindow::createNewFemEquationWindow(): tried to set a results window although there is no result available" << std::endl;
+		return;
+	}
+
+	MatrixWindow *mdi_window;
+	mdi_window = new MatrixWindow(document.project, mdiArea);
+	mdi_window->showMaximized();
+}
+
   
 void 
 MainWindow::setUserInterfaceAsOpened()
 {
-	mylog.setPrefix("MainWindow::setUserInterfaceAsOpened()");
-
 	// set the menus
 	ui.menuProject->setEnabled(true);
 	ui.menuView->setEnabled(true);
@@ -1344,6 +1319,7 @@ MainWindow::setUserInterfaceAsOpened()
 	ui.actionNodeActions->setEnabled(true);
 	ui.actionEditMaterials->setEnabled(true);
 	ui.actionQuadrature_rules->setEnabled(true);
+	ui.actionSelection->setEnabled(true);
 
 	ui.actionDisplayNodes->setChecked(true);
 	ui.actionDisplaySurfaces->setChecked(true);
@@ -1361,8 +1337,6 @@ MainWindow::setUserInterfaceAsOpened()
 		this->setWindowTitle("Femp - [unnamed.fem.json]");
 	else
 		this->setWindowTitle("Femp - " + *document.file_name);
-
-	mylog.clearPrefix();
 }
 
 
@@ -1373,7 +1347,7 @@ MainWindow::setUserInterfaceAsClosed()
 	ui.menuProject->setDisabled(true);
 	ui.menuView->setDisabled(true);
 	ui.menuWindow->setDisabled(true);
-        ui.menuDump->setDisabled(true);
+	ui.menuDump->setDisabled(true);
 
 	ui.actionReopen->setDisabled(true);
 	ui.actionSave->setDisabled(true);
@@ -1383,8 +1357,13 @@ MainWindow::setUserInterfaceAsClosed()
 	ui.actionNodeActions->setDisabled(true);
 	ui.actionEditMaterials->setDisabled(true);
 	ui.actionQuadrature_rules->setDisabled(true);
-        ui.actionDump_FEM_equation->setDisabled(true);
-        ui.actionResults_from_selection->setDisabled(true);
+	ui.actionSelection->setDisabled(true);
+	ui.actionDump_FEM_equation->setDisabled(true);
+	ui.actionResults_from_selection->setDisabled(true);
+
+	ui.actionNewPostprocessingWindow->setDisabled(true);
+	ui.actionNewAnalysisResultsWindow->setDisabled(true);
+	ui.actionNewFemEquationWindow->setDisabled(true);
 
 	// close all MDI windows
 	mdiArea->closeAllSubWindows();
@@ -1398,6 +1377,18 @@ MainWindow::setUserInterfaceAsClosed()
 
 	// set the window name
 	this->setWindowTitle("Femp");
+}
+
+
+void 
+MainWindow::setUserInterfacePostAnalysis()
+{
+	ui.menuDump->setEnabled(true);
+	ui.actionDump_FEM_equation->setEnabled(true);
+	ui.actionResults_from_selection->setEnabled(true);
+	ui.actionNewPostprocessingWindow->setEnabled(true);
+	ui.actionNewAnalysisResultsWindow->setEnabled(true);
+	ui.actionNewFemEquationWindow->setEnabled(true);
 }
 
 

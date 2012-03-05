@@ -10,8 +10,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>	// for gluQuadric()
 
-#include "Logs.h++"	// declare the global message loggers
-
 #include "../../fem/Model.h++"
 #include "../../fem/Surface.h++"
 
@@ -25,7 +23,7 @@
 
 
 VPStateGradients::VPStateGradients()
-	: ViewportState<BaseViewport>()
+	: ViewportState()
 { 
 	this->m_gradient_representation.renderStrains11();
 
@@ -36,16 +34,12 @@ VPStateGradients::VPStateGradients()
 
 VPStateGradients::~VPStateGradients()
 {
-	mylog.setPrefix("VPStateGradients::~VPStateGradients()");
-	mylog.message("destructor called");
 }
 
 
 void
 VPStateGradients::initialize(BaseViewport *mv)
 {
-	mylog.setPrefix("VPStateGradients::initialize()");
-	mylog.message("initializing");
 	// build the displaced_nodes from the analysis
 	assert(mv != NULL);
 
@@ -59,9 +53,6 @@ VPStateGradients::initialize(BaseViewport *mv)
 void
 VPStateGradients::populateScenegraph(BaseViewport *viewport)
 {
-	mylog.setPrefix("void VPStateGradients::populateScenegraph(fem::Model *viewport->project->model)");
-	mylog.message("populating");
-
 	assert(viewport != NULL);
 
 	scenegraph.clear();
@@ -84,7 +75,6 @@ VPStateGradients::populateScenegraph(BaseViewport *viewport)
 	}
 
 	// add the elements to the scenegraph
-	//for( std::vector<fem::Element>::iterator i = viewport->project->model.element_list.begin(); i != viewport->project->model.element_list.end(); i++)
 	for( std::vector<fem::Element>::size_type n = 0; n < viewport->project->model.element_list.size(); n++)
 	{
 		component = this->m_factory(n, viewport->project->model.element_list[n]);
@@ -115,8 +105,6 @@ VPStateGradients::setResultsRanges(fem::ResultsRanges<double> &ranges)
 void
 VPStateGradients::setDisplacementsScale(float new_scale)
 {
-	mylog.setPrefix("VPStateGradients::setDisplacementsScale()");
-	mylog.message("set scale");
 	this->m_displacements.setDisplacementsScale(new_scale);
 }
 
@@ -124,54 +112,12 @@ VPStateGradients::setDisplacementsScale(float new_scale)
 void 
 VPStateGradients::setSelection(Selection)
 {
-	std::cout << "VPStateGradients::setSelection(Selection)" << std::endl;
-}
-
-
-void
-VPStateGradients::paintGL(BaseViewport *viewport)
-{
-	assert(viewport != NULL);
-
-	mylog.setPrefix("VPStateGradients::paintGL()");
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	viewport->viewport_data.camera.reposition();
-
-	this->scenegraph.paint(viewport->viewport_data,  viewport->colors);
-
-}
-
-
-void
-VPStateGradients::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
-{
-	viewport->viewport_data.lastPos = event->pos();
-	// process left clicks
-	if(event->buttons() & Qt::LeftButton)
-	{
-		fem::point near, far;
-		QPoint pos = event->pos();
-		GLdouble modelview[16];
-		GLdouble projection[16];
-		GLint viewport[4];
-
-		glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-		glGetDoublev(GL_PROJECTION_MATRIX, projection);
-		glGetIntegerv(GL_VIEWPORT, viewport);
-		gluUnProject(pos.x(), viewport[3]-pos.y(), 0, modelview, projection, viewport, &near.data[0], &near.data[1], &near.data[2]);
-		gluUnProject(pos.x(), viewport[3]-pos.y(), 1, modelview, projection, viewport, &far.data[0], &far.data[1], &far.data[2]);
-	}
 }
 
 
 void
 VPStateGradients::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 {
-	qWarning("keypressed");
 	switch( event->key() )
 	{
 		case Qt::Key_S:	// change the displacements scale
@@ -201,7 +147,6 @@ VPStateGradients::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 void
 VPStateGradients::renderStrains11()
 {
-	qWarning("void VPStateGradients::renderStrains11()");
 	this->m_gradient_representation.renderStrains11();
 }
 
@@ -209,9 +154,7 @@ VPStateGradients::renderStrains11()
 void
 VPStateGradients::renderStrains22()
 {
-	qWarning("void VPStateGradients::renderStrains22()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderNeutral();
 	this->m_gradient_representation.renderStrains22();
 }
 
@@ -219,9 +162,7 @@ VPStateGradients::renderStrains22()
 void
 VPStateGradients::renderStrains33()
 {
-	qWarning("void VPStateGradients::renderStrains33()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStrains33();
 }
 
@@ -229,9 +170,7 @@ VPStateGradients::renderStrains33()
 void
 VPStateGradients::renderStrains12()
 {
-	qWarning("void VPStateGradients::renderStrains12()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStrains12();
 }
 
@@ -239,9 +178,7 @@ VPStateGradients::renderStrains12()
 void
 VPStateGradients::renderStrains23()
 {
-	qWarning("void VPStateGradients::renderStrains23()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStrains23();
 }
 
@@ -249,9 +186,7 @@ VPStateGradients::renderStrains23()
 void
 VPStateGradients::renderStrains13()
 {
-	qWarning("void VPStateGradients::renderStrains13()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStrains13();
 }
 
@@ -259,7 +194,6 @@ VPStateGradients::renderStrains13()
 void
 VPStateGradients::renderStresses11()
 {
-	qWarning("void VPStateGradients::renderStresses11()");
 	this->m_gradient_representation.renderStresses11();
 }
 
@@ -267,9 +201,7 @@ VPStateGradients::renderStresses11()
 void
 VPStateGradients::renderStresses22()
 {
-	qWarning("void VPStateGradients::renderStresses22()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderNeutral();
 	this->m_gradient_representation.renderStresses22();
 }
 
@@ -277,9 +209,7 @@ VPStateGradients::renderStresses22()
 void
 VPStateGradients::renderStresses33()
 {
-	qWarning("void VPStateGradients::renderStresses33()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStresses33();
 }
 
@@ -287,9 +217,7 @@ VPStateGradients::renderStresses33()
 void
 VPStateGradients::renderStresses12()
 {
-	qWarning("void VPStateGradients::renderStresses12()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStresses12();
 }
 
@@ -297,9 +225,7 @@ VPStateGradients::renderStresses12()
 void
 VPStateGradients::renderStresses23()
 {
-	qWarning("void VPStateGradients::renderStresses23()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStresses23();
 }
 
@@ -307,9 +233,7 @@ VPStateGradients::renderStresses23()
 void
 VPStateGradients::renderStresses13()
 {
-	qWarning("void VPStateGradients::renderStresses13()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderStresses13();
 }
 
@@ -317,9 +241,7 @@ VPStateGradients::renderStresses13()
 void
 VPStateGradients::renderVonMises()
 {
-	qWarning("void VPStateGradients::renderStrains13()");
 	//TODO test only. change this
-	//this->m_gradient_representation.renderConstant(-0.5);
 	this->m_gradient_representation.renderVonMises();
 }
 

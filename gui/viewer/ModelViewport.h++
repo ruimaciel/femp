@@ -6,8 +6,6 @@
 #include <QWidget>
 #include <QGLWidget>
 
-#include "Logs.h++"
-
 #include "../MdiWindowProperties.h++"
 
 #include "../fem/Project.h++"
@@ -34,12 +32,12 @@ class ModelViewport
 {
 	Q_OBJECT
 
+protected:
+	VPStateModel 	m_vp_state_model;
+
 public:
 	ModelViewport(fem::Project &project, QWidget *parent = NULL);
 	~ModelViewport();
-
-	template <class NewState>
-	void setState(NewState *);
 
 	/*
 	sets if the element nodes are visible
@@ -48,29 +46,9 @@ public:
 	void setNodeVisibility(bool state);
 	void setSurfaceVisibility(bool state);
 
-
-public Q_SLOTS:
-	void setXRotation(int angle);
-	void setYRotation(int angle);
-	void setZRotation(int angle);
-	void setPosition(int x, int y);
-
 	// set the viewport state
 	void showModel();
 
-Q_SIGNALS:
-	void xRotationChanged(int angle);
-	void yRotationChanged(int angle);
-	void zRotationChanged(int angle);
-
-protected:
-	void paintGL();
-
-	// routines to handle input
-	void mousePressEvent(QMouseEvent *event);
-	void mouseMoveEvent(QMouseEvent *event);
-	void wheelEvent(QWheelEvent *event);
-	void keyPressEvent ( QKeyEvent * event );
 };
 
 #endif

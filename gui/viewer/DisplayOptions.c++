@@ -17,6 +17,7 @@ void
 DisplayOptions::setDefaultOptions()
 {
 	nodes = 1;
+	node_restrictions = 1;
 	surfaces = 1;
 
 	nodal_forces = 0;
@@ -24,3 +25,4 @@ DisplayOptions::setDefaultOptions()
 	domain_forces =  0;
 	nodal_displacements = 0;
 }
+

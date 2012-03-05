@@ -102,7 +102,7 @@ MdiWindow::setViewportIso()
 void 
 MdiWindow::setNodeVisibility(const bool state)
 {
-	this->viewport->setRenderGoupVisibility(SceneGraph::RG_NODES, state);
+	this->viewport->setNodeVisibility(state);
 	this->viewport->refresh();
 }
 
@@ -110,7 +110,7 @@ MdiWindow::setNodeVisibility(const bool state)
 void 
 MdiWindow::setNodeRestrictionsVisibility(const bool state)
 {
-	this->viewport->setRenderGoupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, state);
+	this->viewport->setNodeRestrictionsVisibility(state);
 	this->viewport->refresh();
 }
 

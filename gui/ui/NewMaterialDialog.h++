@@ -9,7 +9,7 @@
 
 
 class NewMaterialDialog
-	: public QDialog, private Ui_NewMaterialDialog
+	: public QDialog, private Ui::NewMaterialDialog
 {
 	Q_OBJECT
 

@@ -8,7 +8,7 @@
 #include <QString>
 
 
-class NewProjectWizardPage1: public QWizardPage, public Ui_NewProjectWizardPage1
+class NewProjectWizardPage1: public QWizardPage, public Ui::NewProjectWizardPage1
 {
 	Q_OBJECT
 

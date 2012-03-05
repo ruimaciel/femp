@@ -40,3 +40,4 @@ struct RenderGroup
 };
 
 #endif
+

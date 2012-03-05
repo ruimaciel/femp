@@ -113,10 +113,6 @@ public Q_SLOTS:
 	void getWarning(QString);
 	void getError(QString);
 
-	// sets the current MDI window's viewport
-	void setModelViewport();
-	void setPostprocessingViewport();
-
 	/**
 	Sets the current MdiViewport to show only the selected objects
 	**/
@@ -128,6 +124,9 @@ public Q_SLOTS:
 	void createNewViewportWindow();
 	void createNewModelWindow();
 	void createNewPostprocessingWindow();
+	void createNewTensorFieldWindow();
+	void createNewAnalysisResultsWindow();
+	void createNewFemEquationWindow();
 
 Q_SIGNALS:
 	void setMessage(QString);
@@ -142,6 +141,7 @@ private:
 	void loadOptions();	// loads global options from the options files
 	void setUserInterfaceAsOpened();	// sets the user interface in it's "opened document" state
 	void setUserInterfaceAsClosed();	// sets the user interface in it's "closed document" state
+	void setUserInterfacePostAnalysis();	// sets the user interface in it's "opened document" state
 
 	// set all signal and slots connections
 	void setSignalsAndSlotsConnections(ModelWindow *window);

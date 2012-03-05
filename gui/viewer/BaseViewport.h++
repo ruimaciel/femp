@@ -13,6 +13,7 @@
 #include "../fem/AnalysisResult.h++"
 
 #include "BaseViewport.h++"
+#include "SceneGraph.h++"
 #include "Camera.h++"
 #include "ViewportColors.h++"
 #include "DisplayOptions.h++"
@@ -22,7 +23,16 @@
 #include "Selection.h++"
 
 #include "ViewportStates/ViewportState.h++"	// for the vieport's state pattern base class
+#include "InputStates/Input.h++"		// for the state pattern that handles user input
+#include "InputStates/ISStart.h++"		// for the state pattern that handles user input
+#include "InputStates/ISLeftClick.h++"		// for the state pattern that handles user input
+#include "InputStates/ISLeftDrag.h++"		// for the state pattern that handles user input
+#include "InputStates/ISRightClick.h++"		// for the state pattern that handles user input
+#include "InputStates/ISRightDrag.h++"		// for the state pattern that handles user input
 
+
+class ViewportState;
+class Input;
 
 /*
 QGLidget subclass designed for a Base class for all Qt widgets that provide an opengl viewports to render the model 
@@ -32,6 +42,17 @@ class BaseViewport
 {
 Q_OBJECT
 
+
+public:
+	InputStates::Start 	m_is_start;
+	InputStates::LeftClick	m_is_left_click;
+	InputStates::LeftDrag	m_is_left_drag;
+	InputStates::RightClick	m_is_right_click;
+	InputStates::RightDrag	m_is_right_drag;
+
+protected:
+	Input *m_input;	// state pattern that handles user input
+
 public:
 	ViewportData viewport_data;
 	ViewportColors colors;	// color definitions
@@ -39,10 +60,11 @@ public:
 
 	fem::Project *project;
 
-	ViewportState<BaseViewport>	*state;	// pointer to object used for the State pattern
+	ViewportState	*state;	// pointer to object used for the State pattern
 
 public:
 	BaseViewport(fem::Project &project, QWidget *parent);
+	~BaseViewport();
 
 
 	void setColors(ViewportColors &new_colors);
@@ -57,13 +79,20 @@ public:
 		- initializes the object
 		- generates the scenegraph
 	*/
-	template <class NewState>
-	void setState(NewState *);
+	void setState(ViewportState *new_state);
 
 	/**
 	Method to refresh the scene
 	**/
 	void refresh(void);
+
+	/*
+	sets if the element nodes are visible
+	@param	state	true if nodes should be visible, false if they shouldn't be rendered
+	*/
+	void setNodeVisibility(bool const state);
+	void setNodeRestrictionsVisibility(bool const state);
+	void setSurfaceVisibility(bool const state);
 
 
 public Q_SLOTS:
@@ -108,11 +137,11 @@ protected:
 
 	// routines to handle input
 	void mousePressEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
 	void wheelEvent(QWheelEvent *event);
 	void keyPressEvent ( QKeyEvent * event );
 
-	void setState(ViewportState<BaseViewport> *new_state);
 
 protected:
 	void normalizeAngle(int *angle);

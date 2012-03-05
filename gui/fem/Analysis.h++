@@ -22,8 +22,6 @@
 
 #include "AnalysisResult.h++"
 
-#include "../Logs.h++"
-
 #include "elements/BaseElement.h++"
 
 #include "ProgressIndicatorStrategy.h++"
@@ -166,8 +164,6 @@ Analysis<Scalar>::~Analysis()
 template<typename Scalar>
 enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &project, const LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
 {
-	mylog.setPrefix("Analysis<Scalar>::build_fem_equation()");
-
 	using namespace std;
 	using namespace Eigen;
 
@@ -240,7 +236,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 				break;
 
 			default:
-				mylog.message("unsupported element");
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "Analysis<Scalar>::build_fem_equation(): unsupported element" << std::endl;
 				return ERR_UNSUPPORTED_ELEMENT;
 				break;
 		}
@@ -285,9 +282,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 				// return error if we stumble on a negative determinant
 			if(detJ <= 0)
 			{
-				QString m;
-				m.sprintf("stumbled on a negative determinant on element_iterator %ld", distance(project.model.element_list.begin(), element_iterator));
-				mylog.message(m);
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << " Analysis<Scalar>::build_fem_equation(): stumbled on a negative determinant on element_iterator " << distance(project.model.element_list.begin(), element_iterator) << std::endl;
 				
 				return ERR_NEGATIVE_DETERMINANT;
 			}
@@ -384,7 +380,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 				break;
 
 			default:
-				mylog.message("unsupported element");
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "Analysis<Scalar>::build_fem_equation(): unsupported element" << std::endl;
 				return ERR_UNSUPPORTED_ELEMENT;
 				break;
 		}
@@ -416,9 +413,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 			detJ = J.determinant();
 			if(detJ <= 0)
 			{
-				QString m;
-				m.sprintf("stumbled on a negative determinant on element_reference %ld", domain_load->first);
-				mylog.message(m);
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "stumbled on a negative determinant on element_reference " <<  domain_load->first << std::endl;
 
 				// quit
 				return ERR_NEGATIVE_DETERMINANT;
@@ -493,7 +489,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 				break;
 
 			default:
-				mylog.message("unsupported element");
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "unsupported element" << std::endl;
 				return ERR_UNSUPPORTED_ELEMENT;
 				break;
 		}
@@ -527,7 +524,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 
 			if(detJ <= 0)
 			{
-				mylog.message("stumbled on a negative determinant on the surface load");
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "stumbled on a negative determinant on the surface load" << std::endl;
 
 				// quit
 				return ERR_NEGATIVE_DETERMINANT;
@@ -640,6 +638,8 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar
 template<typename Scalar>
 void Analysis<Scalar>::generateDisplacementsMap(Project &project, AnalysisResult<Scalar> &result)
 {
+	std::cerr << "void Analysis<Scalar>::generateDisplacementsMap(Project &project, AnalysisResult<Scalar> &result)" << std::endl;
+
 	fem::point d;	// displacements field
 	boost::tuple<size_t,size_t,size_t> references;
 
@@ -654,11 +654,11 @@ void Analysis<Scalar>::generateDisplacementsMap(Project &project, AnalysisResult
 		d.data[1] = (references.get<1>() == 0)? 0 : result.d(references.get<1>()-1);
 		d.data[2] = (references.get<2>() == 0)? 0 : result.d(references.get<2>()-1);
 
-		std::cout << "d[" << i->first << "]: " << d << "\n";
+		// std::cout << "d[" << i->first << "]: " << d << "\n";
 
 		result.displacements[i->first] = d;
 	}
-	std::cout << std::endl;
+	//std::cout << std::endl;
 }
 
 
@@ -668,15 +668,15 @@ Analysis<Scalar>::recoverValues(Model &model, AnalysisResult<Scalar> &result)
 {
 	ElementResultsFactory<Scalar> factory(model, result);
 	ElementResults<Scalar> *element_results;
-	//for(std::vector<Element>::iterator i = model.element_list.begin(); i != model.element_list.end(); i++)
+
 	for(element_ref_t n = 0; n < model.element_list.size(); n++)
 	{
 		element_results = factory(model.element_list[n]);
 		// TODO test memory allocation
 		result.results[n] = element_results;
 
+		/*	// used for testing purposes
 		std::cout << "element " << n << "\n";
-		//std::cout << *element_results;
 		std::cout << *result.results[n];
 		// */
 	}

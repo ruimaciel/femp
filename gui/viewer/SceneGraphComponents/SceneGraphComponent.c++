@@ -2,7 +2,6 @@
 
 
 #include <assert.h>
-#include "../Logs.h++"	// declare the global message loggers
 
 
 
@@ -35,21 +34,12 @@ void SceneGraphComponent::pushComponent(SceneGraphComponent *new_component)
 {
 	assert(new_component != NULL);
 
-	/*
-	SceneGraphComponent *c = new SceneGraphComponent;
-
-	// initialize the new object
-	c->children 	= new_component->children;
-	c->boundary 	= new_component->boundary;
-	*/
-
 	this->children.push_back(new_component);
 }
 
 
 void SceneGraphComponent::accept(OperationsVisitor &visitor)
 {
-	mylog.setPrefix("void SceneGraphComponent::Accept(OperationsVisitor &v)");
 	for(std::list<SceneGraphComponent *>::iterator i = this->children.begin(); i != this->children.end(); i++)
 	{
 		(*i)->accept(visitor);

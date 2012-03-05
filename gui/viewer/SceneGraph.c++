@@ -4,8 +4,6 @@
 #include <iostream>
 #include <map>
 
-#include "Logs.h++"
-
 #include "ModelViewport.h++"
 
 
@@ -34,15 +32,6 @@ SceneGraph::clear()
 	primitive_components.clear();
 
 	this->rendering_groups.clear();
-	/*
-	for(map<int, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
-	{
-		for(std::list<SceneGraphComponent *>::iterator j = i->second.primitive_components.begin(); j != i->second.primitive_components.end(); j++)
-		{
-			delete(*j);
-		}
-	}
-	*/
 }
 
 
@@ -50,8 +39,6 @@ void
 SceneGraph::paint(ViewportData &viewport_data, ViewportColors &colors)
 {
 	using namespace std;
-	// get the model
-	glGetFloatv(GL_PROJECTION_MATRIX, viewport_data.modelview) ;
 
 	for(map<int, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
 	{

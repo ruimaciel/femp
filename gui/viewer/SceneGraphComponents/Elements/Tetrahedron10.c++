@@ -22,5 +22,4 @@ Tetrahedron10::paintGL(ViewportData &, ViewportColors &colors)
 }
 
 
-
 }

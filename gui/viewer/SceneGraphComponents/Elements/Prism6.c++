@@ -22,5 +22,4 @@ Prism6::paintGL(ViewportData &, ViewportColors &colors)
 }
 
 
-
 }

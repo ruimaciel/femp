@@ -7,14 +7,11 @@
 ModelViewport::ModelViewport(fem::Project &project, QWidget *parent)
 	: BaseViewport(project, parent)
 {
-	mylog.setPrefix("ModelViewport::ModelViewport(fem::Model *model, QWidget *parent)");
-	mylog.message("constructor");
-
 	// initialize the dangling pointers
 	this->project = &project;
 	this->state = NULL;
 
-	this->setState(new VPStateModel);	// set the current viewport state
+	this->setState(&m_vp_state_model);	// set the current viewport state
 
 	// set this widget's load pattern pointer
 	if(project.model.load_pattern_list.empty())
@@ -53,115 +50,10 @@ ModelViewport::setSurfaceVisibility(bool state)
 
 
 void 
-ModelViewport::paintGL()
-{
-	assert(project != NULL);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	state->paintGL(this);
-}
-
-
-void 
-ModelViewport::mousePressEvent(QMouseEvent *event)
-{
-	state->mousePressEvent(this, event);
-
-	updateGL();
-}
-
-
-void 
-ModelViewport::mouseMoveEvent(QMouseEvent *event)
-{
-	state->mouseMoveEvent(this, event);
-
-	updateGL();
-}
-
-
-void 
-ModelViewport::wheelEvent(QWheelEvent *event)
-{
-	viewport_data.zoom += event->delta()/1000.0f;
-
-	this->resizeGL(this->width(), this->height());
-	this->updateGL();
-	event->accept();
-}
-
-
-void 
-ModelViewport::keyPressEvent( QKeyEvent *event)
-{
-	state->keyPressEvent(this, event);
-}
-
-
-template <class NewState>
-void 
-ModelViewport::setState(NewState *new_state)
-{
-	if(this->state != NULL) delete this->state;
-
-	this->state = new_state;	// the state's default starting point is Model
-	this->state->initialize(this);
-	this->state->populateScenegraph(this);
-}
-
-
-void 
-ModelViewport::setXRotation(int angle)
-{
-	normalizeAngle(&angle);
-	viewport_data.camera.rotation.data[0] = angle;
-	Q_EMIT xRotationChanged(angle);
-	updateGL();
-}
-
-
-void 
-ModelViewport::setYRotation(int angle)
-{
-	normalizeAngle(&angle);
-	viewport_data.camera.rotation.data[1] = angle;
-	Q_EMIT yRotationChanged(angle);
-	updateGL();
-}
-
-
-void 
-ModelViewport::setZRotation(int angle)
-{
-	normalizeAngle(&angle);
-	viewport_data.camera.rotation.data[2] = angle;
-	Q_EMIT zRotationChanged(angle);
-	updateGL();
-}
-
-
-void 
-ModelViewport::setPosition(int x, int y)
-{
-	//TODO implement this
-	viewport_data.camera.pos.x(-x);
-	viewport_data.camera.pos.y(-y);
-
-	QString m;
-	mylog.message(m.sprintf("pos: %f, %f, %f",viewport_data.camera.pos.x(), viewport_data.camera.pos.y(), viewport_data.camera.pos.z()));
-
-	updateGL();
-}
-
-
-void 
 ModelViewport::showModel()
 {
 	// set the state
-	VPStateModel* state = new VPStateModel;
+	VPStateModel* state = &m_vp_state_model;
 
 	this->setState(state);
 

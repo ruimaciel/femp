@@ -31,7 +31,10 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	fem/elements/Prism18.h++ \
 	viewer/ViewportData.h++ \
 	viewer/Camera.h++  viewer/DisplayOptions.h++  viewer/ViewportColors.h++  \
-	viewer/BaseViewport.h++ viewer/ModelViewport.h++ viewer/PostprocessingViewport.h++ \
+	viewer/BaseViewport.h++ \
+	viewer/ModelViewport.h++ \
+	viewer/PostprocessingViewport.h++ \
+	viewer/TensorFieldViewport.h++ \
 	viewer/ViewportStates/*.h++ \
 	viewer/SceneGraph.h++ \
 	viewer/RenderGroup.h++ \
@@ -42,6 +45,14 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	viewer/SceneGraphComponents/Elements/*.h++ \
 	viewer/SceneGraphComponents/Operations/*.h++ \
 	viewer/boundaries/BoundaryStrategy.h++ viewer/boundaries/SphericalBoundary.h++ \
+	viewer/boundaries/CollisionDetection.h++ \
+	viewer/InputStates/Input.h++ \
+	viewer/InputStates/InputState.h++ \
+	viewer/InputStates/ISStart.h++ \
+	viewer/InputStates/ISLeftClick.h++ \
+	viewer/InputStates/ISLeftDrag.h++ \
+	viewer/InputStates/ISRightClick.h++ \
+	viewer/InputStates/ISRightDrag.h++ \
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/msh.h++ parsers/json.h parsers/FemJsonParser.h++\
 	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
@@ -49,9 +60,7 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	fem/ProgressIndicatorStrategy.h++ \
 	fem/solvers/Solver.h++ fem/solvers/CholeskySolver.h++ fem/solvers/CGSolver.h++ fem/solvers/UmfpackSolver.h++\
 	DefaultProgressIndicator.h++ \
-	MessageLogger.h++ Logs.h++ \
 	fem/Surface.h++ \
-	viewer/boundaries/CollisionDetection.h++ \
 	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++ \
 	fem/solvers/*.h++
 
@@ -68,7 +77,10 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	fem/ProjectVisitor/*.c++ \
 	viewer/ViewportData.c++ \
 	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ViewportColors.c++  \
-	viewer/BaseViewport.c++ viewer/ModelViewport.c++ viewer/PostprocessingViewport.c++ \
+	viewer/BaseViewport.c++ \
+	viewer/ModelViewport.c++ \
+	viewer/PostprocessingViewport.c++ \
+	viewer/TensorFieldViewport.c++ \
 	viewer/ViewportStates/*.c++  \
 	viewer/SceneGraph.c++ \
 	viewer/RenderGroup.c++ \
@@ -79,13 +91,19 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	viewer/SceneGraphComponents/Elements/*.c++ \
 	viewer/SceneGraphComponents/Operations/*.c++ \
 	viewer/boundaries/BoundaryStrategy.c++  viewer/boundaries/SphericalBoundary.c++  \
+	viewer/boundaries/CollisionDetection.c++ \
+	viewer/InputStates/Input.c++ \
+	viewer/InputStates/InputState.c++ \
+	viewer/InputStates/ISStart.c++ \
+	viewer/InputStates/ISLeftClick.c++ \
+	viewer/InputStates/ISLeftDrag.c++ \
+	viewer/InputStates/ISRightClick.c++ \
+	viewer/InputStates/ISRightDrag.c++ \
 	fem_msh.c++ lex.msh_yy.c++ \
 	parsers/parser.c++ parsers/msh.c++ parsers/json.c parsers/FemJsonParser.c++\
 	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++ \
 	DefaultProgressIndicator.c++ \
-	MessageLogger.c++ \
-	fem/Surface.c++ \
-	viewer/boundaries/CollisionDetection.c++ 
+	fem/Surface.c++ 
 
 FORMS += ui/*.ui
 

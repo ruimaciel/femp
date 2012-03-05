@@ -26,6 +26,9 @@ struct ElementResults
 
 	std::vector<Scalar>	von_mises;
 
+	Scalar eig_vec[3][3];	// stress tensor eigen vectors 
+	Scalar eig_val[3];		// stress tensor eigen values 
+
 	/**
 	resizes all lists
 	**/
@@ -84,6 +87,22 @@ std::ostream &operator<< (std::ostream &os, ElementResults<Scalar> const &elemen
 		os << "\t\tv: " << *i;
 		os << "\n";
 	}
+
+	// code useful for debugging: remove later
+	os << "\t eigen stuff\n";
+	for(int i = 0; i < 3; i++)
+	{
+		os << "\t\teve" << i << " = [";
+		os << element_results.eig_vec[0][i] << ", " << element_results.eig_vec[1][i] << ", " << element_results.eig_vec[2][i] << "]', ";
+		os << "eva" << i << " = ";
+		os << element_results.eig_val[i] << "\n";
+	}
+
+	os << "T = [" ;
+	os << element_results.stresses[4].s11 << " " <<  element_results.stresses[4].s12 << " " << element_results.stresses[4].s13 << ";\n";
+	os << element_results.stresses[4].s12 << " " <<  element_results.stresses[4].s22 << " " << element_results.stresses[4].s23 << ";\n";
+	os << element_results.stresses[4].s13 << " " <<  element_results.stresses[4].s23 << " " << element_results.stresses[4].s33 << "]\n";
+
 	os << std::endl;
 	return os;
 }

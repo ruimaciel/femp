@@ -152,15 +152,6 @@ Model::pushElement(fem::Element e)
 
 		case Element::FE_HEXAHEDRON8:
 			nodes.resize(4);
-			/*
-			face order for hexahedrons:
-			face 1: [1, 0, 3, 2]
-			face 2:	[0, 4, 7, 3]
-			face 3: [4, 5, 6, 7]
-			face 4: [5, 1, 2, 6]
-			face 5: [0, 1, 5, 4]
-			face 6: [3, 2, 7, 6]
-			*/
 			// face 1:
 			nodes[0] = e.nodes[1];
 			nodes[1] = e.nodes[0];

@@ -42,3 +42,5 @@ Camera::reposition()
 	glRotated(rotation.data[2], 0.0, 0.0, 1.0);
 	glTranslated(pos.x(),pos.y(),pos.z());
 }
+
+

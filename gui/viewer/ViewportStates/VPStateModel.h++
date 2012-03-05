@@ -6,6 +6,8 @@
 #include <QMouseEvent>
 
 #include "ViewportState.h++"
+
+#include "../BaseViewport.h++"
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"
 
@@ -20,7 +22,7 @@ class BaseViewport;
 A pattern for the State pattern which is used to render the model space
 */
 class VPStateModel
-	:public ViewportState<BaseViewport>
+	:public ViewportState
 {
 protected:
 	ElementRepresentationFlyweightFactory		m_element_representation_factory;
@@ -38,10 +40,6 @@ public:
 	Tweaks the way the viewport is rendered according to the current selection
 	**/
 	void setSelection(Selection);
-
-	void paintGL(BaseViewport *viewport);
-	void mousePressEvent(BaseViewport *viewport, QMouseEvent *event);
-	// void mouseMoveEvent(QMouseEvent *event);
 
 };
 

@@ -10,8 +10,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>	// for gluQuadric()
 
-#include "Logs.h++"	// declare the global message loggers
-
 #include "../../fem/Model.h++"
 #include "../../fem/Surface.h++"
 
@@ -25,7 +23,7 @@
 
 
 VPStateDisplacements::VPStateDisplacements()
-	: ViewportState<BaseViewport>()
+	: ViewportState()
 { 
 	this->m_factory.setElementRepresentationPolicy(m_element_representation_factory.opaque());
 	this->m_factory.setDisplacementsPolicy(&m_displacements);
@@ -34,16 +32,12 @@ VPStateDisplacements::VPStateDisplacements()
 
 VPStateDisplacements::~VPStateDisplacements()
 {
-	mylog.setPrefix("VPStateDisplacements::~VPStateDisplacements()");
-	mylog.message("destructor called");
 }
 
 
 void
 VPStateDisplacements::initialize(BaseViewport *viewport)
 {
-	mylog.setPrefix("VPStateDisplacements::initialize()");
-	mylog.message("initializing");
 	// build the displaced_nodes from the analysis
 	assert(viewport != NULL);
 
@@ -55,9 +49,6 @@ VPStateDisplacements::initialize(BaseViewport *viewport)
 void
 VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 {
-	mylog.setPrefix("void VPStateDisplacements::populateScenegraph(fem::Model *viewport->project->model)");
-	mylog.message("populating");
-
 	assert(viewport != NULL);
 
 	scenegraph.clear();
@@ -78,7 +69,6 @@ VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 	}
 
 	// add the elements to the scenegraph
-	//for( std::vector<fem::Element>::iterator i = viewport->project->model.element_list.begin(); i != viewport->project->model.element_list.end(); i++)
 	for( std::vector<fem::Element>::size_type n = 0; n < viewport->project->model.element_list.size(); n++)
 	{
 		component = this->m_factory(n, viewport->project->model.element_list[n]);
@@ -101,8 +91,6 @@ VPStateDisplacements::setAnalysisResult(fem::AnalysisResult<double> &new_result)
 void
 VPStateDisplacements::setDisplacementsScale(float new_scale)
 {
-	mylog.setPrefix("VPStateDisplacements::setDisplacementsScale()");
-	mylog.message("set scale");
 	this->m_displacements.setDisplacementsScale(new_scale);
 }
 
@@ -110,54 +98,12 @@ VPStateDisplacements::setDisplacementsScale(float new_scale)
 void 
 VPStateDisplacements::setSelection(Selection)
 {
-	std::cout << "VPStateDisplacements::setSelection(Selection)" << std::endl;
-}
-
-
-void
-VPStateDisplacements::paintGL(BaseViewport *viewport)
-{
-	assert(viewport != NULL);
-
-	mylog.setPrefix("VPStateDisplacements::paintGL()");
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	viewport->viewport_data.camera.reposition();
-
-	this->scenegraph.paint(viewport->viewport_data,  viewport->colors);
-
-}
-
-
-void
-VPStateDisplacements::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
-{
-	viewport->viewport_data.lastPos = event->pos();
-	// process left clicks
-	if(event->buttons() & Qt::LeftButton)
-	{
-		fem::point near, far;
-		QPoint pos = event->pos();
-		GLdouble modelview[16];
-		GLdouble projection[16];
-		GLint viewport[4];
-
-		glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-		glGetDoublev(GL_PROJECTION_MATRIX, projection);
-		glGetIntegerv(GL_VIEWPORT, viewport);
-		gluUnProject(pos.x(), viewport[3]-pos.y(), 0, modelview, projection, viewport, &near.data[0], &near.data[1], &near.data[2]);
-		gluUnProject(pos.x(), viewport[3]-pos.y(), 1, modelview, projection, viewport, &far.data[0], &far.data[1], &far.data[2]);
-	}
 }
 
 
 void
 VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 {
-	qWarning("keypressed");
 	switch( event->key() )
 	{
 		case Qt::Key_S:	// change the displacements scale
@@ -182,5 +128,4 @@ VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 			break;
 	}
 }
-
 

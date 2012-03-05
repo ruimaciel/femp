@@ -5,8 +5,6 @@
 
 #include <assert.h>
 
-#include "../Logs.h++"	// declare the global message loggers
-
 
 namespace SGC
 {

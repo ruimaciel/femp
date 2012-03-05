@@ -17,3 +17,4 @@ ViewportData::reset()
 	selected_node_list.clear();
 
 }
+

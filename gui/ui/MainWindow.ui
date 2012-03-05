@@ -52,16 +52,17 @@
     <property name="title">
      <string>Window</string>
     </property>
-    <widget class="QMenu" name="menuSet">
+    <widget class="QMenu" name="menuNew">
      <property name="title">
-      <string>Set</string>
+      <string>New</string>
      </property>
-     <addaction name="actionSetModelViewport"/>
-     <addaction name="actionSetPostprocessingViewport"/>
+     <addaction name="actionNewModelWindow"/>
+     <addaction name="actionNewPostprocessingWindow"/>
+     <addaction name="actionNewTensorFieldWindow"/>
+     <addaction name="actionNewAnalysisResultsWindow"/>
+     <addaction name="actionNewFemEquationWindow"/>
     </widget>
-    <addaction name="actionNewViewportWindow"/>
-    <addaction name="separator"/>
-    <addaction name="menuSet"/>
+    <addaction name="menuNew"/>
     <addaction name="separator"/>
     <addaction name="actionWindowTile"/>
     <addaction name="actionWindowCascade"/>
@@ -303,11 +304,6 @@
     <string>Cascade</string>
    </property>
   </action>
-  <action name="actionNewViewportWindow">
-   <property name="text">
-    <string>New</string>
-   </property>
-  </action>
   <action name="actionViewModel">
    <property name="text">
     <string>Model</string>
@@ -378,6 +374,31 @@
    </property>
    <property name="text">
     <string>Results from selection</string>
+   </property>
+  </action>
+  <action name="actionNewModelWindow">
+   <property name="text">
+    <string>Model</string>
+   </property>
+  </action>
+  <action name="actionNewPostprocessingWindow">
+   <property name="text">
+    <string>Gradient</string>
+   </property>
+  </action>
+  <action name="actionNewAnalysisResultsWindow">
+   <property name="text">
+    <string>Analysis results</string>
+   </property>
+  </action>
+  <action name="actionNewFemEquationWindow">
+   <property name="text">
+    <string>FEM equation</string>
+   </property>
+  </action>
+  <action name="actionNewTensorFieldWindow">
+   <property name="text">
+    <string>Tensor field</string>
    </property>
   </action>
  </widget>

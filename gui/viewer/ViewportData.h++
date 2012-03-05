@@ -6,6 +6,7 @@
 #include <list>
 #include <QPoint>
 
+#include <GL/gl.h>	// for GLDouble definition
 #include "Camera.h++"
 
 
@@ -23,7 +24,8 @@ struct ViewportData
 	float aspect_ratio;	// window aspect ratio
 	float node_scale;	// the scale used by the nodes, reset when a window resizes
 
-	float modelview[16];	// opengl modelview matrix
+	GLdouble modelview[16];	// opengl modelview matrix, needed for picking to handle mouse clicks
+	GLdouble projection[16];	// opengl modelview matrix, needed for picking to handle mouse clicks
 
 	QPoint lastPos;
 

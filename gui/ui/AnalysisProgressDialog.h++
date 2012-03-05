@@ -10,7 +10,7 @@
 #include "ui_AnalysisProgressDialog.h"
 
 class AnalysisProgressDialog
-	: public QDialog, private Ui_AnalysisProgressDialog
+	: public QDialog, private Ui::AnalysisProgressDialog
 {
 	Q_OBJECT
 

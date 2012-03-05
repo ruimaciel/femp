@@ -9,7 +9,7 @@
 #include "../fem/Model.h++"
 
 
-class MaterialsEditorDialog: public QDialog, private  Ui_MaterialsEditorDialog
+class MaterialsEditorDialog: public QDialog, private  Ui::MaterialsEditorDialog
 {
 	//TODO finish this
 

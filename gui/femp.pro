@@ -44,6 +44,8 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/*.h++ \
 	viewer/SceneGraphComponents/Elements/*.h++ \
 	viewer/SceneGraphComponents/Operations/*.h++ \
+	viewer/SceneGraphComponents/hud/HudObject.h++ \
+	viewer/SceneGraphComponents/hud/HudSelection.h++ \
 	viewer/boundaries/BoundaryStrategy.h++ viewer/boundaries/SphericalBoundary.h++ \
 	viewer/boundaries/CollisionDetection.h++ \
 	viewer/InputStates/Input.h++ \
@@ -86,6 +88,7 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/*.c++ \
 	viewer/SceneGraphComponents/Elements/*.c++ \
 	viewer/SceneGraphComponents/Operations/*.c++ \
+	viewer/SceneGraphComponents/hud/HudSelection.c++ \
 	viewer/boundaries/BoundaryStrategy.c++  viewer/boundaries/SphericalBoundary.c++  \
 	viewer/boundaries/CollisionDetection.c++ \
 	viewer/InputStates/Input.c++ \

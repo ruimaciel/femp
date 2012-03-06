@@ -8,6 +8,7 @@
 #include <GL/gl.h>
 
 #include "SceneGraphComponents/SceneGraphComponent.h++"
+#include "SceneGraphComponents/hud/HudSelection.h++"
 
 #include "ViewportData.h++"
 #include "ViewportColors.h++"
@@ -38,6 +39,8 @@ public:
 	std::list<SceneGraphComponent *> primitive_components;
 
 	std::map<int, RenderGroup>	rendering_groups;
+
+	hud::Selection	m_selection;	// HUD object to render selection
 
 public:
 	SceneGraph();
@@ -80,6 +83,11 @@ public:
 	@param	visitor	class which will act on each object 
 	**/
 	void runOperation(OperationsVisitor &);
+
+
+	void setSelectionStart(fem::point const &p)	{ m_selection.setStart(p); };
+	void setSelectionEnd(fem::point const &p)	{ m_selection.setEnd(p); };
+	void setSelectionOff()				{ m_selection.off(); };
 };
 
 #endif

@@ -47,6 +47,9 @@ SceneGraph::paint(ViewportData &viewport_data, ViewportColors &colors)
 			i->second.scenegraph.paintGL(viewport_data, colors);
 		}
 	}
+
+	// render HUD objects
+	m_selection.paintGL(viewport_data, colors);
 }
 
 

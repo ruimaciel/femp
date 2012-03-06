@@ -29,8 +29,8 @@ public:
 
 	void paintGL(ViewportData &data, ViewportColors &colors);
 
-	void setStart(float &x, float &y);
-	void setEnd(float &x, float &y);
+	void setStart(fem::point const &p);
+	void setEnd(fem::point const &p);
 	void off()	{m_on = false;}
 };
 

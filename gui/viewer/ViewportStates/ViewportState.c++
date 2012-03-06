@@ -119,3 +119,24 @@ ViewportState::showSelection(const Selection)
 }
 
 
+void 
+ViewportState::setSelectionStart(fem::point const &p)
+{ 
+	std::cerr << "ViewportState::setSelectionStart(fem::point) 	=> (" << p.x() << ", " << p.y() << ", " << p.z() << ")" << std::endl;
+	scenegraph.setSelectionStart(p); 
+};
+
+
+void 
+ViewportState::setSelectionEnd(fem::point const &p)
+{ 
+	std::cerr << "ViewportState::setSelectionEnd(fem::point) 	=> (" << p.x() << ", " << p.y() << ", " << p.z() << ")" << std::endl;
+	scenegraph.setSelectionEnd(p); 
+};
+
+
+void 
+ViewportState::setSelectionOff()
+{
+	scenegraph.setSelectionOff();
+}

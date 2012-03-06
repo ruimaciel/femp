@@ -9,9 +9,7 @@ namespace hud
 
 Selection::Selection()
 {
-	//TODO test only
-	m_start.set(1,2);
-	m_end.set(2,1);
+	m_on = false;
 }
 
 
@@ -20,16 +18,20 @@ Selection::paintGL(ViewportData &data, ViewportColors &colors)
 {
 	if(m_on)
 	{
-		//glDisable(GL_DEPTH_TEST);
-		//glClear(GL_COLOR_BUFFER_BIT);
-
-		
-		glMatrixMode(GL_MODELVIEW);
+		glMatrixMode(GL_PROJECTION);
 		glPushMatrix();
 		glLoadIdentity();
+
+		GLfloat vp[4];
+		glGetFloatv(GL_VIEWPORT, vp);
+		glOrtho(vp[0], vp[2], vp[3], vp[1], -1, 1);
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
 		glColor3f(1,0,0);	//TODO fix this
 
-		glTranslatef(0,0,-20);
+		glDisable(GL_DEPTH_TEST);
 		glBegin(GL_LINE_STRIP);
 		glVertex2f(m_end.x(), m_end.y());
 		glVertex2f(m_end.x(), m_start.y());
@@ -37,24 +39,29 @@ Selection::paintGL(ViewportData &data, ViewportColors &colors)
 		glVertex2f(m_start.x(), m_end.y());
 		glVertex2f(m_end.x(), m_end.y());
 		glEnd();
+		glEnable(GL_DEPTH_TEST);
+
+		glMatrixMode(GL_PROJECTION);
 		glPopMatrix();
-		// */
+		glMatrixMode(GL_MODELVIEW);
+		glPopMatrix();
 	}
 }
 
 
 void 
-Selection::setStart(float &x, float &y)
+Selection::setStart(fem::point const &p)
 {
 	m_on = true;
-	m_start.set(x,y);
+	m_start = p;
+	m_end = p;
 }
 
 
 void 
-Selection::setEnd(float &x, float &y)
+Selection::setEnd(fem::point const &p)
 {
-	m_end.set(x,y);
+	m_end = p;
 }
 
 

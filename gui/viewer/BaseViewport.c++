@@ -110,6 +110,8 @@ BaseViewport::initializeGL()
 void 
 BaseViewport::resizeGL(int width, int height)
 {
+	viewport_data.width = width;
+	viewport_data.height = height;
 	viewport_data.aspect_ratio = qMin(width, height);
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);

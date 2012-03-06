@@ -29,9 +29,19 @@ Selection::paintGL(ViewportData &data, ViewportColors &colors)
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		glColor3f(1,0,0);	//TODO fix this
-
 		glDisable(GL_DEPTH_TEST);
+		glEnable(GL_BLEND);
+
+		glColor4f(1,0,0,0.25);	//TODO fix this
+		glBegin(GL_QUADS);
+		glVertex2f(m_end.x(), m_end.y());
+		glVertex2f(m_end.x(), m_start.y());
+		glVertex2f(m_start.x(), m_start.y());
+		glVertex2f(m_start.x(), m_end.y());
+		glVertex2f(m_end.x(), m_end.y());
+		glEnd();
+
+		glColor3f(1,0,0);	//TODO fix this
 		glBegin(GL_LINE_STRIP);
 		glVertex2f(m_end.x(), m_end.y());
 		glVertex2f(m_end.x(), m_start.y());

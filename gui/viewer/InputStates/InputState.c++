@@ -2,6 +2,42 @@
 
 #include <iostream>
 
+#include "../BaseViewport.h++"
+
+
+void 
+InputState::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
+{
+	std::cerr << "InputState::press(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
+	switch(event->buttons() )
+	{ 
+		case Qt::LeftButton:
+			this->leftClick(viewport, event, input);
+			break;
+
+		case Qt::RightButton:
+			this->rightClick(viewport, event, input);
+			break;
+
+		/*
+		case (Qt::LeftButton | Qt::RightButton):
+			std::cerr << "both" << std::endl;
+			break;
+		*/
+
+		default:
+			std::cerr << "other" << std::endl;
+			break;
+	}
+}
+
+
+void 
+InputState::release(BaseViewport *viewport, QMouseEvent *event, Input *input)
+{
+	std::cerr << "InputState::release(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
+}
+
 
 void 
 InputState::leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
@@ -41,6 +77,7 @@ InputState::move(BaseViewport *viewport, QMouseEvent *event, Input *input)
 	// remove after debug
 	std::cerr << "InputState::move(Input *input) defaulted" << std::endl;
 }
+
 
 
 void 

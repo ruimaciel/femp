@@ -1,38 +1,28 @@
 #include "Input.h++"
 
 #include "InputState.h++"
+#include "../BaseViewport.h++"
 
 
 Input::Input()
 {
+	m_current_state = &m_s_start;	//TODO remove this
 }
 
 
 void 
-Input::leftClick(BaseViewport *viewport, QMouseEvent *event)
+Input::press(BaseViewport *viewport, QMouseEvent *event)
 {
-	m_current_state->leftClick(viewport, event, this);
+	m_current_state->press(viewport, event, this);
+	event->accept();
 }
 
 
 void 
-Input::leftRelease(BaseViewport *viewport, QMouseEvent *event)
+Input::release(BaseViewport *viewport, QMouseEvent *event)
 {
-	m_current_state->leftRelease(viewport,  event,this);
-}
-
-
-void 
-Input::rightClick(BaseViewport *viewport, QMouseEvent *event)
-{
-	m_current_state->rightClick(viewport, event, this);
-}
-
-
-void 
-Input::rightRelease(BaseViewport *viewport, QMouseEvent *event)
-{
-	m_current_state->rightRelease(viewport,  event,this);
+	m_current_state->release(viewport, event, this);
+	event->accept();
 }
 
 
@@ -40,6 +30,7 @@ void
 Input::move(BaseViewport *viewport, QMouseEvent *event)
 {
 	m_current_state->move(viewport, event, this);
+	event->accept();
 }
 
 

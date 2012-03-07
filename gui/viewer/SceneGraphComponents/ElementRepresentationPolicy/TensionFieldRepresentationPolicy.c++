@@ -39,6 +39,7 @@ TensionFieldRepresentationPolicy::renderTensor( fem::element_ref_t const &ref, f
 	diameter = 0.5f*(m_model->node_list[ element.nodes[1]] - m_model->node_list[ element.nodes[0]]).norm();
 
 	glEnable(GL_BLEND);
+	glDisable(GL_LIGHTING);
 	glBegin(GL_LINES);
 	for(int k = 0; k < 3; k++)
 	{
@@ -59,6 +60,7 @@ TensionFieldRepresentationPolicy::renderTensor( fem::element_ref_t const &ref, f
 		}
 	}
 	glEnd();
+	glEnable(GL_LIGHTING);
 	glDisable(GL_BLEND);
 }
 

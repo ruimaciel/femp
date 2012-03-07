@@ -60,14 +60,11 @@ TensionFieldRepresentationPolicy::renderTensor( fem::element_ref_t const &ref, f
 }
 
 
-	void
+void
 TensionFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 	assert(m_model != nullptr);
 	assert(m_result != nullptr);
-
-	std::cerr << "TensionFieldRepresentationPolicy::tetra4 ()" << std::endl;
-
 
 	renderTensor(ref,element,color);
 
@@ -77,9 +74,9 @@ TensionFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &ref, fem::El
 /**
  */
 void
-TensionFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+TensionFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
-	std::cerr << "TensionFieldRepresentationPolicy::tetra10 ()" << std::endl;
+	renderTensor(ref,element,color);
 }
  
 
@@ -88,8 +85,6 @@ TensionFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &, fem::Elem
 void
 TensionFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
-	// std::cerr << "TensionFieldRepresentationPolicy::hexa8 ()" << std::endl;
-
 	renderTensor(ref, element, color);
 }
 
@@ -97,45 +92,45 @@ TensionFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &ref, fem::Ele
 /**
  */
 void
-TensionFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+TensionFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
-	std::cerr << "TensionFieldRepresentationPolicy::hexa20 ()" << std::endl;
+	renderTensor(ref,element,color);
 }
 
 
 /**
  */
 void
-TensionFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+TensionFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
-	std::cerr << "TensionFieldRepresentationPolicy::hexa27 ()" << std::endl;
+	renderTensor(ref,element,color);
 }
 
 
 /**
  */
 void
-TensionFieldRepresentationPolicy::prism6 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+TensionFieldRepresentationPolicy::prism6 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
-	std::cerr << "TensionFieldRepresentationPolicy::prism6 ()" << std::endl;
+	renderTensor(ref,element,color);
 }
 
 
 /**
  */
 void
-TensionFieldRepresentationPolicy::prism15 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+TensionFieldRepresentationPolicy::prism15 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
-	std::cerr << "TensionFieldRepresentationPolicy::prism15 ()" << std::endl;
+	renderTensor(ref,element,color);
 }
 
 
 /**
  */
 void
-TensionFieldRepresentationPolicy::prism18 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+TensionFieldRepresentationPolicy::prism18 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
-	std::cerr << "TensionFieldRepresentationPolicy::prism18 ()" << std::endl;
+	renderTensor(ref,element,color);
 }
 
 

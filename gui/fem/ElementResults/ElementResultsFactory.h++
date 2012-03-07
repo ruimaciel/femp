@@ -279,6 +279,7 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 		//VON MISES
 		if(results->von_mises[coord] > m_analysis_result->ranges.max_von_mises)
 			m_analysis_result->ranges.max_von_mises = results->von_mises[coord];
+
 	}
 
 	// nasty hack to set up the tensor
@@ -365,6 +366,16 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 
 	// calculate eigenvalues and eigenvectors
 	dsyevj3(tensor, results->eig_vec, results->eig_val);
+
+	// tension and compression
+	for(int i = 0; i < 3; i++)
+	{
+		if(results->eig_val[i] > m_analysis_result->ranges.max_tension)
+			m_analysis_result->ranges.max_tension = results->eig_val[i];
+		if(results->eig_val[i] < m_analysis_result->ranges.max_compression)
+			m_analysis_result->ranges.max_compression = results->eig_val[i];
+	}
+
 	return results;
 }
 

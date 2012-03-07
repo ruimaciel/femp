@@ -21,6 +21,9 @@ struct ResultsRanges
 
 	Scalar max_von_mises; Scalar min_von_mises;
 
+	Scalar max_tension;	// used by tension fields
+	Scalar max_compression;	// used by tension fields
+
 	void setZero();
 };
 
@@ -41,6 +44,9 @@ ResultsRanges<Scalar>::setZero()
 	max_stress11 = 0;	max_stress22 = 0;	max_stress33 = 0;	max_stress12 = 0;	max_stress23 = 0;	max_stress13 = 0;
 	min_stress11 = 0;	min_stress22 = 0;	min_stress33 = 0;	min_stress12 = 0;	min_stress23 = 0;	min_stress13 = 0;
 	max_von_mises = 0;	min_von_mises = 0;
+
+	max_tension = 0;
+	max_compression= 0;
 }
 
 

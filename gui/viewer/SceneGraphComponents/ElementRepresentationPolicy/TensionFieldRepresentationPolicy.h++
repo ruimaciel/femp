@@ -1,6 +1,7 @@
-
 #ifndef TENSORFIELDREPRESENTATIONPOLICY_H
 #define TENSORFIELDREPRESENTATIONPOLICY_H
+
+#include <GL/gl.h>
 
 #include "ElementRepresentationPolicy.h++"
 #include "../../../fem/AnalysisResult.h++"
@@ -12,6 +13,8 @@ class TensionFieldRepresentationPolicy
 	: virtual public ElementRepresentationPolicy
 {
 protected:
+	GLfloat m_temp_color[3];	// temporary value used to set a color
+
 	fem::Model *m_model;
 	fem::AnalysisResult<double> *m_result;
 	bool	m_negative_principal_tension_visible;
@@ -76,6 +79,13 @@ public:
 
 	void showNegativePrincipalStressesVisibility(bool state);
 	void showPositivePrincipalStressesVisibility(bool state);
+
+	/**
+	Converts a gradient value into a GLfloat [3]
+	@param	gradient	the gradient's value
+	@return	pointer to this->m_temp_color
+	**/
+	GLfloat * getColor(double &gradient, ViewportColors &colors);
 
 };
 

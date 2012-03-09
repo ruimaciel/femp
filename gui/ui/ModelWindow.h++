@@ -18,8 +18,6 @@ class ModelWindow
 public:
 	ModelWindow (fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
 
-	void connectToSelectionManager(SelectionManager &selection_manager);
-
 protected:
 	void connectSignalsToSlots();
 

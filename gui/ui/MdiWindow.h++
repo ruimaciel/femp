@@ -1,7 +1,6 @@
 #ifndef MDI_WINDOW_HPP
 #define MDI_WINDOW_HPP
 
-
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QMainWindow>
 #include <QMenuBar>
@@ -20,7 +19,7 @@
 
 
 /**
-Base class for all the MDI windows 
+Base class for all the MDI windows that render the model
 **/
 class MdiWindow 
 	:  public QMainWindow, protected Ui::MdiWindow, public sigc::trackable

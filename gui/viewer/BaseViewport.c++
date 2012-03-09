@@ -1,6 +1,7 @@
 #include "BaseViewport.h++"
 
 #include "SceneGraphComponents/Operations/ToggleRenderOperation.h++"
+#include "SceneGraphComponents/Operations/ToggleSelectionOperation.h++"
 
 
 BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
@@ -310,7 +311,10 @@ BaseViewport::normalizeAngle(int *angle)
 void 
 BaseViewport::setSelection(Selection selection)
 {
-	this->state->setSelection(selection);
+	std::cerr << "BaseViewport::setSelection(Selection selection)" << std::endl;
+	ToggleSelectionOperation op(selection);
+	this->state->runSceneGraphOperation(op);
+	this->updateGL();
 }
 
 

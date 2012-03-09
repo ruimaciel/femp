@@ -79,11 +79,6 @@ protected:
 	void setGradientValuesRange(const fem::AnalysisResult<double> &result);
 
 
-public:
-	// libsigc++ slots
-	void setSelection(Selection);	// sets the selection
-	void clearSelection();		// clears the selection
-
 };	
 
 #endif

@@ -150,16 +150,3 @@ TensorFieldWindow::setResultsRanges()
 	};
 }
 
-
-void 
-TensorFieldWindow::setSelection(Selection)
-{
-}
-
-
-void 
-TensorFieldWindow::clearSelection()
-{
-}
-
-

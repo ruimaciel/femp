@@ -195,15 +195,3 @@ PostprocessingWindow::setPostprocessingState(int state)
 }
 
 
-void 
-PostprocessingWindow::setSelection(Selection)
-{
-}
-
-
-void 
-PostprocessingWindow::clearSelection()
-{
-}
-
-

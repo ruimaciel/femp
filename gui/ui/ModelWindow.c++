@@ -22,16 +22,3 @@ ModelWindow::connectSignalsToSlots()
 }
 
 
-void 
-ModelWindow::setSelection(Selection)
-{
-	std::cout << "void ModelWindow::setSelection(Selection)" << std::endl;
-}
-
-
-void 
-ModelWindow::clearSelection()
-{
-	std::cout << "void ModelWindow::clearSelection()" << std::endl;
-}
-

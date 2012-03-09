@@ -146,9 +146,10 @@ MdiWindow::setColors(ViewportColors &colors)
 
 
 void 
-MdiWindow::setSelection(Selection)
+MdiWindow::setSelection(Selection selection)
 {
-	std::cout << "void MdiWindow::setSelection(Selection): hasn't been implemented" << std::endl;
+	std::cout << "void MdiWindow::setSelection(Selection)" << std::endl;
+	this->viewport->setSelection(selection);
 }
 
 

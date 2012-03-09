@@ -21,11 +21,6 @@ public:
 protected:
 	void connectSignalsToSlots();
 
-public:
-	// libsigc++ slots
-	void setSelection(Selection);	// sets the selection
-	void clearSelection();		// clears the selection
-
 };	
 
 #endif

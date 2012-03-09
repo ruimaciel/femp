@@ -31,8 +31,40 @@ SelectionManager::clearSelection()
 }
 
 
+void 
+SelectionManager::selectElement(const fem::element_ref_t &ref)
+{
+	std::cerr << "SelectionManager::selectElement(const fem::element_ref_t &ref)" << std::endl;
+	m_selection.selectElement(ref);
+}
+
+
+void 
+SelectionManager::deselectElement(const fem::element_ref_t &ref)
+{
+	std::cerr << "SelectionManager::deselectElement(const fem::element_ref_t &ref)" << std::endl;
+	m_selection.deselectElement(ref);
+}
+
+
+void 
+SelectionManager::selectNode(const fem::node_ref_t &ref)
+{
+	std::cerr << "SelectionManager::selectNode(const fem::node_ref_t &ref)" << std::endl;
+	m_selection.selectNode(ref);
+}
+
+
+void 
+SelectionManager::deselectNode(const fem::node_ref_t &ref)
+{
+	std::cerr << "SelectionManager::deselectNode(const fem::node_ref_t &ref)" << std::endl;
+	m_selection.deselectNode(ref);
+}
+
+
 Selection
-SelectionManager::getSelection()
+SelectionManager::getSelection() const
 {
 	return this->m_selection;
 }

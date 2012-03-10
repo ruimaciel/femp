@@ -20,6 +20,7 @@ struct ViewportData
 
 	Camera camera;	// transition to a camera class
 
+	float node_radius;	
 	float zoom;		// drawing zoom, used to zoom
 	int   width, height;
 	float aspect_ratio;	// window aspect ratio

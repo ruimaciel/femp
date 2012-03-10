@@ -1,5 +1,7 @@
 #include "ViewportState.h++"
 
+#include "../SceneGraphComponents/SGCPickRay.h++"	// debugging purposes only
+
 
 ViewportState::ViewportState()
 {
@@ -37,10 +39,6 @@ void
 ViewportState::paintGL(BaseViewport *viewport)
 {
 	assert(viewport != NULL);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	viewport->viewport_data.camera.reposition();
 
@@ -120,6 +118,39 @@ void
 ViewportState::showSelection(const Selection)
 {
 	std::cout << "ViewportState::showSelection(const Selection selection)" << std::endl;
+}
+
+
+void 
+ViewportState::setSelectionStart(fem::point const &p)
+{ 
+	std::cerr << "ViewportState::setSelectionStart(fem::point) 	=> (" << p.x() << ", " << p.y() << ", " << p.z() << ")" << std::endl;
+	scenegraph.setSelectionStart(p); 
+};
+
+
+void 
+ViewportState::setSelectionEnd(fem::point const &p)
+{ 
+	std::cerr << "ViewportState::setSelectionEnd(fem::point) 	=> (" << p.x() << ", " << p.y() << ", " << p.z() << ")" << std::endl;
+	scenegraph.setSelectionEnd(p); 
+};
+
+
+void 
+ViewportState::setSelectionOff()
+{
+	scenegraph.setSelectionOff();
+}
+
+
+void 
+ViewportState::addPickRay(fem::point const &origin, fem::point const &destination, float const &radius)
+{
+	std::cerr << "ViewportState::addPickRay(fem::point const &origin, fem::point const &destination, float const &radius)" << std::endl;
+	SGC::PickRay *ray = new SGC::PickRay(origin, destination, radius);
+	scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, ray);
+	scenegraph.generateSceneGraph();
 }
 
 

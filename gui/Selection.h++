@@ -27,6 +27,11 @@ public:
 	void clear();
 
 	void setSelection(Selection);
+
+	void selectElement(const fem::element_ref_t &ref);
+	void deselectElement(const fem::element_ref_t &ref);
+	void selectNode(const fem::node_ref_t &ref);
+	void deselectNode(const fem::node_ref_t &ref);
 };
 
 #endif

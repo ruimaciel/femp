@@ -118,6 +118,11 @@ public Q_SLOTS:
 	**/
 	void setViewSelection(Selection);
 
+	/**
+	Extract the current pick ray and select all objects in the scene graph that are intersected
+	**/
+	void selectObjectsFromRay(fem::point const &origin, fem::point const &destination);
+
 Q_SIGNALS:
 	void xRotationChanged(int angle);
 	void yRotationChanged(int angle);
@@ -146,6 +151,9 @@ protected:
 protected:
 	void normalizeAngle(int *angle);
 
+public:
+	// libsigc++ signals
+	sigc::signal<void, Selection>	selection_changed;	// signals that this window originated a change of item selection
 };
 
 

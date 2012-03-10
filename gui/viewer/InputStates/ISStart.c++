@@ -46,6 +46,13 @@ void
 Start::leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
 	std::cerr << "Start::leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
+	{
+		fem::point near;
+		//TODO rename this
+		near.x((float)event->x());
+		near.y((float)event->y());
+		viewport->state->setSelectionStart(near);
+	}
 	input->changeState(&viewport->m_is_left_click);
 }
 

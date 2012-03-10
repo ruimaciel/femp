@@ -6,6 +6,8 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include "fem/Project.h++"
+#include "fem/Element.h++"
+#include "fem/Node.h++"
 #include "Selection.h++"
 
 
@@ -28,12 +30,16 @@ public:
 	// libsigc++ slots
 	void setSelection(Selection);
 	void clearSelection();
+	void selectElement(const fem::element_ref_t &ref);
+	void deselectElement(const fem::element_ref_t &ref);
+	void selectNode(const fem::node_ref_t &ref);
+	void deselectNode(const fem::node_ref_t &ref);
 
 	/**
 	returns a pointer to an object of type Selection which stores a set of references to selected objects
 	@return	an object of type Selection
 	**/
-	Selection getSelection();
+	Selection getSelection() const;
 
 };
 

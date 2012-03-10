@@ -1,11 +1,11 @@
-#ifndef SCENE_GRAPH_COMPONENT_NODE_HPP
-#define SCENE_GRAPH_COMPONENT_NODE_HPP
+#ifndef SCENE_GRAPH_COMPONENT_PICK_RAY_HPP
+#define SCENE_GRAPH_COMPONENT_PICK_RAY_HPP
 
 
 #include "SceneGraphComponent.h++"
 #include "Operations/OperationsVisitor.h++"
 
-#include "../../fem/Node.h++"
+#include "../../fem/point.h++"
 #include "../../fem/NodeRestrictions.h++"
 #include "../../fem/LinearAnalysis.h++"
 
@@ -16,29 +16,23 @@ namespace SGC
 {
 
 /**
-Scene graph component which renders a node
+Scene graph component used to debug picking operation
 **/
-class Node
+class PickRay
 	: public SceneGraphComponent
 {
 protected:
-	fem::node_ref_t node_label;
-	fem::Node *m_node;
-	DisplacementsRepresentationPolicy *m_displacements;
+	fem::point m_origin, m_destination;
+	float radius;
 
 public:
-	Node(size_t, fem::Node &node, DisplacementsRepresentationPolicy *displacements);
-	~Node();
-
+	PickRay(fem::point const &origin,fem::point const &destination, float const &radius);
+	~PickRay();
 
 	/*
 	Renders this node
 	*/
 	void paintGL(ViewportData &data, ViewportColors &colors);
-
-	fem::node_ref_t const &reference() const	{ return node_label; }
-
-	fem::point const &pos()	const	{ return *m_node; }
 
 	/*
 	Visitor pattern method

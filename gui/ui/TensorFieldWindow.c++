@@ -64,6 +64,8 @@ TensorFieldWindow::setAnalysisResult(fem::AnalysisResult<double> &result)
 void 
 TensorFieldWindow::connectSignalsToSlots()
 {
+	// nasty hack to connect libsigc++ signal
+	MdiWindow::connectSignalsToSlots();
 
 	connect(actionMenuVisibility,	SIGNAL(toggled(bool)),	this,	SLOT(toggleMenuBarVisibility(bool) ) );
 	//connect(actionSetTensionRanges,	SIGNAL(triggered()),	this,	SLOT(setResultsRanges()));
@@ -148,28 +150,5 @@ TensorFieldWindow::setResultsRanges()
 		default:
 			break;
 	};
-}
-
-
-void 
-TensorFieldWindow::setSelection(Selection)
-{
-}
-
-
-void 
-TensorFieldWindow::clearSelection()
-{
-}
-
-
-void 
-TensorFieldWindow::connectToSelectionManager(SelectionManager &selection_manager)
-{
-	// connects signals to slots
-	std::cout << "void TensorFieldWindow::connectToSelectionManager(SelectionManager &selection_manager)" << std::endl;
-
-	selection_manager.selection_changed.connect( sigc::mem_fun(this, & TensorFieldWindow::setSelection));
-	this->selection_changed.connect( sigc::mem_fun(selection_manager, &SelectionManager::setSelection));
 }
 

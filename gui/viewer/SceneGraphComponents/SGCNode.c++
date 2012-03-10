@@ -34,7 +34,8 @@ void Node::paintGL(ViewportData &data, ViewportColors &colors)
 	//glTranslated(this->m_node->data[0], this->m_node->data[1], this->m_node->data[2]);
 	glTranslated(u.data[0], u.data[1], u.data[2]);
 	
-	glScalef(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
+	//glScalef(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
+	float radius = data.node_radius*(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
 
 	//TODO paint selected node in a different color
 	// paint the nodal sphere
@@ -47,7 +48,7 @@ void Node::paintGL(ViewportData &data, ViewportColors &colors)
 
 	GLUquadric *p;
 	p = gluNewQuadric();
-	gluSphere(p,1,8,8);
+	gluSphere(p,radius,8,8);
 
 	// end 
 	glPopMatrix();

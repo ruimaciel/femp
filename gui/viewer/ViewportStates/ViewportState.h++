@@ -76,6 +76,16 @@ public:
 	virtual void clearSelection();		// clears the selection list representation
 
 	virtual void showSelection(const Selection);	// only displays the selected objects
+
+	void setSelectionStart(fem::point const &p);
+	void setSelectionEnd(fem::point const &p);
+	void setSelectionOff();
+
+	/** 
+	For debugging purposes
+	**/
+	void addPickRay(fem::point const &origin, fem::point const &destination, float const &radius);
+
 };
 
 #endif

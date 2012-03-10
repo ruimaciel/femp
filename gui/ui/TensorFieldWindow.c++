@@ -64,6 +64,8 @@ TensorFieldWindow::setAnalysisResult(fem::AnalysisResult<double> &result)
 void 
 TensorFieldWindow::connectSignalsToSlots()
 {
+	// nasty hack to connect libsigc++ signal
+	MdiWindow::connectSignalsToSlots();
 
 	connect(actionMenuVisibility,	SIGNAL(toggled(bool)),	this,	SLOT(toggleMenuBarVisibility(bool) ) );
 	//connect(actionSetTensionRanges,	SIGNAL(triggered()),	this,	SLOT(setResultsRanges()));

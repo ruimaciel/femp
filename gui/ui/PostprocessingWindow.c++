@@ -64,6 +64,9 @@ PostprocessingWindow::setAnalysisResult(fem::AnalysisResult<double> &result)
 void 
 PostprocessingWindow::connectSignalsToSlots()
 {
+	// nasty hack to connect libsigc++ signal
+	MdiWindow::connectSignalsToSlots();
+
 	WindowWithScaling::connectSignalsToSlots();
 	WindowWithPostprocessing::connectSignalsToSlots();
 

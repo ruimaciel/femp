@@ -19,6 +19,8 @@ ModelWindow::ModelWindow (fem::Project &project, ViewportColors &colors, QWidget
 void 
 ModelWindow::connectSignalsToSlots()
 {
+	// nasty hack to connect libsigc++ signal
+	MdiWindow::connectSignalsToSlots();
 }
 
 

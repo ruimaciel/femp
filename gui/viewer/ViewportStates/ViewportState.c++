@@ -1,5 +1,7 @@
 #include "ViewportState.h++"
 
+#include "../SceneGraphComponents/SGCPickRay.h++"	// debugging purposes only
+
 
 ViewportState::ViewportState()
 {
@@ -140,3 +142,15 @@ ViewportState::setSelectionOff()
 {
 	scenegraph.setSelectionOff();
 }
+
+
+void 
+ViewportState::addPickRay(fem::point const &origin, fem::point const &destination, float const &radius)
+{
+	std::cerr << "ViewportState::addPickRay(fem::point const &origin, fem::point const &destination, float const &radius)" << std::endl;
+	SGC::PickRay *ray = new SGC::PickRay(origin, destination, radius);
+	scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, ray);
+	scenegraph.generateSceneGraph();
+}
+
+

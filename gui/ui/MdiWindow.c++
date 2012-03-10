@@ -23,8 +23,6 @@ MdiWindow::MdiWindow (QWidget *parent)
 
 	this->createViewportToolbar();
 	this->createVisibilityToolbar();
-
-	this->connectSignalsToSlots();
 }
 
 
@@ -125,6 +123,9 @@ MdiWindow::connectSignalsToSlots()
 
 	connect(actionVisibleNodes,	SIGNAL(toggled(bool)),	this,	SLOT(setNodeVisibility(bool)));
 	connect(actionVisibleRestrictions,	SIGNAL(toggled(bool)),	this,	SLOT(setNodeRestrictionsVisibility(bool)));
+
+	// libsigc++ signals
+	this->viewport->selection_changed.connect(this->selection_changed.make_slot());
 }
 
 

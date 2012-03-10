@@ -2,6 +2,8 @@
 
 #include "SceneGraphComponents/Operations/ToggleRenderOperation.h++"
 #include "SceneGraphComponents/Operations/ToggleSelectionOperation.h++"
+#include "SceneGraphComponents/Operations/SelectRayIntersectionOperation.h++"
+
 
 
 BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
@@ -234,6 +236,26 @@ BaseViewport::setViewSelection(Selection selection)
 	//TODO finish this
 	ToggleRenderOperation operation(selection, true);
 	this->state->runSceneGraphOperation(operation);
+}
+
+
+void 
+BaseViewport::selectObjectsFromRay(fem::point const &origin, fem::point const &destination)
+{
+	Selection selection;
+	
+	float radius = viewport_data.node_scale/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom));
+
+	//TODO debug purposes only. remove
+	std::cerr << "radius: " << radius << std::endl;
+	//state->addPickRay(origin, destination, radius);
+	
+	//get a selection list of which object has been selected
+	SelectRayIntersectionOperation operation(selection, origin, destination, radius);
+	this->state->runSceneGraphOperation(operation);
+
+	// sends request to select a set of nodes
+	selection_changed(selection);
 }
 
 

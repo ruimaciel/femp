@@ -27,6 +27,7 @@ Selection::paintGL(ViewportData &data, ViewportColors &colors)
 		glOrtho(vp[0], vp[2], vp[3], vp[1], -1, 1);
 
 		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
 		glLoadIdentity();
 
 		glDisable(GL_DEPTH_TEST);

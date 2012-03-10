@@ -41,6 +41,22 @@ LeftClick::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
 	std::cerr << "LeftClick::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 	input->changeState(&viewport->m_is_start);
+
+	{
+		fem::point near, far;
+		QPoint pos = event->pos();
+		
+		GLint vport[4];
+
+		glGetDoublev(GL_MODELVIEW_MATRIX, viewport->viewport_data.modelview);
+		glGetDoublev(GL_PROJECTION_MATRIX, viewport->viewport_data.projection);
+		glGetIntegerv(GL_VIEWPORT, vport);
+		gluUnProject(pos.x(), vport[3]-pos.y(), 0, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &near.data[0], &near.data[1], &near.data[2]);
+		gluUnProject(pos.x(), vport[3]-pos.y(), 1, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &far.data[0], &far.data[1], &far.data[2]);
+
+		// extract pick ray and perform pick selection
+		viewport->selectObjectsFromRay(near, far);
+	}
 }
 
 

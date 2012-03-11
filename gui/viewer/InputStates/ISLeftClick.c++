@@ -64,6 +64,7 @@ void
 LeftClick::move(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
 	std::cerr << "LeftClick::move(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
+
 	input->changeState(&viewport->m_is_left_drag);
 }
 

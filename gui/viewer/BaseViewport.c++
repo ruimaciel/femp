@@ -3,6 +3,7 @@
 #include "SceneGraphComponents/Operations/ToggleRenderOperation.h++"
 #include "SceneGraphComponents/Operations/ToggleSelectionOperation.h++"
 #include "SceneGraphComponents/Operations/SelectRayIntersectionOperation.h++"
+#include "SceneGraphComponents/Operations/SelectFrustumInclusionOperation.h++"
 
 
 
@@ -252,6 +253,20 @@ BaseViewport::selectObjectsFromRay(fem::point const &origin, fem::point const &d
 	
 	//get a selection list of which object has been selected
 	SelectRayIntersectionOperation operation(selection, origin, destination, radius);
+	this->state->runSceneGraphOperation(operation);
+
+	// sends request to select a set of nodes
+	selection_changed(selection);
+}
+
+
+void 
+BaseViewport::selectObjectsFromFrustum(std::array<fem::point,4> const &near, std::array<fem::point,4> const &far)
+{
+	Selection selection;
+
+	//get a selection list of which object has been selected
+	SelectFrustumInclusionOperation operation(selection, near, far);
 	this->state->runSceneGraphOperation(operation);
 
 	// sends request to select a set of nodes

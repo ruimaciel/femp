@@ -53,6 +53,10 @@ Start::leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
 		near.y((float)event->y());
 		viewport->state->setSelectionStart(near);
 	}
+
+	// register place where mouse is clicked
+	viewport->viewport_data.lastPos = event->pos();
+
 	input->changeState(&viewport->m_is_left_click);
 }
 

@@ -6,6 +6,8 @@
 
 #include <QGLWidget>
 
+#include <array>
+
 #include "../MdiWindowProperties.h++"
 
 #include "../fem/Project.h++"
@@ -122,6 +124,7 @@ public Q_SLOTS:
 	Extract the current pick ray and select all objects in the scene graph that are intersected
 	**/
 	void selectObjectsFromRay(fem::point const &origin, fem::point const &destination);
+	void selectObjectsFromFrustum(std::array<fem::point,4> const &near, std::array<fem::point,4> const &far);
 
 Q_SIGNALS:
 	void xRotationChanged(int angle);

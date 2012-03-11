@@ -134,6 +134,7 @@ public:
 	void setSelection(Selection);	// sets the selection
 	void clearSelection();		// clears the selection list representation
 	void showSelection(const Selection);
+	void showAll();
 
 protected:
 	void initializeGL();

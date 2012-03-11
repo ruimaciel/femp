@@ -356,3 +356,13 @@ BaseViewport::showSelection(const Selection selection)
 }
 
 
+void 
+BaseViewport::showAll()
+{
+	// nasty hack to avoid having to develop a new operator
+	Selection selection;
+	ToggleRenderOperation op(selection, false);	// turns on all elements which aren't selected, which in this case means all elements
+	this->state->runSceneGraphOperation(op);
+}
+
+

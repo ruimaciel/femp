@@ -170,6 +170,14 @@ MdiWindow::showSelection(const Selection selection)
 
 
 void 
+MdiWindow::showAll()
+{
+	std::cout << "MdiWindow::viewAll()" << std::endl;
+	this->viewport->showAll();
+}
+
+
+void 
 MdiWindow::connectToSelectionManager(SelectionManager &selection_manager)
 {
 	// connects signals to slots

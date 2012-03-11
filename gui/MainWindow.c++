@@ -414,6 +414,7 @@ MainWindow::createActions()
 	connect(ui.actionNewFemEquationWindow,		SIGNAL(triggered()),	this,	SLOT(createNewFemEquationWindow()));
 
 	connect(ui.actionViewSelection,	SIGNAL(triggered()),	this,	SLOT(showSelection()));
+	connect(ui.actionViewAll,	SIGNAL(triggered()),	this,	SLOT(showAll()));
 
 	connect(ui.actionQuadrature_rules,	SIGNAL(triggered()),	this,	SLOT(editQuadratureRules()) );
 	connect(ui.actionSelection,		SIGNAL(triggered()),	this,	SLOT(editSelection()) );
@@ -1149,6 +1150,22 @@ MainWindow::showSelection()
 			{
 				window->showSelection(selection);
 			}
+		}
+	}
+}
+
+
+void 
+MainWindow::showAll()
+{
+	QMdiSubWindow *mdi_window;
+	mdi_window = mdiArea->currentSubWindow();
+	if(mdi_window != NULL)
+	{
+		MdiWindow *window = static_cast<MdiWindow*>(mdi_window->widget() );
+		if(window != NULL)
+		{
+			window->showAll();
 		}
 	}
 }

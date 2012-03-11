@@ -80,6 +80,7 @@
      <string>View</string>
     </property>
     <addaction name="actionViewSelection"/>
+    <addaction name="actionViewAll"/>
    </widget>
    <widget class="QMenu" name="menuProject">
     <property name="enabled">
@@ -399,6 +400,11 @@
   <action name="actionNewTensorFieldWindow">
    <property name="text">
     <string>Tensor field</string>
+   </property>
+  </action>
+  <action name="actionViewAll">
+   <property name="text">
+    <string>All</string>
    </property>
   </action>
  </widget>

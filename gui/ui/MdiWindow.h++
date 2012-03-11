@@ -84,6 +84,7 @@ public:
 	virtual void setSelection(Selection);	// sets the selection
 	virtual void clearSelection();		// clears the selection
 	void showSelection(const Selection);	// sets the viewport so that only the selected items are shown
+	void showAll();				// sets the viewport so that all scenegraph components are shown
 
 	/**
 	Handles all libsigc++ connections between this window and an object of type SelectionManager

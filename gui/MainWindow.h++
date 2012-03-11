@@ -117,6 +117,7 @@ public Q_SLOTS:
 	Sets the current MdiViewport to show only the selected objects
 	**/
 	void showSelection();
+	void showAll();
 
 	// set MDI subwindow configuration
 	void setTiledWindows();

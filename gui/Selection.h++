@@ -11,19 +11,12 @@ A set of objects contained in a given fem::Project object which have been select
 **/
 class Selection
 {
-protected:
-	fem::Project	*m_project;
-
 public:
 	//crude hack.  must implement some iterator of sorts
 	std::set<fem::element_ref_t>	m_elements_selected;
 	std::set<fem::node_ref_t>	m_nodes_selected;
 
 public:
-	Selection();
-	
-	void setProject(fem::Project &project);
-
 	void clear();
 
 	void setSelection(Selection);

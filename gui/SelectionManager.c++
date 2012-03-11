@@ -3,18 +3,11 @@
 #include <iostream>	// testing only
 
 
-void 
-SelectionManager::setProject(fem::Project &project)
-{
-	this->m_selection.setProject(project);
-}
-
-
 void
 SelectionManager::setSelection(Selection selection)
 {
 	std::cout << "SelectionManager::setSelection()" << std::endl;
-	this->m_selection = selection;
+	m_selection = selection;
 
 	this->selection_changed.emit(selection);
 }
@@ -66,6 +59,6 @@ SelectionManager::deselectNode(const fem::node_ref_t &ref)
 Selection
 SelectionManager::getSelection() const
 {
-	return this->m_selection;
+	return m_selection;
 }
 

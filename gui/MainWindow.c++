@@ -74,8 +74,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 	// set the user interface
 	setUserInterfaceAsClosed();
-
-	m_selection_manager.setProject(document.project);
 }
 
 
@@ -1124,8 +1122,7 @@ MainWindow::dumpResultsFromSelection()
 	fem::AnalysisResult<double> * result;
 	result = &this->document.project.result.back();	// nasty hack
 
-	Selection selection;
-	selection = m_selection_manager.getSelection();
+	Selection selection = m_selection_manager.getSelection();
 
 	OutputResultsInNodesVisitor visitor(selection, result);
 

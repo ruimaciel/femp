@@ -5,7 +5,6 @@
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 
-#include "fem/Project.h++"
 #include "fem/Element.h++"
 #include "fem/Node.h++"
 #include "Selection.h++"
@@ -21,8 +20,6 @@ protected:
 	Selection m_selection;
 
 public:
-	void setProject(fem::Project &project);
-
 	// libsigc++ signals
 	sigc::signal<void, Selection>	selection_changed;
 	sigc::signal<void>		selection_cleared;

@@ -38,7 +38,7 @@ Element::setDisplacementsPolicy(DisplacementsRepresentationPolicy *displacements
 
 
 void 
-Element::accept(OperationsVisitor &visitor)
+Element::accept(Operation::OperationsVisitor &visitor)
 {
 	visitor.visit(*this);
 }

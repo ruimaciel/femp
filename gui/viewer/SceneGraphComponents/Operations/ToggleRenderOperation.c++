@@ -2,6 +2,11 @@
 
 #include <iostream>
 
+
+namespace Operation
+{
+
+
 ToggleRenderOperation::ToggleRenderOperation(Selection selection, bool state)
 {
 	this->setSelection(selection);
@@ -36,3 +41,4 @@ ToggleRenderOperation::visit(SGC::Element &element)
 }
 
 
+}

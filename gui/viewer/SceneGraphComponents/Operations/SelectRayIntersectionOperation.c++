@@ -2,6 +2,11 @@
 
 #include <iostream>
 
+
+namespace Operation
+{
+
+
 SelectRayIntersectionOperation::SelectRayIntersectionOperation(Selection &selection, fem::point const &origin, fem::point const &destination, float const &radius)
 {
 	this->m_selection = &selection;
@@ -57,6 +62,9 @@ SelectRayIntersectionOperation::visit(SGC::Element &element)
 		element.render = !m_render_state;
 	*/
 	//std::cerr << "SelectRayIntersectionOperation::visit(SGC::Element &element)" << std::endl;
+}
+
+
 }
 
 

@@ -12,6 +12,9 @@
 #include "../../../fem/point.h++"
 
 
+namespace Operation
+{
+
 /**
 Sets each scene graph component to be rendered or not, according to some criteria
 **/
@@ -40,5 +43,7 @@ public:
 	void visit(SGC::Node &element);
 	void visit(SGC::Element &element);
 };
+
+}
 
 #endif

@@ -38,7 +38,7 @@ void SceneGraphComponent::pushComponent(SceneGraphComponent *new_component)
 }
 
 
-void SceneGraphComponent::accept(OperationsVisitor &visitor)
+void SceneGraphComponent::accept(Operation::OperationsVisitor &visitor)
 {
 	for(std::list<SceneGraphComponent *>::iterator i = this->children.begin(); i != this->children.end(); i++)
 	{

@@ -2,6 +2,10 @@
 
 #include <iostream>
 
+
+namespace Operation
+{
+
 ToggleSelectionOperation::ToggleSelectionOperation(Selection selection, bool state)
 {
 	this->setSelection(selection);
@@ -32,6 +36,9 @@ ToggleSelectionOperation::visit(SGC::Element &element)
 		element.selected = m_selection_state;
 	else
 		element.selected = !m_selection_state;
+}
+
+
 }
 
 

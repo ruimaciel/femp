@@ -55,7 +55,7 @@ void Node::paintGL(ViewportData &data, ViewportColors &colors)
 }
 
 
-void Node::accept(OperationsVisitor &visitor)
+void Node::accept(Operation::OperationsVisitor &visitor)
 {
 	visitor.visit(*this);
 }

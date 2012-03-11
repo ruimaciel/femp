@@ -69,7 +69,7 @@ public:
 	/** 
 	visitor pattern for the scenegraph
 	**/
-	void runSceneGraphOperation(OperationsVisitor &);
+	void runSceneGraphOperation(Operation::OperationsVisitor &);
 
 	// libsigc++ slots
 	virtual void setSelection(Selection);	// sets the selection

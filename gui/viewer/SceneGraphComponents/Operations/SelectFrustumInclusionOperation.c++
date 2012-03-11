@@ -2,6 +2,11 @@
 
 #include <iostream>
 
+
+namespace Operation
+{
+
+
 SelectFrustumInclusionOperation::SelectFrustumInclusionOperation(Selection &selection, std::array<fem::point,4> const &near, std::array<fem::point,4> const &far)
 {
 	this->m_selection = &selection;
@@ -59,3 +64,4 @@ SelectFrustumInclusionOperation::calculateNormalVectors(std::array<fem::point, 4
 }
 
 
+}

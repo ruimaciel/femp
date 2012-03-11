@@ -96,7 +96,7 @@ ViewportState::keyPressEvent ( BaseViewport *, QKeyEvent * event )
 
 
 void 
-ViewportState::runSceneGraphOperation(OperationsVisitor &visitor)
+ViewportState::runSceneGraphOperation(Operation::OperationsVisitor &visitor)
 {
 	scenegraph.runOperation(visitor);
 }

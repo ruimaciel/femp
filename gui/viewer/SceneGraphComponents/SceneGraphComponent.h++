@@ -51,7 +51,7 @@ public:
 	/*
 	Method to be able to implement a Visitor pattern for operations on selected objects
 	*/
-	virtual void accept(OperationsVisitor &v);
+	virtual void accept(Operation::OperationsVisitor &v);
 };
 
 

@@ -62,7 +62,7 @@ public:
 	Visitor pattern method
 	@param	visitor	Object of base class OperationsVisitor, which will act on this class
 	*/
-	virtual void accept(OperationsVisitor &visitor);
+	virtual void accept(Operation::OperationsVisitor &visitor);
 
 protected:
 	void setReferenceElement(fem::element_ref_t const &, fem::Element &);

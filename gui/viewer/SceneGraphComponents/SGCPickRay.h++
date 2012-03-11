@@ -37,7 +37,7 @@ public:
 	/*
 	Visitor pattern method
 	*/
-	void accept(OperationsVisitor &visitor);
+	void accept(Operation::OperationsVisitor &visitor);
 };
 
 }	// namespace SGC

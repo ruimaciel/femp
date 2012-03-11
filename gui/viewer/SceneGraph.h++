@@ -82,7 +82,7 @@ public:
 	visitor pattern for the scenegraph
 	@param	visitor	class which will act on each object 
 	**/
-	void runOperation(OperationsVisitor &);
+	void runOperation(Operation::OperationsVisitor &);
 
 
 	void setSelectionStart(fem::point const &p)	{ m_selection.setStart(p); };

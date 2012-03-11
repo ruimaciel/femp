@@ -57,7 +57,7 @@ void NodeRestrictions::paintGL(ViewportData &data, ViewportColors &colors)
 }
 
 
-void NodeRestrictions::accept(OperationsVisitor &visitor)
+void NodeRestrictions::accept(Operation::OperationsVisitor &visitor)
 {
 	visitor.visit(*this);
 }

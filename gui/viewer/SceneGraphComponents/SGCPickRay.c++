@@ -37,7 +37,7 @@ void PickRay::paintGL(ViewportData &data, ViewportColors &colors)
 }
 
 
-void PickRay::accept(OperationsVisitor &visitor)
+void PickRay::accept(Operation::OperationsVisitor &visitor)
 {
 	visitor.visit(*this);
 }

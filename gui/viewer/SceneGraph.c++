@@ -87,7 +87,7 @@ SceneGraph::generateSceneGraph()
 
 
 void 
-SceneGraph::runOperation(OperationsVisitor &visitor)
+SceneGraph::runOperation(Operation::OperationsVisitor &visitor)
 {
 	for(std::list<SceneGraphComponent *>::iterator i = this->primitive_components.begin(); i != this->primitive_components.end(); i++)
 	{

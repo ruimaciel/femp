@@ -11,6 +11,9 @@
 #include "../../../Selection.h++"
 
 
+namespace Operation
+{
+
 /**
 Sets each scene graph component to be rendered as selected
 **/
@@ -38,5 +41,8 @@ public:
 	void visit(SGC::Node &element);
 	void visit(SGC::Element &element);
 };
+
+
+}
 
 #endif

@@ -13,6 +13,9 @@
 #include "../../../fem/point.h++"
 
 
+namespace Operation
+{
+
 /**
 Sets each scene graph component to be rendered or not, according to some criteria
 **/
@@ -43,5 +46,7 @@ public:
 protected:
 	void calculateNormalVectors(std::array<fem::point, 4> const &near, std::array<fem::point, 4> const &far);
 };
+
+}
 
 #endif

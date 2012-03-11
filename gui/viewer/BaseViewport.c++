@@ -235,7 +235,7 @@ void
 BaseViewport::setViewSelection(Selection selection)
 {
 	//TODO finish this
-	ToggleRenderOperation operation(selection, true);
+	Operation::ToggleRenderOperation operation(selection, true);
 	this->state->runSceneGraphOperation(operation);
 }
 
@@ -252,7 +252,7 @@ BaseViewport::selectObjectsFromRay(fem::point const &origin, fem::point const &d
 	//state->addPickRay(origin, destination, radius);
 	
 	//get a selection list of which object has been selected
-	SelectRayIntersectionOperation operation(selection, origin, destination, radius);
+	Operation::SelectRayIntersectionOperation operation(selection, origin, destination, radius);
 	this->state->runSceneGraphOperation(operation);
 
 	// sends request to select a set of nodes
@@ -266,7 +266,7 @@ BaseViewport::selectObjectsFromFrustum(std::array<fem::point,4> const &near, std
 	Selection selection;
 
 	//get a selection list of which object has been selected
-	SelectFrustumInclusionOperation operation(selection, near, far);
+	Operation::SelectFrustumInclusionOperation operation(selection, near, far);
 	this->state->runSceneGraphOperation(operation);
 
 	// sends request to select a set of nodes
@@ -349,7 +349,7 @@ void
 BaseViewport::setSelection(Selection selection)
 {
 	std::cerr << "BaseViewport::setSelection(Selection selection)" << std::endl;
-	ToggleSelectionOperation op(selection);
+	Operation::ToggleSelectionOperation op(selection);
 	this->state->runSceneGraphOperation(op);
 	this->updateGL();
 }
@@ -366,7 +366,7 @@ void
 BaseViewport::showSelection(const Selection selection)
 {
 	//this->state->showSelection(selection);
-	ToggleRenderOperation op(selection);
+	Operation::ToggleRenderOperation op(selection);
 	this->state->runSceneGraphOperation(op);
 }
 
@@ -376,7 +376,7 @@ BaseViewport::showAll()
 {
 	// nasty hack to avoid having to develop a new operator
 	Selection selection;
-	ToggleRenderOperation op(selection, false);	// turns on all elements which aren't selected, which in this case means all elements
+	Operation::ToggleRenderOperation op(selection, false);	// turns on all elements which aren't selected, which in this case means all elements
 	this->state->runSceneGraphOperation(op);
 }
 

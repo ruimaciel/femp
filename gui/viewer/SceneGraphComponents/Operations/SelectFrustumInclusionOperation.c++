@@ -28,15 +28,17 @@ SelectFrustumInclusionOperation::visit(SceneGraphComponent &)
 void 
 SelectFrustumInclusionOperation::visit(SGC::Node &node)
 {
-	// test first plane
-	for(int i = 0; i < 4; i++)
+	if(node.render)
 	{
-		std::cerr << "normal[" << i << "]: " << m_normal[i] << std::endl;
-		if( dot_product(m_normal[i], node.pos() - m_near[i]) < 0)
-			return;
-	}
+		for(int i = 0; i < 4; i++)
+		{
+			std::cerr << "normal[" << i << "]: " << m_normal[i] << std::endl;
+			if( dot_product(m_normal[i], node.pos() - m_near[i]) < 0)
+				return;
+		}
 
-	m_selection->selectNode(node.reference());
+		m_selection->selectNode(node.reference());
+	}
 }
 
 

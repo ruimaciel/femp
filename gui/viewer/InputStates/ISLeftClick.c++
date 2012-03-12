@@ -11,7 +11,6 @@ namespace InputStates
 void 
 LeftClick::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	std::cerr << "LeftClick::press(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 	switch(event->buttons() )
 	{ 
 		/*
@@ -30,7 +29,6 @@ LeftClick::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
 void 
 LeftClick::release(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	//std::cerr << "LeftClick::release(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 	//TODO check if left button was released
 	this->leftRelease(viewport, event, input);
 }
@@ -39,7 +37,6 @@ LeftClick::release(BaseViewport *viewport, QMouseEvent *event, Input *input)
 void 
 LeftClick::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	std::cerr << "LeftClick::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 	input->changeState(&viewport->m_is_start);
 
 	{
@@ -63,7 +60,6 @@ LeftClick::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
 void 
 LeftClick::move(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	std::cerr << "LeftClick::move(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 
 	input->changeState(&viewport->m_is_left_drag);
 }

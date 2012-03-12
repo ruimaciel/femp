@@ -38,21 +38,17 @@ Start::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
 void 
 Start::release(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	std::cerr << "Start::release(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 }
 
 
 void 
 Start::leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	std::cerr << "Start::leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
-	{
-		fem::point near;
-		//TODO rename this
-		near.x((float)event->x());
-		near.y((float)event->y());
-		viewport->state->setSelectionStart(near);
-	}
+	fem::point near;
+	//TODO rename this
+	near.x((float)event->x());
+	near.y((float)event->y());
+	viewport->state->setSelectionStart(near);
 
 	// register place where mouse is clicked
 	viewport->viewport_data.lastPos = event->pos();
@@ -64,7 +60,6 @@ Start::leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
 void 
 Start::rightClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	std::cerr << "Start::rightClick(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 	viewport->viewport_data.lastPos = event->pos(); // for the rotate
 	input->changeState(&viewport->m_is_right_click);
 }
@@ -73,7 +68,6 @@ Start::rightClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
 void 
 Start::move(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	std::cerr << "Start::move(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 }
 
 

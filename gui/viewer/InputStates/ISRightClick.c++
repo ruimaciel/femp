@@ -11,7 +11,6 @@ namespace InputStates
 void 
 RightClick::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	std::cerr << "RightClick::press(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 	switch(event->buttons() )
 	{ 
 		/*
@@ -30,7 +29,6 @@ RightClick::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
 void 
 RightClick::release(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	//std::cerr << "RightClick::release(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 	//TODO check if left button was released
 	this->rightRelease(viewport, event, input);
 }
@@ -39,7 +37,6 @@ RightClick::release(BaseViewport *viewport, QMouseEvent *event, Input *input)
 void 
 RightClick::rightRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	std::cerr << "RightClick::rightRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 	input->changeState(&viewport->m_is_start);
 }
 
@@ -47,7 +44,6 @@ RightClick::rightRelease(BaseViewport *viewport, QMouseEvent *event, Input *inpu
 void 
 RightClick::move(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	std::cerr << "RightClick::move(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 	input->changeState(&viewport->m_is_right_drag);
 }
 

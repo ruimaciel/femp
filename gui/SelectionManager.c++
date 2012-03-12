@@ -4,7 +4,7 @@
 
 
 void
-SelectionManager::setSelection(Selection selection)
+SelectionManager::setSelection(Selection const &selection)
 {
 	std::cout << "SelectionManager::setSelection()" << std::endl;
 	m_selection = selection;

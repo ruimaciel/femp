@@ -21,11 +21,11 @@ protected:
 
 public:
 	// libsigc++ signals
-	sigc::signal<void, Selection>	selection_changed;
-	sigc::signal<void>		selection_cleared;
+	sigc::signal<void, Selection const &>	selection_changed;
+	sigc::signal<void>			selection_cleared;
 
 	// libsigc++ slots
-	void setSelection(Selection);
+	void setSelection(Selection const &);
 	void clearSelection();
 	void selectElement(const fem::element_ref_t &ref);
 	void deselectElement(const fem::element_ref_t &ref);

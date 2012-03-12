@@ -268,6 +268,7 @@ BaseViewport::selectObjectsFromFrustum(std::array<fem::point,4> const &near, std
 	//get a selection list of which object has been selected
 	Operation::SelectFrustumInclusionOperation operation(selection, near, far);
 	this->state->runSceneGraphOperation(operation);
+	operation.selectInclusiveElements(*project);
 
 	// sends request to select a set of nodes
 	selection_changed(selection);

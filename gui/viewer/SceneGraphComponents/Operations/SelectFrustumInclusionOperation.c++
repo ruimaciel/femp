@@ -1,6 +1,7 @@
 #include "SelectFrustumInclusionOperation.h++"
 
 #include <iostream>
+#include "../../../fem/Project.h++"
 
 
 namespace Operation
@@ -42,6 +43,32 @@ SelectFrustumInclusionOperation::visit(SGC::Node &node)
 void 
 SelectFrustumInclusionOperation::visit(SGC::Element &element)
 {
+	//nasty hack: elements are analyzed in the end, after all nodes have been selected
+}
+
+
+void 
+SelectFrustumInclusionOperation::selectInclusiveElements(fem::Project const &project)
+{
+	std::set<fem::node_ref_t>::const_iterator i;
+
+	//for(auto element: project.model.element_list)
+	for( std::vector<fem::Element>::size_type n = 0; n < project.model.element_list.size(); n++)
+	{
+		
+		for(auto node: project.model.element_list[n].nodes)
+		{
+			i = m_selection->m_nodes_selected.find(node);
+			if(i == m_selection->m_nodes_selected.end())
+				break;
+		}
+
+		// all elements in the node were found
+		if(i != m_selection->m_nodes_selected.end())
+		{
+			m_selection->selectElement(n);
+		}
+	}
 }
 
 

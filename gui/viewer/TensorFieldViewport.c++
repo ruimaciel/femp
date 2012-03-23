@@ -39,35 +39,35 @@ void
 TensorFieldViewport::setAnalysisResult(fem::AnalysisResult<double> &result)
 {
 	this->m_analysis_result = &result;
-	this->m_vp_state_tension_fields.setAnalysisResult(result);
+	this->m_vp_state_tensor_fields.setAnalysisResult(result);
 }
 
 
 void
 TensorFieldViewport::setResultsRanges(fem::ResultsRanges<double> &ranges)
 {
-	this->m_vp_state_tension_fields.setResultsRanges(ranges);
+	this->m_vp_state_tensor_fields.setResultsRanges(ranges);
 }
 
 
 void 
 TensorFieldViewport::showTensionField()
 {
-	this->setState(&this->m_vp_state_tension_fields);
+	this->setState(&this->m_vp_state_tensor_fields);
 }
 
 
 void 
 TensorFieldViewport::showNegativePrincipalStressesVisibility(bool state)
 {
-	m_vp_state_tension_fields.showNegativePrincipalStressesVisibility(state);
+	m_vp_state_tensor_fields.showNegativePrincipalStressesVisibility(state);
 }
 
 
 void 
 TensorFieldViewport::showPositivePrincipalStressesVisibility(bool state)
 {
-	m_vp_state_tension_fields.showPositivePrincipalStressesVisibility(state);
+	m_vp_state_tensor_fields.showPositivePrincipalStressesVisibility(state);
 }
 
 

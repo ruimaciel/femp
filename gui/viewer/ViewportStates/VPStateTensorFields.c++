@@ -1,4 +1,4 @@
-#include "VPStateTensionFields.h++"
+#include "VPStateTensorFields.h++"
 
 #include <map>
 #include <list>
@@ -23,34 +23,34 @@
 
 
 
-VPStateTensionFields::VPStateTensionFields()
+VPStateTensorFields::VPStateTensorFields()
 	: ViewportState()
 { 
-	this->m_factory.setElementRepresentationPolicy(&m_tension_representation);
+	this->m_factory.setElementRepresentationPolicy(&m_stress_field_representation);
 	this->m_factory.setDisplacementsPolicy(&m_displacements);
 }
 
 
-VPStateTensionFields::~VPStateTensionFields()
+VPStateTensorFields::~VPStateTensorFields()
 {
 }
 
 
 void
-VPStateTensionFields::initialize(BaseViewport *mv)
+VPStateTensorFields::initialize(BaseViewport *mv)
 {
 	// build the displaced_nodes from the analysis
 	assert(mv != NULL);
 
 	this->setDisplacementsScale(1.0);	//TODO tweak this value 
 
-	this->m_tension_representation.setModel(mv->project->model);
+	this->m_stress_field_representation.setModel(mv->project->model);
 	this->m_displacements.setModel(mv->project->model);
 }
 
 
 void
-VPStateTensionFields::populateScenegraph(BaseViewport *viewport)
+VPStateTensorFields::populateScenegraph(BaseViewport *viewport)
 {
 	assert(viewport != NULL);
 
@@ -87,28 +87,28 @@ VPStateTensionFields::populateScenegraph(BaseViewport *viewport)
 
 
 void
-VPStateTensionFields::setAnalysisResult(fem::AnalysisResult<double> &new_result)
+VPStateTensorFields::setAnalysisResult(fem::AnalysisResult<double> &new_result)
 {
-	this->m_tension_representation.setAnalysisResult(new_result);
+	this->m_stress_field_representation.setAnalysisResult(new_result);
 	this->m_displacements.setAnalysisResult(new_result);
 }
 
 
 void
-VPStateTensionFields::setResultsRanges(fem::ResultsRanges<double> &ranges)
+VPStateTensorFields::setResultsRanges(fem::ResultsRanges<double> &ranges)
 {
 }
 
 
 void
-VPStateTensionFields::setDisplacementsScale(float new_scale)
+VPStateTensorFields::setDisplacementsScale(float new_scale)
 {
 	this->m_displacements.setDisplacementsScale(new_scale);
 }
 
 
 void
-VPStateTensionFields::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
+VPStateTensorFields::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 {
 	switch( event->key() )
 	{
@@ -137,16 +137,16 @@ VPStateTensionFields::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 
 
 void 
-VPStateTensionFields::showNegativePrincipalStressesVisibility(bool state)
+VPStateTensorFields::showNegativePrincipalStressesVisibility(bool state)
 {
-	m_tension_representation.showNegativePrincipalStressesVisibility(state);
+	m_stress_field_representation.showNegativePrincipalStressesVisibility(state);
 }
 
 
 void 
-VPStateTensionFields::showPositivePrincipalStressesVisibility(bool state)
+VPStateTensorFields::showPositivePrincipalStressesVisibility(bool state)
 {
-	m_tension_representation.showPositivePrincipalStressesVisibility(state);
+	m_stress_field_representation.showPositivePrincipalStressesVisibility(state);
 }
 
 

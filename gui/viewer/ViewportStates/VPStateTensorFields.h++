@@ -1,5 +1,5 @@
-#ifndef VIEWPORT_STATE_TENSION_FIELDS_HPP
-#define VIEWPORT_STATE_TENSION_FIELDS_HPP
+#ifndef VIEWPORT_STATE_TENSOR_FIELDS_HPP
+#define VIEWPORT_STATE_TENSOR_FIELDS_HPP
 
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
@@ -10,7 +10,7 @@
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"
 
-#include "../SceneGraphComponents/ElementRepresentationPolicy/TensionFieldRepresentationPolicy.h++"
+#include "../SceneGraphComponents/ElementRepresentationPolicy/StressFieldRepresentationPolicy.h++"
 #include "../SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.h++"
 #include "../SceneGraphComponents/SceneComponentFactory.h++"
 
@@ -20,17 +20,17 @@ class BaseViewport;
 /*
 A pattern for the State pattern which is used to render the tension fields 
 */
-class VPStateTensionFields
+class VPStateTensorFields
 	:public ViewportState
 {
 protected:
-	TensionFieldRepresentationPolicy	m_tension_representation;
+	StressFieldRepresentationPolicy		m_stress_field_representation;
 	DisplacementsPolicy			m_displacements;	// the displacements view renders displacements
 	SGC::SceneComponentFactory		m_factory;
 
 public:
-	VPStateTensionFields();
-	~VPStateTensionFields();
+	VPStateTensorFields();
+	~VPStateTensorFields();
 
 	void initialize(BaseViewport *mv);
 	void populateScenegraph(BaseViewport *mv);

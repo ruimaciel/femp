@@ -1,11 +1,11 @@
-#include "TensionFieldRepresentationPolicy.h++"
+#include "StressFieldRepresentationPolicy.h++"
 
 #include <iostream>	// debugging purposes
 
 // Constructors/Destructors
 //  
 
-TensionFieldRepresentationPolicy::TensionFieldRepresentationPolicy ( ) 
+StressFieldRepresentationPolicy::StressFieldRepresentationPolicy ( ) 
 {
 	m_model = nullptr;
 	m_result = nullptr;
@@ -13,7 +13,7 @@ TensionFieldRepresentationPolicy::TensionFieldRepresentationPolicy ( )
 	m_positive_principal_tension_visible = true;
 }
 
-TensionFieldRepresentationPolicy::~TensionFieldRepresentationPolicy ( ) 
+StressFieldRepresentationPolicy::~StressFieldRepresentationPolicy ( ) 
 { 
 }
 
@@ -22,7 +22,7 @@ TensionFieldRepresentationPolicy::~TensionFieldRepresentationPolicy ( )
 //  
 
 void 
-TensionFieldRepresentationPolicy::renderTensor( fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color)
+StressFieldRepresentationPolicy::renderTensor( fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color)
 {
 	fem::point p;	
 	fem::point c;	// center point
@@ -66,7 +66,7 @@ TensionFieldRepresentationPolicy::renderTensor( fem::element_ref_t const &ref, f
 
 
 void
-TensionFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+StressFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 	assert(m_model != nullptr);
 	assert(m_result != nullptr);
@@ -79,7 +79,7 @@ TensionFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &ref, fem::El
 /**
  */
 void
-TensionFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+StressFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 	renderTensor(ref,element,color);
 }
@@ -88,7 +88,7 @@ TensionFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &ref, fem::E
 /**
  */
 void
-TensionFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+StressFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 	renderTensor(ref, element, color);
 }
@@ -97,7 +97,7 @@ TensionFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &ref, fem::Ele
 /**
  */
 void
-TensionFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+StressFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 	renderTensor(ref,element,color);
 }
@@ -106,7 +106,7 @@ TensionFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &ref, fem::El
 /**
  */
 void
-TensionFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+StressFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 	renderTensor(ref,element,color);
 }
@@ -115,7 +115,7 @@ TensionFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &ref, fem::El
 /**
  */
 void
-TensionFieldRepresentationPolicy::prism6 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+StressFieldRepresentationPolicy::prism6 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 	renderTensor(ref,element,color);
 }
@@ -124,7 +124,7 @@ TensionFieldRepresentationPolicy::prism6 (fem::element_ref_t const &ref, fem::El
 /**
  */
 void
-TensionFieldRepresentationPolicy::prism15 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+StressFieldRepresentationPolicy::prism15 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 	renderTensor(ref,element,color);
 }
@@ -133,42 +133,42 @@ TensionFieldRepresentationPolicy::prism15 (fem::element_ref_t const &ref, fem::E
 /**
  */
 void
-TensionFieldRepresentationPolicy::prism18 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
+StressFieldRepresentationPolicy::prism18 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
 	renderTensor(ref,element,color);
 }
 
 
 void 
-TensionFieldRepresentationPolicy::setModel(fem::Model &model)
+StressFieldRepresentationPolicy::setModel(fem::Model &model)
 {
 	m_model = &model;
 }
 
 
 void 
-TensionFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult<double> &result)
+StressFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult<double> &result)
 {
 	m_result = &result;
 }
 
 
 void 
-TensionFieldRepresentationPolicy::showNegativePrincipalStressesVisibility(bool state)
+StressFieldRepresentationPolicy::showNegativePrincipalStressesVisibility(bool state)
 {
 	m_negative_principal_tension_visible = state;
 }
 
 
 void
-TensionFieldRepresentationPolicy::showPositivePrincipalStressesVisibility(bool state)
+StressFieldRepresentationPolicy::showPositivePrincipalStressesVisibility(bool state)
 {
 	m_positive_principal_tension_visible = state;
 }
 
 
 GLfloat *
-TensionFieldRepresentationPolicy::getColor(double &gradient, ViewportColors &colors)
+StressFieldRepresentationPolicy::getColor(double &gradient, ViewportColors &colors)
 {
 	assert(m_model != NULL);
 	assert(m_result != NULL);

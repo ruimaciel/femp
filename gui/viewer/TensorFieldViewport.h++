@@ -26,7 +26,7 @@
 
 #include "ViewportStates/VPStateDisplacements.h++"
 #include "ViewportStates/VPStateGradients.h++"
-#include "ViewportStates/VPStateTensionFields.h++"
+#include "ViewportStates/VPStateTensorFields.h++"
 
 
 /**
@@ -39,7 +39,7 @@ class TensorFieldViewport
 
 protected:
 	fem::AnalysisResult<double> *m_analysis_result;
-	VPStateTensionFields	m_vp_state_tension_fields;
+	VPStateTensorFields	m_vp_state_tensor_fields;
 
 public:
 	TensorFieldViewport(fem::Project &project, fem::AnalysisResult<double> &result, fem::ResultsRanges<double> &ranges, QWidget *parent = NULL);

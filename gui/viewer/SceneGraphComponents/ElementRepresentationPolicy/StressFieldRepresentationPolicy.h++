@@ -1,5 +1,5 @@
-#ifndef TENSORFIELDREPRESENTATIONPOLICY_H
-#define TENSORFIELDREPRESENTATIONPOLICY_H
+#ifndef STRESS_FIELD_REPRESENTATION_POLICY_H
+#define STRESS_FIELD_REPRESENTATION_POLICY_H
 
 #include <GL/gl.h>
 
@@ -9,7 +9,7 @@
 #include "../../ViewportColors.h++"
 
 
-class TensionFieldRepresentationPolicy 
+class StressFieldRepresentationPolicy 
 	: virtual public ElementRepresentationPolicy
 {
 protected:
@@ -29,12 +29,12 @@ public:
 	/**
 	 * Empty Constructor
 	 */
-	TensionFieldRepresentationPolicy ( );
+	StressFieldRepresentationPolicy ( );
 
 	/**
 	 * Empty Destructor
 	 */
-	virtual ~TensionFieldRepresentationPolicy ( );
+	virtual ~StressFieldRepresentationPolicy ( );
 
 
 protected:
@@ -44,33 +44,12 @@ public:
 	/**
 	 */
 	void tetra4 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
-
-	/**
-	 */
 	void tetra10 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements); 
-
-	/**
-	 */
 	void hexa8 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
-
-	/**
-	 */
 	void hexa20 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
-
-	/**
-	 */
 	void hexa27 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
-
-	/**
-	 */
 	void prism6 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
-
-	/**
-	 */
 	void prism15 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
-
-	/**
-	 */
 	void prism18 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements);
 
 

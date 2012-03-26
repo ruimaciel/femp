@@ -28,6 +28,8 @@ StressFieldRepresentation::push(fem::point const &pos, std::array<fem::point,3> 
 	tensor.m_stress[0] = stresses[0];
 	tensor.m_stress[1] = stresses[1];
 	tensor.m_stress[2] = stresses[2];
+
+	m_tensor.push_back(tensor);
 }
 
 

@@ -1,0 +1,40 @@
+#ifndef STRESS_FIELD_REPRESENTATION_H
+#define STRESS_FIELD_REPRESENTATION_H
+
+#include <array>
+#include <tuple>
+#include <vector>
+
+#include "../../../../fem/point.h++"
+#include "../../../ViewportColors.h++"
+
+#include "StressTensor.h++"
+
+
+namespace StressFieldRepresentation
+{
+
+/**
+Class intended to be a placeholder for a finite set of tensor representations used to represent tensor fields
+**/
+class StressFieldRepresentation
+{
+protected:
+	std::vector<StressTensor> m_tensor;
+
+public:
+	/**
+	Renders this stress field, representing a given element
+	**/
+	void render(float const & diameter, float const &max, float const &min, ViewportColors const &colors) const;
+
+	/**
+	Pushes a new tensor to this representation
+	**/
+	void push(fem::point const &pos, std::array<fem::point,3> const &directions, std::array<float,3> const &stresses);
+};
+
+}
+
+#endif
+

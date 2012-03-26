@@ -3,6 +3,11 @@
 
 #include <cmath>	// sqrt
 #include <iostream>	// cout
+
+#include <Eigen/Core>
+#include <Eigen/Sparse>
+#include <Eigen/LU>
+
 #include "../Element.h++"
 #include "../Model.h++"
 #include "../AnalysisResult.h++"

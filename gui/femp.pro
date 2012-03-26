@@ -42,6 +42,7 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/*.h++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/*.h++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/*.h++ \
+	viewer/SceneGraphComponents/ElementRepresentationPolicy/StressField/*.h++ \
 	viewer/SceneGraphComponents/Elements/*.h++ \
 	viewer/SceneGraphComponents/Operations/*.h++ \
 	viewer/SceneGraphComponents/hud/HudObject.h++ \
@@ -90,6 +91,7 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/*.c++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/*.c++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/*.c++ \
+	viewer/SceneGraphComponents/ElementRepresentationPolicy/StressField/*.c++ \
 	viewer/SceneGraphComponents/Elements/*.c++ \
 	viewer/SceneGraphComponents/Operations/*.c++ \
 	viewer/SceneGraphComponents/hud/HudSelection.c++ \

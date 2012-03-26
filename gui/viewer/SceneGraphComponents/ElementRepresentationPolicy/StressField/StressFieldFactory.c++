@@ -44,27 +44,53 @@ StressFieldFactory::operator() (fem::Element const &element)
 
 		case fem::Element::FE_HEXAHEDRON20:
 			e = &m_hexahedron20;
-			local_points = { {0,0,0} };
+			local_points = { 
+				{-0.57735,-0.57735,-0.57735},
+				{ 0.57735,-0.57735,-0.57735},
+				{ 0.57735, 0.57735,-0.57735},
+				{-0.57735, 0.57735,-0.57735},
+				{-0.57735,-0.57735, 0.57735},
+				{ 0.57735,-0.57735, 0.57735},
+				{ 0.57735, 0.57735, 0.57735},
+				{-0.57735, 0.57735, 0.57735}
+			};
 			break;
 
 		case fem::Element::FE_HEXAHEDRON27:
 			e = &m_hexahedron27;
-			local_points = { {0,0,0} };
+			local_points = {
+				{-0.57735,-0.57735,-0.57735},
+				{ 0.57735,-0.57735,-0.57735},
+				{ 0.57735, 0.57735,-0.57735},
+				{-0.57735, 0.57735,-0.57735},
+				{-0.57735,-0.57735, 0.57735},
+				{ 0.57735,-0.57735, 0.57735},
+				{ 0.57735, 0.57735, 0.57735},
+				{-0.57735, 0.57735, 0.57735}
+			};
 			break;
 
 		case fem::Element::FE_PRISM6:
 			e = &m_prism6;
-			local_points = { {0,0,0} };
+			local_points = { 
+				{1.0/3, 1.0/3, 0} 
+			};
 			break;
 
 		case fem::Element::FE_PRISM15:
 			e = &m_prism15;
-			local_points = { {1.0/3, 1.0/3, 0} };
+			local_points = { 
+				{1.0/3, 1.0/3, -0.57735} ,
+				{1.0/3, 1.0/3,  0.57735}
+			};
 			break;
 
 		case fem::Element::FE_PRISM18:
 			e = &m_prism18;
-			local_points = { {1.0/3, 1.0/3, 0} };
+			local_points = { 
+				{1.0/3, 1.0/3, -0.57735} ,
+				{1.0/3, 1.0/3,  0.57735}
+			};
 			break;
 
 		case fem::Element::FE_INVALID:
@@ -179,8 +205,6 @@ StressFieldFactory::operator() (fem::Element const &element)
 
 	}
 
-	// update diameter
-	
 	// all ended well
 	return representation;
 }
@@ -336,4 +360,6 @@ StressFieldFactory::dsyevj3(double A[3][3], double Q[3][3], double w[3]) const
 
 #undef SQR
 
-}
+}	// namespace StressFieldRepresentation
+
+

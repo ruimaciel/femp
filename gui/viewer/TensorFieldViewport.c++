@@ -9,6 +9,8 @@ TensorFieldViewport::TensorFieldViewport(fem::Project &project, fem::AnalysisRes
 	//TODO let the user choose which result to represent
 	this->project = &project;
 	this->m_analysis_result = NULL;
+
+	this->setState(&m_vp_state_tensor_fields);
 	this->setAnalysisResult(result);
 	this->setResultsRanges(ranges);
 

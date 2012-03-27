@@ -29,6 +29,9 @@ public:
 	void render(float const &diameter, float const &max, float const &min, bool const &render_positive, bool const &render_negative, ViewportColors const &colors);
 
 protected:
+	/**
+	Sets the color value by interpolating a float between the maximum and minimum stress values
+	**/
 	void setColor(float const &gradient,  float const &max, float const &min, std::array<GLfloat, 3> &color, ViewportColors const &colors);
 };
 

@@ -36,7 +36,7 @@ protected:
 	float m_max, m_min;	// maximum and minimum value from any stress
 
 	// temp values for dsyevj3
-	double A[3][3];
+	double A[3][3];	// temporary variable
 	double eig_vec[3][3];
 	double eig_val[3];
 
@@ -44,7 +44,7 @@ protected:
 	Eigen::Matrix3d 	Dg, invDg;
 	Eigen::Vector3d 	dNdcsi;
 
-
+	// helper objects, which are only used because fem::Element was poorly conceived and there is no time to rewrite it
 	fem::Tetrahedron4<double>       m_tetrahedron4;
 	fem::Tetrahedron10<double>      m_tetrahedron10;
 	fem::Hexahedron8<double>        m_hexahedron8;
@@ -63,7 +63,7 @@ public:
 	StressFieldRepresentation operator() (fem::Element const &element) ;
 
 	/**
-	Returns the maximum and minimum principal stress
+	Returns the maximum and minimum value for the principal stress
 	**/
 	float max() const;
 	float min() const;

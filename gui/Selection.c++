@@ -22,7 +22,7 @@ Selection::setSelection(Selection selection)
 void 
 Selection::selectElement(const fem::element_ref_t &ref)
 {
-	std::cerr << "Selection::selectElement(const fem::element_ref_t &ref)" << std::endl;
+	//std::cerr << "Selection::selectElement(const fem::element_ref_t &ref)" << std::endl;
 	m_elements_selected.insert(ref);
 }
 
@@ -30,7 +30,7 @@ Selection::selectElement(const fem::element_ref_t &ref)
 void 
 Selection::deselectElement(const fem::element_ref_t &ref)
 {
-	std::cerr << "Selection::selectElement(const fem::element_ref_t &ref)" << std::endl;
+	//std::cerr << "Selection::selectElement(const fem::element_ref_t &ref)" << std::endl;
 	m_elements_selected.erase(ref);
 }
 
@@ -38,7 +38,7 @@ Selection::deselectElement(const fem::element_ref_t &ref)
 void 
 Selection::selectNode(const fem::node_ref_t &ref)
 {
-	std::cerr << "Selection::selectNode(const fem::node_ref_t &ref)" << std::endl;
+	//std::cerr << "Selection::selectNode(const fem::node_ref_t &ref)" << std::endl;
 	m_nodes_selected.insert(ref);
 }
 
@@ -46,7 +46,7 @@ Selection::selectNode(const fem::node_ref_t &ref)
 void 
 Selection::deselectNode(const fem::node_ref_t &ref)
 {
-	std::cerr << "Selection::deselectNode(const fem::node_ref_t &ref)" << std::endl;
+	//std::cerr << "Selection::deselectNode(const fem::node_ref_t &ref)" << std::endl;
 	m_nodes_selected.erase(ref);
 }
 

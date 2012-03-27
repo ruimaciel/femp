@@ -142,7 +142,7 @@ BaseViewport::paintGL()
 void 
 BaseViewport::mousePressEvent(QMouseEvent *event)
 {
-	std::cerr << "BaseViewport::mousePressEvent(QMouseEvent *event)" << std::endl;
+	// std::cerr << "BaseViewport::mousePressEvent(QMouseEvent *event)" << std::endl;
 
 	m_input->press(this, event);
 
@@ -248,7 +248,7 @@ BaseViewport::selectObjectsFromRay(fem::point const &origin, fem::point const &d
 	float radius = viewport_data.node_scale/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom));
 
 	//TODO debug purposes only. remove
-	std::cerr << "radius: " << radius << std::endl;
+	//std::cerr << "radius: " << radius << std::endl;
 	//state->addPickRay(origin, destination, radius);
 	
 	//get a selection list of which object has been selected
@@ -349,7 +349,7 @@ BaseViewport::normalizeAngle(int *angle)
 void 
 BaseViewport::setSelection(Selection selection)
 {
-	std::cerr << "BaseViewport::setSelection(Selection selection)" << std::endl;
+	//std::cerr << "BaseViewport::setSelection(Selection selection)" << std::endl;
 	Operation::ToggleSelectionOperation op(selection);
 	this->state->runSceneGraphOperation(op);
 	this->updateGL();

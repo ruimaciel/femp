@@ -32,7 +32,7 @@ SelectFrustumInclusionOperation::visit(SGC::Node &node)
 	{
 		for(int i = 0; i < 4; i++)
 		{
-			std::cerr << "normal[" << i << "]: " << m_normal[i] << std::endl;
+			// std::cerr << "normal[" << i << "]: " << m_normal[i] << std::endl;
 			if( dot_product(m_normal[i], node.pos() - m_near[i]) < 0)
 				return;
 		}
@@ -81,7 +81,7 @@ SelectFrustumInclusionOperation::calculateNormalVectors(std::array<fem::point, 4
 	{
 		// calculates the normal vector which is perpendicular to the plane defined by (p1-p0),(p2-p0)
 		fem::point n = cross_product( p1-p0, p2-p0);
-		std::cerr << "calculate normal" << n << std::endl;
+		// std::cerr << "calculate normal" << n << std::endl;
 		n.normalize();
 		return n;
 	};

@@ -42,7 +42,7 @@ VPStateTensorFields::initialize(BaseViewport *mv)
 	// build the displaced_nodes from the analysis
 	assert(mv != NULL);
 
-	this->setDisplacementsScale(1.0);	//TODO tweak this value 
+	//this->setDisplacementsScale(1.0);	//TODO tweak this value 
 
 	this->m_stress_field_representation.setModel(mv->project->model);
 	this->m_displacements.setModel(mv->project->model);
@@ -90,7 +90,6 @@ void
 VPStateTensorFields::setAnalysisResult(fem::AnalysisResult<double> &new_result)
 {
 	this->m_stress_field_representation.setAnalysisResult(new_result);
-	this->m_displacements.setAnalysisResult(new_result);
 }
 
 
@@ -101,34 +100,21 @@ VPStateTensorFields::setResultsRanges(fem::ResultsRanges<double> &)
 }
 
 
+/*
 void
 VPStateTensorFields::setDisplacementsScale(float new_scale)
 {
 	this->m_displacements.setDisplacementsScale(new_scale);
 }
+*/
 
 
 void
-VPStateTensorFields::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
+VPStateTensorFields::keyPressEvent ( BaseViewport * /*viewport*/, QKeyEvent * event )
 {
 	switch( event->key() )
 	{
-		case Qt::Key_S:	// change the displacements scale
-			{
-				DialogScale ds(1.0f, viewport);
-				switch(ds.exec())
-				{
-					case QDialog::Accepted:
-						this->setDisplacementsScale(ds.scale());
-
-						//update the scene
-						viewport->updateGL();
-						break;
-
-					default:
-						break;
-				}
-			}
+		case Qt::Key_S:	
 			break;
 
 		default:

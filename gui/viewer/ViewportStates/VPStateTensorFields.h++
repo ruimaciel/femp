@@ -11,7 +11,7 @@
 #include "../ViewportColors.h++"
 
 #include "../SceneGraphComponents/ElementRepresentationPolicy/StressFieldRepresentationPolicy.h++"
-#include "../SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.h++"
+#include "../SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.h++"
 #include "../SceneGraphComponents/SceneComponentFactory.h++"
 
 
@@ -25,7 +25,7 @@ class VPStateTensorFields
 {
 protected:
 	StressFieldRepresentationPolicy		m_stress_field_representation;
-	DisplacementsPolicy			m_displacements;	// the displacements view renders displacements
+	NoDisplacementsPolicy			m_displacements;	// the displacements view renders displacements
 	SGC::SceneComponentFactory		m_factory;
 
 public:
@@ -41,7 +41,7 @@ public:
 	void setAnalysisResult(fem::AnalysisResult<double> &new_result);
 	void setResultsRanges(fem::ResultsRanges<double> &ranges);
 
-	void setDisplacementsScale(float new_scale);
+	//void setDisplacementsScale(float new_scale);
 
 	void keyPressEvent ( BaseViewport *mv, QKeyEvent * event );
 

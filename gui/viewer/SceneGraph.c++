@@ -40,7 +40,7 @@ SceneGraph::paint(ViewportData &viewport_data, ViewportColors &colors)
 {
 	using namespace std;
 
-	for(map<int, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
+	for(map<enum Groups, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
 	{
 		if(i->second.render)
 		{
@@ -56,7 +56,7 @@ SceneGraph::paint(ViewportData &viewport_data, ViewportColors &colors)
 void 
 SceneGraph::generateDisplayLists(ViewportData &viewport_data, ViewportColors &colors)
 {
-	for(std::map<int, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
+	for(std::map<enum Groups, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
 	{
 		if(i->second.render)
 		{
@@ -67,7 +67,7 @@ SceneGraph::generateDisplayLists(ViewportData &viewport_data, ViewportColors &co
 
 
 void 
-SceneGraph::addPrimitiveComponent(int group, SceneGraphComponent *new_component)
+SceneGraph::addPrimitiveComponent(enum Groups group, SceneGraphComponent *new_component)
 {
 	assert(new_component != NULL);
 
@@ -79,7 +79,7 @@ SceneGraph::addPrimitiveComponent(int group, SceneGraphComponent *new_component)
 void 
 SceneGraph::generateSceneGraph()
 {
-	for(std::map<int, RenderGroup>::iterator i = this->rendering_groups.begin(); i!= this->rendering_groups.end(); i++)
+	for(std::map<enum Groups, RenderGroup>::iterator i = this->rendering_groups.begin(); i!= this->rendering_groups.end(); i++)
 	{
 		i->second.generateSceneGraph();
 	}

@@ -76,7 +76,7 @@ VPStateModel::populateScenegraph(BaseViewport *viewport)
 	}
 
 	// set the visibility of the rendering groups
-	this->scenegraph.rendering_groups[2].render = false;	// hide wireframe surfaces
+	this->scenegraph.rendering_groups[SceneGraph::RG_WIREFRAME].render = false;	// hide wireframe surfaces
 
 	// generate the scene graph
 	this->scenegraph.generateSceneGraph();

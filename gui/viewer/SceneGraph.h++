@@ -38,7 +38,7 @@ public:
 	*/
 	std::list<SceneGraphComponent *> primitive_components;
 
-	std::map<int, RenderGroup>	rendering_groups;
+	std::map<enum Groups, RenderGroup>	rendering_groups;
 
 	hud::Selection	m_selection;	// HUD object to render selection
 
@@ -71,7 +71,7 @@ public:
 	@param group	destination RenderGroup
 	@param *newcomponent	new scenegraph component
 	*/
-	void addPrimitiveComponent(int group, SceneGraphComponent *new_component);
+	void addPrimitiveComponent(enum Groups group, SceneGraphComponent *new_component);
 
 	/*
 	Generate a new scenegraph tree from the current list of primitive components

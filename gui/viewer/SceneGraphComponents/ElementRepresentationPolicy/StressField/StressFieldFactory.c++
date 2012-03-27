@@ -29,23 +29,15 @@ StressFieldFactory::operator() (fem::Element const &element)
 	float e11, e22, e33, e12, e13, e23;
 
 	// helper
-	auto di = [&m_diameter, &m_model, &element](float const &scale, std::initializer_list<fem::node_ref_t> clist, std::initializer_list<fem::node_ref_t> list)
+	auto di = [&m_diameter, &m_model, &element](float const scale, std::initializer_list< std::pair<fem::node_ref_t, fem::node_ref_t> > list)
 	{
 		fem::point center;
 
-		// determine the center
-		for(auto a: clist)
-		{
-			fem::node_ref_t n = element.nodes[a];
-			center += m_model->node_list[n];
-		}
-		center *= scale/clist.size();
-		
 		for(auto a: list)
 		{
-			fem::point p = m_model->node_list[element.nodes[a]]-center;
-			if(dot_product(p,p) < (*m_diameter)*(*m_diameter))
-				*m_diameter = p.norm();
+			fem::point d = m_model->node_list[element.nodes[a.second]]-m_model->node_list[element.nodes[a.first]];
+			if(scale*scale*dot_product(d,d) < (*m_diameter)*(*m_diameter))
+				*m_diameter = scale*d.norm();
 		}
 	};
 
@@ -57,7 +49,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 			local_points = { {1.0/3, 1.0/3, 1.0/3} };
 
 			// tweak the diameter
-			di( 0.70f, {0,1,2,3}, {0,1,2,3} );
+			di( 0.30f, { {0,1}, {1,2}, {2,0}, {0,3}, {1, 3}, {2, 3} });
 
 			break;
 
@@ -66,7 +58,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 			local_points = { {1.0/3, 1.0/3, 1.0/3} };
 
 			// tweak the diameter
-			di( 0.70f, {0,1,2,3}, {0,1,2,3} );
+			di( 0.20f, { {0,1}, {1,2}, {2,0}, {0,3}, {1, 3}, {2, 3} });
 			break;
 
 		case fem::Element::FE_HEXAHEDRON8:
@@ -74,7 +66,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 			local_points = { {0,0,0} };
 
 			// tweak the diameter
-			di( 0.75f, {0,1,2,3,4,5,6,7}, {0,1,2,3,4,5,6,7} );
+			di( 0.40f, { {0,1}, {1, 2}, {2,3}, {3,0}, {4, 5}, {5, 6}, {6,7}, {7, 4}, {0,4}, {1,5}, {2,6}, {3,7} });
 			break;
 
 		case fem::Element::FE_HEXAHEDRON20:
@@ -90,7 +82,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 				{-0.57735, 0.57735, 0.57735}
 			};
 			// tweak the diameter
-			di( 0.75f, {0,1,2,3,4,5,6,7}, {0,1,2,3,4,5,6,7} );
+			di( 0.20f, { {0,1}, {1, 2}, {2,3}, {3,0}, {4, 5}, {5, 6}, {6,7}, {7, 4}, {0,4}, {1,5}, {2,6}, {3,7} });
 			break;
 
 		case fem::Element::FE_HEXAHEDRON27:
@@ -106,7 +98,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 				{-0.57735, 0.57735, 0.57735}
 			};
 			// tweak the diameter
-			di( 0.75f, {0,1,2,3,4,5,6,7}, {0,1,2,3,4,5,6,7} );
+			di( 0.20f, { {0,1}, {1, 2}, {2,3}, {3,0}, {4, 5}, {5, 6}, {6,7}, {7, 4}, {0,4}, {1,5}, {2,6}, {3,7} });
 			break;
 
 		case fem::Element::FE_PRISM6:
@@ -116,7 +108,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 			};
 
 			// tweak the diameter
-			di( 0.75f, {0,1,2,3,4,5}, {0,1,2,3,4,5} );
+			di( 0.40f, { {0,1}, {0, 2}, {1,2}, {0,3}, {3,4}, {3, 5}, {4, 5} });
 			break;
 
 		case fem::Element::FE_PRISM15:
@@ -127,7 +119,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 			};
 
 			// tweak the diameter
-			di( 0.75f, {0,1,2,3,4,5}, {0,1,2,3,4,5} );
+			di( 0.20f, { {0,1}, {0, 2}, {1,2}, {0,3}, {3,4}, {3, 5}, {4, 5} });
 			break;
 
 		case fem::Element::FE_PRISM18:
@@ -138,7 +130,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 			};
 
 			// tweak the diameter
-			di( 0.75f, {0,1,2,3,4,5}, {0,1,2,3,4,5} );
+			di( 0.20f, { {0,1}, {0, 2}, {1,2}, {0,3}, {3,4}, {3, 5}, {4, 5} });
 			break;
 
 		case fem::Element::FE_INVALID:

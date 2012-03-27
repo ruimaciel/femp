@@ -113,7 +113,7 @@ public Q_SLOTS:
 	/**
 	Sets the visibility state of any scenegraph group of the current viewport state
 	**/
-	void setRenderGoupVisibility(SceneGraph::Groups group, bool state);
+	void setRenderGroupVisibility(SceneGraph::Groups group, bool state);
 
 	/**
 	Renders only the current selection of elements

@@ -56,7 +56,7 @@ public:
 	@param	group	scene graph render group code, as defined in class SceneGraph
 	@param	state	true if visible, false if invisible
 	**/
-	void setRenderGoupVisibility(SceneGraph::Groups group, bool state);
+	void setRenderGroupVisibility(SceneGraph::Groups group, bool state);
 
 	/*
 	Routine which will paint each OpenGL scene

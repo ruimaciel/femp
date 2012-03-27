@@ -39,20 +39,6 @@ PostprocessingWindow::setDisplacementsScale(double scale)
 
 
 void 
-PostprocessingWindow::setNodeRestrictionsVisibility(const bool )
-{
-	//TODO run a scenegraph operation
-	qWarning(" void PostprocessingWindow::setNodeRestrictionsVisibility(const bool )");
-}
-
-
-void 
-PostprocessingWindow::setGhostSurfacesVisibility(const bool )
-{
-}
-
-
-void 
 PostprocessingWindow::setAnalysisResult(fem::AnalysisResult<double> &result)
 {
 	this->m_result = &result;

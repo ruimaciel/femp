@@ -38,21 +38,6 @@ TensorFieldWindow::setDisplacementsScale(double scale)
 
 
 void 
-TensorFieldWindow::setNodeRestrictionsVisibility(const bool )
-{
-	//TODO run a scenegraph operation
-	std::cout << " void TensorFieldWindow::setNodeRestrictionsVisibility(const bool )" << std::endl;
-}
-
-
-void 
-TensorFieldWindow::setGhostSurfacesVisibility(const bool )
-{
-	//TODO remove this
-}
-
-
-void 
 TensorFieldWindow::setAnalysisResult(fem::AnalysisResult<double> &result)
 {
 	this->m_result = &result;

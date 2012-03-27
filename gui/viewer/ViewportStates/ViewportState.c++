@@ -29,7 +29,7 @@ ViewportState::setDisplacementsScale(float new_scale)
 
 
 void
-ViewportState::setRenderGoupVisibility(SceneGraph::Groups group, bool state)
+ViewportState::setRenderGroupVisibility(SceneGraph::Groups group, bool state)
 {
 	this->scenegraph.rendering_groups[group].render = state;
 }

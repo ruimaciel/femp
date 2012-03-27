@@ -194,8 +194,8 @@ BaseViewport::setState(ViewportState *new_state)
 	this->state->populateScenegraph(this);
 
 	// toggle the visibility states
-	this->state->setRenderGoupVisibility(SceneGraph::RG_NODES, display_options.nodes);
-	this->state->setRenderGoupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, display_options.node_restrictions);
+	this->state->setRenderGroupVisibility(SceneGraph::RG_NODES, display_options.nodes);
+	this->state->setRenderGroupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, display_options.node_restrictions);
 }
 
 
@@ -209,7 +209,7 @@ BaseViewport::refresh(void)
 void
 BaseViewport::setNodeVisibility(bool const state)
 {
-	this->state->setRenderGoupVisibility(SceneGraph::RG_NODES, state);
+	this->state->setRenderGroupVisibility(SceneGraph::RG_NODES, state);
 	this->display_options.nodes = state;
 }
 
@@ -217,7 +217,7 @@ BaseViewport::setNodeVisibility(bool const state)
 void
 BaseViewport::setNodeRestrictionsVisibility(bool const state)
 {
-	this->state->setRenderGoupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, state);
+	this->state->setRenderGroupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, state);
 	this->display_options.node_restrictions = state;
 }
 
@@ -225,8 +225,8 @@ BaseViewport::setNodeRestrictionsVisibility(bool const state)
 void 
 BaseViewport::setSurfaceVisibility(bool const state)
 {
-	this->state->setRenderGoupVisibility(SceneGraph::RG_SURFACES, state);
-	this->state->setRenderGoupVisibility(SceneGraph::RG_WIREFRAME, !state);
+	this->state->setRenderGroupVisibility(SceneGraph::RG_SURFACES, state);
+	this->state->setRenderGroupVisibility(SceneGraph::RG_WIREFRAME, !state);
 	this->display_options.surfaces = state;
 }
 
@@ -330,9 +330,9 @@ BaseViewport::setDisplacementsScale(float scale)
 
 
 void 
-BaseViewport::setRenderGoupVisibility(SceneGraph::Groups group, bool state)
+BaseViewport::setRenderGroupVisibility(SceneGraph::Groups group, bool state)
 {
-	this->state->setRenderGoupVisibility(group, state);
+	this->state->setRenderGroupVisibility(group, state);
 }
 
 

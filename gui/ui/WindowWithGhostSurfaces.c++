@@ -22,7 +22,7 @@ void WindowWithGhostSurfaces::createToolbar()
 void WindowWithGhostSurfaces::setGhostSurfacesVisibility(const bool state)
 {
 	qWarning("WindowWithGhostSurfaces::setGhostSurfacesVisibility()");
-	this->viewport->setRenderGoupVisibility(SceneGraph::RG_GHOST_SURFACES, state);
+	this->viewport->setRenderGroupVisibility(SceneGraph::RG_GHOST_SURFACES, state);
 	this->viewport->refresh();
 }
 

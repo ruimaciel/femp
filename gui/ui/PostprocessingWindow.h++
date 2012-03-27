@@ -50,10 +50,6 @@ public:
 public Q_SLOTS:
 	void setDisplacementsScale(double scale);
 
-	// this member is needed because I can't get the connect() in WindowWithGhostSurfaces to have any effect
-	void setNodeRestrictionsVisibility(const bool state);
-	void setGhostSurfacesVisibility(const bool state);
-
 	// sets the postprocessing state according
 	void setPostprocessingState(int state);
 	void toggleMenuBarVisibility(bool);

@@ -28,7 +28,7 @@ StressFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &ref, fem::Ele
 	assert(m_model != nullptr);
 	assert(m_result != nullptr);
 
-	m_representation[ref].render(m_diameter, m_max, m_min, color);
+	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
@@ -40,7 +40,7 @@ StressFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &ref, fem::El
 	assert(m_model != nullptr);
 	assert(m_result != nullptr);
 
-	m_representation[ref].render(m_diameter, m_max, m_min, color);
+	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
  
 
@@ -49,7 +49,7 @@ StressFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &ref, fem::El
 void
 StressFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
-	m_representation[ref].render(m_diameter, m_max, m_min, color);
+	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
@@ -58,7 +58,7 @@ StressFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &ref, fem::Elem
 void
 StressFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
-	m_representation[ref].render(m_diameter, m_max, m_min, color);	
+	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);	
 }
 
 
@@ -67,7 +67,7 @@ StressFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &ref, fem::Ele
 void
 StressFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
-	m_representation[ref].render(m_diameter, m_max, m_min, color);
+	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
@@ -76,7 +76,7 @@ StressFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &ref, fem::Ele
 void
 StressFieldRepresentationPolicy::prism6 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
-	m_representation[ref].render(m_diameter, m_max, m_min, color);
+	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
@@ -85,7 +85,7 @@ StressFieldRepresentationPolicy::prism6 (fem::element_ref_t const &ref, fem::Ele
 void
 StressFieldRepresentationPolicy::prism15 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
-	m_representation[ref].render(m_diameter, m_max, m_min, color);
+	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
@@ -94,7 +94,7 @@ StressFieldRepresentationPolicy::prism15 (fem::element_ref_t const &ref, fem::El
 void
 StressFieldRepresentationPolicy::prism18 (fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacements)
 {
-	m_representation[ref].render(m_diameter, m_max, m_min, color);
+	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 

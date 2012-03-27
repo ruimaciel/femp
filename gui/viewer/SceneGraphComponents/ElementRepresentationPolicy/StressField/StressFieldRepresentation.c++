@@ -6,11 +6,11 @@ namespace StressFieldRepresentation
 
 
 void 
-StressFieldRepresentation::render(float const & diameter, float const &max, float const &min, ViewportColors const &colors) const
+StressFieldRepresentation::render(float const & diameter, float const &max, float const &min,  bool const &render_positive, bool const &render_negative,ViewportColors const &colors) const
 {
 	for(auto tensor: m_tensor)
 	{
-		tensor.render(diameter, max, min, colors);
+		tensor.render(diameter, max, min, render_positive, render_negative, colors);
 	}
 }
 

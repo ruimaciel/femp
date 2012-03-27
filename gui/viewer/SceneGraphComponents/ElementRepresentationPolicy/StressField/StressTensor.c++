@@ -7,7 +7,7 @@ namespace StressFieldRepresentation
 
 
 void 
-StressTensor::render(float const &diameter, float const &max, float const &min, ViewportColors const &colors)
+StressTensor::render(float const &diameter, float const &max, float const &min, bool const &render_positive, bool const &render_negative, ViewportColors const &colors)
 {
 	fem::point p;	
 	std::array<GLfloat, 3> color;
@@ -18,11 +18,14 @@ StressTensor::render(float const &diameter, float const &max, float const &min, 
 	for(int k = 0; k < 3; k++)
 	{
 		//let color reflect the tension value
-		setColor(this->m_stress[k], max, min, color, colors);
-		glColor3fv( color.data() );
+		if( (this->m_stress[k] > 0 && render_positive) || (this->m_stress[k] < 0 && render_negative))
+		{
+			setColor(this->m_stress[k], max, min, color, colors);
+			glColor3fv( color.data() );
 
-		glVertex3dv((m_position-m_direction[k]*diameter).data);
-		glVertex3dv((m_position+m_direction[k]*diameter).data);
+			glVertex3dv((m_position-m_direction[k]*diameter).data);
+			glVertex3dv((m_position+m_direction[k]*diameter).data);
+		}
 	}
 	glEnd();
 	glEnable(GL_LIGHTING);

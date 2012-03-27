@@ -26,7 +26,7 @@ public:
 	/**
 	Renders this stress field, representing a given element
 	**/
-	void render(float const & diameter, float const &max, float const &min, ViewportColors const &colors) const;
+	void render(float const & diameter, float const &max, float const &min,  bool const &render_positive, bool const &render_negative,ViewportColors const &colors) const;
 
 	/**
 	Pushes a new tensor to this representation

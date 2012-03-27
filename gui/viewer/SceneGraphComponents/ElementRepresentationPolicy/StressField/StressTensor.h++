@@ -26,7 +26,7 @@ public:
 	/**
 	Renders the stress tensor with colors scaled between max and min
 	**/
-	void render(float const &diameter, float const &max, float const &min, ViewportColors const &colors);
+	void render(float const &diameter, float const &max, float const &min, bool const &render_positive, bool const &render_negative, ViewportColors const &colors);
 
 protected:
 	void setColor(float const &gradient,  float const &max, float const &min, std::array<GLfloat, 3> &color, ViewportColors const &colors);

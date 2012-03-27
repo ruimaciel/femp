@@ -16,6 +16,8 @@ StressFieldFactory::StressFieldFactory(float &diameter, fem::Model &model, fem::
 StressFieldRepresentation 
 StressFieldFactory::operator() (fem::Element const &element) 
 {
+	assert(m_model != NULL);
+
 	StressFieldRepresentation representation;
 
 	fem::BaseElement<double> *e = nullptr;
@@ -24,22 +26,53 @@ StressFieldFactory::operator() (fem::Element const &element)
 
 	float e11, e22, e33, e12, e13, e23;
 
+	// helper
+	auto di = [&m_diameter, &m_model, &element](float const &scale, std::initializer_list<fem::node_ref_t> clist, std::initializer_list<fem::node_ref_t> list)
+	{
+		fem::point center;
+
+		// determine the center
+		for(auto a: clist)
+		{
+			fem::node_ref_t n = element.nodes[a];
+			center += m_model->node_list[n];
+		}
+		center *= scale/clist.size();
+		
+		for(auto a: list)
+		{
+			fem::point p = m_model->node_list[element.nodes[a]]-center;
+			if(dot_product(p,p) < (*m_diameter)*(*m_diameter))
+				*m_diameter = p.norm();
+		}
+	};
+
 	//setup the stress field representation for this particular e
 	switch(element.type)
 	{
 		case fem::Element::FE_TETRAHEDRON4:
 			e = &m_tetrahedron4;
 			local_points = { {1.0/3, 1.0/3, 1.0/3} };
+
+			// tweak the diameter
+			di( 0.70f, {0,1,2,3}, {0,1,2,3} );
+
 			break;
 
 		case fem::Element::FE_TETRAHEDRON10:
 			e = &m_tetrahedron10;
 			local_points = { {1.0/3, 1.0/3, 1.0/3} };
+
+			// tweak the diameter
+			di( 0.70f, {0,1,2,3}, {0,1,2,3} );
 			break;
 
 		case fem::Element::FE_HEXAHEDRON8:
 			e = &m_hexahedron8;
 			local_points = { {0,0,0} };
+
+			// tweak the diameter
+			di( 0.75f, {0,1,2,3,4,5,6,7}, {0,1,2,3,4,5,6,7} );
 			break;
 
 		case fem::Element::FE_HEXAHEDRON20:
@@ -54,6 +87,8 @@ StressFieldFactory::operator() (fem::Element const &element)
 				{ 0.57735, 0.57735, 0.57735},
 				{-0.57735, 0.57735, 0.57735}
 			};
+			// tweak the diameter
+			di( 0.75f, {0,1,2,3,4,5,6,7}, {0,1,2,3,4,5,6,7} );
 			break;
 
 		case fem::Element::FE_HEXAHEDRON27:
@@ -68,6 +103,8 @@ StressFieldFactory::operator() (fem::Element const &element)
 				{ 0.57735, 0.57735, 0.57735},
 				{-0.57735, 0.57735, 0.57735}
 			};
+			// tweak the diameter
+			di( 0.75f, {0,1,2,3,4,5,6,7}, {0,1,2,3,4,5,6,7} );
 			break;
 
 		case fem::Element::FE_PRISM6:
@@ -75,6 +112,9 @@ StressFieldFactory::operator() (fem::Element const &element)
 			local_points = { 
 				{1.0/3, 1.0/3, 0} 
 			};
+
+			// tweak the diameter
+			di( 0.75f, {0,1,2,3,4,5}, {0,1,2,3,4,5} );
 			break;
 
 		case fem::Element::FE_PRISM15:
@@ -83,6 +123,9 @@ StressFieldFactory::operator() (fem::Element const &element)
 				{1.0/3, 1.0/3, -0.57735} ,
 				{1.0/3, 1.0/3,  0.57735}
 			};
+
+			// tweak the diameter
+			di( 0.75f, {0,1,2,3,4,5}, {0,1,2,3,4,5} );
 			break;
 
 		case fem::Element::FE_PRISM18:
@@ -91,12 +134,16 @@ StressFieldFactory::operator() (fem::Element const &element)
 				{1.0/3, 1.0/3, -0.57735} ,
 				{1.0/3, 1.0/3,  0.57735}
 			};
+
+			// tweak the diameter
+			di( 0.75f, {0,1,2,3,4,5}, {0,1,2,3,4,5} );
 			break;
 
 		case fem::Element::FE_INVALID:
 			// invalid e type
 			//break;
 		default:
+			//TODO this case must be dealt with
 			// something unexpected happened
 			break;
 	}

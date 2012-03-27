@@ -39,13 +39,6 @@ public:
 	ModelViewport(fem::Project &project, QWidget *parent = NULL);
 	~ModelViewport();
 
-	/*
-	sets if the element nodes are visible
-	@param	state	true if nodes should be visible, false if they shouldn't be rendered
-	*/
-	void setNodeVisibility(bool state);
-	void setSurfaceVisibility(bool state);
-
 	// set the viewport state
 	void showModel();
 

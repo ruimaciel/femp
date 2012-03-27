@@ -36,12 +36,6 @@ Start::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
 
 
 void 
-Start::release(BaseViewport *viewport, QMouseEvent *event, Input *input)
-{
-}
-
-
-void 
 Start::leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
 	fem::point near;
@@ -62,12 +56,6 @@ Start::rightClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
 	viewport->viewport_data.lastPos = event->pos(); // for the rotate
 	input->changeState(&viewport->m_is_right_click);
-}
-
-
-void 
-Start::move(BaseViewport *viewport, QMouseEvent *event, Input *input)
-{
 }
 
 

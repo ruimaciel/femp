@@ -9,7 +9,7 @@ namespace InputStates
 {
 
 void 
-LeftDrag::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
+LeftDrag::press(BaseViewport * /*viewport*/, QMouseEvent *event, Input * /*input*/)
 {
 	switch(event->buttons() )
 	{ 
@@ -91,7 +91,7 @@ LeftDrag::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
 
 
 void 
-LeftDrag::move(BaseViewport *viewport, QMouseEvent *event, Input *input)
+LeftDrag::move(BaseViewport *viewport, QMouseEvent *event, Input * /*input*/)
 {
 	fem::point near;
 	near.x((float)event->x());

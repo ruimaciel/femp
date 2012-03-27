@@ -52,7 +52,7 @@ SelectRayIntersectionOperation::visit(SGC::Node &node)
 
 
 void 
-SelectRayIntersectionOperation::visit(SGC::Element &element)
+SelectRayIntersectionOperation::visit(SGC::Element & /*element*/)
 {
 	// if element is selected
 	/*

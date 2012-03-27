@@ -23,9 +23,9 @@ RenderGroup::generateSceneGraph()
 
 
 void 
-RenderGroup::generateDisplayList( ViewportData &data, ViewportColors &colors)
+RenderGroup::generateDisplayList( ViewportData & /*data*/, ViewportColors & /*colors*/)
 {
-	// generate display list
+	//TODO generate display list
 	/*
 	glNewList(display_list, GL_COMPILE_AND_EXECUTE);
 	this->scenegraph.paintGL(data, colors);

@@ -14,7 +14,7 @@ Selection::Selection()
 
 
 void 
-Selection::paintGL(ViewportData &data, ViewportColors &colors)
+Selection::paintGL(ViewportData & /*data*/, ViewportColors & /*colors*/)
 {
 	if(m_on)
 	{

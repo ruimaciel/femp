@@ -33,14 +33,14 @@ InputState::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
 
 
 void 
-InputState::release(BaseViewport *viewport, QMouseEvent *event, Input *input)
+InputState::release(BaseViewport * /*viewport*/, QMouseEvent * /*event*/, Input * /*input*/)
 {
 	std::cerr << "InputState::release(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 }
 
 
 void 
-InputState::leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
+InputState::leftClick(BaseViewport * /*viewport*/, QMouseEvent * /*event*/, Input * /*input*/)
 {
 	// remove after debug
 	std::cerr << "InputState::leftClick(Input *input) defaulted" << std::endl;
@@ -48,7 +48,7 @@ InputState::leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
 
 
 void 
-InputState::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
+InputState::leftRelease(BaseViewport * /*viewport*/, QMouseEvent * /*event*/, Input * /*input*/)
 {
 	// remove after debug
 	std::cerr << "InputState::leftRelease(Input *input) defaulted" << std::endl;
@@ -56,7 +56,7 @@ InputState::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input
 
 
 void 
-InputState::rightClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
+InputState::rightClick(BaseViewport * /*viewport*/, QMouseEvent * /*event*/, Input * /*input*/)
 {
 	// remove after debug
 	std::cerr << "InputState::rightClick(Input *input) defaulted" << std::endl;
@@ -64,7 +64,7 @@ InputState::rightClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
 
 
 void 
-InputState::rightRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
+InputState::rightRelease(BaseViewport * /*viewport*/, QMouseEvent * /*event*/, Input * /*input*/)
 {
 	// remove after debug
 	std::cerr << "InputState::rightRelease(Input *input) defaulted" << std::endl;
@@ -72,7 +72,7 @@ InputState::rightRelease(BaseViewport *viewport, QMouseEvent *event, Input *inpu
 
 
 void 
-InputState::move(BaseViewport *viewport, QMouseEvent *event, Input *input)
+InputState::move(BaseViewport * /*viewport*/, QMouseEvent * /*event*/, Input * /*input*/)
 {
 	// remove after debug
 	std::cerr << "InputState::move(Input *input) defaulted" << std::endl;

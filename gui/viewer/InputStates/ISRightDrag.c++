@@ -9,7 +9,7 @@ namespace InputStates
 {
 
 void 
-RightDrag::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
+RightDrag::press(BaseViewport * /*viewport*/, QMouseEvent *event, Input * /*input*/)
 {
 	switch(event->buttons() )
 	{ 
@@ -35,14 +35,14 @@ RightDrag::release(BaseViewport *viewport, QMouseEvent *event, Input *input)
 
 
 void 
-RightDrag::rightRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
+RightDrag::rightRelease(BaseViewport *viewport, QMouseEvent * /*event*/, Input *input)
 {
 	input->changeState(&viewport->m_is_start);
 }
 
 
 void 
-RightDrag::move(BaseViewport *viewport, QMouseEvent *event, Input *input)
+RightDrag::move(BaseViewport *viewport, QMouseEvent *event, Input * /*input*/)
 {
 	int dx = event->x() - viewport->viewport_data.lastPos.x();
 	int dy = event->y() - viewport->viewport_data.lastPos.y();

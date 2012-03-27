@@ -32,14 +32,14 @@ MatrixModel::headerData ( int section, Qt::Orientation orientation, int role ) c
 
 
 int 
-MatrixModel::rowCount(const QModelIndex &parent) const 
+MatrixModel::rowCount(const QModelIndex & /*parent*/) const 
 {
 	return m_result->K.rows();
 }
 
 
 int 
-MatrixModel::columnCount(const QModelIndex &parent ) const
+MatrixModel::columnCount(const QModelIndex & /*parent */) const
 {
 	return m_result->K.columns();
 }

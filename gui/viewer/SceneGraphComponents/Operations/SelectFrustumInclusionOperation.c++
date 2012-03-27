@@ -43,7 +43,7 @@ SelectFrustumInclusionOperation::visit(SGC::Node &node)
 
 
 void 
-SelectFrustumInclusionOperation::visit(SGC::Element &element)
+SelectFrustumInclusionOperation::visit(SGC::Element & /*element*/)
 {
 	//nasty hack: elements are analyzed in the end, after all nodes have been selected
 }

@@ -95,8 +95,9 @@ VPStateTensorFields::setAnalysisResult(fem::AnalysisResult<double> &new_result)
 
 
 void
-VPStateTensorFields::setResultsRanges(fem::ResultsRanges<double> &ranges)
+VPStateTensorFields::setResultsRanges(fem::ResultsRanges<double> &)
 {
+	std::cerr << "VPStateTensorFields::setResultsRanges(fem::ResultsRanges<double> &): to be implemented" << std::endl;
 }
 
 

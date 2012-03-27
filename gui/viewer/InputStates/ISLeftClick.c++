@@ -9,7 +9,7 @@ namespace InputStates
 {
 
 void 
-LeftClick::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
+LeftClick::press(BaseViewport * /*viewport*/, QMouseEvent *event, Input * /*input*/)
 {
 	switch(event->buttons() )
 	{ 
@@ -58,7 +58,7 @@ LeftClick::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
 
 
 void 
-LeftClick::move(BaseViewport *viewport, QMouseEvent *event, Input *input)
+LeftClick::move(BaseViewport *viewport, QMouseEvent * /*event*/, Input *input)
 {
 
 	input->changeState(&viewport->m_is_left_drag);

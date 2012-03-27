@@ -17,13 +17,12 @@ class Start
 {
 public:
 	void press(BaseViewport *viewport, QMouseEvent *event, Input *input);
-	void release(BaseViewport *viewport, QMouseEvent *event, Input *input);
+	//void release(BaseViewport *viewport, QMouseEvent *event, Input *input);
 	void leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input);
 	//void leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input);
 	void rightClick(BaseViewport *viewport, QMouseEvent *event, Input *input);
 	//void rightRelease(BaseViewport *viewport, QMouseEvent *event, Input *input);
-
-	void move(BaseViewport *viewport, QMouseEvent *event, Input *input);
+	//void move(BaseViewport *viewport, QMouseEvent *event, Input *input);
 };
 
 

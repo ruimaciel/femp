@@ -38,9 +38,6 @@ public:
 	 */
 	StressFieldRepresentationPolicy ( );
 
-protected:
-	void renderTensor(fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color);
-
 public:
 	/**
 	 */

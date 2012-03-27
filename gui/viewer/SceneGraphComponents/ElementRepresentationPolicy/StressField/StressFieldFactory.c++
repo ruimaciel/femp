@@ -10,6 +10,8 @@ StressFieldFactory::StressFieldFactory(float &diameter, fem::Model &model, fem::
 	this->m_diameter = &diameter;
 	this->m_model = &model;
 	this->m_result = &result;
+
+	m_max = m_min = 0;
 }
 
 
@@ -238,13 +240,17 @@ StressFieldFactory::operator() (fem::Element const &element)
 		std::array<float, 3> stresses;
 		for(int i = 0; i < 3; i++)
 		{
-			directions[i].data[0] = eig_vec[i][0];
-			directions[i].data[1] = eig_vec[i][1];
-			directions[i].data[2] = eig_vec[i][2];
+			directions[i].data[0] = eig_vec[0][i];
+			directions[i].data[1] = eig_vec[1][i];
+			directions[i].data[2] = eig_vec[2][i];
 
 			directions[i].normalize();
 
 			stresses[i] = eig_val[i];
+
+			//update the max and min values
+			if(eig_val[i] > m_max) m_max = eig_val[i];
+			if(eig_val[i] < m_min) m_min = eig_val[i];
 		}
 
 		// set values

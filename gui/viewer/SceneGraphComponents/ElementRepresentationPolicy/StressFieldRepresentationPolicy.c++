@@ -22,50 +22,6 @@ StressFieldRepresentationPolicy::StressFieldRepresentationPolicy ( )
 // Methods
 //  
 
-void 
-StressFieldRepresentationPolicy::renderTensor( fem::element_ref_t const &ref, fem::Element &element, ViewportColors &color)
-{
-	fem::point p;	
-	fem::point c;	// center point
-	float diameter = 0.40f;
-
-	c.zero();
-	for(auto n: element.nodes)
-	{
-		c += m_model->node_list[n];
-	}
-	c *= 1.0/element.nodes.size();
-
-	// set element diameter
-	diameter = 0.5f*(m_model->node_list[ element.nodes[1]] - m_model->node_list[ element.nodes[0]]).norm();
-
-	glEnable(GL_BLEND);
-	glDisable(GL_LIGHTING);
-	glBegin(GL_LINES);
-	for(int k = 0; k < 3; k++)
-	{
-		if( ( (m_result->results[ref]->eig_val[k] > 0) && m_positive_principal_stress_visible ) || 
-				( (m_result->results[ref]->eig_val[k] < 0) && m_negative_principal_stress_visible ) )
-		{
-			float dim = m_result->results[ref]->eig_vec[0][k]*m_result->results[ref]->eig_vec[0][k] + m_result->results[ref]->eig_vec[1][k]*m_result->results[ref]->eig_vec[1][k]+ m_result->results[ref]->eig_vec[2][k]*m_result->results[ref]->eig_vec[2][k];
-			p.data[0] = m_result->results[ref]->eig_vec[0][k]*diameter/dim;
-			p.data[1] = m_result->results[ref]->eig_vec[1][k]*diameter/dim;
-			p.data[2] = m_result->results[ref]->eig_vec[2][k]*diameter/dim;
-
-			//let color reflect the tension value
-			getColor(m_result->results[ref]->eig_val[k], color);
-			glColor3fv( m_temp_color );
-
-			glVertex3dv((c-p).data);
-			glVertex3dv((c+p).data);
-		}
-	}
-	glEnd();
-	glEnable(GL_LIGHTING);
-	glDisable(GL_BLEND);
-}
-
-
 void
 StressFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy *)
 {
@@ -231,5 +187,9 @@ StressFieldRepresentationPolicy::generateData()
 	{
 		m_representation[n] = factory(m_model->element_list[n]);
 	}
+
+	// updates the maxium positive and negative stresses
+	m_max = factory.max();
+	m_min = factory.min();
 }
 

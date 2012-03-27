@@ -1,24 +1,2 @@
-- implement a single data structure to deal with both nodal displacements and nodal forces, which are mutually exclusive
-- separate designation for the element type supported by the program and those supported by the document format
-
-- certificar que antes da importação da malha há materiais definidos
-- ao importar a malha, escolher o material a atribuir
-- seleccionar o tipo de elementos a importar
-- não interpretar matrix singular como erro
-
-- apontar DisplayOptions::load_pattern para o objecto LoadPattern referido pela toolbar
-- abandonar flex/bison ao escrever um analisador sintático LL para o formato MSH 
-
-- implement Iso viewport angles in DisplacementsViewport
-- verificar se cargas no domínio fazem referência a um elemento que existe
-
-- visualização de reacções no apoio
-- visualização de campos de tensões
-adicionar opção para escolher cores dos campos de tensões
-partilhar camaras por viewports
-
-SceneGraph: eliminar RenderGroups em favor de uma operação a operar nos bool SceneGraphComponent::render
-MainWindow: ligar view->Postprocessing apenas depois de pelo menos uma análise ser corrida
-
-== Notas ==
-	deslocamentos prescritos podem ter outra orientação além das do referencial
+limpar avisos de InputStates
+passar togglenodevisibility para WindowWithVisibility

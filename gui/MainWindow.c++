@@ -154,7 +154,8 @@ MainWindow::openProject()
 	switch(parser.error.code)
 	{
 		case FemJsonParser::Error::ERR_OK:
-			setUserInterfaceAsOpened();
+			// setup the user interface
+			this->setUserInterfaceAsOpened();
 			break;
 
 		default:
@@ -1376,6 +1377,7 @@ MainWindow::setUserInterfaceAsClosed()
 	ui.actionResults_from_selection->setDisabled(true);
 
 	ui.actionNewPostprocessingWindow->setDisabled(true);
+	ui.actionNewTensorFieldWindow->setDisabled(true);
 	ui.actionNewAnalysisResultsWindow->setDisabled(true);
 	ui.actionNewFemEquationWindow->setDisabled(true);
 
@@ -1401,6 +1403,7 @@ MainWindow::setUserInterfacePostAnalysis()
 	ui.actionDump_FEM_equation->setEnabled(true);
 	ui.actionResults_from_selection->setEnabled(true);
 	ui.actionNewPostprocessingWindow->setEnabled(true);
+	ui.actionNewTensorFieldWindow->setEnabled(true);
 	ui.actionNewAnalysisResultsWindow->setEnabled(true);
 	ui.actionNewFemEquationWindow->setEnabled(true);
 }

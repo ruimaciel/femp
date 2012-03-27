@@ -140,9 +140,11 @@ private:
 	void createDockWidgets();
 	void destroyToolBars();
 	void loadOptions();	// loads global options from the options files
+
+	// sets the user interface state
 	void setUserInterfaceAsOpened();	// sets the user interface in it's "opened document" state
 	void setUserInterfaceAsClosed();	// sets the user interface in it's "closed document" state
-	void setUserInterfacePostAnalysis();	// sets the user interface in it's "opened document" state
+	void setUserInterfacePostAnalysis();	// sets the user interface in it's "analysis performed" state
 
 	// set all signal and slots connections
 	void setSignalsAndSlotsConnections(ModelWindow *window);

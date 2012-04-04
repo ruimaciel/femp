@@ -4,6 +4,8 @@
 
 #include "ui/ui_NodeRestrainDialog.h"
 
+#include "fem/NodeRestrictions.h++"
+
 
 class NodeRestrainsDialog
 	: public QDialog, private Ui_NodeRestrainDialog
@@ -16,6 +18,8 @@ public:
 	~NodeRestrainsDialog();
 
 	int getRestraints();
+
+	fem::NodeRestrictions getRestrictions() const;
 
 };
 

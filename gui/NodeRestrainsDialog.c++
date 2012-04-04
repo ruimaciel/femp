@@ -28,3 +28,13 @@ NodeRestrainsDialog::getRestraints()
 }
 
 
+fem::NodeRestrictions 
+NodeRestrainsDialog::getRestrictions() const
+{
+	fem::NodeRestrictions restrictions;
+
+	if(checkBoxX->isChecked()) restrictions.setdx();
+	if(checkBoxY->isChecked()) restrictions.setdy();
+	if(checkBoxZ->isChecked()) restrictions.setdz();
+}
+

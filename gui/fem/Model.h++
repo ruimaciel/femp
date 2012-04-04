@@ -69,6 +69,11 @@ public:
 	void setDefaultMaterial(int material)	{ default_material = material; }
 
 	/**
+	returns the number of elements which form this model
+	**/
+	std::vector<Element>::size_type numberOfElements() const	{ return element_list.size(); }
+
+	/**
 	Adds a new material to the list
 	**/
 	Model::Error pushMaterial(fem::Material &);

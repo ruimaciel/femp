@@ -295,13 +295,13 @@ Document::save()
 			// take care of the domain displacements
 			if (!it->domain_loads.empty()) 
 			{
-				out << ",\n\t\t";
+				out << ",\n\t\t\t";
 				out << "\"domain loads\":[";
 				for (std::map < size_t, fem::DomainLoad >::iterator n = it->domain_loads.begin(); n != it->domain_loads.end(); n++) 
 				{
 					if (n != it->domain_loads.begin())
 						out << ",";
-					out << "\n\t\t\t{";
+					out << "\n\t\t\t\t{";
 					out << "\"element\":" << n->first;
 					out << ", ";
 					out << "\"force\": [" << n->second.force.x() << "," << n-> second.force.y() << "," << n->second.force.z() << "]";

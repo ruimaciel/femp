@@ -1106,15 +1106,63 @@ MainWindow::dumpResultsFromSelection(fem::AnalysisResult<double> *result)
 void
 MainWindow::dumpResultsFromSelection()
 {
-	//TODO finish this
+	QString file_name;
+	QFile file;
+
+	// opens the file
+	{
+		QFileDialog dialog(this);
+		QStringList sl;
+
+		// setup the file dialog
+		dialog.setFileMode(QFileDialog::AnyFile);
+		dialog.setAcceptMode(QFileDialog::AcceptSave);
+		dialog.setNameFilter(tr("text file (*.txt)"));
+		dialog.setDefaultSuffix("txt");
+		if(dialog.exec() == QDialog::Rejected)
+		{
+			// user cancelled 
+			return;
+		}
+
+		sl = dialog.selectedFiles();
+		file_name = sl.at(0);
+
+		// check if file already exists
+		file.setFileName(file_name);
+		if(file.exists())
+		{
+			QMessageBox msgBox;
+			msgBox.setText(tr("File already exists") );
+			msgBox.setInformativeText(tr("Do you want to overwrite it?") );
+			msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+			msgBox.setDefaultButton(QMessageBox::No);
+			if(msgBox.exec() == QMessageBox::No)
+			{
+				return;
+			}
+		}
+	}
+
+	// prepare the file for dumping
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) 
+	{
+		QMessageBox::critical(this, tr("femp"), tr("Failed to open file"));
+		return;
+	}
+
+	QTextStream     out(&file);
+	//dump the text to a text file
 	fem::AnalysisResult<double> * result;
 	result = &this->document.project.result.back();	// nasty hack
 
 	Selection selection = m_selection_manager.getSelection();
 
-	OutputResultsInNodesVisitor visitor(selection, result);
+	OutputResultsInNodesVisitor visitor(selection, result, out);
 
 	document.project.accept(visitor);
+
+	file.close();
 }
 
 

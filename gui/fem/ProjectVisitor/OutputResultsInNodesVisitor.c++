@@ -7,7 +7,7 @@
 #include "../AnalysisResult.h++"
 
 
-OutputResultsInNodesVisitor::OutputResultsInNodesVisitor(Selection &selection, fem::AnalysisResult<double> *result, std::ostream &os)
+OutputResultsInNodesVisitor::OutputResultsInNodesVisitor(Selection &selection, fem::AnalysisResult<double> *result, QTextStream &os)
 {
 	m_result = result;
 	m_selection = &selection;
@@ -43,7 +43,7 @@ OutputResultsInNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisR
 				*m_out << "\tnode[" << n << "]:" << element->nodes[n];
 				*m_out << "\n";
 
-				*m_out << model.node_list[element->nodes[n]] << "\n";
+				*m_out << "[\t" << model.node_list[element->nodes[n]].x() << ",\t" <<  model.node_list[element->nodes[n]].y() << ",\t" <<  model.node_list[element->nodes[n]].z() << "]"  << "\n"; 
 
 				element_results = m_result->results[e->first];
 

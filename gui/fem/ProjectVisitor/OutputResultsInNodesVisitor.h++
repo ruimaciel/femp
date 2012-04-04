@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include <QTextStream>
+
 #include "ProjectVisitor.h++"
 #include "../Model.h++"
 #include "../AnalysisResult.h++"
@@ -17,11 +19,11 @@ class OutputResultsInNodesVisitor
 {
 protected:
 	fem::AnalysisResult<double>	*m_result;
-	std::ostream	*m_out;
+	QTextStream	*m_out;
 	Selection	*m_selection;
 	
 public:
-	OutputResultsInNodesVisitor(Selection &selection, fem::AnalysisResult<double> *result, std::ostream &os = std::cout);
+	OutputResultsInNodesVisitor(Selection &selection, fem::AnalysisResult<double> *result, QTextStream &os);
 
 	void visit(fem::Model &model, std::vector<fem::AnalysisResult<double> > &result);
 };

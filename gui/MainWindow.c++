@@ -47,6 +47,7 @@
 #include "fem/solvers/CGSolver.h++"
 
 #include "fem/ProjectVisitor/OutputResultsInNodesVisitor.h++"
+#include "fem/ProjectVisitor/SetNodeRestraintsVisitor.h++"
 
 #include "parsers/FemJsonParser.h++"
 
@@ -820,29 +821,14 @@ MainWindow::setNodeRestraints()
 {
 	assert(mdiArea != NULL);
 
-	// check if active window supports node restraints
-	//TODO implement this
-
 	NodeRestrainsDialog nd;
 	if(nd.exec() == QDialog::Accepted)
 	{
 		// get list of node restraints from active window
-		fem::NodeRestrictions nr;
-		int r = nd.getRestraints();
-		for(std::map<size_t,bool>::iterator it = document.model_selection.nodes.begin(); it != document.model_selection.nodes.end(); it++)
-		{
-			if(it->second == true)
-			{
-				nr.reset();
-				if(r & NodeRestrainsDialog::RX)
-					nr.setdx();
-				if(r & NodeRestrainsDialog::RY)
-					nr.setdy();
-				if(r & NodeRestrainsDialog::RZ)
-					nr.setdz();
-				document.project.model.node_restrictions_list[it->first] = nr;
-			}
-		}
+		Selection selection = m_selection_manager.getSelection();
+		SetNodeRestraintsVisitor visitor(selection, nd.getRestrictions());
+
+		document.project.accept(visitor);
 	}
 }
 

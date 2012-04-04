@@ -36,5 +36,7 @@ NodeRestrainsDialog::getRestrictions() const
 	if(checkBoxX->isChecked()) restrictions.setdx();
 	if(checkBoxY->isChecked()) restrictions.setdy();
 	if(checkBoxZ->isChecked()) restrictions.setdz();
+
+	return restrictions;
 }
 

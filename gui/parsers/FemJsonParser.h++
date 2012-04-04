@@ -30,6 +30,7 @@ public:
 		enum Type
 		{
 			ERR_OK,
+			ERR_INVALID_ELEMENT_REFERENCE,
 			ERR_UNKNOWN
 		} code;
 		std::string message;

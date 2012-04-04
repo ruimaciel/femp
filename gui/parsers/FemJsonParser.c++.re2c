@@ -1279,7 +1279,15 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 				case PR_DOMAIN_LOAD_SET:
 					for(std::vector<size_t>::iterator i = reference.begin(); i != reference.end(); i++)
 					{
-						temp_load_pattern.addDomainLoad(*i, temp_point.back());
+						if(*i < model.numberOfElements())
+						{
+							temp_load_pattern.addDomainLoad(*i, temp_point.back());
+						}
+						else
+						{
+							/* this model tries to set a domain load on an element which doesn't exist */
+							std::cerr << "Error: domain load applied to non-existing element #" << *i << std::endl;
+						}
 					}
 					reference.clear();
 					temp_point.pop_back();

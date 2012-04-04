@@ -10,6 +10,7 @@ void
 DefaultProgressIndicator::markSectionStart(std::string section_name)
 {
 	m_current_section_name = section_name;
+	m_current_progress = 0;
 	emit beginSection(section_name);
 }
 

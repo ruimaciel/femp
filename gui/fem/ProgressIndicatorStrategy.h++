@@ -16,7 +16,7 @@ class ProgressIndicatorStrategy
 		size_t m_current_progress;
 
 	public:
-		ProgressIndicatorStrategy() {}
+		ProgressIndicatorStrategy(): m_progress_limit(0), m_current_progress(0) {}
 		/**
 		Marks the begining of a new progress section
 		@param	section name

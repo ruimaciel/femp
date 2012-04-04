@@ -26,7 +26,7 @@ void AnalysisProgressDialog::setProgress(size_t progress)
 {
 	//TODO finish this
 	QString temp;
-	temp.setNum(progress-size_t(0));
+	temp.setNum(progress);
 	this->textEdit->append(temp);
 }
 

@@ -62,10 +62,16 @@
      <addaction name="actionNewAnalysisResultsWindow"/>
      <addaction name="actionNewFemEquationWindow"/>
     </widget>
+    <widget class="QMenu" name="menuWindowOpened">
+     <property name="title">
+      <string>Opened</string>
+     </property>
+    </widget>
     <addaction name="menuNew"/>
     <addaction name="separator"/>
     <addaction name="actionWindowTile"/>
     <addaction name="actionWindowCascade"/>
+    <addaction name="menuWindowOpened"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">

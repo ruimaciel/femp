@@ -61,6 +61,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	// set the MDI area widget as the window's central widget
 	mdiArea = new QMdiArea;
 	setCentralWidget(mdiArea);	// this main window has a Multiple Document Interface
+	m_window_mapper = new QSignalMapper(this);
 
 	// Load global options from the options files
 	this->loadOptions();
@@ -420,6 +421,8 @@ MainWindow::createActions()
 	connect(ui.actionQuadrature_rules,	SIGNAL(triggered()),	this,	SLOT(editQuadratureRules()) );
 	connect(ui.actionSelection,		SIGNAL(triggered()),	this,	SLOT(editSelection()) );
 	connect(ui.actionResults_from_selection,		SIGNAL(triggered()),	this,	SLOT(dumpResultsFromSelection()) );
+
+	connect(ui.menuWindowOpened,	SIGNAL(aboutToShow()),	this,	SLOT(updateWindowMenu()) );
 }
 
 
@@ -1353,6 +1356,46 @@ MainWindow::createNewFemEquationWindow()
 	mdi_window->showMaximized();
 }
 
+
+void 
+MainWindow::updateWindowMenu()
+{
+	qWarning("MainWindow::updateWindowMenu()");
+
+	QList<QMdiSubWindow *> 	subWindowList;
+	subWindowList = mdiArea->subWindowList();
+
+	// empties the menu
+	ui.menuWindowOpened->clear();
+
+	// fills the menu
+	QAction *action;
+	//for(QList<QMdiSubWindow *>::const_iterator subwindow = subWindowList.begin(); subwindow != subWindowList.end(); subwindow++)
+	for(int n = 0; n < subWindowList.size(); n++)
+	{
+		// get current MDI window label
+		BaseWindow *base = dynamic_cast<BaseWindow*>(subWindowList[n]->widget());
+		// set the action name
+		action = new QAction(base->label(), this);
+		action->setData(n);
+		ui.menuWindowOpened->addAction(action);
+
+		// map
+		m_window_mapper->setMapping(action, n);
+		connect(action, SIGNAL(triggered()), m_window_mapper, SLOT(map()));
+		connect(m_window_mapper, SIGNAL(mapped(int)), this, SLOT(activateSubWindowByIndex(int)));
+	}
+}
+
+
+void 
+MainWindow::activateSubWindowByIndex(int index)
+{
+	QList<QMdiSubWindow *> 	subWindowList;
+	subWindowList = mdiArea->subWindowList();
+	this->mdiArea->setActiveSubWindow(subWindowList[index]);
+}
+
   
 void 
 MainWindow::setUserInterfaceAsOpened()
@@ -1442,6 +1485,8 @@ MainWindow::setUserInterfacePostAnalysis()
 	ui.actionNewAnalysisResultsWindow->setEnabled(true);
 	ui.actionNewFemEquationWindow->setEnabled(true);
 }
+
+
 
 
 void 

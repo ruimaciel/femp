@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QComboBox>
 #include <QDir>
+#include <QSignalMapper>
 
 #include "ui/ui_MainWindow.h"
 
@@ -52,6 +53,7 @@ protected:
 	ViewportColors colors;	// the elements' viewport colors
 
 	QDir file_dialog_last_directory;
+	QSignalMapper	*m_window_mapper;	// used to map menu clicks to window activation
 
 
 public Q_SLOTS:
@@ -128,6 +130,11 @@ public Q_SLOTS:
 	void createNewTensorFieldWindow();
 	void createNewAnalysisResultsWindow();
 	void createNewFemEquationWindow();
+	void updateWindowMenu();
+
+	// set all signal and slots connections
+	void setSignalsAndSlotsConnections(ModelWindow *window);
+	void activateSubWindowByIndex(int);
 
 Q_SIGNALS:
 	void setMessage(QString);
@@ -146,8 +153,6 @@ private:
 	void setUserInterfaceAsClosed();	// sets the user interface in it's "closed document" state
 	void setUserInterfacePostAnalysis();	// sets the user interface in it's "analysis performed" state
 
-	// set all signal and slots connections
-	void setSignalsAndSlotsConnections(ModelWindow *window);
 };
 
 

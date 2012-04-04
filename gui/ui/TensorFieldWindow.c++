@@ -10,7 +10,7 @@
 
 TensorFieldWindow::TensorFieldWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent)
 	: MdiWindow(parent), 
-	WindowWithResults(project, colors, parent)
+	WindowWithResults(project, colors, parent), BaseWindow("Tensor field")
 {
 	this->setGradientValuesRange(result);
 

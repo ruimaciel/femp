@@ -3,6 +3,7 @@
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 
+#include "BaseWindow.h++"
 #include "MdiWindow.h++"
 #include "WindowWithWireframe.h++"
 
@@ -14,7 +15,7 @@ MDI window designed to represent the model
 **/
 class ModelWindow 
 	: virtual public MdiWindow, 
-	virtual public WindowWithWireframe
+	virtual public WindowWithWireframe, public BaseWindow
 {
 	Q_OBJECT
 

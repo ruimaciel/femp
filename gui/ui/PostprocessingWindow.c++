@@ -12,7 +12,7 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::Analysis
 	: MdiWindow(parent), 
 	WindowWithResults(project, colors, parent), 
 	WindowWithPostprocessing(project, colors, parent) ,
-	WindowWithScaling(project, colors, parent)
+	WindowWithScaling(project, colors, parent), BaseWindow("Gradient")
 {
 	this->setGradientValuesRange(result);
 	this->viewport = new PostprocessingViewport(project, result, m_results_ranges,  parent);

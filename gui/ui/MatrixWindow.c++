@@ -2,7 +2,7 @@
 
 
 MatrixWindow::MatrixWindow(fem::Project &project, QWidget *parent)
-	: QMdiSubWindow(parent) 
+	: QMdiSubWindow(parent), BaseWindow("Stiffness matrix")
 {
 	m_project = &project;
 	m_matrix_widget = new MatrixWidget(project, parent);

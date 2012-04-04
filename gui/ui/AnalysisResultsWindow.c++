@@ -2,7 +2,7 @@
 
 
 AnalysisResultsWindow::AnalysisResultsWindow(fem::Project &project, QWidget *parent)
-	: QMdiSubWindow(parent) 
+	: QMdiSubWindow(parent), BaseWindow("Analysis results")
 {
 	m_project = &project;
 	m_analysis_results_widget = new AnalysisResultsWidget(project, parent);

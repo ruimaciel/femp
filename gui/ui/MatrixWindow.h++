@@ -8,6 +8,7 @@
 #include <QComboBox>
 #include <QMdiSubWindow>
 
+#include "BaseWindow.h++"
 #include "MatrixWidget.h++"
 #include "../fem/Project.h++"
 
@@ -16,7 +17,7 @@
 MDI window designed to represent the stiffness matrix of an analysis
 **/
 class MatrixWindow
-	:  public QMdiSubWindow, public sigc::trackable
+	:  public QMdiSubWindow, public sigc::trackable, public BaseWindow
 {
 	Q_OBJECT
 protected:

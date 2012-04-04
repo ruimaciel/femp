@@ -1,6 +1,7 @@
 #ifndef TENSOR_FIELD__WINDOW_HPP
 #define TENSOR_FIELD__WINDOW_HPP
 
+#include "BaseWindow.h++"
 #include "MdiWindow.h++"
 #include "WindowWithResults.h++"
 #include "WindowWithScaling.h++"
@@ -23,7 +24,7 @@
 MDI window designed to represent a tensor field of a given analysis result
 **/
 class TensorFieldWindow 
-	: virtual public MdiWindow, virtual public WindowWithResults
+	: virtual public MdiWindow, virtual public WindowWithResults, public BaseWindow
 {
 	Q_OBJECT
 

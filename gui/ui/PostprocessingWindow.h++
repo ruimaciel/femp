@@ -1,6 +1,7 @@
 #ifndef POSTPROCESSING__WINDOW_HPP
 #define POSTPROCESSING__WINDOW_HPP
 
+#include "BaseWindow.h++"
 #include "MdiWindow.h++"
 #include "WindowWithResults.h++"
 #include "WindowWithPostprocessing.h++"
@@ -23,7 +24,7 @@
 MDI window designed to represent the model
 **/
 class PostprocessingWindow 
-	: virtual public MdiWindow, virtual public WindowWithResults, virtual public WindowWithPostprocessing, virtual public WindowWithScaling
+	: virtual public MdiWindow, virtual public WindowWithResults, virtual public WindowWithPostprocessing, virtual public WindowWithScaling, public BaseWindow
 {
 	Q_OBJECT
 

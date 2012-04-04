@@ -143,6 +143,7 @@ protected:
 		NT_HEADER,
 		NT_FORMAT_VERSION,
 		NT_MODEL_TYPE,
+		NT_MODEL_TYPE_SET,
 		NT_MATERIAL_LIST,
 		NT_MATERIAL,
 		NT_MATERIAL_SET,	// ghost state to set the material
@@ -297,6 +298,7 @@ protected:
 		PR_HEADER_1,
 		PR_FORMAT_VERSION_1,
 		PR_MODEL_TYPE_1,
+		PR_MODEL_TYPE_SET,	// ghost state, set the model type
 		PR_MATERIAL_LIST_1,
 		PR_MATERIAL_1,
 		PR_MATERIAL_TYPE_1,

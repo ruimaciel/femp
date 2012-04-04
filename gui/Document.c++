@@ -14,6 +14,8 @@ Document::Document()
 {
 	unsaved = false;
 	file_name = NULL;
+
+	document_type = TYPE_SOLID3D;	// nasty hack due to poor design
 }
 
 

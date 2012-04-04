@@ -156,6 +156,7 @@ MainWindow::openProject()
 	{
 		case FemJsonParser::Error::ERR_OK:
 			// setup the user interface
+			document.setProjectType( Document::TYPE_SOLID3D);	// nasty hack due to poor design
 			this->setUserInterfaceAsOpened();
 			break;
 

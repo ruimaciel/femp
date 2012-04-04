@@ -240,9 +240,14 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					break;
 
 				case PR_MODEL_TYPE_1:
+					ss.push(NT_MODEL_TYPE_SET);	// sets the model type
 					ss.push(TT_LABEL_3D_SOLID);
 					ss.push(TT_NAME_SEPARATOR);
 					ss.push(TT_LABEL_TYPE);
+					break;
+
+				case PR_MODEL_TYPE_SET:
+					// due to poor design, it isn't possible to set the model type
 					break;
 
 				case PR_MATERIAL_LIST_1:
@@ -1474,6 +1479,7 @@ void FemJsonParser::setParserTable()
 	table	[NT_FORMAT_VERSION]	[TT_LABEL_VERSION]	=	PR_FORMAT_VERSION_1;
 
 	table	[NT_MODEL_TYPE]		[TT_LABEL_TYPE]		=	PR_MODEL_TYPE_1;
+	table	[NT_MODEL_TYPE_SET]	[TT_OBJECT_CLOSE]	=	PR_MODEL_TYPE_SET;
 
 	table	[NT_MATERIAL_LIST]	[TT_LABEL_MATERIALS]	=	PR_MATERIAL_LIST_1;
 	table	[NT_MATERIAL]		[TT_OBJECT_OPEN]	=	PR_MATERIAL_1;

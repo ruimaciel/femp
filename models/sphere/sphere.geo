@@ -2,7 +2,7 @@
 Defines a section of a hollow sphere
 */
 t = 0.1;
-r = 1.0 + t/2;
+r = 1.0 + t;
 delta = t/2;
 
 Point(1) = { 0, 0, 0};	// center point

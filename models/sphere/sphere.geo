@@ -20,3 +20,4 @@ Extrude {{0, 1, 0}, {0, 0, 0}, Pi/2} {
   Surface{5}; Recombine;
 }
 Physical Volume(23) = {1};
+Physical Surface(24) = {17};

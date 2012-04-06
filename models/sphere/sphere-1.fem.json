@@ -9,10 +9,10 @@
 	"nodes":[
 		[	1,[	1.1,	0,	0	]],
 		[	2,[	1,	0,	0	]],
-		[	3,[	6.73533e-17,	1.1,	0	]],
-		[	4,[	6.12303e-17,	1,	0	]],
-		[	5,[	6.73533e-17,	0,	-1.1	]],
-		[	6,[	6.12303e-17,	0,	-1	]],
+		[	3,[	0,	1.1,	0	]],
+		[	4,[	0,	1,	0	]],
+		[	5,[	0,	0,	-1.1	]],
+		[	6,[	0,	0,	-1	]],
 		[	7,[	1.08329,	0.191013,	0	]],
 		[	8,[	1.03366,	0.376222,	0	]],
 		[	9,[	0.952628,	0.55,	0	]],
@@ -28,21 +28,21 @@
 		[	19,[	0.55557,	0.83147,	0	]],
 		[	20,[	0.382683,	0.92388,	0	]],
 		[	21,[	0.19509,	0.980785,	0	]],
-		[	22,[	7.19992e-17,	0.19509,	-0.980785	]],
-		[	23,[	8.00013e-17,	0.382683,	-0.92388	]],
-		[	24,[	8.49289e-17,	0.55557,	-0.83147	]],
-		[	25,[	8.65927e-17,	0.707107,	-0.707107	]],
-		[	26,[	8.49289e-17,	0.83147,	-0.55557	]],
-		[	27,[	8.00013e-17,	0.92388,	-0.382683	]],
-		[	28,[	7.19992e-17,	0.980785,	-0.19509	]],
-		[	29,[	7.80259e-17,	1.08329,	-0.191013	]],
-		[	30,[	8.63276e-17,	1.03366,	-0.376222	]],
-		[	31,[	9.20064e-17,	0.952628,	-0.55	]],
-		[	32,[	9.48896e-17,	0.842649,	-0.707066	]],
-		[	33,[	9.48896e-17,	0.707066,	-0.842649	]],
-		[	34,[	9.20064e-17,	0.55,	-0.952628	]],
-		[	35,[	8.63276e-17,	0.376222,	-1.03366	]],
-		[	36,[	7.80259e-17,	0.191013,	-1.08329	]],
+		[	22,[	0,	0.19509,	-0.980785	]],
+		[	23,[	0,	0.382683,	-0.92388	]],
+		[	24,[	0,	0.55557,	-0.83147	]],
+		[	25,[	0,	0.707107,	-0.707107	]],
+		[	26,[	0,	0.83147,	-0.55557	]],
+		[	27,[	0,	0.92388,	-0.382683	]],
+		[	28,[	0,	0.980785,	-0.19509	]],
+		[	29,[	0,	1.08329,	-0.191013	]],
+		[	30,[	0,	1.03366,	-0.376222	]],
+		[	31,[	0,	0.952628,	-0.55	]],
+		[	32,[	0,	0.842649,	-0.707066	]],
+		[	33,[	0,	0.707066,	-0.842649	]],
+		[	34,[	0,	0.55,	-0.952628	]],
+		[	35,[	0,	0.376222,	-1.03366	]],
+		[	36,[	0,	0.191013,	-1.08329	]],
 		[	37,[	1.08329,	0,	-0.191013	]],
 		[	38,[	1.03366,	0,	-0.376222	]],
 		[	39,[	0.952628,	0,	-0.55	]],
@@ -149,364 +149,364 @@
 		[	140,[	1.07969,	0.172299,	-0.120748	]]
 	],
 	"elements":[
-		{"type":"tetrahedron4", "nodes":[123,77,68,98], "material": 0},
-		{"type":"tetrahedron4", "nodes":[85,40,116,114]},
-		{"type":"tetrahedron4", "nodes":[112,98,60,121]},
-		{"type":"tetrahedron4", "nodes":[120,63,53,71]},
-		{"type":"tetrahedron4", "nodes":[30,138,28,82]},
-		{"type":"tetrahedron4", "nodes":[25,32,79,119]},
-		{"type":"tetrahedron4", "nodes":[63,102,58,90]},
-		{"type":"tetrahedron4", "nodes":[101,55,59,91]},
-		{"type":"tetrahedron4", "nodes":[124,22,6,88]},
-		{"type":"tetrahedron4", "nodes":[139,138,126,57]},
-		{"type":"tetrahedron4", "nodes":[122,58,90,104]},
-		{"type":"tetrahedron4", "nodes":[117,96,78,70]},
-		{"type":"tetrahedron4", "nodes":[137,18,78,81]},
-		{"type":"tetrahedron4", "nodes":[69,85,116,114]},
-		{"type":"tetrahedron4", "nodes":[61,105,127,65]},
-		{"type":"tetrahedron4", "nodes":[124,88,51,44]},
-		{"type":"tetrahedron4", "nodes":[88,124,51,6]},
-		{"type":"tetrahedron4", "nodes":[56,105,125,61]},
-		{"type":"tetrahedron4", "nodes":[108,27,30,31]},
-		{"type":"tetrahedron4", "nodes":[46,39,47,84]},
-		{"type":"tetrahedron4", "nodes":[68,112,75,76]},
-		{"type":"tetrahedron4", "nodes":[62,52,68,118]},
-		{"type":"tetrahedron4", "nodes":[102,122,58,90]},
-		{"type":"tetrahedron4", "nodes":[20,134,66,72]},
-		{"type":"tetrahedron4", "nodes":[73,130,131,97]},
-		{"type":"tetrahedron4", "nodes":[80,57,67,126]},
-		{"type":"tetrahedron4", "nodes":[57,134,129,72]},
-		{"type":"tetrahedron4", "nodes":[63,102,53,58]},
-		{"type":"tetrahedron4", "nodes":[64,107,35,103]},
-		{"type":"tetrahedron4", "nodes":[138,87,28,82]},
-		{"type":"tetrahedron4", "nodes":[124,44,51,6]},
-		{"type":"tetrahedron4", "nodes":[118,95,68,76]},
-		{"type":"tetrahedron4", "nodes":[27,138,30,82]},
-		{"type":"tetrahedron4", "nodes":[111,17,9,10]},
-		{"type":"tetrahedron4", "nodes":[16,61,127,65]},
-		{"type":"tetrahedron4", "nodes":[58,63,90,62]},
-		{"type":"tetrahedron4", "nodes":[86,1,7,2]},
-		{"type":"tetrahedron4", "nodes":[105,16,127,65]},
-		{"type":"tetrahedron4", "nodes":[61,111,81,127]},
-		{"type":"tetrahedron4", "nodes":[52,58,113,104]},
-		{"type":"tetrahedron4", "nodes":[17,61,81,127]},
-		{"type":"tetrahedron4", "nodes":[15,140,86,65]},
-		{"type":"tetrahedron4", "nodes":[115,66,70,78]},
-		{"type":"tetrahedron4", "nodes":[62,90,118,128]},
-		{"type":"tetrahedron4", "nodes":[94,43,51,44]},
-		{"type":"tetrahedron4", "nodes":[13,20,134,12]},
-		{"type":"tetrahedron4", "nodes":[37,1,140,86]},
-		{"type":"tetrahedron4", "nodes":[37,45,86,109]},
-		{"type":"tetrahedron4", "nodes":[124,94,107,88]},
-		{"type":"tetrahedron4", "nodes":[130,73,100,97]},
-		{"type":"tetrahedron4", "nodes":[77,55,93,123]},
-		{"type":"tetrahedron4", "nodes":[94,88,51,89]},
-		{"type":"tetrahedron4", "nodes":[55,77,93,64]},
-		{"type":"tetrahedron4", "nodes":[94,43,106,89]},
-		{"type":"tetrahedron4", "nodes":[130,80,100,73]},
-		{"type":"tetrahedron4", "nodes":[110,63,96,70]},
-		{"type":"tetrahedron4", "nodes":[11,18,19,78]},
-		{"type":"tetrahedron4", "nodes":[32,26,79,100]},
-		{"type":"tetrahedron4", "nodes":[17,111,81,10]},
-		{"type":"tetrahedron4", "nodes":[80,130,67,73]},
-		{"type":"tetrahedron4", "nodes":[122,102,58,74]},
-		{"type":"tetrahedron4", "nodes":[119,32,79,100]},
-		{"type":"tetrahedron4", "nodes":[69,122,74,114]},
-		{"type":"tetrahedron4", "nodes":[39,114,47,84]},
-		{"type":"tetrahedron4", "nodes":[56,136,132,99]},
+		{"type":"tetrahedron4", "nodes":[124,88,6,51], "material": 0},
+		{"type":"tetrahedron4", "nodes":[31,100,26,32]},
+		{"type":"tetrahedron4", "nodes":[84,74,132,114]},
+		{"type":"tetrahedron4", "nodes":[134,20,12,13]},
+		{"type":"tetrahedron4", "nodes":[117,134,66,78]},
+		{"type":"tetrahedron4", "nodes":[16,8,65,105]},
 		{"type":"tetrahedron4", "nodes":[83,38,109,45]},
-		{"type":"tetrahedron4", "nodes":[111,137,81,10]},
-		{"type":"tetrahedron4", "nodes":[56,105,61,65]},
-		{"type":"tetrahedron4", "nodes":[55,101,59,106]},
-		{"type":"tetrahedron4", "nodes":[59,69,113,52]},
-		{"type":"tetrahedron4", "nodes":[18,17,81,10]},
-		{"type":"tetrahedron4", "nodes":[108,80,57,82]},
-		{"type":"tetrahedron4", "nodes":[95,112,76,133]},
-		{"type":"tetrahedron4", "nodes":[41,40,116,48]},
-		{"type":"tetrahedron4", "nodes":[64,23,107,22]},
-		{"type":"tetrahedron4", "nodes":[41,101,59,116]},
-		{"type":"tetrahedron4", "nodes":[94,64,107,88]},
-		{"type":"tetrahedron4", "nodes":[40,114,47,39]},
-		{"type":"tetrahedron4", "nodes":[119,25,75,79]},
-		{"type":"tetrahedron4", "nodes":[62,54,128,133]},
-		{"type":"tetrahedron4", "nodes":[85,40,47,48]},
-		{"type":"tetrahedron4", "nodes":[138,108,57,82]},
-		{"type":"tetrahedron4", "nodes":[3,87,4,29]},
-		{"type":"tetrahedron4", "nodes":[115,57,67,66]},
-		{"type":"tetrahedron4", "nodes":[87,28,4,29]},
-		{"type":"tetrahedron4", "nodes":[80,27,82,108]},
-		{"type":"tetrahedron4", "nodes":[122,69,74,58]},
-		{"type":"tetrahedron4", "nodes":[134,20,129,72]},
-		{"type":"tetrahedron4", "nodes":[59,101,49,42]},
-		{"type":"tetrahedron4", "nodes":[27,138,82,108]},
-		{"type":"tetrahedron4", "nodes":[40,85,47,114]},
-		{"type":"tetrahedron4", "nodes":[94,64,89,93]},
-		{"type":"tetrahedron4", "nodes":[14,87,129,21]},
-		{"type":"tetrahedron4", "nodes":[64,77,93,103]},
-		{"type":"tetrahedron4", "nodes":[137,18,81,10]},
-		{"type":"tetrahedron4", "nodes":[137,11,117,78]},
-		{"type":"tetrahedron4", "nodes":[26,32,31,100]},
-		{"type":"tetrahedron4", "nodes":[56,84,74,99]},
-		{"type":"tetrahedron4", "nodes":[125,102,99,53]},
-		{"type":"tetrahedron4", "nodes":[34,23,60,24]},
-		{"type":"tetrahedron4", "nodes":[115,57,126,67]},
-		{"type":"tetrahedron4", "nodes":[77,123,93,103]},
-		{"type":"tetrahedron4", "nodes":[114,84,132,74]},
-		{"type":"tetrahedron4", "nodes":[140,37,86,109]},
-		{"type":"tetrahedron4", "nodes":[105,56,125,136]},
-		{"type":"tetrahedron4", "nodes":[8,140,7,65]},
-		{"type":"tetrahedron4", "nodes":[140,15,7,65]},
-		{"type":"tetrahedron4", "nodes":[140,1,7,86]},
-		{"type":"tetrahedron4", "nodes":[84,56,132,99]},
-		{"type":"tetrahedron4", "nodes":[33,25,24,121]},
-		{"type":"tetrahedron4", "nodes":[70,54,67,92]},
-		{"type":"tetrahedron4", "nodes":[27,30,28,82]},
-		{"type":"tetrahedron4", "nodes":[73,130,67,131]},
-		{"type":"tetrahedron4", "nodes":[34,33,24,121]},
-		{"type":"tetrahedron4", "nodes":[56,136,99,125]},
-		{"type":"tetrahedron4", "nodes":[80,108,100,31]},
-		{"type":"tetrahedron4", "nodes":[119,112,75,121]},
-		{"type":"tetrahedron4", "nodes":[34,121,24,60]},
-		{"type":"tetrahedron4", "nodes":[112,95,76,68]},
-		{"type":"tetrahedron4", "nodes":[57,129,126,139]},
-		{"type":"tetrahedron4", "nodes":[21,87,129,72]},
-		{"type":"tetrahedron4", "nodes":[55,101,106,91]},
-		{"type":"tetrahedron4", "nodes":[25,121,75,24]},
-		{"type":"tetrahedron4", "nodes":[43,50,42,106]},
-		{"type":"tetrahedron4", "nodes":[73,97,76,75]},
-		{"type":"tetrahedron4", "nodes":[94,124,44,88]},
-		{"type":"tetrahedron4", "nodes":[36,22,124,107]},
-		{"type":"tetrahedron4", "nodes":[34,98,121,60]},
-		{"type":"tetrahedron4", "nodes":[22,23,107,35]},
-		{"type":"tetrahedron4", "nodes":[57,134,72,66]},
-		{"type":"tetrahedron4", "nodes":[22,36,124,6]},
-		{"type":"tetrahedron4", "nodes":[54,62,76,133]},
-		{"type":"tetrahedron4", "nodes":[61,56,53,125]},
-		{"type":"tetrahedron4", "nodes":[25,33,32,119]},
-		{"type":"tetrahedron4", "nodes":[52,62,104,118]},
-		{"type":"tetrahedron4", "nodes":[32,25,79,26]},
-		{"type":"tetrahedron4", "nodes":[52,95,68,118]},
-		{"type":"tetrahedron4", "nodes":[52,58,104,62]},
-		{"type":"tetrahedron4", "nodes":[62,90,104,118]},
-		{"type":"tetrahedron4", "nodes":[118,95,76,133]},
-		{"type":"tetrahedron4", "nodes":[97,112,76,75]},
-		{"type":"tetrahedron4", "nodes":[58,90,104,62]},
-		{"type":"tetrahedron4", "nodes":[56,53,99,74]},
-		{"type":"tetrahedron4", "nodes":[13,21,14,129]},
-		{"type":"tetrahedron4", "nodes":[56,125,99,53]},
-		{"type":"tetrahedron4", "nodes":[38,83,109,132]},
-		{"type":"tetrahedron4", "nodes":[13,20,129,134]},
-		{"type":"tetrahedron4", "nodes":[134,66,117,78]},
-		{"type":"tetrahedron4", "nodes":[50,43,51,89]},
-		{"type":"tetrahedron4", "nodes":[50,42,106,89]},
-		{"type":"tetrahedron4", "nodes":[50,59,42,89]},
-		{"type":"tetrahedron4", "nodes":[58,69,52,113]},
-		{"type":"tetrahedron4", "nodes":[69,59,113,116]},
-		{"type":"tetrahedron4", "nodes":[91,59,113,52]},
-		{"type":"tetrahedron4", "nodes":[62,118,76,133]},
-		{"type":"tetrahedron4", "nodes":[122,114,99,74]},
-		{"type":"tetrahedron4", "nodes":[77,55,123,68]},
-		{"type":"tetrahedron4", "nodes":[91,55,52,68]},
-		{"type":"tetrahedron4", "nodes":[66,115,70,67]},
-		{"type":"tetrahedron4", "nodes":[95,91,52,68]},
-		{"type":"tetrahedron4", "nodes":[123,55,91,68]},
-		{"type":"tetrahedron4", "nodes":[95,123,91,68]},
-		{"type":"tetrahedron4", "nodes":[76,54,133,131]},
-		{"type":"tetrahedron4", "nodes":[107,64,93,103]},
-		{"type":"tetrahedron4", "nodes":[23,77,64,103]},
-		{"type":"tetrahedron4", "nodes":[85,69,74,114]},
-		{"type":"tetrahedron4", "nodes":[118,62,128,133]},
-		{"type":"tetrahedron4", "nodes":[42,101,106,89]},
-		{"type":"tetrahedron4", "nodes":[16,8,15,65]},
-		{"type":"tetrahedron4", "nodes":[106,94,89,93]},
-		{"type":"tetrahedron4", "nodes":[123,77,98,103]},
-		{"type":"tetrahedron4", "nodes":[101,59,106,89]},
-		{"type":"tetrahedron4", "nodes":[122,69,113,116]},
-		{"type":"tetrahedron4", "nodes":[15,140,7,86]},
-		{"type":"tetrahedron4", "nodes":[34,98,60,103]},
-		{"type":"tetrahedron4", "nodes":[14,87,4,139]},
-		{"type":"tetrahedron4", "nodes":[22,124,107,88]},
-		{"type":"tetrahedron4", "nodes":[38,37,109,45]},
-		{"type":"tetrahedron4", "nodes":[59,101,42,89]},
-		{"type":"tetrahedron4", "nodes":[25,33,119,121]},
-		{"type":"tetrahedron4", "nodes":[46,83,132,84]},
-		{"type":"tetrahedron4", "nodes":[88,94,51,44]},
-		{"type":"tetrahedron4", "nodes":[71,111,81,61]},
-		{"type":"tetrahedron4", "nodes":[94,64,93,107]},
-		{"type":"tetrahedron4", "nodes":[43,50,106,89]},
-		{"type":"tetrahedron4", "nodes":[115,134,66,117]},
-		{"type":"tetrahedron4", "nodes":[52,95,118,104]},
-		{"type":"tetrahedron4", "nodes":[61,17,9,127]},
-		{"type":"tetrahedron4", "nodes":[27,138,108,30]},
-		{"type":"tetrahedron4", "nodes":[38,46,132,39]},
-		{"type":"tetrahedron4", "nodes":[58,122,113,104]},
-		{"type":"tetrahedron4", "nodes":[16,61,9,127]},
-		{"type":"tetrahedron4", "nodes":[56,83,105,65]},
-		{"type":"tetrahedron4", "nodes":[1,37,2,86]},
-		{"type":"tetrahedron4", "nodes":[105,61,127,125]},
-		{"type":"tetrahedron4", "nodes":[111,127,9,81]},
-		{"type":"tetrahedron4", "nodes":[8,16,9,127]},
-		{"type":"tetrahedron4", "nodes":[91,95,52,104]},
-		{"type":"tetrahedron4", "nodes":[61,16,9,17]},
-		{"type":"tetrahedron4", "nodes":[30,138,29,28]},
-		{"type":"tetrahedron4", "nodes":[18,137,11,10]},
-		{"type":"tetrahedron4", "nodes":[46,38,132,83]},
-		{"type":"tetrahedron4", "nodes":[43,94,51,89]},
-		{"type":"tetrahedron4", "nodes":[111,120,61,71]},
-		{"type":"tetrahedron4", "nodes":[66,115,117,78]},
-		{"type":"tetrahedron4", "nodes":[66,134,19,78]},
-		{"type":"tetrahedron4", "nodes":[83,105,65,109]},
-		{"type":"tetrahedron4", "nodes":[114,39,132,84]},
-		{"type":"tetrahedron4", "nodes":[14,87,21,4]},
-		{"type":"tetrahedron4", "nodes":[97,119,79,100]},
-		{"type":"tetrahedron4", "nodes":[64,23,35,107]},
-		{"type":"tetrahedron4", "nodes":[62,118,68,76]},
-		{"type":"tetrahedron4", "nodes":[73,97,79,100]},
-		{"type":"tetrahedron4", "nodes":[4,139,3,14]},
-		{"type":"tetrahedron4", "nodes":[138,87,29,28]},
-		{"type":"tetrahedron4", "nodes":[135,120,96,71]},
-		{"type":"tetrahedron4", "nodes":[102,120,53,125]},
-		{"type":"tetrahedron4", "nodes":[119,97,79,75]},
-		{"type":"tetrahedron4", "nodes":[64,22,107,88]},
-		{"type":"tetrahedron4", "nodes":[97,73,79,75]},
-		{"type":"tetrahedron4", "nodes":[85,114,74,84]},
-		{"type":"tetrahedron4", "nodes":[83,56,132,84]},
-		{"type":"tetrahedron4", "nodes":[58,102,53,74]},
+		{"type":"tetrahedron4", "nodes":[36,124,22,6]},
+		{"type":"tetrahedron4", "nodes":[122,90,58,102]},
+		{"type":"tetrahedron4", "nodes":[31,108,27,80]},
+		{"type":"tetrahedron4", "nodes":[61,125,56,53]},
+		{"type":"tetrahedron4", "nodes":[109,83,45,86]},
+		{"type":"tetrahedron4", "nodes":[83,132,136,109]},
+		{"type":"tetrahedron4", "nodes":[83,84,56,132]},
+		{"type":"tetrahedron4", "nodes":[37,109,45,86]},
+		{"type":"tetrahedron4", "nodes":[72,139,21,129]},
+		{"type":"tetrahedron4", "nodes":[84,46,132,83]},
+		{"type":"tetrahedron4", "nodes":[84,74,99,132]},
 		{"type":"tetrahedron4", "nodes":[39,46,132,84]},
-		{"type":"tetrahedron4", "nodes":[115,70,67,92]},
-		{"type":"tetrahedron4", "nodes":[96,71,78,70]},
-		{"type":"tetrahedron4", "nodes":[83,136,109,132]},
-		{"type":"tetrahedron4", "nodes":[69,122,114,116]},
-		{"type":"tetrahedron4", "nodes":[50,59,49,42]},
-		{"type":"tetrahedron4", "nodes":[111,120,71,96]},
-		{"type":"tetrahedron4", "nodes":[120,135,63,71]},
-		{"type":"tetrahedron4", "nodes":[41,101,49,59]},
-		{"type":"tetrahedron4", "nodes":[26,80,100,31]},
-		{"type":"tetrahedron4", "nodes":[37,45,2,86]},
-		{"type":"tetrahedron4", "nodes":[97,73,76,131]},
-		{"type":"tetrahedron4", "nodes":[63,71,96,70]},
-		{"type":"tetrahedron4", "nodes":[55,59,89,106]},
-		{"type":"tetrahedron4", "nodes":[54,110,128,131]},
-		{"type":"tetrahedron4", "nodes":[13,21,129,72]},
-		{"type":"tetrahedron4", "nodes":[97,76,133,131]},
-		{"type":"tetrahedron4", "nodes":[67,54,131,92]},
-		{"type":"tetrahedron4", "nodes":[110,115,70,117]},
-		{"type":"tetrahedron4", "nodes":[128,54,131,133]},
-		{"type":"tetrahedron4", "nodes":[80,108,57,126]},
-		{"type":"tetrahedron4", "nodes":[115,57,66,134]},
-		{"type":"tetrahedron4", "nodes":[110,63,54,128]},
-		{"type":"tetrahedron4", "nodes":[54,110,131,92]},
-		{"type":"tetrahedron4", "nodes":[80,130,108,126]},
-		{"type":"tetrahedron4", "nodes":[63,135,102,90]},
-		{"type":"tetrahedron4", "nodes":[91,101,113,59]},
-		{"type":"tetrahedron4", "nodes":[102,122,99,74]},
-		{"type":"tetrahedron4", "nodes":[59,101,113,116]},
-		{"type":"tetrahedron4", "nodes":[134,20,66,19]},
-		{"type":"tetrahedron4", "nodes":[122,69,58,113]},
-		{"type":"tetrahedron4", "nodes":[20,13,129,72]},
-		{"type":"tetrahedron4", "nodes":[75,121,60,24]},
-		{"type":"tetrahedron4", "nodes":[27,80,31,108]},
-		{"type":"tetrahedron4", "nodes":[138,108,126,57]},
-		{"type":"tetrahedron4", "nodes":[11,134,19,12]},
-		{"type":"tetrahedron4", "nodes":[73,80,100,79]},
-		{"type":"tetrahedron4", "nodes":[95,123,68,98]},
-		{"type":"tetrahedron4", "nodes":[15,86,7,2]},
-		{"type":"tetrahedron4", "nodes":[45,83,86,109]},
-		{"type":"tetrahedron4", "nodes":[109,140,65,86]},
-		{"type":"tetrahedron4", "nodes":[71,96,78,117]},
-		{"type":"tetrahedron4", "nodes":[71,111,117,78]},
-		{"type":"tetrahedron4", "nodes":[16,105,8,65]},
-		{"type":"tetrahedron4", "nodes":[111,137,117,78]},
-		{"type":"tetrahedron4", "nodes":[101,41,49,42]},
-		{"type":"tetrahedron4", "nodes":[13,20,21,72]},
-		{"type":"tetrahedron4", "nodes":[105,140,65,109]},
-		{"type":"tetrahedron4", "nodes":[110,54,70,92]},
-		{"type":"tetrahedron4", "nodes":[23,64,35,103]},
-		{"type":"tetrahedron4", "nodes":[53,102,99,74]},
-		{"type":"tetrahedron4", "nodes":[127,17,9,81]},
-		{"type":"tetrahedron4", "nodes":[130,67,131,92]},
-		{"type":"tetrahedron4", "nodes":[36,22,107,35]},
-		{"type":"tetrahedron4", "nodes":[17,111,9,81]},
-		{"type":"tetrahedron4", "nodes":[87,129,57,139]},
-		{"type":"tetrahedron4", "nodes":[57,134,126,129]},
-		{"type":"tetrahedron4", "nodes":[69,48,59,116]},
+		{"type":"tetrahedron4", "nodes":[101,59,91,55]},
+		{"type":"tetrahedron4", "nodes":[90,104,58,62]},
+		{"type":"tetrahedron4", "nodes":[83,56,109,136]},
+		{"type":"tetrahedron4", "nodes":[7,140,15,65]},
+		{"type":"tetrahedron4", "nodes":[90,128,62,63]},
+		{"type":"tetrahedron4", "nodes":[46,39,132,38]},
+		{"type":"tetrahedron4", "nodes":[132,74,99,114]},
+		{"type":"tetrahedron4", "nodes":[81,10,137,18]},
+		{"type":"tetrahedron4", "nodes":[106,93,89,55]},
+		{"type":"tetrahedron4", "nodes":[106,101,91,55]},
+		{"type":"tetrahedron4", "nodes":[52,118,68,62]},
+		{"type":"tetrahedron4", "nodes":[68,123,91,55]},
+		{"type":"tetrahedron4", "nodes":[66,115,67,126]},
+		{"type":"tetrahedron4", "nodes":[83,132,56,136]},
+		{"type":"tetrahedron4", "nodes":[78,81,111,137]},
+		{"type":"tetrahedron4", "nodes":[93,94,106,89]},
+		{"type":"tetrahedron4", "nodes":[124,36,5,6]},
 		{"type":"tetrahedron4", "nodes":[48,41,59,116]},
-		{"type":"tetrahedron4", "nodes":[87,57,138,139]},
+		{"type":"tetrahedron4", "nodes":[39,114,40,47]},
+		{"type":"tetrahedron4", "nodes":[73,80,67,130]},
+		{"type":"tetrahedron4", "nodes":[124,88,22,6]},
+		{"type":"tetrahedron4", "nodes":[106,50,42,89]},
+		{"type":"tetrahedron4", "nodes":[139,28,138,82]},
+		{"type":"tetrahedron4", "nodes":[61,127,65,105]},
+		{"type":"tetrahedron4", "nodes":[56,83,105,65]},
+		{"type":"tetrahedron4", "nodes":[60,98,121,112]},
+		{"type":"tetrahedron4", "nodes":[117,78,111,137]},
+		{"type":"tetrahedron4", "nodes":[139,28,82,87]},
+		{"type":"tetrahedron4", "nodes":[119,75,121,112]},
+		{"type":"tetrahedron4", "nodes":[52,68,91,55]},
+		{"type":"tetrahedron4", "nodes":[94,88,44,51]},
+		{"type":"tetrahedron4", "nodes":[25,24,121,75]},
+		{"type":"tetrahedron4", "nodes":[23,34,103,35]},
+		{"type":"tetrahedron4", "nodes":[128,54,62,63]},
+		{"type":"tetrahedron4", "nodes":[80,108,27,82]},
+		{"type":"tetrahedron4", "nodes":[140,7,15,86]},
+		{"type":"tetrahedron4", "nodes":[83,46,132,38]},
+		{"type":"tetrahedron4", "nodes":[98,103,77,60]},
+		{"type":"tetrahedron4", "nodes":[134,57,72,129]},
+		{"type":"tetrahedron4", "nodes":[88,124,44,51]},
+		{"type":"tetrahedron4", "nodes":[119,33,25,32]},
+		{"type":"tetrahedron4", "nodes":[71,117,78,111]},
+		{"type":"tetrahedron4", "nodes":[127,61,9,17]},
+		{"type":"tetrahedron4", "nodes":[85,48,40,47]},
+		{"type":"tetrahedron4", "nodes":[61,16,9,17]},
+		{"type":"tetrahedron4", "nodes":[16,61,9,127]},
+		{"type":"tetrahedron4", "nodes":[98,60,77,68]},
+		{"type":"tetrahedron4", "nodes":[43,50,89,51]},
+		{"type":"tetrahedron4", "nodes":[113,59,101,116]},
+		{"type":"tetrahedron4", "nodes":[123,93,77,103]},
+		{"type":"tetrahedron4", "nodes":[33,24,121,25]},
+		{"type":"tetrahedron4", "nodes":[39,46,84,47]},
+		{"type":"tetrahedron4", "nodes":[28,4,87,29]},
+		{"type":"tetrahedron4", "nodes":[140,15,65,86]},
+		{"type":"tetrahedron4", "nodes":[84,114,47,85]},
+		{"type":"tetrahedron4", "nodes":[125,56,136,105]},
+		{"type":"tetrahedron4", "nodes":[20,134,129,13]},
+		{"type":"tetrahedron4", "nodes":[56,83,109,105]},
+		{"type":"tetrahedron4", "nodes":[127,16,65,105]},
+		{"type":"tetrahedron4", "nodes":[109,83,86,65]},
+		{"type":"tetrahedron4", "nodes":[25,119,79,75]},
+		{"type":"tetrahedron4", "nodes":[21,139,4,14]},
+		{"type":"tetrahedron4", "nodes":[71,61,120,111]},
+		{"type":"tetrahedron4", "nodes":[71,120,63,135]},
+		{"type":"tetrahedron4", "nodes":[88,94,64,89]},
+		{"type":"tetrahedron4", "nodes":[104,118,95,52]},
+		{"type":"tetrahedron4", "nodes":[28,82,27,30]},
+		{"type":"tetrahedron4", "nodes":[124,88,94,107]},
+		{"type":"tetrahedron4", "nodes":[59,41,49,101]},
+		{"type":"tetrahedron4", "nodes":[107,23,35,22]},
+		{"type":"tetrahedron4", "nodes":[131,76,73,97]},
+		{"type":"tetrahedron4", "nodes":[59,113,91,52]},
+		{"type":"tetrahedron4", "nodes":[125,61,105,127]},
+		{"type":"tetrahedron4", "nodes":[81,10,17,111]},
+		{"type":"tetrahedron4", "nodes":[34,24,23,60]},
+		{"type":"tetrahedron4", "nodes":[71,53,63,120]},
+		{"type":"tetrahedron4", "nodes":[58,104,52,62]},
+		{"type":"tetrahedron4", "nodes":[81,71,78,111]},
+		{"type":"tetrahedron4", "nodes":[128,90,62,118]},
+		{"type":"tetrahedron4", "nodes":[50,59,42,89]},
+		{"type":"tetrahedron4", "nodes":[76,133,95,112]},
+		{"type":"tetrahedron4", "nodes":[34,23,103,60]},
+		{"type":"tetrahedron4", "nodes":[50,43,106,42]},
+		{"type":"tetrahedron4", "nodes":[59,113,52,69]},
+		{"type":"tetrahedron4", "nodes":[84,39,47,114]},
+		{"type":"tetrahedron4", "nodes":[113,58,52,69]},
+		{"type":"tetrahedron4", "nodes":[131,76,133,54]},
+		{"type":"tetrahedron4", "nodes":[16,15,65,8]},
+		{"type":"tetrahedron4", "nodes":[90,102,135,63]},
+		{"type":"tetrahedron4", "nodes":[74,122,69,58]},
+		{"type":"tetrahedron4", "nodes":[128,131,54,110]},
+		{"type":"tetrahedron4", "nodes":[81,10,111,137]},
+		{"type":"tetrahedron4", "nodes":[90,58,102,63]},
+		{"type":"tetrahedron4", "nodes":[92,54,70,67]},
+		{"type":"tetrahedron4", "nodes":[128,131,133,54]},
+		{"type":"tetrahedron4", "nodes":[118,76,68,62]},
+		{"type":"tetrahedron4", "nodes":[81,17,9,111]},
+		{"type":"tetrahedron4", "nodes":[11,78,137,18]},
+		{"type":"tetrahedron4", "nodes":[117,11,78,137]},
+		{"type":"tetrahedron4", "nodes":[98,123,77,103]},
+		{"type":"tetrahedron4", "nodes":[115,117,78,70]},
+		{"type":"tetrahedron4", "nodes":[83,109,105,65]},
+		{"type":"tetrahedron4", "nodes":[61,16,65,127]},
+		{"type":"tetrahedron4", "nodes":[39,84,132,114]},
+		{"type":"tetrahedron4", "nodes":[120,71,111,96]},
+		{"type":"tetrahedron4", "nodes":[88,124,94,44]},
+		{"type":"tetrahedron4", "nodes":[80,108,57,126]},
+		{"type":"tetrahedron4", "nodes":[114,85,40,47]},
+		{"type":"tetrahedron4", "nodes":[93,103,107,64]},
+		{"type":"tetrahedron4", "nodes":[4,139,3,14]},
+		{"type":"tetrahedron4", "nodes":[113,104,91,52]},
+		{"type":"tetrahedron4", "nodes":[124,36,22,107]},
+		{"type":"tetrahedron4", "nodes":[61,71,120,53]},
+		{"type":"tetrahedron4", "nodes":[21,14,13,129]},
+		{"type":"tetrahedron4", "nodes":[81,10,18,17]},
+		{"type":"tetrahedron4", "nodes":[98,123,95,68]},
+		{"type":"tetrahedron4", "nodes":[34,98,121,60]},
+		{"type":"tetrahedron4", "nodes":[100,80,26,79]},
+		{"type":"tetrahedron4", "nodes":[139,28,29,138]},
+		{"type":"tetrahedron4", "nodes":[92,110,70,54]},
+		{"type":"tetrahedron4", "nodes":[139,72,87,57]},
+		{"type":"tetrahedron4", "nodes":[123,68,77,55]},
+		{"type":"tetrahedron4", "nodes":[31,108,30,27]},
+		{"type":"tetrahedron4", "nodes":[138,82,30,27]},
+		{"type":"tetrahedron4", "nodes":[138,28,30,82]},
+		{"type":"tetrahedron4", "nodes":[95,118,68,52]},
+		{"type":"tetrahedron4", "nodes":[82,139,87,57]},
+		{"type":"tetrahedron4", "nodes":[37,1,86,2]},
+		{"type":"tetrahedron4", "nodes":[4,139,29,3]},
+		{"type":"tetrahedron4", "nodes":[93,106,91,55]},
+		{"type":"tetrahedron4", "nodes":[117,71,96,111]},
+		{"type":"tetrahedron4", "nodes":[127,16,8,9]},
+		{"type":"tetrahedron4", "nodes":[11,19,78,18]},
+		{"type":"tetrahedron4", "nodes":[113,104,52,58]},
+		{"type":"tetrahedron4", "nodes":[131,73,67,130]},
+		{"type":"tetrahedron4", "nodes":[107,88,94,64]},
+		{"type":"tetrahedron4", "nodes":[8,140,65,105]},
+		{"type":"tetrahedron4", "nodes":[74,53,56,99]},
+		{"type":"tetrahedron4", "nodes":[110,117,115,70]},
+		{"type":"tetrahedron4", "nodes":[4,29,139,87]},
+		{"type":"tetrahedron4", "nodes":[117,110,96,70]},
+		{"type":"tetrahedron4", "nodes":[37,140,109,86]},
+		{"type":"tetrahedron4", "nodes":[90,128,63,135]},
+		{"type":"tetrahedron4", "nodes":[7,140,1,86]},
+		{"type":"tetrahedron4", "nodes":[10,11,137,18]},
+		{"type":"tetrahedron4", "nodes":[7,15,8,65]},
+		{"type":"tetrahedron4", "nodes":[138,108,82,27]},
+		{"type":"tetrahedron4", "nodes":[94,43,106,89]},
+		{"type":"tetrahedron4", "nodes":[44,124,6,51]},
+		{"type":"tetrahedron4", "nodes":[42,59,49,101]},
+		{"type":"tetrahedron4", "nodes":[23,103,77,64]},
+		{"type":"tetrahedron4", "nodes":[43,94,44,51]},
+		{"type":"tetrahedron4", "nodes":[75,76,68,112]},
+		{"type":"tetrahedron4", "nodes":[100,31,80,108]},
+		{"type":"tetrahedron4", "nodes":[108,80,57,82]},
+		{"type":"tetrahedron4", "nodes":[134,57,129,126]},
+		{"type":"tetrahedron4", "nodes":[76,95,68,112]},
+		{"type":"tetrahedron4", "nodes":[82,138,139,57]},
+		{"type":"tetrahedron4", "nodes":[94,93,64,89]},
+		{"type":"tetrahedron4", "nodes":[106,59,101,55]},
+		{"type":"tetrahedron4", "nodes":[139,138,126,57]},
+		{"type":"tetrahedron4", "nodes":[60,75,68,112]},
+		{"type":"tetrahedron4", "nodes":[98,60,68,112]},
+		{"type":"tetrahedron4", "nodes":[67,80,57,126]},
+		{"type":"tetrahedron4", "nodes":[67,92,130,126]},
+		{"type":"tetrahedron4", "nodes":[134,20,19,12]},
+		{"type":"tetrahedron4", "nodes":[125,61,120,53]},
+		{"type":"tetrahedron4", "nodes":[129,57,72,139]},
+		{"type":"tetrahedron4", "nodes":[98,34,103,60]},
+		{"type":"tetrahedron4", "nodes":[138,28,29,30]},
+		{"type":"tetrahedron4", "nodes":[128,110,63,135]},
+		{"type":"tetrahedron4", "nodes":[24,34,121,60]},
+		{"type":"tetrahedron4", "nodes":[25,26,79,32]},
+		{"type":"tetrahedron4", "nodes":[72,21,139,87]},
+		{"type":"tetrahedron4", "nodes":[108,80,130,126]},
+		{"type":"tetrahedron4", "nodes":[23,107,64,22]},
+		{"type":"tetrahedron4", "nodes":[76,118,68,95]},
+		{"type":"tetrahedron4", "nodes":[15,7,2,86]},
+		{"type":"tetrahedron4", "nodes":[134,11,78,117]},
+		{"type":"tetrahedron4", "nodes":[107,103,35,64]},
+		{"type":"tetrahedron4", "nodes":[58,90,62,63]},
+		{"type":"tetrahedron4", "nodes":[43,50,106,89]},
+		{"type":"tetrahedron4", "nodes":[100,73,97,130]},
+		{"type":"tetrahedron4", "nodes":[118,76,133,95]},
+		{"type":"tetrahedron4", "nodes":[34,24,121,33]},
+		{"type":"tetrahedron4", "nodes":[59,41,101,116]},
+		{"type":"tetrahedron4", "nodes":[74,122,58,102]},
+		{"type":"tetrahedron4", "nodes":[53,125,99,102]},
+		{"type":"tetrahedron4", "nodes":[115,117,66,78]},
+		{"type":"tetrahedron4", "nodes":[61,127,81,17]},
+		{"type":"tetrahedron4", "nodes":[53,125,56,99]},
+		{"type":"tetrahedron4", "nodes":[119,75,112,97]},
+		{"type":"tetrahedron4", "nodes":[56,125,136,99]},
+		{"type":"tetrahedron4", "nodes":[104,118,52,62]},
+		{"type":"tetrahedron4", "nodes":[122,113,58,104]},
+		{"type":"tetrahedron4", "nodes":[74,84,99,56]},
+		{"type":"tetrahedron4", "nodes":[84,132,99,56]},
+		{"type":"tetrahedron4", "nodes":[107,88,64,22]},
+		{"type":"tetrahedron4", "nodes":[48,85,40,116]},
+		{"type":"tetrahedron4", "nodes":[132,56,136,99]},
+		{"type":"tetrahedron4", "nodes":[85,114,40,116]},
+		{"type":"tetrahedron4", "nodes":[90,122,58,104]},
+		{"type":"tetrahedron4", "nodes":[23,107,35,64]},
+		{"type":"tetrahedron4", "nodes":[5,124,6,44]},
+		{"type":"tetrahedron4", "nodes":[88,124,22,107]},
+		{"type":"tetrahedron4", "nodes":[17,10,9,111]},
+		{"type":"tetrahedron4", "nodes":[103,23,35,64]},
+		{"type":"tetrahedron4", "nodes":[41,42,49,101]},
+		{"type":"tetrahedron4", "nodes":[11,134,19,12]},
+		{"type":"tetrahedron4", "nodes":[133,76,62,54]},
+		{"type":"tetrahedron4", "nodes":[59,48,116,69]},
+		{"type":"tetrahedron4", "nodes":[128,133,62,54]},
+		{"type":"tetrahedron4", "nodes":[61,125,120,127]},
+		{"type":"tetrahedron4", "nodes":[61,127,120,111]},
+		{"type":"tetrahedron4", "nodes":[120,53,63,135]},
+		{"type":"tetrahedron4", "nodes":[76,118,133,62]},
+		{"type":"tetrahedron4", "nodes":[94,43,89,51]},
+		{"type":"tetrahedron4", "nodes":[88,94,89,51]},
+		{"type":"tetrahedron4", "nodes":[108,138,30,27]},
+		{"type":"tetrahedron4", "nodes":[59,52,91,55]},
+		{"type":"tetrahedron4", "nodes":[118,128,133,62]},
+		{"type":"tetrahedron4", "nodes":[36,107,35,22]},
+		{"type":"tetrahedron4", "nodes":[110,128,63,54]},
+		{"type":"tetrahedron4", "nodes":[129,57,139,126]},
+		{"type":"tetrahedron4", "nodes":[119,25,121,75]},
+		{"type":"tetrahedron4", "nodes":[92,131,110,54]},
+		{"type":"tetrahedron4", "nodes":[42,59,101,89]},
+		{"type":"tetrahedron4", "nodes":[71,120,135,96]},
+		{"type":"tetrahedron4", "nodes":[60,24,75,121]},
+		{"type":"tetrahedron4", "nodes":[106,42,101,89]},
+		{"type":"tetrahedron4", "nodes":[72,21,13,129]},
+		{"type":"tetrahedron4", "nodes":[59,106,101,89]},
+		{"type":"tetrahedron4", "nodes":[81,127,9,17]},
+		{"type":"tetrahedron4", "nodes":[20,134,19,66]},
+		{"type":"tetrahedron4", "nodes":[123,95,68,91]},
+		{"type":"tetrahedron4", "nodes":[20,21,13,72]},
+		{"type":"tetrahedron4", "nodes":[95,52,68,91]},
+		{"type":"tetrahedron4", "nodes":[119,33,121,25]},
+		{"type":"tetrahedron4", "nodes":[108,138,57,126]},
+		{"type":"tetrahedron4", "nodes":[50,59,49,42]},
+		{"type":"tetrahedron4", "nodes":[139,28,87,29]},
+		{"type":"tetrahedron4", "nodes":[100,108,80,130]},
+		{"type":"tetrahedron4", "nodes":[73,100,80,130]},
+		{"type":"tetrahedron4", "nodes":[113,122,69,116]},
+		{"type":"tetrahedron4", "nodes":[138,108,57,82]},
+		{"type":"tetrahedron4", "nodes":[31,80,27,26]},
+		{"type":"tetrahedron4", "nodes":[140,1,86,37]},
+		{"type":"tetrahedron4", "nodes":[81,61,71,111]},
 		{"type":"tetrahedron4", "nodes":[48,41,49,59]},
+		{"type":"tetrahedron4", "nodes":[134,20,72,66]},
+		{"type":"tetrahedron4", "nodes":[140,7,8,65]},
+		{"type":"tetrahedron4", "nodes":[66,67,57,126]},
+		{"type":"tetrahedron4", "nodes":[132,83,38,109]},
+		{"type":"tetrahedron4", "nodes":[92,115,126,67]},
+		{"type":"tetrahedron4", "nodes":[75,119,79,97]},
+		{"type":"tetrahedron4", "nodes":[119,25,79,32]},
+		{"type":"tetrahedron4", "nodes":[73,75,79,97]},
+		{"type":"tetrahedron4", "nodes":[74,53,99,102]},
+		{"type":"tetrahedron4", "nodes":[46,83,45,38]},
+		{"type":"tetrahedron4", "nodes":[113,59,91,101]},
+		{"type":"tetrahedron4", "nodes":[92,131,67,130]},
+		{"type":"tetrahedron4", "nodes":[53,125,102,120]},
+		{"type":"tetrahedron4", "nodes":[61,56,105,65]},
+		{"type":"tetrahedron4", "nodes":[73,131,67,54]},
+		{"type":"tetrahedron4", "nodes":[136,56,109,105]},
+		{"type":"tetrahedron4", "nodes":[61,125,105,56]},
+		{"type":"tetrahedron4", "nodes":[26,100,79,32]},
+		{"type":"tetrahedron4", "nodes":[73,100,97,79]},
+		{"type":"tetrahedron4", "nodes":[100,119,97,79]},
+		{"type":"tetrahedron4", "nodes":[134,117,66,115]},
+		{"type":"tetrahedron4", "nodes":[41,48,40,116]},
+		{"type":"tetrahedron4", "nodes":[59,106,89,55]},
+		{"type":"tetrahedron4", "nodes":[102,53,135,63]},
+		{"type":"tetrahedron4", "nodes":[134,19,66,78]},
+		{"type":"tetrahedron4", "nodes":[93,123,77,55]},
+		{"type":"tetrahedron4", "nodes":[54,110,70,63]},
+		{"type":"tetrahedron4", "nodes":[134,57,126,66]},
+		{"type":"tetrahedron4", "nodes":[123,93,91,55]},
+		{"type":"tetrahedron4", "nodes":[53,120,102,135]},
+		{"type":"tetrahedron4", "nodes":[73,131,97,130]},
+		{"type":"tetrahedron4", "nodes":[115,134,126,66]},
+		{"type":"tetrahedron4", "nodes":[80,67,130,126]},
+		{"type":"tetrahedron4", "nodes":[38,37,109,45]},
+		{"type":"tetrahedron4", "nodes":[78,81,137,18]},
+		{"type":"tetrahedron4", "nodes":[76,131,133,97]},
+		{"type":"tetrahedron4", "nodes":[58,53,102,63]},
+		{"type":"tetrahedron4", "nodes":[77,93,55,64]},
+		{"type":"tetrahedron4", "nodes":[78,117,96,70]},
+		{"type":"tetrahedron4", "nodes":[74,58,53,102]},
+		{"type":"tetrahedron4", "nodes":[131,92,67,54]},
+		{"type":"tetrahedron4", "nodes":[93,89,55,64]},
+		{"type":"tetrahedron4", "nodes":[100,31,26,80]},
+		{"type":"tetrahedron4", "nodes":[100,73,80,79]},
+		{"type":"tetrahedron4", "nodes":[134,57,66,72]},
+		{"type":"tetrahedron4", "nodes":[133,76,97,112]},
+		{"type":"tetrahedron4", "nodes":[16,127,8,105]},
+		{"type":"tetrahedron4", "nodes":[7,1,2,86]},
+		{"type":"tetrahedron4", "nodes":[75,76,112,97]},
 		{"type":"tetrahedron4", "nodes":[48,85,116,69]},
-		{"type":"tetrahedron4", "nodes":[40,85,116,48]},
-		{"type":"tetrahedron4", "nodes":[120,61,53,125]},
-		{"type":"tetrahedron4", "nodes":[120,71,53,61]},
-		{"type":"tetrahedron4", "nodes":[16,105,127,8]},
-		{"type":"tetrahedron4", "nodes":[87,138,57,82]},
-		{"type":"tetrahedron4", "nodes":[135,63,102,53]},
-		{"type":"tetrahedron4", "nodes":[110,96,117,70]},
-		{"type":"tetrahedron4", "nodes":[63,135,96,71]},
-		{"type":"tetrahedron4", "nodes":[135,63,96,110]},
-		{"type":"tetrahedron4", "nodes":[120,135,102,53]},
-		{"type":"tetrahedron4", "nodes":[135,120,63,53]},
-		{"type":"tetrahedron4", "nodes":[56,83,132,136]},
-		{"type":"tetrahedron4", "nodes":[110,63,70,54]},
-		{"type":"tetrahedron4", "nodes":[80,26,100,79]},
-		{"type":"tetrahedron4", "nodes":[112,121,60,75]},
-		{"type":"tetrahedron4", "nodes":[36,5,124,6]},
-		{"type":"tetrahedron4", "nodes":[115,57,134,126]},
-		{"type":"tetrahedron4", "nodes":[3,139,4,87]},
-		{"type":"tetrahedron4", "nodes":[137,18,11,78]},
-		{"type":"tetrahedron4", "nodes":[11,134,117,78]},
-		{"type":"tetrahedron4", "nodes":[117,115,70,78]},
-		{"type":"tetrahedron4", "nodes":[14,87,139,129]},
-		{"type":"tetrahedron4", "nodes":[111,71,117,96]},
-		{"type":"tetrahedron4", "nodes":[134,11,19,78]},
-		{"type":"tetrahedron4", "nodes":[23,34,60,103]},
-		{"type":"tetrahedron4", "nodes":[71,111,78,81]},
-		{"type":"tetrahedron4", "nodes":[64,94,89,88]},
-		{"type":"tetrahedron4", "nodes":[130,126,67,92]},
-		{"type":"tetrahedron4", "nodes":[20,134,12,19]},
-		{"type":"tetrahedron4", "nodes":[29,139,3,87]},
-		{"type":"tetrahedron4", "nodes":[8,105,140,65]},
-		{"type":"tetrahedron4", "nodes":[114,85,47,84]},
-		{"type":"tetrahedron4", "nodes":[15,8,7,65]},
-		{"type":"tetrahedron4", "nodes":[68,112,60,75]},
-		{"type":"tetrahedron4", "nodes":[98,112,60,68]},
-		{"type":"tetrahedron4", "nodes":[77,98,60,68]},
-		{"type":"tetrahedron4", "nodes":[98,77,60,103]},
-		{"type":"tetrahedron4", "nodes":[73,54,76,131]},
-		{"type":"tetrahedron4", "nodes":[52,91,104,113]},
-		{"type":"tetrahedron4", "nodes":[77,23,60,103]},
-		{"type":"tetrahedron4", "nodes":[61,120,127,125]},
-		{"type":"tetrahedron4", "nodes":[111,120,127,61]},
-		{"type":"tetrahedron4", "nodes":[55,106,89,93]},
-		{"type":"tetrahedron4", "nodes":[130,80,67,126]},
-		{"type":"tetrahedron4", "nodes":[64,55,89,93]},
-		{"type":"tetrahedron4", "nodes":[55,91,106,93]},
-		{"type":"tetrahedron4", "nodes":[97,119,112,75]},
-		{"type":"tetrahedron4", "nodes":[90,63,128,62]},
-		{"type":"tetrahedron4", "nodes":[135,63,128,90]},
-		{"type":"tetrahedron4", "nodes":[112,97,76,133]},
-		{"type":"tetrahedron4", "nodes":[91,55,59,52]},
-		{"type":"tetrahedron4", "nodes":[63,54,128,62]},
-		{"type":"tetrahedron4", "nodes":[54,73,67,131]},
-		{"type":"tetrahedron4", "nodes":[25,119,75,121]},
-		{"type":"tetrahedron4", "nodes":[98,95,112,68]},
-		{"type":"tetrahedron4", "nodes":[124,5,44,6]},
-		{"type":"tetrahedron4", "nodes":[87,138,29,139]},
-		{"type":"tetrahedron4", "nodes":[80,27,31,26]},
-		{"type":"tetrahedron4", "nodes":[55,123,91,93]},
-		{"type":"tetrahedron4", "nodes":[105,56,136,109]},
-		{"type":"tetrahedron4", "nodes":[56,83,136,109]},
-		{"type":"tetrahedron4", "nodes":[83,56,105,109]},
-		{"type":"tetrahedron4", "nodes":[80,130,100,108]},
-		{"type":"tetrahedron4", "nodes":[114,74,132,99]},
-		{"type":"tetrahedron4", "nodes":[115,110,70,92]},
-		{"type":"tetrahedron4", "nodes":[74,84,132,99]},
-		{"type":"tetrahedron4", "nodes":[126,115,67,92]},
-		{"type":"tetrahedron4", "nodes":[46,38,83,45]},
-		{"type":"tetrahedron4", "nodes":[83,109,65,86]},
-		{"type":"tetrahedron4", "nodes":[34,23,35,103]},
-		{"type":"tetrahedron4", "nodes":[87,57,129,72]},
-		{"type":"tetrahedron4", "nodes":[111,137,78,81]},
-		{"type":"tetrahedron4", "nodes":[135,63,110,128]}
+		{"type":"tetrahedron4", "nodes":[84,74,114,85]},
+		{"type":"tetrahedron4", "nodes":[59,113,69,116]},
+		{"type":"tetrahedron4", "nodes":[73,76,75,97]},
+		{"type":"tetrahedron4", "nodes":[100,119,79,32]},
+		{"type":"tetrahedron4", "nodes":[103,23,77,60]},
+		{"type":"tetrahedron4", "nodes":[127,81,9,111]},
+		{"type":"tetrahedron4", "nodes":[109,140,105,65]},
+		{"type":"tetrahedron4", "nodes":[127,61,81,111]},
+		{"type":"tetrahedron4", "nodes":[140,109,86,65]},
+		{"type":"tetrahedron4", "nodes":[115,92,70,67]},
+		{"type":"tetrahedron4", "nodes":[110,92,70,115]},
+		{"type":"tetrahedron4", "nodes":[115,66,67,70]},
+		{"type":"tetrahedron4", "nodes":[115,78,66,70]},
+		{"type":"tetrahedron4", "nodes":[123,98,77,68]},
+		{"type":"tetrahedron4", "nodes":[95,104,52,91]},
+		{"type":"tetrahedron4", "nodes":[93,107,94,64]},
+		{"type":"tetrahedron4", "nodes":[11,134,78,19]},
+		{"type":"tetrahedron4", "nodes":[90,118,104,62]},
+		{"type":"tetrahedron4", "nodes":[4,139,21,87]},
+		{"type":"tetrahedron4", "nodes":[20,134,72,129]},
+		{"type":"tetrahedron4", "nodes":[71,78,96,70]},
+		{"type":"tetrahedron4", "nodes":[14,21,139,129]},
+		{"type":"tetrahedron4", "nodes":[103,93,77,64]},
+		{"type":"tetrahedron4", "nodes":[71,117,96,78]},
+		{"type":"tetrahedron4", "nodes":[20,72,13,129]},
+		{"type":"tetrahedron4", "nodes":[95,98,68,112]},
+		{"type":"tetrahedron4", "nodes":[75,60,121,112]},
+		{"type":"tetrahedron4", "nodes":[74,122,102,99]},
+		{"type":"tetrahedron4", "nodes":[122,74,114,99]},
+		{"type":"tetrahedron4", "nodes":[70,110,96,63]},
+		{"type":"tetrahedron4", "nodes":[110,135,96,63]},
+		{"type":"tetrahedron4", "nodes":[71,70,96,63]},
+		{"type":"tetrahedron4", "nodes":[37,86,45,2]},
+		{"type":"tetrahedron4", "nodes":[135,71,96,63]},
+		{"type":"tetrahedron4", "nodes":[122,113,69,58]},
+		{"type":"tetrahedron4", "nodes":[76,131,73,54]},
+		{"type":"tetrahedron4", "nodes":[114,85,69,116]},
+		{"type":"tetrahedron4", "nodes":[122,114,69,116]},
+		{"type":"tetrahedron4", "nodes":[74,114,85,69]},
+		{"type":"tetrahedron4", "nodes":[74,122,114,69]}
 	],
 
 	"node restrictions": [
@@ -562,26 +562,893 @@
 		{ "node":50, "dy":true},
 		{ "node":51, "dy":true}
 	],
-
 	"load patterns":[
 		{
-			"label": "First test pattern",
+			"label": "pressure",
 			"surface loads":[
-				{"type": "triangle3", "nodes": [2,15,86], "forces": [[1,0,0],[0.980785,0.19509,0],[0.985059,0.115082,-0.128119]]},
-				{"type": "triangle3", "nodes": [2,86,45], "forces": [[1,0,0],[0.985059,0.115082,-0.128119],[0.980785,0,-0.19509]]},
-				{"type": "triangle3", "nodes": [45,86,83], "forces": [[0.980785,0,-0.19509],[0.985059,0.115082,-0.128119],[0.952577,0.122436,-0.278579]]},
-				{"type": "triangle3", "nodes": [45,83,46], "forces": [[0.980785,0,-0.19509],[0.952577,0.122436,-0.278579],[0.985059,0.115082,-0.128119]]}
 				{
 					"type": "triangle3", 
-					"nodes": [45,83, 46], 
+					"nodes": [59, 52, 55], 
 					"forces": [
-						[	0.980785,	0,	-0.19509	],
-						[	0.952577,	0.122436,	-0.278579	],
-						[	0.92388,	0,	-0.382683	]
+						[	0.549848,	0.168363,	-0.81812	],
+						[	0.522257,	0.366307,	-0.770109	],
+						[	0.375555,	0.286757,	-0.881322	]
 					]
 				},
+				{
+					"type": "triangle3",
+					"nodes": [60, 24, 23],
+					"forces": [
+						[	0.144467,	0.499804,	-0.854005	],
+						[	0,	0.55557,	-0.83147	],
+						[	0,	0.382683,	-0.92388	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [62, 52, 58],
+					"forces": [
+						[	0.518922,	0.543015,	-0.660193	],
+						[	0.522257,	0.366307,	-0.770109	],
+						[	0.676064,	0.405638,	-0.615138	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [53, 63, 58],
+					"forces": [
+						[	0.792254,	0.432386,	-0.430554	],
+						[	0.654948,	0.578663,	-0.485995	],
+						[	0.676064,	0.405638,	-0.615138	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [64, 23, 22],
+					"forces": [
+						[	0.182026,	0.245681,	-0.952107	],
+						[	0,	0.382683,	-0.92388	],
+						[	0,	0.19509,	-0.980785	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [16, 65, 15],
+					"forces": [
+						[	0.92388,	0.382683,	0	],
+						[	0.953742,	0.254755,	-0.159611	],
+						[	0.980785,	0.19509,	0	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [62, 63, 54],
+					"forces": [
+						[	0.518922,	0.543015,	-0.660193	],
+						[	0.654948,	0.578663,	-0.485995	],
+						[	0.47161,	0.702419,	-0.533096	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [62, 58, 63],
+					"forces": [
+						[	0.518922,	0.543015,	-0.660193	],
+						[	0.676064,	0.405638,	-0.615138	],
+						[	0.654948,	0.578663,	-0.485995	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [56, 61, 53],
+					"forces": [
+						[	0.896977,	0.264205,	-0.354439	],
+						[	0.865713,	0.459869,	-0.197638	],
+						[	0.792254,	0.432386,	-0.430554	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [48, 59, 49],
+					"forces": [
+						[	0.707107,	0,	-0.707107	],
+						[	0.549848,	0.168363,	-0.81812	],
+						[	0.55557,	0,	-0.83147	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [66, 19, 20],
+					"forces": [
+						[	0.46165,	0.866418,	-0.190261	],
+						[	0.55557,	0.83147,	0	],
+						[	0.382683,	0.92388,	0	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [67, 66, 57],
+					"forces": [
+						[	0.383506,	0.832851,	-0.399103	],
+						[	0.46165,	0.866418,	-0.190261	],
+						[	0.290082,	0.914713,	-0.281339	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [56, 65, 61],
+					"forces": [
+						[	0.896977,	0.264205,	-0.354439	],
+						[	0.953742,	0.254755,	-0.159611	],
+						[	0.865713,	0.459869,	-0.197638	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [65, 16, 61],
+					"forces": [
+						[	0.953742,	0.254755,	-0.159611	],
+						[	0.92388,	0.382683,	0	],
+						[	0.865713,	0.459869,	-0.197638	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [52, 68, 55],
+					"forces": [
+						[	0.522257,	0.366307,	-0.770109	],
+						[	0.335874,	0.486897,	-0.8063	],
+						[	0.375555,	0.286757,	-0.881322	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [69, 59, 48],
+					"forces": [
+						[	0.690326,	0.209216,	-0.692588	],
+						[	0.549848,	0.168363,	-0.81812	],
+						[	0.707107,	0,	-0.707107	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [70, 67, 54],
+					"forces": [
+						[	0.582116,	0.730915,	-0.356236	],
+						[	0.383506,	0.832851,	-0.399103	],
+						[	0.47161,	0.702419,	-0.533096	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [53, 71, 63],
+					"forces": [
+						[	0.792254,	0.432386,	-0.430554	],
+						[	0.732175,	0.61064,	-0.301726	],
+						[	0.654948,	0.578663,	-0.485995	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [72, 20, 21],
+					"forces": [
+						[	0.315631,	0.940079,	-0.128956	],
+						[	0.382683,	0.92388,	0	],
+						[	0.19509,	0.980785,	0	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [20, 72, 66],
+					"forces": [
+						[	0.382683,	0.92388,	0	],
+						[	0.315631,	0.940079,	-0.128956	],
+						[	0.46165,	0.866418,	-0.190261	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [67, 73, 54],
+					"forces": [
+						[	0.383506,	0.832851,	-0.399103	],
+						[	0.286073,	0.762898,	-0.579783	],
+						[	0.47161,	0.702419,	-0.533096	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [76, 62, 54],
+					"forces": [
+						[	0.369925,	0.632411,	-0.680597	],
+						[	0.518922,	0.543015,	-0.660193	],
+						[	0.47161,	0.702419,	-0.533096	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [77, 60, 23], 
+					"forces": [
+						[	0.220365,	0.364325,	-0.904824	], 
+						[	0.144467,	0.499804,	-0.854005	],
+						[	0,	0.382683,	-0.92388	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [77, 64, 55],
+					"forces": [
+						[	0.220365,	0.364325,	-0.904824	],
+						[	0.182026,	0.245681,	-0.952107	],
+						[	0.375555,	0.286757,	-0.881322	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [64, 77, 23],
+					"forces": [
+						[	0.182026,	0.245681,	-0.952107	],
+						[	0.220365,	0.364325,	-0.904824	],
+						[	0,	0.382683,	-0.92388	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [68, 77, 55],
+					"forces": [
+						[	0.335874,	0.486897,	-0.8063	],
+						[	0.220365,	0.364325,	-0.904824	],
+						[	0.375555,	0.286757,	-0.881322	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [68, 60, 77],
+					"forces": [
+						[	0.335874,	0.486897,	-0.8063	],
+						[	0.144467,	0.499804,	-0.854005	],
+						[	0.220365,	0.364325,	-0.904824	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [57, 66, 72],
+					"forces": [
+						[	0.290082,	0.914713,	-0.281339	],
+						[	0.46165,	0.866418,	-0.190261	],
+						[	0.315631,	0.940079,	-0.128956	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [52, 69, 58],
+					"forces": [
+						[	0.522257,	0.366307,	-0.770109	],
+						[	0.690326,	0.209216,	-0.692588	],
+						[	0.676064,	0.405638,	-0.615138	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [69, 52, 59],
+					"forces": [
+						[	0.690326,	0.209216,	-0.692588	],
+						[	0.522257,	0.366307,	-0.770109	],
+						[	0.549848,	0.168363,	-0.81812	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [62, 68, 52],
+					"forces": [
+						[	0.518922,	0.543015,	-0.660193	],
+						[	0.335874,	0.486897,	-0.8063	],
+						[	0.522257,	0.366307,	-0.770109	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [62, 76, 68],
+					"forces": [
+						[	0.518922,	0.543015,	-0.660193	],
+						[	0.369925,	0.632411,	-0.680597	],
+						[	0.335874,	0.486897,	-0.8063	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [61, 71, 53],
+					"forces": [
+						[	0.865713,	0.459869,	-0.197638	],
+						[	0.732175,	0.61064,	-0.301726	],
+						[	0.792254,	0.432386,	-0.430554	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [75, 25, 24],
+					"forces": [
+						[	0.18703,	0.639751,	-0.745478	],
+						[	0,	0.707107,	-0.707107	],
+						[	0,	0.55557,	-0.83147	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [70, 66, 67],
+					"forces": [
+						[	0.582116,	0.730915,	-0.356236	],
+						[	0.46165,	0.866418,	-0.190261	],
+						[	0.383506,	0.832851,	-0.399103	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [78, 19, 66],
+					"forces": [
+						[	0.649762,	0.74161,	-0.166808	],
+						[	0.55557,	0.83147,	0	],
+						[	0.46165,	0.866418,	-0.190261	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [70, 78, 66],
+					"forces": [
+						[	0.582116,	0.730915,	-0.356236	],
+						[	0.649762,	0.74161,	-0.166808	],
+						[	0.46165,	0.866418,	-0.190261	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [73, 79, 75],
+					"forces": [
+						[	0.286073,	0.762898,	-0.579783	],
+						[	0.119047,	0.790784,	-0.600407	],
+						[	0.18703,	0.639751,	-0.745478	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [78, 18, 19],
+					"forces": [
+						[	0.649762,	0.74161,	-0.166808	],
+						[	0.707107,	0.707107,	0	],
+						[	0.55557,	0.83147,	0	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [25, 79, 26],
+					"forces": [
+						[	0,	0.707107,	-0.707107	],
+						[	0.119047,	0.790784,	-0.600407	],
+						[	0,	0.83147,	-0.55557	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [25, 75, 79],
+					"forces": [
+						[	0,	0.707107,	-0.707107	],
+						[	0.18703,	0.639751,	-0.745478	],
+						[	0.119047,	0.790784,	-0.600407	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [76, 54, 73],
+					"forces": [
+						[	0.369925,	0.632411,	-0.680597	],
+						[	0.47161,	0.702419,	-0.533096	],
+						[	0.286073,	0.762898,	-0.579783	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [71, 70, 63],
+					"forces": [
+						[	0.732175,	0.61064,	-0.301726	],
+						[	0.582116,	0.730915,	-0.356236	],
+						[	0.654948,	0.578663,	-0.485995	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [70, 54, 63],
+					"forces": [
+						[	0.582116,	0.730915,	-0.356236	],
+						[	0.47161,	0.702419,	-0.533096	],
+						[	0.654948,	0.578663,	-0.485995	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [74, 53, 58],
+					"forces": [
+						[	0.801256,	0.256839,	-0.540391	],
+						[	0.792254,	0.432386,	-0.430554	],
+						[	0.676064,	0.405638,	-0.615138	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [74, 56, 53],
+					"forces": [
+						[	0.801256,	0.256839,	-0.540391	],
+						[	0.896977,	0.264205,	-0.354439	],
+						[	0.792254,	0.432386,	-0.430554	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [69, 74, 58],
+					"forces": [
+						[	0.690326,	0.209216,	-0.692588	],
+						[	0.801256,	0.256839,	-0.540391	],
+						[	0.676064,	0.405638,	-0.615138	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [26, 80, 27],
+					"forces": [
+						[	0,	0.83147,	-0.55557	],
+						[	0.207232,	0.873523,	-0.440469	],
+						[	0,	0.92388,	-0.382683	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [80, 67, 57],
+					"forces": [
+						[	0.207232,	0.873523,	-0.440469	],
+						[	0.383506,	0.832851,	-0.399103	],
+						[	0.290082,	0.914713,	-0.281339	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [26, 79, 80],
+					"forces": [
+						[	0,	0.83147,	-0.55557	],
+						[	0.119047,	0.790784,	-0.600407	],
+						[	0.207232,	0.873523,	-0.440469	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [80, 73, 67],
+					"forces": [
+						[	0.207232,	0.873523,	-0.440469	],
+						[	0.286073,	0.762898,	-0.579783	],
+						[	0.383506,	0.832851,	-0.399103	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [79, 73, 80],
+					"forces": [
+						[	0.119047,	0.790784,	-0.600407	],
+						[	0.286073,	0.762898,	-0.579783	],
+						[	0.207232,	0.873523,	-0.440469	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [78, 70, 71],
+					"forces": [
+						[	0.649762,	0.74161,	-0.166808	],
+						[	0.582116,	0.730915,	-0.356236	],
+						[	0.732175,	0.61064,	-0.301726	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [75, 60, 68],
+					"forces": [
+						[	0.18703,	0.639751,	-0.745478	],
+						[	0.144467,	0.499804,	-0.854005	],
+						[	0.335874,	0.486897,	-0.8063	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [60, 75, 24],
+					"forces": [
+						[	0.144467,	0.499804,	-0.854005	],
+						[	0.18703,	0.639751,	-0.745478	],
+						[	0,	0.55557,	-0.83147	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [75, 68, 76],
+					"forces": [
+						[	0.18703,	0.639751,	-0.745478	],
+						[	0.335874,	0.486897,	-0.8063	],
+						[	0.369925,	0.632411,	-0.680597	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [75, 76, 73],
+					"forces": [
+						[	0.18703,	0.639751,	-0.745478	],
+						[	0.369925,	0.632411,	-0.680597	],
+						[	0.286073,	0.762898,	-0.579783	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [81, 18, 78],
+					"forces": [
+						[	0.772734,	0.620144,	-0.135293	],
+						[	0.707107,	0.707107,	0	],
+						[	0.649762,	0.74161,	-0.166808	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [71, 81, 78],
+					"forces": [
+						[	0.732175,	0.61064,	-0.301726	],
+						[	0.772734,	0.620144,	-0.135293	],
+						[	0.649762,	0.74161,	-0.166808	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [81, 17, 18],
+					"forces": [
+						[	0.772734,	0.620144,	-0.135293	],
+						[	0.83147,	0.55557,	0	],
+						[	0.707107,	0.707107,	0	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [61, 81, 71],
+					"forces": [
+						[	0.865713,	0.459869,	-0.197638	],
+						[	0.772734,	0.620144,	-0.135293	],
+						[	0.732175,	0.61064,	-0.301726	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [17, 61, 16],
+					"forces": [
+						[	0.83147,	0.55557,	0	],
+						[	0.865713,	0.459869,	-0.197638	],
+						[	0.92388,	0.382683,	0	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [61, 17, 81],
+					"forces": [
+						[	0.865713,	0.459869,	-0.197638	],
+						[	0.83147,	0.55557,	0	],
+						[	0.772734,	0.620144,	-0.135293	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [83, 46, 45],
+					"forces": [
+						[	0.952577,	0.122436,	-0.278579	],
+						[	0.92388,	0,	-0.382683	],
+						[	0.980785,	0,	-0.19509	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [83, 65, 56],
+					"forces": [
+						[	0.952577,	0.122436,	-0.278579	],
+						[	0.953742,	0.254755,	-0.159611	],
+						[	0.896977,	0.264205,	-0.354439	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [46, 84, 47],
+					"forces": [
+						[	0.92388,	0,	-0.382683	],
+						[	0.877043,	0.125021,	-0.46386	],
+						[	0.83147,	0,	-0.55557	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [47, 85, 48],
+					"forces": [
+						[	0.83147,	0,	-0.55557	],
+						[	0.791478,	0.118893,	-0.599523	],
+						[	0.707107,	0,	-0.707107	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [69, 85, 74],
+					"forces": [
+						[	0.690326,	0.209216,	-0.692588	],
+						[	0.791478,	0.118893,	-0.599523	],
+						[	0.801256,	0.256839,	-0.540391	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [85, 69, 48],
+					"forces": [
+						[	0.791478,	0.118893,	-0.599523	],
+						[	0.690326,	0.209216,	-0.692588	],
+						[	0.707107,	0,	-0.707107	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [15, 86, 2],
+					"forces": [
+						[	0.980785,	0.19509,	0	],
+						[	0.985059,	0.115082,	-0.128119	],
+						[	1,	0,	0	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [86, 15, 65],
+					"forces": [
+						[	0.985059,	0.115082,	-0.128119	],
+						[	0.980785,	0.19509,	0	],
+						[	0.953742,	0.254755,	-0.159611	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [86, 45, 2],
+					"forces": [
+						[	0.985059,	0.115082,	-0.128119	],
+						[	0.980785,	0,	-0.19509	],
+						[	1,	0,	0	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [86, 83, 45],
+					"forces": [
+						[	0.985059,	0.115082,	-0.128119	],
+						[	0.952577,	0.122436,	-0.278579	],
+						[	0.980785,	0,	-0.19509	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [65, 83, 86],
+					"forces": [
+						[	0.953742,	0.254755,	-0.159611	],
+						[	0.952577,	0.122436,	-0.278579	],
+						[	0.952577,	0.122436,	-0.278579	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [84, 85, 47],
+					"forces": [
+						[	0.877043,	0.125021,	-0.46386	],
+						[	0.791478,	0.118893,	-0.599523	],
+						[	0.83147,	0,	-0.55557	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [84, 74, 85],
+					"forces": [
+						[	0.877043,	0.125021,	-0.46386	],
+						[	0.801256,	0.256839,	-0.540391	],
+						[	0.791478,	0.118893,	-0.599523	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [84, 46, 83],
+					"forces": [
+						[	0.877043,	0.125021,	-0.46386	],
+						[	0.92388,	0,	-0.382683	],
+						[	0.952577,	0.122436,	-0.278579	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [56, 84, 83],
+					"forces": [
+						[	0.896977,	0.264205,	-0.354439	],
+						[	0.877043,	0.125021,	-0.46386	],
+						[	0.952577,	0.122436,	-0.278579	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [84, 56, 74],
+					"forces": [
+						[	0.877043,	0.125021,	-0.46386	],
+						[	0.896977,	0.264205,	-0.354439	],
+						[	0.801256,	0.256839,	-0.540391	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [27, 82, 28],
+					"forces": [
+						[	0,	0.92388,	-0.382683	],
+						[	0.133769,	0.941057,	-0.310672	],
+						[	0,	0.980785,	-0.19509	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [82, 27, 80],
+					"forces": [
+						[	0.133769,	0.941057,	-0.310672	],
+						[	0,	0.92388,	-0.382683	],
+						[	0.207232,	0.873523,	-0.440469	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [80, 57, 82],
+					"forces": [
+						[	0.207232,	0.873523,	-0.440469	],
+						[	0.290082,	0.914713,	-0.281339	],
+						[	0.133769,	0.941057,	-0.310672	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [87, 4, 28],
+					"forces": [
+						[	0.149709,	0.97765,	-0.147605	],
+						[	0,	1,	0	],
+						[	0,	0.980785,	-0.19509	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [82, 87, 28],
+					"forces": [
+						[	0.133769,	0.941057,	-0.310672	],
+						[	0.149709,	0.97765,	-0.147605	],
+						[	0,	0.980785,	-0.19509	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [4, 87, 21],
+					"forces": [
+						[	0,	1,	0	],
+						[	0.149709,	0.97765,	-0.147605	],
+						[	0.19509,	0.980785,	0	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [87, 72, 21],
+					"forces": [
+						[	0.149709,	0.97765,	-0.147605	],
+						[	0.315631,	0.940079,	-0.128956	],
+						[	0.19509,	0.980785,	0	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [88, 22, 6],
+					"forces": [
+						[	0.154073,	0.116322,	-0.981188	],
+						[	0,	0.19509,	-0.980785	],
+						[	0,	0,	-1	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [51, 88, 6],
+					"forces": [
+						[	0.19509,	0,	-0.980785	],
+						[	0.154073,	0.116322,	-0.981188	],
+						[	0,	0,	-1	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [22, 88, 64],
+					"forces": [
+						[	0,	0.19509,	-0.980785	],
+						[	0.154073,	0.116322,	-0.981188	],
+						[	0.182026,	0.245681,	-0.952107	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [55, 89, 59],
+					"forces": [
+						[	0.375555,	0.286757,	-0.881322	],
+						[	0.349477,	0.117558,	-0.929541	],
+						[	0.549848,	0.168363,	-0.81812	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [50, 89, 51],
+					"forces": [
+						[	0.382683,	0,	-0.92388	],
+						[	0.349477,	0.117558,	-0.929541	],
+						[	0.19509,	0,	-0.980785	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [64, 89, 55],
+					"forces": [
+						[	0.182026,	0.245681,	-0.952107	],
+						[	0.349477,	0.117558,	-0.929541	],
+						[	0.375555,	0.286757,	-0.881322	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [89, 64, 88],
+					"forces": [
+						[	0.349477,	0.117558,	-0.929541	],
+						[	0.182026,	0.245681,	-0.952107	],
+						[	0.154073,	0.116322,	-0.981188	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [89, 88, 51],
+					"forces": [
+						[	0.349477,	0.117558,	-0.929541	],
+						[	0.154073,	0.116322,	-0.981188	],
+						[	0.19509,	0,	-0.980785	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [59, 50, 49],
+					"forces": [
+						[	0.549848,	0.168363,	-0.81812	],
+						[	0.382683,	0,	-0.92388	],
+						[	0.55557,	0,	-0.83147	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [89, 50, 59],
+					"forces": [
+						[	0.349477,	0.117558,	-0.929541	],
+						[	0.382683,	0,	-0.92388	],
+						[	0.549848,	0.168363,	-0.81812	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [87, 57, 72],
+					"forces": [
+						[	0.149709,	0.97765,	-0.147605	],
+						[	0.290082,	0.914713,	-0.281339	],
+						[	0.315631,	0.940079,	-0.128956	]
+					]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [82, 57, 87],
+					"forces": [
+						[	0.133769,	0.941057,	-0.310672	],
+						[	0.290082,	0.914713,	-0.281339	],
+						[	0.149709,	0.97765,	-0.147605	]
+					]
+				}
 			]
 		}
 	]
-
 }

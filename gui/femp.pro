@@ -29,6 +29,7 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	fem/elements/Tetrahedron4.h++ fem/elements/Tetrahedron10.h++ \
 	fem/elements/Prism6.h++ \
 	fem/elements/Prism18.h++ \
+	fem/SurfaceLoadOperators/*.h++ \
 	viewer/ViewportData.h++ \
 	viewer/Camera.h++  viewer/DisplayOptions.h++  viewer/ViewportColors.h++  \
 	viewer/BaseViewport.h++ \
@@ -78,6 +79,7 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
 	fem/ElementGroup.c++ fem/NodeGroup.c++ \
 	fem/ProjectVisitor/*.c++ \
+	fem/SurfaceLoadOperators/*.c++ \
 	viewer/ViewportData.c++ \
 	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ViewportColors.c++  \
 	viewer/BaseViewport.c++ \

@@ -31,7 +31,7 @@ template<typename T>
 void QuadrangleFamily<T>::generateQuadratureData()
 {
 	using namespace boost;
-	std::vector<tuple<fem::point, double> > ips;
+	std::vector<tuple<fem::point, T> > ips;
 	
 	for(int d = 1; d < 6; d++)
 	{

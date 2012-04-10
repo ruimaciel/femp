@@ -50,6 +50,7 @@
 #include "fem/ProjectVisitor/SetNodeRestraintsVisitor.h++"
 
 #include "parsers/FemJsonParser.h++"
+#include "parsers/MshParser.h++"
 
 
 
@@ -392,7 +393,6 @@ MainWindow::createActions()
 	connect(ui.actionSaveAs,	SIGNAL(triggered()), this,	SLOT(saveProjectAs()));
 	connect(ui.actionClose,	SIGNAL(triggered()), this,	SLOT(closeProject()));
 	connect(ui.actionQuit,	SIGNAL(triggered()), this,	SLOT(quit()));
-	connect(ui.actionImportMesh,	SIGNAL(triggered()), this,	SLOT(importMesh()));
 	connect(ui.actionNodeRestraints,	SIGNAL(triggered()), this,	SLOT(setNodeRestraints()));
 	connect(ui.actionNodeActions,	SIGNAL(triggered()), this,	SLOT(setNodeActions()));
 	connect(ui.actionRun,	SIGNAL(triggered()), this,	SLOT(runAnalysis()));
@@ -771,52 +771,6 @@ MainWindow::loadOptions()
 			}
 		}
 	}
-}
-
-
-/*
-   Imports a mesh from a mesh document 
- */
-void 
-MainWindow::importMesh()
-{
-	QStringList files;
-	QFile mesh_file;
-	QFileDialog dialog(this);
-
-	// setup the file dialog
-	dialog.setFileMode(QFileDialog::ExistingFile);
-	dialog.setNameFilter(tr("Mesh files (*.msh)"));
-	//TODO import options from ProgramOptions
-
-	if(dialog.exec())
-	{
-		// import file
-		files = dialog.selectedFiles();
-		mesh_file.setFileName(files[0]);
-		if(!mesh_file.open(QIODevice::ReadOnly | QIODevice::Text) )
-		{	// failed to open file
-			//TODO implement variadic method to emulate printf()
-
-			QMessageBox msgBox(this);
-			msgBox.setIcon(QMessageBox::Warning);
-			msgBox.setWindowTitle("Error");
-			msgBox.setText("Unable to open file "+mesh_file.fileName() );
-			msgBox.setDefaultButton(QMessageBox::Ok);
-			msgBox.exec();
-			return;
-		}
-
-		// import mesh from a Gmsh file
-		FILE *f = fdopen(mesh_file.handle(), "r");
-		fem_model_import_msh(f,document.project.model);
-		mesh_file.close();
-
-		//TODO implement way to add document type from the dialog box
-		document.setProjectType( Document::TYPE_SOLID3D);
-	}
-	// now this document has unsaved changes
-	hasUnsavedChanges = true;
 }
 
 

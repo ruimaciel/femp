@@ -65,7 +65,6 @@ public Q_SLOTS:
 	void saveProjectAs();
 	void closeProject();
 	void quit();
-	void importMesh();
 
 	/**
 	Calls the "set node restraints" dialog and, from it's output, sets them

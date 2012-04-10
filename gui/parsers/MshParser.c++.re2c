@@ -353,7 +353,8 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_NUMBER_OF_ELEMENTS_SET:
 					model.element_list.reserve(index_list.back());
-					index_list.pop_back();	
+					//index_list.pop_back();	
+					index_list.clear();
 					break;
 
 				case PR_E_ELEMENT_DEFINITION:

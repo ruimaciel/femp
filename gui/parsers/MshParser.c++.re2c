@@ -9,6 +9,9 @@
 MshParser::MshParser()
 {
 	setParserTable();
+
+	// set the operators
+	surface_load_operator = nullptr;
 }
 
 
@@ -474,11 +477,17 @@ MshParser::parse(std::istream &file, fem::Model &model)
 				case PR_E_ELEMENT_TYPE_SET_FORCE:
 					index_list.pop_front();	// get rid of element index
 					index_list.pop_front();	// get rid of element type: nasty hack
-					surface_load.nodes.assign(index_list.begin(), index_list.end());
-					surface_load.surface_forces.resize(surface_load.nodes.size());
-					//TODO finish this
-					index_list.clear();
-					load_pattern.addSurfaceLoad(surface_load);
+					if(surface_load_operator)
+					{
+						surface_load.nodes.assign(index_list.begin(), index_list.end());
+						surface_load.surface_forces.resize(surface_load.nodes.size());
+
+						//TODO finish this
+						(*surface_load_operator)(surface_load, model);
+
+						index_list.clear();
+						load_pattern.addSurfaceLoad(surface_load);
+					}
 					break;
 					
 				case PR_E_ELEMENT_DEFINITION_FOLLOW_1:
@@ -850,11 +859,10 @@ MshParser::operator() (std::istream &file, fem::Model &model)
 }
 
 
-fem::point 
-MshParser::normalForce(fem::SurfaceLoad const &surface_load, fem::node_ref_t const &) const
+void 
+MshParser::setSurfaceLoadOperator(fem::SurfaceLoadOperator &surface_load_operator)
 {
-	fem::point f;
-
-	return f;
+	this->surface_load_operator = &surface_load_operator;
 }
+
 

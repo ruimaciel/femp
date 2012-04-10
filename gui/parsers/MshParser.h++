@@ -6,9 +6,14 @@
 #include "../fem/Element.h++"
 #include "../fem/SurfaceLoad.h++"
 
+#include "../fem/SurfaceLoadOperators/SurfaceLoadOperator.h++"
+
 class MshParser
 	: public Parser
 {
+protected:
+	fem::SurfaceLoadOperator *surface_load_operator;
+
 protected:
 	enum TerminalToken 
 	{
@@ -208,6 +213,11 @@ public:
 	enum Error::Type  parse(std::istream &file, fem::Model &model);
 
 	enum Error::Type operator() (std::istream &file, fem::Model &model);
+
+	/**
+	sets the constant load operator, to state how to define the surface loads
+	**/
+	void setSurfaceLoadOperator(fem::SurfaceLoadOperator &surface_load_operator);
 
 protected:
 	enum TerminalToken lexer(std::istream &file);

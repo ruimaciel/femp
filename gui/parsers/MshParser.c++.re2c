@@ -344,7 +344,13 @@ MshParser::parse(std::istream &file, fem::Model &model)
 				case PR_E_NUMBER_OF_ELEMENTS:
 					//TODO set limit to how many elements have been parsed
 					ss.push(TT_EOL);
+					ss.push(NT_E_NUMBER_OF_ELEMENTS_SET);
 					ss.push(TT_INDEX);
+					break;
+
+				case PR_E_NUMBER_OF_ELEMENTS_SET:
+					model.element_list.resize(index_list.back());
+					index_list.pop_back();	
 					break;
 
 				case PR_E_ELEMENT_DEFINITION:
@@ -789,6 +795,7 @@ MshParser::setParserTable()
 
 	table	[NT_ELEMENTS]			[TT_OPEN_ELEMENTS]	=	PR_ELEMENTS;
 	table	[NT_E_NUMBER_OF_ELEMENTS]	[TT_INDEX]		=	PR_E_NUMBER_OF_ELEMENTS;
+	table	[NT_E_NUMBER_OF_ELEMENTS_SET]	[TT_EOL]		=	PR_E_NUMBER_OF_ELEMENTS_SET;
 	table	[NT_E_ELEMENT_DEFINITION]	[TT_INDEX]		=	PR_E_ELEMENT_DEFINITION;
 
 	table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_TRIANGLE3]		=	PR_E_ELEMENT_TRIANGLE3;

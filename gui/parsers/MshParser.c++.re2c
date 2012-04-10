@@ -1,18 +1,14 @@
 #include "MshParser.h++"
 
 #include <iostream>	// for cerr
-#include <sstream>
+#include <cstdlib>	// for strtol, strtod
 
 #include <boost/lexical_cast.hpp>
+
 
 MshParser::MshParser()
 {
 	setParserTable();
-}
-
-
-MshParser::~MshParser()
-{
 }
 
 
@@ -31,6 +27,9 @@ MshParser::parse(std::istream &file, fem::Model &model)
 	this->error.code = Error::ERR_OK;
 	this->error.message.clear();
 
+	// set the temp variable's default values
+	load_pattern.label = "Default MSH import load pattern";
+	//TODO set default material
 
 	while(!ss.empty())
 	{
@@ -137,8 +136,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 					std::cout << "TT_ELEMENT_POINT" << std::endl;
 					break;
 				case TT_ELEMENT_QUADRANGLE8:
-					std::cout << "TT_ELEMENT_QUADRANGLE8" << std::endl;
-					break;
+					std::cout << "TT_ELEMENT_QUADRANGLE8" << std::endl; break;
 				case TT_ELEMENT_HEXAHEDRON20:
 					std::cout << "TT_ELEMENT_HEXAHEDRON20" << std::endl;
 					break;
@@ -267,6 +265,12 @@ MshParser::parse(std::istream &file, fem::Model &model)
 					ss.push(TT_VERSION_2_2);
 					break;
 
+				case PR_MF_VERSION_NUMBER_ERROR:
+					this->error.code = Error::ERR_UNSUPPORTED_VERSION;
+					this->error.message = "Unsupported version";
+					return this->error.code;
+					break;
+
 				case PR_MF_FILE_TYPE_ASCII:
 					ss.push(TT_MF_FILE_TYPE_ASCII);
 					break;
@@ -287,15 +291,34 @@ MshParser::parse(std::istream &file, fem::Model &model)
 					break;
 
 				case PR_N_NUMBER_OF_NODES:
-					//TODO set limit to how many nodes have been parsed
 					ss.push(TT_EOL);
 					ss.push(TT_INDEX);
 					break;
 
+				case PR_N_NUMBER_OF_NODES_SET:
+					//TODO set limit to how many nodes have been parsed
+					index_list.pop_back();	// clear up the stack
+					break;
+
 				case PR_N_NODE_DEFINITION:
 					ss.push(TT_EOL);
+					ss.push(NT_N_NODE_DEFINITION_SET);
 					ss.push(NT_COORDINATE);
 					ss.push(TT_INDEX);
+					break;
+
+				case PR_N_NODE_DEFINITION_SET:
+					// set the node coordinates
+					node.x(float_list.front());
+					float_list.pop_front();
+					node.y(float_list.front());
+					float_list.pop_front();
+					node.z(float_list.front());
+					float_list.pop_front();
+
+					// set the node
+					model.setNode(index_list.back(), node);
+					index_list.pop_back();
 					break;
 
 				case PR_N_NODE_DEFINITION_FOLLOW_1:
@@ -330,81 +353,108 @@ MshParser::parse(std::istream &file, fem::Model &model)
 					break;
 
 				case PR_E_ELEMENT_TRIANGLE3:
+					surface_load.type = fem::Element::FE_TRIANGLE3;
 					for(int i = 0; i < 3; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_TRIANGLE3);
 					break;
 
 				case PR_E_ELEMENT_TRIANGLE6:
+					surface_load.type = fem::Element::FE_TRIANGLE6;
 					for(int i = 0; i < 6; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_TRIANGLE6);
 					break;
 
 				case PR_E_ELEMENT_QUADRANGLE4:
+					surface_load.type = fem::Element::FE_QUADRANGLE4;
 					for(int i = 0; i < 4; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_QUADRANGLE4);
 					break;
 
 				case PR_E_ELEMENT_QUADRANGLE8:
+					surface_load.type = fem::Element::FE_QUADRANGLE8;
 					for(int i = 0; i < 8; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_QUADRANGLE8);
 					break;
 
 				case PR_E_ELEMENT_QUADRANGLE9:
+					surface_load.type = fem::Element::FE_QUADRANGLE9;
 					for(int i = 0; i < 9; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_QUADRANGLE9);
 					break;
 
 				case PR_E_ELEMENT_HEXAHEDRON8:
+					element.type = fem::Element::FE_HEXAHEDRON8;
 					for(int i = 0; i < 8; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_HEXAHEDRON8);
 					break;
 
 				case PR_E_ELEMENT_HEXAHEDRON20:
+					element.type = fem::Element::FE_HEXAHEDRON20;
 					for(int i = 0; i < 20; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_HEXAHEDRON20);
 					break;
 
 				case PR_E_ELEMENT_HEXAHEDRON27:
+					element.type = fem::Element::FE_HEXAHEDRON27;
 					for(int i = 7; i < 20; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_HEXAHEDRON27);
 					break;
 
 				case PR_E_ELEMENT_TETRAHEDRON4:
+					element.type = fem::Element::FE_TETRAHEDRON4;
 					for(int i = 0; i < 4; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_TETRAHEDRON4);
 					break;
 
 				case PR_E_ELEMENT_TETRAHEDRON10:
+					element.type = fem::Element::FE_TETRAHEDRON10;
 					for(int i = 0; i < 10; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_TETRAHEDRON10);
 					break;
 
 				case PR_E_ELEMENT_PRISM6:
+					element.type = fem::Element::FE_PRISM6;
 					for(int i = 0; i < 6; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_PRISM6);
 					break;
 
 				case PR_E_ELEMENT_PRISM15:
+					element.type = fem::Element::FE_PRISM15;
 					for(int i = 0; i < 15; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_PRISM15);
 					break;
 
 				case PR_E_ELEMENT_PRISM18:
+					element.type = fem::Element::FE_PRISM18;
 					for(int i = 0; i < 18; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_PRISM18);
+					break;
+
+				case PR_E_ELEMENT_TYPE_SET_ELEMENT:
+					index_list.pop_front();	// get rid of element index
+					element.nodes.assign(index_list.begin(), index_list.end());
+					index_list.clear();
+					model.pushElement(element);
+					break;
+
+				case PR_E_ELEMENT_TYPE_SET_FORCE:
+					index_list.pop_front();	// get rid of element index
+					surface_load.nodes.assign(index_list.begin(), index_list.end());
+					index_list.clear();
+					load_pattern.addSurfaceLoad(surface_load);
 					break;
 					
 				case PR_E_ELEMENT_DEFINITION_FOLLOW_1:
@@ -438,6 +488,11 @@ MshParser::parse(std::istream &file, fem::Model &model)
 					ss.push(TT_INDEX);
 					ss.push(TT_INDEX);
 					ss.push(TT_3_TAGS);
+					break;
+
+				case PR_ELEMENTS_SET:
+					if(!load_pattern.empty())
+						model.pushLoadPattern(load_pattern);
 					break;
 
 				case PR_ELEMENT_FOLLOW_1:
@@ -547,7 +602,7 @@ std:
 		case 3:	// parse nodes section: coordinates
 		{
 	/*!re2c
-	number	{ return TT_NUMBER; }
+	number	{ setNumber(); return TT_NUMBER; }
 	'\n'	{ lex_state = 2; line_number++; return TT_EOL; }
 	"\000"			{ return TT_EOF;	}
 	' '+	{ goto std;	}
@@ -575,7 +630,7 @@ std:
 	[0-9]+	{
 			setIndex();
 			lex_state = 6;	// custom lexer to parse the tags
-			switch(val.index)
+			switch(index_list.back())
 			{
 				case 2:return TT_ELEMENT_TRIANGLE3;
 				case 3:return TT_ELEMENT_QUADRANGLE4;
@@ -658,10 +713,17 @@ std:
 
 void MshParser::setIndex()
 {
-	std::string tmp;
-	tmp.append(tok,pos-tok); 
-	std::istringstream f(tmp);
-	f >> val.index;
+	long number;
+	number = strtol(tok, &pos, 10);
+	index_list.push_back(number);
+}
+
+
+void MshParser::setNumber()
+{
+	float number;
+	number = strtod(tok, &pos);
+	float_list.push_back(number);
 }
 
 
@@ -675,27 +737,34 @@ MshParser::setParserTable()
 	table	[NT_HEADER]		[TT_OPEN_MESH_FORMAT]	=	PR_HEADER;
 
 	table	[NT_MF_VERSION_NUMBER]	[TT_VERSION_2_1]	=	PR_MF_VERSION_NUMBER_2_1;
+	table	[NT_MF_VERSION_NUMBER]	[TT_VERSION_2_2]	=	PR_MF_VERSION_NUMBER_2_2;
+	table	[NT_MF_VERSION_NUMBER]	[TT_UNKNOWN_TOKEN]	=	PR_MF_VERSION_NUMBER_ERROR;	// error just in case
 
 	table	[NT_MF_FILE_TYPE]	[TT_MF_FILE_TYPE_ASCII]	=	PR_MF_FILE_TYPE_ASCII;
 
 	table	[NT_MF_DATA_SIZE]	[TT_MF_DATA_SIZE]	=	PR_MF_DATA_SIZE;
 
-	table	[NT_NODES]		[TT_OPEN_NODES]		=	PR_NODES;
-	table	[NT_N_NUMBER_OF_NODES]	[TT_INDEX]		=	PR_N_NUMBER_OF_NODES;
-	table	[NT_N_NODE_DEFINITION]	[TT_INDEX]		=	PR_N_NODE_DEFINITION;
+	table	[NT_NODES]			[TT_OPEN_NODES]		=	PR_NODES;
+	table	[NT_N_NUMBER_OF_NODES]		[TT_INDEX]		=	PR_N_NUMBER_OF_NODES;
+	table	[NT_N_NUMBER_OF_NODES_SET]	[TT_EOL]		=	PR_N_NUMBER_OF_NODES_SET;
+	table	[NT_N_NODE_DEFINITION]		[TT_INDEX]		=	PR_N_NODE_DEFINITION;
+	table	[NT_N_NODE_DEFINITION_SET]	[TT_EOL]		=	PR_N_NODE_DEFINITION_SET;
 
 	table	[NT_N_NODE_DEFINITION_FOLLOW]	[TT_INDEX]		=	PR_N_NODE_DEFINITION_FOLLOW_1;
 	table	[NT_N_NODE_DEFINITION_FOLLOW]	[TT_CLOSE_NODES]	=	PR_N_NODE_DEFINITION_FOLLOW_2;
 
-	table	[NT_ELEMENTS]		[TT_OPEN_ELEMENTS]	=	PR_ELEMENTS;
-	table	[NT_E_NUMBER_OF_ELEMENTS]	[TT_INDEX]	=	PR_E_NUMBER_OF_ELEMENTS;
-	table	[NT_E_ELEMENT_DEFINITION]	[TT_INDEX]	=	PR_E_ELEMENT_DEFINITION;
+	table	[NT_ELEMENTS]			[TT_OPEN_ELEMENTS]	=	PR_ELEMENTS;
+	table	[NT_E_NUMBER_OF_ELEMENTS]	[TT_INDEX]		=	PR_E_NUMBER_OF_ELEMENTS;
+	table	[NT_E_ELEMENT_DEFINITION]	[TT_INDEX]		=	PR_E_ELEMENT_DEFINITION;
 
 	table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_TRIANGLE3]		=	PR_E_ELEMENT_TRIANGLE3;
 	table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_TRIANGLE6]		=	PR_E_ELEMENT_TRIANGLE6;
 	table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_QUADRANGLE4]	=	PR_E_ELEMENT_QUADRANGLE4;
 	table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_QUADRANGLE8]	=	PR_E_ELEMENT_QUADRANGLE8;
 	table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_QUADRANGLE9]	=	PR_E_ELEMENT_QUADRANGLE9;
+
+	table	[NT_E_ELEMENT_TYPE_SET_ELEMENT]	[TT_EOL]	=	PR_E_ELEMENT_TYPE_SET_ELEMENT;
+	table	[NT_E_ELEMENT_TYPE_SET_FORCE]	[TT_EOL]	=	PR_E_ELEMENT_TYPE_SET_FORCE;
 
 	table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_HEXAHEDRON8]	=	PR_E_ELEMENT_HEXAHEDRON8;
 	table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_HEXAHEDRON20]	=	PR_E_ELEMENT_HEXAHEDRON20;
@@ -713,6 +782,8 @@ MshParser::setParserTable()
 	table	[NT_E_TAGS]		[TT_1_TAGS]		=	PR_E_TAGS_1;
 	table	[NT_E_TAGS]		[TT_2_TAGS]		=	PR_E_TAGS_2;
 	table	[NT_E_TAGS]		[TT_3_TAGS]		=	PR_E_TAGS_3;
+
+	table	[NT_ELEMENTS_SET]	[TT_EOL]		=	PR_ELEMENTS_SET;
 
 	table	[NT_ELEMENTS_FOLLOW]	[TT_OPEN_NODE_DATA]		=	PR_ELEMENT_FOLLOW_1;
 	table	[NT_ELEMENTS_FOLLOW]	[TT_OPEN_ELEMENT_DATA]		=	PR_ELEMENT_FOLLOW_2;

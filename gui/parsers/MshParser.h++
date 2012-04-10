@@ -3,6 +3,8 @@
 
 #include "parser.h++"
 
+#include "../fem/Element.h++"
+#include "../fem/SurfaceLoad.h++"
 
 class MshParser
 	: public Parser
@@ -77,11 +79,6 @@ protected:
 		TT_LAST
 	};
 
-	union value {
-		size_t	index;
-		double	number;
-	} val;
-
 	enum NonTerminalToken 
 	{
 		NT_FIRST = TT_LAST,	// to avoid overlapping enum definitions
@@ -95,7 +92,9 @@ protected:
 
 		NT_NODES,	// node definition section
 		NT_N_NUMBER_OF_NODES,
+		NT_N_NUMBER_OF_NODES_SET,
 		NT_N_NODE_DEFINITION,
+		NT_N_NODE_DEFINITION_SET,
 		NT_N_NODE_DEFINITION_FOLLOW,
 
 		NT_ELEMENTS,
@@ -103,7 +102,10 @@ protected:
 		NT_E_ELEMENT_DEFINITION,
 		NT_E_ELEMENT_DEFINITION_FOLLOW,
 		NT_E_ELEMENT_TYPE,
+		NT_E_ELEMENT_TYPE_SET_ELEMENT,
+		NT_E_ELEMENT_TYPE_SET_FORCE,
 		NT_E_TAGS,
+		NT_ELEMENTS_SET,
 		NT_ELEMENTS_FOLLOW,
 
 		NT_NODE_DATA,
@@ -125,12 +127,15 @@ protected:
 		PR_HEADER,
 		PR_MF_VERSION_NUMBER_2_1,	
 		PR_MF_VERSION_NUMBER_2_2,
+		PR_MF_VERSION_NUMBER_ERROR,
 		PR_MF_FILE_TYPE_ASCII,
 		PR_MF_DATA_SIZE,
 
 		PR_NODES,
 		PR_N_NUMBER_OF_NODES,
+		PR_N_NUMBER_OF_NODES_SET,	// set state
 		PR_N_NODE_DEFINITION,
+		PR_N_NODE_DEFINITION_SET,	// set state
 		PR_N_NODE_DEFINITION_FOLLOW_1,
 		PR_N_NODE_DEFINITION_FOLLOW_2,
 
@@ -156,6 +161,11 @@ protected:
 		PR_E_ELEMENT_PRISM15,
 		PR_E_ELEMENT_PRISM18,
 
+		PR_E_ELEMENT_TYPE_SET_ELEMENT,	// set state
+		PR_E_ELEMENT_TYPE_SET_FORCE,		// set state
+
+		PR_ELEMENTS_SET,
+
 		PR_ELEMENT_FOLLOW_1,
 		PR_ELEMENT_FOLLOW_2,
 		PR_ELEMENT_FOLLOW_3,
@@ -166,15 +176,23 @@ protected:
 		PR_E_TAGS_2,
 		PR_E_TAGS_3,
 
+		// primitive states
 		PR_COORDINATE	// requires 3 floats, sets a point with them
 	};
 
 	std::map< enum NonTerminalToken, std::map<enum TerminalToken, enum ParserRule> > table;
 	std::stack<int>	ss;	// the LL parser symbol stack
 
+	std::list<long>		index_list;	// used to store parsed indexes
+	std::list<float>	float_list;	// used to store parsed indexes
+
+	fem::Node		node;
+	fem::Element		element;
+	fem::SurfaceLoad	surface_load;
+	fem::LoadPattern	load_pattern;
+
 public:
 	MshParser();
-	~MshParser();
 
 	enum Error::Type  parse(std::istream &file, fem::Model &model);
 
@@ -183,6 +201,7 @@ public:
 protected:
 	enum TerminalToken lexer(std::istream &file);
 	void setIndex();
+	void setNumber();
 	void setParserTable();
 
 };

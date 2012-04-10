@@ -29,6 +29,7 @@ class Parser
 			{
 				ERR_OK,
 				ERR_INVALID_ELEMENT_REFERENCE,
+				ERR_UNSUPPORTED_VERSION,
 				ERR_UNKNOWN
 			} code;
 			std::string message;

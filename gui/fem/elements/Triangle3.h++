@@ -15,23 +15,23 @@ template <typename T>
 struct Triangle3
 	: public TriangleFamily<T>
 {
-	public:
-		Triangle3();
-		~Triangle3()	{};
+public:
+	Triangle3();
+	~Triangle3()	{};
 
-		std::vector<fem::point> & setCoordinates();
+	std::vector<fem::point> & setCoordinates();
 
-		std::vector<T> & setN(const point & p);
-		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<T> & setN(const point & p);
+	std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdcsi(const point &p);
-		std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<T> & setdNdcsi(const point &p);
+	std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdeta(const point &p);
-		std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<T> & setdNdeta(const point &p);
+	std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdzeta(const point &p);
-		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<T> & setdNdzeta(const point &p);
+	std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
 public: // merging with fem::Element
 	enum BaseElement<T>::Error set(std::vector<size_t> &nodes);
@@ -60,14 +60,16 @@ Triangle3<T>::Triangle3()
 
 
 template<typename T>
-std::vector<T> & Triangle3<T>::setN(const point &p)
+std::vector<T> & 
+Triangle3<T>::setN(const point &p)
 {
 	return this->setN(p.data[0], p.data[1], p.data[2]);
 }
 
 
 template<typename T>
-std::vector<T> & Triangle3<T>::setN(const T &csi, const T &eta, const T &)
+std::vector<T> & 
+Triangle3<T>::setN(const T &csi, const T &eta, const T &)
 {
 	this->N[0] = 1-csi-eta;
 	this->N[1] = csi;
@@ -78,14 +80,16 @@ std::vector<T> & Triangle3<T>::setN(const T &csi, const T &eta, const T &)
 
 
 template<typename T>
-std::vector<T> & Triangle3<T>::setdNdcsi(const point &p)
+std::vector<T> & 
+Triangle3<T>::setdNdcsi(const point &p)
 {
 	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
 }
 
 
 template<typename T>
-std::vector<T> & Triangle3<T>::setdNdcsi(const T &, const T &, const T &)
+std::vector<T> & 
+Triangle3<T>::setdNdcsi(const T &, const T &, const T &)
 {
 	// this->dNdcsi
 	this->dNdcsi[0] = -1;
@@ -97,14 +101,16 @@ std::vector<T> & Triangle3<T>::setdNdcsi(const T &, const T &, const T &)
 
 
 template<typename T>
-std::vector<T> & Triangle3<T>::setdNdeta(const point &p)
+std::vector<T> & 
+Triangle3<T>::setdNdeta(const point &p)
 {
 	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
 template<typename T>
-std::vector<T> & Triangle3<T>::setdNdeta(const T &, const T &, const T &)
+std::vector<T> & 
+Triangle3<T>::setdNdeta(const T &, const T &, const T &)
 {
 	// this->dNdeta
 	this->dNdeta[0] = -1;
@@ -116,14 +122,16 @@ std::vector<T> & Triangle3<T>::setdNdeta(const T &, const T &, const T &)
 
 
 template<typename T>
-std::vector<T> & Triangle3<T>::setdNdzeta(const point &p)
+std::vector<T> & 
+Triangle3<T>::setdNdzeta(const point &p)
 {
 	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
 template<typename T>
-std::vector<T> & Triangle3<T>::setdNdzeta(const T &, const T &, const T &)
+std::vector<T> & 
+Triangle3<T>::setdNdzeta(const T &, const T &, const T &)
 {
 	// this->dNdzeta
 	this->dNdzeta[0] = 0;
@@ -134,7 +142,8 @@ std::vector<T> & Triangle3<T>::setdNdzeta(const T &, const T &, const T &)
 }
 
 template<typename T>
-std::vector<fem::point> & Triangle3<T>::setCoordinates()
+std::vector<fem::point> & 
+Triangle3<T>::setCoordinates()
 {
 	//TODO finish
 	return this->coordinates;

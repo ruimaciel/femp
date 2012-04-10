@@ -332,6 +332,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 				// start parsing the element field
 				case PR_ELEMENTS:
 					ss.push(TT_EOL);
+					ss.push(NT_ELEMENTS_SET);
 					ss.push(TT_CLOSE_ELEMENTS);
 					ss.push(NT_E_ELEMENT_DEFINITION_FOLLOW);
 					ss.push(NT_E_ELEMENT_DEFINITION);

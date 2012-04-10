@@ -50,6 +50,7 @@ public:
 	**/
 	enum Error save();
 	enum Error importMesh(QString file_name);
+	enum Error importMesh(std::string file_name);
 
 	// object selection routines
 	void selectNode(const size_t &node);

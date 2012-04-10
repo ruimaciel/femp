@@ -214,7 +214,6 @@ protected:
 	void setIndex();
 	void setNumber();
 	void setParserTable();
-
 };
 
 

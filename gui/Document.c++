@@ -316,13 +316,13 @@ Document::save()
 			// take care of the surface loads
 			if (!it->surface_loads.empty())
 			{
-				out << ",\n\t\t";
+				out << ",\n\t\t\t";
 				out << "\"surface loads\":[";
 				for(std::vector<fem::SurfaceLoad>::iterator n = it->surface_loads.begin(); n != it->surface_loads.end(); n++)
 				{
 					if (n != it->surface_loads.begin())
 						out << ",";
-					out << "\n\t\t\t{";
+					out << "\n\t\t\t\t{";
 					out << "\"type\": ";
 					switch(n->type)
 					{

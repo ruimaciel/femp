@@ -4,10 +4,6 @@
 namespace fem
 {
 
-SurfaceLoadOperator::SurfaceLoadOperator()
-{
-}
-
 
 } // namespace fem
 

@@ -14,8 +14,6 @@ Abstract base class for an operator which is applied to a surface load
 class SurfaceLoadOperator
 {
 public:
-	SurfaceLoadOperator();
-
 	/**
 	functor
 	**/

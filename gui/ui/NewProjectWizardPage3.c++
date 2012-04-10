@@ -4,6 +4,9 @@
 
 #include "Document.h++"	// for the loading test
 #include "ui/NewMaterialDialog.h++"
+#include "fem/SurfaceLoadOperators/ConstantLoad.h++"
+#include "fem/SurfaceLoadOperators/SurfaceNormalLoad.h++"
+#include "fem/SurfaceLoadOperators/ConcentricLoad.h++"
 
 
 NewProjectWizardPage3::NewProjectWizardPage3(Document *document)
@@ -67,13 +70,49 @@ void NewProjectWizardPage3::loadMeshFile()
 	if(validMeshFile() )
 	{
 		// load a mesh from a given file
-		//switch(document->importMesh(lineEditFilePath->text()) )
 		std::string file_name;
 		//file_name = lineEditFilePath->text().toStdString();	// Qt screws up this conversion
 		file_name = lineEditFilePath->text().toUtf8().data();	// hack
-		switch(document->importMesh(file_name) )
+
+		// open the file for parsing
+		std::ifstream file;
+
+		file.open(file_name);
+
+		if(!file.good())
 		{
-			case Document::ERR_OK:
+			// clear the model except the materials list
+			document->project.model.node_list.clear();
+			document->project.model.element_list.clear();
+			document->project.model.node_restrictions_list.clear();
+			document->project.model.load_pattern_list.clear();
+
+			// update the UI
+			labelNodesNumber->setText("");
+			labelElementsNumber->setText("");
+			labelError->setText( tr("Failed to open the file"));
+
+			successful_import = false;
+			return;
+		}
+
+		/*
+		fem::ConstantLoad o;
+		o.setLoad(fem::point(1,0,0));
+		*/
+		fem::SurfaceNormalLoad o;
+		o.setLoadMagnitude(1.0f);
+		/*
+		fem::ConcentricLoad o;
+		o.setLoadMagnitude(1.0f);
+		o.setConvergencePoint(fem::point(0,0,0));
+		*/
+
+		parser.setSurfaceLoadOperator(o);
+		// parse the file
+		switch(parser(file, document->project.model) )
+		{
+			case Parser::Error::ERR_OK:
 				{
 				// update the UI accordingly
 				QString temp;
@@ -105,6 +144,7 @@ void NewProjectWizardPage3::loadMeshFile()
 		}
 
 		emit completeChanged();
+		file.close();
 	}
 }
 

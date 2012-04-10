@@ -6,6 +6,7 @@
 
 #include <QWizardPage>
 
+#include "parsers/MshParser.h++"
 #include "Document.h++"
 
 
@@ -19,6 +20,7 @@ class NewProjectWizardPage3
 
 	private:
 		bool successful_import;
+		MshParser parser;
 
 	public:
 		Document *document;	// must point to a valid instance or it crashes

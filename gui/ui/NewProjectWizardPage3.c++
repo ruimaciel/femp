@@ -101,7 +101,7 @@ void NewProjectWizardPage3::loadMeshFile()
 		o.setLoad(fem::point(1,0,0));
 		*/
 		fem::SurfaceNormalLoad o;
-		o.setLoadMagnitude(1.0f);
+		o.setLoadMagnitude(-1.0f);
 		/*
 		fem::ConcentricLoad o;
 		o.setLoadMagnitude(1.0f);

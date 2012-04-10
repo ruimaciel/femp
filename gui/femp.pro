@@ -57,7 +57,7 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	viewer/InputStates/ISRightClick.h++ \
 	viewer/InputStates/ISRightDrag.h++ \
 	fem_msh.h++ lex.msh_yy.h \
-	parsers/parser.h++ parsers/msh.h++ parsers/json.h parsers/FemJsonParser.h++\
+	parsers/parser.h++ parsers/MshParser.h++ parsers/json.h parsers/FemJsonParser.h++\
 	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
 	fem/Analysis.h++ fem/LinearAnalysis.h++ fem/AnalysisResult.h++\
 	fem/ProgressIndicatorStrategy.h++ \
@@ -105,7 +105,7 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	viewer/InputStates/ISRightClick.c++ \
 	viewer/InputStates/ISRightDrag.c++ \
 	fem_msh.c++ lex.msh_yy.c++ \
-	parsers/parser.c++ parsers/msh.c++ parsers/json.c parsers/FemJsonParser.c++\
+	parsers/parser.c++ parsers/MshParser.c++ parsers/json.c parsers/FemJsonParser.c++\
 	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++ \
 	DefaultProgressIndicator.c++ \
 	fem/Surface.c++ 
@@ -120,10 +120,10 @@ FemJsonParserRe2c.commands = re2c -o parsers/FemJsonParser.c++ parsers/FemJsonPa
 FemJsonParserRe2c.depends = parsers/FemJsonParser.c++.re2c
 FemJsonParserRe2c.output = parsers/FemJsonParser.c++
 
-MshParserRe2c.target = fem/msh.c++
-MshParserRe2c.commands = re2c -o fem/msh.c++ fem/msh.c++.re2c
-MshParserRe2c.depends = fem/msh.c++.re2c
-MshParserRe2c.output = fem/msh.c++
+MshParserRe2c.target = parsers/MshParser.c++
+MshParserRe2c.commands = re2c -o parsers/MshParser.c++ parsers/MshParser.c++.re2c
+MshParserRe2c.depends = parsers/MshParser.c++.re2c
+MshParserRe2c.output = parsers/MshParser.c++
 
 ProgramOptionRe2c.target = ProgramOptions.c++
 ProgramOptionRe2c.commands = re2c -o ProgramOptions.c++ ProgramOptions.c++.re2c

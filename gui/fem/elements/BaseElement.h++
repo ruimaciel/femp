@@ -89,10 +89,13 @@ public:
 	~BaseElement(){};
 
 	/**
-	Sets this element's local coordinates for it's nodes
+	Sets this element's local coordinates for each of its nodes
 	**/
 	virtual std::vector<fem::point> & setCoordinates() = 0;
 
+	/**
+	Calculates the values for vector N according to a given point expressed in local coordinates
+	**/
 	virtual std::vector<T> & setN(const point & p) = 0;
 	virtual std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0) = 0;
 	virtual std::vector<T> & setdNdcsi(const point &p) = 0;

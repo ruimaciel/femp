@@ -34,6 +34,9 @@ namespace fem
 			**/
 			void clear();
 
+			/** checks if this load pattern has any load set **/
+			bool empty() const;
+
 			void addNodalLoad(size_t, point);
 			void addNodalDisplacement(size_t, point);
 

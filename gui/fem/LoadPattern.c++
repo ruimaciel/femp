@@ -34,6 +34,17 @@ namespace fem
 	}
 
 
+	bool 
+	LoadPattern::empty() const
+	{
+		if(!nodal_loads.empty()) return false;
+		if(!domain_loads.empty()) return false;
+		if(!surface_loads.empty()) return false;
+		if(!nodal_displacements.empty()) return false;
+		return true;
+	}
+
+
 	void 
 	LoadPattern::addNodalLoad(size_t node, point force)
 	{

@@ -80,6 +80,55 @@ Model::pushMaterial(fem::Material &material)
 Model::Error 
 Model::pushElement(fem::Element e)
 {
+	// check if element is valid
+	switch(e.type)
+	{
+		case Element::FE_TETRAHEDRON4:
+			if(e.nodes.size() != 4)
+				return ERR_NODE_NUMBER;
+			break;;
+
+		case Element::FE_TETRAHEDRON10:
+			if(e.nodes.size() != 10)
+				return ERR_NODE_NUMBER;
+			break;;
+
+		case Element::FE_HEXAHEDRON8:
+			if(e.nodes.size() != 8)
+				return ERR_NODE_NUMBER;
+			break;;
+
+		case Element::FE_HEXAHEDRON20:
+			if(e.nodes.size() != 20)
+				return ERR_NODE_NUMBER;
+			break;;
+
+		case Element::FE_HEXAHEDRON27:
+			if(e.nodes.size() != 27)
+				return ERR_NODE_NUMBER;
+			break;;
+
+		case Element::FE_PRISM6:
+			if(e.nodes.size() != 6)
+				return ERR_NODE_NUMBER;
+			break;;
+
+		case Element::FE_PRISM15:
+			if(e.nodes.size() != 15)
+				return ERR_NODE_NUMBER;
+			break;;
+
+		case Element::FE_PRISM18:
+			if(e.nodes.size() != 18)
+				return ERR_NODE_NUMBER;
+			break;;
+
+		default:
+			std::cerr << "Model::Error Model::pushElement(): unsupported element type " << e.type << std::endl;
+			return ERR_UNSUPPORTED_ELEMENT;
+			break;
+	}
+
 	// push element to the element list
 	e.material = default_material;
 	this->element_list.push_back(e);

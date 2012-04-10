@@ -74,8 +74,6 @@ public:
 	Type type;
 
 	Element();
-	Element(const Element &);
-	~Element();
 
 	enum Error set(Type type, std::vector<size_t> nodes);
 

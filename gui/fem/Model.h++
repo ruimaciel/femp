@@ -78,7 +78,7 @@ public:
 	**/
 	Model::Error pushMaterial(fem::Material &);
 
-	Model::Error pushElement(fem::Element);
+	Model::Error pushElement(fem::Element &);
 	Model::Error pushElement(fem::Element::Type type, std::vector<size_t> nodes);
 
 	/** Specifies new node restrictions affecting a node

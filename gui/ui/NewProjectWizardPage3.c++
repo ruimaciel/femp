@@ -67,7 +67,11 @@ void NewProjectWizardPage3::loadMeshFile()
 	if(validMeshFile() )
 	{
 		// load a mesh from a given file
-		switch(document->importMesh(lineEditFilePath->text()) )
+		//switch(document->importMesh(lineEditFilePath->text()) )
+		std::string file_name;
+		//file_name = lineEditFilePath->text().toStdString();	// Qt screws up this conversion
+		file_name = lineEditFilePath->text().toUtf8().data();	// hack
+		switch(document->importMesh(file_name) )
 		{
 			case Document::ERR_OK:
 				{

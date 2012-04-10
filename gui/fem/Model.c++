@@ -78,7 +78,7 @@ Model::pushMaterial(fem::Material &material)
 
 
 Model::Error 
-Model::pushElement(fem::Element e)
+Model::pushElement(fem::Element &e)
 {
 	// check if element is valid
 	switch(e.type)

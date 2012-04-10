@@ -105,6 +105,11 @@ protected:
 		NT_E_ELEMENT_TYPE_SET_ELEMENT,
 		NT_E_ELEMENT_TYPE_SET_FORCE,
 		NT_E_TAGS,
+
+		NT_E_TAGS_1_SET, 
+		NT_E_TAGS_2_SET,
+		NT_E_TAGS_3_SET,
+
 		NT_ELEMENTS_SET,
 		NT_ELEMENTS_FOLLOW,
 
@@ -175,6 +180,10 @@ protected:
 		PR_E_TAGS_1, 
 		PR_E_TAGS_2,
 		PR_E_TAGS_3,
+
+		PR_E_TAGS_1_SET, 
+		PR_E_TAGS_2_SET,
+		PR_E_TAGS_3_SET,
 
 		// primitive states
 		PR_COORDINATE	// requires 3 floats, sets a point with them

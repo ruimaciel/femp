@@ -354,6 +354,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_TRIANGLE3:
 					surface_load.type = fem::Element::FE_TRIANGLE3;
+					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
 					for(int i = 0; i < 3; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_TRIANGLE3);
@@ -361,6 +362,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_TRIANGLE6:
 					surface_load.type = fem::Element::FE_TRIANGLE6;
+					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
 					for(int i = 0; i < 6; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_TRIANGLE6);
@@ -368,6 +370,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_QUADRANGLE4:
 					surface_load.type = fem::Element::FE_QUADRANGLE4;
+					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
 					for(int i = 0; i < 4; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_QUADRANGLE4);
@@ -375,12 +378,14 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_QUADRANGLE8:
 					surface_load.type = fem::Element::FE_QUADRANGLE8;
+					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
 					for(int i = 0; i < 8; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_QUADRANGLE8);
 					break;
 
 				case PR_E_ELEMENT_QUADRANGLE9:
+					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
 					surface_load.type = fem::Element::FE_QUADRANGLE9;
 					for(int i = 0; i < 9; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
@@ -389,6 +394,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_HEXAHEDRON8:
 					element.type = fem::Element::FE_HEXAHEDRON8;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
 					for(int i = 0; i < 8; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_HEXAHEDRON8);
@@ -396,6 +402,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_HEXAHEDRON20:
 					element.type = fem::Element::FE_HEXAHEDRON20;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
 					for(int i = 0; i < 20; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_HEXAHEDRON20);
@@ -403,6 +410,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_HEXAHEDRON27:
 					element.type = fem::Element::FE_HEXAHEDRON27;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
 					for(int i = 7; i < 20; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_HEXAHEDRON27);
@@ -410,6 +418,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_TETRAHEDRON4:
 					element.type = fem::Element::FE_TETRAHEDRON4;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
 					for(int i = 0; i < 4; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_TETRAHEDRON4);
@@ -417,6 +426,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_TETRAHEDRON10:
 					element.type = fem::Element::FE_TETRAHEDRON10;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
 					for(int i = 0; i < 10; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_TETRAHEDRON10);
@@ -424,6 +434,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_PRISM6:
 					element.type = fem::Element::FE_PRISM6;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
 					for(int i = 0; i < 6; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_PRISM6);
@@ -431,6 +442,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_PRISM15:
 					element.type = fem::Element::FE_PRISM15;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
 					for(int i = 0; i < 15; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_PRISM15);
@@ -438,6 +450,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_PRISM18:
 					element.type = fem::Element::FE_PRISM18;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
 					for(int i = 0; i < 18; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_PRISM18);
@@ -445,6 +458,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_TYPE_SET_ELEMENT:
 					index_list.pop_front();	// get rid of element index
+					index_list.pop_front();	// get rid of element type: nasty hack
 					element.nodes.assign(index_list.begin(), index_list.end());
 					index_list.clear();
 					model.pushElement(element);
@@ -452,6 +466,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_TYPE_SET_FORCE:
 					index_list.pop_front();	// get rid of element index
+					index_list.pop_front();	// get rid of element type: nasty hack
 					surface_load.nodes.assign(index_list.begin(), index_list.end());
 					index_list.clear();
 					load_pattern.addSurfaceLoad(surface_load);
@@ -471,12 +486,14 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_TAGS_1:
 					//TODO test this
+					ss.push(NT_E_TAGS_1_SET);
 					ss.push(TT_INDEX);
 					ss.push(TT_1_TAGS);
 					break;
 
 				case PR_E_TAGS_2:
 					//TODO test this
+					ss.push(NT_E_TAGS_2_SET);
 					ss.push(TT_INDEX);
 					ss.push(TT_INDEX);
 					ss.push(TT_2_TAGS);
@@ -484,10 +501,26 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_TAGS_3:
 					//TODO test this
+					ss.push(NT_E_TAGS_3_SET);
 					ss.push(TT_INDEX);
 					ss.push(TT_INDEX);
 					ss.push(TT_INDEX);
 					ss.push(TT_3_TAGS);
+					break;
+
+				case PR_E_TAGS_1_SET:
+					index_list.pop_front();
+					break;
+
+				case PR_E_TAGS_2_SET:
+					index_list.pop_front();
+					index_list.pop_front();
+					break;
+
+				case PR_E_TAGS_3_SET:
+					index_list.pop_front();
+					index_list.pop_front();
+					index_list.pop_front();
 					break;
 
 				case PR_ELEMENTS_SET:
@@ -782,6 +815,10 @@ MshParser::setParserTable()
 	table	[NT_E_TAGS]		[TT_1_TAGS]		=	PR_E_TAGS_1;
 	table	[NT_E_TAGS]		[TT_2_TAGS]		=	PR_E_TAGS_2;
 	table	[NT_E_TAGS]		[TT_3_TAGS]		=	PR_E_TAGS_3;
+
+	table	[NT_E_TAGS_1_SET]	[TT_INDEX]		=	PR_E_TAGS_1_SET;
+	table	[NT_E_TAGS_2_SET]	[TT_INDEX]		=	PR_E_TAGS_2_SET;
+	table	[NT_E_TAGS_3_SET]	[TT_INDEX]		=	PR_E_TAGS_3_SET;
 
 	table	[NT_ELEMENTS_SET]	[TT_EOL]		=	PR_ELEMENTS_SET;
 

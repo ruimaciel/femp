@@ -8,7 +8,7 @@ Parser::Parser()
 	buffer[0] = '\0';
 	pos = tok = limit = buffer;
 	lex_state = 0;
-	line_number = 0;
+	error.line_number = 0;
 }
 
 

@@ -33,6 +33,7 @@ class Parser
 				ERR_UNKNOWN
 			} code;
 			std::string message;
+			size_t line_number;	// line number where the error occurred 
 		} error;
 
 	public:
@@ -50,7 +51,6 @@ class Parser
 		char *pos; 	// marks the current position
 		char *marker;	
 		char *limit;	// marks the string limit
-		size_t line_number;
 		int lex_state;	// lexer state, to avoid grammar ambiguities
 
 		void fill(std::istream &file);

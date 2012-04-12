@@ -422,7 +422,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 				case PR_E_ELEMENT_HEXAHEDRON27:
 					element.type = fem::Element::FE_HEXAHEDRON27;
 					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
-					for(int i = 7; i < 20; i++) ss.push(TT_INDEX);
+					for(int i = 0; i < 27; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_HEXAHEDRON27);
 					break;
@@ -551,7 +551,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 				case PR_ELEMENT_FOLLOW_2:
 				case PR_ELEMENT_FOLLOW_3:
 					this->error.code = Error::ERR_UNKNOWN;
-					this->error.message = "Section is not supported" + boost::lexical_cast<std::string>(line_number);
+					this->error.message = "Section is not supported" + boost::lexical_cast<std::string>(error.line_number);
 					return this->error.code;
 					break;
 
@@ -567,7 +567,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				default:
 					this->error.code = Error::ERR_UNKNOWN;
-					this->error.message = "Unknown error while parsing line " + boost::lexical_cast<std::string>(line_number);
+					this->error.message = "Unknown error while parsing line " + boost::lexical_cast<std::string>(error.line_number);
 					return this->error.code;
 					break;
 			}
@@ -610,7 +610,7 @@ std:
 	"$NodeData"	{ return TT_OPEN_NODE_DATA;	}
 	"$ElementData"	{ return TT_OPEN_ELEMENT_DATA;	}
 	"$ElementNodeData"	{ return TT_OPEN_ELEMENT_NODE_DATA;	}
-	'\n'	{ line_number++; return TT_EOL; }
+	'\n'	{ error.line_number++; return TT_EOL; }
 	"\000"			{ return TT_EOF;	}
 	' '+	{ goto std;}
 	.	{ return TT_UNKNOWN_TOKEN; }
@@ -626,7 +626,7 @@ std:
 	"0"	{ return TT_MF_FILE_TYPE_ASCII;	}
 	[0-9]	{ return TT_MF_DATA_SIZE;	}
 	"$EndMeshFormat"	{ lex_state = 0;	return TT_CLOSE_MESH_FORMAT; }
-	'\n'	{ line_number++; return TT_EOL; }
+	'\n'	{ error.line_number++; return TT_EOL; }
 	"\000"			{ return TT_EOF;	}
 	' '+	{ goto std;	}
 	.	{ return TT_UNKNOWN_TOKEN; }
@@ -643,7 +643,7 @@ std:
 			return TT_INDEX; 
 		}
 	"$EndNodes"	{ lex_state = 0;	return TT_CLOSE_NODES; }
-	'\n'	{ line_number++; return TT_EOL; }
+	'\n'	{ error.line_number++; return TT_EOL; }
 	"\000"			{ return TT_EOF;	}
 	' '+	{ goto std;	}
 	.	{ return TT_UNKNOWN_TOKEN; }
@@ -655,7 +655,7 @@ std:
 		{
 	/*!re2c
 	number	{ setNumber(); return TT_NUMBER; }
-	'\n'	{ lex_state = 2; line_number++; return TT_EOL; }
+	'\n'	{ lex_state = 2; error.line_number++; return TT_EOL; }
 	"\000"			{ return TT_EOF;	}
 	' '+	{ goto std;	}
 	.	{ return TT_UNKNOWN_TOKEN; }
@@ -668,7 +668,7 @@ std:
 	/*!re2c
 	index	{ lex_state = 5; setIndex(); return TT_INDEX; }
 	"$EndElements"	{ lex_state = 0;	return TT_CLOSE_ELEMENTS; }
-	'\n'	{ line_number++; return TT_EOL; }
+	'\n'	{ error.line_number++; return TT_EOL; }
 	"\000"			{ return TT_EOF;	}
 	' '+	{ goto std;	}
 	.	{ return TT_UNKNOWN_TOKEN; }
@@ -718,7 +718,7 @@ std:
 					return TT_UNKNOWN_TOKEN;
 			}
 		}
-	'\n'	{ lex_state = 4; line_number++; return TT_EOL; }
+	'\n'	{ lex_state = 4; error.line_number++; return TT_EOL; }
 	"\000"			{ return TT_EOF;	}
 	' '+	{ goto std;	}
 	.	{ return TT_UNKNOWN_TOKEN; }
@@ -746,7 +746,7 @@ std:
 	index	{ setIndex(); return TT_INDEX; }
 	"\000"	{ return TT_EOF;	}
 	' '+	{ goto std;	}
-	'\n'	{ lex_state = 4; line_number++; return TT_EOL; }
+	'\n'	{ lex_state = 4; error.line_number++; return TT_EOL; }
 	.	{ return TT_UNKNOWN_TOKEN; }
 	*/
 		}

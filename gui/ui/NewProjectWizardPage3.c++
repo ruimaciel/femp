@@ -137,7 +137,7 @@ void NewProjectWizardPage3::loadMeshFile()
 				// update the UI
 				labelNodesNumber->setText("");
 				labelElementsNumber->setText("");
-				labelError->setText("Failed to load");
+				labelError->setText(QString::fromStdString(parser.error.message));
 
 				successful_import = false;
 				break;

@@ -5,9 +5,14 @@ gui/build/*
 moc_*
 gui/ui/ui_*
 gui/ui/src
+gui/lalib/solvers/main.c++
+gui/parsers/main.c++
+gui/fem/CMakeLists.txt
 lex.msh_yy.*
 msh.tab.*
 *.oct
+*.xmi
 .*
 *.msh
 models/*
+gui/parsers/how to make a ll parser.txt

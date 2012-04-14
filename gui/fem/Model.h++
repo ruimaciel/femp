@@ -87,6 +87,7 @@ public:
 	@return	ERR_NONE if all went well, some other error if something went bad
 	**/
 	enum Error pushNodeRestrictions(size_t node, fem::NodeRestrictions nr);
+	enum Error popNodeRestrictions(node_ref_t const &node);
 
 	/** push a new load pattern into the load pattern stack
 	@param lp	the newly added load pattern

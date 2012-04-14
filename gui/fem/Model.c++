@@ -564,6 +564,13 @@ Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions nr)
 
 
 enum Model::Error 
+Model::popNodeRestrictions(node_ref_t const &node)
+{
+	node_restrictions_list.erase(node);
+}
+
+
+enum Model::Error 
 Model::pushLoadPattern(fem::LoadPattern lp)
 {
 	//TODO perform error checks

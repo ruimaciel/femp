@@ -19,9 +19,19 @@ SetNodeRestraintsVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResu
 {
 	assert(m_selection != NULL);
 
-	for(auto node: m_selection->m_nodes_selected)
+	if(m_restrictions.free())
 	{
-		model.pushNodeRestrictions(node, m_restrictions);
+		for(auto node: m_selection->m_nodes_selected)
+		{
+			model.popNodeRestrictions(node);
+		}
+	}
+	else
+	{
+		for(auto node: m_selection->m_nodes_selected)
+		{
+			model.pushNodeRestrictions(node, m_restrictions);
+		}
 	}
 }
 

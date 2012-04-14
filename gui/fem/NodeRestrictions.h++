@@ -28,6 +28,11 @@ class NodeRestrictions {
 		bool dy()	{return d[1];}
 		bool dz()	{return d[2];}
 
+		/**
+		Returns true if there isn't a restriction set
+		**/
+		bool free()	const;
+
 		/** small hand-written parser to extract meaning from a small string of text
 		  @param buffer a string of text
 		  @return NR_DX if buffer is "dx", NR_DY if buffer is "dy", NR_DZ if buffer is "dz", NR_INVALID if otherwise

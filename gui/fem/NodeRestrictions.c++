@@ -23,6 +23,13 @@ NodeRestrictions::~NodeRestrictions()
 }
 
 
+bool 
+NodeRestrictions::free()	const
+{
+	return !(d[0] || d[1] || d[2]);
+}
+
+
 enum NodeRestrictions::Type 
 NodeRestrictions::extractType(char *buffer)
 {

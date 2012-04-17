@@ -95,14 +95,16 @@ MainWindow::newProject()
 	/*
 	The NewProjectWizard dialog will fill up a given document object through the steps
 	*/
-	document.clear();
-	setUserInterfaceAsClosed();
-
 	NewProjectWizard np(document, this);
-	if(np.exec() == QDialog::Accepted)
+	switch(np.exec())
 	{
-		document.clear();
-		setUserInterfaceAsOpened();
+		case QDialog::Accepted:
+			setUserInterfaceAsOpened();
+			break;
+
+		default:
+			document.clear();
+			break;
 	}
 }
 

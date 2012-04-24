@@ -47,6 +47,7 @@
 #include "fem/solvers/CGSolver.h++"
 
 #include "fem/ProjectVisitor/OutputResultsInNodesVisitor.h++"
+#include "fem/ProjectVisitor/OutputResultsInNodesCSVVisitor.h++"
 #include "fem/ProjectVisitor/SetNodeRestraintsVisitor.h++"
 
 #include "parsers/FemJsonParser.h++"
@@ -1115,7 +1116,7 @@ MainWindow::dumpResultsFromSelection()
 
 	Selection selection = m_selection_manager.getSelection();
 
-	OutputResultsInNodesVisitor visitor(selection, result, out);
+	OutputResultsInNodesCSVVisitor visitor(selection, result, out);
 
 	document.project.accept(visitor);
 

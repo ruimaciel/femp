@@ -18,3 +18,9 @@ Extrude {0, 0, -t} {
   Surface{20};
 }
 Physical Volume(134) = {1, 3, 4, 2};
+Extrude {0, h, 0} {
+  Surface{105, 51};
+}
+Extrude {0, -h, 0} {
+  Surface{78, 132};
+}

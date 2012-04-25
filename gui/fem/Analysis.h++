@@ -319,7 +319,10 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 			Bt = B.transpose();
 
 			if(material_index != element_iterator->material)
+			{
 				D = project.model.material_list[element_iterator->material].generateD().cast<Scalar>();
+				material_index = element_iterator->material;
+			}
 
 			// add this integration point's contribution
 			k_elem += Bt*D*B*detJ*i->get<1>();

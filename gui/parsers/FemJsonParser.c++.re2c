@@ -6,6 +6,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include "../fem/FemException.h++"
+#include "../fem/Element.h++"
 
 
 FemJsonParser::FemJsonParser()
@@ -41,6 +42,9 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 	// resets the error message
 	this->error.code = Error::Type::ERR_OK;
 	this->error.message.clear();
+
+	// temporary object
+	fem::Element element;
 
 
 	while(!ss.empty())
@@ -375,6 +379,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 
 				case PR_ELEMENT_1:
 					ss.push(TT_OBJECT_CLOSE);
+					ss.push(NT_ELEMENT_SET);
 					ss.push(NT_ELEMENT_TYPE_FOLLOW);
 					ss.push(NT_ELEMENT_TYPE);
 					ss.push(TT_NAME_SEPARATOR);
@@ -382,6 +387,10 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					ss.push(TT_OBJECT_OPEN);
 
 					reference.clear();
+					break;
+
+				case PR_ELEMENT_SET_1:
+					model.pushElement(element);
 					break;
 
 				case PR_ELEMENT_TYPE_1:
@@ -549,43 +558,58 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					break;
 
 				case PR_ELEMENT_HEXAHEDRON8_SET:
-					model.pushElement(fem::Element::FE_HEXAHEDRON8, reference);
+					element.clear();
+					element.type = fem::Element::FE_HEXAHEDRON8;
+					element.nodes = reference;
 					reference.clear();
-
 					break;
 
 				case PR_ELEMENT_HEXAHEDRON20_SET:
-					model.pushElement(fem::Element::FE_HEXAHEDRON20, reference);
+					element.clear();
+					element.type = fem::Element::FE_HEXAHEDRON20; 
+					element.nodes = reference;
 					reference.clear();
 					break;
 
 				case PR_ELEMENT_HEXAHEDRON27_SET:
-					model.pushElement(fem::Element::FE_HEXAHEDRON27, reference);
+					element.clear();
+					element.type = fem::Element::FE_HEXAHEDRON27; 
+					element.nodes = reference;
 					reference.clear();
 					break;
 
 				case PR_ELEMENT_TETRAHEDRON4_SET:
-					model.pushElement(fem::Element::FE_TETRAHEDRON4, reference);
+					element.clear();
+					element.type = fem::Element::FE_TETRAHEDRON4; 
+					element.nodes = reference;
 					reference.clear();
 					break;
 
 				case PR_ELEMENT_TETRAHEDRON10_SET:
-					model.pushElement(fem::Element::FE_TETRAHEDRON10, reference);
+					element.clear();
+					element.type = fem::Element::FE_TETRAHEDRON10; 
+					element.nodes = reference;
 					reference.clear();
 					break;
 
 				case PR_ELEMENT_PRISM6_SET:
-					model.pushElement(fem::Element::FE_PRISM6, reference);
+					element.clear();
+					element.type = fem::Element::FE_PRISM6; 
+					element.nodes = reference;
 					reference.clear();
 					break;
 
 				case PR_ELEMENT_PRISM15_SET:
-					model.pushElement(fem::Element::FE_PRISM15, reference);
+					element.clear();
+					element.type = fem::Element::FE_PRISM15; 
+					element.nodes = reference;
 					reference.clear();
 					break;
 
 				case PR_ELEMENT_PRISM18_SET:
-					model.pushElement(fem::Element::FE_PRISM18, reference);
+					element.clear();
+					element.type = fem::Element::FE_PRISM18; 
+					element.nodes = reference;
 					reference.clear();
 					break;
 
@@ -1512,6 +1536,7 @@ void FemJsonParser::setParserTable()
 
 	table	[NT_ELEMENT_LIST]	[TT_LABEL_ELEMENTS]	=	PR_ELEMENT_LIST_1;
 	table	[NT_ELEMENT]		[TT_OBJECT_OPEN]	=	PR_ELEMENT_1;
+	table	[NT_ELEMENT_SET]	[TT_OBJECT_CLOSE]	=	PR_ELEMENT_SET_1;
 
 	table	[NT_ELEMENT_TYPE]	[TT_LABEL_HEXAHEDRON8]		=	PR_ELEMENT_HEXAHEDRON8_1;
 	table	[NT_ELEMENT_TYPE]	[TT_LABEL_HEXAHEDRON20]		=	PR_ELEMENT_HEXAHEDRON20_1;

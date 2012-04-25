@@ -298,6 +298,23 @@ MainWindow::saveProjectAs()
 	sl = dialog.selectedFiles();
 	document.file_name = new QString;
 	*document.file_name = sl.at(0);
+	// check if file already exists
+	QFile file;
+	file.setFileName(*document.file_name);
+	if(file.exists())
+	{
+		QMessageBox msgBox;
+		msgBox.setText(tr("File already exists") );
+		msgBox.setInformativeText(tr("Do you want to overwrite it?") );
+		msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+		msgBox.setDefaultButton(QMessageBox::No);
+		if(msgBox.exec() == QMessageBox::No)
+		{
+			return;
+		}
+	}
+
+	this->setWindowTitle("Femp - " + *document.file_name);
 
 	// tweak the UI
 	document.save();

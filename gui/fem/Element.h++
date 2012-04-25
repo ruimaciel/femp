@@ -86,6 +86,9 @@ public:
 	int node_number() const;
 	
 	enum ElementFamily family() const;
+
+	// clears the element
+	void clear();
 };
 
 

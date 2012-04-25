@@ -883,4 +883,13 @@ enum Element::ElementFamily Element::family() const
 }
 
 
+void 
+Element::clear()
+{
+	material = 0;		// reference to a material in Model's material map
+	nodes.clear();	// nodes that define this element
+	type = FE_INVALID;
+}
+
+
 }	// namespace fem

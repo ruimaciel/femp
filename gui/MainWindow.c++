@@ -278,9 +278,6 @@ MainWindow::saveProject()
 void 
 MainWindow::saveProjectAs()
 {
-	std::cerr << __FILE__ << ":" << __LINE__ ;
-	std::cerr << "MainWindow::saveProjectAs() not yet implemented" << std::endl;
-
 	QFileDialog dialog(this);
 	QStringList sl;
 

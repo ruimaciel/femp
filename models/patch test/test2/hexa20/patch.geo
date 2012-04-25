@@ -1,5 +1,5 @@
-Mesh.ElementOrder = 1;
-Mesh.SecondOrderIncomplete = 0;
+Mesh.ElementOrder = 2;
+Mesh.SecondOrderIncomplete = 1;
 
 b = 1;
 h = b;

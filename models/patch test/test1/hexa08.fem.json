@@ -4,7 +4,8 @@
 		"type": "3D solid"
 	},
 	"materials": [
-		{"type":"linear elastic", "label": "Mat1", "E":100,"nu":0.3, "fy": 4.94066e-324}
+		{"type":"linear elastic", "label": "Mat1", "E":1e2,"nu":0.3, "fy": 4.94066e-324},
+		{"type":"linear elastic", "label": "Mat2", "E":1e6,"nu":0.3, "fy": 4.94066e-324}
 	],
 	"nodes":[
 		[	1,[	-0.5,	-0.5,	-0.5	]],
@@ -79,7 +80,7 @@
 		{"type":"hexahedron8", "nodes":[22,24,7,8,47,51,33,35]},
 		{"type":"hexahedron8", "nodes":[47,51,33,35,48,52,34,36]},
 		{"type":"hexahedron8", "nodes":[48,52,34,36,42,44,13,14]},
-		{"type":"hexahedron8", "nodes":[49,29,31,51,50,30,32,52]}
+		{"type":"hexahedron8", "nodes":[49,29,31,51,50,30,32,52], "material": 1}
 	],
 
 	"node restrictions": [
@@ -87,18 +88,42 @@
 		{ "node":2, "dx":true, "dy":true, "dz":true},
 		{ "node":3, "dx":true, "dy":true, "dz":true},
 		{ "node":4, "dx":true, "dy":true, "dz":true},
+		{ "node":5, "dy":true, "dz":true},
+		{ "node":6, "dy":true, "dz":true},
+		{ "node":7, "dy":true, "dz":true},
+		{ "node":8, "dy":true, "dz":true},
 		{ "node":9, "dx":true, "dy":true, "dz":true},
 		{ "node":10, "dx":true, "dy":true, "dz":true},
+		{ "node":11, "dy":true, "dz":true},
+		{ "node":12, "dy":true, "dz":true},
+		{ "node":13, "dy":true, "dz":true},
+		{ "node":14, "dy":true, "dz":true},
 		{ "node":15, "dx":true, "dy":true, "dz":true},
 		{ "node":16, "dx":true, "dy":true, "dz":true},
 		{ "node":17, "dx":true, "dy":true, "dz":true},
 		{ "node":18, "dx":true, "dy":true, "dz":true},
 		{ "node":19, "dx":true, "dy":true, "dz":true},
 		{ "node":20, "dx":true, "dy":true, "dz":true},
+		{ "node":21, "dz":true},
+		{ "node":22, "dz":true},
+		{ "node":23, "dz":true},
+		{ "node":24, "dz":true},
+		{ "node":25, "dy":true},
+		{ "node":26, "dy":true},
+		{ "node":27, "dy":true},
+		{ "node":28, "dy":true},
+		{ "node":33, "dy":true},
+		{ "node":34, "dy":true},
+		{ "node":35, "dy":true},
+		{ "node":36, "dy":true},
 		{ "node":37, "dx":true, "dy":true, "dz":true},
 		{ "node":38, "dx":true, "dy":true, "dz":true},
 		{ "node":39, "dx":true, "dy":true, "dz":true},
-		{ "node":40, "dx":true, "dy":true, "dz":true}
+		{ "node":40, "dx":true, "dy":true, "dz":true},
+		{ "node":41, "dz":true},
+		{ "node":42, "dz":true},
+		{ "node":43, "dz":true},
+		{ "node":44, "dz":true}
 	],
 
 	"load patterns":[

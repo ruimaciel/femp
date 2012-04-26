@@ -87,6 +87,12 @@ MainWindow::newProject()
 	// initialize a new project
 	std::string default_path, tmp;
 
+	// tweak the UI
+	setUserInterfaceAsClosed();
+
+	// free everything
+	document.clear();
+
 	default_path = getenv("HOME");
 	if(options.getOption("project.new.default_directory",tmp))
 	{

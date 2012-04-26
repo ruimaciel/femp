@@ -53,7 +53,7 @@ Document::clear()
 		file_name = NULL;
 	}
 	document_type = TYPE_NONE;
-	this->project.model.clear();
+	this->project.clear();
 
 	// clear all selections
 	model_selection.deselectAll();

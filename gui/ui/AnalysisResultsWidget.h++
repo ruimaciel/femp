@@ -2,7 +2,9 @@
 #define ANALYSIS_RESULTS_WIDGET_H
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
+
 #include <QWidget>
+#include <QSortFilterProxyModel>
 
 #include "ui_AnalysisResultsWidget.h"
 #include "AnalysisResultsModel.h++"
@@ -17,10 +19,14 @@ class AnalysisResultsWidget
 	:public QWidget, private Ui::AnalysisResultsWidget
 {
 	Q_OBJECT
+
 protected:
 	fem::Project const *m_project;
 	fem::AnalysisResult<double> const *m_result;
 	AnalysisResultsModel *m_model;
+
+	// proxy model to provide a way to filter stuff from the results
+	QSortFilterProxyModel m_proxy_model;
 
 public:
 	AnalysisResultsWidget(fem::Project &project, QWidget *parent = nullptr);
@@ -33,6 +39,10 @@ public:
 private:
 	// adds load pattern names to the combo box
 	void fillComboBox(fem::Model const &);
+
+private Q_SLOTS:
+	// Calls the TableFilterDialog and sets the table according to the user input
+	void setFilterOptions();
 };
 
 #endif

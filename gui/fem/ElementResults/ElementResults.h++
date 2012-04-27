@@ -19,8 +19,6 @@ Stores the results for each element
 template<typename Scalar>
 struct ElementResults
 {
-	ElementResults();
-
 	std::vector<Strains<Scalar> >	strains;	// strains calculated in each of the element's nodes
 	std::vector<Stresses<Scalar> >	stresses;	// stresses calculated in each of the element's nodes
 
@@ -34,16 +32,6 @@ struct ElementResults
 	**/
 	void resize(const unsigned int );
 };
-
-
-
-template<typename Scalar>
-ElementResults<Scalar>::ElementResults()
-{
-	stresses.clear();
-	strains.clear();
-	von_mises.clear();
-}
 
 
 template<typename Scalar>

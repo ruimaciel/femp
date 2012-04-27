@@ -13,8 +13,23 @@ AnalysisResultsWidget::AnalysisResultsWidget(fem::Project &project, QWidget *par
 
 	m_model = new AnalysisResultsModel(project, parent);
 	this->tableView->setModel(m_model);
+
 	m_project = &project;
-	m_result = &project.result[0];	//CRUDE HACK
+
+	setProjectResults(project.result[0]);	//CRUDE HACK
 }
 
+
+void 
+AnalysisResultsWidget::setProjectResults(fem::AnalysisResult<double> const &results)
+{
+	m_result  = &results;
+}
+
+
+void 
+AnalysisResultsWidget::fillComboBox(fem::Model const &)
+{
+	//TODO finish this
+}
 

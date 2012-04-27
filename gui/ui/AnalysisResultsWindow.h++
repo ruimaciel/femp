@@ -14,7 +14,7 @@
 
 
 /**
-MDI window designed to represent the model
+MDI window designed to represent a model's results
 **/
 class AnalysisResultsWindow
 	:  public QMdiSubWindow, public sigc::trackable, public BaseWindow

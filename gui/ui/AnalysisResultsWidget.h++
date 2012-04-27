@@ -24,6 +24,15 @@ protected:
 
 public:
 	AnalysisResultsWidget(fem::Project &project, QWidget *parent = nullptr);
+
+	/**
+	Sets which project to represent
+	**/
+	void setProjectResults(fem::AnalysisResult<double> const &result);
+
+private:
+	// adds load pattern names to the combo box
+	void fillComboBox(fem::Model const &);
 };
 
 #endif

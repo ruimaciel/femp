@@ -28,6 +28,16 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
+        <widget class="QCheckBox" name="checkBoxElements">
+         <property name="text">
+          <string>All</string>
+         </property>
+         <property name="tristate">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="checkBoxElementReference">
          <property name="text">
           <string>Element reference</string>
@@ -45,9 +55,16 @@
      </widget>
      <widget class="QWidget" name="tabNodes">
       <attribute name="title">
-       <string>Nodes</string>
+       <string>Node references</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QCheckBox" name="checkBoxNodeReferences">
+         <property name="text">
+          <string>All</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QCheckBox" name="checkBoxNodeGlobalReference">
          <property name="text">
@@ -59,6 +76,20 @@
         <widget class="QCheckBox" name="checkBoxNodeLocalReference">
          <property name="text">
           <string>local reference</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabNodePosition">
+      <attribute name="title">
+       <string>Node position</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <widget class="QCheckBox" name="checkBoxNodePositions">
+         <property name="text">
+          <string>All</string>
          </property>
         </widget>
        </item>
@@ -91,6 +122,13 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
+        <widget class="QCheckBox" name="checkBoxNodeDisplacements">
+         <property name="text">
+          <string>All</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="checkBoxNodeDisplacementsX">
          <property name="text">
           <string>X displacements</string>
@@ -118,6 +156,16 @@
        <string>Strains</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QCheckBox" name="checkBoxStrains">
+         <property name="text">
+          <string>All</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QCheckBox" name="checkBoxE11">
          <property name="text">
@@ -167,6 +215,13 @@
        <string>Stresses</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QCheckBox" name="checkBoxStresses">
+         <property name="text">
+          <string>All</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QCheckBox" name="checkBoxS11">
          <property name="text">

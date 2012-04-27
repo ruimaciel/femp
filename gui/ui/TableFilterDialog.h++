@@ -47,6 +47,24 @@ bool get##XX##Visible() const		{ return this->checkBox##XX->isChecked(); }
 	MEMBER_HELPER(VonMises);
 #undef MEMBER_HELPER
 
+private Q_SLOTS:
+	void toggleElementsCheckboxes(bool);
+	void toggleElementCheckbox(bool);
+
+	void toggleNodeReferencesCheckboxes(bool);
+	void toggleNodeReferenceCheckbox(bool);
+
+	void toggleNodePositionsCheckboxes(bool);
+	void toggleNodePositionCheckbox(bool);
+
+	void toggleNodeDisplacementsCheckboxes(bool);
+	void toggleNodeDisplacementsCheckbox(bool);
+
+	void toggleStrainsCheckboxes(bool);
+	void toggleStrainsCheckbox(bool);
+
+	void toggleStressesCheckboxes(bool);
+	void toggleStressesCheckbox(bool);
 };
 
 

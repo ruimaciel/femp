@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 #include "Input.h++"
 #include "../BaseViewport.h++"
 

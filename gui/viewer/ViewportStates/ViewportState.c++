@@ -1,5 +1,8 @@
 #include "ViewportState.h++"
 
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 #include "../SceneGraphComponents/SGCPickRay.h++"	// debugging purposes only
 
 

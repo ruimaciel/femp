@@ -10,7 +10,7 @@ QT += opengl
 QMAKE_EXT_CPP += c++
 
 INCLUDEPATH += /usr/include/eigen2 /usr/include/suitesparse
-LIBS += -ll -ly -lumfpack -lmetis -lblas -lamd
+LIBS += -ll -ly -lumfpack -lmetis -lblas -lamd -lGLU
 
 HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	ModelSelection.h++ \

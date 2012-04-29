@@ -3,18 +3,19 @@
 
 #include "MdiWindow.h++"
 
-#include <QWidget>
+#include <QMainWindow>
 #include <QComboBox>
 #include <QToolBar>
 
 #include "../fem/Project.h++"
+#include "WindowWith.h++"
 
 
 /**
 Provides a window with the UI needed to select between rendering wireframe, surfaces or both
 **/
 class WindowWithWireframe
-	: public virtual MdiWindow
+	: public WindowWith
 {
 public:
 	enum RenderingType {
@@ -29,9 +30,7 @@ protected:
 	QToolBar *toggleElementRenderingToolBar;	
 
 public:
-	WindowWithWireframe(QWidget *parent = 0);
-
-	void createToolbar();
+	void createToolbar(QMainWindow *parent);
 };
 
 

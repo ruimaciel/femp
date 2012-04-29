@@ -1,35 +1,30 @@
 #include "WindowWithPostprocessing.h++"
 
+#include <QObject>	// for tr()
 #include <QString>
 
 
-WindowWithPostprocessing::WindowWithPostprocessing(fem::Project &, ViewportColors &, QWidget *parent)
-	: MdiWindow(parent)
+void WindowWithPostprocessing::createToolbar(QMainWindow *parent, fem::Project &)
 {
-}
-
-
-void WindowWithPostprocessing::createToolbar(fem::Project &)
-{
-	postprocessingComboBox = new QComboBox(this);
+	postprocessingComboBox = new QComboBox(parent);
 	QString text;
 
-	postprocessingComboBox->insertItem(P_DISPLACEMENT, "Displacements");
-	postprocessingComboBox->insertItem(P_STRAIN_11, "Strain 11");
-	postprocessingComboBox->insertItem(P_STRAIN_22, "Strain 22");
-	postprocessingComboBox->insertItem(P_STRAIN_33, "Strain 33");
-	postprocessingComboBox->insertItem(P_STRAIN_12, "Strain 12");
-	postprocessingComboBox->insertItem(P_STRAIN_13, "Strain 13");
-	postprocessingComboBox->insertItem(P_STRAIN_23, "Strain 23");
-	postprocessingComboBox->insertItem(P_STRESS_11, "Stress 11");
-	postprocessingComboBox->insertItem(P_STRESS_22, "Stress 22");
-	postprocessingComboBox->insertItem(P_STRESS_33, "Stress 33");
-	postprocessingComboBox->insertItem(P_STRESS_12, "Stress 12");
-	postprocessingComboBox->insertItem(P_STRESS_13, "Stress 13");
-	postprocessingComboBox->insertItem(P_STRESS_23, "Stress 23");
-	postprocessingComboBox->insertItem(P_VON_MISES, "Von Mises");
+	postprocessingComboBox->insertItem(P_DISPLACEMENT, QObject::tr("Displacements"));
+	postprocessingComboBox->insertItem(P_STRAIN_11, QObject::tr("Strain 11"));
+	postprocessingComboBox->insertItem(P_STRAIN_22, QObject::tr("Strain 22"));
+	postprocessingComboBox->insertItem(P_STRAIN_33, QObject::tr("Strain 33"));
+	postprocessingComboBox->insertItem(P_STRAIN_12, QObject::tr("Strain 12"));
+	postprocessingComboBox->insertItem(P_STRAIN_13, QObject::tr("Strain 13"));
+	postprocessingComboBox->insertItem(P_STRAIN_23, QObject::tr("Strain 23"));
+	postprocessingComboBox->insertItem(P_STRESS_11, QObject::tr("Stress 11"));
+	postprocessingComboBox->insertItem(P_STRESS_22, QObject::tr("Stress 22"));
+	postprocessingComboBox->insertItem(P_STRESS_33, QObject::tr("Stress 33"));
+	postprocessingComboBox->insertItem(P_STRESS_12, QObject::tr("Stress 12"));
+	postprocessingComboBox->insertItem(P_STRESS_13, QObject::tr("Stress 13"));
+	postprocessingComboBox->insertItem(P_STRESS_23, QObject::tr("Stress 23"));
+	postprocessingComboBox->insertItem(P_VON_MISES, QObject::tr("Von Mises"));
 
-	postprocessingToolBar = addToolBar(tr("Postprocessing"));
+	postprocessingToolBar = parent->addToolBar(QObject::tr("Postprocessing"));
 	postprocessingToolBar->addWidget(postprocessingComboBox);
 }
 

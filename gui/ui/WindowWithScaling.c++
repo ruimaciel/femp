@@ -1,39 +1,32 @@
 #include "WindowWithScaling.h++"
 
 #include <assert.h>
+#include <QObject>	// for tr()
 #include <QString>
 
 
-WindowWithScaling::WindowWithScaling(fem::Project &, ViewportColors &, QWidget *parent)
-	: MdiWindow(parent)
+void WindowWithScaling::createToolbar(QMainWindow *parent, fem::Project &)
 {
-	actionSetTensionRanges = new QAction("Set tension ranges", this);
-}
-
-
-void WindowWithScaling::createToolbar(fem::Project &)
-{
-	scalingDoubleSpinBox = new QDoubleSpinBox(this);
+	scalingDoubleSpinBox = new QDoubleSpinBox(parent);
 	scalingDoubleSpinBox->setMinimum(0);
 	scalingDoubleSpinBox->setMaximum(9e99);
 	scalingDoubleSpinBox->setValue(1);
 
-	scalingToolBar = addToolBar(tr("Scale"));
+	scalingToolBar = parent->addToolBar(QObject::tr("Scale"));
 	scalingToolBar->addWidget(scalingDoubleSpinBox);
 }
 
 
-void WindowWithScaling::createMenuBar(QMenuBar *menu)
+void WindowWithScaling::createMenuBar(QMainWindow *parent,QMenuBar *menu)
 {
-	assert(menu != NULL);
-
-	m_scaling_menu = menu->addMenu(tr("Scaling"));
+	actionSetTensionRanges = new QAction(QObject::tr("Set tension ranges"), parent);
+	m_scaling_menu = menu->addMenu(QObject::tr("Scaling"));
 	m_scaling_menu->addAction(actionSetTensionRanges);
 }
 
 
-void WindowWithScaling::connectSignalsToSlots()
+void WindowWithScaling::connectSignalsToSlots(QMainWindow *parent)
 {
-	connect(scalingDoubleSpinBox,	SIGNAL(valueChanged(double)),	this,	SLOT(setDisplacementsScale(double) ) );
+	QObject::connect(scalingDoubleSpinBox,	SIGNAL(valueChanged(double)),	parent,	SLOT(setDisplacementsScale(double) ) );
 }
 

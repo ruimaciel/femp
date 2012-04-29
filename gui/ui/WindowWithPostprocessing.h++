@@ -3,18 +3,19 @@
 
 #include "MdiWindow.h++"
 
-#include <QWidget>
+#include <QMainWindow>
 #include <QComboBox>
 #include <QToolBar>
 
 #include "../fem/Project.h++"
+#include "WindowWith.h++"
 
 
 /**
 Provides a window with the ability to select which AnalysisResults<> object to use
 **/
 class WindowWithPostprocessing
-	: public virtual MdiWindow
+	: public WindowWith
 {
 protected:
 	enum PostprocessingType {
@@ -28,9 +29,7 @@ protected:
 	QComboBox *postprocessingComboBox;
 
 public:
-	WindowWithPostprocessing(fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
-
-	void createToolbar(fem::Project &results);
+	void createToolbar(QMainWindow *parent, fem::Project &results);
 };
 
 

@@ -10,9 +10,10 @@
 
 PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent)
 	: MdiWindow(parent), 
-	WindowWithResults(project, colors, parent), 
-	WindowWithPostprocessing(project, colors, parent) ,
-	WindowWithScaling(project, colors, parent), BaseWindow("Gradient")
+	WindowWithResults(),
+	WindowWithPostprocessing(),
+	WindowWithScaling(), 
+	BaseWindow("Gradient")
 {
 	this->setGradientValuesRange(result);
 	this->viewport = new PostprocessingViewport(project, result, m_results_ranges,  parent);
@@ -22,7 +23,7 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::Analysis
 	this->viewport->setColors(colors);
 
 
-	WindowWithScaling::createMenuBar(this->menuBar());
+	WindowWithScaling::createMenuBar(this, this->menuBar());
 
 	this->createToolBars(project);
 
@@ -51,10 +52,8 @@ void
 PostprocessingWindow::connectSignalsToSlots()
 {
 	// nasty hack to connect libsigc++ signal
-	MdiWindow::connectSignalsToSlots();
-
-	WindowWithScaling::connectSignalsToSlots();
-	WindowWithPostprocessing::connectSignalsToSlots();
+	WindowWithScaling::connectSignalsToSlots(this);
+	WindowWithPostprocessing::connectSignalsToSlots(this);
 
 	connect(postprocessingComboBox,	SIGNAL(activated(int)),	this,	SLOT(setPostprocessingState(int)));
 	connect(actionMenuVisibility,	SIGNAL(toggled(bool)),	this,	SLOT(toggleMenuBarVisibility(bool) ) );
@@ -65,9 +64,9 @@ PostprocessingWindow::connectSignalsToSlots()
 void 
 PostprocessingWindow::createToolBars(fem::Project &project)
 {
-	WindowWithScaling::createToolbar(project);
-	WindowWithResults::createToolbar(project);
-	WindowWithPostprocessing::createToolbar(project);
+	WindowWithScaling::createToolbar(this, project);
+	WindowWithResults::createToolbar(this, project);
+	WindowWithPostprocessing::createToolbar(this, project);
 
 	// create
 	toggleMenuBarVisibilityToolBar = addToolBar(tr("Menu bar visibility"));

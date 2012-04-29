@@ -24,7 +24,7 @@
 MDI window designed to represent the model
 **/
 class PostprocessingWindow 
-	: virtual public MdiWindow, virtual public WindowWithResults, virtual public WindowWithPostprocessing, virtual public WindowWithScaling, public BaseWindow
+	: public MdiWindow,  public WindowWithResults,  public WindowWithPostprocessing,  public WindowWithScaling, public BaseWindow
 {
 	Q_OBJECT
 

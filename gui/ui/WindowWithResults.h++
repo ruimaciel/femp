@@ -3,27 +3,26 @@
 
 #include "MdiWindow.h++"
 
-#include <QWidget>
+#include <QMainWindow>
 #include <QComboBox>
 #include <QToolBar>
 
 #include "../fem/Project.h++"
+#include "WindowWith.h++"
 
 
 /**
 Provides a window with the ability to select which AnalysisResults<> object to use
 **/
 class WindowWithResults
-	: public virtual MdiWindow
+	: public WindowWith
 {
 protected:
 	QToolBar *resultsToolBar;	// toolbar to provide a user to select which result to run
 	QComboBox *resultsComboBox;
 
 public:
-	WindowWithResults(fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
-
-	void createToolbar(fem::Project &results);
+	void createToolbar(QMainWindow *parent, fem::Project &results);
 };
 
 

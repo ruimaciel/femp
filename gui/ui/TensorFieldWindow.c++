@@ -10,7 +10,8 @@
 
 TensorFieldWindow::TensorFieldWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent)
 	: MdiWindow(parent), 
-	WindowWithResults(project, colors, parent), BaseWindow("Tensor field")
+	WindowWithResults(),
+	BaseWindow("Tensor field")
 {
 	this->setGradientValuesRange(result);
 
@@ -50,7 +51,7 @@ void
 TensorFieldWindow::connectSignalsToSlots()
 {
 	// nasty hack to connect libsigc++ signal
-	MdiWindow::connectSignalsToSlots();
+	WindowWithResults::connectSignalsToSlots(this);
 
 	connect(actionMenuVisibility,	SIGNAL(toggled(bool)),	this,	SLOT(toggleMenuBarVisibility(bool) ) );
 	//connect(actionSetTensionRanges,	SIGNAL(triggered()),	this,	SLOT(setResultsRanges()));
@@ -62,7 +63,7 @@ TensorFieldWindow::connectSignalsToSlots()
 void 
 TensorFieldWindow::createToolBars(fem::Project &project)
 {
-	WindowWithResults::createToolbar(project);
+	WindowWithResults::createToolbar(this, project);
 
 	// create
 	/*

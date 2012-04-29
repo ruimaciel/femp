@@ -1,17 +1,12 @@
 #include "WindowWithResults.h++"
 
+#include <QObject>	// for tr()
 #include <QString>
 
 
-WindowWithResults::WindowWithResults(fem::Project &, ViewportColors &, QWidget *parent)
-	: MdiWindow(parent)
+void WindowWithResults::createToolbar(QMainWindow *parent, fem::Project &project)
 {
-}
-
-
-void WindowWithResults::createToolbar(fem::Project &project)
-{
-	resultsComboBox = new QComboBox(this);
+	resultsComboBox = new QComboBox(parent);
 	QString text;
 
 	for(size_t n = 0; n < project.result.size(); n++)
@@ -20,7 +15,7 @@ void WindowWithResults::createToolbar(fem::Project &project)
 		resultsComboBox->insertItem(n, text);
 	}
 
-	resultsToolBar = addToolBar(tr("Results"));
+	resultsToolBar = parent->addToolBar(QObject::tr("Results"));
 	resultsToolBar->addWidget(resultsComboBox);
 }
 

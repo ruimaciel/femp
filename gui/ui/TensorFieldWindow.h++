@@ -24,7 +24,7 @@
 MDI window designed to represent a tensor field of a given analysis result
 **/
 class TensorFieldWindow 
-	: virtual public MdiWindow, virtual public WindowWithResults, public BaseWindow
+	: public MdiWindow, public WindowWithResults, public BaseWindow
 {
 	Q_OBJECT
 

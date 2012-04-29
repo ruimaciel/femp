@@ -1,23 +1,18 @@
 #include "WindowWithWireframe.h++"
 
+#include <QObject>	// for tr()
 #include <QString>
 
 
-WindowWithWireframe::WindowWithWireframe( QWidget *parent)
-	: MdiWindow(parent)
+void WindowWithWireframe::createToolbar(QMainWindow *parent)
 {
-}
+	elementRenderingComboBox = new QComboBox(parent);
 
+	elementRenderingComboBox->insertItem(R_WIREFRAMES, QObject::tr("Wireframe"));
+	elementRenderingComboBox->insertItem(R_SURFACES, QObject::tr("Surface"));
+	elementRenderingComboBox->insertItem(R_BOTH, QObject::tr("Both"));
 
-void WindowWithWireframe::createToolbar()
-{
-	elementRenderingComboBox = new QComboBox(this);
-
-	elementRenderingComboBox->insertItem(R_WIREFRAMES, "Wireframe");
-	elementRenderingComboBox->insertItem(R_SURFACES, "Surface");
-	elementRenderingComboBox->insertItem(R_BOTH, "Both");
-
-	toggleElementRenderingToolBar = addToolBar(tr("Element rendering"));
+	toggleElementRenderingToolBar = parent->addToolBar( QObject::tr("Element rendering"));
 	toggleElementRenderingToolBar->addWidget(elementRenderingComboBox);
 }
 

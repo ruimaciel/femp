@@ -3,20 +3,21 @@
 
 #include "MdiWindow.h++"
 
-#include <QWidget>
+#include <QMainWindow>
 #include <QDoubleSpinBox>
 #include <QMenuBar>
 #include <QMenu>
 #include <QToolBar>
 
 #include "../fem/Project.h++"
+#include "WindowWith.h++"
 
 
 /**
 Provides a window with a toolbar which sets a scale
 **/
 class WindowWithScaling
-	: public virtual MdiWindow
+	: public WindowWith
 {
 protected:
 	QToolBar *scalingToolBar;	// toolbar to provide a user to select which result to run
@@ -26,21 +27,19 @@ protected:
 	QMenu * m_scaling_menu;
 
 public:
-	WindowWithScaling(fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
-
-	void createToolbar(fem::Project &results);
+	void createToolbar(QMainWindow *parent, fem::Project &results);
 
 	/**
 	Adds menu entries to the window's menu bar
 	**/
-	void createMenuBar(QMenuBar *);
+	void createMenuBar(QMainWindow *parent, QMenuBar *);
 
 public slots:
 	void setDisplacementsScale(double);
 	
 
 protected:
-	void connectSignalsToSlots();
+	void connectSignalsToSlots(QMainWindow *parent);
 };
 
 

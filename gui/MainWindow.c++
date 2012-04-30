@@ -1350,6 +1350,12 @@ MainWindow::updateWindowMenu()
 	{
 		// get current MDI window label
 		BaseWindow *base = dynamic_cast<BaseWindow*>(subWindowList[n]->widget());
+		{
+			//TODO fix problem with menu windows 
+			std::cerr << "MainWindow::updateWindowMenu(): nullptr result" << std::endl;
+			continue;
+		}
+
 		// set the action name
 		action = new QAction(base->label(), this);
 		action->setData(n);

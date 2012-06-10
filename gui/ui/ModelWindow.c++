@@ -23,6 +23,7 @@ void
 ModelWindow::connectSignalsToSlots()
 {
 	// nasty hack to connect libsigc++ signal
+	MdiWindow::connectSignalsToSlots();
 	WindowWithWireframe::connectSignalsToSlots(this);
 }
 

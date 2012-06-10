@@ -51,6 +51,7 @@ void
 TensorFieldWindow::connectSignalsToSlots()
 {
 	// nasty hack to connect libsigc++ signal
+	MdiWindow::connectSignalsToSlots();
 	WindowWithResults::connectSignalsToSlots(this);
 
 	connect(actionMenuVisibility,	SIGNAL(toggled(bool)),	this,	SLOT(toggleMenuBarVisibility(bool) ) );

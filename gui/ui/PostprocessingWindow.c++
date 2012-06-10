@@ -52,6 +52,7 @@ void
 PostprocessingWindow::connectSignalsToSlots()
 {
 	// nasty hack to connect libsigc++ signal
+	MdiWindow::connectSignalsToSlots();
 	WindowWithScaling::connectSignalsToSlots(this);
 	WindowWithPostprocessing::connectSignalsToSlots(this);
 

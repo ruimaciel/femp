@@ -15,7 +15,6 @@ class Material {
 			MAT_LINEAR_ELASTIC = 0
 		};
 
-		//QString label;	// a label describing this material
 		std::string label;	// a label describing this material
 		enum Type type;
 

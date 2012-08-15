@@ -514,7 +514,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 #define X(N)	project.model.node_list[surface_load->nodes[N]].x()
 #define Y(N)	project.model.node_list[surface_load->nodes[N]].y()
 #define Z(N)	project.model.node_list[surface_load->nodes[N]].z()
-			//J(0,0) = 1;	J(1,0) = 2;	J(2,0) = 3;
+
 			for(int n = 0; n < nnodes; n++)
 			{
 				J(0,0) += element->dNdcsi[n]*X(n);	J(0,1) += element->dNdcsi[n]*Y(n);	J(0,2) += element->dNdcsi[n]*Z(n);
@@ -648,7 +648,6 @@ void Analysis<Scalar>::generateDisplacementsMap(Project &project, AnalysisResult
 
 	result.displacements.clear();
 
-	//for(size_t n = 0; n < project.model.node_list.size(); n++)
 	for( std::map<size_t, Node>::iterator i = project.model.node_list.begin(); i != project.model.node_list.end(); i++)
 	{
 		references = result.lm[i->first];
@@ -657,11 +656,8 @@ void Analysis<Scalar>::generateDisplacementsMap(Project &project, AnalysisResult
 		d.data[1] = (references.get<1>() == 0)? 0 : result.d(references.get<1>()-1);
 		d.data[2] = (references.get<2>() == 0)? 0 : result.d(references.get<2>()-1);
 
-		// std::cout << "d[" << i->first << "]: " << d << "\n";
-
 		result.displacements[i->first] = d;
 	}
-	//std::cout << std::endl;
 }
 
 
@@ -677,11 +673,6 @@ Analysis<Scalar>::recoverValues(Model &model, AnalysisResult<Scalar> &result)
 		element_results = factory(model.element_list[n]);
 		// TODO test memory allocation
 		result.results[n] = element_results;
-
-		/*	// used for testing purposes
-		std::cout << "element " << n << "\n";
-		std::cout << *result.results[n];
-		// */
 	}
 
 	return ERR_OK;

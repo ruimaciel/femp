@@ -12,7 +12,7 @@
 #include "../fem/Model.h++"
 
 /**
-Class developed to parse the INI file format
+Class developed to parse the fem.json file format
 **/
 class FemJsonParser
 {

@@ -23,10 +23,6 @@ class Material {
 		double fy;	// elastic limit
 
 	public:
-		Material();
-		Material(const Material &);
-		~Material();
-
 		/**
 		Generates a constitutive matrix
 		@return	a matrix type

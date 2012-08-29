@@ -672,17 +672,4 @@ Model::sanity_check()
 }
 
 
-void 
-Model::text_dump() const
-{
-	using namespace std;
-
-	cout << "Nodes\n";
-	for(map<size_t, Node>::const_iterator i = node_list.begin(); i != node_list.end(); i++)
-	{
-		cout << i->first << ", " << i->second << "\n";
-	}
-}
-
-
 }

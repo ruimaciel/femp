@@ -112,7 +112,6 @@ public:
 	**/
 	enum Model::Error sanity_check();
 
-	void text_dump() const;
 };
 
 }

@@ -182,12 +182,12 @@ TableFilterDialog::toggleStrainsCheckbox(bool)
 void 
 TableFilterDialog::toggleStressesCheckboxes(bool state)
 {
-	this->checkBoxE11->setChecked(state);
-	this->checkBoxE22->setChecked(state);
-	this->checkBoxE33->setChecked(state);
-	this->checkBoxE12->setChecked(state);
-	this->checkBoxE23->setChecked(state);
-	this->checkBoxE13->setChecked(state);
+	this->checkBoxS11->setChecked(state);
+	this->checkBoxS22->setChecked(state);
+	this->checkBoxS33->setChecked(state);
+	this->checkBoxS12->setChecked(state);
+	this->checkBoxS23->setChecked(state);
+	this->checkBoxS13->setChecked(state);
 }
 
 

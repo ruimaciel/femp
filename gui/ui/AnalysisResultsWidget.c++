@@ -71,6 +71,7 @@ AnalysisResultsWidget::setFilterOptions()
 	MEMBER_HELPER(19, S12);
 	MEMBER_HELPER(20, S23);
 	MEMBER_HELPER(21, S13);
+	MEMBER_HELPER(22, VonMises);
 #undef MEMBER_HELPER
 
 	switch(dialog.exec())
@@ -100,6 +101,7 @@ AnalysisResultsWidget::setFilterOptions()
 			MEMBER_HELPER(19, S12);
 			MEMBER_HELPER(20, S23);
 			MEMBER_HELPER(21, S13);
+			MEMBER_HELPER(22, VonMises);
 #undef MEMBER_HELPER
 			break;
 

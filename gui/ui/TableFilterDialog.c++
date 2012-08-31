@@ -178,6 +178,7 @@ TableFilterDialog::toggleStrainsCheckbox(bool)
 	}
 }
 
+
 void 
 TableFilterDialog::toggleStressesCheckboxes(bool state)
 {

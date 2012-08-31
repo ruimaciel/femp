@@ -10,6 +10,7 @@
 
 /**
 Implements a dialog box which is used to toggle the visibility of each column and filter the results
+After running the dialog, the status of each widget is checked to tweak the visibility of each column in the table
 **/
 class TableFilterDialog
 	: public QDialog, private Ui::TableFilterDialog

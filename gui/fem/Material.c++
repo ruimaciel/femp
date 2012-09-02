@@ -4,7 +4,7 @@ namespace fem
 {
 
 Eigen::Matrix<double, 6, 6> 
-Material::generateD()
+Material::generateD() const
 {
 	Eigen::Matrix<double,6,6> D;
 

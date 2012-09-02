@@ -27,7 +27,7 @@ class Material {
 		Generates a constitutive matrix
 		@return	a matrix type
 		**/
-		Eigen::Matrix<double,6,6> generateD();
+		Eigen::Matrix<double,6,6> generateD() const;
 };
 
 typedef std::vector<Material>::size_type material_ref_t;

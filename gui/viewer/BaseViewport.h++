@@ -66,7 +66,7 @@ public:
 
 public:
 	BaseViewport(fem::Project &project, QWidget *parent);
-	~BaseViewport();
+	virtual ~BaseViewport();
 
 
 	void setColors(ViewportColors &new_colors);

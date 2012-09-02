@@ -78,7 +78,7 @@ fem::Solver<double> * AnalysisDialog::solver()
 }
 
 
-int AnalysisDialog::loadPattern()
+int AnalysisDialog::loadPattern() const
 {
 	//TODO finish this
 	return comboBoxLoadPattern->currentIndex();

@@ -32,7 +32,7 @@ class AnalysisDialog
 		Returns which load patter the user selected to be analyized
 		@return	counter to the current index
 		**/
-		int loadPattern();
+		int loadPattern() const;
 
 	protected:
 		/**

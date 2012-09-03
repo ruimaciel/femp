@@ -26,6 +26,7 @@
 #include "ui/SelectionDialog.h++"
 #include "ui/AnalysisProgressDialog.h++"
 #include "ui/AnalysisDialog.h++"
+#include "ui/MoveNodesDialog.h++"
 
 #include "ui/MdiWindow.h++"
 #include "ui/ModelWindow.h++"
@@ -49,6 +50,7 @@
 #include "fem/ProjectVisitor/OutputResultsInNodesVisitor.h++"
 #include "fem/ProjectVisitor/OutputResultsInNodesCSVVisitor.h++"
 #include "fem/ProjectVisitor/SetNodeRestraintsVisitor.h++"
+#include "fem/ProjectVisitor/MoveNodesVisitor.h++"
 
 #include "parsers/FemJsonParser.h++"
 #include "parsers/MshParser.h++"
@@ -414,8 +416,10 @@ MainWindow::createActions()
 	connect(ui.actionSaveAs,	SIGNAL(triggered()), this,	SLOT(saveProjectAs()));
 	connect(ui.actionClose,	SIGNAL(triggered()), this,	SLOT(closeProject()));
 	connect(ui.actionQuit,	SIGNAL(triggered()), this,	SLOT(quit()));
-	connect(ui.actionNodeRestraints,	SIGNAL(triggered()), this,	SLOT(setNodeRestraints()));
-	connect(ui.actionNodeActions,	SIGNAL(triggered()), this,	SLOT(setNodeActions()));
+	connect(ui.actionNodeRestraints,	SIGNAL(triggered()), this,	SLOT(setNodeRestraints()) );
+	connect(ui.actionNodeActions,	SIGNAL(triggered()), this,	SLOT(setNodeActions()) );
+	connect(ui.actionMoveNodes,	SIGNAL(triggered()), this,	SLOT(moveSelectedNodes()) );
+
 	connect(ui.actionRun,	SIGNAL(triggered()), this,	SLOT(runAnalysis()));
 	connect(ui.actionDump_FEM_equation,	SIGNAL(triggered()),	this,	SLOT(dumpFemEquation()));
 
@@ -828,6 +832,26 @@ MainWindow::setNodeActions()
 		}
 	}
 }
+
+
+void 
+MainWindow::moveSelectedNodes()
+{
+	assert(mdiArea != NULL);
+
+	MoveNodesDialog nd(this);
+	if(nd.exec() == QDialog::Accepted)
+	{
+		// get list of node restraints from active window
+		Selection selection = m_selection_manager.getSelection();
+		MoveNodesVisitor visitor(selection, nd.getTranslation());
+
+		document.project.accept(visitor);
+
+		document.setUnsaved();
+	}
+}
+
 
 
 void 

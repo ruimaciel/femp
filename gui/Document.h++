@@ -56,6 +56,8 @@ public:
 	void selectNode(const size_t &node);
 	void deselectNode(const size_t &node);
 	void deselectAll();
+
+	void setUnsaved()	{unsaved = true; }
 };
 
 

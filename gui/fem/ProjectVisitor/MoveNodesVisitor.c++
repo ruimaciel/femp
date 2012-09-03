@@ -20,7 +20,7 @@ MoveNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult<doubl
 
 	for(auto node: m_selection->m_nodes_selected)
 	{
-		model.getNode(node) -= m_translation;
+		model.getNode(node) += m_translation;
 	}
 }
 

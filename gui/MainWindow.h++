@@ -71,6 +71,8 @@ public Q_SLOTS:
 	**/
 	void setNodeRestraints();
 	void setNodeActions();
+	void moveSelectedNodes();
+
 	void setDisplayOptions();
 	void editMaterials();
 	void editQuadratureRules();

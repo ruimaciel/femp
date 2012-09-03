@@ -114,6 +114,7 @@
     </property>
     <addaction name="actionNodeRestraints"/>
     <addaction name="actionNodeActions"/>
+    <addaction name="actionMoveNodes"/>
     <addaction name="separator"/>
     <addaction name="actionPreferences"/>
     <addaction name="actionEditMaterials"/>
@@ -411,6 +412,11 @@
   <action name="actionViewAll">
    <property name="text">
     <string>All</string>
+   </property>
+  </action>
+  <action name="actionMoveNodes">
+   <property name="text">
+    <string>Move nodes</string>
    </property>
   </action>
  </widget>

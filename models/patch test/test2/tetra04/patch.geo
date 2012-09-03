@@ -1,4 +1,4 @@
-Mesh.ElementOrder = 2;
+Mesh.ElementOrder = 1;
 Mesh.SecondOrderIncomplete = 0;
 
 b = 1;

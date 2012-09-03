@@ -1,0 +1,117 @@
+{
+	"fem": {
+		"version": "1.0",
+		"type": "3D solid"
+	},
+	"materials": [
+		{"type":"linear elastic", "label": "Mat", "E":10,"nu":0.3, "fy": 1.18436e-316}
+	],
+	"nodes":[
+		[	1,[	-0.5,	-0.5,	0	]],
+		[	2,[	0.5,	-0.5,	0	]],
+		[	3,[	0.5,	0.5,	0	]],
+		[	4,[	-0.5,	0.5,	0	]],
+		[	5,[	-0.5,	-0.5,	2	]],
+		[	6,[	0.5,	-0.5,	2	]],
+		[	7,[	0.5,	0.5,	2	]],
+		[	8,[	-0.5,	0.5,	2	]],
+		[	9,[	-1.04083e-12,	-0.5,	0	]],
+		[	10,[	0.5,	-1.04083e-12,	0	]],
+		[	11,[	1.04083e-12,	0.5,	0	]],
+		[	12,[	-0.5,	1.04083e-12,	0	]],
+		[	13,[	-1.04083e-12,	-0.5,	2	]],
+		[	14,[	0.5,	-1.04083e-12,	2	]],
+		[	15,[	1.04083e-12,	0.5,	2	]],
+		[	16,[	-0.5,	1.04083e-12,	2	]],
+		[	17,[	-0.5,	-0.5,	1	]],
+		[	18,[	0.5,	-0.5,	1	]],
+		[	19,[	0.5,	0.5,	1	]],
+		[	20,[	-0.5,	0.5,	1	]],
+		[	21,[	-2.1665e-24,	0,	0	]],
+		[	22,[	-1.04083e-12,	-0.5,	1	]],
+		[	23,[	0.5,	-1.04083e-12,	1	]],
+		[	24,[	1.04083e-12,	0.5,	1	]],
+		[	25,[	-0.5,	1.04083e-12,	1	]],
+		[	26,[	-2.1665e-24,	0,	2	]],
+		[	27,[	-2.1665e-24,	0,	1	]]
+	],
+	"elements":[
+		{"type":"tetrahedron4", "nodes":[1,9,12,25], "material": 0},
+		{"type":"tetrahedron4", "nodes":[22,17,25,9]},
+		{"type":"tetrahedron4", "nodes":[9,17,25,1]},
+		{"type":"tetrahedron4", "nodes":[17,22,25,16]},
+		{"type":"tetrahedron4", "nodes":[13,5,16,17]},
+		{"type":"tetrahedron4", "nodes":[22,17,13,16]},
+		{"type":"tetrahedron4", "nodes":[12,9,21,27]},
+		{"type":"tetrahedron4", "nodes":[22,25,27,9]},
+		{"type":"tetrahedron4", "nodes":[9,25,27,12]},
+		{"type":"tetrahedron4", "nodes":[25,22,27,26]},
+		{"type":"tetrahedron4", "nodes":[13,16,26,22]},
+		{"type":"tetrahedron4", "nodes":[22,16,26,25]},
+		{"type":"tetrahedron4", "nodes":[12,21,4,27]},
+		{"type":"tetrahedron4", "nodes":[27,25,20,12]},
+		{"type":"tetrahedron4", "nodes":[4,12,27,20]},
+		{"type":"tetrahedron4", "nodes":[25,27,20,26]},
+		{"type":"tetrahedron4", "nodes":[26,16,8,20]},
+		{"type":"tetrahedron4", "nodes":[25,16,26,20]},
+		{"type":"tetrahedron4", "nodes":[4,21,11,27]},
+		{"type":"tetrahedron4", "nodes":[27,20,24,11]},
+		{"type":"tetrahedron4", "nodes":[4,20,27,11]},
+		{"type":"tetrahedron4", "nodes":[20,27,24,26]},
+		{"type":"tetrahedron4", "nodes":[26,8,15,20]},
+		{"type":"tetrahedron4", "nodes":[24,20,26,15]},
+		{"type":"tetrahedron4", "nodes":[9,2,21,27]},
+		{"type":"tetrahedron4", "nodes":[18,22,27,9]},
+		{"type":"tetrahedron4", "nodes":[2,9,18,27]},
+		{"type":"tetrahedron4", "nodes":[22,18,27,26]},
+		{"type":"tetrahedron4", "nodes":[6,13,26,18]},
+		{"type":"tetrahedron4", "nodes":[18,13,26,22]},
+		{"type":"tetrahedron4", "nodes":[21,2,10,27]},
+		{"type":"tetrahedron4", "nodes":[18,27,23,2]},
+		{"type":"tetrahedron4", "nodes":[2,27,23,10]},
+		{"type":"tetrahedron4", "nodes":[27,18,23,26]},
+		{"type":"tetrahedron4", "nodes":[6,26,14,18]},
+		{"type":"tetrahedron4", "nodes":[18,26,14,23]},
+		{"type":"tetrahedron4", "nodes":[21,10,11,27]},
+		{"type":"tetrahedron4", "nodes":[23,27,24,11]},
+		{"type":"tetrahedron4", "nodes":[10,27,23,11]},
+		{"type":"tetrahedron4", "nodes":[27,23,24,26]},
+		{"type":"tetrahedron4", "nodes":[14,26,15,23]},
+		{"type":"tetrahedron4", "nodes":[23,26,15,24]},
+		{"type":"tetrahedron4", "nodes":[11,10,3,23]},
+		{"type":"tetrahedron4", "nodes":[23,24,19,3]},
+		{"type":"tetrahedron4", "nodes":[11,24,23,3]},
+		{"type":"tetrahedron4", "nodes":[24,23,19,15]},
+		{"type":"tetrahedron4", "nodes":[14,15,7,19]},
+		{"type":"tetrahedron4", "nodes":[23,15,14,19]}
+	],
+
+	"node restrictions": [
+		{ "node":1, "dz":true},
+		{ "node":2, "dz":true},
+		{ "node":3, "dz":true},
+		{ "node":4, "dz":true},
+		{ "node":9, "dx":true, "dz":true},
+		{ "node":10, "dy":true, "dz":true},
+		{ "node":11, "dx":true, "dz":true},
+		{ "node":12, "dy":true, "dz":true},
+		{ "node":21, "dx":true, "dy":true, "dz":true}
+	],
+
+	"load patterns":[
+		{
+			"label": "Default MSH import load pattern",
+			"surface loads":[
+				{"type": "triangle3", "nodes": [5,13,16], "forces": [[0,0,-1],[0,0,-1],[0,0,-1]]},
+				{"type": "triangle3", "nodes": [16,13,26], "forces": [[0,0,-1],[0,0,-1],[0,0,-1]]},
+				{"type": "triangle3", "nodes": [16,26,8], "forces": [[0,0,-1],[0,0,-1],[0,0,-1]]},
+				{"type": "triangle3", "nodes": [8,26,15], "forces": [[0,0,-1],[0,0,-1],[0,0,-1]]},
+				{"type": "triangle3", "nodes": [13,6,26], "forces": [[0,0,-1],[0,0,-1],[0,0,-1]]},
+				{"type": "triangle3", "nodes": [26,6,14], "forces": [[0,0,-1],[0,0,-1],[0,0,-1]]},
+				{"type": "triangle3", "nodes": [26,14,15], "forces": [[0,0,-1],[0,0,-1],[0,0,-1]]},
+				{"type": "triangle3", "nodes": [15,14,7], "forces": [[0,0,-1],[0,0,-1],[0,0,-1]]}
+			]
+		}
+	]
+
+}

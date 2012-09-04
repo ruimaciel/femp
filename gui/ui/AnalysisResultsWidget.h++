@@ -21,7 +21,7 @@ class AnalysisResultsWidget
 	Q_OBJECT
 
 protected:
-	fem::Project const *m_project;
+	fem::Project const &m_project;
 	fem::AnalysisResult<double> const *m_result;
 	AnalysisResultsModel *m_model;
 

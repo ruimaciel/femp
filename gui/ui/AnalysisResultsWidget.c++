@@ -9,12 +9,11 @@
 
 
 AnalysisResultsWidget::AnalysisResultsWidget(fem::Project &project, QWidget *parent)
-	: QWidget(parent)
+	: QWidget(parent), m_project(project)
 {
 	setupUi(this);
 
 	// initialize member variables
-	m_project = &project;
 	setProjectResults(project.result[0]);	//CRUDE HACK
 
 	// set the table model for the model/view stuff

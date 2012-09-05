@@ -68,7 +68,7 @@
 
 	"load patterns":[
 		{
-			"label": "Default MSH import load pattern",
+			"label": "Load case 1: Tension",
 			"surface loads":[
 				{"type": "triangle3", "nodes": [5,13,16], "forces": [[0,0,-1],[0,0,-1],[0,0,-1]]},
 				{"type": "triangle3", "nodes": [16,13,26], "forces": [[0,0,-1],[0,0,-1],[0,0,-1]]},
@@ -78,6 +78,51 @@
 				{"type": "triangle3", "nodes": [26,6,14], "forces": [[0,0,-1],[0,0,-1],[0,0,-1]]},
 				{"type": "triangle3", "nodes": [26,14,15], "forces": [[0,0,-1],[0,0,-1],[0,0,-1]]},
 				{"type": "triangle3", "nodes": [15,14,7], "forces": [[0,0,-1],[0,0,-1],[0,0,-1]]}
+			]
+		},
+		{
+			"label": "Load case 2: Moment",
+			"surface loads":[
+				{
+					"type": "triangle3",
+					"nodes": [5,13,16], 
+					"forces": [[0,0,1],[0,0,1],[0,0,0]]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [16,13,26], 
+					"forces": [[0,0,0],[0,0,1],[0,0,0]]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [16,26,8],
+					"forces": [[0,0,0],[0,0,0],[0,0,-1]]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [8,26,15],
+					"forces": [[0,0,-1],[0,0,0],[0,0,-1]]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [13,6,26],
+					"forces": [[0,0,1],[0,0,1],[0,0,0]]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [26,6,14],
+					"forces": [[0,0,0],[0,0,1],[0,0,0]]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [26,14,15],
+					"forces": [[0,0,0],[0,0,0],[0,0,-1]]
+				},
+				{
+					"type": "triangle3",
+					"nodes": [15,14,7],
+					"forces": [[0,0,-1],[0,0,0],[0,0,-1]]
+				}
 			]
 		}
 	]

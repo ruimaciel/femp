@@ -39,15 +39,22 @@
 			]
 		},
 		{
-			"label": "First test pattern",
+			"label": "nodal load",
 			"nodal loads":[
 				{"node":2, "force":[10, 0, 0]},
 				{"node":3, "force":[10, 0, 0]},
 				{"node":6, "force":[10, 0, 0]},
 				{"node":7, "force":[10, 0, 0]}
-			]
-		, "surface loads":[
-			{"type": "quadrangle4", "nodes": [2,3,7,6], "forces": [[1,0,0],[1,0,0],[1,0,0],[1,0,0]]}
+			] 
+		},
+		{
+			"label": "surface load",
+			"surface loads":[
+				{
+					"type": "quadrangle4", 
+					"nodes": [5,6,7,8], 
+					"forces": [[0,0,1],[0,0,1],[0,0,-1],[0,0,-1]]
+				}
 			]
 		}
 	]

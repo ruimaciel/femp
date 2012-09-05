@@ -138,9 +138,14 @@ std::vector<T> & Quadrangle4<T>::setdNdzeta(const T &, const T &, const T &)
 	return this->dNdzeta;
 }
 
+
 template<typename T>
 std::vector<fem::point> & Quadrangle4<T>::setCoordinates()
 {
+	this->coordinates[0] = point(	-0.5,	-0.5,	0	);
+	this->coordinates[1] = point(	0.5,	-0.5,	0	);
+	this->coordinates[2] = point(	0.5,	0.5,	0	);
+	this->coordinates[3] = point(	-0.5,	0.5,	0	);
 
 	return this->coordinates;
 }

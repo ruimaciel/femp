@@ -178,7 +178,13 @@ template<typename T>
 std::vector<fem::point> & 
 Triangle10<T>::setCoordinates()
 {
-	//TODO finish
+	this->coordinates[0] = point(	0,	0,	0	);
+	this->coordinates[1] = point(	1,	0,	0	);
+	this->coordinates[2] = point(	0,	1,	0	);
+	this->coordinates[3] = point(	0.5,	0,	0	);
+	this->coordinates[4] = point(	0.5,	0.5,	0	);
+	this->coordinates[5] = point(	0,	0.5,	0	);
+
 	return this->coordinates;
 }
 

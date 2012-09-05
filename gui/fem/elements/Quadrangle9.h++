@@ -163,6 +163,15 @@ std::vector<T> & Quadrangle9<T>::setdNdzeta(const T &, const T &, const T &)
 template<typename T>
 std::vector<fem::point> & Quadrangle9<T>::setCoordinates()
 {
+	this->coordinates[0] = point(	-0.5,	-0.5,	0	);
+	this->coordinates[1] = point(	0.5,	-0.5,	0	);
+	this->coordinates[2] = point(	0.5,	0.5,	0	);
+	this->coordinates[3] = point(	-0.5,	0.5,	0	);
+	this->coordinates[4] = point(	0,	-0.5,	0	);
+	this->coordinates[5] = point(	0.5,	0,	0	);
+	this->coordinates[6] = point(	0,	0.5,	0	);
+	this->coordinates[7] = point(	-0.5,	0,	0	);
+	this->coordinates[8] = point(	0,	0,	0	);
 
 	return this->coordinates;
 }

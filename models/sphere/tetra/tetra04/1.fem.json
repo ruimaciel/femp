@@ -1,0 +1,107 @@
+{
+	"fem": {
+		"version": "1.0",
+		"type": "3D solid"
+	},
+	"materials": [
+		{"type":"linear elastic", "label": "", "E":1,"nu":0.2, "fy": 1.04991e-316},
+		{"type":"linear elastic", "label": "", "E":1,"nu":0.2, "fy": 1.04991e-316}
+	],
+	"nodes":[
+		[	1,[	1,	0,	0	]],
+		[	2,[	0.5,	0,	0	]],
+		[	3,[	6.12303e-17,	1,	0	]],
+		[	4,[	3.06152e-17,	0.5,	0	]],
+		[	5,[	6.12303e-17,	0,	-1	]],
+		[	6,[	3.06152e-17,	0,	-0.5	]],
+		[	7,[	0.75,	0,	0	]],
+		[	8,[	4.59227e-17,	0.75,	0	]],
+		[	9,[	0.707107,	0.707107,	0	]],
+		[	10,[	0.353553,	0.353553,	0	]],
+		[	11,[	4.59227e-17,	0,	-0.75	]],
+		[	12,[	2.16482e-17,	0.353553,	-0.353553	]],
+		[	13,[	4.32964e-17,	0.707107,	-0.707107	]],
+		[	14,[	0.707107,	0,	-0.707107	]],
+		[	15,[	0.353553,	0,	-0.353553	]],
+		[	16,[	0.53033,	0.53033,	0	]],
+		[	17,[	0.53033,	0,	-0.53033	]],
+		[	18,[	0.25,	0.353553,	-0.25	]],
+		[	19,[	0.5,	0.707107,	-0.5	]],
+		[	20,[	3.24723e-17,	0.53033,	-0.53033	]],
+		[	21,[	0.375,	0.53033,	-0.375	]]
+	],
+	"elements":[
+		{"type":"tetrahedron4", "nodes":[1,7,16,21], "material": 0},
+		{"type":"tetrahedron4", "nodes":[17,14,21,7]},
+		{"type":"tetrahedron4", "nodes":[7,14,21,1]},
+		{"type":"tetrahedron4", "nodes":[14,17,21,20]},
+		{"type":"tetrahedron4", "nodes":[11,5,20,14]},
+		{"type":"tetrahedron4", "nodes":[17,14,11,20]},
+		{"type":"tetrahedron4", "nodes":[1,16,9,21]},
+		{"type":"tetrahedron4", "nodes":[21,14,19,1]},
+		{"type":"tetrahedron4", "nodes":[9,1,21,19]},
+		{"type":"tetrahedron4", "nodes":[14,21,19,13]},
+		{"type":"tetrahedron4", "nodes":[20,5,13,14]},
+		{"type":"tetrahedron4", "nodes":[21,14,20,13]},
+		{"type":"tetrahedron4", "nodes":[9,16,8,21]},
+		{"type":"tetrahedron4", "nodes":[9,19,21,8]},
+		{"type":"tetrahedron4", "nodes":[20,13,8,21]},
+		{"type":"tetrahedron4", "nodes":[21,13,8,19]},
+		{"type":"tetrahedron4", "nodes":[9,8,3,19]},
+		{"type":"tetrahedron4", "nodes":[8,13,3,19]},
+		{"type":"tetrahedron4", "nodes":[7,2,10,15]},
+		{"type":"tetrahedron4", "nodes":[15,17,18,7]},
+		{"type":"tetrahedron4", "nodes":[10,7,15,18]},
+		{"type":"tetrahedron4", "nodes":[17,15,18,12]},
+		{"type":"tetrahedron4", "nodes":[6,11,12,15]},
+		{"type":"tetrahedron4", "nodes":[15,11,12,17]},
+		{"type":"tetrahedron4", "nodes":[7,10,16,21]},
+		{"type":"tetrahedron4", "nodes":[18,17,21,7]},
+		{"type":"tetrahedron4", "nodes":[10,7,18,21]},
+		{"type":"tetrahedron4", "nodes":[17,18,21,12]},
+		{"type":"tetrahedron4", "nodes":[12,11,20,17]},
+		{"type":"tetrahedron4", "nodes":[21,17,12,20]},
+		{"type":"tetrahedron4", "nodes":[16,10,4,21]},
+		{"type":"tetrahedron4", "nodes":[18,21,4,10]},
+		{"type":"tetrahedron4", "nodes":[21,18,4,12]},
+		{"type":"tetrahedron4", "nodes":[12,20,4,21]},
+		{"type":"tetrahedron4", "nodes":[16,4,8,21]},
+		{"type":"tetrahedron4", "nodes":[4,20,8,21]}
+	],
+
+	"node restrictions": [
+		{ "node":1, "dy":true, "dz":true},
+		{ "node":2, "dy":true, "dz":true},
+		{ "node":3, "dx":true, "dz":true},
+		{ "node":4, "dx":true, "dz":true},
+		{ "node":5, "dx":true, "dy":true},
+		{ "node":6, "dx":true, "dy":true},
+		{ "node":7, "dy":true, "dz":true},
+		{ "node":8, "dx":true, "dz":true},
+		{ "node":9, "dz":true},
+		{ "node":10, "dz":true},
+		{ "node":11, "dx":true, "dy":true},
+		{ "node":12, "dx":true},
+		{ "node":13, "dx":true},
+		{ "node":14, "dy":true},
+		{ "node":15, "dy":true},
+		{ "node":16, "dz":true},
+		{ "node":17, "dy":true},
+		{ "node":20, "dx":true}
+	],
+
+	"load patterns":[
+		{
+			"label": "Default MSH import load pattern",
+			"surface loads":[
+				{"type": "triangle3", "nodes": [15,2,10], "forces": [[0.862856,0.357407,-0.357407],[0.862856,0.357407,-0.357407],[0.862856,0.357407,-0.357407]]},
+				{"type": "triangle3", "nodes": [15,10,18], "forces": [[0.862856,0.357407,-0.357407],[0.862856,0.357407,-0.357407],[0.862856,0.357407,-0.357407]]},
+				{"type": "triangle3", "nodes": [6,15,12], "forces": [[0.357407,0.357407,-0.862856],[0.357407,0.357407,-0.862856],[0.357407,0.357407,-0.862856]]},
+				{"type": "triangle3", "nodes": [15,18,12], "forces": [[0.357407,0.357407,-0.862856],[0.357407,0.357407,-0.862856],[0.357407,0.357407,-0.862856]]},
+				{"type": "triangle3", "nodes": [10,18,4], "forces": [[-0.377964,-0.912487,0.156558],[-0.377964,-0.912487,0.156558],[-0.377964,-0.912487,0.156558]]},
+				{"type": "triangle3", "nodes": [18,12,4], "forces": [[-0.156558,-0.912487,0.377964],[-0.156558,-0.912487,0.377964],[-0.156558,-0.912487,0.377964]]}
+			]
+		}
+	]
+
+}

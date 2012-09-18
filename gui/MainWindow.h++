@@ -97,6 +97,11 @@ public Q_SLOTS:
 	Dumps the FEM equation (K matrix, d and f vectors) to a file following the Matlab format
 	**/
 	void dumpFemEquation();
+
+	/**
+	Displays a summary of the last analysis
+	**/
+	void showAnalysisSummary();
 	
 	/**
 	Dumps the results from the objects which are currently selected

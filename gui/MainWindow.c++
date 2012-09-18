@@ -27,6 +27,7 @@
 #include "ui/AnalysisProgressDialog.h++"
 #include "ui/AnalysisDialog.h++"
 #include "ui/MoveNodesDialog.h++"
+#include "ui/AnalysisSummaryDialog.h++"
 
 #include "ui/MdiWindow.h++"
 #include "ui/ModelWindow.h++"
@@ -422,6 +423,7 @@ MainWindow::createActions()
 
 	connect(ui.actionRun,	SIGNAL(triggered()), this,	SLOT(runAnalysis()));
 	connect(ui.actionDump_FEM_equation,	SIGNAL(triggered()),	this,	SLOT(dumpFemEquation()));
+	connect(ui.actionAnalysisSummary,	SIGNAL(triggered()),	this,	SLOT(showAnalysisSummary() ));
 
 	connect(ui.actionViewActions,	SIGNAL(triggered()), this,	SLOT(setDisplayOptions()));
 	connect(ui.actionEditMaterials,	SIGNAL(triggered()),	this,	SLOT(editMaterials()));
@@ -1085,6 +1087,15 @@ MainWindow::dumpFemEquation()
 }
 
 
+void 
+MainWindow::showAnalysisSummary()
+{
+	// crude hack
+	AnalysisSummaryDialog dialog(document.project.result.back() , this);
+	dialog.exec();
+}
+
+
 void
 MainWindow::dumpResultsFromSelection(fem::AnalysisResult<double> *result)
 {
@@ -1463,6 +1474,7 @@ MainWindow::setUserInterfaceAsClosed()
 	ui.actionNewTensorFieldWindow->setDisabled(true);
 	ui.actionNewAnalysisResultsWindow->setDisabled(true);
 	ui.actionNewFemEquationWindow->setDisabled(true);
+	ui.actionAnalysisSummary->setDisabled(true);
 
 	// close all MDI windows
 	mdiArea->closeAllSubWindows();
@@ -1489,6 +1501,7 @@ MainWindow::setUserInterfacePostAnalysis()
 	ui.actionNewTensorFieldWindow->setEnabled(true);
 	ui.actionNewAnalysisResultsWindow->setEnabled(true);
 	ui.actionNewFemEquationWindow->setEnabled(true);
+	ui.actionAnalysisSummary->setEnabled(true);
 }
 
 

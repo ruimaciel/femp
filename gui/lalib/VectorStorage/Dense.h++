@@ -25,7 +25,7 @@ class DenseVector
 		DenseVector(const size_t size = 0 = 0);
 		~DenseVector()	{};
 
-		size_t size()		{ return t_size; };
+		size_t size() const		{ return t_size; };
 
 		/**
 		Sets all values to zero
@@ -35,7 +35,7 @@ class DenseVector
 		/*
 		Returns the value in [index]
 		*/
-		scalar value(const size_t index);
+		scalar value(const size_t index) const;
 
 		scalar & operator() (const size_t index);
 
@@ -63,7 +63,7 @@ void DenseVector<scalar>::clear()
 
 
 template<typename scalar>
-scalar DenseVector<scalar>::value(const size_t index)
+scalar DenseVector<scalar>::value(const size_t index) const
 {
 	assert(index < t_size);
 

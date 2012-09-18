@@ -25,16 +25,16 @@ class DenseStaticVector
 		Informs if the current instance is a row vector
 		@return	true if it's a row vector
 		**/
-		bool isRow()	{	return transpose;	};
+		bool isRow() const{	return transpose;	};
 
 		/**
 		Informs if the current instance is a column vector
 		@return	true if it's a column vector
 		**/
-		bool isColumn()	{	return !transpose;	};
+		bool isColumn() const {	return !transpose;	};
 
 
-		size_t rows()		{ return t_rows;	};
+		size_t rows() const	{ return t_rows;	};
 
 		scalar &value(const size_t row);
 };

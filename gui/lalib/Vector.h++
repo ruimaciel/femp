@@ -24,7 +24,7 @@ class Vector
 		~Vector()	{};
 
 
-		size_t size()		{ return VectorStoragePolicy<scalar>::size(); };
+		size_t size() const	{ return VectorStoragePolicy<scalar>::size(); };
 
 		/**
 		Sets all values to zero

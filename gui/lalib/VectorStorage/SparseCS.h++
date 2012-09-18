@@ -29,7 +29,7 @@ class SparseCS
 		SparseCS(const size_t size = 0);
 		~SparseCS()	{};
 
-		size_t size()		{ return data.t_size; };
+		size_t size() const		{ return data.t_size; };
 
 		/**
 		Sets all values to zero
@@ -39,7 +39,7 @@ class SparseCS
 		/*
 		Returns the value in [index]
 		*/
-		Scalar value(const size_t index);
+		Scalar value(const size_t index) const;
 
 		Scalar & operator() (const size_t index);
 
@@ -73,7 +73,7 @@ void SparseCS<Scalar>::clear()
 
 
 template<typename Scalar>
-Scalar SparseCS<Scalar>::value(const size_t index)
+Scalar SparseCS<Scalar>::value(const size_t index) const
 {
 	assert(index < data.t_size);
 

@@ -15,7 +15,7 @@ Strain22GradientFieldPolicy::Strain22GradientFieldPolicy()
 
 
 float 
-Strain22GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &p)
+Strain22GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &p) const
 {
 	assert(m_analysis_result != NULL);
 	assert(m_analysis_result->results[ref] != NULL);
@@ -24,15 +24,15 @@ Strain22GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 
 
 
-float const & 
-Strain22GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges)
+float 
+Strain22GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges) const
 {
 	return ranges.max_strain22;
 }
 
 
-float const & 
-Strain22GradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges)
+float 
+Strain22GradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges) const
 {
 	return ranges.min_strain22;
 }

@@ -12,7 +12,7 @@ ConstantGradientFieldPolicy::ConstantGradientFieldPolicy()
 
 
 float 
-ConstantGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &)
+ConstantGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &) const
 {
 	assert(m_analysis_result != NULL);
 	assert(m_analysis_result->results[ref] != NULL);
@@ -20,15 +20,15 @@ ConstantGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 }
 
 
-float const & 
-ConstantGradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &)
+float
+ConstantGradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &) const
 {
 	return 1;
 }
 
 
-float const & 
-ConstantGradientFieldPolicy::minVal(fem::ResultsRanges<double> const &)
+float
+ConstantGradientFieldPolicy::minVal(fem::ResultsRanges<double> const &) const
 {
 	return -1;
 }

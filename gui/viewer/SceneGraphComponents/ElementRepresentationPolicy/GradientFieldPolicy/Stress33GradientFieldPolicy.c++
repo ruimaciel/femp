@@ -11,7 +11,7 @@ Stress33GradientFieldPolicy::Stress33GradientFieldPolicy()
 
 
 float 
-Stress33GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &p)
+Stress33GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &p) const
 {
 	assert(m_analysis_result != NULL);
 	assert(m_analysis_result->results[ref] != NULL);
@@ -19,15 +19,15 @@ Stress33GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 }
 
 
-float const & 
-Stress33GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges)
+float 
+Stress33GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges) const
 {
 	return ranges.max_stress33;
 }
 
 
-float const & 
-Stress33GradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges)
+float 
+Stress33GradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges) const
 {
 	return ranges.min_stress33;
 }

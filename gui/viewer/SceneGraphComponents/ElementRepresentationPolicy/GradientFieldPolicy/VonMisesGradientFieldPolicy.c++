@@ -11,7 +11,7 @@ VonMisesGradientFieldPolicy::VonMisesGradientFieldPolicy()
 
 
 float 
-VonMisesGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &p)
+VonMisesGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &p) const
 {
 	assert(m_analysis_result != NULL);
 	assert(m_analysis_result->results[ref] != NULL);
@@ -19,15 +19,15 @@ VonMisesGradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 }
 
 
-float const & 
-VonMisesGradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges)
+float
+VonMisesGradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges) const
 {
 	return ranges.max_von_mises;
 }
 
 
-float const & 
-VonMisesGradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges)
+float
+VonMisesGradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges) const
 {
 	return ranges.min_von_mises;
 }

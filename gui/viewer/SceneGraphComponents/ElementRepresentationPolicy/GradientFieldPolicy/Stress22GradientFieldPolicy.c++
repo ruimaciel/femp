@@ -11,7 +11,7 @@ Stress22GradientFieldPolicy::Stress22GradientFieldPolicy()
 
 
 float 
-Stress22GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &p)
+Stress22GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &p) const
 {
 	assert(m_analysis_result != NULL);
 	assert(m_analysis_result->results[ref] != NULL);
@@ -19,15 +19,15 @@ Stress22GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 }
 
 
-float const & 
-Stress22GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges)
+float 
+Stress22GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges) const
 {
 	return ranges.max_stress22;
 }
 
 
-float const & 
-Stress22GradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges)
+float 
+Stress22GradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges) const
 {
 	return ranges.min_stress22;
 }

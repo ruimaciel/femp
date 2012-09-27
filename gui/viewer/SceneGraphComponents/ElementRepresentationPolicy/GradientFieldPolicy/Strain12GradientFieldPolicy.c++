@@ -15,7 +15,7 @@ Strain12GradientFieldPolicy::Strain12GradientFieldPolicy()
 
 
 float 
-Strain12GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &p)
+Strain12GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t const &p) const
 {
 	assert(m_analysis_result != NULL);
 	assert(m_analysis_result->results[ref] != NULL);
@@ -24,15 +24,15 @@ Strain12GradientFieldPolicy::val(fem::element_ref_t const &ref, gradient_index_t
 
 
 
-float const & 
-Strain12GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges)
+float 
+Strain12GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const &ranges) const
 {
 	return ranges.max_strain12;
 }
 
 
-float const & 
-Strain12GradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges)
+float 
+Strain12GradientFieldPolicy::minVal(fem::ResultsRanges<double> const &ranges) const
 {
 	return ranges.min_strain12;
 }

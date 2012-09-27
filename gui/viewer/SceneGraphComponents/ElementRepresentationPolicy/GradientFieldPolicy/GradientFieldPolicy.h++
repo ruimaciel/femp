@@ -57,9 +57,9 @@ public:
 protected:
 	/** returns the gradient value for each result
 	**/
-	virtual float val(fem::element_ref_t const &ref, gradient_index_t const &p) = 0;
-	virtual float const & maxVal(fem::ResultsRanges<double> const &) = 0;
-	virtual float const & minVal(fem::ResultsRanges<double> const &) = 0;
+	virtual float val(fem::element_ref_t const &ref, gradient_index_t const &p) const = 0;
+	virtual float maxVal(fem::ResultsRanges<double> const &) const = 0;
+	virtual float minVal(fem::ResultsRanges<double> const &) const = 0;
 
 };
 

@@ -978,12 +978,18 @@ MainWindow::runAnalysis()
 	}
 	t.join();
 
-	document.project.pushAnalysisResult(analysis_result);
+	if(analysis.succeeded())
+	{
+		document.project.pushAnalysisResult(analysis_result);
 
-	// set the UI
-	this->setUserInterfacePostAnalysis();
-	this->createNewPostprocessingWindow();
-
+		// set the UI
+		this->setUserInterfacePostAnalysis();
+		this->createNewPostprocessingWindow();
+	}
+	else
+	{
+		QMessageBox::critical(this, "No analysis", "There isn't a equation to dump");
+	}
 
 	delete solver;
 }

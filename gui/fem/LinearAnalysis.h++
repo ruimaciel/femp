@@ -32,6 +32,7 @@ class LinearAnalysis
 		AnalysisResult<Scalar> *m_result;
 		ProgressIndicatorStrategy *m_progress;
 		Solver<Scalar>	* m_solver;
+		typename Analysis<Scalar>::Error m_error;
 
 	public:
 		LinearAnalysis();
@@ -43,6 +44,9 @@ class LinearAnalysis
 		Operator intended to run the analysis through a thread
 		**/
 		void operator() ();
+
+		bool succeeded() const;
+		typename Analysis<Scalar>::Error const error() const;
 
 	protected:
 		enum Analysis<Scalar>::Error run(Project &project, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
@@ -59,6 +63,7 @@ LinearAnalysis<Scalar>::LinearAnalysis()
 	m_result = NULL;
 	m_progress = NULL;
 	m_solver = NULL;
+	m_error = Analysis<Scalar>::ERR_OK;
 }
 
 
@@ -82,6 +87,22 @@ void LinearAnalysis<Scalar>::set(Project &project, LoadPattern &lp, AnalysisResu
 
 
 template<typename Scalar>
+bool 
+LinearAnalysis<Scalar>::succeeded() const
+{
+	return (m_error == Analysis<Scalar>::ERR_OK);
+}
+
+
+template<typename Scalar>
+typename Analysis<Scalar>::Error const 
+LinearAnalysis<Scalar>::error() const
+{
+	return m_error;
+}
+
+
+template<typename Scalar>
 enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Project &project, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
 {
 	using namespace std;
@@ -91,7 +112,13 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Project &project, LoadP
 	// clear existing data structures
 	result->clear();
 
-	this->build_fem_equation(project, lp, result, progress);
+	typename Analysis<Scalar>::Error error = Analysis<Scalar>::ERR_OK;
+
+	if( ( error = this->build_fem_equation(project, lp, result, progress)) != Analysis<Scalar>::ERR_OK )
+	{
+		// some error happened when building the FEM equation
+		return error;
+	}
 
 	result->d.resize(result->f.size());	// is this reallly necessary?
 	progress.markSectionEnd();
@@ -132,11 +159,7 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Project &project, LoadP
 template<typename Scalar>
 void LinearAnalysis<Scalar>::operator() ()
 {
-	if( this->run(*m_project, *m_load_pattern, m_result, *m_progress) != fem::Analysis<double>::ERR_OK)
-	{
-		//TODO throw error message
-		return;
-	}
+	m_error = this->run(*m_project, *m_load_pattern, m_result, *m_progress);
 }
 
 

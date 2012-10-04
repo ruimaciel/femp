@@ -1,6 +1,8 @@
 #ifndef PROJECT_HPP
 #define PROJECT_HPP
 
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
+
 #include "Model.h++"
 #include "AnalysisResult.h++"
 #include "ProjectVisitor/ProjectVisitor.h++"
@@ -16,6 +18,7 @@ namespace fem
 {
 
 class Project
+	: public sigc::trackable
 {
 public:
 	Model model;	// the FEM model

@@ -22,7 +22,9 @@
 Base class for all the MDI windows that render the model
 **/
 class MdiWindow 
-	:  public QMainWindow, protected Ui::MdiWindow, public sigc::trackable
+	:  public QMainWindow, 
+	protected Ui::MdiWindow, 
+	public sigc::trackable
 {
 	Q_OBJECT
 
@@ -85,6 +87,8 @@ public:
 	virtual void clearSelection();		// clears the selection
 	void showSelection(const Selection);	// sets the viewport so that only the selected items are shown
 	void showAll();				// sets the viewport so that all scenegraph components are shown
+	
+	void updateNodeRestriction(size_t const, fem::NodeRestrictions const &);
 
 	/**
 	Handles all libsigc++ connections between this window and an object of type SelectionManager

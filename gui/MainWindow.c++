@@ -813,6 +813,7 @@ MainWindow::setNodeRestraints()
 		Selection selection = m_selection_manager.getSelection();
 		SetNodeRestraintsVisitor visitor(selection, nd.getRestrictions());
 
+		// set the restraints in the model
 		document.project.accept(visitor);
 	}
 }

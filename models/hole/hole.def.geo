@@ -1,5 +1,5 @@
-radius=1;
-b = 2*radius;
+a=1;
+b = 10*a;
 h=2*b;
 t=1;
 cl1 = 1;
@@ -7,10 +7,10 @@ cl1 = 1;
 refine = 10;
 
 Point(1) = {0, 0, t/2, cl1};
-Point(2) = {radius, 0, t/2, cl1};
+Point(2) = {a, 0, t/2, cl1};
 Point(3) = {b, 0, t/2, cl1};
-Point(4) = {0, radius, t/2, cl1};
-Point(5) = {radius, radius, t/2, cl1};
+Point(4) = {0, a, t/2, cl1};
+Point(5) = {a, a, t/2, cl1};
 Point(6) = {0, b, t/2, cl1};
 Point(7) = {b, b, t/2, cl1};
 

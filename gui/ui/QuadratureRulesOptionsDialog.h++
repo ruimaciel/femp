@@ -1,6 +1,7 @@
 #ifndef QUADRATURE_OPTIONS_DIALOG_HPP
 #define QUADRATURE_OPTIONS_DIALOG_HPP
 
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include "ui_QuadratureRulesOptionsDialog.h"
 
 #include "../fem/Analysis.h++"

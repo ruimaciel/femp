@@ -567,6 +567,7 @@ enum Model::Error
 Model::popNodeRestrictions(node_ref_t const &node)
 {
 	node_restrictions_list.erase(node);
+	return ERR_OK;
 }
 
 

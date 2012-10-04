@@ -8,7 +8,7 @@ div = 1;
 
 // M10e
 line_div = 1;
-surface_div = 5;
+surface_div = 2;
 volume_div = 2;
 
 Point(1) = { 0, 0, 0};	// center point
@@ -22,7 +22,7 @@ Extrude {{0, 0, 1}, {0, 0, 0}, Pi/2} {
 
 // now, define the sphere
 Extrude {{0, 1, 0}, {0, 0, 0}, Pi/2} {
-  Surface{5}; Layers{div*volume_div}; Recombine;
+  Surface{5}; Layers{div*volume_div}; //Recombine;
 }
 
 Physical Volume(23) = {1};

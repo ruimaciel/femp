@@ -40,7 +40,8 @@ class Input;
 QGLidget subclass designed for a Base class for all Qt widgets that provide an opengl viewports to render the model 
 */
 class BaseViewport 
-	: public QGLWidget
+	: public QGLWidget,
+	virtual public sigc::trackable
 {
 Q_OBJECT
 

@@ -16,7 +16,8 @@ MDI window designed to represent the model
 **/
 class ModelWindow 
 	: public MdiWindow, 
-	public WindowWithWireframe, public BaseWindow
+	public WindowWithWireframe, 
+	public BaseWindow
 {
 	Q_OBJECT
 

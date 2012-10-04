@@ -1,6 +1,7 @@
 #ifndef OUTPUT_RESULTS_IN_NODES_VISITOR_HPP
 #define OUTPUT_RESULTS_IN_NODES_VISITOR_HPP
 
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <iostream>
 
 #include <QTextStream>

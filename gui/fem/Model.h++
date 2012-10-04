@@ -1,6 +1,8 @@
 #ifndef FEM_HPP
 #define FEM_HPP
 
+#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
+
 // #include <QString>
 
 #include <map>
@@ -25,9 +27,13 @@ namespace fem
 {
 
 class Model 
+	: public sigc::trackable
 {
 private:
 	int default_material;	// used when adding elements
+
+public:	// sigc++ signals
+	sigc::signal<void, size_t const, fem::NodeRestrictions const>	update_node_restriction;	// signals a change to a node restriction
 
 public:
 	enum Error {	

@@ -178,6 +178,13 @@ MdiWindow::showAll()
 
 
 void 
+MdiWindow::updateNodeRestriction(size_t const id, fem::NodeRestrictions const &nr)
+{
+	std::cout << "MdiWindow::updateNodeRestriction(size_t const id, fem::NodeRestrictions const &nr)" << std::endl;
+}
+
+
+void 
 MdiWindow::connectToSelectionManager(SelectionManager &selection_manager)
 {
 	// connects signals to slots

@@ -27,7 +27,9 @@
 
 
 
-class MainWindow : public QMainWindow
+class MainWindow 
+	: public QMainWindow,
+	public sigc::trackable
 {
 	Q_OBJECT
 

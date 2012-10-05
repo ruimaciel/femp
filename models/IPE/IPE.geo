@@ -5,7 +5,7 @@ t_f = 0.0052;
 r = 0.005;
 l = 1.0;
 
-div = 2*32;
+div = 1*32;
 div_t = 3;
 div_b = div_t*3;
 div_w = div_b*2;

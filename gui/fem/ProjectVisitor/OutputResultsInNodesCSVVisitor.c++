@@ -18,6 +18,7 @@ OutputResultsInNodesCSVVisitor::OutputResultsInNodesCSVVisitor(Selection &select
 	*m_out << "\tlocal";
 	*m_out << "\tglobal";
 	*m_out << "\tx\ty\tz";
+	*m_out << "\tdx\tdy\tdz";
 	*m_out << "\te11";
 	*m_out << "\te22";
 	*m_out << "\te33";
@@ -63,6 +64,10 @@ OutputResultsInNodesCSVVisitor::visit(fem::Model &model, std::vector<fem::Analys
 				*m_out << model.node_list[element->nodes[n]].x() << "\t";
 				*m_out << model.node_list[element->nodes[n]].y() << "\t";
 				*m_out << model.node_list[element->nodes[n]].z() << "\t";
+
+				*m_out << m_result->displacements[element->nodes[n]].x() << "\t";
+				*m_out << m_result->displacements[element->nodes[n]].y() << "\t";
+				*m_out << m_result->displacements[element->nodes[n]].z() << "\t";
 
 				element_results = m_result->results[e->first];
 

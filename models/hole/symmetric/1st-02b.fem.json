@@ -12603,6 +12603,15 @@
 		{"type":"prism6", "nodes":[1277,1125,232,163,162,13]}
 	],
 
+	"groups" : {
+		"nodes" : [
+			{
+				"label": "stress nodes",
+				"nodes": [7,8, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95]
+			}
+		]
+	},
+
 	"node restrictions": [
 		{ "node":1, "dy":true},
 		{ "node":2, "dy":true},

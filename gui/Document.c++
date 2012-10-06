@@ -224,6 +224,81 @@ Document::save()
 	}
 	out << "\n\t]";
 
+	if(this->project.model.m_node_groups.size() > 0 && this->project.model.m_node_groups.size() > 0 )
+	{
+		out << ",\n";
+		out << "\n\t";
+		out << "\"groups\": {";
+		if(this->project.model.m_node_groups.size() > 0)
+		{
+			// output node groups
+			out << "\n\t\t";
+			out << "\"nodes\": [";
+			out << "\n\t\t\t";
+
+			for(std::vector<fem::NodeGroup>::iterator n = this->project.model.m_node_groups.begin(); n != this->project.model.m_node_groups.end(); ++n)
+			{
+				out << "{";
+				out << "\n\t\t\t\t";
+				out << "\"label\": \"" << QString::fromStdString(n->label) << "\",";
+				out << "\n\t\t\t\t";
+				out << "\"nodes\": [";
+				fem::NodeGroup::const_iterator i = n->begin();
+				out << *i;
+				++i;
+				for(; i != n->end(); i++)
+				{
+					out << "," << *i;
+				}
+				out << "]";
+				out << "\n\t\t\t";
+				out << "}";
+				out << "\n\t\t\t";
+			}
+
+			// iterate each group
+			out << "\n\t\t";
+			out << "]";
+			if(this->project.model.m_element_groups.size() > 0)
+				out << ",";
+		}
+
+		if(this->project.model.m_element_groups.size() > 0)
+		{
+			// output element groups
+			out << "\n\t\t";
+			out << "\"elements\": [";
+			out << "\n\t\t\t";
+
+			for(std::vector<fem::ElementGroup>::iterator n = this->project.model.m_element_groups.begin(); n != this->project.model.m_element_groups.end(); ++n)
+			{
+				out << "{";
+				out << "\n\t\t\t\t";
+				out << "\"label\": \"" << QString::fromStdString(n->label) << "\",";
+				out << "\n\t\t\t\t";
+				out << "\"nodes\": [";
+				fem::ElementGroup::const_iterator i = n->begin();
+				out << *i;
+				++i;
+				for(; i != n->end(); i++)
+				{
+					out << "," << *i;
+				}
+				out << "]";
+				out << "\n\t\t\t";
+				out << "}";
+				out << "\n\t\t\t";
+			}
+
+			// iterate each group
+			out << "\n\t\t";
+			out << "]";
+		}
+		out << "\n\t";
+		out << "}";
+
+	}
+
 	if(!this->project.model.node_restrictions_list.empty())
 	{
 		out << ",\n\n";

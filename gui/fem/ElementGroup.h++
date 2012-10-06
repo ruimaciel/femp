@@ -25,6 +25,7 @@ public:
 	void pushElement(size_t);
 
 	// iterators
+	typedef std::vector<size_t>::const_iterator const_iterator;
 	std::vector<size_t>::const_iterator begin();	
 	std::vector<size_t>::const_iterator end();
 	

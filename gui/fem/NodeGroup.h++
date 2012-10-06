@@ -27,6 +27,7 @@ public:
 	void pushNode(size_t);
 
 	// iterators
+	typedef std::vector<size_t>::const_iterator const_iterator;
 	std::vector<size_t>::const_iterator begin();	
 	std::vector<size_t>::const_iterator end();
 	

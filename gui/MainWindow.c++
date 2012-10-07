@@ -825,12 +825,21 @@ MainWindow::setNodeActions()
 	NodeActionsDialog na(document.project.model, this);
 	if(na.exec() == QDialog::Accepted)
 	{
-		for(std::map<size_t,bool>::iterator it = document.model_selection.nodes.begin(); it != document.model_selection.nodes.end(); it++)
+		Selection const selection = m_selection_manager.getSelection();
+
+		fem::point force = na.getForce();
+		//fem::point displacement = na.getDisplacement(); // doesn't support node displacements
+
+		if(force != fem::point(0,0,0))
 		{
-			if(it->second == true)
+			// shortcut just to reduce code clutter
+			fem::Model &model = document.project.model;
+			fem::LoadPattern &load_pattern = model.load_pattern_list[ na.getLoadPattern() ];
+
+			// assign nodal loads
+			for(fem::node_ref_t const &node: selection.m_nodes_selected)
 			{
-				document.project.model.load_pattern_list[na.getLoadPattern()].addNodalLoad(it->first, na.getForce());
-				document.project.model.load_pattern_list[na.getLoadPattern()].addNodalDisplacement(it->first, na.getDisplacement());
+				load_pattern.addNodalLoad(node, force);
 			}
 		}
 	}

@@ -21,6 +21,7 @@
 #include "NodeRestrainsDialog.h++"
 #include "NodeActionsDialog.h++"
 #include "DisplayOptionsDialog.h++"
+#include "ui/DomainLoadsDialog.h++"
 #include "ui/MaterialsEditorDialog.h++"
 #include "ui/QuadratureRulesOptionsDialog.h++"
 #include "ui/SelectionDialog.h++"
@@ -51,6 +52,7 @@
 #include "fem/ProjectVisitor/OutputResultsInNodesVisitor.h++"
 #include "fem/ProjectVisitor/OutputResultsInNodesCSVVisitor.h++"
 #include "fem/ProjectVisitor/SetNodeRestraintsVisitor.h++"
+#include "fem/ProjectVisitor/SetDomainLoadsVisitor.h++"
 #include "fem/ProjectVisitor/MoveNodesVisitor.h++"
 
 #include "parsers/FemJsonParser.h++"
@@ -419,6 +421,7 @@ MainWindow::createActions()
 	connect(ui.actionQuit,	SIGNAL(triggered()), this,	SLOT(quit()));
 	connect(ui.actionNodeRestraints,	SIGNAL(triggered()), this,	SLOT(setNodeRestraints()) );
 	connect(ui.actionNodeActions,	SIGNAL(triggered()), this,	SLOT(setNodeActions()) );
+	connect(ui.actionDomainLoads,	SIGNAL(triggered()), this,	SLOT(setDomainLoads()) );
 	connect(ui.actionMoveNodes,	SIGNAL(triggered()), this,	SLOT(moveSelectedNodes()) );
 
 	connect(ui.actionRun,	SIGNAL(triggered()), this,	SLOT(runAnalysis()));
@@ -842,6 +845,23 @@ MainWindow::setNodeActions()
 				load_pattern.addNodalLoad(node, force);
 			}
 		}
+	}
+}
+
+
+void 
+MainWindow::setDomainLoads()
+{
+	DomainLoadsDialog dialog(document.project.model, this);
+	if(dialog.exec() == QDialog::Accepted)
+	{
+		Selection const selection = m_selection_manager.getSelection();
+
+		SetDomainLoadsVisitor visitor(selection,  document.project.model.load_pattern_list[ dialog.getLoadPattern() ], dialog.getForce() );
+
+		document.project.accept(visitor);
+
+		document.setUnsaved();
 	}
 }
 
@@ -1442,6 +1462,7 @@ MainWindow::setUserInterfaceAsOpened()
 	ui.actionClose->setEnabled(true);
 	ui.actionNodeRestraints->setEnabled(true);
 	ui.actionNodeActions->setEnabled(true);
+	ui.actionDomainLoads->setEnabled(true);
 	ui.actionEditMaterials->setEnabled(true);
 	ui.actionQuadrature_rules->setEnabled(true);
 	ui.actionSelection->setEnabled(true);
@@ -1480,6 +1501,7 @@ MainWindow::setUserInterfaceAsClosed()
 	ui.actionClose->setDisabled(true);
 	ui.actionNodeRestraints->setDisabled(true);
 	ui.actionNodeActions->setDisabled(true);
+	ui.actionDomainLoads->setDisabled(true);
 	ui.actionEditMaterials->setDisabled(true);
 	ui.actionQuadrature_rules->setDisabled(true);
 	ui.actionSelection->setDisabled(true);

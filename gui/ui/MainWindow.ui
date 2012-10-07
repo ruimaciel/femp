@@ -115,6 +115,7 @@
     </property>
     <addaction name="actionNodeRestraints"/>
     <addaction name="actionNodeActions"/>
+    <addaction name="actionDomainLoads"/>
     <addaction name="actionMoveNodes"/>
     <addaction name="separator"/>
     <addaction name="actionPreferences"/>
@@ -423,6 +424,14 @@
   <action name="actionAnalysisSummary">
    <property name="text">
     <string>Analysis summary</string>
+   </property>
+  </action>
+  <action name="actionDomainLoads">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Domain loads</string>
    </property>
   </action>
  </widget>

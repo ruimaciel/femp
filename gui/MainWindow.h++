@@ -73,6 +73,7 @@ public Q_SLOTS:
 	**/
 	void setNodeRestraints();
 	void setNodeActions();
+	void setDomainLoads();
 	void moveSelectedNodes();
 
 	void setDisplayOptions();

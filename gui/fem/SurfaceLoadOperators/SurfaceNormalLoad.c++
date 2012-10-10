@@ -69,24 +69,34 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 	set the force accordingly
 	**/
 	element->setCoordinates();	// sets the values for the local coordinates that mark each node
+	using namespace std;
 	for(unsigned int i = 0; i < surface_load.nodes.size(); i++)
 	{
+		cout << "node " << i << " at " << element->coordinates[i] << "\n";
+
 		element->setdNdcsi(element->coordinates[i]);
 		element->setdNdeta(element->coordinates[i]);
+		dPdcsi.zero();
+		dPdeta.zero();
 
 		for(unsigned int n = 0; n < surface_load.nodes.size(); n++)
 		{
-			fem::point p = model.node_list[ surface_load.nodes[n]];
+			fem::point &p = model.node_list[ surface_load.nodes[n]];
+			cout << "point : " << p << "\n";
 			dPdcsi += element->dNdcsi[n]*p;
 			dPdeta += element->dNdeta[n]*p;
 		}
 
 		f = cross_product(dPdcsi, dPdeta);
+		cout << "cross( " << dPdcsi << "," << dPdeta << ")\n";
+
 		f.normalize();
 		f *= m_magnitude;
 
 		// set the force
 		surface_load.surface_forces[i] = f;
+
+		cout << "force: " << f << endl;
 	}
 }
 

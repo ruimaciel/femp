@@ -1,0 +1,1 @@
+%element	local	global	x	y	z	e11	e22	e33	e12	e23	e13	s11	s22	s33	s12	s23	s13	von

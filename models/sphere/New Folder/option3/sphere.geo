@@ -1,3 +1,6 @@
+Mesh.ElementOrder = 2;
+Mesh.SecondOrderIncomplete = 0;
+
 r_i = 0.50;
 r_e = 1.00;
 theta=Pi/4;
@@ -122,3 +125,4 @@ Transfinite Surface{55};
 Transfinite Volume{57};
 Transfinite Volume{59};
 Transfinite Volume{61};
+Physical Surface(63) = {27, 29, 31};

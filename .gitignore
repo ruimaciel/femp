@@ -8,6 +8,7 @@ gui/ui/src
 gui/lalib/solvers/main.c++
 gui/parsers/main.c++
 gui/fem/CMakeLists.txt
+gui/test/*
 lex.msh_yy.*
 msh.tab.*
 *.oct

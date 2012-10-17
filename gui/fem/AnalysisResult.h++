@@ -49,6 +49,8 @@ struct AnalysisResult
 	// the model's energy
 	Scalar energy;
 
+	Scalar volume;
+
 	// elapsed time in miliseconds (taken from Qt's qint64
 	long long int elapsed_time;	
 
@@ -80,6 +82,8 @@ AnalysisResult<Scalar>::AnalysisResult(const AnalysisResult<Scalar> &copied)
 	this->ranges = copied.ranges;
 
 	this->energy = copied.energy;
+	this->volume = copied.volume;
+
 	this->elapsed_time = elapsed_time;
 }
 
@@ -103,6 +107,7 @@ void AnalysisResult<Scalar>::clear()
 	ranges.setZero();
 
 	energy = 0;
+	volume = 0;
 	this->elapsed_time = 0;
 }
 

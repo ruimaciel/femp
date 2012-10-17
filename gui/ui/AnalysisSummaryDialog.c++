@@ -9,4 +9,5 @@ AnalysisSummaryDialog::AnalysisSummaryDialog(fem::AnalysisResult<double> const &
 	labelEnergy->setNum(results.energy);
 	labelDoF->setNum((double)results.d.size());
 	labelTime->setNum(results.elapsed_time/1000.0f);
+	labelVolume->setNum(results.volume);
 }

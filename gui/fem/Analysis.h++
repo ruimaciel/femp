@@ -327,6 +327,9 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 
 			// add this integration point's contribution
 			k_elem += Bt*D*B*detJ*i->get<1>();
+
+			// calculate this element's contribution to the model's volume
+			result->volume += detJ*i->get<1>();
 		}
 
 		// add elementary stiffness matrix to the global stiffness matrix 

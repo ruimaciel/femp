@@ -100,6 +100,15 @@
 		{"type":"hexahedron20", "nodes":[75,55,39,60,70,24,7,27,81,80,79,59,58,62,41,63,74,73,26,28]}
 	],
 
+	"groups" : {
+		"nodes" :[
+			{
+				"label": "test node",
+				"nodes": [75]
+			}
+		]
+	},
+
 	"node restrictions": [
 		{ "node":1, "dz":true},
 		{ "node":2, "dz":true},

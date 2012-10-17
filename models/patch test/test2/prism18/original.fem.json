@@ -152,6 +152,15 @@
 		{"type":"prism18", "nodes":[72,63,39,27,24,7,123,74,76,69,67,41,98,28,26,125,77,71]}
 	],
 
+	"groups" : {
+		"nodes" :[
+			{
+				"label": "test node",
+				"nodes": [99]
+			}
+		]
+	},
+
 	"node restrictions": [
 		{ "node":1, "dz":true},
 		{ "node":2, "dz":true},

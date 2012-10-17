@@ -120,6 +120,15 @@
 		{"type":"prism15", "nodes":[64,59,39,27,24,7,93,66,67,63,62,41,82,28,26]}
 	],
 
+	"groups" : {
+		"nodes" :[
+			{
+				"label": "test node",
+				"nodes": [83]
+			}
+		]
+	},
+
 	"node restrictions": [
 		{ "node":1, "dz":true},
 		{ "node":2, "dz":true},

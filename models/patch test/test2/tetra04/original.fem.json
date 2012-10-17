@@ -86,6 +86,15 @@
 		{"type":"tetrahedron4", "nodes":[23,15,14,19]}
 	],
 
+	"groups" : {
+		"nodes" :[
+			{
+				"label": "test node",
+				"nodes": [27]
+			}
+		]
+	},
+
 	"node restrictions": [
 		{ "node":1, "dz":true},
 		{ "node":2, "dz":true},

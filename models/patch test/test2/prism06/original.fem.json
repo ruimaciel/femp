@@ -54,6 +54,14 @@
 		{"type":"prism6", "nodes":[24,23,19,15,14,7]}
 	],
 
+	"groups" : {
+		"nodes" :[
+			{
+				"label": "test node",
+				"nodes": [27]
+			}
+		]
+	},
 	"node restrictions": [
 		{ "node":1, "dz":true},
 		{ "node":2, "dz":true},

@@ -144,6 +144,15 @@
 		{"type":"hexahedron27", "nodes":[99,63,39,72,90,24,7,27,117,111,107,69,67,74,41,76,96,94,26,28,123,121,115,71,77,98,125]}
 	],
 
+	"groups" : {
+		"nodes" :[
+			{
+				"label": "test node",
+				"nodes": [99]
+			}
+		]
+	},
+
 	"node restrictions": [
 		{ "node":1, "dz":true},
 		{ "node":2, "dz":true},

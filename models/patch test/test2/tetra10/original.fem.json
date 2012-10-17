@@ -184,6 +184,15 @@
 		{"type":"tetrahedron10", "nodes":[63,27,24,39,125,98,68,70,71,76]}
 	],
 
+	"groups" : {
+		"nodes" :[
+			{
+				"label": "test node",
+				"nodes": [99]
+			}
+		]
+	},
+
 	"node restrictions": [
 		{ "node":1, "dz":true},
 		{ "node":2, "dz":true},

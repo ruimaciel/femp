@@ -1,0 +1,14 @@
+==2D==
+automatic
+frontal
+blossom
+
+recombine: on
+==3D==
+all quads
+no split
+harmonic
+1
+1.0
+0 : 1e22
+1

@@ -54,6 +54,7 @@
 #include "fem/ProjectVisitor/SetNodeRestraintsVisitor.h++"
 #include "fem/ProjectVisitor/SetDomainLoadsVisitor.h++"
 #include "fem/ProjectVisitor/MoveNodesVisitor.h++"
+#include "fem/ProjectVisitor/OutputElementStatisticsVisitor.h++"
 
 #include "parsers/FemJsonParser.h++"
 #include "parsers/MshParser.h++"
@@ -182,6 +183,8 @@ MainWindow::openProject()
 			break;
 	}
 
+	OutputElementStatisticsVisitor visit(m_selection_manager.getSelection());
+	document.project.accept(visit);
 
 	file.close();
 }

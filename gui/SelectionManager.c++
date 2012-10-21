@@ -56,7 +56,7 @@ SelectionManager::deselectNode(const fem::node_ref_t &ref)
 }
 
 
-Selection
+Selection const &
 SelectionManager::getSelection() const
 {
 	return m_selection;

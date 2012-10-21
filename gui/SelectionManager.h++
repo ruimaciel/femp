@@ -36,7 +36,7 @@ public:
 	returns a pointer to an object of type Selection which stores a set of references to selected objects
 	@return	an object of type Selection
 	**/
-	Selection getSelection() const;
+	Selection const & getSelection() const;
 
 };
 

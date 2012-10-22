@@ -55,6 +55,7 @@ protected:
 	ViewportColors colors;	// the elements' viewport colors
 
 	QDir file_dialog_last_directory;
+	QDir results_dump_dialog_last_directory;
 	QSignalMapper	*m_window_mapper;	// used to map menu clicks to window activation
 
 

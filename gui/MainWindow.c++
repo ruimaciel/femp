@@ -559,6 +559,25 @@ MainWindow::loadOptions()
 		file_dialog_last_directory = QDir::home();
 	}
 
+	if(options.wasSet("project.results.dump.default_directory"))
+	{
+		std::string default_path;
+		options.getOption("project.results.dump.default_directory",default_path);
+		if( QFile::exists(QString::fromStdString(default_path)) )
+		{
+			results_dump_dialog_last_directory.setPath(QString::fromStdString(default_path));
+		}
+		else
+		{
+			results_dump_dialog_last_directory = QDir::home();
+			QString path = results_dump_dialog_last_directory.absolutePath();
+		}
+	}
+	else
+	{
+		results_dump_dialog_last_directory = file_dialog_last_directory;
+	}
+
 	// set color options
 	{
 		std::vector<double> temp;
@@ -1164,6 +1183,7 @@ MainWindow::dumpResultsFromSelection()
 	// opens the file
 	{
 		QFileDialog dialog(this);
+		dialog.setDirectory(results_dump_dialog_last_directory);
 		QStringList sl;
 
 		// setup the file dialog
@@ -1176,6 +1196,9 @@ MainWindow::dumpResultsFromSelection()
 			// user cancelled 
 			return;
 		}
+
+		// get the last directory used to dump results
+		results_dump_dialog_last_directory = dialog.directory();
 
 		sl = dialog.selectedFiles();
 		file_name = sl.at(0);

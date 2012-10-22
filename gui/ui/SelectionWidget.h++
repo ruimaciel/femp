@@ -44,7 +44,7 @@ public:
 	sigc::signal<void>		selection_cleared;
 
 	// libsigc++ slots
-	void setSelection(Selection);
+	void setSelection(Selection const&);
 	void clearSelection();
 
 

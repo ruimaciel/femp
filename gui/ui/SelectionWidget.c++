@@ -69,7 +69,7 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 
 
 void 
-SelectionWidget::setSelection(Selection selection)
+SelectionWidget::setSelection(Selection const &selection)
 {
 	assert(m_element_item != NULL);
 	assert(m_node_item != NULL);

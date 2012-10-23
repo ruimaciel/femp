@@ -5,8 +5,8 @@ t_f = 0.0052;
 r = 0.005;
 l = 1.0;
 
-div = 1*32;
-div_t = 3;
+div = 1*32;	// subdivision along the ZZ axis
+div_t = 2;
 div_b = div_t*3;
 div_w = div_b*2;
 div_r = div_t*2;
@@ -110,9 +110,11 @@ Transfinite Surface{43} = {10, 12, 14, 16};
 Recombine Surface{31,33,35,37,39,41,43,45,47};
 
 // extruding
+
 Extrude {0, 0, l} {
   Surface{37, 41, 39, 45, 43, 47, 33, 35, 31};Layers{ 1*div}; Recombine;
 }
 Physical Volume(246) = {9, 8, 7, 6, 5, 4, 2, 3, 1};
+// */
 
 // next section

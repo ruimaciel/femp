@@ -1,9 +1,10 @@
 a=1;
-b = 2*a;
+b = 3*a;
 h=2*b;
 t=1;
 cl1 = 1;
 layers=1;	// transversal layers
+l=2*b+a;	// shaft
 
 refine = 10;
 
@@ -30,18 +31,13 @@ Transfinite Line{5} = 2*refine Using Progression 1.25;
 Line Loop(6) = {3, -4, 5, 1, 2};
 Plane Surface(7) = {6};
 
-
-b=2*a;
+Extrude {0,l,0} {
+	Line{2}; Layers{2*refine}; Recombine;
+}
 
 Extrude {0, 0, -t/2} {
-  Surface{7}; Layers{layers}; Recombine;
+ 	Surface{7, 11}; Layers{layers}; Recombine;
 }
 
-Transfinite Surface {33} = {6,7,8,22};
-
-Extrude {0, h, 0} {
-  Surface{33}; Layers{refine*h/b}; Recombine;
-}
-
-Physical Volume(57) = {1, 2};
-Physical Surface(58) = {56};
+Physical Volume(61) = {1, 2};
+Physical Surface(62) = {55};

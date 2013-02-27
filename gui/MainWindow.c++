@@ -147,6 +147,7 @@ MainWindow::openProject()
 	// clear the document
 	this->setUserInterfaceAsClosed();
 	this->document.clear();
+	this->m_selection_manager.clearSelection();
 
 	// prepare the file
 	sl = dialog.selectedFiles();
@@ -198,6 +199,7 @@ MainWindow::reopenProject()
 		// clear the document
 		setUserInterfaceAsClosed();
 		this->document.project.model.clear();
+		this->m_selection_manager.clearSelection();
 
 		std::string my_file_name( document.file_name->toUtf8() ); 
 		std::fstream file;
@@ -372,6 +374,7 @@ MainWindow::closeProject()
 
 	// free everything
 	document.clear();
+	this->m_selection_manager.clearSelection();
 }
 
 

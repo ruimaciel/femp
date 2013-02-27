@@ -12,7 +12,7 @@ Selection::clear()
 
 
 void 
-Selection::setSelection(Selection selection)
+Selection::setSelection(Selection const &selection)
 {
 	this->m_elements_selected = selection.m_elements_selected;
 	this->m_nodes_selected = selection.m_nodes_selected;

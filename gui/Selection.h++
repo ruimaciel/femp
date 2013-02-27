@@ -12,6 +12,7 @@ A set of objects contained in a given fem::Project object which have been select
 class Selection
 {
 public:
+	//TODO add support for a data type that specifies a selection range
 	//crude hack.  must implement some iterator of sorts
 	std::set<fem::element_ref_t>	m_elements_selected;
 	std::set<fem::node_ref_t>	m_nodes_selected;
@@ -19,7 +20,7 @@ public:
 public:
 	void clear();
 
-	void setSelection(Selection);
+	void setSelection(Selection const &);
 
 	void selectElement(const fem::element_ref_t &ref);
 	void deselectElement(const fem::element_ref_t &ref);

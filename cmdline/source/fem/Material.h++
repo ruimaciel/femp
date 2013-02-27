@@ -1,12 +1,13 @@
 #ifndef MATERIAL_HPP
 #define MATERIAL_HPP
 
-// #include <QString>
+#include <vector>
 #include <string>
-#include <boost/numeric/ublas/symmetric.hpp>
+#include <Eigen/Core>
 
 namespace fem
 {
+
 
 class Material {
 	public:
@@ -14,7 +15,6 @@ class Material {
 			MAT_LINEAR_ELASTIC = 0
 		};
 
-		//QString label;	// a label describing this material
 		std::string label;	// a label describing this material
 		enum Type type;
 
@@ -23,17 +23,14 @@ class Material {
 		double fy;	// elastic limit
 
 	public:
-		Material();
-		Material(const Material &);
-		~Material();
-
 		/**
 		Generates a constitutive matrix
 		@return	a matrix type
 		**/
-		boost::numeric::ublas::symmetric_matrix<double, boost::numeric::ublas::upper>  generateD();
+		Eigen::Matrix<double,6,6> generateD() const;
 };
 
+typedef std::vector<Material>::size_type material_ref_t;
 
 }
 

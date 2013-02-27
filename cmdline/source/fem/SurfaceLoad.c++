@@ -5,11 +5,13 @@ namespace fem
 {
 
 SurfaceLoad::SurfaceLoad()
+	: Element()
 {
 }
 
 
 SurfaceLoad::SurfaceLoad(const SurfaceLoad &copied)
+	: Element(copied)
 {
 	type = copied.type;
 	nodes = copied.nodes;
@@ -22,7 +24,8 @@ SurfaceLoad::~SurfaceLoad()
 }
 
 
-void SurfaceLoad::clear()
+void 
+SurfaceLoad::clear()
 {
 	type = Element::FE_INVALID;
 	nodes.clear();

@@ -5,6 +5,9 @@
 namespace fem
 {
 
+typedef unsigned int node_restriction_ref_t;
+
+
 class NodeRestrictions {
 	public:
 		enum Type {NR_INVALID, NR_DX, NR_DY, NR_DZ};
@@ -24,6 +27,11 @@ class NodeRestrictions {
 		bool dx()	{return d[0];}
 		bool dy()	{return d[1];}
 		bool dz()	{return d[2];}
+
+		/**
+		Returns true if there isn't a restriction set
+		**/
+		bool free()	const;
 
 		/** small hand-written parser to extract meaning from a small string of text
 		  @param buffer a string of text

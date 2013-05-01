@@ -161,13 +161,13 @@ SelectionWidget::unionGroupList()
 		return;
 	}
 
-	fem::Group *group = &m_selection_groups[index];
+	fem::Group &group = m_selection_groups[index];
 	
-	for(std::set<fem::element_ref_t>::iterator i =	group->m_element_references.begin(); i != group->m_element_references.end(); i++)
+	for(std::set<fem::element_ref_t>::iterator i =	group.m_element_references.begin(); i != group.m_element_references.end(); i++)
 	{
 		this->m_element_map[*i]->setSelected(true);
 	}
-	for(std::set<fem::node_ref_t>::iterator i =	group->m_node_references.begin(); i != group->m_node_references.end(); i++)
+	for(std::set<fem::node_ref_t>::iterator i =	group.m_node_references.begin(); i != group.m_node_references.end(); i++)
 	{
 		this->m_node_map[*i]->setSelected(true);
 	}

@@ -1492,6 +1492,7 @@ MainWindow::setUserInterfaceAsOpened()
 	ui.actionNodeRestraints->setEnabled(true);
 	ui.actionNodeActions->setEnabled(true);
 	ui.actionDomainLoads->setEnabled(true);
+	ui.actionMoveNodes->setEnabled(true);
 	ui.actionEditMaterials->setEnabled(true);
 	ui.actionQuadrature_rules->setEnabled(true);
 	ui.actionSelection->setEnabled(true);
@@ -1531,6 +1532,7 @@ MainWindow::setUserInterfaceAsClosed()
 	ui.actionNodeRestraints->setDisabled(true);
 	ui.actionNodeActions->setDisabled(true);
 	ui.actionDomainLoads->setDisabled(true);
+	ui.actionMoveNodes->setDisabled(true);
 	ui.actionEditMaterials->setDisabled(true);
 	ui.actionQuadrature_rules->setDisabled(true);
 	ui.actionSelection->setDisabled(true);

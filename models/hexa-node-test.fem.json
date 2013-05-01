@@ -1,0 +1,50 @@
+{
+	"fem": {
+		"version": "1.0",
+		"type": "3D solid"
+	},
+	"materials": [
+		{"type":"linear elastic", "label": "A400", "E":200,"nu":0.3, "fy": 2e+07}
+	],
+	"nodes":[
+		[1,[-1,-1,-1]],
+		[2,[1,-1,-1]],
+		[3,[1,1,-1]],
+		[4,[-1,1,-1]],
+		[5,[-1,-1,1]],
+		[6,[1,-1,1]],
+		[7,[1,1,1]],
+		[8,[-1,1,1]]
+	],
+	"elements":[
+		{"type":"hexahedron8", "nodes":[1,2,3,4,5,6,7,8], "material": 0}
+	],
+
+	"node restrictions": [
+		{ "node":1, "dx":true, "dy":true, "dz":true},
+		{ "node":2, "dx":true },
+		{ "node":3, "dy":true },
+		{ "node":4, "dz":true },
+		{ "node":5, "dx":true, "dy":true, "dz":true},
+		{ "node":6, "dx":true },
+		{ "node":7, "dy":true },
+		{ "node":8, "dz":true }
+	],
+
+	"load patterns":[
+		{
+			"label": "First test pattern",
+			"nodal loads":[
+				{"node":2, "force":[1, 0, 0]},
+				{"node":3, "force":[1, 0, 0]},
+				{"node":6, "force":[1, 0, 0]},
+				{"node":7, "force":[1, 0, 0]}
+			]
+,
+		"surface loads":[
+			{"type": "quadrangle4", "nodes": [2,3,7,6], "forces": [[1,0,0],[1,0,0],[1,0,0],[1,0,0]]}
+			]
+		}
+	]
+
+}

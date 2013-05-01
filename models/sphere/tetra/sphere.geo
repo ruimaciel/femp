@@ -1,7 +1,7 @@
 Mesh.CharacteristicLengthFromPoints = 1;
 Mesh.ElementOrder =2;
 
-size=1/2^5;
+size=1/2^(3.5);
 
 Point(1) = {0, 0, 0, size};
 

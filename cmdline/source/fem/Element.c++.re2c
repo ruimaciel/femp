@@ -18,9 +18,11 @@ Element::Element(const Element &copied)
 	this->type = copied.type;
 }
 
+
 Element::~Element()
 {
 }
+
 
 enum Element::Error Element::set(Type type, std::vector<size_t> nodes)
 {
@@ -55,6 +57,13 @@ enum Element::Error Element::set(Type type, std::vector<size_t> nodes)
 			}
 			break;
 
+		case FE_HEXAHEDRON20:
+			if(nodes.size() != 20)
+			{
+				return ERR_NODE_NUMBER;
+			}
+			break;
+
 		case FE_HEXAHEDRON27:
 			if(nodes.size() != 27)
 			{
@@ -69,8 +78,22 @@ enum Element::Error Element::set(Type type, std::vector<size_t> nodes)
 			}
 			break;
 
+		case FE_PRISM15:
+			if(nodes.size() != 15)
+			{
+				return ERR_NODE_NUMBER;
+			}
+			break;
+
+		case FE_PRISM18:
+			if(nodes.size() != 18)
+			{
+				return ERR_NODE_NUMBER;
+			}
+			break;
+
 		default:
-			std::cerr << "error: unsupported type" << std::endl;
+			std::cerr << "error: unsupported type " << type << std::endl;
 			return ERR_INVALID_TYPE;
 			break;
 	}
@@ -148,6 +171,10 @@ int Element::node_number() const
 			return 4;
 			break;
 
+		case FE_QUADRANGLE8:
+			return 8;
+			break;
+
 		case FE_QUADRANGLE9:
 			return 9;
 			break;
@@ -164,6 +191,10 @@ int Element::node_number() const
 			return 8;
 			break;
 
+		case FE_HEXAHEDRON20:
+			return 20;
+			break;
+
 		case FE_HEXAHEDRON27:
 			return 27;
 			break;
@@ -172,8 +203,16 @@ int Element::node_number() const
 			return 6;
 			break;
 
+		case FE_PRISM15:
+			return 15;
+			break;
+
+		case FE_PRISM18:
+			return 18;
+			break;
+
 		default:
-			std::cerr << "Element::node_number(): unsupported element" << std::endl;
+			std::cerr << "Element::node_number(): unsupported element: type " << this->type << std::endl;
 			assert(0);
 			break;
 	}
@@ -234,63 +273,4 @@ enum Element::ElementFamily Element::family() const
 }
 
 
-int Element::degree() const
-{
-	switch(this->type)
-	{
-		case FE_TRIANGLE3   :
-		case FE_TRIANGLE6   :
-		case FE_TRIANGLE10  :
-		case FE_TRIANGLE15  :
-		case FE_TRIANGLE21  :
-		case FE_ITRIANGLE9  :
-		case FE_ITRIANGLE12 :
-		case FE_ITRIANGLE15 :
-			return 1;	//TODO change
-			break;
-
-		case FE_QUADRANGLE4 :
-		case FE_QUADRANGLE8 :
-		case FE_QUADRANGLE9 :
-			return 1;
-			break;
-
-		case FE_TETRAHEDRON4:
-			return 1;	//TODO change
-			break;
-
-		case FE_TETRAHEDRON10:
-		case FE_TETRAHEDRON20:
-		case FE_TETRAHEDRON35:
-		case FE_TETRAHEDRON56:
-			return 1;	//TODO change
-			break;
-
-		case FE_HEXAHEDRON8:
-			return 4;	//TODO change
-			break;
-
-		case FE_HEXAHEDRON20:
-		case FE_HEXAHEDRON27:
-			return 4;	//TODO change
-			break;
-
-		case FE_PRISM6      :
-		case FE_PRISM18     :
-		case FE_PRISM15     :
-			return 1;	//TODO change
-			break;
-
-		case FE_PYRAMID5    :
-		case FE_PYRAMID14   :
-		case FE_PYRAMID13   :
-			return 1;	//TODO change
-			break;
-
-		default:
-			return 0;	// should never be reached
-			break;
-	}
-
-}
-}
+}	// namespace fem

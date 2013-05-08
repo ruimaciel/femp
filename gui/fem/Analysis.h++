@@ -400,10 +400,12 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
 		{
 				// build the Jacobian
-			element->setN( i->template get<0>());
-			element->setdNdcsi( i->template get<0>() );
-			element->setdNdeta( i->template get<0>() );
-			element->setdNdzeta( i->template get<0>() );
+			point quadrature_point = i->template get<0>();
+
+			element->setN( quadrature_point);
+			element->setdNdcsi(quadrature_point);
+			element->setdNdeta( quadrature_point);
+			element->setdNdzeta( quadrature_point);
 
 				// generate the jacobian
 			J.setZero();

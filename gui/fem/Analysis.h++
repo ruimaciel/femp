@@ -299,9 +299,9 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 #undef X
 #undef Y
 #undef Z
-#define dNdx invJ(0,0)*element->dNdcsi[n] + invJ(0,1)*element->dNdeta[n] + invJ(0,2)*element->dNdzeta[n]
-#define dNdy invJ(1,0)*element->dNdcsi[n] + invJ(1,1)*element->dNdeta[n] + invJ(1,2)*element->dNdzeta[n]
-#define dNdz invJ(2,0)*element->dNdcsi[n] + invJ(2,1)*element->dNdeta[n] + invJ(2,2)*element->dNdzeta[n]
+				double dNdx = invJ(0,0)*element->dNdcsi[n] + invJ(0,1)*element->dNdeta[n] + invJ(0,2)*element->dNdzeta[n];
+				double dNdy = invJ(1,0)*element->dNdcsi[n] + invJ(1,1)*element->dNdeta[n] + invJ(1,2)*element->dNdzeta[n];
+				double dNdz = invJ(2,0)*element->dNdcsi[n] + invJ(2,1)*element->dNdeta[n] + invJ(2,2)*element->dNdzeta[n];
 
 				// set the current node portion of the B matrix
 				B(0,3*n)	= dNdx;
@@ -312,9 +312,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 				B(5,3*n+1)	= dNdz;	B(5,3*n+2) = dNdy;
 
 				//TODO consider also setting Bt, avoid trans(b)
-#undef dNdx
-#undef dNdy
-#undef dNdz
 			}
 
 			Bt = B.transpose();
@@ -434,13 +431,12 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 			{
 #define N(n) element->N[n]
 #define b(COORD) domain_load->second.force.COORD()
-#define W    i->template get<1>()
+				double W = i->template get<1>();
 				f_elem(3*n) += N(n)*b(x)*detJ*W;
 				f_elem(3*n+1) += N(n)*b(y)*detJ*W;
 				f_elem(3*n+2) += N(n)*b(z)*detJ*W;
 #undef N
 #undef b
-#undef W
 			}
 		}
 #undef X

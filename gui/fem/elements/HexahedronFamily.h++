@@ -35,7 +35,7 @@ void HexahedronFamily<T>::generateQuadratureData()
 	{
 		T x[d], w[d];	// for the Gauss-Legendre integration points and weights
 		// get the Gauss-Legendre integration points and weights
-		gauleg(x,w,d);
+		this->template gauleg(x,w,d);
 
 		// and now generate a list with those points
 		for(int i = 0; i < d; i++)

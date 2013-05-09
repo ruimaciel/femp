@@ -19,11 +19,6 @@ Element::Element(const Element &copied)
 }
 
 
-Element::~Element()
-{
-}
-
-
 enum Element::Error Element::set(Type type, std::vector<size_t> nodes)
 {
 	switch(type)
@@ -270,6 +265,11 @@ enum Element::ElementFamily Element::family() const
 			return EF_INVALID;
 			break;
 	}
+}
+
+
+void Element::clear()
+{
 }
 
 

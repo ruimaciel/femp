@@ -62,7 +62,7 @@ void PrismFamily<T>::generateQuadratureData()
 	{
 		T x[3], w[3];	// for the Gauss-Legendre integration points and weights
 		// get the Gauss-Legendre integration points and weights
-		gauleg(x,w,3);
+		this->template gauleg(x,w,3);
 
 		//TODO needs testing
 		ips.clear();
@@ -87,7 +87,7 @@ void PrismFamily<T>::generateQuadratureData()
 	{
 		T x[3], w[3];	// for the Gauss-Legendre integration points and weights
 		// get the Gauss-Legendre integration points and weights
-		gauleg(x,w,3);
+		this->template gauleg(x,w,3);
 
 		//TODO needs testing
 		ips.clear();
@@ -115,7 +115,7 @@ void PrismFamily<T>::generateQuadratureData()
 	{
 		T x[4], w[4];	// for the Gauss-Legendre integration points and weights
 		// get the Gauss-Legendre integration points and weights
-		gauleg(x,w,4);
+		this->template gauleg(x,w,4);
 
 		//TODO needs testing
 		ips.clear();

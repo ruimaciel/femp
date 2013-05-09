@@ -5,6 +5,7 @@ libboost1.42-dev
 libeigen2-dev
 libsuitesparse-dev
 libsuitesparse-metis-dev
+re2c
 bison
 flex
 libsigc++-2.0-dev

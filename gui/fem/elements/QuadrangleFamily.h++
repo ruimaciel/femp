@@ -38,7 +38,7 @@ void QuadrangleFamily<T>::generateQuadratureData()
 		ips.clear();
 		T x[d], w[d];	// for the Gauss-Legendre integration points and weights
 		// get the Gauss-Legendre integration points and weights
-		gauleg(x,w,d);
+		this->template gauleg(x,w,d);	// this causes an error with gcc4.7 http://gcc.gnu.org/gcc-4.7/porting_to.html
 
 		// and now generate a list with those points
 		for(int i = 0; i < d; i++)

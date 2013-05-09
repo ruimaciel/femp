@@ -29,7 +29,8 @@ StressFieldFactory::operator() (fem::Element const &element)
 	float e11, e22, e33, e12, e13, e23;
 
 	// helper
-	auto di = [&m_diameter, &m_model, &element](float const scale, std::initializer_list< std::pair<fem::node_ref_t, fem::node_ref_t> > list)
+	//auto di = [&m_diameter, &m_model, &element](float const scale, std::initializer_list< std::pair<fem::node_ref_t, fem::node_ref_t> > list)
+	auto di = [&](float const scale, std::initializer_list< std::pair<fem::node_ref_t, fem::node_ref_t> > list)
 	{
 		fem::point center;
 

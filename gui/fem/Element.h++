@@ -74,6 +74,7 @@ public:
 	Type type;
 
 	Element();
+	Element(Element const &copied);
 
 	enum Error set(Type type, std::vector<size_t> nodes);
 

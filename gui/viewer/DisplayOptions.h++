@@ -22,6 +22,9 @@ struct DisplayOptions
 	unsigned int domain_forces: 	1;
 	unsigned int nodal_displacements: 	1;
 
+	unsigned int triangle_wireframe: 	1;	// renders a wireframe bordering the OpenGL triangles
+	unsigned int shading: 		1;	// renders surfaces with Gouraud shading
+
 	DisplayOptions();
 	~DisplayOptions();
 

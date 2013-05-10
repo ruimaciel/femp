@@ -1,11 +1,14 @@
 #include "BaseViewport.h++"
 
+#include <iostream>	// for cerr
+	
 #include "SceneGraphComponents/Operations/ToggleRenderOperation.h++"
 #include "SceneGraphComponents/Operations/ToggleSelectionOperation.h++"
 #include "SceneGraphComponents/Operations/SelectRayIntersectionOperation.h++"
 #include "SceneGraphComponents/Operations/SelectFrustumInclusionOperation.h++"
 
 
+//TODO add sanity checks to this->state
 
 BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
 	: QGLWidget(parent)
@@ -226,6 +229,31 @@ BaseViewport::setSurfaceVisibility(bool const state)
 	this->state->setRenderGroupVisibility(SceneGraph::RG_SURFACES, state);
 	this->state->setRenderGroupVisibility(SceneGraph::RG_WIREFRAME, !state);
 	this->display_options.surfaces = state;
+}
+
+
+void 
+BaseViewport::setTrianglesVisible(bool const state)
+{
+	//TODO set triangle wireframe visibility
+	this->display_options.triangle_wireframe = state;	// this has no effect, as currently no component uses this value
+
+	/* Performs a sanity check */
+	if(state == NULL)
+	{
+		std::cerr << "BaseViewport::setTrianglesVisible(bool const state): this->state is NULL" << std::endl;
+		return;
+	}
+
+	this->state->setTrianglesVisible(state);
+}
+
+
+void 
+BaseViewport::setShading(bool const state)
+{
+	//TODO toggle shading
+	this->display_options.shading = state;
 }
 
 

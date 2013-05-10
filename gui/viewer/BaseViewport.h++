@@ -97,6 +97,9 @@ public:
 	void setNodeRestrictionsVisibility(bool const state);
 	void setSurfaceVisibility(bool const state);
 
+	void setTrianglesVisible(bool const state);
+	void setShading(bool const state);
+
 
 public Q_SLOTS:
 	void setXRotation(int angle);

@@ -37,6 +37,11 @@ public:
 	ElementRepresentationPolicy * gradient();
 	//ElementRepresentationPolicy * tensor();
 
+	/**
+	Toggles opengl wireframe rendering on all relevant policies
+	**/
+	void setTriangleWireframeRendering(bool const state);
+	void toggleTriangleWireframeRendering();
 };
 
 #endif // ELEMENTREPRESENTATIONFLYWEIGHTFACTORY_H

@@ -124,8 +124,20 @@ VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 			}
 			break;
 
+		case Qt::Key_W:
+			m_element_representation_factory.toggleTriangleWireframeRendering();	
+			break;
+
 		default:
+			event->ignore();
 			break;
 	}
+}
+
+
+void 
+VPStateDisplacements::setTrianglesVisible(bool const state)
+{
+	m_element_representation_factory.setTriangleWireframeRendering(state);
 }
 

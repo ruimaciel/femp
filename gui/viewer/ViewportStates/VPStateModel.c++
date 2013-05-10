@@ -97,6 +97,7 @@ VPStateModel::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 	{
 		case Qt::Key_W:
 			m_element_representation_factory.toggleTriangleWireframeRendering();	
+			viewport->updateGL();
 			break;
 
 		default:

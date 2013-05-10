@@ -8,6 +8,7 @@
 OpaqueRepresentationPolicy::OpaqueRepresentationPolicy ( ) 
 {
 	m_temp_p.reserve(27);	// to accomodate the maximum number of points
+	m_triangle_wireframe_representation = false;
 }
 
 OpaqueRepresentationPolicy::~OpaqueRepresentationPolicy ( ) { }
@@ -23,6 +24,16 @@ OpaqueRepresentationPolicy::~OpaqueRepresentationPolicy ( ) { }
 void
 OpaqueRepresentationPolicy::tri3(fem::point &p1, fem::point &p2, fem::point &p3, ViewportColors &color)
 {
+	// OpenGL wireframe
+	if(m_triangle_wireframe_representation)
+	{
+		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	}
+	else
+	{
+		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	}
+
 	glEnable(GL_BLEND);
 
 	//int partitions = 4;	//TODO implement a better code
@@ -44,6 +55,16 @@ OpaqueRepresentationPolicy::tri3(fem::point &p1, fem::point &p2, fem::point &p3,
 void
 OpaqueRepresentationPolicy::tri6(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4,fem::point &p5, fem::point &p6, ViewportColors &color)
 {
+	// OpenGL wireframe
+	if(m_triangle_wireframe_representation)
+	{
+		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	}
+	else
+	{
+		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	}
+
 	glEnable(GL_BLEND);
 	int partitions = 6;	//TODO implement a better code
 
@@ -137,6 +158,16 @@ OpaqueRepresentationPolicy::tri6(fem::point &p1, fem::point &p2, fem::point &p3,
 void
 OpaqueRepresentationPolicy::quad4(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, ViewportColors &color)
 {
+	// OpenGL wireframe
+	if(m_triangle_wireframe_representation)
+	{
+		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	}
+	else
+	{
+		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	}
+
 	glEnable(GL_BLEND);
 	int partitions = 3;	//TODO implement a better code
 
@@ -218,12 +249,27 @@ OpaqueRepresentationPolicy::quad4(fem::point &p1, fem::point &p2, fem::point &p3
 		glEnd(); 
 	} 
 	glDisable(GL_BLEND);
+
+	// OpenGL wireframe
+	if(m_triangle_wireframe_representation)
+	{
+	}
 }
 
 
 void
 OpaqueRepresentationPolicy::quad8(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, fem::point &p5, fem::point &p6, fem::point &p7, fem::point &p8, ViewportColors &color)
 {
+	// OpenGL wireframe
+	if(m_triangle_wireframe_representation)
+	{
+		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	}
+	else
+	{
+		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	}
+
 	glEnable(GL_BLEND);
 	int partitions = 6;	//TODO implement a better code
 
@@ -307,12 +353,27 @@ OpaqueRepresentationPolicy::quad8(fem::point &p1, fem::point &p2, fem::point &p3
 		glEnd(); 
 	} 
 	glDisable(GL_BLEND);
+
+	// OpenGL wireframe
+	if(m_triangle_wireframe_representation)
+	{
+	}
 }
 
 
 void
 OpaqueRepresentationPolicy::quad9(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, fem::point &p5, fem::point &p6, fem::point &p7, fem::point &p8, fem::point &p9, ViewportColors &color)
 {
+	// OpenGL wireframe
+	if(m_triangle_wireframe_representation)
+	{
+		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	}
+	else
+	{
+		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	}
+
 	glEnable(GL_BLEND);
 	int partitions = 6;	//TODO implement a better code
 
@@ -393,6 +454,11 @@ OpaqueRepresentationPolicy::quad9(fem::point &p1, fem::point &p2, fem::point &p3
 		glEnd(); 
 	} 
 	glDisable(GL_BLEND);
+
+	// OpenGL wireframe
+	if(m_triangle_wireframe_representation)
+	{
+	}
 }
 
 
@@ -584,5 +650,19 @@ OpaqueRepresentationPolicy::prism18 (fem::element_ref_t const &, fem::Element &e
 	quad9( m_temp_p[3], m_temp_p[0], m_temp_p[1], m_temp_p[4], m_temp_p[8], m_temp_p[6], m_temp_p[10], m_temp_p[12], m_temp_p[15], color);
 	quad9( m_temp_p[4], m_temp_p[1], m_temp_p[2], m_temp_p[5], m_temp_p[10], m_temp_p[9], m_temp_p[11], m_temp_p[14], m_temp_p[17], color);
 	quad9( m_temp_p[0], m_temp_p[3], m_temp_p[5], m_temp_p[2], m_temp_p[8], m_temp_p[13], m_temp_p[11], m_temp_p[7], m_temp_p[16], color);
+}
+
+
+void 
+OpaqueRepresentationPolicy::setTriangleWireframeRendering(bool const state)
+{
+	m_triangle_wireframe_representation = state;
+}
+
+
+void 
+OpaqueRepresentationPolicy::toggleTriangleWireframeRendering()
+{
+	setTriangleWireframeRendering(!m_triangle_wireframe_representation);
 }
 

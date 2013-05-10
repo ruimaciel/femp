@@ -157,3 +157,8 @@ ViewportState::addPickRay(fem::point const &origin, fem::point const &destinatio
 }
 
 
+void 
+ViewportState::setTrianglesVisible(bool const)
+{
+}
+

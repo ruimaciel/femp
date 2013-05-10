@@ -13,6 +13,7 @@ class OpaqueRepresentationPolicy
 {
 protected:
 	std::vector<fem::point> m_temp_p;
+	bool m_triangle_wireframe_representation;
 
 public:
 
@@ -72,6 +73,11 @@ public:
 	void prism18 (fem::element_ref_t const &, fem::Element &element, ViewportColors &color, DisplacementsRepresentationPolicy *displacement);
 
 
+	/**
+	Toggles the OpenGL wireframe representation
+	**/
+	void setTriangleWireframeRendering(bool const state);
+	void toggleTriangleWireframeRendering();
 };
 
 #endif // OPAQUEREPRESENTATIONPOLICY_H

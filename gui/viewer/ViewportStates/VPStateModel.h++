@@ -41,6 +41,13 @@ public:
 	**/
 	void setSelection(Selection);
 
+	void keyPressEvent ( BaseViewport *viewport, QKeyEvent * event );
+
+	/**
+	Sets the relevant policies to render the OpenGL triangles with a wireframe
+	This isn't implemented in ViewportStates which won't render Opaque objects
+	**/
+	void setTrianglesVisible(bool const state);
 };
 
 

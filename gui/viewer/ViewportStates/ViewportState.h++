@@ -86,6 +86,11 @@ public:
 	**/
 	void addPickRay(fem::point const &origin, fem::point const &destination, float const &radius);
 
+	/**
+	Sets the relevant policies to render the OpenGL triangles with a wireframe
+	This isn't implemented in ViewportStates which won't render Opaque objects
+	**/
+	virtual void setTrianglesVisible(bool const state);
 };
 
 #endif

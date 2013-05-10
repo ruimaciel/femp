@@ -90,3 +90,26 @@ VPStateModel::setSelection(Selection)
 }
 
 
+void
+VPStateModel::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
+{
+	switch( event->key() )
+	{
+		case Qt::Key_W:
+			m_element_representation_factory.toggleTriangleWireframeRendering();	
+			break;
+
+		default:
+			event->ignore();
+			break;
+	}
+}
+
+
+
+void 
+VPStateModel::setTrianglesVisible(bool const state)
+{
+	m_element_representation_factory.setTriangleWireframeRendering(state);
+}
+

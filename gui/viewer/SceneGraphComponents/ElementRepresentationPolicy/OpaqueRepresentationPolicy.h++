@@ -29,8 +29,6 @@ public:
 	/**
 	 * Empty Destructor
 	 */
-	virtual ~OpaqueRepresentationPolicy ( );
-
 
 protected:
 	inline void tri3 (fem::point &p1, fem::point &p2, fem::point &p3, ViewportColors &color);

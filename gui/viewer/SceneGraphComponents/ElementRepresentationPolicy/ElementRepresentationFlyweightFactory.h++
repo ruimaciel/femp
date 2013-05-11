@@ -21,7 +21,6 @@ protected:
 
 public:
 	ElementRepresentationFlyweightFactory ( );
-	virtual ~ElementRepresentationFlyweightFactory ( );
 
 
 protected:
@@ -42,6 +41,9 @@ public:
 	**/
 	void setTriangleWireframeRendering(bool const state);
 	void toggleTriangleWireframeRendering();
+
+
+	void setSurfaceSubdivisionLevel(unsigned short level);
 };
 
 #endif // ELEMENTREPRESENTATIONFLYWEIGHTFACTORY_H

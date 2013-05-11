@@ -11,7 +11,6 @@ OpaqueRepresentationPolicy::OpaqueRepresentationPolicy ( )
 	m_triangle_wireframe_representation = false;
 }
 
-OpaqueRepresentationPolicy::~OpaqueRepresentationPolicy ( ) { }
 
 //  
 // Methods
@@ -66,7 +65,7 @@ OpaqueRepresentationPolicy::tri6(fem::point &p1, fem::point &p2, fem::point &p3,
 	}
 
 	glEnable(GL_BLEND);
-	int partitions = 6;	//TODO implement a better code
+	int partitions = 2*(m_surface_subdivision_level+1);	//TODO implement a better code
 
 /*
      v
@@ -169,7 +168,7 @@ OpaqueRepresentationPolicy::quad4(fem::point &p1, fem::point &p2, fem::point &p3
 	}
 
 	glEnable(GL_BLEND);
-	int partitions = 3;	//TODO implement a better code
+	int partitions = 2*(m_surface_subdivision_level+1);	//TODO implement a better code
 
 /*
 	^ y
@@ -271,7 +270,7 @@ OpaqueRepresentationPolicy::quad8(fem::point &p1, fem::point &p2, fem::point &p3
 	}
 
 	glEnable(GL_BLEND);
-	int partitions = 6;	//TODO implement a better code
+	int partitions = 2*(m_surface_subdivision_level+1);	//TODO implement a better code
 
 /*
 	^ y
@@ -375,7 +374,7 @@ OpaqueRepresentationPolicy::quad9(fem::point &p1, fem::point &p2, fem::point &p3
 	}
 
 	glEnable(GL_BLEND);
-	int partitions = 6;	//TODO implement a better code
+	int partitions = 2*(m_surface_subdivision_level+1);	//TODO implement a better code
 
 /*
 	^ y

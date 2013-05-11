@@ -7,11 +7,7 @@
 
 ElementRepresentationFlyweightFactory::ElementRepresentationFlyweightFactory ( ) 
 {
-}
-
-
-ElementRepresentationFlyweightFactory::~ElementRepresentationFlyweightFactory ( ) 
-{ 
+	setSurfaceSubdivisionLevel(2);	// 6 elements per side by default
 }
 
 
@@ -50,5 +46,13 @@ void
 ElementRepresentationFlyweightFactory::toggleTriangleWireframeRendering()
 {
 	m_opaque_policy.toggleTriangleWireframeRendering();
+}
+
+
+void 
+ElementRepresentationFlyweightFactory::setSurfaceSubdivisionLevel(unsigned short level)
+{
+	m_opaque_policy.setSurfaceSubdivisionLevel(level);
+	m_gradient_policy.setSurfaceSubdivisionLevel(level);
 }
 

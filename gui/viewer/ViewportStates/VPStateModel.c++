@@ -14,6 +14,8 @@
 
 #include "../BaseViewport.h++"
 
+#include "ui/SurfaceSubdivisionDialog.h++"
+
 #include "../SceneGraph.h++"
 #include "../SceneGraphComponents/SGCNode.h++"
 #include "../SceneGraphComponents/SGCNodeRestrictions.h++"
@@ -98,6 +100,26 @@ VPStateModel::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 		case Qt::Key_W:
 			m_element_representation_factory.toggleTriangleWireframeRendering();	
 			viewport->updateGL();
+			break;
+
+		case Qt::Key_D:	// change the displacements scale
+			{
+				//DialogScale ds(1.0f, viewport);
+				SurfaceSubdivisionDialog ds(2);
+				switch(ds.exec())
+				{
+					case QDialog::Accepted:
+						//this->setDisplacementsScale(ds.scale());
+						m_element_representation_factory.setSurfaceSubdivisionLevel(ds.scale());
+
+						//update the scene
+						viewport->updateGL();
+						break;
+
+					default:
+						break;
+				}
+			}
 			break;
 
 		default:

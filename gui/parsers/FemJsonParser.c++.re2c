@@ -104,6 +104,12 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					ss.push(TT_NATURAL_NUMBER);
 					break;
 
+				case PR_REFERENCE_ERROR:
+					this->error.code = Error::Type::ERR_UNKNOWN;	//TODO return a dedicated error
+					this->error.message = "Expected a reference number at line " + boost::lexical_cast<std::string>(line_number);
+					return this->error.code;
+					break;
+
 				case PR_REFERENCE_SET:
 					try
 					{
@@ -1471,6 +1477,7 @@ void FemJsonParser::setParserTable()
 	table	[NT_VECTOR3D_SET]	[TT_OBJECT_CLOSE]	=	PR_VECTOR3D_SET;
 
 	table	[NT_REFERENCE]		[TT_NATURAL_NUMBER]	=	PR_REFERENCE_1;
+	table	[NT_REFERENCE]		[TT_VALUE_SEPARATOR]	=	PR_REFERENCE_ERROR;	// error state
 
 	table	[NT_REFERENCE_SET]	[TT_VALUE_SEPARATOR]	=	PR_REFERENCE_SET;
 	table	[NT_REFERENCE_SET]	[TT_ARRAY_CLOSE]	=	PR_REFERENCE_SET;

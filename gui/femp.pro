@@ -119,7 +119,7 @@ OBJECTS_DIR += ./build
 
 FemJsonParserRe2c.target = parsers/FemJsonParser.c++
 FemJsonParserRe2c.commands = re2c -o parsers/FemJsonParser.c++ parsers/FemJsonParser.c++.re2c
-FemJsonParserRe2c.depends = parsers/FemJsonParser.c++.re2c
+FemJsonParserRe2c.depends = parsers/FemJsonParser.c++.re2c fem/Model.h++ fem/Model.c++
 FemJsonParserRe2c.output = parsers/FemJsonParser.c++
 
 MshParserRe2c.target = parsers/MshParser.c++
@@ -139,12 +139,12 @@ ElementRe2c.output = fem/Element.c++
 
 FlexOutput.target = lex.msh_yy.h 
 FlexOutput.commands = flex --header-file=lex.msh_yy.h -o lex.msh_yy.c++ msh.l
-FlexOutput.depends = msh.l
+FlexOutput.depends = msh.l fem/Model.h++ fem/Model.c++
 FlexOutput.output = lex.msh_yy.c++ lex.msh_yy.h
 
 BisonOutput.target = msh.tab.h
 BisonOutput.commands = bison -d --debug msh.y
-BisonOutput.depends = msh.y lex.msh_yy.h
+BisonOutput.depends = msh.y lex.msh_yy.h fem/Model.h++ fem/Model.c++
 BisonOutput.output = msh.tab.c msh.tab.h
 
 BisonCompile.target = msh.tab.o

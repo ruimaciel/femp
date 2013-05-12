@@ -586,6 +586,16 @@ Model::pushLoadPattern(fem::LoadPattern &lp)
 }
 
 
+void 
+Model::createEmptyLoadPattern(std::string const &label)
+{
+	LoadPattern lp;
+	lp.label = label;
+
+	pushLoadPattern(lp);
+}
+
+
 enum Model::Error 
 Model::pushNodeGroup(fem::NodeGroup &new_node_group)
 {

@@ -1,16 +1,16 @@
 #include "NodeActionsDialog.h++"
 
+#include "LoadPatternDialog.h++"
+
+
 NodeActionsDialog::NodeActionsDialog(LoadPatternsModel &model, QWidget *parent)
 	: QDialog(parent)
 {
 	setupUi(this);
 
 	this->comboBoxLoadPattern->setModel(&model);
-}
 
-
-NodeActionsDialog::~NodeActionsDialog()
-{
+	connect(toolButtonNewLoadPattern,	SIGNAL(clicked()), 	this,	SLOT(handleNewLabelButton()));
 }
 
 
@@ -43,4 +43,25 @@ NodeActionsDialog::getDisplacement()
 	return p;
 }
 
+
+void 
+NodeActionsDialog::loadPatternCreated(size_t, fem::LoadPattern const &)
+{
+	this->comboBoxLoadPattern->view()->reset();
+}
+
+
+void 
+NodeActionsDialog::handleNewLabelButton()
+{
+	LoadPatternDialog dialog(this);
+	if(dialog.exec() == QDialog::Accepted)
+	{
+		std::string text;
+		text = dialog.getLabel();
+
+		// emit signal
+		create_load_pattern(text);
+	}
+}
 

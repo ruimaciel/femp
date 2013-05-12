@@ -855,6 +855,11 @@ MainWindow::setNodeActions()
 	LoadPatternsModel model(document.project.model, this);
 
 	NodeActionsDialog na(model, this);
+
+	// Connect the sigc++ signals
+	na. create_load_pattern.connect( sigc::mem_fun(document.project.model, &fem::Model::createEmptyLoadPattern));
+	document.project.model.load_pattern_created.connect(  sigc::mem_fun(na, &NodeActionsDialog::loadPatternCreated) );
+
 	if(na.exec() == QDialog::Accepted)
 	{
 		Selection const selection = m_selection_manager.getSelection();
@@ -884,6 +889,20 @@ MainWindow::setDomainLoads()
 	LoadPatternsModel model(document.project.model, this);
 
 	DomainLoadsDialog dialog(model, this);
+
+	// Connect the sigc++ signals
+	dialog. create_load_pattern.connect( sigc::mem_fun(document.project.model, &fem::Model::createEmptyLoadPattern));
+	document.project.model.load_pattern_created.connect(  sigc::mem_fun(dialog, &DomainLoadsDialog::loadPatternCreated) );
+
+	/*
+	From:
+	https://developer.gnome.org/libsigc++-tutorial/stable/ch04.html#id455954
+	myaliendetector.signal_detected.connect( sigc::hide<std::string>( sigc::ptr_fun(warn_people) ) );
+	*/
+	//document.project.model.load_pattern_created.connect(sigc::hide<size_t const, fem::LoadPattern const &>(dialog.loadPatternCreated() ) );
+
+
+	// call the dialog box
 	if(dialog.exec() == QDialog::Accepted)
 	{
 		Selection const selection = m_selection_manager.getSelection();

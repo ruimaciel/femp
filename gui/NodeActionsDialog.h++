@@ -6,6 +6,7 @@
 
 #include "fem/point.h++"
 #include "fem/Model.h++"
+#include "fem/LoadPattern.h++"
 
 #include "LoadPatternsModel.h++"
 
@@ -13,19 +14,27 @@
 
 
 class NodeActionsDialog
-	: public QDialog, private Ui_NodeActionsDialog
+	: public QDialog, public sigc::trackable, private Ui::NodeActionsDialog
 {
+	Q_OBJECT
+
 private:
 	size_t load_pattern;
 
 public:
 	NodeActionsDialog(LoadPatternsModel &model, QWidget *parent = NULL);
-	~NodeActionsDialog();
 
 	size_t	getLoadPattern();
 	fem::point getForce();
 	fem::point getDisplacement();
 
+	void loadPatternCreated(size_t, fem::LoadPattern const &);
+
+protected Q_SLOTS:
+	void handleNewLabelButton();
+
+public:	// sigc++ signals
+	sigc::signal<void, std::string const &>	create_load_pattern;	// sends a signal for fem::Model to create a new load pattern 
 };
 
 

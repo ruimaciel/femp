@@ -34,7 +34,7 @@ private:
 
 public:	// sigc++ signals
 	sigc::signal<void, size_t const, fem::NodeRestrictions const>	update_node_restriction;	// signals a change to a node restriction
-	sigc::signal<void, size_t const, fem::LoadPattern const &>	load_pattern_created;	// signals that a new load pattern has been added to the project
+	sigc::signal<void, size_t, fem::LoadPattern const &>	load_pattern_created;	// signals that a new load pattern has been added to the project
 
 public:
 	enum Error {	
@@ -101,6 +101,12 @@ public:
 	@return	ERR_NONE if all went well, some other error if something went bad
 	**/
 	enum Error pushLoadPattern(fem::LoadPattern &lp);
+
+	/**
+	Creates an empty load pattern
+	This is used by sigc++ signals
+	**/
+	void createEmptyLoadPattern(std::string const &label);
 
 
 	/** pushes a new node group to the node group list

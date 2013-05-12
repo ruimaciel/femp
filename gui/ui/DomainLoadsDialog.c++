@@ -1,16 +1,16 @@
 #include "DomainLoadsDialog.h++"
 
+#include "LoadPatternDialog.h++"
+
+
 DomainLoadsDialog::DomainLoadsDialog(LoadPatternsModel &model, QWidget *parent)
 	: QDialog(parent)
 {
 	setupUi(this);
 
 	this->comboBoxLoadPattern->setModel(&model);
-}
 
-
-DomainLoadsDialog::~DomainLoadsDialog()
-{
+	connect(toolButtonNewLoadPattern,	SIGNAL(clicked()), 	this,	SLOT(handleNewLabelButton()));
 }
 
 
@@ -32,4 +32,25 @@ DomainLoadsDialog::getForce()
 	return p;
 }
 
+
+void 
+DomainLoadsDialog::loadPatternCreated(size_t, fem::LoadPattern const &)
+{
+	this->comboBoxLoadPattern->view()->reset();
+}
+
+
+void 
+DomainLoadsDialog::handleNewLabelButton()
+{
+	LoadPatternDialog dialog(this);
+	if(dialog.exec() == QDialog::Accepted)
+	{
+		std::string text;
+		text = dialog.getLabel();
+
+		// emit signal
+		create_load_pattern(text);
+	}
+}
 

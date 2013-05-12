@@ -11,6 +11,7 @@ void WindowWithScaling::createToolbar(QMainWindow *parent, fem::Project &)
 	scalingDoubleSpinBox->setMinimum(0);
 	scalingDoubleSpinBox->setMaximum(9e99);
 	scalingDoubleSpinBox->setValue(1);
+	scalingDoubleSpinBox->setDecimals(12);
 
 	scalingToolBar = parent->addToolBar(QObject::tr("Scale"));
 	scalingToolBar->addWidget(scalingDoubleSpinBox);

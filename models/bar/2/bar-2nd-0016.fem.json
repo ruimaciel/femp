@@ -4,7 +4,7 @@
 		"type": "3D solid"
 	},
 	"materials": [
-		{"type":"linear elastic", "label": "Steel", "E":210e+06,"nu":0.3, "fy": 4.94066e-324}
+		{"type":"linear elastic", "label": "", "E":2.1e+08,"nu":0.3, "fy": 4.94066e-324}
 	],
 	"nodes":[
 		[	1,[	-0.125,	-0.125,	-2	]],
@@ -324,35 +324,58 @@
 		{"type":"hexahedron27", "nodes":[31,62,93,124,5,6,7,8,170,263,47,201,78,232,109,140,13,16,14,15,295,172,265,203,234,266,297]}
 	],
 
-        "node restrictions": [
-                { "node":1, "dx":true, "dy":true, "dz":true},
-                { "node":2, "dx":true, "dy":true, "dz":true},
-                { "node":3, "dx":true, "dy":true, "dz":true},
-                { "node":4, "dx":true, "dy":true, "dz":true},
+	"node restrictions": [
+		{ "node":1, "dx":true, "dy":true, "dz":true},
+		{ "node":2, "dx":true, "dy":true, "dz":true},
+		{ "node":3, "dx":true, "dy":true, "dz":true},
+		{ "node":4, "dx":true, "dy":true, "dz":true},
+		{ "node":9, "dx":true, "dy":true, "dz":true},
+		{ "node":10, "dx":true, "dy":true, "dz":true},
+		{ "node":11, "dx":true, "dy":true, "dz":true},
+		{ "node":12, "dx":true, "dy":true, "dz":true},
+		{ "node":141, "dx":true, "dy":true, "dz":true}
+	],
 
-                { "node":9, "dx":true, "dy":true, "dz":true},
-                { "node":10, "dx":true, "dy":true, "dz":true},
-                { "node":11, "dx":true, "dy":true, "dz":true},
-                { "node":12, "dx":true, "dy":true, "dz":true},
-
-                { "node":141, "dx":true, "dy":true, "dz":true}
-        ] ,
-
-        "load patterns":[
-                {
-                        "label": "Default",
-                        "nodal loads":[
-                                {"node":7, "force":[0, -1000, 0]},
-                                {"node":8, "force":[0, -1000, 0]}
-                        ]
-                } ,
+	"load patterns":[
 		{
-			"label": "distributed domain load",
-
-			"domain loads":[
-				{"element":[0,16], "force": [0,-1000,0]}
+			"label": "Point load",
+			"nodal loads":[
+				{"node":7, "force":[0, -1000, 0]},
+				{"node":8, "force":[0, -1000, 0]}
 			]
 		}
+,
+		{
+			"label": "distributed domain load",
+			"domain loads":[
+				{"element":0, "force": [0,-1000,0]},
+				{"element":1, "force": [0,-1000,0]},
+				{"element":2, "force": [0,-1000,0]},
+				{"element":3, "force": [0,-1000,0]},
+				{"element":4, "force": [0,-1000,0]},
+				{"element":5, "force": [0,-1000,0]},
+				{"element":6, "force": [0,-1000,0]},
+				{"element":7, "force": [0,-1000,0]},
+				{"element":8, "force": [0,-1000,0]},
+				{"element":9, "force": [0,-1000,0]},
+				{"element":10, "force": [0,-1000,0]},
+				{"element":11, "force": [0,-1000,0]},
+				{"element":12, "force": [0,-1000,0]},
+				{"element":13, "force": [0,-1000,0]},
+				{"element":14, "force": [0,-1000,0]},
+				{"element":15, "force": [0,-1000,0]}
+			]
+		}
+,
+		{
+			"label": "Axial load",
+			"nodal loads":[
+				{"node":5, "force":[0, 2, 0]},
+				{"node":7, "force":[0, -1000, 0]},
+				{"node":8, "force":[0, -1000, 0]},
+				{"node":266, "force":[0, 0, 1]}
+			]
+		}
+	]
 
-        ]
 }

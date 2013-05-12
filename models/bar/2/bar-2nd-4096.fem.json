@@ -41402,7 +41402,7 @@
 
         "load patterns":[
                 {
-                        "label": "Default",
+                        "label": "Point load",
                         "nodal loads":[
                                 {"node":7, "force":[0, -1000, 0]},
                                 {"node":8, "force":[0, -1000, 0]}

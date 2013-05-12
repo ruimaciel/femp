@@ -3,7 +3,7 @@
 
 ElementRepresentationPolicy::ElementRepresentationPolicy()
 {
-	m_surface_subdivision_level = 2;
+	m_surface_subdivision_level = 1;
 }
 
 

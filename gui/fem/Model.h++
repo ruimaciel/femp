@@ -85,7 +85,7 @@ public:
 	Model::Error pushMaterial(fem::Material &);
 
 	Model::Error pushElement(fem::Element &);
-	Model::Error pushElement(fem::Element::Type type, std::vector<size_t> nodes);
+	Model::Error pushElement(fem::Element::Type type, std::vector<size_t> &nodes);
 
 	/** Specifies new node restrictions affecting a node
 	@param node	a reference for a node contained in node_list
@@ -99,7 +99,7 @@ public:
 	@param lp	the newly added load pattern
 	@return	ERR_NONE if all went well, some other error if something went bad
 	**/
-	enum Error pushLoadPattern(fem::LoadPattern lp);
+	enum Error pushLoadPattern(fem::LoadPattern &lp);
 
 
 	/** pushes a new node group to the node group list

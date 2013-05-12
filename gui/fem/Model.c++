@@ -537,7 +537,7 @@ Model::pushElement(fem::Element &e)
 
 
 Model::Error 
-Model::pushElement(fem::Element::Type type, std::vector<size_t> nodes)
+Model::pushElement(fem::Element::Type type, std::vector<size_t> &nodes)
 {
 	fem::Element e;
 	e.set(type,nodes);
@@ -572,7 +572,7 @@ Model::popNodeRestrictions(node_ref_t const &node)
 
 
 enum Model::Error 
-Model::pushLoadPattern(fem::LoadPattern lp)
+Model::pushLoadPattern(fem::LoadPattern &lp)
 {
 	//TODO perform error checks
 

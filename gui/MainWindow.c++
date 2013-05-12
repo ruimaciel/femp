@@ -17,6 +17,8 @@
 #include <string>
 #include <stdlib.h>	// getenv()
 
+#include "ui/LoadPatternsModel.h++"
+
 #include "ui/NewProjectWizard.h++"
 #include "NodeRestrainsDialog.h++"
 #include "NodeActionsDialog.h++"
@@ -850,7 +852,9 @@ MainWindow::setNodeRestraints()
 void 
 MainWindow::setNodeActions()
 {
-	NodeActionsDialog na(document.project.model, this);
+	LoadPatternsModel model(document.project.model, this);
+
+	NodeActionsDialog na(model, this);
 	if(na.exec() == QDialog::Accepted)
 	{
 		Selection const selection = m_selection_manager.getSelection();
@@ -877,7 +881,9 @@ MainWindow::setNodeActions()
 void 
 MainWindow::setDomainLoads()
 {
-	DomainLoadsDialog dialog(document.project.model, this);
+	LoadPatternsModel model(document.project.model, this);
+
+	DomainLoadsDialog dialog(model, this);
 	if(dialog.exec() == QDialog::Accepted)
 	{
 		Selection const selection = m_selection_manager.getSelection();
@@ -1154,26 +1160,6 @@ MainWindow::showAnalysisSummary()
 	// crude hack
 	AnalysisSummaryDialog dialog(document.project.result.back() , this);
 	dialog.exec();
-}
-
-
-void
-MainWindow::dumpResultsFromSelection(fem::AnalysisResult<double> *result)
-{
-	//TODO this currently doesn't work, as no signal emits a *result
-	if(result == NULL)
-	{
-		std::cerr << __FILE__ << ":" << __LINE__ ;
-		std::cerr << "MainWindow::dumpResultsFromSelection(fem::AnalysisResult<double> *result): result == NULL" << std::endl;
-		return;
-	}
-
-	/*
-	//TODO finish this
-	OutputResultsInNodesVisitor visitor(result);
-
-	document.project.accept(visitor);
-	*/
 }
 
 

@@ -578,6 +578,10 @@ Model::pushLoadPattern(fem::LoadPattern &lp)
 
 	load_pattern_list.push_back(lp);
 
+
+	// signal the world
+	load_pattern_created.emit(load_pattern_list.size()-1, lp);
+
 	return ERR_OK;
 }
 

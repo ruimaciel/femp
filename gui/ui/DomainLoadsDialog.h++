@@ -7,6 +7,8 @@
 #include "fem/point.h++"
 #include "fem/Model.h++"
 
+#include "LoadPatternsModel.h++"
+
 #include "ui_DomainLoadsDialog.h"
 
 
@@ -17,7 +19,7 @@ private:
 	size_t load_pattern;
 
 public:
-	DomainLoadsDialog(fem::Model &model, QWidget *parent = NULL);
+	DomainLoadsDialog(LoadPatternsModel &model, QWidget *parent = NULL);
 	~DomainLoadsDialog();
 
 	size_t	getLoadPattern();

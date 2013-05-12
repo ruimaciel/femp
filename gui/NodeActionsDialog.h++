@@ -7,6 +7,8 @@
 #include "fem/point.h++"
 #include "fem/Model.h++"
 
+#include "LoadPatternsModel.h++"
+
 #include "ui/ui_NodeActionsDialog.h"
 
 
@@ -17,7 +19,7 @@ private:
 	size_t load_pattern;
 
 public:
-	NodeActionsDialog(fem::Model &model, QWidget *parent = NULL);
+	NodeActionsDialog(LoadPatternsModel &model, QWidget *parent = NULL);
 	~NodeActionsDialog();
 
 	size_t	getLoadPattern();

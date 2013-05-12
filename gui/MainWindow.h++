@@ -108,12 +108,6 @@ public Q_SLOTS:
 	void showAnalysisSummary();
 	
 	/**
-	Dumps the results from the objects which are currently selected
-	@param	result	the result which will be dumped
-	**/
-	void dumpResultsFromSelection(fem::AnalysisResult<double> *result);
-
-	/**
 	Dumps the results taken from the last analysis from the objects which are currently selected
 	**/
 	void dumpResultsFromSelection();

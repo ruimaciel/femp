@@ -34,6 +34,7 @@ private:
 
 public:	// sigc++ signals
 	sigc::signal<void, size_t const, fem::NodeRestrictions const>	update_node_restriction;	// signals a change to a node restriction
+	sigc::signal<void, size_t const, fem::LoadPattern const &>	load_pattern_created;	// signals that a new load pattern has been added to the project
 
 public:
 	enum Error {	

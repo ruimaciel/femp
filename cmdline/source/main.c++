@@ -7,6 +7,7 @@
 #include "fem/Model.h++"
 #include "fem/LinearAnalysis.h++"
 
+#include "fem/FemException.h++"
 #include "FempException.h++"
 #include "ProgramOptions.h++"
 
@@ -16,9 +17,9 @@ int main(int argc, char **argv)
 	using namespace std;
 	using namespace fem;
 
-	// declaring the objects
 	try
 	{
+		// declaring the objects
 		ProgramOptions options;
 		fem::Model model;
 		fem::LinearAnalysis<double> analysis;
@@ -58,6 +59,10 @@ int main(int argc, char **argv)
 				break;
 		}
 
+	}
+	catch(FemException e)
+	{
+		cout << "FemException: " << e.what() << endl;
 	}
 	catch(FempException e)
 	{

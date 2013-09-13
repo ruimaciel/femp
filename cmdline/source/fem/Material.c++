@@ -1,5 +1,8 @@
 #include "Material.h++"
 
+#include "FemException.h++"
+
+
 namespace fem
 {
 
@@ -27,7 +30,8 @@ Material::generateD() const
 			break;
 
 		default:
-			assert(false);	//TODO this part must not be reached
+			throw FemException("Unsupported material type");
+			break;
 	}
 
 	return D;

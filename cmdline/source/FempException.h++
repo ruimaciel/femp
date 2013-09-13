@@ -1,5 +1,5 @@
-#ifndef FEMPEXCEPTION_HPP
-#define FEMPEXCEPTION_HPP
+#ifndef FEMP_EXCEPTION_HPP
+#define FEMP_EXCEPTION_HPP
 
 #include <exception>
 #include <string>

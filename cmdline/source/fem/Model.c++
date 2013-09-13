@@ -8,6 +8,8 @@
 #include <vector>
 #include <stack>
 
+#include "FemException.h++"
+
 
 
 namespace fem
@@ -124,6 +126,7 @@ Model::pushElement(fem::Element &e)
 			break;;
 
 		default:
+			throw FemException("Stumbled on a unsupported type");
 			std::cerr << "Model::Error Model::pushElement(): unsupported element type " << e.type << std::endl;
 			return ERR_UNSUPPORTED_ELEMENT;
 			break;
@@ -152,7 +155,11 @@ Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions nr)
 {
 	// check if node is set
 	if(node_list.find(pos) == node_list.end())
+	{
+		throw FemException("Invalid node reference");
 		return ERR_INVALID_NODE_REFERENCE;
+	}
+	
 
 	//TODO perform aditional error checking
 
@@ -264,12 +271,14 @@ Model::sanity_check()
 		for(std::vector<size_t>::iterator n = it->nodes.begin(); n != it->nodes.end(); n++)
 		{
 			if(node_list.find(*n) == node_list.end())
+			{
+				throw FemException("Element node reference");	// clear up this error
 				return ERR_ELEMENT_NODE_REFERENCE;
+			}
 		}
 	}
 
-	//test node_restrictions_list
-	//TODO finish this
+	//TODO test node_restrictions_list
 	return ERR_OK;
 }
 

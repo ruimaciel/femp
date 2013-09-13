@@ -1,20 +1,21 @@
-#ifndef FEM_EXCEPTION
-#define FEM_EXCEPTION
+#ifndef FEM_EXCEPTION_HPP
+#define FEM_EXCEPTION_HPP
 
+#include <exception>
 #include <string>
-#include <stdexcept>
 
 /**
-  * class FemException
-  * This class is intended to be the base calss for all exceptions thrown by FEM routines
-  **/
+Exception classes thrown by the FEM module
+**/
 class FemException
-	: public std::runtime_error
+	: public std::exception
 {
-	public:
-		explicit FemException(const std::string &message): std::runtime_error(std::string("FEM: "+message)) {}
+	std::string	m_message;	// exception message
+
+public:
+	FemException(std::string const &message) throw();
+	~FemException() throw();
+	virtual const char* what() const throw();
 };
-
-
 
 #endif

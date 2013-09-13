@@ -3,24 +3,16 @@
 #include <iostream>
 #include <assert.h>
 
+#include "FemException.h++"
+
+
 namespace fem
 {
 
 Element::Element()
 {
-}
-
-
-Element::Element(const Element &copied)
-{
-	this->material = copied.material;
-	this->nodes = copied.nodes;
-	this->type = copied.type;
-}
-
-
-Element::~Element()
-{
+	this->material = 0;
+	this->type = FE_INVALID;
 }
 
 
@@ -93,6 +85,7 @@ enum Element::Error Element::set(Type type, std::vector<size_t> nodes)
 			break;
 
 		default:
+			throw FemException("Invalid element type");
 			std::cerr << "error: unsupported type " << type << std::endl;
 			return ERR_INVALID_TYPE;
 			break;
@@ -212,6 +205,7 @@ int Element::node_number() const
 			break;
 
 		default:
+			throw FemException("Unsupported element type");
 			std::cerr << "Element::node_number(): unsupported element: type " << this->type << std::endl;
 			assert(0);
 			break;

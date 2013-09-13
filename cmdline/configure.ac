@@ -10,17 +10,18 @@ AC_CONFIG_HEADERS([config.h])
 
 
 # Checks for programs.
-AC_PROG_CC
+#AC_PROG_CC
 AC_PROG_CXX
+AC_LANG_CPLUSPLUS
+
 AC_CHECK_PROG(RE2C, re2c, yes, no)
 AM_CONDITIONAL([HAVE_RE2C],[test "$RE2C" = yes])
 
-AC_LANG_CPLUSPLUS
 
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([memory.h stdint.h stdlib.h])
+PKG_CHECK_MODULES([eigen2],[eigen2])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_INT64_T

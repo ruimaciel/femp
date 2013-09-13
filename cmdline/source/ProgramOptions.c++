@@ -25,7 +25,7 @@ ProgramOptions::~ProgramOptions()
 }
 
 
-enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char **argv, fem::Analysis &analysis)
+enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char **argv)
 {
 	using namespace std;
 
@@ -210,7 +210,7 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 
 					//TODO assign
 					// assign a new IP degree to the element
-					analysis.setDegree(element_type, integer);
+					// analysis.setDegree(element_type, integer);
 					break;
 
 				case 51: // <IPs follow stiffness assignment>	::= <IPs first assignment> <G IPs stiffness assign> <end field>
@@ -224,7 +224,7 @@ enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char
 					ss.pop();
 
 					// assign a new IP degree to the element
-					analysis.setDDegree(element_type, integer);
+					// analysis.setDDegree(element_type, integer);
 					break;
 
 				case 53: // <IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>

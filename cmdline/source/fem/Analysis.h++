@@ -1,12 +1,12 @@
 #ifndef ANALYSIS_HPP
 #define ANALYSIS_HPP
 
-#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
-#include <boost/tuple/tuple.hpp>
+#include <boost/tuple/tuple.hpp>	// remove this
 
 #include "../lalib/Matrix.h++"
 #include "../lalib/Vector.h++"
 #include "../lalib/Operations.h++"
+
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 #include <Eigen/LU>
@@ -326,10 +326,10 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 			}
 
 			// add this integration point's contribution
-			k_elem += Bt*D*B*detJ*i->get<1>();
+			k_elem += Bt*D*B*detJ*i->template get<1>();
 
 			// calculate this element's contribution to the model's volume
-			result->volume += detJ*i->get<1>();
+			result->volume += detJ*i->template get<1>();
 		}
 
 		// add elementary stiffness matrix to the global stiffness matrix 
@@ -593,12 +593,12 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Project &proje
 		n = nodal_load->first;
 
 		// set the nodal loads
-		if(result->lm[n].get<0>() != 0)
-			result->f(result->lm[n].get<0>()-1) += nodal_load->second.x();
-		if(result->lm[n].get<1>() != 0)
-			result->f(result->lm[n].get<1>()-1) += nodal_load->second.y();
-		if(result->lm[n].get<2>() != 0)
-			result->f(result->lm[n].get<2>()-1) += nodal_load->second.z();
+		if(result->lm[n].template get<0>() != 0)
+			result->f(result->lm[n].template get<0>()-1) += nodal_load->second.x();
+		if(result->lm[n].template get<1>() != 0)
+			result->f(result->lm[n].template get<1>()-1) += nodal_load->second.y();
+		if(result->lm[n].template get<2>() != 0)
+			result->f(result->lm[n].template get<2>()-1) += nodal_load->second.z();
 
 		progress.markSectionIterationIncrement();
 	}

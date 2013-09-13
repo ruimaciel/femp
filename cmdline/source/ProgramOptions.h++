@@ -38,7 +38,7 @@ struct ProgramOptions
 	~ProgramOptions();
 
 
-	enum Option setCommandLineOptions(int argc, char **argv, fem::Analysis &analysis);
+	enum Option setCommandLineOptions(int argc, char **argv);
 
 	private:
 		int integer;	// used to return an int

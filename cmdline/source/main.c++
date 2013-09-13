@@ -5,7 +5,7 @@
 #include "parsers/json.h"
 
 #include "fem/Model.h++"
-#include "fem/Analysis.h++"
+#include "fem/LinearAnalysis.h++"
 
 #include "ProgramOptions.h++"
 
@@ -18,10 +18,10 @@ int main(int argc, char **argv)
 	// declaring the objects
 	ProgramOptions options;
 	fem::Model model;
-	Analysis analysis;
+	fem::LinearAnalysis<double> analysis;
 
 	// get the remaining options from the command line
-	switch(options.setCommandLineOptions(argc, argv, analysis))
+	switch(options.setCommandLineOptions(argc, argv))
 	{
 		case ProgramOptions::OPT_PARSER_ERROR:	// some invalid options passed
 			cout << "Invalid option" << endl;
@@ -47,87 +47,6 @@ int main(int argc, char **argv)
 			break;
 
 		case ProgramOptions::OPT_RUN:	// run the model
-			{
-					// start JSON output
-				cout << "{\n";
-
-				//TODO import a model from a file
-				FILE *file;	// a pointer to the object controlling the file stream
-
-					// set the input source stream: stdin or file?
-				if(options.input_file.empty())
-				{
-					file = stdin;
-				}
-				else
-				{
-					//TODO finish this
-					cerr << "needs finishing" << endl;
-					return 0;
-				}
-
-					// parse the input strean
-				switch(model.import_json(file))
-				{
-					case Model::ERR_OK:
-							// all went well
-						if(!options.input_file.empty())
-						{
-							fclose(file);
-						}
-							// the rest will happen after the switch() statement
-						break;
-
-					default:
-						//TODO report an error, exit
-						return 1;
-						break;
-				}
-
-					// run the analysis
-				//TODO support command line arguments
-				if( analysis.build_fem_equation(model, model.load_pattern_list[0], true) != Analysis::ERR_OK)
-				{
-					// some error occurred
-					return 1;
-				}
-					
-					// if asked then output FEM equation
-				if(options.output_fem)
-					analysis.output_fem_equation(cout);
-
-					// solve the equation
-				switch(options.solver)
-				{
-					case ProgramOptions::OPT_S_CHOLESKY:
-						//TODO output a meaningful field from the function's return value
-						analysis.solve_cholesky();
-						break;
-
-					case ProgramOptions::OPT_S_CG:
-						//TODO output a meaningful field from the function's return value
-						analysis.solve_conjugate_gradient(1e-5);
-						break;
-
-					case ProgramOptions::OPT_S_GAUSS:
-						//TODO output a meaningful field from the function's return value
-						//analysis.solve_gauss();
-						analysis.solve_gauss_pivot();
-						break;
-
-					default:
-						// this bit is only reached if a new solver is added to the command line options and this part is yet to be updated
-						cerr << "error: asked for a solver which isn't implemented" << endl;
-						return 1;
-						break;
-				}
-
-				// output displacements field
-				analysis.output_displacements(cout);
-
-				// finish JSON output
-				cout << "}\n";
-			}
 			break;
 
 		default:

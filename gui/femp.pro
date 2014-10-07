@@ -115,6 +115,8 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 FORMS += ui/*.ui
 
 UI_DIR += ./ui
+MOC_DIR += ui/moc
+
 OBJECTS_DIR += ./build
 
 FemJsonParserRe2c.target = parsers/FemJsonParser.c++

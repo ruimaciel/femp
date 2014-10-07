@@ -17,6 +17,7 @@
 Q_DECLARE_METATYPE(size_t);
 Q_DECLARE_METATYPE(std::string);
 
+
 int main(int argc, char *argv[])
 {
 	qRegisterMetaType<size_t>("size_t");
@@ -30,40 +31,5 @@ int main(int argc, char *argv[])
 	mainWin.show();
 
 	return app.exec();
-	// */
-
-	/*
-	if(argc < 2)
-	{
-		std::cout << "usage: test <msh file name>" << std::endl;
-		return 0;
-	}
-
-	// open a file 
-	std::fstream file;
-	fem::Model model;
-	MshParser parser;
-
-	file.open(argv[1], std::fstream::in);
-	if(!file.good())
-	{
-		std::cerr << "error opening file: " << argv[2] << std::endl;
-		return 1;
-	}
-
-	switch(parser(file, model))
-	{
-		case MshParser::Error::ERR_OK:
-			std::cout << "All ended well" << std::endl;
-			break;
-
-		default:
-			std::cout << "Unknown error: " << parser.error.message <<  std::endl;
-			break;
-	}
-
-	file.close();
-	*/
-	return 0;
 }
 

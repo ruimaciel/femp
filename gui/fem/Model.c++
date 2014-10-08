@@ -69,15 +69,14 @@ Model::setNode(size_t ref, fem::point p)
 }
 
 
-Model::Error 
+void
 Model::pushMaterial(fem::Material &material)
 {
 	material_list.push_back(material);
-	return ERR_OK;
 }
 
 
-Model::Error 
+void
 Model::pushElement(fem::Element &e)
 {
 	// check if element is valid
@@ -85,47 +84,46 @@ Model::pushElement(fem::Element &e)
 	{
 		case Element::FE_TETRAHEDRON4:
 			if(e.nodes.size() != 4)
-				return ERR_NODE_NUMBER;
+				throw FemException("wrong node number");
 			break;;
 
 		case Element::FE_TETRAHEDRON10:
 			if(e.nodes.size() != 10)
-				return ERR_NODE_NUMBER;
+				throw FemException("wrong node number");
 			break;;
 
 		case Element::FE_HEXAHEDRON8:
 			if(e.nodes.size() != 8)
-				return ERR_NODE_NUMBER;
+				throw FemException("wrong node number");
 			break;;
 
 		case Element::FE_HEXAHEDRON20:
 			if(e.nodes.size() != 20)
-				return ERR_NODE_NUMBER;
+				throw FemException("wrong node number");
 			break;;
 
 		case Element::FE_HEXAHEDRON27:
 			if(e.nodes.size() != 27)
-				return ERR_NODE_NUMBER;
+				throw FemException("wrong node number");
 			break;;
 
 		case Element::FE_PRISM6:
 			if(e.nodes.size() != 6)
-				return ERR_NODE_NUMBER;
+				throw FemException("wrong node number");
 			break;;
 
 		case Element::FE_PRISM15:
 			if(e.nodes.size() != 15)
-				return ERR_NODE_NUMBER;
+				throw FemException("wrong node number");
 			break;;
 
 		case Element::FE_PRISM18:
 			if(e.nodes.size() != 18)
-				return ERR_NODE_NUMBER;
+				throw FemException("wrong node number");
 			break;;
 
 		default:
-			std::cerr << "Model::Error Model::pushElement(): unsupported element type " << e.type << std::endl;
-			return ERR_UNSUPPORTED_ELEMENT;
+			throw FemException("unsupported element type");
 			break;
 	}
 
@@ -527,51 +525,44 @@ Model::pushElement(fem::Element &e)
 			break;
 
 		default:
-			std::cerr << "Model::Error Model::pushElement(): unsupported element type " << e.type << std::endl;
-			assert(0);
+			throw FemException("unsupported element type");
 			break;
 	}
-
-	return ERR_OK;
 }
 
 
-Model::Error 
+void
 Model::pushElement(fem::Element::Type type, std::vector<size_t> &nodes)
 {
 	fem::Element e;
 	e.set(type,nodes);
 
-	return this->pushElement(e);
+	this->pushElement(e);
 }
 
 
-enum Model::Error 
+void
 Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions nr)
 {
 	// check if node is set
 	if(node_list.find(pos) == node_list.end())
-		return ERR_INVALID_NODE_REFERENCE;
+		throw FemException("invalid node reference");
 
 	//TODO perform aditional error checking
 
 	// push node restrictions object
 	node_restrictions_list[pos] = nr;
-
-	// everything went smoothly
-	return ERR_OK;
 }
 
 
-enum Model::Error 
+void
 Model::popNodeRestrictions(node_ref_t const &node)
 {
 	node_restrictions_list.erase(node);
-	return ERR_OK;
 }
 
 
-enum Model::Error 
+void
 Model::pushLoadPattern(fem::LoadPattern &lp)
 {
 	//TODO perform error checks
@@ -581,8 +572,6 @@ Model::pushLoadPattern(fem::LoadPattern &lp)
 
 	// signal the world
 	load_pattern_created.emit(load_pattern_list.size()-1, lp);
-
-	return ERR_OK;
 }
 
 
@@ -596,23 +585,21 @@ Model::createEmptyLoadPattern(std::string const &label)
 }
 
 
-enum Model::Error 
+void
 Model::pushNodeGroup(fem::NodeGroup &new_node_group)
 {
 	this->m_node_groups.push_back(new_node_group);
-	return ERR_OK;
 }
 
 
-enum Model::Error 
+void
 Model::pushElementGroup(fem::ElementGroup &new_element_group)
 {
 	this->m_element_groups.push_back(new_element_group);
-	return ERR_OK;
 }
 
 
-enum Model::Error 
+void
 Model::sanity_check()
 {
 	// check if the Element's nodes are right
@@ -620,7 +607,7 @@ Model::sanity_check()
 	{
 		// check if the referenced material exists
 		if(material_list.size() > (size_t)it->material)
-			return ERR_INVALID_MATERIAL_REFERENCE;
+			throw FemException("invalid material reference");
 
 		// check node's type
 		switch(it->type)
@@ -628,21 +615,21 @@ Model::sanity_check()
 			case Element::FE_LINE2:
 				if(it->nodes.size() != 2)
 				{
-					return ERR_NODE_NUMBER;
+					throw FemException("wrong node number");
 				}
 				break;
 
 			case Element::FE_TETRAHEDRON4:
 				if(it->nodes.size() != 4)
 				{
-					return ERR_NODE_NUMBER;
+					throw FemException("wrong node number");
 				}
 				break;
 
 			case Element::FE_TETRAHEDRON10:
 				if(it->nodes.size() != 10)
 				{
-					return ERR_NODE_NUMBER;
+					throw FemException("wrong node number");
 				}
 				break;
 
@@ -650,26 +637,27 @@ Model::sanity_check()
 			case Element::FE_HEXAHEDRON8:
 				if(it->nodes.size() != 8)
 				{
-					return ERR_NODE_NUMBER;
+					throw FemException("wrong node number");
 				}
 				break;
 
 			case Element::FE_HEXAHEDRON20:
 				if(it->nodes.size() != 20)
 				{
-					return ERR_NODE_NUMBER;
+					throw FemException("wrong node number");
 				}
 				break;
 
 			case Element::FE_HEXAHEDRON27:
 				if(it->nodes.size() != 27)
 				{
-					return ERR_NODE_NUMBER;
+					throw FemException("wrong node number");
 				}
 				break;
 
+
 			default:
-				return ERR_UNSUPPORTED_ELEMENT;
+				throw FemException("unsupported element type");
 				break;
 		}
 
@@ -677,13 +665,15 @@ Model::sanity_check()
 		for(std::vector<size_t>::iterator n = it->nodes.begin(); n != it->nodes.end(); n++)
 		{
 			if(node_list.find(*n) == node_list.end())
-				return ERR_ELEMENT_NODE_REFERENCE;
+			{
+				//TODO throw a better message
+				throw FemException("element node reference");
+			}
 		}
 	}
 
 	//test node_restrictions_list
 	//TODO finish this
-	return ERR_OK;
 }
 
 

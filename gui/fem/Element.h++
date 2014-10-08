@@ -4,6 +4,7 @@
 #include <vector>
 #include "Material.h++"
 #include "Node.h++"
+#include "FemException.h++"
 
 
 namespace fem
@@ -13,13 +14,6 @@ namespace fem
 class Element 
 {
 public:
-	enum Error 
-	{
-		ERR_OK,
-		ERR_NODE_NUMBER,	// the number of nodes are off for the element type
-		ERR_INVALID_TYPE
-	};
-
 	enum Type 
 	{
 		FE_INVALID	= 0,	/* test entry */
@@ -76,7 +70,7 @@ public:
 	Element();
 	Element(Element const &copied);
 
-	enum Error set(Type type, std::vector<size_t> nodes);
+	void set(Type type, std::vector<size_t> nodes);
 
 	static enum Type extractType(char *);
 

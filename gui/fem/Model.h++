@@ -22,6 +22,8 @@
 #include "NodeGroup.h++"
 #include "ElementGroup.h++"
 
+#include "FemException.h++"
+
 
 namespace fem
 {
@@ -37,19 +39,6 @@ public:	// sigc++ signals
 	sigc::signal<void, size_t, fem::LoadPattern const &>	load_pattern_created;	// signals that a new load pattern has been added to the project
 
 public:
-	enum Error {	
-		ERR_OK = 0,	// no error
-		ERR_PARSER,	// the parser stumbled on a grammar error
-		ERR_NO_ELEMENTS,
-		ERR_UNSUPPORTED_ELEMENT,
-		ERR_NODE_NUMBER,
-		ERR_ELEMENT_NODE_REFERENCE,	// an invalid node reference has been made
-		ERR_NODE_RESTRICTIONS_NODE_REFERENCE,	// an invalid node reference has been made
-		ERR_INVALID_MATERIAL_REFERENCE,
-		ERR_INVALID_NODE_REFERENCE,
-		ERR_UNKNOWN	// a bug somewhere. Never should happen
-	};
-
 	std::map<node_ref_t, Node> 	node_list;
 	std::vector<Element> 	element_list;
 	std::vector<Material> 	material_list;
@@ -83,24 +72,24 @@ public:
 	/**
 	Adds a new material to the list
 	**/
-	Model::Error pushMaterial(fem::Material &);
+	void pushMaterial(fem::Material &);
 
-	Model::Error pushElement(fem::Element &);
-	Model::Error pushElement(fem::Element::Type type, std::vector<size_t> &nodes);
+	void pushElement(fem::Element &);
+	void pushElement(fem::Element::Type type, std::vector<size_t> &nodes);
 
 	/** Specifies new node restrictions affecting a node
 	@param node	a reference for a node contained in node_list
 	@param nr	the new node restrictions definition
 	@return	ERR_NONE if all went well, some other error if something went bad
 	**/
-	enum Error pushNodeRestrictions(size_t node, fem::NodeRestrictions nr);
-	enum Error popNodeRestrictions(node_ref_t const &node);
+	void pushNodeRestrictions(size_t node, fem::NodeRestrictions nr);
+	void popNodeRestrictions(node_ref_t const &node);
 
 	/** push a new load pattern into the load pattern stack
 	@param lp	the newly added load pattern
 	@return	ERR_NONE if all went well, some other error if something went bad
 	**/
-	enum Error pushLoadPattern(fem::LoadPattern &lp);
+	void pushLoadPattern(fem::LoadPattern &lp);
 
 	/**
 	Creates an empty load pattern
@@ -112,18 +101,17 @@ public:
 	/** pushes a new node group to the node group list
 	@param	new_node_group	object of type fem::NodeGroup
 	**/
-	enum Error pushNodeGroup(fem::NodeGroup &new_node_group);
+	void pushNodeGroup(fem::NodeGroup &new_node_group);
 
 	/** pushes a new element group to the element group list
 	@param	new_element_group	object of type fem::NodeGroup
 	**/
-	enum Error pushElementGroup(fem::ElementGroup &new_element_group);
+	void pushElementGroup(fem::ElementGroup &new_element_group);
 
 	/**
 	Performs a sanity check on the model
-	@retur ERR_OK if all is well, other error code if something bad happened
 	**/
-	enum Model::Error sanity_check();
+	void sanity_check();
 
 };
 

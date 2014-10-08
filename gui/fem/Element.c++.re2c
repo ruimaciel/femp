@@ -19,28 +19,29 @@ Element::Element(const Element &copied)
 }
 
 
-enum Element::Error Element::set(Type type, std::vector<size_t> nodes)
+void 
+Element::set(Type type, std::vector<size_t> nodes)
 {
 	switch(type)
 	{
 		case FE_LINE2:
 			if(nodes.size() != 2)
 			{
-				return ERR_NODE_NUMBER;
+				throw FemException("Wrong node number");;
 			}
 			break;
 
 		case FE_TETRAHEDRON4:
 			if(nodes.size() != 4)
 			{
-				return ERR_NODE_NUMBER;
+				throw FemException("Wrong node number");;
 			}
 			break;
 
 		case FE_TETRAHEDRON10:
 			if(nodes.size() != 10)
 			{
-				return ERR_NODE_NUMBER;
+				throw FemException("Wrong node number");;
 			}
 			break;
 
@@ -48,55 +49,52 @@ enum Element::Error Element::set(Type type, std::vector<size_t> nodes)
 		case FE_HEXAHEDRON8:
 			if(nodes.size() != 8)
 			{
-				return ERR_NODE_NUMBER;
+				throw FemException("Wrong node number");;
 			}
 			break;
 
 		case FE_HEXAHEDRON20:
 			if(nodes.size() != 20)
 			{
-				return ERR_NODE_NUMBER;
+				throw FemException("Wrong node number");;
 			}
 			break;
 
 		case FE_HEXAHEDRON27:
 			if(nodes.size() != 27)
 			{
-				return ERR_NODE_NUMBER;
+				throw FemException("Wrong node number");;
 			}
 			break;
 
 		case FE_PRISM6:
 			if(nodes.size() != 6)
 			{
-				return ERR_NODE_NUMBER;
+				throw FemException("Wrong node number");;
 			}
 			break;
 
 		case FE_PRISM15:
 			if(nodes.size() != 15)
 			{
-				return ERR_NODE_NUMBER;
+				throw FemException("Wrong node number");;
 			}
 			break;
 
 		case FE_PRISM18:
 			if(nodes.size() != 18)
 			{
-				return ERR_NODE_NUMBER;
+				throw FemException("Wrong node number");;
 			}
 			break;
 
 		default:
-			std::cerr << "error: unsupported type " << type << std::endl;
-			return ERR_INVALID_TYPE;
+			throw FemException("Invalid element type");;
 			break;
 	}
+
 	this->type = type;
 	this->nodes = nodes;
-
-	// all went well
-	return ERR_OK;
 }
 
 

@@ -1,5 +1,5 @@
 Makefile
-femp
+gui/gui
 TODO
 gui/build/*
 moc_*
@@ -9,6 +9,9 @@ gui/lalib/solvers/main.c++
 gui/parsers/main.c++
 gui/fem/CMakeLists.txt
 gui/test/*
+unittests/*.o
+unittests/*.moc
+unittests/unittests
 lex.msh_yy.*
 msh.tab.*
 *.oct

@@ -1,6 +1,9 @@
+include(../defaults.pri)
+
 TEMPLATE = app
 
 CONFIG += link_pkgconfig qt debug 
+
 QMAKE_CXXFLAGS += -std=c++0x
 QMAKE_CXXFLAGS_DEBUG +=-O0 -Wfatal-errors -std=c++0x
 
@@ -10,6 +13,7 @@ QT += opengl
 QMAKE_EXT_CPP += c++
 
 INCLUDEPATH += /usr/include/eigen2 /usr/include/suitesparse
+
 LIBS += -lumfpack -lblas -lamd -lGLU
 
 HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \

@@ -138,11 +138,6 @@ ProgramOptionRe2c.commands = re2c -o ProgramOptions.c++ ProgramOptions.c++.re2c
 ProgramOptionRe2c.depends = ProgramOptions.c++.re2c
 ProgramOptionRe2c.output = ProgramOptions.c++
 
-ElementRe2c.target = fem/Element.c++
-ElementRe2c.commands = re2c -o fem/Element.c++ fem/Element.c++.re2c
-ElementRe2c.depends = fem/Element.c++.re2c
-ElementRe2c.output = fem/Element.c++
-
 FlexOutput.target = lex.msh_yy.h 
 FlexOutput.commands = flex --header-file=lex.msh_yy.h -o lex.msh_yy.c++ msh.l
 FlexOutput.depends = msh.l fem/Model.h++ fem/Model.c++
@@ -161,4 +156,4 @@ BisonCompile.output = msh.tab.o
 OBJECTS += msh.tab.o
 QMAKE_CLEAN += lex.msh_yy.h lex.msh_yy.c++ msh.tab.c msh.tab.h msh.tab.o
 
-QMAKE_EXTRA_TARGETS += FemJsonParserRe2c MshParserRe2c ProgramOptionRe2c  ElementRe2c FlexOutput BisonOutput BisonCompile 
+QMAKE_EXTRA_TARGETS += FemJsonParserRe2c MshParserRe2c ProgramOptionRe2c  FlexOutput BisonOutput BisonCompile 

@@ -73,8 +73,6 @@ public:
 
 	void set(Type type, std::vector<size_t> nodes);
 
-	static enum Type extractType(char *);
-
 	/**
 	return the number of nodes that an element of this particular type has
 	@return	the number of nodes

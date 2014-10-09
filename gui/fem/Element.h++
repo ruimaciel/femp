@@ -67,6 +67,7 @@ public:
 	std::vector<node_ref_t> nodes;	// nodes that define this element
 	Type type;
 
+public:
 	Element();
 	Element(Element const &copied);
 

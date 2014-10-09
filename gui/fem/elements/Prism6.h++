@@ -35,7 +35,7 @@ struct Prism6
 		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
 public: // merging with fem::Element
-        enum BaseElement<T>::Error set(std::vector<size_t> &nodes);
+        void set(std::vector<size_t> &nodes);
 
         /** 
         return the number of nodes that an element of this particular type has
@@ -166,12 +166,14 @@ std::vector<fem::point> & Prism6<T>::setCoordinates()
 
 
 template<typename T>
-enum BaseElement<T>::Error 
+void
 Prism6<T>::set(std::vector<size_t> &nodes)
 {
-	assert(nodes.size() == 6);
+	if(nodes.size() == 6)
+	{
+		throw FemException("wrong number of nodes");
+	}
 	this->nodes = nodes;
-	return BaseElement<T>::ERR_OK;
 }
 
 }

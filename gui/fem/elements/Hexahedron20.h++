@@ -35,7 +35,7 @@ public:
 	std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
 public: // merging with fem::Element
-        enum BaseElement<T>::Error set(std::vector<size_t> &nodes);
+        void set(std::vector<size_t> &nodes);
 
         /** 
         return the number of nodes that an element of this particular type has
@@ -245,13 +245,15 @@ Hexahedron20<T>::setCoordinates()
 
 
 template<typename T>
-enum BaseElement<T>::Error 
+void
 Hexahedron20<T>::set(std::vector<size_t> &nodes)
 {
-	assert(nodes.size() == 20);
-	this->nodes = nodes;
+	if(nodes.size() == 20)
+	{
+		throw FemException("wrong number of nodes");
+	}
 
-	return BaseElement<T>::ERR_OK;
+	this->nodes = nodes;
 }
 
 

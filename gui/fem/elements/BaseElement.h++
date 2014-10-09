@@ -25,12 +25,6 @@ public:
 	int stiffness_degree;	// Quadrature rule degree to integrate stiffness matrices
 	int domain_degree;	// Quadrature rule degree to integrate domain loads
 
-	enum Error {
-		ERR_OK,
-		ERR_NODE_NUMBER,	// the number of nodes are off for the element type
-		ERR_INVALID_TYPE
-	};
-
 	enum Type 
 	{
 		FE_INVALID	= 0,	/* test entry */
@@ -81,7 +75,7 @@ public:
 
 public:	// merging with fem::Element
 	material_ref_t material;		// reference to a material in Model's material map
-	std::vector< node_ref_t > nodes;	// nodes that define this element
+	std::vector<node_ref_t> nodes;	// nodes that define this element
 	Type type;
 
 public:
@@ -112,8 +106,7 @@ public:
 	std::vector<boost::tuple<fem::point, T> > &domain_quadrature()	{ return this->ipwpl[domain_degree]; }
 
 public:	// merging with fem::Element
-	enum Error set(Type type, std::vector<size_t> &nodes);
-	virtual enum Error set(std::vector<size_t> &nodes) = 0;
+	virtual void set(std::vector<size_t> &nodes) = 0;
 
 	/**
 	return the number of nodes that an element of this particular type has
@@ -138,15 +131,6 @@ protected:
 	*/
 	virtual void generateQuadratureData() = 0;
 };
-
-
-template<typename T>
-enum BaseElement<T>::Error 
-BaseElement<T>::set(Type type, std::vector<size_t> &nodes)
-{
-	assert(type == this->type);
-	this->set(nodes);
-}
 
 
 /*******************************************************************************

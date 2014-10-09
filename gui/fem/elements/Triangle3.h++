@@ -34,7 +34,7 @@ public:
 	std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
 public: // merging with fem::Element
-	enum BaseElement<T>::Error set(std::vector<size_t> &nodes);
+	void set(std::vector<size_t> &nodes);
 
 	/** 
 	return the number of nodes that an element of this particular type has
@@ -155,12 +155,15 @@ Triangle3<T>::setCoordinates()
 
 
 template<typename T>
-enum BaseElement<T>::Error 
+void
 Triangle3<T>::set(std::vector<size_t> &nodes)
 {
-	assert(nodes.size() == 3);
+	if(nodes.size() == 3)
+	{
+		throw FemException("wrong number of nodes");
+	}
+
 	this->nodes = nodes;
-	return BaseElement<T>::ERR_OK;
 }
 
 

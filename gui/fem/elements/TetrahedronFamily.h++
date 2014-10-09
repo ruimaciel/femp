@@ -14,9 +14,20 @@ struct TetrahedronFamily
 {
 	TetrahedronFamily();
 
-	protected:
-		void generateQuadratureData();
+	enum BaseElement<T>::ElementFamily family() const;
+
+
+protected:
+	void generateQuadratureData();
 };
+
+
+template<typename T>
+enum BaseElement<T>::ElementFamily
+TetrahedronFamily<T>::family() const
+{
+	return BaseElement<T>::EF_TETRAHEDRON;
+}
 
 
 template<typename T>
@@ -25,7 +36,6 @@ TetrahedronFamily<T>::TetrahedronFamily()
 {
 	generateQuadratureData();
 }
-
 
 
 template<typename T>

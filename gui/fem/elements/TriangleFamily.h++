@@ -14,8 +14,11 @@ struct TriangleFamily
 {
 	TriangleFamily();
 
-	protected:
-		void generateQuadratureData();
+	enum BaseElement<T>::ElementFamily family() const;
+
+
+protected:
+	void generateQuadratureData();
 };
 
 
@@ -26,6 +29,13 @@ TriangleFamily<T>::TriangleFamily()
 	generateQuadratureData();
 }
 
+
+template<typename T>
+enum BaseElement<T>::ElementFamily
+TriangleFamily<T>::family() const
+{
+	return BaseElement<T>::EF_TRIANGLE;
+}
 
 
 template<typename T>

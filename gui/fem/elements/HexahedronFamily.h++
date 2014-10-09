@@ -2,8 +2,6 @@
 #define HEXAHEDRON_FAMILY_HPP
 
 
-#include <iostream>
-
 #include "BaseElement.h++"
 
 
@@ -15,9 +13,22 @@ struct HexahedronFamily
 	: public BaseElement<T>
 {
 	HexahedronFamily();
-	protected:
-		void generateQuadratureData();
+
+	enum BaseElement<T>::ElementFamily family() const;
+
+
+protected:
+	void generateQuadratureData();
 };
+
+
+template<typename T>
+enum BaseElement<T>::ElementFamily
+HexahedronFamily<T>::family() const
+{
+	return BaseElement<T>::EF_HEXAHEDRON;
+}
+
 
 
 template<typename T>

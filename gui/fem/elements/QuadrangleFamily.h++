@@ -14,9 +14,20 @@ struct QuadrangleFamily
 {
 	QuadrangleFamily();
 
-	protected:
-		void generateQuadratureData();
+	enum BaseElement<T>::ElementFamily family() const;
+
+
+protected:
+	void generateQuadratureData();
 };
+
+
+template<typename T>
+enum BaseElement<T>::ElementFamily
+QuadrangleFamily<T>::family() const
+{
+	return BaseElement<T>::EF_QUADRILATERAL;
+}
 
 
 template <typename T>

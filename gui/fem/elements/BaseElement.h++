@@ -61,6 +61,21 @@ public:
 		FE_TETRAHEDRON56        = 31    /* 56-node fifth order tetrahedron */
 	};
 
+	/**
+	// introduced to facilitate merging BaseElement with Element. remove this
+	**/
+	enum ElementFamily 
+	{
+		EF_TRIANGLE = 0, 
+		EF_QUADRILATERAL = 1, 
+		EF_TETRAHEDRON = 2, 
+		EF_PRISM = 3, 
+		EF_PYRAMID = 4, 
+		EF_HEXAHEDRON = 5,
+		EF_INVALID
+	};
+
+
 
 public:
 	std::map<int, std::vector<boost::tuple<fem::point, T> > > ipwpl;	// integration points/weights pair list
@@ -114,6 +129,11 @@ public:	// merging with fem::Element
 	**/
 	virtual int node_number() const = 0;
 	
+	/**
+	returns enum representing family type.
+	TODO: This member function was introduced to facilitate merging Element with BaseElement.  Remove after cleanup
+	**/
+	virtual enum ElementFamily family() const = 0;
 
 protected:
 	/**

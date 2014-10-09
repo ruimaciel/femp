@@ -1,7 +1,6 @@
 #ifndef PRISM_FAMILY_HPP
 #define PRISM_FAMILY_HPP
 
-#include <iostream>
 
 #include "BaseElement.h++"
 
@@ -15,9 +14,21 @@ struct PrismFamily
 {
 	PrismFamily();
 
-	protected:
-		void generateQuadratureData();
+	enum BaseElement<T>::ElementFamily family() const;
+
+
+protected:
+	void generateQuadratureData();
 };
+
+
+template<typename T>
+enum BaseElement<T>::ElementFamily
+PrismFamily<T>::family() const
+{
+	return BaseElement<T>::EF_PRISM;
+}
+
 
 
 template<typename T>

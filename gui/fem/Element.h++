@@ -79,6 +79,9 @@ public:
 	**/
 	int node_number() const;
 	
+	/**
+	returns enum representing family type.
+	**/
 	enum ElementFamily family() const;
 
 	node_ref_t getNode(node_ref_t ref) const { return this->nodes[ref]; }

@@ -4,11 +4,10 @@
 
 #include "parsers/json.h"
 
-#include "fem/Model.h++"
-#include "fem/LinearAnalysis.h++"
+#include <libfemp/Model.h++>
+#include <libfemp/LinearAnalysis.h++>
+#include <libfemp/FemException.h++>
 
-#include "fem/FemException.h++"
-#include "FempException.h++"
 #include "ProgramOptions.h++"
 
 

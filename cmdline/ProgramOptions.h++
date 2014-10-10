@@ -4,8 +4,8 @@
 #include <string>
 #include <map>
 
-#include "fem/Analysis.h++"
-#include "fem/Element.h++"
+#include <libfemp/Element.h++>
+#include <libfemp/Analysis.h++>
 
 
 struct ProgramOptions

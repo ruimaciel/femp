@@ -11,7 +11,6 @@
 #include <libla/output.h++>
 #include <libla/ProgressIndicatorStrategy.h++>
 
-#include "Project.h++"
 #include "AnalysisResult.h++"
 
 #include "solvers/Solver.h++"
@@ -26,7 +25,7 @@ class LinearAnalysis
 	: public Analysis<Scalar>
 {
 	protected:
-		Project *m_project;
+		Model *m_model;
 		LoadPattern *m_load_pattern;
 		AnalysisResult<Scalar> *m_result;
 		ProgressIndicatorStrategy *m_progress;
@@ -37,7 +36,7 @@ class LinearAnalysis
 		LinearAnalysis();
 		~LinearAnalysis();
 
-		void set(Project &project, LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver);
+		void set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver);
 
 		/**
 		Operator intended to run the analysis through a thread
@@ -48,7 +47,7 @@ class LinearAnalysis
 		typename Analysis<Scalar>::Error const error() const;
 
 	protected:
-		enum Analysis<Scalar>::Error run(Project &project, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
+		enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
 };
 
 
@@ -57,7 +56,7 @@ template<typename Scalar>
 LinearAnalysis<Scalar>::LinearAnalysis()
 	: Analysis<Scalar>()
 {
-	m_project = NULL;
+	m_model = NULL;
 	m_load_pattern = NULL;
 	m_result = NULL;
 	m_progress = NULL;
@@ -73,11 +72,11 @@ LinearAnalysis<Scalar>::~LinearAnalysis()
 
 
 template<typename Scalar>
-void LinearAnalysis<Scalar>::set(Project &project, LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver)
+void LinearAnalysis<Scalar>::set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver)
 {
 	assert(solver != NULL);
 
-	this->m_project = &project;
+	this->m_model = &model;
 	this->m_load_pattern = &lp;
 	this->m_result = &result;
 	this->m_progress = &progress;
@@ -102,7 +101,7 @@ LinearAnalysis<Scalar>::error() const
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Project &project, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
+enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
 {
 	using namespace std;
 	using namespace Eigen;
@@ -113,7 +112,7 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Project &project, LoadP
 
 	typename Analysis<Scalar>::Error error = Analysis<Scalar>::ERR_OK;
 
-	if( ( error = this->build_fem_equation(project, lp, result, progress)) != Analysis<Scalar>::ERR_OK )
+	if( ( error = this->build_fem_equation(model, lp, result, progress)) != Analysis<Scalar>::ERR_OK )
 	{
 		// some error happened when building the FEM equation
 		return error;
@@ -130,20 +129,20 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Project &project, LoadP
 	progress.markSectionEnd();
 
 	progress.markSectionStart("solving FEM equation");
-	progress.markSectionLimit(project.model.element_list.size());
+	progress.markSectionLimit(model.element_list.size());
 	this->m_solver->solve(*result, &progress);
 	progress.markSectionEnd();
 
 	progress.markSectionStart("generating displacements list");
-	this->generateDisplacementsMap(project, *result);
+	this->generateDisplacementsMap(model, *result);
 	progress.markSectionEnd();
 
 	progress.markSectionStart("recovering values");
-	this->recoverValues(project.model, *result);
+	this->recoverValues(model, *result);
 	progress.markSectionEnd();
 
 	progress.markSectionStart("calculating strain energy");
-	this->calculateStrainEnergy(project, *result);
+	this->calculateStrainEnergy(model, *result);
 	cout << "strain energy: " << result->energy << endl;
 	progress.markSectionEnd();
 
@@ -158,7 +157,7 @@ enum Analysis<Scalar>::Error LinearAnalysis<Scalar>::run(Project &project, LoadP
 template<typename Scalar>
 void LinearAnalysis<Scalar>::operator() ()
 {
-	m_error = this->run(*m_project, *m_load_pattern, m_result, *m_progress);
+	m_error = this->run(*m_model, *m_load_pattern, m_result, *m_progress);
 }
 
 

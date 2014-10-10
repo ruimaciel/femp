@@ -1044,7 +1044,7 @@ MainWindow::runAnalysis()
 	connect(&progress,	SIGNAL(finish()),	&dialog,	SLOT(finish() ));
 
 	//TODO finish this
-	analysis.set(document.project, document.project.model.load_pattern_list[analysis_dialog.loadPattern()], analysis_result, progress, solver);
+	analysis.set(document.project.model, document.project.model.load_pattern_list[analysis_dialog.loadPattern()], analysis_result, progress, solver);
 
 	std::thread t(analysis);
 

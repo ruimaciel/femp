@@ -6,7 +6,7 @@
 #include <string>
 #include <list>
 
-#include "fem/Project.h++"
+#include "Project.h++"
 #include "ModelSelection.h++"
 
 

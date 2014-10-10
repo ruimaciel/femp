@@ -5,7 +5,7 @@
 #include <QDialog>
 #include "ui/ui_NewMaterialDialog.h"
 
-#include "fem/Model.h++"	// for the materials list
+#include <libfemp/Model.h++>	// for the materials list
 
 
 class NewMaterialDialog

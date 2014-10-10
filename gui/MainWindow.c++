@@ -42,21 +42,22 @@
 #include "fem_msh.h++"
 #include "parsers/json.h"
 
-#include "fem/NodeRestrictions.h++"
 
 #include "DefaultProgressIndicator.h++"
-#include "fem/Analysis.h++"
-#include "fem/LinearAnalysis.h++"
-#include "fem/AnalysisResult.h++"
-#include "fem/solvers/CholeskySolver.h++"
-#include "fem/solvers/CGSolver.h++"
 
-#include "fem/ProjectVisitor/OutputResultsInNodesVisitor.h++"
-#include "fem/ProjectVisitor/OutputResultsInNodesCSVVisitor.h++"
-#include "fem/ProjectVisitor/SetNodeRestraintsVisitor.h++"
-#include "fem/ProjectVisitor/SetDomainLoadsVisitor.h++"
-#include "fem/ProjectVisitor/MoveNodesVisitor.h++"
-#include "fem/ProjectVisitor/OutputElementStatisticsVisitor.h++"
+#include <libfemp/NodeRestrictions.h++>
+#include <libfemp/Analysis.h++>
+#include <libfemp/LinearAnalysis.h++>
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/solvers/CholeskySolver.h++>
+#include <libfemp/solvers/CGSolver.h++>
+
+#include "ProjectVisitor/OutputResultsInNodesVisitor.h++"
+#include "ProjectVisitor/OutputResultsInNodesCSVVisitor.h++"
+#include "ProjectVisitor/SetNodeRestraintsVisitor.h++"
+#include "ProjectVisitor/SetDomainLoadsVisitor.h++"
+#include "ProjectVisitor/MoveNodesVisitor.h++"
+#include "ProjectVisitor/OutputElementStatisticsVisitor.h++"
 
 #include "parsers/FemJsonParser.h++"
 #include "parsers/MshParser.h++"

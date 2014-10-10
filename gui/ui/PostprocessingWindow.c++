@@ -4,7 +4,7 @@
 
 #include <map>
 #include "ResultsRangeDialog.h++"
-#include "../fem/ElementResults/ElementResults.h++"
+#include <libfemp/ElementResults/ElementResults.h++>
 
 
 

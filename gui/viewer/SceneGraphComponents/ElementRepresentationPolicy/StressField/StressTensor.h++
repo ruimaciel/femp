@@ -4,7 +4,8 @@
 #include <array>
 
 #include <GL/gl.h>
-#include "../../../../fem/point.h++"
+#include <libfemp/point.h++>
+
 #include "../../../ViewportColors.h++"
 
 

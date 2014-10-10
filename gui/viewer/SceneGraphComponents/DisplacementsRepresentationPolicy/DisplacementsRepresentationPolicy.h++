@@ -2,8 +2,8 @@
 #ifndef DISPLACEMENTSREPRESENTATIONPOLICY_H
 #define DISPLACEMENTSREPRESENTATIONPOLICY_H
 
-#include "../../../fem/Model.h++"
-#include "../../../fem/point.h++"
+#include <libfemp/Model.h++>
+#include <libfemp/point.h++>
 
 /**
 Defines the policy which is followed to represent element displacements

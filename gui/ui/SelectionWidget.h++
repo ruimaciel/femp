@@ -7,8 +7,9 @@
 #include <map>
 #include "ui_SelectionWidget.h"
 
-#include "../fem/Project.h++"
-#include "../fem/Group.h++"
+#include "../Project.h++"
+#include <libfemp/Group.h++>
+
 #include "../Selection.h++"
 #include "../SelectionManager.h++"
 

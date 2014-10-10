@@ -8,8 +8,12 @@
 
 #include "../MdiWindowProperties.h++"
 
-#include "../fem/Project.h++"
-#include "../fem/Model.h++"
+#include "../Project.h++"
+#include <libfemp/Model.h++>
+
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/ElementResults/ResultsRanges.h++>
+#include <libfemp/LinearAnalysis.h++>
 
 #include "BaseViewport.h++"
 #include "Camera.h++"
@@ -19,10 +23,6 @@
 #include "ViewportData.h++"
 
 #include "ViewportStates/ViewportState.h++"	// for the vieport's state pattern base class
-
-#include "../fem/AnalysisResult.h++"
-#include "../fem/ElementResults/ResultsRanges.h++"
-#include "../fem/LinearAnalysis.h++"
 
 #include "ViewportStates/VPStateDisplacements.h++"
 #include "ViewportStates/VPStateGradients.h++"

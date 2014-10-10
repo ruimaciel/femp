@@ -4,10 +4,11 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QWidget>
 
+#include "../Project.h++"
+#include <libfemp/AnalysisResult.h++>
+
 #include "ui_MatrixWidget.h"
 #include "MatrixModel.h++"
-#include "../fem/Project.h++"
-#include "../fem/AnalysisResult.h++"
 
 
 /**

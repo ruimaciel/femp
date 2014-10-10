@@ -10,7 +10,7 @@
 
 #include "BaseWindow.h++"
 #include "MatrixWidget.h++"
-#include "../fem/Project.h++"
+#include "../Project.h++"
 
 
 /**

@@ -3,8 +3,8 @@
 #define OPAQUEREPRESENTATIONPOLICY_H
 
 #include "ElementRepresentationPolicy.h++"
-#include "../../../fem/point.h++"
-#include "../../../fem/Element.h++"
+#include <libfemp/point.h++>
+#include <libfemp/Element.h++>
 #include "../../ViewportColors.h++"
 
 

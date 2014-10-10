@@ -2,9 +2,11 @@
 #define SELECTION_HPP
 
 #include <set>
-#include "fem/Project.h++"
-#include "fem/Element.h++"
-#include "fem/Node.h++"
+
+#include <libfemp/Element.h++>
+#include <libfemp/Node.h++>
+
+#include "Project.h++"
 
 /**
 A set of objects contained in a given fem::Project object which have been selected

@@ -5,7 +5,8 @@
 
 #include "HudObject.h++"
 
-#include "../../../fem/point.h++"
+#include <libfemp/point.h++>
+
 #include "../../ViewportData.h++"
 #include "../../ViewportColors.h++"
 

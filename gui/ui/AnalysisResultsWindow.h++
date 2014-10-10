@@ -8,9 +8,11 @@
 #include <QComboBox>
 #include <QMdiSubWindow>
 
+#include "../Project.h++"
+
 #include "BaseWindow.h++"
 #include "AnalysisResultsWidget.h++"
-#include "../fem/Project.h++"
+
 
 
 /**

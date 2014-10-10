@@ -7,9 +7,9 @@
 
 #include <QAbstractTableModel>
 
-#include "../fem/Project.h++"
-#include "../fem/Element.h++"
+#include <libfemp/Element.h++>
 
+#include "../Project.h++"
 
 /**
 Provides a Qt MVC model to use with QTableView widgets

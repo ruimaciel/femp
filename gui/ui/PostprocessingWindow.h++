@@ -11,9 +11,10 @@
 #include <QToolBar>
 #include <QComboBox>
 
-#include "../fem/Project.h++"
-#include "../fem/AnalysisResult.h++"
-#include "../fem/ElementResults/ResultsRanges.h++"
+#include "../Project.h++"
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/ElementResults/ResultsRanges.h++>
+
 #include "../viewer/ViewportColors.h++"
 
 #include "Selection.h++"

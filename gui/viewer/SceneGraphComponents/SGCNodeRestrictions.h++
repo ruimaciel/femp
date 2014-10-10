@@ -7,11 +7,12 @@
 
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"
-#include "../../fem/Model.h++"
 
-#include "../../fem/Node.h++"
-#include "../../fem/NodeRestrictions.h++"
-#include "../../fem/LinearAnalysis.h++"
+#include <libfemp/Model.h++>
+#include <libfemp/Node.h++>
+#include <libfemp/NodeRestrictions.h++>
+#include <libfemp/LinearAnalysis.h++>
+
 #include "DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++"
 
 

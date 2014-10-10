@@ -4,9 +4,9 @@
 #include <GL/gl.h>
 
 #include "ElementRepresentationPolicy.h++"
-#include "../../../fem/Model.h++"
-#include "../../../fem/AnalysisResult.h++"
-#include "../../../fem/Element.h++"
+#include <libfemp/Model.h++>
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/Element.h++>
 #include "../../ViewportColors.h++"
 
 #include "StressField/StressFieldRepresentation.h++"

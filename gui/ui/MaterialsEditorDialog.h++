@@ -6,7 +6,7 @@
 
 #include "ui_MaterialsEditorDialog.h"
 
-#include "../fem/Model.h++"
+#include <libfemp/Model.h++>
 
 
 class MaterialsEditorDialog: public QDialog, private  Ui::MaterialsEditorDialog

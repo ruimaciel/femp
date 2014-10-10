@@ -4,8 +4,8 @@
 
 #include "TableFilterDialog.h++"
 
-#include "../fem/Model.h++"
-#include "../fem/Node.h++"
+#include <libfemp/Model.h++>
+#include <libfemp/Node.h++>
 
 
 AnalysisResultsWidget::AnalysisResultsWidget(fem::Project &project, QWidget *parent)

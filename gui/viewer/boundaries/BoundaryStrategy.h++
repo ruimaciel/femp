@@ -2,7 +2,7 @@
 #define BOUNDARY_STRATEGY_HPP
 
 
-#include "../../fem/point.h++"
+#include <libfemp/point.h++>
 
 /*
 Provides the interface for a generic boundary volume through a strategy pattern

@@ -1,11 +1,13 @@
-# http://comp-phys.net/2014/03/13/new-project-structure-for-projects-in-qt-creator-with-unit-tests/
-
 TEMPLATE = subdirs
 
 CONFIG+=ordered
 
 SUBDIRS = \
-    gui \
-    unittests
+	libla \
+	libfemp \
+	gui \
+	unittests
 
+libfemp.depends = libla
+gui.depends = libla libfemp
 tests.depends = gui

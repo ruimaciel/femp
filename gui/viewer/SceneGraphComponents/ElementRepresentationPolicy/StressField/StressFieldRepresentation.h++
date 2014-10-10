@@ -5,7 +5,8 @@
 #include <tuple>
 #include <vector>
 
-#include "../../../../fem/point.h++"
+#include <libfemp/point.h++>
+
 #include "../../../ViewportColors.h++"
 
 #include "StressTensor.h++"

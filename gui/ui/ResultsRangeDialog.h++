@@ -8,7 +8,7 @@
 
 #include "ui_ResultsRangeDialog.h"
 
-#include "../fem/ElementResults/ResultsRanges.h++"
+#include <libfemp/ElementResults/ResultsRanges.h++>
 
 
 /**

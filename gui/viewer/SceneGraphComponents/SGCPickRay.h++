@@ -5,9 +5,9 @@
 #include "SceneGraphComponent.h++"
 #include "Operations/OperationsVisitor.h++"
 
-#include "../../fem/point.h++"
-#include "../../fem/NodeRestrictions.h++"
-#include "../../fem/LinearAnalysis.h++"
+#include <libfemp/point.h++>
+#include <libfemp/NodeRestrictions.h++>
+#include <libfemp/LinearAnalysis.h++>
 
 #include "DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++"
 

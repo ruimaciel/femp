@@ -5,8 +5,9 @@
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 
-#include "fem/Element.h++"
-#include "fem/Node.h++"
+#include <libfemp/Element.h++>
+#include <libfemp/Node.h++>
+
 #include "Selection.h++"
 
 

@@ -4,7 +4,7 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QtGui/QDialog>
 
-#include "../fem/AnalysisResult.h++"
+#include <libfemp/AnalysisResult.h++>
 
 #include "ui_AnalysisSummaryDialog.h"
 

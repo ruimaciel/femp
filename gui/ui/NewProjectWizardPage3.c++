@@ -4,9 +4,9 @@
 
 #include "Document.h++"	// for the loading test
 #include "ui/NewMaterialDialog.h++"
-#include "fem/SurfaceLoadOperators/ConstantLoad.h++"
-#include "fem/SurfaceLoadOperators/SurfaceNormalLoad.h++"
-#include "fem/SurfaceLoadOperators/ConcentricLoad.h++"
+#include <libfemp/SurfaceLoadOperators/ConstantLoad.h++>
+#include <libfemp/SurfaceLoadOperators/SurfaceNormalLoad.h++>
+#include <libfemp/SurfaceLoadOperators/ConcentricLoad.h++>
 
 
 NewProjectWizardPage3::NewProjectWizardPage3(Document *document)

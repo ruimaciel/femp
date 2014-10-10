@@ -8,9 +8,9 @@
 #include <GL/gl.h>
 #include <GL/glu.h>	// for gluQuadric()
 
-#include "../../fem/Model.h++"
-#include "../../fem/NodeRestrictions.h++"
-#include "../../fem/Surface.h++"
+#include <libfemp/Model.h++>
+#include <libfemp/NodeRestrictions.h++>
+#include <libfemp/Surface.h++>
 
 #include "../BaseViewport.h++"
 

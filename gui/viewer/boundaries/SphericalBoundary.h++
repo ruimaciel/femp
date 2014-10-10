@@ -1,10 +1,9 @@
 #ifndef SPHERE_BOUNDARY_STRATEGY_HPP
 #define SPHERE_BOUNDARY_STRATEGY_HPP
 
-
 #include "BoundaryStrategy.h++"
 
-#include "../../fem/point.h++"
+#include <libfemp/point.h++>
 
 /*
 A concrete class that implements a sphere boundary throught the Boundary strategy pattern

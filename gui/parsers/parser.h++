@@ -4,7 +4,7 @@
 #include <fstream>
 #include <stack>
 
-#include "../fem/Model.h++"
+#include <libfemp/Model.h++>
 
 
 /**

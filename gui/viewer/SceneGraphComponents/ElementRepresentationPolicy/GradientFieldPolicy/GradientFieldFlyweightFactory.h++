@@ -22,9 +22,9 @@
 
 #include "VonMisesGradientFieldPolicy.h++"
 
-#include "../../../../fem/Model.h++"
-#include "../../../../fem/AnalysisResult.h++"
-#include "../../../../fem/ElementResults/ResultsRanges.h++"
+#include <libfemp/Model.h++>
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/ElementResults/ResultsRanges.h++>
 
 
 /**

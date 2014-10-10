@@ -2,7 +2,7 @@
 #define FEM_MSH_HPP
 
 #include <stdio.h>
-#include "fem/Model.h++"
+#include <libfemp/Model.h++>
 
 enum FEM_PARSER_RETURN {FP_OK = 0, FP_UNKNOWN_ERROR};
 

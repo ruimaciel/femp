@@ -11,7 +11,7 @@
 
 #include "../ViewportColors.h++"
 
-#include "../../fem/Element.h++"
+#include <libfemp/Element.h++>
 
 #include "ElementRepresentationPolicy/ElementRepresentationPolicy.h++"
 #include "DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++"

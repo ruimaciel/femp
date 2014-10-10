@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-#include "../fem/Model.h++"
-#include "../fem/Node.h++"
+#include <libfemp/Model.h++>
+#include <libfemp/Node.h++>
 
 
 MatrixWidget::MatrixWidget(fem::Project &project, QWidget *parent)

@@ -4,7 +4,8 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include "ui_QuadratureRulesOptionsDialog.h"
 
-#include "../fem/Analysis.h++"
+#include <libfemp/Analysis.h++>
+
 
 class QuadratureRulesOptionsDialog
 	: public QDialog, private Ui_QuadratureRulesOptionsDialog

@@ -3,16 +3,17 @@
 #define GRADIENT_FIELDREPRESENTATIONPOLICY_H
 
 #include "ElementRepresentationPolicy.h++"
-#include "../../../fem/point.h++"
-#include "../../../fem/Element.h++"
+
+#include <libfemp/point.h++>
+#include <libfemp/Element.h++>
+#include <libfemp/Model.h++>
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/ElementResults/ResultsRanges.h++>
+
 #include "../../ViewportColors.h++"
 
 #include "GradientFieldPolicy/GradientFieldPolicy.h++"
 #include "GradientFieldPolicy/GradientFieldFlyweightFactory.h++"
-
-#include "../../../fem/Model.h++"
-#include "../../../fem/AnalysisResult.h++"
-#include "../../../fem/ElementResults/ResultsRanges.h++"
 
 
 /**

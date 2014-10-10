@@ -9,7 +9,7 @@
 #include "../SGCElement.h++"
 
 #include "../../../Selection.h++"
-#include "../../../fem/point.h++"
+#include <libfemp/point.h++>
 
 
 namespace Operation

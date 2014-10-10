@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "fem/Material.h++"
+#include <libfemp/Material.h++>
 
 
 NewMaterialDialog::NewMaterialDialog(fem::Model *model, QWidget *parent)

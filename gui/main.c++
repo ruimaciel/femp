@@ -10,7 +10,7 @@
 #include <fstream>
 
 #include "parsers/MshParser.h++"
-#include "fem/Model.h++"
+#include <libfemp/Model.h++>
 
 
 

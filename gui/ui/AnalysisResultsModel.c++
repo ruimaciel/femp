@@ -3,7 +3,7 @@
 #include <iostream>
 #include <iterator>
 
-#include "../fem/ElementResults/ElementResults.h++"
+#include <libfemp/ElementResults/ElementResults.h++>
 
 
 AnalysisResultsModel::AnalysisResultsModel(fem::Project &project, QObject *parent )

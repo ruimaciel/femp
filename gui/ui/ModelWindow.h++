@@ -8,7 +8,7 @@
 #include "MdiWindow.h++"
 #include "WindowWithWireframe.h++"
 
-#include "../fem/Project.h++"
+#include "../Project.h++"
 #include "../viewer/ViewportColors.h++"
 
 /**

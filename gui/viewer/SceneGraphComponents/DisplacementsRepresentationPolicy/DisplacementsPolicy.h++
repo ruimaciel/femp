@@ -4,7 +4,7 @@
 
 #include "DisplacementsRepresentationPolicy.h++"
 
-#include "../../../fem/AnalysisResult.h++"
+#include <libfemp/AnalysisResult.h++>
 
 /**
 Concrete displacements policy where displacements are represented according to an analysis result

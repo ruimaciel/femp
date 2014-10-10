@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "../Project.h++"
+
 /**
 Base class that defines the interface for all WindowWith classes
 **/

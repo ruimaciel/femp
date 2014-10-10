@@ -3,7 +3,7 @@
 #include <iostream>
 #include <iterator>
 
-#include "../fem/ElementResults/ElementResults.h++"
+#include <libfemp/ElementResults/ElementResults.h++>
 
 
 MatrixModel::MatrixModel(fem::Project &project, QObject *parent )

@@ -6,10 +6,11 @@
 #include <QWidget>
 #include <QSortFilterProxyModel>
 
+#include "../Project.h++"
+#include <libfemp/AnalysisResult.h++>
+
 #include "ui_AnalysisResultsWidget.h"
 #include "AnalysisResultsModel.h++"
-#include "../fem/Project.h++"
-#include "../fem/AnalysisResult.h++"
 
 
 /**

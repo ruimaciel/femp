@@ -3,10 +3,9 @@
 
 #include "parser.h++"
 
-#include "../fem/Element.h++"
-#include "../fem/SurfaceLoad.h++"
-
-#include "../fem/SurfaceLoadOperators/SurfaceLoadOperator.h++"
+#include <libfemp/Element.h++>
+#include <libfemp/SurfaceLoad.h++>
+#include <libfemp/SurfaceLoadOperators/SurfaceLoadOperator.h++>
 
 class MshParser
 	: public Parser

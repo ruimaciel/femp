@@ -9,7 +9,7 @@
 #include <fstream>
 
 
-#include "../fem/Model.h++"
+#include <libfemp/Model.h++>
 
 /**
 Class developed to parse the fem.json file format

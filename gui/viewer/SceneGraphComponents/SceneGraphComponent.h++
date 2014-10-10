@@ -12,8 +12,9 @@
 
 #include "Operations/OperationsVisitor.h++"
 
-#include "../../fem/Project.h++"
-#include "../../fem/AnalysisResult.h++"
+#include "../../Project.h++"
+#include <libfemp/AnalysisResult.h++>
+
 
 
 /*

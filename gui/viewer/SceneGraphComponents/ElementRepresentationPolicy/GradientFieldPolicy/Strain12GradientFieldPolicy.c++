@@ -2,7 +2,7 @@
 
 #include "../../SceneGraphException.h++"
 
-#include "../../../../fem/point.h++"
+#include <libfemp/point.h++>
 
 
 Strain12GradientFieldPolicy::Strain12GradientFieldPolicy()

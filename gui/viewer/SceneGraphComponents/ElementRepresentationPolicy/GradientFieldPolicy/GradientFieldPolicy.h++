@@ -4,11 +4,12 @@
 #include <vector>
 #include <GL/gl.h>
 
-#include "../../../../fem/point.h++"
-#include "../../../../fem/Element.h++"
-#include "../../../../fem/Model.h++"
-#include "../../../../fem/AnalysisResult.h++"
-#include "../../../../fem/ElementResults/ResultsRanges.h++"
+#include <libfemp/point.h++>
+#include <libfemp/Element.h++>
+#include <libfemp/Model.h++>
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/ElementResults/ResultsRanges.h++>
+
 #include "../../../ViewportColors.h++"
 
 

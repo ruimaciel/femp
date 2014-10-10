@@ -4,7 +4,7 @@
 
 #include "ui/ui_NodeRestrainDialog.h"
 
-#include "fem/NodeRestrictions.h++"
+#include <libfemp/NodeRestrictions.h++>
 
 
 class NodeRestrainsDialog

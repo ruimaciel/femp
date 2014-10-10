@@ -7,6 +7,9 @@
 #include <QDir>
 #include <QSignalMapper>
 
+#include <libfemp/LinearAnalysis.h++>
+#include <libfemp/AnalysisResult.h++>
+
 #include "ui/ui_MainWindow.h"
 
 #include "CommandLineDockWidget.h++"
@@ -21,9 +24,6 @@
 
 #include "Document.h++"
 #include "SelectionManager.h++"
-
-#include "fem/LinearAnalysis.h++"
-#include "fem/AnalysisResult.h++"
 
 
 

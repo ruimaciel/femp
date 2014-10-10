@@ -7,7 +7,6 @@
 #include <QComboBox>
 #include <QToolBar>
 
-#include "../fem/Project.h++"
 #include "WindowWith.h++"
 
 

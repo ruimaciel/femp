@@ -6,7 +6,7 @@
 
 #include "SelectionWidget.h++"
 
-#include "../fem/Project.h++"
+#include "../Project.h++"
 #include "../SelectionManager.h++"
 
 

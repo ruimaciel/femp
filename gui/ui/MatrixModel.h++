@@ -7,8 +7,8 @@
 
 #include <QAbstractTableModel>
 
-#include "../fem/Project.h++"
-#include "../fem/Element.h++"
+#include "../Project.h++"
+#include <libfemp/Element.h++>
 
 
 /**

@@ -6,19 +6,19 @@
 #include <Eigen/LU>
 
 #include "StressFieldRepresentation.h++"
-#include "../../../../fem/Model.h++"
-#include "../../../../fem/Element.h++"
-#include "../../../../fem/AnalysisResult.h++"
+#include <libfemp/Model.h++>
+#include <libfemp/Element.h++>
+#include <libfemp/AnalysisResult.h++>
 
-#include "../../../../fem/elements/BaseElement.h++"
-#include "../../../../fem/elements/Tetrahedron4.h++"
-#include "../../../../fem/elements/Tetrahedron10.h++"
-#include "../../../../fem/elements/Hexahedron8.h++"
-#include "../../../../fem/elements/Hexahedron20.h++"
-#include "../../../../fem/elements/Hexahedron27.h++"
-#include "../../../../fem/elements/Prism6.h++"
-#include "../../../../fem/elements/Prism15.h++"
-#include "../../../../fem/elements/Prism18.h++"
+#include <libfemp/elements/BaseElement.h++>
+#include <libfemp/elements/Tetrahedron4.h++>
+#include <libfemp/elements/Tetrahedron10.h++>
+#include <libfemp/elements/Hexahedron8.h++>
+#include <libfemp/elements/Hexahedron20.h++>
+#include <libfemp/elements/Hexahedron27.h++>
+#include <libfemp/elements/Prism6.h++>
+#include <libfemp/elements/Prism15.h++>
+#include <libfemp/elements/Prism18.h++>
 
 
 namespace StressFieldRepresentation

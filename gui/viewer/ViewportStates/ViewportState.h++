@@ -6,8 +6,8 @@
 #include <iostream>
 #include <QMouseEvent>
 
-#include "../../fem/Model.h++"
-#include "../../fem/AnalysisResult.h++"
+#include <libfemp/Model.h++>
+#include <libfemp/AnalysisResult.h++>
 
 #include "../../Selection.h++"
 

@@ -6,7 +6,6 @@
 #include <QMouseEvent>
 
 #include "ViewportState.h++"
-
 #include "../BaseViewport.h++"
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"

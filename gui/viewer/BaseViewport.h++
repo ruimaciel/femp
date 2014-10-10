@@ -10,9 +10,10 @@
 
 #include "../MdiWindowProperties.h++"
 
-#include "../fem/Project.h++"
-#include "../fem/Model.h++"
-#include "../fem/AnalysisResult.h++"
+#include "../Project.h++"
+
+#include <libfemp/Model.h++>
+#include <libfemp/AnalysisResult.h++>
 
 #include "BaseViewport.h++"
 #include "SceneGraph.h++"

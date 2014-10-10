@@ -4,7 +4,7 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QDialog>
 
-#include "../fem/point.h++"
+#include <libfemp/point.h++>
 
 #include "ui_MoveNodesDialog.h"
 

@@ -5,10 +5,10 @@
 
 #include <QString>
 
-#include "../fem/solvers/CholeskySolver.h++"
-#include "../fem/solvers/CGSolver.h++"
-#include "../fem/solvers/DenseCholeskySolver.h++"
-#include "../fem/solvers/UmfpackSolver.h++"
+#include <libfemp/solvers/CholeskySolver.h++>
+#include <libfemp/solvers/CGSolver.h++>
+#include <libfemp/solvers/DenseCholeskySolver.h++>
+#include <libfemp/solvers/UmfpackSolver.h++>
 
 #include "assert.h"
 

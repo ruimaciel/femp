@@ -2,40 +2,26 @@ include(../defaults.pri)
 
 TEMPLATE = app
 
-CONFIG += link_pkgconfig qt debug 
-
-QMAKE_CXXFLAGS += -std=c++0x
-QMAKE_CXXFLAGS_DEBUG +=-O0 -Wfatal-errors -std=c++0x
-
-PKGCONFIG += sigc++-2.0
+CONFIG += qt debug 
 
 QT += opengl
-QMAKE_EXT_CPP += c++
 
-INCLUDEPATH += /usr/include/eigen2 /usr/include/suitesparse
+INCLUDEPATH += /usr/include/eigen2 /usr/include/suitesparse $${SRCDIR}}
 
-LIBS += -lumfpack -lblas -lamd -lGLU
+#LIBS += -lumfpack -lblas -lamd -lGLU -l$${PWD}/../libla/liblibla.so -l$${PWD}/../libfemp/liblibfemp.so
+LIBS += -lumfpack -lblas -lamd -lGLU -L$${PWD}/../libla -llibla -L$${PWD}/../libfemp -llibfemp
 
 HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	ModelSelection.h++ \
 	MdiWindowProperties.h++ \
 	Selection*.h++ \
 	ui/*.h++ \
-	fem/Project.h++ \
-	fem/Group.h++ \
-	fem/Model.h++ fem/Node.h++ fem/Element.h++ fem/Material.h++ fem/LoadPattern.h++ fem/NodalLoad.h++ fem/NodalDisplacement.h++ fem/point.h++ fem/NodeRestrictions.h++ \
-	fem/DomainLoad.h++ fem/SurfaceLoad.h++ \
-	fem/ElementGroup.h++ fem/NodeGroup.h++ \
-	fem/ProjectVisitor/*.h++ \
-	fem/elements/Triangle3.h++ fem/elements/Triangle6.h++ \
-	fem/elements/Quadrangle4.h++ fem/elements/Quadrangle8.h++ fem/elements/Quadrangle9.h++ \
-	fem/elements/Hexahedron8.h++ fem/elements/Hexahedron20.h++ fem/elements/Hexahedron27.h++ \
-	fem/elements/Tetrahedron4.h++ fem/elements/Tetrahedron10.h++ \
-	fem/elements/Prism6.h++ \
-	fem/elements/Prism18.h++ \
-	fem/SurfaceLoadOperators/*.h++ \
+	Project.h++ \
+	ProjectVisitor/*.h++ \
 	viewer/ViewportData.h++ \
-	viewer/Camera.h++  viewer/DisplayOptions.h++  viewer/ViewportColors.h++  \
+	viewer/Camera.h++  \
+	viewer/DisplayOptions.h++ \
+	viewer/ViewportColors.h++  \
 	viewer/BaseViewport.h++ \
 	viewer/ModelViewport.h++ \
 	viewer/PostprocessingViewport.h++ \
@@ -52,7 +38,8 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	viewer/SceneGraphComponents/Operations/*.h++ \
 	viewer/SceneGraphComponents/hud/HudObject.h++ \
 	viewer/SceneGraphComponents/hud/HudSelection.h++ \
-	viewer/boundaries/BoundaryStrategy.h++ viewer/boundaries/SphericalBoundary.h++ \
+	viewer/boundaries/BoundaryStrategy.h++ \
+	viewer/boundaries/SphericalBoundary.h++ \
 	viewer/boundaries/CollisionDetection.h++ \
 	viewer/InputStates/Input.h++ \
 	viewer/InputStates/InputState.h++ \
@@ -64,28 +51,22 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ parsers/MshParser.h++ parsers/json.h parsers/FemJsonParser.h++\
 	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
-	fem/Analysis.h++ fem/LinearAnalysis.h++ fem/AnalysisResult.h++\
-	fem/ProgressIndicatorStrategy.h++ \
-	fem/solvers/Solver.h++ fem/solvers/CholeskySolver.h++ fem/solvers/CGSolver.h++ fem/solvers/UmfpackSolver.h++\
 	DefaultProgressIndicator.h++ \
-	fem/Surface.h++ \
-	lalib/Matrix.h++ lalib/Vector.h++ lalib/solvers/*.h++ \
-	fem/solvers/*.h++
 
-SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
+SOURCES += main.c++ \
+	MainWindow.c++ \
+	Document.c++ \
+	ProgramOptions.c++ \
 	ModelSelection.c++ \
 	MdiWindowProperties.c++ \
+	Project.c++ \
+	ProjectVisitor/*.c++ \
 	Selection*.c++ \
 	ui/*.c++ \
-	fem/Project.c++ \
-	fem/Group.c++ \
-	fem/Model.c++ fem/Node.c++ fem/Element.c++ fem/Material.c++ fem/LoadPattern.c++ fem/NodalLoad.c++ fem/NodalDisplacement.c++ fem/point.c++ fem/NodeRestrictions.c++ \
-	fem/DomainLoad.c++ fem/SurfaceLoad.c++\
-	fem/ElementGroup.c++ fem/NodeGroup.c++ \
-	fem/ProjectVisitor/*.c++ \
-	fem/SurfaceLoadOperators/*.c++ \
 	viewer/ViewportData.c++ \
-	viewer/Camera.c++  viewer/DisplayOptions.c++  viewer/ViewportColors.c++  \
+	viewer/Camera.c++ \
+	viewer/DisplayOptions.c++ \
+	viewer/ViewportColors.c++  \
 	viewer/BaseViewport.c++ \
 	viewer/ModelViewport.c++ \
 	viewer/PostprocessingViewport.c++ \
@@ -101,7 +82,8 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	viewer/SceneGraphComponents/Elements/*.c++ \
 	viewer/SceneGraphComponents/Operations/*.c++ \
 	viewer/SceneGraphComponents/hud/HudSelection.c++ \
-	viewer/boundaries/BoundaryStrategy.c++  viewer/boundaries/SphericalBoundary.c++  \
+	viewer/boundaries/BoundaryStrategy.c++ \
+	viewer/boundaries/SphericalBoundary.c++  \
 	viewer/boundaries/CollisionDetection.c++ \
 	viewer/InputStates/Input.c++ \
 	viewer/InputStates/InputState.c++ \
@@ -111,10 +93,14 @@ SOURCES += main.c++ MainWindow.c++ Document.c++ ProgramOptions.c++ \
 	viewer/InputStates/ISRightClick.c++ \
 	viewer/InputStates/ISRightDrag.c++ \
 	fem_msh.c++ lex.msh_yy.c++ \
-	parsers/parser.c++ parsers/MshParser.c++ parsers/json.c parsers/FemJsonParser.c++\
-	NodeRestrainsDialog.c++ NodeActionsDialog.c++ DisplayOptionsDialog.c++ \
-	DefaultProgressIndicator.c++ \
-	fem/Surface.c++ 
+	parsers/parser.c++ \
+	parsers/MshParser.c++ \
+	parsers/json.c \
+	parsers/FemJsonParser.c++\
+	NodeRestrainsDialog.c++ \
+	NodeActionsDialog.c++ \
+	DisplayOptionsDialog.c++ \
+	DefaultProgressIndicator.c++
 
 FORMS += ui/*.ui
 
@@ -125,7 +111,7 @@ OBJECTS_DIR += ./build
 
 FemJsonParserRe2c.target = parsers/FemJsonParser.c++
 FemJsonParserRe2c.commands = re2c -o parsers/FemJsonParser.c++ parsers/FemJsonParser.c++.re2c
-FemJsonParserRe2c.depends = parsers/FemJsonParser.c++.re2c fem/Model.h++ fem/Model.c++
+FemJsonParserRe2c.depends = parsers/FemJsonParser.c++.re2c
 FemJsonParserRe2c.output = parsers/FemJsonParser.c++
 
 MshParserRe2c.target = parsers/MshParser.c++
@@ -140,12 +126,12 @@ ProgramOptionRe2c.output = ProgramOptions.c++
 
 FlexOutput.target = lex.msh_yy.h 
 FlexOutput.commands = flex --header-file=lex.msh_yy.h -o lex.msh_yy.c++ msh.l
-FlexOutput.depends = msh.l fem/Model.h++ fem/Model.c++
+FlexOutput.depends = msh.l 
 FlexOutput.output = lex.msh_yy.c++ lex.msh_yy.h
 
 BisonOutput.target = msh.tab.h
 BisonOutput.commands = bison -d --debug msh.y
-BisonOutput.depends = msh.y lex.msh_yy.h fem/Model.h++ fem/Model.c++
+BisonOutput.depends = msh.y lex.msh_yy.h 
 BisonOutput.output = msh.tab.c msh.tab.h
 
 BisonCompile.target = msh.tab.o

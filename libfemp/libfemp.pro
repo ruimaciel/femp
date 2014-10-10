@@ -48,9 +48,6 @@ HEADERS = Group.h++ \
 	solvers/CGSolver.h++ \
 	solvers/UmfpackSolver.h++ \
 	Surface.h++ \
-	lalib/Matrix.h++ \
-	lalib/Vector.h++ \
-	lalib/solvers/*.h++ \
 	solvers/*.h++
 
 SOURCES = Group.c++ \
@@ -67,5 +64,6 @@ SOURCES = Group.c++ \
 	SurfaceLoad.c++\
 	ElementGroup.c++ \
 	NodeGroup.c++ \
+	Analysis.c++ \
 	SurfaceLoadOperators/*.c++ \
 	Surface.c++ 

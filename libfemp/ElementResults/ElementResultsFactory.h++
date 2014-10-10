@@ -68,7 +68,7 @@ protected:
 	Efficient numerical diagonalization of hermitian 3x3 matrices
 	http://arxiv.org/abs/physics/0610206
 	**/
-	int dsyevj3(double A[3][3], double Q[3][3], double w[3]) const;
+	int dsyevj3(Scalar A[3][3], Scalar Q[3][3], Scalar w[3]) const;
 
 };
 
@@ -179,9 +179,9 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 		//m_gradient_value[coord] = 0;
 
 		// set strains
-		float dNdx = 0;
-		float dNdy = 0;
-		float dNdz = 0;
+		Scalar dNdx = 0;
+		Scalar dNdy = 0;
+		Scalar dNdz = 0;
 		for(unsigned int node = 0; node < element->coordinates.size(); node++)
 		{
 			fem::point d; // displacements
@@ -288,7 +288,7 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 	}
 
 	// nasty hack to set up the tensor
-	double tensor[3][3];
+	Scalar tensor[3][3];
 	switch(reference_element.type)
 	{
 		case fem::Element::FE_TETRAHEDRON4:
@@ -411,7 +411,7 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 template<typename Scalar>
 // ----------------------------------------------------------------------------
 int 
-ElementResultsFactory<Scalar>::dsyevj3(double A[3][3], double Q[3][3], double w[3]) const
+ElementResultsFactory<Scalar>::dsyevj3(Scalar A[3][3], Scalar Q[3][3], Scalar w[3]) const
 // ----------------------------------------------------------------------------
 // Calculates the eigenvalues and normalized eigenvectors of a symmetric 3x3
 // matrix A using the Jacobi algorithm.
@@ -430,10 +430,10 @@ ElementResultsFactory<Scalar>::dsyevj3(double A[3][3], double Q[3][3], double w[
 // ----------------------------------------------------------------------------
 {
 	const int n = 3;
-	double sd, so;                  // Sums of diagonal resp. off-diagonal elements
-	double s, c, t;                 // sin(phi), cos(phi), tan(phi) and temporary storage
-	double g, h, z, theta;          // More temporary storage
-	double thresh;
+	Scalar sd, so;                  // Sums of diagonal resp. off-diagonal elements
+	Scalar s, c, t;                 // sin(phi), cos(phi), tan(phi) and temporary storage
+	Scalar g, h, z, theta;          // More temporary storage
+	Scalar thresh;
 
 	// Initialize Q to the identitity matrix
 #ifndef EVALS_ONLY

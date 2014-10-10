@@ -631,7 +631,7 @@ inline void Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Ma
 
 
 // explicit template instantiation
-// template class Analysis<float>;
+template class Analysis<float>;
 template class Analysis<double>;
 
 }	// namespace femp

@@ -1,15 +1,20 @@
 include(../defaults.pri)
 
 TEMPLATE = app
+TARGET = femp
 
 CONFIG += qt debug 
 
 QT += opengl
 
+OBJECTS_DIR += $${BUILD_DIR}/gui
+DESTDIR = $${BUILD_DIR}
+
+
 INCLUDEPATH += /usr/include/eigen2 /usr/include/suitesparse $${SRCDIR}}
 
 #LIBS += -lumfpack -lblas -lamd -lGLU -l$${PWD}/../libla/liblibla.so -l$${PWD}/../libfemp/liblibfemp.so
-LIBS += -lumfpack -lblas -lamd -lGLU -L$${PWD}/../libla -llibla -L$${PWD}/../libfemp -llibfemp
+LIBS += -lumfpack -lblas -lamd -lGLU -L$${BUILD_DIR} -llibla -llibfemp
 
 HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	ModelSelection.h++ \
@@ -107,7 +112,6 @@ FORMS += ui/*.ui
 UI_DIR += ./ui
 MOC_DIR += ui/moc
 
-OBJECTS_DIR += ./build
 
 FemJsonParserRe2c.target = parsers/FemJsonParser.c++
 FemJsonParserRe2c.commands = re2c -o parsers/FemJsonParser.c++ parsers/FemJsonParser.c++.re2c

@@ -1,7 +1,8 @@
+.gitignore
 Makefile
 gui/gui
 TODO
-gui/build/*
+build/*
 moc_*
 gui/ui/ui_*
 gui/ui/src
@@ -16,6 +17,5 @@ lex.msh_yy.*
 msh.tab.*
 *.oct
 *.xmi
-.*
 *.msh
 gui/parsers/how to make a ll parser.txt

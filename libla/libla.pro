@@ -4,7 +4,8 @@ TEMPLATE = lib
 
 CONFIG += staticlib
 
-OBJECTS_DIR += ./build
+OBJECTS_DIR += $${BUILD_DIR}/libla
+DESTDIR = $${BUILD_DIR}
 
 INCLUDEPATH += /usr/include/eigen2 /usr/include/suitesparse
 
@@ -17,3 +18,4 @@ HEADERS = Matrix.h++ \
 	solvers/*.h++ 
 
 SOURCES =
+

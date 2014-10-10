@@ -1,5 +1,7 @@
 INCLUDEPATH += $$PWD
 
+BUILD_DIR += $${PWD}/build
+
 QMAKE_CXXFLAGS += -std=c++0x
 QMAKE_CXXFLAGS_DEBUG +=-O0 -Wfatal-errors -std=c++0x
 

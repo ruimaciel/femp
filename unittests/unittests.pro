@@ -5,5 +5,12 @@ TEMPLATE = app
 CONFIG += qtestlib
 
 QT += testlib
-SOURCES = TestQString.cpp
 
+SOURCES = main.c++ \
+	  TestLa.c++ \
+	  TestFemp.c++
+
+HEADERS = TestLa.h++ \
+	  TestFemp.h++
+
+LIBS += -lumfpack -lblas -lamd -lGLU -L$${BUILD_DIR} -llibla -llibfemp

@@ -63,10 +63,6 @@ int main(int argc, char **argv)
 	{
 		cout << "FemException: " << e.what() << endl;
 	}
-	catch(FempException e)
-	{
-		cout << "FempException: " << e.what() << endl;
-	}
 	catch(std::exception e)
 	{
 		cout << "exception: " << e.what() << endl;

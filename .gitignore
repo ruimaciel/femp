@@ -1,4 +1,5 @@
 .gitignore
+*.swp
 Makefile
 gui/gui
 TODO

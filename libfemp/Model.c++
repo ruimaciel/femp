@@ -677,4 +677,4 @@ Model::sanity_check()
 }
 
 
-}
+}	// namespace fem

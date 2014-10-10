@@ -5,17 +5,6 @@
 namespace fem
 {
 
-template<typename Scalar>
-Analysis<Scalar>::Analysis()
-{
-}
-
-
-template<typename Scalar>
-Analysis<Scalar>::~Analysis()
-{
-}
-
 
 template<typename Scalar>
 enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
@@ -498,8 +487,6 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar
 template<typename Scalar>
 void Analysis<Scalar>::generateDisplacementsMap(Model &model, AnalysisResult<Scalar> &result)
 {
-	std::cerr << "void Analysis<Scalar>::generateDisplacementsMap(Model &model, AnalysisResult<Scalar> &result)" << std::endl;
-
 	fem::point d;	// displacements field
 	boost::tuple<size_t,size_t,size_t> references;
 

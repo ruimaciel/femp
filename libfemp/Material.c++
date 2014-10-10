@@ -33,4 +33,6 @@ Material::generateD() const
 	return D;
 }
 
-}
+
+}	// namespace fem
+

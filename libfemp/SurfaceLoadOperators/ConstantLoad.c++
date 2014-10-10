@@ -29,5 +29,5 @@ ConstantLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &)
 }
 
 
-}
+}	// namespace fem
 

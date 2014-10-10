@@ -55,5 +55,5 @@ Group::clear()
 }
 
 
-}
+}	// namespace fem
 

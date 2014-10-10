@@ -31,4 +31,5 @@ ElementGroup::clear()
 	this->m_element_reference_list.clear();
 }
 
-}
+
+}	// namespace fem

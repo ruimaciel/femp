@@ -19,4 +19,5 @@ DomainLoad::~DomainLoad()
 {
 }
 
-}
+
+}	// namespace fem

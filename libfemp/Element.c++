@@ -100,7 +100,8 @@ Element::set(Type type, std::vector<size_t> nodes)
 }
 
 
-int Element::node_number() const
+int 
+Element::node_number() const
 {
 	switch(this->type)
 	{
@@ -168,7 +169,8 @@ int Element::node_number() const
 }
 
 
-enum Element::ElementFamily Element::family() const
+enum Element::ElementFamily 
+Element::family() const
 {
 	switch(this->type)
 	{
@@ -222,7 +224,8 @@ enum Element::ElementFamily Element::family() const
 }
 
 
-void Element::clear()
+void 
+Element::clear()
 {
 }
 

@@ -41,6 +41,6 @@ public:
 	void operator() (fem::SurfaceLoad &surface_load, fem::Model &model);
 };
 
-}
+}	// namespace fem
 
 #endif

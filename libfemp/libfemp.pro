@@ -43,6 +43,11 @@ HEADERS = Group.h++ \
 	Analysis.h++ \
 	LinearAnalysis.h++ \
 	AnalysisResult.h++\
+	ElementResults/ElementResultsFactory.h++ \
+	ElementResults/Stresses.h++ \
+	ElementResults/ResultsRanges.h++ \
+	ElementResults/Strains.h++ \
+	ElementResults/ElementResults.h++ \
 	solvers/Solver.h++ \
 	solvers/CholeskySolver.h++ \
 	solvers/CGSolver.h++ \
@@ -67,3 +72,4 @@ SOURCES = Group.c++ \
 	Analysis.c++ \
 	SurfaceLoadOperators/*.c++ \
 	Surface.c++ 
+

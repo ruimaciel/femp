@@ -1,5 +1,0 @@
-<Report>	::= <header> <build FEM progress indicator> <FEM equation> <displacements field>
-
-<header>	::= <version>
-
-<build FEM progress indicator>	::= <stiffness matrix progress> <domain loads progress> <surface loads progress> <nodal loads progress>

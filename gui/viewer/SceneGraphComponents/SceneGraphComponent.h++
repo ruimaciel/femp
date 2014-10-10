@@ -34,7 +34,7 @@ public:
 
 public:
 	SceneGraphComponent();
-	~SceneGraphComponent();
+	virtual ~SceneGraphComponent();
 
 	static void setDetailFactor(const float & new_detail_factor) { detail_factor = new_detail_factor; }
 

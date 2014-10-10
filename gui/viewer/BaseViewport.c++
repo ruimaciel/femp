@@ -239,7 +239,7 @@ BaseViewport::setTrianglesVisible(bool const state)
 	this->display_options.triangle_wireframe = state;	// this has no effect, as currently no component uses this value
 
 	/* Performs a sanity check */
-	if(state == NULL)
+	if(state == false)
 	{
 		std::cerr << "BaseViewport::setTrianglesVisible(bool const state): this->state is NULL" << std::endl;
 		return;

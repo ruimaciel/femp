@@ -22,6 +22,9 @@ class Solver
 			ERR_NEGATIVE_DETERMINANT,
 			ERR_UNKNOWN
 		};
+
+		virtual ~Solver() {};
+
 		/*
 		If necessary, initializes any data structure specific for this solver
 		*/

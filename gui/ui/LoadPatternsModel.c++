@@ -22,7 +22,7 @@ LoadPatternsModel::data(const QModelIndex &index, int role ) const
 	{
 		case Qt::DisplayRole:
 		{
-			int i = index.row();
+			unsigned int i = index.row();
 			if( i < m_model.load_pattern_list.size())
 			{
 				fem::LoadPattern const &lp = m_model.load_pattern_list[i];

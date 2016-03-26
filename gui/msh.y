@@ -1,3 +1,8 @@
+%code requires {
+//HERE
+#include <libfemp/Model.h++>
+}
+
 %{
 #define YY_HEADER_EXPORT_START_CONDITIONS
 
@@ -6,6 +11,7 @@
 
 #include <vector>
 #include <QString>
+
 
 #include "fem_msh.h++"
 
@@ -29,7 +35,7 @@ void yyerror(fem::Model &model, char const *s)
 } 
 
 %error-verbose
-%name-prefix = "msh_yy"
+%define api.prefix {msh_yy}
 %parse-param {fem::Model &model}
 %defines
 %locations

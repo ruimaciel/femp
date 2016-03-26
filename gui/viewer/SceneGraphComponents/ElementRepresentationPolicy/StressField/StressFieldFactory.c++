@@ -175,7 +175,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 		Dg(1,0) = dxdeta.x();	Dg(1,1) = dxdeta.y();	Dg(1,2) = dxdeta.z();
 		Dg(2,0) = dxdzeta.x();	Dg(2,1) = dxdzeta.y();	Dg(2,2) = dxdzeta.z();
 
-		Dg.computeInverse(&invDg);
+		invDg = Dg.inverse();
 
 		//m_gradient_value[coord] = 0;
 

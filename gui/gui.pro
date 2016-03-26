@@ -11,7 +11,7 @@ OBJECTS_DIR += $${BUILD_DIR}/gui
 DESTDIR = $${BUILD_DIR}
 
 
-INCLUDEPATH += /usr/include/eigen2 /usr/include/suitesparse $${SRCDIR}}
+INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${SRCDIR}}
 
 #LIBS += -lumfpack -lblas -lamd -lGLU -l$${PWD}/../libla/liblibla.so -l$${PWD}/../libfemp/liblibfemp.so
 LIBS += -lumfpack -lblas -lamd -lGLU -L$${BUILD_DIR} -llibla -llibfemp
@@ -107,7 +107,35 @@ SOURCES += main.c++ \
 	DisplayOptionsDialog.c++ \
 	DefaultProgressIndicator.c++
 
-FORMS += ui/*.ui
+FORMS += ui/AnalysisDialog.ui \
+	ui/AnalysisProgressDialog.ui \
+	ui/AnalysisResultsWidget.ui \
+	ui/AnalysisSummaryDialog.ui \
+	ui/CommandLineDockWidget.ui \
+	ui/DialogScale.ui \
+	ui/DisplayOptionsDialog.ui \
+	ui/DomainLoadsDialog.ui \
+	ui/LoadPatternDialog.ui \
+	ui/MainWindow.ui \
+	ui/MaterialsEditorDialog.ui \
+	ui/MatrixWidget.ui \
+	ui/MdiWindow.ui \
+	ui/MoveNodesDialog.ui \
+	ui/NewMaterialDialog.ui \
+	ui/NewProjectWizardPage1.ui \
+	ui/NewProjectWizardPage2.ui \
+	ui/NewProjectWizardPage3.ui \
+	ui/NewProjectWizardPageLast.ui \
+	ui/NewProjectWizard.ui \
+	ui/NodeActionsDialog.ui \
+	ui/NodeRestrainDialog.ui \
+	ui/QuadratureRulesOptionsDialog.ui \
+	ui/ResultsRangeDialog.ui \
+	ui/ScalarRangeWidget.ui \
+	ui/SelectionDockWidget.ui \
+	ui/SelectionWidget.ui \
+	ui/SurfaceSubdivisionDialog.ui \
+	ui/TableFilterDialog.ui
 
 UI_DIR += ./ui
 MOC_DIR += ui/moc

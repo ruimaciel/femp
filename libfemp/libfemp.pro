@@ -7,7 +7,7 @@ CONFIG += staticlib
 OBJECTS_DIR += $${BUILD_DIR}/libfemp
 DESTDIR = $${BUILD_DIR}
 
-INCLUDEPATH += /usr/include/eigen2 /usr/include/suitesparse $${LIBFEMP_SRC}
+INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${LIBFEMP_SRC}
 
 #LIBS += -lumfpack -lblas -lamd -lGLU -L$${PWD}/../libla -llibla
 LIBS += -lumfpack -lblas -lamd -lGLU -llibla
@@ -39,7 +39,10 @@ HEADERS = Group.h++ \
 	elements/Tetrahedron10.h++ \
 	elements/Prism6.h++ \
 	elements/Prism18.h++ \
-	SurfaceLoadOperators/*.h++ \
+	SurfaceLoadOperators/ConcentricLoad.h++	\
+	SurfaceLoadOperators/ConstantLoad.h++ \
+	SurfaceLoadOperators/SurfaceLoadOperator.h++ \
+	SurfaceLoadOperators/SurfaceNormalLoad.h++ \
 	Analysis.h++ \
 	LinearAnalysis.h++ \
 	AnalysisResult.h++\
@@ -70,6 +73,8 @@ SOURCES = Group.c++ \
 	ElementGroup.c++ \
 	NodeGroup.c++ \
 	Analysis.c++ \
-	SurfaceLoadOperators/*.c++ \
+	SurfaceLoadOperators/ConcentricLoad.c++	\
+	SurfaceLoadOperators/ConstantLoad.c++ \
+	SurfaceLoadOperators/SurfaceLoadOperator.c++ \
+	SurfaceLoadOperators/SurfaceNormalLoad.c++ \
 	Surface.c++ 
-

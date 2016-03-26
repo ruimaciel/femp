@@ -133,7 +133,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 				return ERR_NEGATIVE_DETERMINANT;
 			}
 
-			J.computeInverse(&invJ);
+			invJ = J.inverse();
 
 				// Set up the B matrix
 			for(int n = 0; n < nnodes; n++)

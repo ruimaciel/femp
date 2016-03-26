@@ -1,7 +1,6 @@
 #ifndef LOAD_PATTERN_HPP
 #define LOAD_PATTERN_HPP
 
-//#include <QString>
 #include <string>
 #include <map>
 

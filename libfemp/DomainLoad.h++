@@ -10,13 +10,13 @@ namespace fem
 
 class DomainLoad
 {
-	public:
-		point force;	// force value for the entire element
+public:
+	point force;	// force value for the entire element
 
-	public:
-		DomainLoad();
-		DomainLoad(const DomainLoad &);
-		~DomainLoad();
+public:
+	DomainLoad();
+	DomainLoad(const DomainLoad &);
+	~DomainLoad();
 };
 
 }

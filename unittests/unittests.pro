@@ -6,7 +6,7 @@ CONFIG += qtestlib
 
 OBJECTS_DIR += $${BUILD_DIR}/unit_tests
 MOC_DIR += $${BUILD_DIR}/unit_tests/moc
-DESTDIR = $${PWD}
+DESTDIR = $${BUILD_DIR}
 
 QT += testlib
 

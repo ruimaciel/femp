@@ -8,10 +8,6 @@
 #include <iostream>
 #include <fstream>
 
-#include "parsers/MshParser.h++"
-#include <libfemp/Model.h++>
-
-
 
 Q_DECLARE_METATYPE(size_t);
 Q_DECLARE_METATYPE(std::string);

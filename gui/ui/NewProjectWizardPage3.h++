@@ -6,8 +6,9 @@
 
 #include <QWizardPage>
 
-#include "parsers/MshParser.h++"
 #include "Document.h++"
+
+#include <libfemp/parsers/MshParser.h++>
 
 
 /**

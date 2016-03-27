@@ -39,9 +39,6 @@
 #include "ui/AnalysisResultsWindow.h++"
 #include "ui/MatrixWindow.h++"
 
-#include "fem_msh.h++"
-#include "parsers/json.h"
-
 
 #include "DefaultProgressIndicator.h++"
 
@@ -51,6 +48,10 @@
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/solvers/CholeskySolver.h++>
 #include <libfemp/solvers/CGSolver.h++>
+#include <libfemp/parsers/FemJsonParser.h++>
+#include <libfemp/parsers/MshParser.h++>
+#include <libfemp/parsers/json.h>
+#include <libfemp/fem_msh.h++>
 
 #include "ProjectVisitor/OutputResultsInNodesVisitor.h++"
 #include "ProjectVisitor/OutputResultsInNodesCSVVisitor.h++"
@@ -58,9 +59,6 @@
 #include "ProjectVisitor/SetDomainLoadsVisitor.h++"
 #include "ProjectVisitor/MoveNodesVisitor.h++"
 #include "ProjectVisitor/OutputElementStatisticsVisitor.h++"
-
-#include "parsers/FemJsonParser.h++"
-#include "parsers/MshParser.h++"
 
 
 

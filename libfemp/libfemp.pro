@@ -56,7 +56,12 @@ HEADERS = Group.h++ \
 	solvers/CGSolver.h++ \
 	solvers/UmfpackSolver.h++ \
 	Surface.h++ \
-	solvers/*.h++
+	solvers/*.h++ \
+	fem_msh.h++ lex.msh_yy.h \
+	parsers/parser.h++ \
+	parsers/MshParser.h++ \
+	parsers/json.h \
+	parsers/FemJsonParser.h++
 
 SOURCES = Group.c++ \
 	Model.c++ \
@@ -77,4 +82,40 @@ SOURCES = Group.c++ \
 	SurfaceLoadOperators/ConstantLoad.c++ \
 	SurfaceLoadOperators/SurfaceLoadOperator.c++ \
 	SurfaceLoadOperators/SurfaceNormalLoad.c++ \
-	Surface.c++ 
+	Surface.c++ \
+	fem_msh.c++ lex.msh_yy.c++ \
+	parsers/parser.c++ \
+	parsers/MshParser.c++ \
+	parsers/json.c \
+	parsers/FemJsonParser.c++
+
+
+FemJsonParserRe2c.target = parsers/FemJsonParser.c++
+FemJsonParserRe2c.commands = re2c -o parsers/FemJsonParser.c++ parsers/FemJsonParser.c++.re2c
+FemJsonParserRe2c.depends = parsers/FemJsonParser.c++.re2c
+FemJsonParserRe2c.output = parsers/FemJsonParser.c++
+
+MshParserRe2c.target = parsers/MshParser.c++
+MshParserRe2c.commands = re2c -o parsers/MshParser.c++ parsers/MshParser.c++.re2c
+MshParserRe2c.depends = parsers/MshParser.c++.re2c
+MshParserRe2c.output = parsers/MshParser.c++
+
+FlexOutput.target = lex.msh_yy.h 
+FlexOutput.commands = flex --header-file=lex.msh_yy.h -o lex.msh_yy.c++ msh.l
+FlexOutput.depends = msh.l 
+FlexOutput.output = lex.msh_yy.c++ lex.msh_yy.h
+
+BisonOutput.target = msh.tab.h
+BisonOutput.commands = bison -d --debug msh.y
+BisonOutput.depends = msh.y lex.msh_yy.h 
+BisonOutput.output = msh.tab.c msh.tab.h
+
+BisonCompile.target = msh.tab.o
+BisonCompile.commands = g++ -c msh.tab.c $(INCPATH)
+BisonCompile.depends = msh.tab.h
+BisonCompile.output = msh.tab.o
+
+OBJECTS += msh.tab.o
+QMAKE_CLEAN += lex.msh_yy.h lex.msh_yy.c++ msh.tab.c msh.tab.h msh.tab.o
+
+QMAKE_EXTRA_TARGETS += FemJsonParserRe2c MshParserRe2c FlexOutput BisonOutput BisonCompile 

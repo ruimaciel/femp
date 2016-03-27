@@ -7,10 +7,9 @@
 #include <iostream>
 #include <fstream>
 
-#include "fem_msh.h++"
-#include "parsers/json.h"
-
-#include "parsers/MshParser.h++"
+#include <libfemp/fem_msh.h++>
+#include <libfemp/parsers/json.h>
+#include <libfemp/parsers/MshParser.h++>
 
 
 Document::Document()

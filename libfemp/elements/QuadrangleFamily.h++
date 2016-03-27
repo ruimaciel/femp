@@ -1,5 +1,5 @@
-#ifndef QUADRANGLE_FAMILY_HPP
-#define QUADRANGLE_FAMILY_HPP
+#ifndef FEMP_QUADRANGLE_FAMILY_HPP
+#define FEMP_QUADRANGLE_FAMILY_HPP
 
 
 #include "BaseElement.h++"

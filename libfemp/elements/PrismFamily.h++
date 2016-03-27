@@ -1,5 +1,5 @@
-#ifndef PRISM_FAMILY_HPP
-#define PRISM_FAMILY_HPP
+#ifndef FEMP_PRISM_FAMILY_HPP
+#define FEMP_PRISM_FAMILY_HPP
 
 
 #include "BaseElement.h++"

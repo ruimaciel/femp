@@ -1,5 +1,5 @@
-#ifndef DOMAIN_LOAD_HPP
-#define DOMAIN_LOAD_HPP
+#ifndef FEMP_DOMAIN_LOAD_HPP
+#define FEMP_DOMAIN_LOAD_HPP
 
 #include <vector>
 #include "point.h++"

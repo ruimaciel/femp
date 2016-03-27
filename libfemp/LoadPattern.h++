@@ -1,5 +1,5 @@
-#ifndef LOAD_PATTERN_HPP
-#define LOAD_PATTERN_HPP
+#ifndef FEMP_LOAD_PATTERN_HPP
+#define FEMP_LOAD_PATTERN_HPP
 
 #include <string>
 #include <map>

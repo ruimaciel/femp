@@ -1,5 +1,5 @@
-#ifndef SOLVER_HPP
-#define SOLVER_HPP
+#ifndef FEMP_SOLVER_HPP
+#define FEMP_SOLVER_HPP
 
 #include "../AnalysisResult.h++"
 

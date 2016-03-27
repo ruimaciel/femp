@@ -1,5 +1,5 @@
-#ifndef PRISM18_HPP
-#define PRISM18_HPP
+#ifndef FEMP_PRISM18_HPP
+#define FEMP_PRISM18_HPP
 
 #include <vector>
 

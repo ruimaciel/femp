@@ -1,5 +1,5 @@
-#ifndef TRIANGLE_FAMILY_HPP
-#define TRIANGLE_FAMILY_HPP
+#ifndef FEMP_TRIANGLE_FAMILY_HPP
+#define FEMP_TRIANGLE_FAMILY_HPP
 
 
 #include "BaseElement.h++"

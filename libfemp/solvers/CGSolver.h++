@@ -1,5 +1,5 @@
-#ifndef CG_SOLVER_HPP
-#define CG_SOLVER_HPP
+#ifndef FEMP_CGSOLVER_HPP
+#define FEMP_CGSOLVER_HPP
 
 #include "Solver.h++"
 

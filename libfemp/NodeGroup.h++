@@ -1,5 +1,5 @@
-#ifndef NODE_GROUP_HPP
-#define NODE_GROUP_HPP
+#ifndef FEMP_NODE_GROUP_HPP
+#define FEMP_NODE_GROUP_HPP
 
 #include <vector>
 #include <string>

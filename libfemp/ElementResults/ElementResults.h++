@@ -1,5 +1,5 @@
-#ifndef ELEMENT_RESULTS_HPP
-#define ELEMENT_RESULTS_HPP
+#ifndef FEMP_ELEMENTRESULTS_HPP
+#define FEMP_ELEMENTRESULTS_HPP
 
 #include <ostream>
 #include <vector>

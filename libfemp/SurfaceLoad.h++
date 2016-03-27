@@ -1,5 +1,5 @@
-#ifndef SURFACE_LOAD_HPP
-#define SURFACE_LOAD_HPP
+#ifndef FEMP_SURFACE_LOAD_HPP
+#define FEMP_SURFACE_LOAD_HPP
 
 #include <vector>
 

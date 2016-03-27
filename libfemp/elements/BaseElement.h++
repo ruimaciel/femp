@@ -1,5 +1,5 @@
-#ifndef BASE_ELEMENT_HPP
-#define BASE_ELEMENT_HPP
+#ifndef FEMP_BASE_ELEMENT_HPP
+#define FEMP_BASE_ELEMENT_HPP
 
 #include <vector>
 #include <map>

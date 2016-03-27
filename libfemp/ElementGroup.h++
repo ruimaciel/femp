@@ -1,5 +1,5 @@
-#ifndef ELEMENT_GROUP_HPP
-#define ELEMENT_GROUP_HPP
+#ifndef FEMP_ELEMENT_GROUP_HPP
+#define FEMP_ELEMENT_GROUP_HPP
 
 #include <vector>
 #include <string>

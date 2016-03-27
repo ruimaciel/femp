@@ -1,5 +1,5 @@
-#ifndef SURFACE_HPP
-#define SURFACE_HPP
+#ifndef FEMP_SURFACE_HPP
+#define FEMP_SURFACE_HPP
 
 
 #include <vector>

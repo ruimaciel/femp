@@ -1,5 +1,5 @@
-#ifndef NODAL_LOAD_HPP
-#define NODAL_LOAD_HPP
+#ifndef FEMP_NODAL_LOAD_HPP
+#define FEMP_NODAL_LOAD_HPP
 
 #include "point.h++"
 

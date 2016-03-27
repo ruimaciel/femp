@@ -1,5 +1,5 @@
-#ifndef FEM_EXCEPTION
-#define FEM_EXCEPTION
+#ifndef FEMP_EXCEPTION
+#define FEMP_EXCEPTION
 
 #include <string>
 #include <stdexcept>

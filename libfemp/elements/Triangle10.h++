@@ -1,5 +1,5 @@
-#ifndef TRIANGLE10_HPP
-#define TRIANGLE10_HPP
+#ifndef FEMP_TRIANGLE10_HPP
+#define FEMP_TRIANGLE10_HPP
 
 #include <vector>
 

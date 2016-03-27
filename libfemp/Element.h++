@@ -1,5 +1,5 @@
-#ifndef ELEMENT_HPP
-#define ELEMENT_HPP
+#ifndef FEMP_ELEMENT_HPP
+#define FEMP_ELEMENT_HPP
 
 #include <vector>
 #include "Material.h++"

@@ -1,5 +1,5 @@
-#ifndef ELEMENT_RESULTS_FACTORY_HPP
-#define ELEMENT_RESULTS_FACTORY_HPP
+#ifndef FEMP_ELEMENTRESULTSFACTORY_HPP
+#define FEMP_ELEMENTRESULTSFACTORY_HPP
 
 #include <cmath>	// sqrt
 #include <iostream>	// cout
@@ -436,7 +436,7 @@ ElementResultsFactory<Scalar>::dsyevj3(Scalar A[3][3], Scalar Q[3][3], Scalar w[
 	Scalar thresh;
 
 	// Initialize Q to the identitity matrix
-#ifndef EVALS_ONLY
+#ifndef FEMP_EVALS_ONLY
 	for (int i=0; i < n; i++)
 	{
 		Q[i][i] = 1.0;
@@ -525,7 +525,7 @@ ElementResultsFactory<Scalar>::dsyevj3(Scalar A[3][3], Scalar Q[3][3], Scalar w[
 					}
 
 					// Update eigenvectors
-#ifndef EVALS_ONLY          
+#ifndef FEMP_EVALS_ONLY          
 					for (int r=0; r < n; r++)
 					{
 						t = Q[r][p];

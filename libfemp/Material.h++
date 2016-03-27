@@ -1,5 +1,5 @@
-#ifndef MATERIAL_HPP
-#define MATERIAL_HPP
+#ifndef FEMP_MATERIAL_HPP
+#define FEMP_MATERIAL_HPP
 
 #include <vector>
 #include <string>

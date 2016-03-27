@@ -1,5 +1,5 @@
-#ifndef PRISM6_HPP
-#define PRISM6_HPP
+#ifndef FEMP_PRISM6_HPP
+#define FEMP_PRISM6_HPP
 
 #include <vector>
 

@@ -1,5 +1,5 @@
-#ifndef TETRAHEDRON10_HPP
-#define TETRAHEDRON10_HPP
+#ifndef FEMP_TETRAHEDRON10_HPP
+#define FEMP_TETRAHEDRON10_HPP
 
 #include <vector>
 #include <boost/tuple/tuple.hpp>

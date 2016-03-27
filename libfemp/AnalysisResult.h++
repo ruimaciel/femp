@@ -1,5 +1,5 @@
-#ifndef ANALYSIS_RESULT_HPP
-#define ANALYSIS_RESULT_HPP
+#ifndef FEMP_ANALYSIS_RESULT_HPP
+#define FEMP_ANALYSIS_RESULT_HPP
 
 #include <map>
 

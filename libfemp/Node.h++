@@ -1,5 +1,5 @@
-#ifndef NODE_HPP
-#define NODE_HPP
+#ifndef FEMP_NODE_HPP
+#define FEMP_NODE_HPP
 
 #include "point.h++"
 

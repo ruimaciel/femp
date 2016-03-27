@@ -1,5 +1,5 @@
-#ifndef UMFPACK_SOLVER_HPP
-#define UMFPACK_SOLVER_HPP
+#ifndef FEMP_UMFPACKSOLVER_HPP
+#define FEMP_UMFPACKSOLVER_HPP
 
 #include <stdio.h>
 

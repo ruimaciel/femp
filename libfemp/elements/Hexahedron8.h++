@@ -1,5 +1,5 @@
-#ifndef HEXAHEDRON8_HPP
-#define HEXAHEDRON8_HPP
+#ifndef FEMP_HEXAHEDRON8_HPP
+#define FEMP_HEXAHEDRON8_HPP
 
 #include <vector>
 

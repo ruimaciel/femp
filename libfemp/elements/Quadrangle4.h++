@@ -1,5 +1,5 @@
-#ifndef QUADRANGLE4_HPP
-#define QUADRANGLE4_HPP
+#ifndef FEMP_FEMP_QUADRANGLE4_HPP
+#define FEMP_FEMP_QUADRANGLE4_HPP
 
 #include <vector>
 

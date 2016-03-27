@@ -1,5 +1,5 @@
-#ifndef HEXAHEDRON_FAMILY_HPP
-#define HEXAHEDRON_FAMILY_HPP
+#ifndef FEMP_HEXAHEDRON_FAMILY_HPP
+#define FEMP_HEXAHEDRON_FAMILY_HPP
 
 
 #include "BaseElement.h++"

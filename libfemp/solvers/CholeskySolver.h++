@@ -1,5 +1,5 @@
-#ifndef CHOLESKY_SOLVER_HPP
-#define CHOLESKY_SOLVER_HPP
+#ifndef FEMP_CHOLESKYSOLVER_HPP
+#define FEMP_CHOLESKYSOLVER_HPP
 
 #include <stdio.h>
 

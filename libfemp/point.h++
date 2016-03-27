@@ -1,5 +1,5 @@
-#ifndef POINT_HPP
-#define POINT_HPP
+#ifndef FEMP_POINT_HPP
+#define FEMP_POINT_HPP
 
 #include <iostream>
 

@@ -1,5 +1,5 @@
-#ifndef TETRAHEDRON4_HPP
-#define TETRAHEDRON4_HPP
+#ifndef FEMP_TETRAHEDRON4_HPP
+#define FEMP_TETRAHEDRON4_HPP
 
 #include <vector>
 

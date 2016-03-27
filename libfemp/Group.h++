@@ -1,5 +1,5 @@
-#ifndef GROUP_HPP
-#define GROUP_HPP
+#ifndef FEMP_GROUP_HPP
+#define FEMP_GROUP_HPP
 
 #include <set>
 #include <string>

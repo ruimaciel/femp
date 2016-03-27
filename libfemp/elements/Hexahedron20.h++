@@ -1,5 +1,5 @@
-#ifndef HEXAHEDRON20_HPP
-#define HEXAHEDRON20_HPP
+#ifndef FEMP_HEXAHEDRON20_HPP
+#define FEMP_HEXAHEDRON20_HPP
 
 #include <vector>
 

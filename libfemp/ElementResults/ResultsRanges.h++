@@ -1,5 +1,5 @@
-#ifndef RESULTS_RANGES_HPP
-#define RESULTS_RANGES_HPP
+#ifndef FEMP_RESULTSRANGES_HPP
+#define FEMP_RESULTSRANGES_HPP
 
 
 namespace fem

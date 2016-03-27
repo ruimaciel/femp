@@ -1,5 +1,5 @@
-#ifndef FEM_HPP
-#define FEM_HPP
+#ifndef FEMP_MODEL_HPP
+#define FEMP_MODEL_HPP
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 

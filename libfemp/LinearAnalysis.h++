@@ -1,5 +1,5 @@
-#ifndef LINEAR_ANALYSIS_HPP
-#define LINEAR_ANALYSIS_HPP
+#ifndef FEMP_LINEAR_ANALYSIS_HPP
+#define FEMP_LINEAR_ANALYSIS_HPP
 
 #include "Analysis.h++"
 

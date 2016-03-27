@@ -51,7 +51,7 @@
 #include <libfemp/parsers/FemJsonParser.h++>
 #include <libfemp/parsers/MshParser.h++>
 #include <libfemp/parsers/json.h>
-#include <libfemp/fem_msh.h++>
+#include <libfemp/parsers/fem_msh.h++>
 
 #include "ProjectVisitor/OutputResultsInNodesVisitor.h++"
 #include "ProjectVisitor/OutputResultsInNodesCSVVisitor.h++"

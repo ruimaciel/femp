@@ -7,7 +7,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <libfemp/fem_msh.h++>
+#include <libfemp/parsers/fem_msh.h++>
 #include <libfemp/parsers/json.h>
 #include <libfemp/parsers/MshParser.h++>
 

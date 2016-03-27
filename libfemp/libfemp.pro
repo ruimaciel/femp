@@ -57,7 +57,7 @@ HEADERS = Group.h++ \
 	solvers/UmfpackSolver.h++ \
 	Surface.h++ \
 	solvers/*.h++ \
-	fem_msh.h++ lex.msh_yy.h \
+	parsers/fem_msh.h++ lex.msh_yy.h \
 	parsers/parser.h++ \
 	parsers/MshParser.h++ \
 	parsers/json.h \
@@ -83,7 +83,7 @@ SOURCES = Group.c++ \
 	SurfaceLoadOperators/SurfaceLoadOperator.c++ \
 	SurfaceLoadOperators/SurfaceNormalLoad.c++ \
 	Surface.c++ \
-	fem_msh.c++ lex.msh_yy.c++ \
+	parsers/fem_msh.c++ lex.msh_yy.c++ \
 	parsers/parser.c++ \
 	parsers/MshParser.c++ \
 	parsers/json.c \

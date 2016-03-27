@@ -13,7 +13,7 @@
 #include <QString>
 
 
-#include "fem_msh.h++"
+#include <libfemp/parsers/fem_msh.h++>
 
 
 

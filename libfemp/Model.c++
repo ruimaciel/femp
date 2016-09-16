@@ -1,4 +1,3 @@
-#include "Model.h++"
 #include <algorithm>
 
 #include <cstdlib>
@@ -8,6 +7,7 @@
 #include <vector>
 #include <stack>
 
+#include "Model.h++"
 
 
 namespace fem

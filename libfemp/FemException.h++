@@ -11,8 +11,8 @@
 class FemException
 	: public std::runtime_error
 {
-	public:
-		explicit FemException(const std::string &message): std::runtime_error(std::string("FEM: "+message)) {}
+public:
+	explicit FemException(const std::string &message): std::runtime_error(std::string("FEM: "+message)) {}
 };
 
 

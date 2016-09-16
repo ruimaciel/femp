@@ -13,19 +13,19 @@ namespace fem
 class SurfaceLoad
 	: public Element
 {
-	public:
-		std::vector<fem::point>	surface_forces;	// forces acting in each node, used to interpolate the surface load
+public:
+	std::vector<fem::point>	surface_forces;	// forces acting in each node, used to interpolate the surface load
 
-	public:
-		SurfaceLoad();
-		SurfaceLoad(const SurfaceLoad &);
-		~SurfaceLoad();
+public:
+	SurfaceLoad();
+	SurfaceLoad(const SurfaceLoad &);
+	~SurfaceLoad();
 
 
-		/**
-		Clears all attributes
-		**/
-		void clear();
+	/**
+	Clears all attributes
+	**/
+	void clear();
 };
 
 }

@@ -5,17 +5,21 @@
 
 namespace fem
 {
-	class NodalDisplacement {
-		public:
-			//TODO change this
-			point displacement;
 
-		public:
-			NodalDisplacement ();
-			NodalDisplacement (const NodalDisplacement &copied);
-			~NodalDisplacement ();
 
-	};
-}
+class NodalDisplacement {
+public:
+	//TODO change this
+	point displacement;
+
+public:
+	NodalDisplacement ();
+	NodalDisplacement (const NodalDisplacement &copied);
+	~NodalDisplacement ();
+
+};
+
+
+}	// namespace fem
 
 #endif

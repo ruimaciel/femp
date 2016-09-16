@@ -93,6 +93,7 @@ public:
 
 typedef std::vector<Element>::size_type  element_ref_t; // current definition
 
-}
+
+}	// namespace fem
 
 #endif

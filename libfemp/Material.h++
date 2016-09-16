@@ -38,6 +38,7 @@ public:
 
 typedef std::vector<Material>::size_type material_ref_t;
 
+
 }	// namespace fem
 
 #endif

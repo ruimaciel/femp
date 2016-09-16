@@ -33,5 +33,6 @@ public:
 	void clear();
 };
 
-}
+}	// namespace fem
+
 #endif

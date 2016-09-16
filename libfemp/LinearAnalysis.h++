@@ -163,5 +163,6 @@ LinearAnalysis<Scalar>::operator() ()
 }
 
 
-}
+}	// namespace fem
+
 #endif

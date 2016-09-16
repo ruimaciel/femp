@@ -103,6 +103,7 @@ public:
 
 };
 
-}
+
+}	// namespace fem
 
 #endif

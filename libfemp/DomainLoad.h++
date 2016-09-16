@@ -19,5 +19,6 @@ public:
 	~DomainLoad();
 };
 
-}
+}	// namespace fem
+
 #endif

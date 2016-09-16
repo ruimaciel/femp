@@ -259,6 +259,7 @@ point cross_product(const point &LHV, const point &RHV)
 	return temp;
 }
 
+
 double dot_product(const point &LHV, const point &RHV)
 {
 	return LHV.data[0]*RHV.data[0] + LHV.data[1]*RHV.data[1] + LHV.data[2]*RHV.data[2];

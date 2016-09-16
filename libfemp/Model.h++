@@ -1,8 +1,6 @@
 #ifndef FEMP_MODEL_HPP
 #define FEMP_MODEL_HPP
 
-#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include <map>
 #include <vector>
 #include <list>
@@ -25,14 +23,9 @@ namespace fem
 {
 
 class Model 
-	: public sigc::trackable
 {
 private:
 	int default_material;	// used when adding elements
-
-public:	// sigc++ signals
-	sigc::signal<void, size_t const, fem::NodeRestrictions const>	update_node_restriction;	// signals a change to a node restriction
-	sigc::signal<void, size_t, fem::LoadPattern const &>	load_pattern_created;	// signals that a new load pattern has been added to the project
 
 public:
 	std::map<node_ref_t, Node> 	node_list;
@@ -89,7 +82,6 @@ public:
 
 	/**
 	Creates an empty load pattern
-	This is used by sigc++ signals
 	**/
 	void createEmptyLoadPattern(std::string const &label);
 

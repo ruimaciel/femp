@@ -4,7 +4,6 @@
 #include <iostream> //TODO remove this: debug purposes only
 #include <map>
 
-#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <boost/tuple/tuple.hpp>
 
 #include <Eigen/Core>

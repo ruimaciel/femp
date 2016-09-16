@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "HexahedronFamily.h++"
-#include "../point.h++"
+#include "../Point.h++"
 
 
 
@@ -19,18 +19,18 @@ public:
 	Hexahedron8();
 	~Hexahedron8()	{};
 
-	std::vector<fem::point> & setCoordinates();
+	std::vector<fem::Point> & setCoordinates();
 
-	std::vector<T> & setN(const point & p);
+	std::vector<T> & setN(const Point & p);
 	std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
 
-	std::vector<T> & setdNdcsi(const point &p);
+	std::vector<T> & setdNdcsi(const Point &p);
 	std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
 
-	std::vector<T> & setdNdeta(const point &p);
+	std::vector<T> & setdNdeta(const Point &p);
 	std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
 
-	std::vector<T> & setdNdzeta(const point &p);
+	std::vector<T> & setdNdzeta(const Point &p);
 	std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
 public: // merging with fem::Element
@@ -63,7 +63,7 @@ Hexahedron8<T>::Hexahedron8()
 
 template<typename T>
 std::vector<T> & 
-Hexahedron8<T>::setN(const point &p)
+Hexahedron8<T>::setN(const Point &p)
 {
 	return this->setN(p.data[0], p.data[1], p.data[2]);
 }
@@ -88,7 +88,7 @@ Hexahedron8<T>::setN(const T &csi, const T &eta, const T &zeta)
 
 template<typename T>
 std::vector<T> & 
-Hexahedron8<T>::setdNdcsi(const point &p)
+Hexahedron8<T>::setdNdcsi(const Point &p)
 {
 	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
 }
@@ -114,7 +114,7 @@ Hexahedron8<T>::setdNdcsi(const T &, const T &eta, const T &zeta)
 
 template<typename T>
 std::vector<T> & 
-Hexahedron8<T>::setdNdeta(const point &p)
+Hexahedron8<T>::setdNdeta(const Point &p)
 {
 	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
 }
@@ -140,7 +140,7 @@ Hexahedron8<T>::setdNdeta(const T &csi, const T &, const T &zeta)
 
 template<typename T>
 std::vector<T> & 
-Hexahedron8<T>::setdNdzeta(const point &p)
+Hexahedron8<T>::setdNdzeta(const Point &p)
 {
 	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
 }
@@ -165,18 +165,18 @@ Hexahedron8<T>::setdNdzeta(const T &csi, const T &eta, const T &)
 
 
 template<typename T>
-std::vector<fem::point> & 
+std::vector<fem::Point> & 
 Hexahedron8<T>::setCoordinates()
 {
-	this->coordinates[0] = point(	-1,	-1,	-1	);
-	this->coordinates[1] = point(	1,	-1,	-1	);
-	this->coordinates[2] = point(	1,	1,	-1	);
-	this->coordinates[3] = point(	-1,	1,	-1	);
+	this->coordinates[0] = Point(	-1,	-1,	-1	);
+	this->coordinates[1] = Point(	1,	-1,	-1	);
+	this->coordinates[2] = Point(	1,	1,	-1	);
+	this->coordinates[3] = Point(	-1,	1,	-1	);
 
-	this->coordinates[4] = point(	-1,	-1,	1	);
-	this->coordinates[5] = point(	1,	-1,	1	);
-	this->coordinates[6] = point(	1,	1,	1	);
-	this->coordinates[7] = point(	-1,	1,	1	);
+	this->coordinates[4] = Point(	-1,	-1,	1	);
+	this->coordinates[5] = Point(	1,	-1,	1	);
+	this->coordinates[6] = Point(	1,	1,	1	);
+	this->coordinates[7] = Point(	-1,	1,	1	);
 
 	return this->coordinates;
 }

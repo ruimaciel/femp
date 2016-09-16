@@ -31,7 +31,7 @@ public:
 		FE_HEXAHEDRON27 = 12,   /* 27-node second order hexahedron */
 		FE_PRISM18      = 13,   /* 18-node second order prism */
 		FE_PYRAMID14    = 14,   /* 14-node second order pyramid */
-		FE_POINT        = 15,   /* 1-node point */
+		FE_POINT        = 15,   /* 1-node Point */
 		FE_QUADRANGLE8  = 16,   /* 8-node second order quadrangle */
 		FE_HEXAHEDRON20 = 17,   /* 20-node second order hexahedron */
 		FE_PRISM15      = 18,   /* 15-node scond order prism */

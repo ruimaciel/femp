@@ -15,14 +15,14 @@ namespace fem
 {
 
 /**
-Defines a surface load whose load vectors converge in a point in space
+Defines a surface load whose load vectors converge in a Point in space
 **/
 class ConcentricLoad
 	: public SurfaceLoadOperator
 {
 protected:
 	float m_magnitude;
-	fem::point m_center;	// the center point where the pressure converges
+	fem::Point m_center;	// the center Point where the pressure converges
 
 	fem::BaseElement<float> *element;	// used to store a pointer to the current object: nasty hack due to the way fem::Element was done
 
@@ -36,7 +36,7 @@ public:
 	ConcentricLoad();
 
 	void setLoadMagnitude(float const &magnitude);
-	void setConvergencePoint(fem::point const &center);
+	void setConvergencePoint(fem::Point const &center);
 
 	void operator() (fem::SurfaceLoad &surface_load, fem::Model &model);
 };

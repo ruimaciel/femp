@@ -8,18 +8,18 @@ namespace fem
 {
 
 
-class point
+class Point
 {
 public:
 	double data[3];
 
 	// constructors
-	point();
-	point(const double& a, const double& b, const double& c = 0);
-	point(const point &copied);
+	Point();
+	Point(const double& a, const double& b, const double& c = 0);
+	Point(const Point &copied);
 
 	// class destructor
-	virtual ~point();
+	virtual ~Point();
 
 
 	void set(const double& a, const double& b, const double& c = 0);
@@ -27,7 +27,7 @@ public:
 
 	double norm() const;  // returns the vector's "lenght"
 	void normalize(); // converts the vector to it's director vector (norm() == 1)
-	point director() const;  // return the vector's director vector
+	Point director() const;  // return the vector's director vector
 
 	void zero();   // assigns 0 to all the vector's values
 
@@ -51,34 +51,34 @@ public:
 	void dec_y(const double &ratio)	{data[1] -= ratio;}
 	void dec_z(const double &ratio)	{data[2] -= ratio;}
 
-	point operator = (const point &other);
-	point operator + (const point &other);
-	point operator - (const point &other);
+	Point operator = (const Point &other);
+	Point operator + (const Point &other);
+	Point operator - (const Point &other);
 
-	point operator += (const point &other);
-	point operator -= (const point &other);
-	point operator *= (const double &scalar);
+	Point operator += (const Point &other);
+	Point operator -= (const Point &other);
+	Point operator *= (const double &scalar);
 
-	bool operator == (const point &other);
-	bool operator != (const point &other);
+	bool operator == (const Point &other);
+	bool operator != (const Point &other);
 
 
-	friend point operator +(const point &lhs, const point &rhs);
-	friend point operator -(const point &lhs, const point &rhs);
-	friend point operator *(const double &s, const point &v);
-	friend point operator *(const point &v, const double &s);
+	friend Point operator +(const Point &lhs, const Point &rhs);
+	friend Point operator -(const Point &lhs, const Point &rhs);
+	friend Point operator *(const double &s, const Point &v);
+	friend Point operator *(const Point &v, const double &s);
 
-	friend point cross_product(const point &LHV, const point &RHV);      //assuming vector is 3D
-	friend double dot_product(const point &LHV, const point &RHV);
-	friend point getNormalVector(const point &a, const point &b, const point &c);
+	friend Point cross_product(const Point &LHV, const Point &RHV);      //assuming vector is 3D
+	friend double dot_product(const Point &LHV, const Point &RHV);
+	friend Point getNormalVector(const Point &a, const Point &b, const Point &c);
 };
 
 
-point cross_product(const point &LHV, const point &RHV);      //assuming vector is 3D
-double dot_product(const point &LHV, const point &RHV);
-point getNormalVector(point &a, point &b, point &c);
+Point cross_product(const Point &LHV, const Point &RHV);      //assuming vector is 3D
+double dot_product(const Point &LHV, const Point &RHV);
+Point getNormalVector(Point &a, Point &b, Point &c);
 
-std::ostream &operator<< (std::ostream &out, const point &p);
+std::ostream &operator<< (std::ostream &out, const Point &p);
 
 
 }	// namespace fem

@@ -144,13 +144,13 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 	// calculate
 	element->setCoordinates();
 
-	fem::point dxdcsi, dxdeta, dxdzeta;
+	fem::Point dxdcsi, dxdeta, dxdzeta;
 	
 	// cycle to calculate a gradient value for each node
 	for(unsigned int coord = 0; coord < element->coordinates.size(); coord++)
 	{
-		fem::point local = element->coordinates[coord];	// point in element in \xi, the local coordinates
-		fem::point global;	// node coordinate in x, the global coordinates
+		fem::Point local = element->coordinates[coord];	// Point in element in \xi, the local coordinates
+		fem::Point global;	// node coordinate in x, the global coordinates
 		
 		element->setdNdcsi(local);
 		element->setdNdeta(local);
@@ -184,7 +184,7 @@ ElementResultsFactory<Scalar>::operator() (const fem::Element &reference_element
 		Scalar dNdz = 0;
 		for(unsigned int node = 0; node < element->coordinates.size(); node++)
 		{
-			fem::point d; // displacements
+			fem::Point d; // displacements
 			d = this->m_analysis_result->displacements[ reference_element.nodes[node] ];	// displacements calculated in this node
 
 			// calculate \epsilon_{11} = dNdx_1*d1

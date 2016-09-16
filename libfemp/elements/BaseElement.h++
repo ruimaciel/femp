@@ -8,7 +8,7 @@
 
 #include "../Node.h++"
 #include "../Material.h++"
-#include "../point.h++"
+#include "../Point.h++"
 
 
 namespace fem
@@ -42,7 +42,7 @@ public:
 		FE_HEXAHEDRON27 = 12,   /* 27-node second order hexahedron */
 		FE_PRISM18      = 13,   /* 18-node second order prism */
 		FE_PYRAMID14    = 14,   /* 14-node second order pyramid */
-		FE_POINT        = 15,   /* 1-node point */
+		FE_POINT        = 15,   /* 1-node Point */
 		FE_QUADRANGLE8  = 16,   /* 8-node second order quadrangle */
 		FE_HEXAHEDRON20 = 17,   /* 20-node second order hexahedron */
 		FE_PRISM15      = 18,   /* 15-node scond order prism */
@@ -78,9 +78,9 @@ public:
 
 
 public:
-	std::map<int, std::vector<boost::tuple<fem::point, T> > > ipwpl;	// integration points/weights pair list
+	std::map<int, std::vector<boost::tuple<fem::Point, T> > > ipwpl;	// integration points/weights pair list
 
-	std::vector<fem::point>	coordinates;
+	std::vector<fem::Point>	coordinates;
 
 	std::vector<T>	N;
 	std::vector<T>	dNdcsi;
@@ -100,25 +100,25 @@ public:
 	/**
 	Sets this element's local coordinates for each of its nodes
 	**/
-	virtual std::vector<fem::point> & setCoordinates() = 0;
+	virtual std::vector<fem::Point> & setCoordinates() = 0;
 
 	/**
-	Calculates the values for vector N according to a given point expressed in local coordinates
+	Calculates the values for vector N according to a given Point expressed in local coordinates
 	**/
-	virtual std::vector<T> & setN(const point & p) = 0;
+	virtual std::vector<T> & setN(const Point & p) = 0;
 	virtual std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0) = 0;
-	virtual std::vector<T> & setdNdcsi(const point &p) = 0;
+	virtual std::vector<T> & setdNdcsi(const Point &p) = 0;
 	virtual std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0) = 0;
-	virtual std::vector<T> & setdNdeta(const point &p) = 0;
+	virtual std::vector<T> & setdNdeta(const Point &p) = 0;
 	virtual std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0) = 0;
-	virtual std::vector<T> & setdNdzeta(const point &p) = 0;
+	virtual std::vector<T> & setdNdzeta(const Point &p) = 0;
 	virtual std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0) = 0;
 
 	/**
 	Returns a list of
 	**/
-	std::vector<boost::tuple<fem::point, T> > &stiffness_quadrature()	{ return this->ipwpl[stiffness_degree]; }
-	std::vector<boost::tuple<fem::point, T> > &domain_quadrature()	{ return this->ipwpl[domain_degree]; }
+	std::vector<boost::tuple<fem::Point, T> > &stiffness_quadrature()	{ return this->ipwpl[stiffness_degree]; }
+	std::vector<boost::tuple<fem::Point, T> > &domain_quadrature()	{ return this->ipwpl[domain_degree]; }
 
 public:	// merging with fem::Element
 	virtual void set(std::vector<size_t> &nodes) = 0;
@@ -140,7 +140,7 @@ protected:
 	  Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
 	  (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and
 	  B.P. Flannery
-	@param x	array of T, stores the abcissa of the integration point
+	@param x	array of T, stores the abcissa of the integration Point
 	@param w	array of T, stores the weights of the integration points
 	@param n	the number of Gauss points
 	*/
@@ -161,7 +161,7 @@ B.P. Flannery
 /*******************************************************************************
 Given n, this
 routine returns arrays x[1..n] and w[1..n] of length n, containing the abscissas
-and weights of the Gauss-Legendre n-point quadrature formula.
+and weights of the Gauss-Legendre n-Point quadrature formula.
 *******************************************************************************/
 template<typename T>
 void 

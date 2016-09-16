@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "PrismFamily.h++"
-#include "../point.h++"
+#include "../Point.h++"
 
 
 
@@ -20,18 +20,18 @@ struct Prism18
 		Prism18();
 		~Prism18()	{};
 
-		std::vector<fem::point> & setCoordinates();
+		std::vector<fem::Point> & setCoordinates();
 
-		std::vector<T> & setN(const point & p);
+		std::vector<T> & setN(const Point & p);
 		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdcsi(const point &p);
+		std::vector<T> & setdNdcsi(const Point &p);
 		std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdeta(const point &p);
+		std::vector<T> & setdNdeta(const Point &p);
 		std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdzeta(const point &p);
+		std::vector<T> & setdNdzeta(const Point &p);
 		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
 public: // merging with fem::Element
@@ -62,7 +62,7 @@ Prism18<T>::Prism18()
 
 
 template<typename T>
-std::vector<T> & Prism18<T>::setN(const point &p)
+std::vector<T> & Prism18<T>::setN(const Point &p)
 {
 	return this->setN(p.data[0], p.data[1], p.data[2]);
 }
@@ -97,7 +97,7 @@ std::vector<T> & Prism18<T>::setN(const T &csi, const T &eta, const T &zeta)
 
 
 template<typename T>
-std::vector<T> & Prism18<T>::setdNdcsi(const point &p)
+std::vector<T> & Prism18<T>::setdNdcsi(const Point &p)
 {
 	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
 }
@@ -134,7 +134,7 @@ std::vector<T> & Prism18<T>::setdNdcsi(const T &csi, const T &eta, const T &zeta
 
 
 template<typename T>
-std::vector<T> & Prism18<T>::setdNdeta(const point &p)
+std::vector<T> & Prism18<T>::setdNdeta(const Point &p)
 {
 	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
 }
@@ -170,7 +170,7 @@ std::vector<T> & Prism18<T>::setdNdeta(const T &csi, const T &eta, const T &zeta
 
 
 template<typename T>
-std::vector<T> & Prism18<T>::setdNdzeta(const point &p)
+std::vector<T> & Prism18<T>::setdNdzeta(const Point &p)
 {
 	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
 }
@@ -204,28 +204,28 @@ std::vector<T> & Prism18<T>::setdNdzeta(const T &csi, const T &eta, const T &zet
 }
 
 template<typename T>
-std::vector<fem::point> & Prism18<T>::setCoordinates()
+std::vector<fem::Point> & Prism18<T>::setCoordinates()
 {
-	this->coordinates[0] = point(	0,	0,	-1	);
-	this->coordinates[1] = point(	1,	0,	-1	);
-	this->coordinates[2] = point(	0,	1,	-1	);
-	this->coordinates[3] = point(	0,	0,	1	);
-	this->coordinates[4] = point(	1,	0,	1	);
-	this->coordinates[5] = point(	0,	1,	1	);
+	this->coordinates[0] = Point(	0,	0,	-1	);
+	this->coordinates[1] = Point(	1,	0,	-1	);
+	this->coordinates[2] = Point(	0,	1,	-1	);
+	this->coordinates[3] = Point(	0,	0,	1	);
+	this->coordinates[4] = Point(	1,	0,	1	);
+	this->coordinates[5] = Point(	0,	1,	1	);
 
-	this->coordinates[6] = point(	0.5,	0,	-1	);
-	this->coordinates[7] = point(	0,	0.5,	-1	);
-	this->coordinates[8] = point(	0,	0,	0	);
-	this->coordinates[9] = point(	0.5,	0.5,	-1	);
-	this->coordinates[10] = point(	1,	0,	0	);
-	this->coordinates[11] = point(	0,	1,	0	);
-	this->coordinates[12] = point(	0.5,	0,	1	);
-	this->coordinates[13] = point(	0,	0.5,	1	);
-	this->coordinates[14] = point(	0.5,	0.5,	1	);
+	this->coordinates[6] = Point(	0.5,	0,	-1	);
+	this->coordinates[7] = Point(	0,	0.5,	-1	);
+	this->coordinates[8] = Point(	0,	0,	0	);
+	this->coordinates[9] = Point(	0.5,	0.5,	-1	);
+	this->coordinates[10] = Point(	1,	0,	0	);
+	this->coordinates[11] = Point(	0,	1,	0	);
+	this->coordinates[12] = Point(	0.5,	0,	1	);
+	this->coordinates[13] = Point(	0,	0.5,	1	);
+	this->coordinates[14] = Point(	0.5,	0.5,	1	);
 
-	this->coordinates[15] = point(	0.5,	0,	0	);
-	this->coordinates[16] = point(	0,	0.5,	0	);
-	this->coordinates[17] = point(	0.5,	0.5,	0	);
+	this->coordinates[15] = Point(	0.5,	0,	0	);
+	this->coordinates[16] = Point(	0,	0.5,	0	);
+	this->coordinates[17] = Point(	0.5,	0.5,	0	);
 
 	return this->coordinates;
 }

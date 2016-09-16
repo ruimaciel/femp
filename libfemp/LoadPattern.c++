@@ -48,7 +48,7 @@ LoadPattern::empty() const
 
 
 void 
-LoadPattern::addNodalLoad(size_t node, point force)
+LoadPattern::addNodalLoad(size_t node, Point force)
 {
 	//TODO perform sanity checks
 	NodalLoad n;
@@ -58,7 +58,7 @@ LoadPattern::addNodalLoad(size_t node, point force)
 
 
 void 
-LoadPattern::addNodalDisplacement(size_t node, point displacement)
+LoadPattern::addNodalDisplacement(size_t node, Point displacement)
 {
 	//TODO perform sanity checks
 	NodalDisplacement n;
@@ -68,7 +68,7 @@ LoadPattern::addNodalDisplacement(size_t node, point displacement)
 
 
 void 
-LoadPattern::addDomainLoad(size_t element, point force)
+LoadPattern::addDomainLoad(size_t element, Point force)
 {
 	//TODO perform sanity checks
 	DomainLoad n;

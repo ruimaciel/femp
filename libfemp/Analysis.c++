@@ -102,13 +102,13 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		B.setZero();
 
 			// build the element_iterator stiffness matrix: cycle through the number of integration points
-		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->stiffness_quadrature().begin(); i != element->stiffness_quadrature().end(); i++)
+		for (typename std::vector<boost::tuple<fem::Point,Scalar> >::iterator i = element->stiffness_quadrature().begin(); i != element->stiffness_quadrature().end(); i++)
 		{
 #define X(N) model.node_list[element_iterator->nodes[N]].x()
 #define Y(N) model.node_list[element_iterator->nodes[N]].y()
 #define Z(N) model.node_list[element_iterator->nodes[N]].z()
 
-				// set the shape function and it's partial derivatives for this integration point
+				// set the shape function and it's partial derivatives for this integration Point
 			element->setdNdcsi( i->template get<0>() );
 			element->setdNdeta( i->template get<0>() );
 			element->setdNdzeta( i->template get<0>() );
@@ -166,7 +166,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 				material_index = element_iterator->material;
 			}
 
-			// add this integration point's contribution
+			// add this integration Point's contribution
 			k_elem += Bt*D*B*detJ*i->get<1>();
 
 			// calculate this element's contribution to the model's volume
@@ -238,10 +238,10 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		f_elem.setZero();
 
 		// as the distribution is linear across the domain then degree 1 is enough
-		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
+		for (typename std::vector<boost::tuple<fem::Point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
 		{
 				// build the Jacobian
-			point quadrature_point = i->template get<0>();
+			Point quadrature_point = i->template get<0>();
 
 			element->setN( quadrature_point);
 			element->setdNdcsi(quadrature_point);
@@ -348,9 +348,9 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		f_elem.resize(nnodes*3);
 		f_elem.setZero();
 
-		for (typename std::vector<boost::tuple<fem::point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
+		for (typename std::vector<boost::tuple<fem::Point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
 		{
-				// get shape function and shape function derivatives in this integration point's coordinate
+				// get shape function and shape function derivatives in this integration Point's coordinate
 			element->setN( i->template get<0>() );
 			element->setdNdcsi(i->template get<0>() );
 			element->setdNdeta(i->template get<0>() );
@@ -385,7 +385,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 #define N(n) element->N[n]
 #define W    i->template get<1>()
 				// calculate q(csi, eta, zeta)
-			fem::point q(0,0,0);
+			fem::Point q(0,0,0);
 			for(int j = 0; j < nnodes; j++)
 			{
 				q += N(j)*surface_load->surface_forces[j];
@@ -487,7 +487,7 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar
 template<typename Scalar>
 void Analysis<Scalar>::generateDisplacementsMap(Model &model, AnalysisResult<Scalar> &result)
 {
-	fem::point d;	// displacements field
+	fem::Point d;	// displacements field
 	boost::tuple<size_t,size_t,size_t> references;
 
 	result.displacements.clear();

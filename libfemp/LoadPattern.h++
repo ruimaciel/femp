@@ -37,15 +37,15 @@ public:
 	/** checks if this load pattern has any load set **/
 	bool empty() const;
 
-	void addNodalLoad(size_t, point);
-	void addNodalDisplacement(size_t, point);
+	void addNodalLoad(size_t, Point);
+	void addNodalDisplacement(size_t, Point);
 
 	/**
 	sets the domain load for a given element
 	@param element	element that will get a new domain load definition
 	@param force_shape	a list of forces acting on each of the element's nodes
 	**/
-	void addDomainLoad(size_t element, point force);
+	void addDomainLoad(size_t element, Point force);
 
 	void addSurfaceLoad(SurfaceLoad &);
 };

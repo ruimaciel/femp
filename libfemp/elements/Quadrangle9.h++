@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "QuadrangleFamily.h++"
-#include "../point.h++"
+#include "../Point.h++"
 
 
 
@@ -19,18 +19,18 @@ struct Quadrangle9
 		Quadrangle9();
 		~Quadrangle9()	{};
 
-		std::vector<fem::point> & setCoordinates();
+		std::vector<fem::Point> & setCoordinates();
 
-		std::vector<T> & setN(const point & p);
+		std::vector<T> & setN(const Point & p);
 		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdcsi(const point &p);
+		std::vector<T> & setdNdcsi(const Point &p);
 		std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdeta(const point &p);
+		std::vector<T> & setdNdeta(const Point &p);
 		std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
 
-		std::vector<T> & setdNdzeta(const point &p);
+		std::vector<T> & setdNdzeta(const Point &p);
 		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
 
 public: // merging with fem::Element
@@ -77,14 +77,14 @@ std::vector<T> & Quadrangle9<T>::setN(const T &csi, const T &eta, const T &)
 
 
 template<typename T>
-std::vector<T> & Quadrangle9<T>::setN(const point &p)
+std::vector<T> & Quadrangle9<T>::setN(const Point &p)
 {
 	return this->setN(p.data[0], p.data[1], p.data[2]);
 }
 
 
 template<typename T>
-std::vector<T> & Quadrangle9<T>::setdNdcsi(const point &p)
+std::vector<T> & Quadrangle9<T>::setdNdcsi(const Point &p)
 {
 	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
 }
@@ -110,7 +110,7 @@ std::vector<T> & Quadrangle9<T>::setdNdcsi(const T &csi, const T &eta, const T &
 
 
 template<typename T>
-std::vector<T> & Quadrangle9<T>::setdNdeta(const point &p)
+std::vector<T> & Quadrangle9<T>::setdNdeta(const Point &p)
 {
 	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
 }
@@ -136,7 +136,7 @@ std::vector<T> & Quadrangle9<T>::setdNdeta(const T &csi, const T &eta, const T &
 
 
 template<typename T>
-std::vector<T> & Quadrangle9<T>::setdNdzeta(const point &p)
+std::vector<T> & Quadrangle9<T>::setdNdzeta(const Point &p)
 {
 	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
 }
@@ -161,17 +161,17 @@ std::vector<T> & Quadrangle9<T>::setdNdzeta(const T &, const T &, const T &)
 }
 
 template<typename T>
-std::vector<fem::point> & Quadrangle9<T>::setCoordinates()
+std::vector<fem::Point> & Quadrangle9<T>::setCoordinates()
 {
-	this->coordinates[0] = point(	-0.5,	-0.5,	0	);
-	this->coordinates[1] = point(	0.5,	-0.5,	0	);
-	this->coordinates[2] = point(	0.5,	0.5,	0	);
-	this->coordinates[3] = point(	-0.5,	0.5,	0	);
-	this->coordinates[4] = point(	0,	-0.5,	0	);
-	this->coordinates[5] = point(	0.5,	0,	0	);
-	this->coordinates[6] = point(	0,	0.5,	0	);
-	this->coordinates[7] = point(	-0.5,	0,	0	);
-	this->coordinates[8] = point(	0,	0,	0	);
+	this->coordinates[0] = Point(	-0.5,	-0.5,	0	);
+	this->coordinates[1] = Point(	0.5,	-0.5,	0	);
+	this->coordinates[2] = Point(	0.5,	0.5,	0	);
+	this->coordinates[3] = Point(	-0.5,	0.5,	0	);
+	this->coordinates[4] = Point(	0,	-0.5,	0	);
+	this->coordinates[5] = Point(	0.5,	0,	0	);
+	this->coordinates[6] = Point(	0,	0.5,	0	);
+	this->coordinates[7] = Point(	-0.5,	0,	0	);
+	this->coordinates[8] = Point(	0,	0,	0	);
 
 	return this->coordinates;
 }

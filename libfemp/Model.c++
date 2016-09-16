@@ -59,7 +59,7 @@ Model::setNode(size_t ref, double x, double y, double z)
 
 
 void 
-Model::setNode(size_t ref, fem::point p)
+Model::setNode(size_t ref, fem::Point p)
 {
 	Node n;
 	n.x(p.x());

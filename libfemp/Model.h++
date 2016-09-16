@@ -54,7 +54,7 @@ public:
 
 	// sets a node
 	void setNode(size_t ref, double x, double y, double z);
-	void setNode(size_t ref, fem::point p);
+	void setNode(size_t ref, fem::Point p);
 
 	fem::Node & getNode(size_t ref)	{ return this->node_list[ref]; }
 

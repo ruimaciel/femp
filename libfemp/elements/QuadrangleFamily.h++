@@ -42,7 +42,7 @@ template<typename T>
 void QuadrangleFamily<T>::generateQuadratureData()
 {
 	using namespace boost;
-	std::vector<tuple<fem::point, T> > ips;
+	std::vector<tuple<fem::Point, T> > ips;
 	
 	for(int d = 1; d < 6; d++)
 	{
@@ -56,7 +56,7 @@ void QuadrangleFamily<T>::generateQuadratureData()
 		{
 			for(int j = 0; j < d; j++)
 			{
-				ips.push_back(tuple<fem::point,T>(fem::point(x[i],x[j],0), w[i]*w[j]));
+				ips.push_back(tuple<fem::Point,T>(fem::Point(x[i],x[j],0), w[i]*w[j]));
 			}
 		}
 		this->ipwpl[d] = ips;

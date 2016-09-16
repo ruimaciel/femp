@@ -1,12 +1,11 @@
-
 #include <math.h>   // trigonometry functions
-#include "point.h++"
+#include "Point.h++"
 
 
 namespace fem
 {
 
-point::point()
+Point::Point()
 {
 	this->data[0] = 0;
 	this->data[1] = 0;
@@ -14,7 +13,7 @@ point::point()
 }
 
 
-point::point(const double& a, const double& b, const double& c)
+Point::Point(const double& a, const double& b, const double& c)
 {
     this->data[0] = a;
     this->data[1] = b; 
@@ -22,7 +21,7 @@ point::point(const double& a, const double& b, const double& c)
 }
 
 
-point::point(const point &copied)
+Point::Point(const Point &copied)
 {
 	this->data[0] = copied.data[0];
   	this->data[1] = copied.data[1];
@@ -30,7 +29,7 @@ point::point(const point &copied)
 }
 
 
-point::~point()
+Point::~Point()
 {
     // nothing to do here
 }
@@ -40,7 +39,7 @@ point::~point()
 	Sets the vector according to the given values
 */
 void 
-point::set(const double& a, const double& b, const double& c)
+Point::set(const double& a, const double& b, const double& c)
 {
 	this->data[0] = a;
 	this->data[1] = b;
@@ -52,7 +51,7 @@ point::set(const double& a, const double& b, const double& c)
 	Converts the given cylindrical coordinates to regular coordinates
 */
 void 
-point::set_cylindrical(const double& radius, const double& alfa, const double &height)
+Point::set_cylindrical(const double& radius, const double& alfa, const double &height)
 {
 	// alfa is the angle the vector makes with the OX axis
 	// angle in degrees
@@ -67,7 +66,7 @@ point::set_cylindrical(const double& radius, const double& alfa, const double &h
 	Returns the vector's norm (or length);
 */
 double 
-point::norm() const
+Point::norm() const
 {
 	return sqrt(this->data[0]*this->data[0] + this->data[1]*this->data[1] + this->data[2]*this->data[2] );
 }
@@ -77,7 +76,7 @@ point::norm() const
 	Normalizes the vector (norm == 1)
 */
 void 
-point::normalize()
+Point::normalize()
 {
     double length = norm();
     if(length != 0)
@@ -89,10 +88,10 @@ point::normalize()
 }
 
 
-point 
-point::director() const
+Point 
+Point::director() const
 {
-	point temp = *this;
+	Point temp = *this;
 	double length = temp.norm();
 
 	temp.data[0] /= length;
@@ -104,7 +103,7 @@ point::director() const
 
 
 void 
-point::zero()
+Point::zero()
 {
     this->data[0] = 0;
     this->data[1] = 0;
@@ -112,8 +111,8 @@ point::zero()
 }
 
 
-point 
-point::operator = (const point &other)
+Point 
+Point::operator = (const Point &other)
 {
 	if(&other != this)
   	{
@@ -125,10 +124,10 @@ point::operator = (const point &other)
 }
 
 
-point 
-point::operator + (const point &other)
+Point 
+Point::operator + (const Point &other)
 {
-	point tmp;
+	Point tmp;
   	tmp.data[0] = this->data[0] + other.data[0];
   	tmp.data[1] = this->data[1] + other.data[1];
   	tmp.data[2] = this->data[2] + other.data[2];
@@ -136,10 +135,10 @@ point::operator + (const point &other)
 }
 
 
-point 
-point::operator - (const point &other)
+Point 
+Point::operator - (const Point &other)
 {
-	point tmp;
+	Point tmp;
   	tmp.data[0] = this->data[0] - other.data[0];
   	tmp.data[1] = this->data[1] - other.data[1];
   	tmp.data[2] = this->data[2] - other.data[2];
@@ -147,8 +146,8 @@ point::operator - (const point &other)
 }
 
 
-point 
-point::operator += (const point &other)
+Point 
+Point::operator += (const Point &other)
 {
 	this->data[0] += other.data[0];
 	this->data[1] += other.data[1];
@@ -158,8 +157,8 @@ point::operator += (const point &other)
 }
 
 
-point 
-point::operator -= (const point &other)
+Point 
+Point::operator -= (const Point &other)
 {
 	this->data[0] -= other.data[0];
 	this->data[1] -= other.data[1];
@@ -169,8 +168,8 @@ point::operator -= (const point &other)
 }
 
 
-point 
-point::operator *= (const double &scalar)
+Point 
+Point::operator *= (const double &scalar)
 {
 	this->data[0] *= scalar;
 	this->data[1] *= scalar;
@@ -181,7 +180,7 @@ point::operator *= (const double &scalar)
 
 
 bool 
-point::operator == (const point &other)
+Point::operator == (const Point &other)
 {
 	if(&other != this)
   	{
@@ -194,7 +193,7 @@ point::operator == (const point &other)
 
 
 bool 
-point::operator != (const point &other)
+Point::operator != (const Point &other)
 {
 	if(&other != this)
   	{
@@ -210,9 +209,9 @@ point::operator != (const point &other)
 	Friend functions
 */
 
-point operator +(const point &lhs, const point &rhs)
+Point operator +(const Point &lhs, const Point &rhs)
 {
-	point temp;
+	Point temp;
 	temp.data[0] = lhs.data[0] + rhs.data[0];
 	temp.data[1] = lhs.data[1] + rhs.data[1];
 	temp.data[2] = lhs.data[2] + rhs.data[2];
@@ -220,9 +219,9 @@ point operator +(const point &lhs, const point &rhs)
 }
 
 
-point operator -(const point &lhs, const point &rhs)
+Point operator -(const Point &lhs, const Point &rhs)
 {
-	point temp;
+	Point temp;
 	temp.data[0] = lhs.data[0] - rhs.data[0];
 	temp.data[1] = lhs.data[1] - rhs.data[1];
 	temp.data[2] = lhs.data[2] - rhs.data[2];
@@ -230,9 +229,9 @@ point operator -(const point &lhs, const point &rhs)
 }
 
 
-point operator *(const double &s, const point &v)
+Point operator *(const double &s, const Point &v)
 {
-	point temp;
+	Point temp;
 	temp.data[0] = s * v.data[0];
 	temp.data[1] = s * v.data[1];
 	temp.data[2] = s * v.data[2];
@@ -240,9 +239,9 @@ point operator *(const double &s, const point &v)
 }
 
 
-point operator *(const point &v, const double &s)
+Point operator *(const Point &v, const double &s)
 {
-	point temp;
+	Point temp;
 	temp.data[0] = s * v.data[0];
 	temp.data[1] = s * v.data[1];
 	temp.data[2] = s * v.data[2];
@@ -250,9 +249,9 @@ point operator *(const point &v, const double &s)
 }
 
 
-point cross_product(const point &LHV, const point &RHV)
+Point cross_product(const Point &LHV, const Point &RHV)
 {
-	point temp;
+	Point temp;
 	temp.data[0] =  LHV.data[1]*RHV.data[2] - LHV.data[2]*RHV.data[1];
 	temp.data[1] = -LHV.data[0]*RHV.data[2] + LHV.data[2]*RHV.data[0];
 	temp.data[2] =  LHV.data[0]*RHV.data[1] - LHV.data[1]*RHV.data[0];
@@ -260,25 +259,25 @@ point cross_product(const point &LHV, const point &RHV)
 }
 
 
-double dot_product(const point &LHV, const point &RHV)
+double dot_product(const Point &LHV, const Point &RHV)
 {
 	return LHV.data[0]*RHV.data[0] + LHV.data[1]*RHV.data[1] + LHV.data[2]*RHV.data[2];
 }
 
 
-point getNormalVector(const point &a, const point &b, const point &c)
+Point getNormalVector(const Point &a, const Point &b, const Point &c)
 {
 	return cross_product(b-a, c-b);
 }
 
 
-point getNormalVector(point &a, point &b, point &c)
+Point getNormalVector(Point &a, Point &b, Point &c)
 {
 	return cross_product(b-a, c-b);
 }
 
 
-std::ostream &operator<< (std::ostream &out, const point &p)
+std::ostream &operator<< (std::ostream &out, const Point &p)
 {
 	out << "[" << p.x() << ", " << p.y() << ", " << p.z() << "]";
 	return out;

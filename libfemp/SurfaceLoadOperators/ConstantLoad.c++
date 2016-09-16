@@ -12,7 +12,7 @@ ConstantLoad::ConstantLoad()
 
 
 void 
-ConstantLoad::setLoad(fem::point const &force)
+ConstantLoad::setLoad(fem::Point const &force)
 {
 	this->m_force = force;
 }

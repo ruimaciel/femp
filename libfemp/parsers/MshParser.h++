@@ -123,7 +123,7 @@ protected:
 		NT_ELEMENT_NODE_DATA,
 
 		// generic helper non-terminal states
-		NT_COORDINATE,	// requires 3 floats, sets a point with them
+		NT_COORDINATE,	// requires 3 floats, sets a Point with them
 	};
 
 	/** 
@@ -192,7 +192,7 @@ protected:
 		PR_E_TAGS_3_SET,
 
 		// primitive states
-		PR_COORDINATE	// requires 3 floats, sets a point with them
+		PR_COORDINATE	// requires 3 floats, sets a Point with them
 	};
 
 	std::map< enum NonTerminalToken, std::map<enum TerminalToken, enum ParserRule> > table;

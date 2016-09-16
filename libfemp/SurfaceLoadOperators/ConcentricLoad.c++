@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../point.h++"
+#include "../Point.h++"
 
 
 namespace fem
@@ -13,7 +13,7 @@ ConcentricLoad::ConcentricLoad()
 {
 	this->element = nullptr;
 	this->m_magnitude = 1.0f;
-	this->m_center = fem::point(0,0,0);
+	this->m_center = fem::Point(0,0,0);
 }
 
 
@@ -25,7 +25,7 @@ ConcentricLoad::setLoadMagnitude(float const &magnitude)
 
 
 void 
-ConcentricLoad::setConvergencePoint(fem::point const &center)
+ConcentricLoad::setConvergencePoint(fem::Point const &center)
 {
 	this->m_center = center;
 }
@@ -34,8 +34,8 @@ ConcentricLoad::setConvergencePoint(fem::point const &center)
 void 
 ConcentricLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model)
 {
-	fem::point f;
-	fem::point dPdcsi, dPdeta;
+	fem::Point f;
+	fem::Point dPdcsi, dPdeta;
 
 	// set the element
 	switch(surface_load.type)

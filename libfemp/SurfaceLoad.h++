@@ -4,7 +4,7 @@
 #include <vector>
 
 #include <libfemp/Element.h++>
-#include <libfemp/point.h++>
+#include <libfemp/Point.h++>
 
 namespace fem
 {
@@ -13,7 +13,7 @@ class SurfaceLoad
 	: public Element
 {
 public:
-	std::vector<fem::point>	surface_forces;	// forces acting in each node, used to interpolate the surface load
+	std::vector<fem::Point>	surface_forces;	// forces acting in each node, used to interpolate the surface load
 
 public:
 	SurfaceLoad();

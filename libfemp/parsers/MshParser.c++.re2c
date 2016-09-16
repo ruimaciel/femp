@@ -558,7 +558,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 				case PR_ELEMENT_FOLLOW_4:
 					break;
 
-				case PR_COORDINATE:		// requires 3 floats, sets a point with them
+				case PR_COORDINATE:		// requires 3 floats, sets a Point with them
 					//TODO set a vector
 					ss.push(TT_NUMBER);
 					ss.push(TT_NUMBER);

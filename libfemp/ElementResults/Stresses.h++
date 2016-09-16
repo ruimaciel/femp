@@ -23,7 +23,7 @@ struct Stresses
 };
 
 
-}
+}	// namespace fem
 
 
 #endif

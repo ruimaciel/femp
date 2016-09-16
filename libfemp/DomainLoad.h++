@@ -2,8 +2,8 @@
 #define FEMP_DOMAIN_LOAD_HPP
 
 #include <vector>
-#include "point.h++"
-#include "Element.h++"
+#include <libfemp/point.h++>
+#include <libfemp/Element.h++>
 
 namespace fem
 {

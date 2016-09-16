@@ -4,8 +4,8 @@
 #include <set>
 #include <string>
 
-#include "Element.h++"
-#include "Node.h++"
+#include <libfemp/Element.h++>
+#include <libfemp/Node.h++>
 
 
 namespace fem

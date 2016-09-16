@@ -6,14 +6,13 @@
 #include <boost/tuple/tuple.hpp>
 #include <iostream>
 
-#include "Element.h++"
-#include "ElementResults/ElementResults.h++"
-#include "ElementResults/ResultsRanges.h++"
+#include <libfemp/point.h++>
+#include <libfemp/Element.h++>
+#include <libfemp/ElementResults/ElementResults.h++>
+#include <libfemp/ElementResults/ResultsRanges.h++>
 
 #include <libla/Matrix.h++>
 #include <libla/Vector.h++>
-
-#include "point.h++"
 
 
 namespace fem

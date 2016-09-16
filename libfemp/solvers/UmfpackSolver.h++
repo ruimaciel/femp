@@ -3,8 +3,9 @@
 
 #include <stdio.h>
 
-#include "Solver.h++"
-#include "../AnalysisResult.h++"
+#include <libfemp/solvers/Solver.h++>
+#include <libfemp/AnalysisResult.h++>
+
 #include <libla/solvers/Umfpack.h++>
 #include <libla/Matrix.h++>
 #include <libla/output.h++>
@@ -17,13 +18,13 @@ template<typename Scalar>
 class UmfpackSolver
 	: public Solver<Scalar> 
 {
-	protected:
-		lalib::Matrix<Scalar, lalib::SparseCCS> A;
+protected:
+	lalib::Matrix<Scalar, lalib::SparseCCS> A;
 
-	public:
-		enum Solver<Scalar>::Error initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
-		enum Solver<Scalar>::Error solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
-		enum Solver<Scalar>::Error cleanup(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
+public:
+	enum Solver<Scalar>::Error initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
+	enum Solver<Scalar>::Error solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
+	enum Solver<Scalar>::Error cleanup(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
 };
 
 
@@ -51,6 +52,7 @@ enum Solver<Scalar>::Error UmfpackSolver<Scalar>::cleanup(AnalysisResult<Scalar>
 	return Solver<Scalar>::ERR_OK;
 }
 
-}
+
+}	// namespace fem
 
 #endif

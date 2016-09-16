@@ -1,7 +1,7 @@
 #ifndef FEMP_CGSOLVER_HPP
 #define FEMP_CGSOLVER_HPP
 
-#include "Solver.h++"
+#include <libfemp/solvers/Solver.h++>
 
 #include <libla/solvers/CG.h++>
 #include <libla/Matrix.h++>
@@ -14,18 +14,18 @@ template<typename Scalar>
 class CGSolver
 	: public Solver<Scalar> 
 {
-	protected:
-		lalib::Matrix<Scalar, lalib::SparseCRS> my_k;
+protected:
+	lalib::Matrix<Scalar, lalib::SparseCRS> my_k;
 
-	public:
-		Scalar delta;
-		int max_iterations;
+public:
+	Scalar delta;
+	int max_iterations;
 
-		CGSolver();
+	CGSolver();
 
-		enum Solver<Scalar>::Error initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
-		enum Solver<Scalar>::Error solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
-		enum Solver<Scalar>::Error cleanup(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
+	enum Solver<Scalar>::Error initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
+	enum Solver<Scalar>::Error solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
+	enum Solver<Scalar>::Error cleanup(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
 };
 
 
@@ -64,6 +64,7 @@ enum Solver<Scalar>::Error CGSolver<Scalar>::cleanup(AnalysisResult<Scalar> &, P
 	return Solver<Scalar>::ERR_OK;
 }
 
-}
+
+}	// namespace fem
 
 #endif

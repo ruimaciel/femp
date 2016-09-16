@@ -1,6 +1,9 @@
 #ifndef FEMP_ANALYSIS_HPP
 #define FEMP_ANALYSIS_HPP
 
+#include <iostream> //TODO remove this: debug purposes only
+#include <map>
+
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <boost/tuple/tuple.hpp>
 
@@ -9,21 +12,14 @@
 #include <Eigen/LU>
 
 #include <libla/Operations.h++>
-
-#include <iostream> //TODO rmove this: debug purposes only
-
-#include <map>
-
-#include "Model.h++"
-#include "Element.h++"
-#include "LoadPattern.h++"
-
-
-#include "AnalysisResult.h++"
-
 #include <libla/ProgressIndicatorStrategy.h++>
 
-#include "elements/BaseElement.h++"
+#include <libfemp/Model.h++>
+#include <libfemp/Element.h++>
+#include <libfemp/LoadPattern.h++>
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/elements/BaseElement.h++>
+//TODO remove individual elements after elements are refactored
 #include "elements/Triangle3.h++"
 #include "elements/Triangle6.h++"
 #include "elements/Quadrangle4.h++"
@@ -37,9 +33,8 @@
 #include "elements/Prism6.h++"
 #include "elements/Prism15.h++"
 #include "elements/Prism18.h++"
-
-#include "ElementResults/ElementResults.h++"
-#include "ElementResults/ElementResultsFactory.h++"
+#include <libfemp/ElementResults/ElementResults.h++>
+#include <libfemp/ElementResults/ElementResultsFactory.h++>
 
 
 namespace fem

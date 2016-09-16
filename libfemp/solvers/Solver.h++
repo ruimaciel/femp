@@ -1,7 +1,7 @@
 #ifndef FEMP_SOLVER_HPP
 #define FEMP_SOLVER_HPP
 
-#include "../AnalysisResult.h++"
+#include <libfemp/AnalysisResult.h++>
 
 #include <libla/ProgressIndicatorStrategy.h++>
 
@@ -15,25 +15,25 @@ namespace fem
 template<typename Scalar>
 class Solver
 {
-	public:
-		enum Error {	
-			ERR_OK = 0,	// no error
-			ERR_SINGULAR_MATRIX,
-			ERR_NEGATIVE_DETERMINANT,
-			ERR_UNKNOWN
-		};
+public:
+	enum Error {	
+		ERR_OK = 0,	// no error
+		ERR_SINGULAR_MATRIX,
+		ERR_NEGATIVE_DETERMINANT,
+		ERR_UNKNOWN
+	};
 
-		virtual ~Solver() {};
+	virtual ~Solver() {};
 
-		/*
-		If necessary, initializes any data structure specific for this solver
-		*/
-		virtual enum Error initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress) = 0;
-		virtual enum Error solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress) = 0;
-		virtual enum Error cleanup(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress) = 0;
+	/*
+	If necessary, initializes any data structure specific for this solver
+	*/
+	virtual enum Error initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress) = 0;
+	virtual enum Error solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress) = 0;
+	virtual enum Error cleanup(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress) = 0;
 };
 
 
-}
+}	// namespace femp
 
 #endif

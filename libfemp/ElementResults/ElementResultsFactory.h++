@@ -8,21 +8,21 @@
 #include <Eigen/Sparse>
 #include <Eigen/LU>
 
-#include "../Element.h++"
-#include "../Model.h++"
-#include "../AnalysisResult.h++"
-#include "../FemException.h++"
+#include <libfemp/Element.h++>
+#include <libfemp/Model.h++>
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/FemException.h++>
 #include "ElementResults.h++"
 
-#include "../elements/BaseElement.h++"
-#include "../elements/Tetrahedron4.h++"
-#include "../elements/Tetrahedron10.h++"
-#include "../elements/Hexahedron8.h++"
-#include "../elements/Hexahedron20.h++"
-#include "../elements/Hexahedron27.h++"
-#include "../elements/Prism6.h++"
-#include "../elements/Prism15.h++"
-#include "../elements/Prism18.h++"
+#include <libfemp/elements/BaseElement.h++>
+#include <libfemp/elements/Tetrahedron4.h++>
+#include <libfemp/elements/Tetrahedron10.h++>
+#include <libfemp/elements/Hexahedron8.h++>
+#include <libfemp/elements/Hexahedron20.h++>
+#include <libfemp/elements/Hexahedron27.h++>
+#include <libfemp/elements/Prism6.h++>
+#include <libfemp/elements/Prism15.h++>
+#include <libfemp/elements/Prism18.h++>
 
 
 namespace fem

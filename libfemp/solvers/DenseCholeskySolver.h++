@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 
-#include "Solver.h++"
-#include "../AnalysisResult.h++"
+#include <libfemp/solvers/Solver.h++>
+#include <libfemp/AnalysisResult.h++>
 
 #include <libla/solvers/Cholesky.h++>
 #include <libla/Matrix.h++>
@@ -55,6 +55,6 @@ enum Solver<Scalar>::Error DenseCholeskySolver<Scalar>::cleanup(AnalysisResult<S
 	return Solver<Scalar>::ERR_OK;
 }
 
-}
+}	// namespace fem
 
 #endif

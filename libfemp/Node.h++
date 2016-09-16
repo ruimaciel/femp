@@ -1,7 +1,7 @@
 #ifndef FEMP_NODE_HPP
 #define FEMP_NODE_HPP
 
-#include "point.h++"
+#include <libfemp/point.h++>
 
 
 namespace fem

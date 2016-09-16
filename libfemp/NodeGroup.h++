@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "Node.h++"
+#include <libfemp/Node.h++>
 
 
 namespace fem

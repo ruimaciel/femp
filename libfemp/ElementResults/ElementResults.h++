@@ -6,7 +6,7 @@
 #include "Strains.h++"
 #include "Stresses.h++"
 
-#include "../Element.h++"
+#include <libfemp/Element.h++>
 
 
 namespace fem
@@ -95,7 +95,8 @@ std::ostream &operator<< (std::ostream &os, ElementResults<Scalar> const &elemen
 	return os;
 }
 
-}
+
+}	// namespace fem
 
 
 #endif

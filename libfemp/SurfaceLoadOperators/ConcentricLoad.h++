@@ -1,14 +1,14 @@
 #ifndef FEMP_SURFACELOADOPERATORS_CONCENTRICLOAD_HPP
 #define FEMP_SURFACELOADOPERATORS_CONCENTRICLOAD_HPP
 
-#include "SurfaceLoadOperator.h++"
 
-#include "../elements/BaseElement.h++"
-#include "../elements/Triangle3.h++"
-#include "../elements/Triangle6.h++"
-#include "../elements/Quadrangle4.h++"
-#include "../elements/Quadrangle8.h++"
-#include "../elements/Quadrangle9.h++"
+#include <libfemp/SurfaceLoadOperators/SurfaceLoadOperator.h++>
+#include <libfemp/elements/BaseElement.h++>
+#include <libfemp/elements/Triangle3.h++>
+#include <libfemp/elements/Triangle6.h++>
+#include <libfemp/elements/Quadrangle4.h++>
+#include <libfemp/elements/Quadrangle8.h++>
+#include <libfemp/elements/Quadrangle9.h++>
 
 
 namespace fem

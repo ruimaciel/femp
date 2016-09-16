@@ -4,10 +4,10 @@
 #include <string>
 #include <map>
 
-#include "NodalLoad.h++"
-#include "NodalDisplacement.h++"
-#include "DomainLoad.h++"
-#include "SurfaceLoad.h++"
+#include <libfemp/NodalLoad.h++>
+#include <libfemp/NodalDisplacement.h++>
+#include <libfemp/DomainLoad.h++>
+#include <libfemp/SurfaceLoad.h++>
 
 
 namespace fem

@@ -50,6 +50,6 @@ ResultsRanges<Scalar>::setZero()
 }
 
 
-}
+}	// namespace fem
 
 #endif

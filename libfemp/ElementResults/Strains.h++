@@ -23,7 +23,7 @@ struct Strains
 };
 
 
-}
+}	// namespace fem
 
 
 #endif

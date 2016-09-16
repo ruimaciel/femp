@@ -3,9 +3,8 @@
 
 #include <vector>
 
-#include "Element.h++"
-
-#include "point.h++"
+#include <libfemp/Element.h++>
+#include <libfemp/point.h++>
 
 namespace fem
 {

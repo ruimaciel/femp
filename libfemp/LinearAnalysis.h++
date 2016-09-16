@@ -1,7 +1,6 @@
 #ifndef FEMP_LINEAR_ANALYSIS_HPP
 #define FEMP_LINEAR_ANALYSIS_HPP
 
-#include "Analysis.h++"
 
 #include <iostream>
 #include <fstream>
@@ -11,9 +10,9 @@
 #include <libla/output.h++>
 #include <libla/ProgressIndicatorStrategy.h++>
 
-#include "AnalysisResult.h++"
-
-#include "solvers/Solver.h++"
+#include <libfemp/Analysis.h++>
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/solvers/Solver.h++>
 
 
 namespace fem

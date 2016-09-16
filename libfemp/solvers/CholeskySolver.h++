@@ -3,13 +3,14 @@
 
 #include <stdio.h>
 
-#include "Solver.h++"
+#include <libfemp/solvers/Solver.h++>
+#include <libfemp/AnalysisResult.h++>
 
-#include "../AnalysisResult.h++"
 #include <libla/solvers/Cholesky.h++>
 #include <libla/Matrix.h++>
 #include <libla/output.h++>
 #include <libla/ProgressIndicatorStrategy.h++>
+
 
 namespace fem
 {
@@ -54,6 +55,6 @@ enum Solver<Scalar>::Error CholeskySolver<Scalar>::cleanup(AnalysisResult<Scalar
 	return Solver<Scalar>::ERR_OK;
 }
 
-}
+}	// namespace fem
 
 #endif

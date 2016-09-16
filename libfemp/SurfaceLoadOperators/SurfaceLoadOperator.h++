@@ -2,11 +2,12 @@
 #define FEMP_SURFACELOADOPERATORS_SURFACELOADOPERATOR_HPP
 
 
-#include "../Model.h++"
-#include "../SurfaceLoad.h++"
+#include <libfemp/Model.h++>
+#include <libfemp/SurfaceLoad.h++>
 
 namespace fem
 {
+
 /**
 Abstract base class for an operator which is applied to a surface load
 **/

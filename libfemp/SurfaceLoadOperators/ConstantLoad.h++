@@ -1,9 +1,9 @@
 #ifndef FEMP_SURFACELOADOPERATORS_CONSTANTLOAD_HPP
 #define FEMP_SURFACELOADOPERATORS_CONSTANTLOAD_HPP
 
-#include "SurfaceLoadOperator.h++"
 
-#include "../point.h++"
+#include <libfemp/SurfaceLoadOperators/SurfaceLoadOperator.h++>
+#include <libfemp/point.h++>
 
 namespace fem
 {

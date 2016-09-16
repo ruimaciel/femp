@@ -2,9 +2,9 @@
 #define FEMP_ELEMENT_HPP
 
 #include <vector>
-#include "Material.h++"
-#include "Node.h++"
-#include "FemException.h++"
+#include <libfemp/Material.h++>
+#include <libfemp/Node.h++>
+#include <libfemp/FemException.h++>
 
 
 namespace fem

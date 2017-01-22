@@ -13,7 +13,6 @@ DESTDIR = $${BUILD_DIR}
 
 INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${SRCDIR}}
 
-#LIBS += -lumfpack -lblas -lamd -lGLU -l$${PWD}/../libla/liblibla.so -l$${PWD}/../libfemp/liblibfemp.so
 LIBS += -lumfpack -lblas -lamd -lGLU -L$${BUILD_DIR} -llibla -llibfemp
 
 HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \

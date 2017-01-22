@@ -9,7 +9,6 @@ DESTDIR = $${BUILD_DIR}
 
 INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${LIBFEMP_SRC}
 
-#LIBS += -lumfpack -lblas -lamd -lGLU -L$${PWD}/../libla -llibla
 LIBS += -lumfpack -lblas -lamd -lGLU -llibla
 
 

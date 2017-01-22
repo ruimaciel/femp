@@ -4,7 +4,7 @@
 
 #include <QTreeWidgetItem>
 
-#include "../Selection.h++"
+#include <Selection.h++>
 
 
 SelectionWidget::SelectionWidget(fem::Project &project, SelectionManager &selection_manager, QWidget *parent)

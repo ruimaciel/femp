@@ -1,6 +1,6 @@
 #include "NodeActionsDialog.h++"
 
-#include "LoadPatternDialog.h++"
+#include <ui/LoadPatternDialog.h++>
 
 
 NodeActionsDialog::NodeActionsDialog(LoadPatternsModel &model, QWidget *parent)

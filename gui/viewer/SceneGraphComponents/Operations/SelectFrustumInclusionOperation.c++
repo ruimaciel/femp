@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../../../Project.h++"
+#include <Project.h++>
 
 
 namespace Operation

@@ -8,7 +8,7 @@
 #include "../SGCNode.h++"
 #include "../SGCElement.h++"
 
-#include "../../../Selection.h++"
+#include <Selection.h++>
 #include <libfemp/point.h++>
 
 

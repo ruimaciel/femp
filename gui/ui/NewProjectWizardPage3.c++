@@ -9,11 +9,9 @@
 #include <libfemp/SurfaceLoadOperators/ConcentricLoad.h++>
 
 
-NewProjectWizardPage3::NewProjectWizardPage3(Document *document)
+NewProjectWizardPage3::NewProjectWizardPage3(Document &document)
+	: m_document(document)
 {
-	assert(document != NULL);
-	this->document = document;
-
 	setupUi(this);
 
 	// set the variable
@@ -42,7 +40,8 @@ bool NewProjectWizardPage3::validatePage()
 
 void NewProjectWizardPage3::loadMaterialsCombo()
 {
-	for(std::vector<fem::Material>::iterator i = document->project.model.material_list.begin(); i != document->project.model.material_list.end(); i++)
+	auto & model = m_document.getProject().model;
+	for(std::vector<fem::Material>::iterator i = model.material_list.begin(); i != model.material_list.end(); i++)
 	{
 		comboBoxMaterialsList->addItem(QString::fromStdString(i->label));
 	}
@@ -79,13 +78,15 @@ void NewProjectWizardPage3::loadMeshFile()
 
 		file.open(file_name);
 
+		auto & model = m_document.getProject().model;
+
 		if(!file.good())
 		{
 			// clear the model except the materials list
-			document->project.model.node_list.clear();
-			document->project.model.element_list.clear();
-			document->project.model.node_restrictions_list.clear();
-			document->project.model.load_pattern_list.clear();
+			model.node_list.clear();
+			model.element_list.clear();
+			model.node_restrictions_list.clear();
+			model.load_pattern_list.clear();
 
 			// update the UI
 			labelNodesNumber->setText("");
@@ -96,42 +97,33 @@ void NewProjectWizardPage3::loadMeshFile()
 			return;
 		}
 
-		/*
-		fem::ConstantLoad o;
-		o.setLoad(fem::Point(1,0,0));
-		*/
 		fem::SurfaceNormalLoad o;
 		o.setLoadMagnitude(-1.0f);
-		/*
-		fem::ConcentricLoad o;
-		o.setLoadMagnitude(1.0f);
-		o.setConvergencePoint(fem::Point(0,0,0));
-		*/
 
 		parser.setSurfaceLoadOperator(o);
 		// parse the file
-		switch(parser(file, document->project.model) )
+		switch(parser(file, model) )
 		{
 			case Parser::Error::ERR_OK:
 				{
-				// update the UI accordingly
-				QString temp;
-				temp.setNum(document->project.model.node_list.size());
-				labelNodesNumber->setText(temp);
-				temp.setNum(document->project.model.element_list.size());
-				labelElementsNumber->setText(temp);
-				labelError->setText("");
+					// update the UI accordingly
+					QString temp;
+					temp.setNum(model.node_list.size());
+					labelNodesNumber->setText(temp);
+					temp.setNum(model.element_list.size());
+					labelElementsNumber->setText(temp);
+					labelError->setText("");
 
-				successful_import = true;
+					successful_import = true;
 				}
 				break;
 
 			default:
 				// clear the model except the materials list
-				document->project.model.node_list.clear();
-				document->project.model.element_list.clear();
-				document->project.model.node_restrictions_list.clear();
-				document->project.model.load_pattern_list.clear();
+				model.node_list.clear();
+				model.element_list.clear();
+				model.node_restrictions_list.clear();
+				model.load_pattern_list.clear();
 				//TODO clear the list when exiting
 
 				// update the UI
@@ -173,7 +165,7 @@ void NewProjectWizardPage3::getFileFromDialog(void)
 
 void NewProjectWizardPage3::addNewMaterial(void)
 {
-	NewMaterialDialog dialog(&document->project.model, this);
+	NewMaterialDialog dialog(m_document.getProject().model, this);
 	switch(dialog.exec())
 	{
 		case QDialog::Accepted:

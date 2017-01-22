@@ -857,7 +857,6 @@ MainWindow::setNodeActions()
 
 	// Connect the sigc++ signals
 	na. create_load_pattern.connect( sigc::mem_fun(document.project.model, &fem::Model::createEmptyLoadPattern));
-	document.project.model.load_pattern_created.connect(  sigc::mem_fun(na, &NodeActionsDialog::loadPatternCreated) );
 
 	if(na.exec() == QDialog::Accepted)
 	{
@@ -890,8 +889,7 @@ MainWindow::setDomainLoads()
 	DomainLoadsDialog dialog(model, this);
 
 	// Connect the sigc++ signals
-	dialog. create_load_pattern.connect( sigc::mem_fun(document.project.model, &fem::Model::createEmptyLoadPattern));
-	document.project.model.load_pattern_created.connect(  sigc::mem_fun(dialog, &DomainLoadsDialog::loadPatternCreated) );
+	dialog.create_load_pattern.connect( sigc::mem_fun(document.project.model, &fem::Model::createEmptyLoadPattern));
 
 	/*
 	From:

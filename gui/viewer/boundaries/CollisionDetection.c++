@@ -8,8 +8,8 @@ bool collided(const SphericalBoundary &sphere, const fem::Point &near, const fem
 	*/
 	using namespace fem;
 
-	point d = far - near;
-	point oc = near - sphere.center;
+	fem::Point d = far - near;
+	fem::Point oc = near - sphere.center;
 
 	float A = dot_product(d,d);
 	float B = 2*dot_product(oc,d);

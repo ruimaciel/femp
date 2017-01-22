@@ -53,9 +53,6 @@ Document::clear()
 	}
 	document_type = TYPE_NONE;
 	this->project.clear();
-
-	// clear all selections
-	model_selection.deselectAll();
 }
 
 
@@ -493,23 +490,3 @@ Document::save()
 }
 
 
-void
-Document::selectNode(const size_t & node)
-{
-	model_selection.selectNode(node);
-
-}
-
-
-void
-Document::deselectNode(const size_t & node)
-{
-	model_selection.deselectNode(node);
-}
-
-
-void
-Document::deselectAll()
-{
-	model_selection.deselectAll();
-}

@@ -16,7 +16,6 @@ INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${SRCDIR}}
 LIBS += -lumfpack -lblas -lamd -lGLU -L$${BUILD_DIR} -llibla -llibfemp
 
 HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
-	ModelSelection.h++ \
 	MdiWindowProperties.h++ \
 	Selection*.h++ \
 	ui/*.h++ \
@@ -59,7 +58,6 @@ SOURCES += main.c++ \
 	MainWindow.c++ \
 	Document.c++ \
 	ProgramOptions.c++ \
-	ModelSelection.c++ \
 	MdiWindowProperties.c++ \
 	Project.c++ \
 	ProjectVisitor/*.c++ \

@@ -25,7 +25,7 @@ NodeRestrictions::~NodeRestrictions()
 
 void NodeRestrictions::paintGL(ViewportData &data, ViewportColors &colors)
 {
-	fem::point u = (*m_displacements)[this->m_node_reference];
+	fem::Point u = (*m_displacements)[this->m_node_reference];
 	glPushMatrix();
 	glTranslated(u.data[0],u.data[1],u.data[2]);
 

@@ -98,14 +98,14 @@ void NewProjectWizardPage3::loadMeshFile()
 
 		/*
 		fem::ConstantLoad o;
-		o.setLoad(fem::point(1,0,0));
+		o.setLoad(fem::Point(1,0,0));
 		*/
 		fem::SurfaceNormalLoad o;
 		o.setLoadMagnitude(-1.0f);
 		/*
 		fem::ConcentricLoad o;
 		o.setLoadMagnitude(1.0f);
-		o.setConvergencePoint(fem::point(0,0,0));
+		o.setConvergencePoint(fem::Point(0,0,0));
 		*/
 
 		parser.setSurfaceLoadOperator(o);

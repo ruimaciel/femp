@@ -1,7 +1,7 @@
 #include "CollisionDetection.h++"
 
 
-bool collided(const SphericalBoundary &sphere, const fem::point &near, const fem::point &far)
+bool collided(const SphericalBoundary &sphere, const fem::Point &near, const fem::Point &far)
 {
 	/* taken from
 	http://wiki.cgsociety.org/index.php/Ray_Sphere_Intersection

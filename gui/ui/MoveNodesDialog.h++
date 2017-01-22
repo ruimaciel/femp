@@ -4,7 +4,7 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QDialog>
 
-#include <libfemp/point.h++>
+#include <libfemp/Point.h++>
 
 #include "ui_MoveNodesDialog.h"
 
@@ -21,7 +21,7 @@ class MoveNodesDialog
 		MoveNodesDialog(QWidget *parent = NULL);
 		~MoveNodesDialog();
 
-		fem::point getTranslation();
+		fem::Point getTranslation();
 };
 
 #endif

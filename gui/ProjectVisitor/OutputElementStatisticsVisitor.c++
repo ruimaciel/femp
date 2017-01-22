@@ -28,8 +28,8 @@ OutputElementStatisticsVisitor::visit(fem::Model &model, std::vector<fem::Analys
 	{
 		auto dim = [&](fem::node_ref_t i, fem::node_ref_t j) -> float
 		{
-			fem::point const &p1 = model.getNode( element.getNode(i));
-			fem::point const &p2 = model.getNode( element.getNode(j));
+			fem::Point const &p1 = model.getNode( element.getNode(i));
+			fem::Point const &p2 = model.getNode( element.getNode(j));
 			return (p1-p2).norm();
 		};
 

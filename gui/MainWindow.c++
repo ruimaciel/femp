@@ -863,10 +863,10 @@ MainWindow::setNodeActions()
 	{
 		Selection const selection = m_selection_manager.getSelection();
 
-		fem::point force = na.getForce();
-		//fem::point displacement = na.getDisplacement(); // doesn't support node displacements
+		fem::Point force = na.getForce();
+		//fem::Point displacement = na.getDisplacement(); // doesn't support node displacements
 
-		if(force != fem::point(0,0,0))
+		if(force != fem::Point(0,0,0))
 		{
 			// shortcut just to reduce code clutter
 			fem::Model &model = document.project.model;

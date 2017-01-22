@@ -38,7 +38,7 @@ Start::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
 void 
 Start::leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	fem::point near;
+	fem::Point near;
 	//TODO rename this
 	near.x((float)event->x());
 	near.y((float)event->y());

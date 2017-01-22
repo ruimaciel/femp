@@ -4,7 +4,7 @@
 #include <array>
 
 #include <GL/gl.h>
-#include <libfemp/point.h++>
+#include <libfemp/Point.h++>
 
 #include "../../../ViewportColors.h++"
 
@@ -18,8 +18,8 @@ Renders the three principal directions of a tensor in a point in space
 class StressTensor
 {
 public:
-	fem::point 	m_position;	// the position in space where the stress tensor will be rendered
-	fem::point 	m_direction[3];	// the three principal directions of a 3D tensor
+	fem::Point 	m_position;	// the position in space where the stress tensor will be rendered
+	fem::Point 	m_direction[3];	// the three principal directions of a 3D tensor
 	float		m_stress[3];	// the stress of each principal direction
 	GLfloat		color[3];
 	

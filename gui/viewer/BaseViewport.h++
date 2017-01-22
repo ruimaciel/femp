@@ -128,8 +128,8 @@ public Q_SLOTS:
 	/**
 	Extract the current pick ray and select all objects in the scene graph that are intersected
 	**/
-	void selectObjectsFromRay(fem::point const &origin, fem::point const &destination);
-	void selectObjectsFromFrustum(std::array<fem::point,4> const &near, std::array<fem::point,4> const &far);
+	void selectObjectsFromRay(fem::Point const &origin, fem::Point const &destination);
+	void selectObjectsFromFrustum(std::array<fem::Point,4> const &near, std::array<fem::Point,4> const &far);
 
 Q_SIGNALS:
 	void xRotationChanged(int angle);

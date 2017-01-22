@@ -61,7 +61,7 @@ Selection::paintGL(ViewportData & /*data*/, ViewportColors & /*colors*/)
 
 
 void 
-Selection::setStart(fem::point const &p)
+Selection::setStart(fem::Point const &p)
 {
 	m_on = true;
 	m_start = p;
@@ -70,7 +70,7 @@ Selection::setStart(fem::point const &p)
 
 
 void 
-Selection::setEnd(fem::point const &p)
+Selection::setEnd(fem::Point const &p)
 {
 	m_end = p;
 }

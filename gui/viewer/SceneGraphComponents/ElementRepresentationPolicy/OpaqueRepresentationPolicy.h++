@@ -3,7 +3,7 @@
 #define OPAQUEREPRESENTATIONPOLICY_H
 
 #include "ElementRepresentationPolicy.h++"
-#include <libfemp/point.h++>
+#include <libfemp/Point.h++>
 #include <libfemp/Element.h++>
 #include "../../ViewportColors.h++"
 
@@ -12,7 +12,7 @@ class OpaqueRepresentationPolicy
 	: virtual public ElementRepresentationPolicy
 {
 protected:
-	std::vector<fem::point> m_temp_p;
+	std::vector<fem::Point> m_temp_p;
 	bool m_triangle_wireframe_representation;
 
 public:
@@ -31,11 +31,11 @@ public:
 	 */
 
 protected:
-	inline void tri3 (fem::point &p1, fem::point &p2, fem::point &p3, ViewportColors &color);
-	inline void tri6 (fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, fem::point &p5, fem::point &p6, ViewportColors &color);
-	inline void quad4(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, ViewportColors &color);
-	inline void quad8(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, fem::point &p5, fem::point &p6, fem::point &p7, fem::point &p8, ViewportColors &color);
-	inline void quad9(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, fem::point &p5, fem::point &p6, fem::point &p7, fem::point &p8, fem::point &p9, ViewportColors &color);
+	inline void tri3 (fem::Point &p1, fem::Point &p2, fem::Point &p3, ViewportColors &color);
+	inline void tri6 (fem::Point &p1, fem::Point &p2, fem::Point &p3, fem::Point &p4, fem::Point &p5, fem::Point &p6, ViewportColors &color);
+	inline void quad4(fem::Point &p1, fem::Point &p2, fem::Point &p3, fem::Point &p4, ViewportColors &color);
+	inline void quad8(fem::Point &p1, fem::Point &p2, fem::Point &p3, fem::Point &p4, fem::Point &p5, fem::Point &p6, fem::Point &p7, fem::Point &p8, ViewportColors &color);
+	inline void quad9(fem::Point &p1, fem::Point &p2, fem::Point &p3, fem::Point &p4, fem::Point &p5, fem::Point &p6, fem::Point &p7, fem::Point &p8, fem::Point &p9, ViewportColors &color);
 
 public:
 	/**

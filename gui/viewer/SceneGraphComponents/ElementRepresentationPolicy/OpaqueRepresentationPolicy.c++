@@ -21,7 +21,7 @@ OpaqueRepresentationPolicy::OpaqueRepresentationPolicy ( )
 // Other methods
 //  
 void
-OpaqueRepresentationPolicy::tri3(fem::point &p1, fem::point &p2, fem::point &p3, ViewportColors &color)
+OpaqueRepresentationPolicy::tri3(fem::Point &p1, fem::Point &p2, fem::Point &p3, ViewportColors &color)
 {
 	// OpenGL wireframe
 	if(m_triangle_wireframe_representation)
@@ -37,7 +37,7 @@ OpaqueRepresentationPolicy::tri3(fem::point &p1, fem::point &p2, fem::point &p3,
 
 	//int partitions = 4;	//TODO implement a better code
 
-	fem::point temp;
+	fem::Point temp;
 	temp = fem::getNormalVector(p1,p2,p3);
 	
 	glBegin(GL_TRIANGLES);
@@ -52,7 +52,7 @@ OpaqueRepresentationPolicy::tri3(fem::point &p1, fem::point &p2, fem::point &p3,
 
 
 void
-OpaqueRepresentationPolicy::tri6(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4,fem::point &p5, fem::point &p6, ViewportColors &color)
+OpaqueRepresentationPolicy::tri6(fem::Point &p1, fem::Point &p2, fem::Point &p3, fem::Point &p4,fem::Point &p5, fem::Point &p6, ViewportColors &color)
 {
 	// OpenGL wireframe
 	if(m_triangle_wireframe_representation)
@@ -81,18 +81,18 @@ OpaqueRepresentationPolicy::tri6(fem::point &p1, fem::point &p2, fem::point &p3,
 
 */
 	// defining temporary structures for points and normal vectors
-	fem::point p_upper_row[partitions+1];
-	fem::point *pu;
-	fem::point n_upper_row[partitions+1];
-	fem::point *nu;
-	fem::point p_lower_row[partitions+1];
-	fem::point *pl;
-	fem::point n_lower_row[partitions+1];
-	fem::point *nl;
+	fem::Point p_upper_row[partitions+1];
+	fem::Point *pu;
+	fem::Point n_upper_row[partitions+1];
+	fem::Point *nu;
+	fem::Point p_lower_row[partitions+1];
+	fem::Point *pl;
+	fem::Point n_lower_row[partitions+1];
+	fem::Point *nl;
 
 	float x, y;
-	fem::point dndx;
-	fem::point dndy;
+	fem::Point dndx;
+	fem::Point dndy;
 
 	// position the pointers
 	pu = p_upper_row;
@@ -155,7 +155,7 @@ OpaqueRepresentationPolicy::tri6(fem::point &p1, fem::point &p2, fem::point &p3,
 
 
 void
-OpaqueRepresentationPolicy::quad4(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, ViewportColors &color)
+OpaqueRepresentationPolicy::quad4(fem::Point &p1, fem::Point &p2, fem::Point &p3, fem::Point &p4, ViewportColors &color)
 {
 	// OpenGL wireframe
 	if(m_triangle_wireframe_representation)
@@ -180,18 +180,18 @@ OpaqueRepresentationPolicy::quad4(fem::point &p1, fem::point &p2, fem::point &p3
 	1 ------ 2 --> x
 */
 	// defining temporary structures for points and normal vectors
-	fem::point p_upper_row[partitions+1];
-	fem::point *pu;
-	fem::point n_upper_row[partitions+1];
-	fem::point *nu;
-	fem::point p_lower_row[partitions+1];
-	fem::point *pl;
-	fem::point n_lower_row[partitions+1];
-	fem::point *nl;
+	fem::Point p_upper_row[partitions+1];
+	fem::Point *pu;
+	fem::Point n_upper_row[partitions+1];
+	fem::Point *nu;
+	fem::Point p_lower_row[partitions+1];
+	fem::Point *pl;
+	fem::Point n_lower_row[partitions+1];
+	fem::Point *nl;
 
 	float x, y;
-	fem::point dndx;
-	fem::point dndy;
+	fem::Point dndx;
+	fem::Point dndy;
 
 	// position the pointers
 	pu = p_upper_row;
@@ -257,7 +257,7 @@ OpaqueRepresentationPolicy::quad4(fem::point &p1, fem::point &p2, fem::point &p3
 
 
 void
-OpaqueRepresentationPolicy::quad8(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, fem::point &p5, fem::point &p6, fem::point &p7, fem::point &p8, ViewportColors &color)
+OpaqueRepresentationPolicy::quad8(fem::Point &p1, fem::Point &p2, fem::Point &p3, fem::Point &p4, fem::Point &p5, fem::Point &p6, fem::Point &p7, fem::Point &p8, ViewportColors &color)
 {
 	// OpenGL wireframe
 	if(m_triangle_wireframe_representation)
@@ -282,18 +282,18 @@ OpaqueRepresentationPolicy::quad8(fem::point &p1, fem::point &p2, fem::point &p3
 	1 -- 5 -- 2 --> x
 */
 	// defining temporary structures for points and normal vectors
-	fem::point p_upper_row[partitions+1];
-	fem::point *pu;
-	fem::point n_upper_row[partitions+1];
-	fem::point *nu;
-	fem::point p_lower_row[partitions+1];
-	fem::point *pl;
-	fem::point n_lower_row[partitions+1];
-	fem::point *nl;
+	fem::Point p_upper_row[partitions+1];
+	fem::Point *pu;
+	fem::Point n_upper_row[partitions+1];
+	fem::Point *nu;
+	fem::Point p_lower_row[partitions+1];
+	fem::Point *pl;
+	fem::Point n_lower_row[partitions+1];
+	fem::Point *nl;
 
 	float x, y;
-	fem::point dndx;
-	fem::point dndy;
+	fem::Point dndx;
+	fem::Point dndy;
 
 	// position the pointers
 	pu = p_upper_row;
@@ -361,7 +361,7 @@ OpaqueRepresentationPolicy::quad8(fem::point &p1, fem::point &p2, fem::point &p3
 
 
 void
-OpaqueRepresentationPolicy::quad9(fem::point &p1, fem::point &p2, fem::point &p3, fem::point &p4, fem::point &p5, fem::point &p6, fem::point &p7, fem::point &p8, fem::point &p9, ViewportColors &color)
+OpaqueRepresentationPolicy::quad9(fem::Point &p1, fem::Point &p2, fem::Point &p3, fem::Point &p4, fem::Point &p5, fem::Point &p6, fem::Point &p7, fem::Point &p8, fem::Point &p9, ViewportColors &color)
 {
 	// OpenGL wireframe
 	if(m_triangle_wireframe_representation)
@@ -386,18 +386,18 @@ OpaqueRepresentationPolicy::quad9(fem::point &p1, fem::point &p2, fem::point &p3
 	1 -- 5 -- 2 --> x
 */
 	// defining temporary structures for points and normal vectors
-	fem::point p_upper_row[partitions+1];
-	fem::point *pu;
-	fem::point n_upper_row[partitions+1];
-	fem::point *nu;
-	fem::point p_lower_row[partitions+1];
-	fem::point *pl;
-	fem::point n_lower_row[partitions+1];
-	fem::point *nl;
+	fem::Point p_upper_row[partitions+1];
+	fem::Point *pu;
+	fem::Point n_upper_row[partitions+1];
+	fem::Point *nu;
+	fem::Point p_lower_row[partitions+1];
+	fem::Point *pl;
+	fem::Point n_lower_row[partitions+1];
+	fem::Point *nl;
 
 	float x, y;
-	fem::point dndx;
-	fem::point dndy;
+	fem::Point dndx;
+	fem::Point dndy;
 
 	// position the pointers
 	pu = p_upper_row;

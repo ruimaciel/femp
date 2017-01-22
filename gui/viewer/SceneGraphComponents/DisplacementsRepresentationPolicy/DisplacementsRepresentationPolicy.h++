@@ -3,7 +3,7 @@
 #define DISPLACEMENTSREPRESENTATIONPOLICY_H
 
 #include <libfemp/Model.h++>
-#include <libfemp/point.h++>
+#include <libfemp/Point.h++>
 
 /**
 Defines the policy which is followed to represent element displacements
@@ -27,7 +27,7 @@ public:
 	/**
 	returns the coordinate of a given point by providing the node's reference
 	**/
-	virtual fem::point operator[](size_t &node_reference) = 0;
+	virtual fem::Point operator[](size_t &node_reference) = 0;
 
 };
 

@@ -22,10 +22,10 @@ DomainLoadsDialog::getLoadPattern()
 }
 
 
-fem::point
+fem::Point
 DomainLoadsDialog::getForce()
 {
-	fem::point p;
+	fem::Point p;
 	p.data[0] = this->doubleSpinBoxFx->value();
 	p.data[1] = this->doubleSpinBoxFy->value();
 	p.data[2] = this->doubleSpinBoxFz->value();

@@ -5,7 +5,7 @@
 #include "SceneGraphComponent.h++"
 #include "Operations/OperationsVisitor.h++"
 
-#include <libfemp/point.h++>
+#include <libfemp/Point.h++>
 #include <libfemp/NodeRestrictions.h++>
 #include <libfemp/LinearAnalysis.h++>
 
@@ -22,11 +22,11 @@ class PickRay
 	: public SceneGraphComponent
 {
 protected:
-	fem::point m_origin, m_destination;
+	fem::Point m_origin, m_destination;
 	float radius;
 
 public:
-	PickRay(fem::point const &origin,fem::point const &destination, float const &radius);
+	PickRay(fem::Point const &origin,fem::Point const &destination, float const &radius);
 	~PickRay();
 
 	/*

@@ -5,7 +5,7 @@
 #include <tuple>
 #include <vector>
 
-#include <libfemp/point.h++>
+#include <libfemp/Point.h++>
 
 #include "../../../ViewportColors.h++"
 
@@ -32,7 +32,7 @@ public:
 	/**
 	Pushes a new tensor to this representation
 	**/
-	void push(fem::point const &pos, std::array<fem::point,3> const &directions, std::array<float,3> const &stresses);
+	void push(fem::Point const &pos, std::array<fem::Point,3> const &directions, std::array<float,3> const &stresses);
 };
 
 }

@@ -6,7 +6,7 @@
 #include <libfemp/AnalysisResult.h++>
 
 
-MoveNodesVisitor::MoveNodesVisitor(Selection const &selection, fem::point const &translation)
+MoveNodesVisitor::MoveNodesVisitor(Selection const &selection, fem::Point const &translation)
 {
 	m_selection = &selection;
 	m_translation = translation;

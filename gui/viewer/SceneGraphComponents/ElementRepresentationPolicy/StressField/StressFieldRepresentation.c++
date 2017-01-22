@@ -16,7 +16,7 @@ StressFieldRepresentation::render(float const & diameter, float const &max, floa
 
 
 void 
-StressFieldRepresentation::push(fem::point const &pos, std::array<fem::point,3> const &directions, std::array<float,3> const &stresses)
+StressFieldRepresentation::push(fem::Point const &pos, std::array<fem::Point,3> const &directions, std::array<float,3> const &stresses)
 {
 	StressTensor tensor;
 

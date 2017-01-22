@@ -27,7 +27,7 @@ public:
 	/**
 	returns the coordinate of a given point by providing the node's reference
 	**/
-	fem::point operator[](size_t &node_reference);
+	fem::Point operator[](size_t &node_reference);
 
 
 	void setAnalysisResult(fem::AnalysisResult<double> &result);

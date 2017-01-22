@@ -9,7 +9,7 @@ namespace StressFieldRepresentation
 void 
 StressTensor::render(float const &diameter, float const &max, float const &min, bool const &render_positive, bool const &render_negative, ViewportColors const &colors)
 {
-	fem::point p;	
+	fem::Point p;	
 	std::array<GLfloat, 3> color;
 
 	glEnable(GL_BLEND);

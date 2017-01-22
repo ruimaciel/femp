@@ -267,7 +267,7 @@ BaseViewport::setViewSelection(Selection selection)
 
 
 void 
-BaseViewport::selectObjectsFromRay(fem::point const &origin, fem::point const &destination)
+BaseViewport::selectObjectsFromRay(fem::Point const &origin, fem::Point const &destination)
 {
 	Selection selection;
 	
@@ -285,7 +285,7 @@ BaseViewport::selectObjectsFromRay(fem::point const &origin, fem::point const &d
 
 
 void 
-BaseViewport::selectObjectsFromFrustum(std::array<fem::point,4> const &near, std::array<fem::point,4> const &far)
+BaseViewport::selectObjectsFromFrustum(std::array<fem::Point,4> const &near, std::array<fem::Point,4> const &far)
 {
 	Selection selection;
 

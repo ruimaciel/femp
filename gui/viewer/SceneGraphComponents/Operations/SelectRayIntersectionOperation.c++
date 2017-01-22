@@ -7,7 +7,7 @@ namespace Operation
 {
 
 
-SelectRayIntersectionOperation::SelectRayIntersectionOperation(Selection &selection, fem::point const &origin, fem::point const &destination, float const &radius)
+SelectRayIntersectionOperation::SelectRayIntersectionOperation(Selection &selection, fem::Point const &origin, fem::Point const &destination, float const &radius)
 {
 	this->m_selection = &selection;
 	m_origin = origin;
@@ -25,7 +25,7 @@ SelectRayIntersectionOperation::visit(SceneGraphComponent &)
 void 
 SelectRayIntersectionOperation::visit(SGC::Node &node)
 {
-	fem::point d = (m_destination - m_origin);
+	fem::Point d = (m_destination - m_origin);
 	A = dot_product(d,d);
 	B = 2*dot_product(m_origin - node.pos(),d);
 	C = dot_product(m_origin - node.pos(), m_origin - node.pos() ) - r*r;

@@ -4,15 +4,15 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <GL/gl.h>
 
-#include <libfemp/point.h++>
+#include <libfemp/Point.h++>
 
 
 class Camera 
 {
 public:
-	fem::point center;
-	fem::point pos;
-	fem::point rotation;
+	fem::Point center;
+	fem::Point pos;
+	fem::Point rotation;
 
 public:
 	Camera();

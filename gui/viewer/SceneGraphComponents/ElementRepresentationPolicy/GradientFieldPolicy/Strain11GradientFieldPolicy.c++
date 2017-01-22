@@ -4,7 +4,7 @@
 
 #include "../../SceneGraphException.h++"
 
-#include <libfemp/point.h++>
+#include <libfemp/Point.h++>
 
 
 Strain11GradientFieldPolicy::Strain11GradientFieldPolicy()

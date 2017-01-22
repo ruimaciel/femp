@@ -436,7 +436,7 @@ Document::save()
 					out << "], ";
 					out << "\"forces\": [";
 
-					for(std::vector<fem::point>::iterator i = n->surface_forces.begin(); i != n->surface_forces.end(); i++)
+					for(std::vector<fem::Point>::iterator i = n->surface_forces.begin(); i != n->surface_forces.end(); i++)
 					{
 						if (i != n->surface_forces.begin())
 							out << ",";

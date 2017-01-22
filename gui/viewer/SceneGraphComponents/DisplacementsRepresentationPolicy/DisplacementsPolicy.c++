@@ -15,7 +15,7 @@ DisplacementsPolicy::~DisplacementsPolicy ( )
 }
 
 
-fem::point 
+fem::Point 
 DisplacementsPolicy::operator[](size_t &node_reference)
 {
 	assert(this->m_model != NULL);

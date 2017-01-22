@@ -85,8 +85,8 @@ public:
 	void runOperation(Operation::OperationsVisitor &);
 
 
-	void setSelectionStart(fem::point const &p)	{ m_selection.setStart(p); };
-	void setSelectionEnd(fem::point const &p)	{ m_selection.setEnd(p); };
+	void setSelectionStart(fem::Point const &p)	{ m_selection.setStart(p); };
+	void setSelectionEnd(fem::Point const &p)	{ m_selection.setEnd(p); };
 	void setSelectionOff()				{ m_selection.off(); };
 };
 

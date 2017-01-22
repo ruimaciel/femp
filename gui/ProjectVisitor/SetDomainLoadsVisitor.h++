@@ -20,10 +20,10 @@ class SetDomainLoadsVisitor
 protected:
 	Selection	const &m_selection;
 	fem::LoadPattern	&m_load_pattern;
-	fem::point	const &m_force;
+	fem::Point	const &m_force;
 	
 public:
-	SetDomainLoadsVisitor(Selection const &selection, fem::LoadPattern &load_pattern, fem::point const &force);
+	SetDomainLoadsVisitor(Selection const &selection, fem::LoadPattern &load_pattern, fem::Point const &force);
 
 	void visit(fem::Model &model, std::vector<fem::AnalysisResult<double> > &);
 };

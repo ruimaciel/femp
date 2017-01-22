@@ -15,9 +15,9 @@ SphericalBoundary::~SphericalBoundary()
 }
 
 
-bool SphericalBoundary::inside(const fem::point &p)
+bool SphericalBoundary::inside(const fem::Point &p)
 {
-	fem::point d = p-center;
+	fem::Point d = p-center;
 	if(dot_product(d,d) > radius2 )
 		return false;
 
@@ -25,7 +25,7 @@ bool SphericalBoundary::inside(const fem::point &p)
 }
 
 
-void SphericalBoundary::setPoint(const fem::point &p)
+void SphericalBoundary::setPoint(const fem::Point &p)
 {
 	this->radius2 = 0;
 	this->center = p;
@@ -33,14 +33,14 @@ void SphericalBoundary::setPoint(const fem::point &p)
 
 
 /*
-   Resizes the spherical boundary, if needed, to include a new fem::point
+   Resizes the spherical boundary, if needed, to include a new fem::Point
  */
-void SphericalBoundary::addPoint(const fem::point &p)
+void SphericalBoundary::addPoint(const fem::Point &p)
 {
 	/*
-	given a circle and a fem::point, if the fem::point isn't inside the circle then define a new cirlce center and radius to include the new fem::point
+	given a circle and a fem::Point, if the fem::Point isn't inside the circle then define a new cirlce center and radius to include the new fem::Point
 	*/
-	fem::point l = center - p;
+	fem::Point l = center - p;
 	float dl = l.norm();
 	if(dl*dl > radius2)
 	{

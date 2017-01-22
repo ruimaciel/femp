@@ -6,7 +6,7 @@
 #include <libfemp/Model.h++>
 #include <libfemp/AnalysisResult.h++>
 
-#include "ProjectVisitor/ProjectVisitor.h++"
+#include <ProjectVisitor/ProjectVisitor.h++>
 
 #include <vector>
 

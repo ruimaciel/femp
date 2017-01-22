@@ -9,7 +9,7 @@
 #include "ProjectVisitor.h++"
 #include <libfemp/Model.h++>
 #include <libfemp/AnalysisResult.h++>
-#include "../../Selection.h++"
+#include <Selection.h++>
 
 
 /**

@@ -152,8 +152,8 @@ MainWindow::openProject()
 
 	// prepare the file
 	sl = dialog.selectedFiles();
-	document.file_name = new QString;
-	*document.file_name = sl.at(0);
+
+	QString file_name = sl.at(0);
 
 	std::string my_file_name( sl.at(0).toUtf8() ); 
 	std::fstream file;
@@ -163,7 +163,6 @@ MainWindow::openProject()
 	if(!file)
 	{
 		QMessageBox::critical(this, tr("Error"), tr("There was an error opening the file"));
-		document.clear();
 		return;
 	}
 
@@ -184,6 +183,8 @@ MainWindow::openProject()
 			document.clear();
 			break;
 	}
+
+	document.setFileName(file_name);
 
 	OutputElementStatisticsVisitor visit(m_selection_manager.getSelection());
 	document.project.accept(visit);
@@ -262,11 +263,12 @@ MainWindow::saveProject()
 		file_dialog_last_directory = dialog.directory();
 
 		sl = dialog.selectedFiles();
-		document.file_name = new QString;
-		*document.file_name = sl.at(0);
+		QString file_name = sl.at(0);
+
 		// check if file already exists
 		QFile file;
-		file.setFileName(*document.file_name);
+		file.setFileName(file_name);
+
 		if(file.exists())
 		{
 			QMessageBox msgBox;
@@ -276,15 +278,14 @@ MainWindow::saveProject()
 			msgBox.setDefaultButton(QMessageBox::No);
 			if(msgBox.exec() == QMessageBox::No)
 			{
-				delete document.file_name;
-				document.file_name = NULL;
 				return;
 			}
 		}
 
 		// set a new file name for this file
+		document.setFileName(file_name);
 		
-		this->setWindowTitle("Femp - " + *document.file_name);
+		this->setWindowTitle("Femp - " + file_name );
 		ui.actionReopen->setEnabled(true);
 	}
 	document.save();
@@ -313,11 +314,12 @@ MainWindow::saveProjectAs()
 	file_dialog_last_directory = dialog.directory();
 
 	sl = dialog.selectedFiles();
-	document.file_name = new QString;
-	*document.file_name = sl.at(0);
+
+	QString file_name = sl.at(0);
+
 	// check if file already exists
 	QFile file;
-	file.setFileName(*document.file_name);
+	file.setFileName(file_name);
 	if(file.exists())
 	{
 		QMessageBox msgBox;
@@ -331,9 +333,10 @@ MainWindow::saveProjectAs()
 		}
 	}
 
-	this->setWindowTitle("Femp - " + *document.file_name);
+	this->setWindowTitle("Femp - " + file_name);
 
 	// tweak the UI
+	document.setFileName(file_name);
 	document.save();
 	hasUnsavedChanges = false;
 }

@@ -1329,9 +1329,6 @@ MainWindow::createNewModelWindow()
 	mdi_window->setWindowTitle(tr("Model"));
 	mdi_window->showMaximized();
 	window->connectToSelectionManager(this->m_selection_manager);
-
-	// connect signals and slots
-	setSignalsAndSlotsConnections(window);
 }
 
 
@@ -1562,13 +1559,6 @@ MainWindow::setUserInterfacePostAnalysis()
 	ui.actionNewAnalysisResultsWindow->setEnabled(true);
 	ui.actionNewFemEquationWindow->setEnabled(true);
 	ui.actionAnalysisSummary->setEnabled(true);
-}
-
-
-void 
-MainWindow::setSignalsAndSlotsConnections(ModelWindow *window)
-{
-	assert(window != NULL);
 }
 
 

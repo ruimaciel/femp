@@ -136,8 +136,6 @@ public Q_SLOTS:
 	void createNewFemEquationWindow();
 	void updateWindowMenu();
 
-	// set all signal and slots connections
-	void setSignalsAndSlotsConnections(ModelWindow *window);
 	void activateSubWindowByIndex(int);
 
 Q_SIGNALS:

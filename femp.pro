@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 
-CONFIG+=ordered
+CONFIG+=ordered debug
 
 SUBDIRS = \
 	libla \

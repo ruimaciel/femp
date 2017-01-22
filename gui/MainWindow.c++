@@ -22,7 +22,7 @@
 #include "ui/NewProjectWizard.h++"
 #include "NodeRestrainsDialog.h++"
 #include "NodeActionsDialog.h++"
-#include "DisplayOptionsDialog.h++"
+#include "ui/DisplayOptionsDialog.h++"
 #include "ui/DomainLoadsDialog.h++"
 #include "ui/MaterialsEditorDialog.h++"
 #include "ui/QuadratureRulesOptionsDialog.h++"

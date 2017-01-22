@@ -42,7 +42,17 @@ public:
 	~Document();
 
 	void clear();	// clears/frees everything
+
+	/*!
+	 * Sets the file name
+	 */
 	enum Error setFileName(QString file);	// points to a file
+
+	/*!
+	 * Returns a QString with the file name
+	 */
+	QString getFileName() const;
+
 	void setProjectType(Type type)	{ document_type = type; }
 
 	/**

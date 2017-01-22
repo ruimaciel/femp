@@ -80,6 +80,20 @@ Document::setFileName(QString new_file)
 }
 
 
+QString
+Document::getFileName() const
+{
+	if(this->file_name == NULL)
+	{
+		return QString();
+	}
+	else
+	{
+		return *this->file_name;
+	}
+}
+
+
 enum Document::Error 
 Document::save()
 {

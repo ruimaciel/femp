@@ -1,8 +1,6 @@
 #ifndef SELECTION_MANAGER_HPP
 #define SELECTION_MANAGER_HPP
 
-#include <set>
-
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include <libfemp/Element.h++>

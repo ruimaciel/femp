@@ -91,16 +91,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 void 
 MainWindow::newProject()
 {
-	// initialize a new project
-	std::string default_path, tmp;
-
 	// tweak the UI
 	setUserInterfaceAsClosed();
 
 	// free everything
 	document.clear();
 
-	default_path = getenv("HOME");
+	std::string default_path = getenv("HOME");
+	std::string tmp;
 	if(options.getOption("project.new.default_directory",tmp))
 	{
 		default_path += "/" + tmp;
@@ -126,14 +124,10 @@ MainWindow::newProject()
 void 
 MainWindow::openProject()
 {
-	std::string last_path, tmp;
-
 	// get the last dir where a project was opened 
 	QFileDialog dialog(this);
 	dialog.setDirectory(file_dialog_last_directory);
 	
-	QStringList sl;
-
 	// setup the file dialog
 	dialog.setFileMode(QFileDialog::ExistingFile);
 	dialog.setNameFilter(tr("FEM project (*.fem.json)"));
@@ -151,13 +145,13 @@ MainWindow::openProject()
 	this->m_selection_manager.clearSelection();
 
 	// prepare the file
+	QStringList sl;
 	sl = dialog.selectedFiles();
 
 	QString file_name = sl.at(0);
 
 	std::string my_file_name( sl.at(0).toUtf8() ); 
 	std::fstream file;
-	FemJsonParser parser;
 
 	file.open(my_file_name, std::fstream::in);
 	if(!file)
@@ -166,6 +160,7 @@ MainWindow::openProject()
 		return;
 	}
 
+	FemJsonParser parser;
 	parser.parse(file, document.getProject().model);
 
 	switch(parser.error.code)
@@ -205,7 +200,6 @@ MainWindow::reopenProject()
 
 		std::string my_file_name( document.file_name->toUtf8() ); 
 		std::fstream file;
-		FemJsonParser parser;
 
 		file.open(my_file_name, std::fstream::in);
 		if(!file)
@@ -215,6 +209,7 @@ MainWindow::reopenProject()
 			return;
 		}
 
+		FemJsonParser parser;
 		parser.parse(file, document.getProject().model);
 
 		switch(parser.error.code)
@@ -248,7 +243,6 @@ MainWindow::saveProject()
 	{
 		QFileDialog dialog(this);
 		dialog.setDirectory(file_dialog_last_directory);
-		QStringList sl;
 
 		// setup the file dialog
 		dialog.setFileMode(QFileDialog::AnyFile);
@@ -260,8 +254,7 @@ MainWindow::saveProject()
 			return;
 		}
 
-		file_dialog_last_directory = dialog.directory();
-
+		QStringList sl;
 		sl = dialog.selectedFiles();
 		QString file_name = sl.at(0);
 
@@ -297,7 +290,6 @@ void
 MainWindow::saveProjectAs()
 {
 	QFileDialog dialog(this);
-	QStringList sl;
 
 	dialog.setDirectory(file_dialog_last_directory);
 
@@ -311,8 +303,7 @@ MainWindow::saveProjectAs()
 		return;
 	}
 
-	file_dialog_last_directory = dialog.directory();
-
+	QStringList sl;
 	sl = dialog.selectedFiles();
 
 	QString file_name = sl.at(0);
@@ -503,8 +494,6 @@ MainWindow::loadOptions()
 {
 	using namespace std;
 
-	std::ifstream is;
-	std::string path;
 	std::vector<double> default_color;
 
 	// Set default options
@@ -527,7 +516,9 @@ MainWindow::loadOptions()
 
 	// Set system options
 	options.setSystem();
-	path = "/etc/femp/options.opt";
+	std::string path = "/etc/femp/options.opt";
+
+	std::ifstream is;
 	is.open(path.c_str(), std::ifstream::in);
 	if(is.is_open())
 	{
@@ -859,7 +850,7 @@ MainWindow::setNodeActions()
 	NodeActionsDialog na(model, this);
 
 	// Connect the sigc++ signals
-	na. create_load_pattern.connect( sigc::mem_fun(document.getProject().model, &fem::Model::createEmptyLoadPattern));
+	na.create_load_pattern.connect( sigc::mem_fun(document.getProject().model, &fem::Model::createEmptyLoadPattern));
 
 	if(na.exec() == QDialog::Accepted)
 	{
@@ -937,7 +928,6 @@ MainWindow::moveSelectedNodes()
 }
 
 
-
 void 
 MainWindow::setDisplayOptions()
 {
@@ -963,7 +953,6 @@ MainWindow::setDisplayOptions()
 void 
 MainWindow::editMaterials()
 {
-	//TODO finish this
 	MaterialsEditorDialog dialog(&document.getProject().model, this);
 	dialog.exec();
 }
@@ -1033,8 +1022,6 @@ MainWindow::runAnalysis()
 
 
 	// runs the analysis
-	QString message;
-	fem::AnalysisResult<double> analysis_result;
 	DefaultProgressIndicator progress;
 	AnalysisProgressDialog dialog(this);
 
@@ -1047,6 +1034,7 @@ MainWindow::runAnalysis()
 	connect(&progress,	SIGNAL(finish()),	&dialog,	SLOT(finish() ));
 
 	//TODO finish this
+	fem::AnalysisResult<double> analysis_result;
 	analysis.set(femp_model, femp_model.load_pattern_list[analysis_dialog.loadPattern()], analysis_result, progress, solver);
 
 	std::thread t(analysis);
@@ -1094,8 +1082,6 @@ MainWindow::dumpFemEquation()
 
 		//TODO pick file name
 		QFileDialog dialog(this);
-		QStringList sl;
-		QString file_name;
 
 		// setup the file dialog
 		dialog.setFileMode(QFileDialog::AnyFile);
@@ -1106,8 +1092,9 @@ MainWindow::dumpFemEquation()
 			// user cancelled 
 			return;
 		}
-		sl = dialog.selectedFiles();
-		file_name = sl.at(0);
+
+		QStringList sl = dialog.selectedFiles();
+		QString file_name = sl.at(0);
 
 		// check if file already exists
 		QFile file;
@@ -1257,30 +1244,25 @@ MainWindow::dumpResultsFromSelection()
 void 
 MainWindow::showSelection()
 {
-	std::cerr << __FILE__ << ":" << __LINE__ ;
-	std::cerr << " MainWindow::showSelection()" << std::endl;
 	Selection selection = m_selection_manager.getSelection();
+	
+	QMdiSubWindow *mdi_window = mdiArea->currentSubWindow();
+	if(mdi_window != NULL)
 	{
-		// this->createNewPostprocessingWindow();
-		QMdiSubWindow *mdi_window;
-		mdi_window = mdiArea->currentSubWindow();
-		if(mdi_window != NULL)
+		MdiWindow *window = static_cast<MdiWindow*>(mdi_window->widget() );
+		if(window != NULL)
 		{
-			MdiWindow *window = static_cast<MdiWindow*>(mdi_window->widget() );
-			if(window != NULL)
-			{
-				window->showSelection(selection);
-			}
+			window->showSelection(selection);
 		}
 	}
+
 }
 
 
 void 
 MainWindow::showAll()
 {
-	QMdiSubWindow *mdi_window;
-	mdi_window = mdiArea->currentSubWindow();
+	QMdiSubWindow *mdi_window = mdiArea->currentSubWindow();
 	if(mdi_window != NULL)
 	{
 		MdiWindow *window = static_cast<MdiWindow*>(mdi_window->widget() );
@@ -1341,9 +1323,7 @@ MainWindow::createNewModelWindow()
 	window = new ModelWindow(document.getProject(), colors, this);
 
 	// create the model's MDI window
-	QMdiSubWindow	* mdi_window;	// the model's opengl viewport
-
-	mdi_window = new QMdiSubWindow(mdiArea);
+	QMdiSubWindow	* mdi_window = new QMdiSubWindow(mdiArea);
 	mdi_window->setWidget(window);
 	mdi_window->setAttribute(Qt::WA_DeleteOnClose);
 	mdi_window->setWindowTitle(tr("Model"));
@@ -1583,8 +1563,6 @@ MainWindow::setUserInterfacePostAnalysis()
 	ui.actionNewFemEquationWindow->setEnabled(true);
 	ui.actionAnalysisSummary->setEnabled(true);
 }
-
-
 
 
 void 

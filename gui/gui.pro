@@ -13,7 +13,7 @@ DESTDIR = $${BUILD_DIR}
 
 INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${SRCDIR}}
 
-LIBS += -lumfpack -lblas -lamd -lGLU -L$${BUILD_DIR} -llibla -llibfemp
+LIBS += -lumfpack -lGLU -L$${BUILD_DIR} -llibla -llibfemp
 
 HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	ModelSelection.h++ \

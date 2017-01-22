@@ -6,15 +6,12 @@
 TensorFieldViewport::TensorFieldViewport(fem::Project &project, fem::AnalysisResult<double> &result, fem::ResultsRanges<double> &ranges, QWidget *parent)
 	: BaseViewport(project, parent)
 {
-	//TODO let the user choose which result to represent
 	this->project = &project;
 	this->m_analysis_result = NULL;
 
 	this->setState(&m_vp_state_tensor_fields);
 	this->setAnalysisResult(result);
 	this->setResultsRanges(ranges);
-
-	//TODO let the user select which analysis case to visualize
 
 	this->showTensionField();
 

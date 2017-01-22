@@ -21,7 +21,7 @@
 
 #include "ui/NewProjectWizard.h++"
 #include "NodeRestrainsDialog.h++"
-#include "NodeActionsDialog.h++"
+#include "ui/NodeActionsDialog.h++"
 #include "ui/DisplayOptionsDialog.h++"
 #include "ui/DomainLoadsDialog.h++"
 #include "ui/MaterialsEditorDialog.h++"

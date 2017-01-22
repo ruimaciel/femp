@@ -51,7 +51,7 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	viewer/InputStates/ISLeftDrag.h++ \
 	viewer/InputStates/ISRightClick.h++ \
 	viewer/InputStates/ISRightDrag.h++ \
-	NodeRestrainsDialog.h++ NodeActionsDialog.h++ \
+	NodeRestrainsDialog.h++ \
 	DefaultProgressIndicator.h++ \
 
 SOURCES += main.c++ \
@@ -93,7 +93,6 @@ SOURCES += main.c++ \
 	viewer/InputStates/ISRightClick.c++ \
 	viewer/InputStates/ISRightDrag.c++ \
 	NodeRestrainsDialog.c++ \
-	NodeActionsDialog.c++ \
 	DefaultProgressIndicator.c++
 
 FORMS += ui/AnalysisDialog.ui \

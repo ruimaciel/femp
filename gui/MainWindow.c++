@@ -166,7 +166,7 @@ MainWindow::openProject()
 		return;
 	}
 
-	parser.parse(file, document.project.model);
+	parser.parse(file, document.getProject().model);
 
 	switch(parser.error.code)
 	{
@@ -187,7 +187,7 @@ MainWindow::openProject()
 	document.setFileName(file_name);
 
 	OutputElementStatisticsVisitor visit(m_selection_manager.getSelection());
-	document.project.accept(visit);
+	document.getProject().accept(visit);
 
 	file.close();
 }
@@ -200,7 +200,7 @@ MainWindow::reopenProject()
 	{
 		// clear the document
 		setUserInterfaceAsClosed();
-		this->document.project.model.clear();
+		this->document.getProject().model.clear();
 		this->m_selection_manager.clearSelection();
 
 		std::string my_file_name( document.file_name->toUtf8() ); 
@@ -215,7 +215,7 @@ MainWindow::reopenProject()
 			return;
 		}
 
-		parser.parse(file, document.project.model);
+		parser.parse(file, document.getProject().model);
 
 		switch(parser.error.code)
 		{
@@ -846,7 +846,7 @@ MainWindow::setNodeRestraints()
 		SetNodeRestraintsVisitor visitor(selection, nd.getRestrictions());
 
 		// set the restraints in the model
-		document.project.accept(visitor);
+		document.getProject().accept(visitor);
 	}
 }
 
@@ -854,12 +854,12 @@ MainWindow::setNodeRestraints()
 void 
 MainWindow::setNodeActions()
 {
-	LoadPatternsModel model(document.project.model, this);
+	LoadPatternsModel model(document.getProject().model, this);
 
 	NodeActionsDialog na(model, this);
 
 	// Connect the sigc++ signals
-	na. create_load_pattern.connect( sigc::mem_fun(document.project.model, &fem::Model::createEmptyLoadPattern));
+	na. create_load_pattern.connect( sigc::mem_fun(document.getProject().model, &fem::Model::createEmptyLoadPattern));
 
 	if(na.exec() == QDialog::Accepted)
 	{
@@ -871,7 +871,7 @@ MainWindow::setNodeActions()
 		if(force != fem::Point(0,0,0))
 		{
 			// shortcut just to reduce code clutter
-			fem::Model &model = document.project.model;
+			fem::Model &model = document.getProject().model;
 			fem::LoadPattern &load_pattern = model.load_pattern_list[ na.getLoadPattern() ];
 
 			// assign nodal loads
@@ -887,19 +887,21 @@ MainWindow::setNodeActions()
 void 
 MainWindow::setDomainLoads()
 {
-	LoadPatternsModel model(document.project.model, this);
+	fem::Model &femp_model = document.getProject().model;
+
+	LoadPatternsModel model(femp_model, this);
 
 	DomainLoadsDialog dialog(model, this);
 
 	// Connect the sigc++ signals
-	dialog.create_load_pattern.connect( sigc::mem_fun(document.project.model, &fem::Model::createEmptyLoadPattern));
+	dialog.create_load_pattern.connect( sigc::mem_fun(femp_model, &fem::Model::createEmptyLoadPattern));
 
 	/*
 	From:
 	https://developer.gnome.org/libsigc++-tutorial/stable/ch04.html#id455954
 	myaliendetector.signal_detected.connect( sigc::hide<std::string>( sigc::ptr_fun(warn_people) ) );
 	*/
-	//document.project.model.load_pattern_created.connect(sigc::hide<size_t const, fem::LoadPattern const &>(dialog.loadPatternCreated() ) );
+	//document.getProject().model.load_pattern_created.connect(sigc::hide<size_t const, fem::LoadPattern const &>(dialog.loadPatternCreated() ) );
 
 
 	// call the dialog box
@@ -907,9 +909,9 @@ MainWindow::setDomainLoads()
 	{
 		Selection const selection = m_selection_manager.getSelection();
 
-		SetDomainLoadsVisitor visitor(selection,  document.project.model.load_pattern_list[ dialog.getLoadPattern() ], dialog.getForce() );
+		SetDomainLoadsVisitor visitor(selection,  femp_model.load_pattern_list[ dialog.getLoadPattern() ], dialog.getForce() );
 
-		document.project.accept(visitor);
+		document.getProject().accept(visitor);
 
 		document.setUnsaved();
 	}
@@ -928,7 +930,7 @@ MainWindow::moveSelectedNodes()
 		Selection selection = m_selection_manager.getSelection();
 		MoveNodesVisitor visitor(selection, nd.getTranslation());
 
-		document.project.accept(visitor);
+		document.getProject().accept(visitor);
 
 		document.setUnsaved();
 	}
@@ -941,12 +943,12 @@ MainWindow::setDisplayOptions()
 {
 	//TODO make this generic
 	/*
-	   DisplayOptionsDialog da(document.project.model, this);
+	   DisplayOptionsDialog da(document.getProject().model, this);
 	   if(da.exec() == QDialog::Accepted)
 	   {
 	// set the LoadPattern pointer
 	size_t n = da.getLoadPatternIndex();
-	glWidget->display_options.load_pattern = &document.project.model.load_pattern_list[n];
+	glWidget->display_options.load_pattern = &document.getProject().model.load_pattern_list[n];
 
 	// set the other visualization options
 	glWidget->display_options.nodal_forces = da.renderNodalForces();
@@ -962,7 +964,7 @@ void
 MainWindow::editMaterials()
 {
 	//TODO finish this
-	MaterialsEditorDialog dialog(&document.project.model, this);
+	MaterialsEditorDialog dialog(&document.getProject().model, this);
 	dialog.exec();
 }
 
@@ -978,7 +980,7 @@ MainWindow::editQuadratureRules()
 void 
 MainWindow::editSelection()
 {
-	SelectionDialog dialog(document.project, m_selection_manager, this);
+	SelectionDialog dialog(document.getProject(), m_selection_manager, this);
 	dialog.exec();
 }
 
@@ -1000,8 +1002,10 @@ MainWindow::runAnalysis()
 {
 	using namespace std;
 
+	fem::Model &femp_model = this->document.getProject().model;
+
 	// check if ther is a load pattern
-	if( this->document.project.model.load_pattern_list.empty() ) 
+	if( femp_model.load_pattern_list.empty() ) 
 	{
 		QMessageBox::critical(this, "No load patterns", "This model doesn't have any load patterns to run");
 		return;
@@ -1010,7 +1014,7 @@ MainWindow::runAnalysis()
 	fem::Solver<double> * solver = NULL;
 
 	// run the AnalysisDialog to get the solver
-	AnalysisDialog analysis_dialog(document.project.model, this);
+	AnalysisDialog analysis_dialog(femp_model, this);
 	switch(analysis_dialog.exec())
 	{
 		case QDialog::Accepted:
@@ -1043,7 +1047,7 @@ MainWindow::runAnalysis()
 	connect(&progress,	SIGNAL(finish()),	&dialog,	SLOT(finish() ));
 
 	//TODO finish this
-	analysis.set(document.project.model, document.project.model.load_pattern_list[analysis_dialog.loadPattern()], analysis_result, progress, solver);
+	analysis.set(femp_model, femp_model.load_pattern_list[analysis_dialog.loadPattern()], analysis_result, progress, solver);
 
 	std::thread t(analysis);
 
@@ -1060,7 +1064,7 @@ MainWindow::runAnalysis()
 
 	if(analysis.succeeded())
 	{
-		document.project.pushAnalysisResult(analysis_result);
+		document.getProject().pushAnalysisResult(analysis_result);
 
 		// set the UI
 		this->setUserInterfacePostAnalysis();
@@ -1078,7 +1082,9 @@ MainWindow::runAnalysis()
 void 
 MainWindow::dumpFemEquation()
 {
-	if( document.project.result.empty() )
+	auto & femp_result = document.getProject().result;
+
+	if( femp_result.empty() )
 	{
 		QMessageBox::information(this, "No analysis", "There isn't a equation to dump");
 	}
@@ -1131,14 +1137,14 @@ MainWindow::dumpFemEquation()
 		out << "# Created by lalib\n";
 		out << "# name: K\n";
 		out << "# type: matrix\n";
-		out << "# rows: " << document.project.result.back().K.rows() << "\n";
-		out << "# columns: " << document.project.result.back().K.columns() << "\n";
+		out << "# rows: " << femp_result.back().K.rows() << "\n";
+		out << "# columns: " << femp_result.back().K.columns() << "\n";
 
-		for(size_t j = 0; j < document.project.result.back().K.columns(); j++)
+		for(size_t j = 0; j < femp_result.back().K.columns(); j++)
 		{
-			for(size_t i = 0; i < document.project.result.back().K.rows(); i++)
+			for(size_t i = 0; i < femp_result.back().K.rows(); i++)
 			{
-				out << " " << document.project.result.back().K.value(i,j);
+				out << " " << femp_result.back().K.value(i,j);
 			}
 			out << "\n";
 		}
@@ -1147,24 +1153,24 @@ MainWindow::dumpFemEquation()
 		out << "# Created by lalib\n";
 		out << "# name: f\n";
 		out << "# type: matrix\n";
-		out << "# rows: " << document.project.result.back().f.size() << "\n";
+		out << "# rows: " << femp_result.back().f.size() << "\n";
 		out << "# columns: 1\n";
-		for(size_t i = 0; i < document.project.result.back().f.size(); i++)
+		for(size_t i = 0; i < femp_result.back().f.size(); i++)
 		{
-			out << " " << document.project.result.back().f.value(i) << "\n";
+			out << " " << femp_result.back().f.value(i) << "\n";
 		}
 		out << endl;
 
-		//lalib::dump_octave(out, "d", document.project.result.back().d);
+		//lalib::dump_octave(out, "d", document.getProject().result.back().d);
 
 		out << "# Created by lalib\n";
 		out << "# name: d\n";
 		out << "# type: matrix\n";
-		out << "# rows: " << document.project.result.back().d.size() << "\n";
+		out << "# rows: " << femp_result.back().d.size() << "\n";
 		out << "# columns: 1\n";
-		for(size_t i = 0; i < document.project.result.back().d.size(); i++)
+		for(size_t i = 0; i < femp_result.back().d.size(); i++)
 		{
-			out << " " << document.project.result.back().d.value(i) << "\n";
+			out << " " << femp_result.back().d.value(i) << "\n";
 		}
 		out << endl;
 		//out.close();
@@ -1177,7 +1183,7 @@ void
 MainWindow::showAnalysisSummary()
 {
 	// crude hack
-	AnalysisSummaryDialog dialog(document.project.result.back() , this);
+	AnalysisSummaryDialog dialog(document.getProject().result.back() , this);
 	dialog.exec();
 }
 
@@ -1236,14 +1242,13 @@ MainWindow::dumpResultsFromSelection()
 
 	QTextStream     out(&file);
 	//dump the text to a text file
-	fem::AnalysisResult<double> * result;
-	result = &this->document.project.result.back();	// nasty hack
+	fem::AnalysisResult<double> & femp_result = this->document.getProject().result.back();	// nasty hack
 
 	Selection selection = m_selection_manager.getSelection();
 
-	OutputResultsInNodesCSVVisitor visitor(selection, result, out);
+	OutputResultsInNodesCSVVisitor visitor(selection, &femp_result, out);
 
-	document.project.accept(visitor);
+	document.getProject().accept(visitor);
 
 	file.close();
 }
@@ -1333,7 +1338,7 @@ void
 MainWindow::createNewModelWindow()
 {
 	ModelWindow *window;	// opengl viewport
-	window = new ModelWindow(document.project, colors, this);
+	window = new ModelWindow(document.getProject(), colors, this);
 
 	// create the model's MDI window
 	QMdiSubWindow	* mdi_window;	// the model's opengl viewport
@@ -1353,7 +1358,8 @@ MainWindow::createNewModelWindow()
 void 
 MainWindow::createNewPostprocessingWindow()
 {
-	if(document.project.result.empty())
+	auto &femp_result = document.getProject().result;
+	if(femp_result.empty())
 	{
 		std::cerr << __FILE__ << ":" << __LINE__ ;
 		std::cerr << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available" << std::endl;
@@ -1361,7 +1367,7 @@ MainWindow::createNewPostprocessingWindow()
 	else
 	{
 		PostprocessingWindow *window;	// opengl viewport
-		window = new PostprocessingWindow(document.project, document.project.result.back(), colors, this);
+		window = new PostprocessingWindow(document.getProject(), femp_result.back(), colors, this);
 
 		// create the model's MDI window
 		QMdiSubWindow	* mdi_window;	// the model's opengl viewport
@@ -1379,7 +1385,7 @@ MainWindow::createNewPostprocessingWindow()
 void 
 MainWindow::createNewTensorFieldWindow()
 {
-	if(document.project.result.empty())
+	if(document.getProject().result.empty())
 	{
 		std::cerr << __FILE__ << ":" << __LINE__ ;
 		std::cerr << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available" << std::endl;
@@ -1387,7 +1393,7 @@ MainWindow::createNewTensorFieldWindow()
 	else
 	{
 		TensorFieldWindow *window;	// MDI viewport
-		window = new TensorFieldWindow(document.project, document.project.result.back(), colors, this);
+		window = new TensorFieldWindow(document.getProject(), document.getProject().result.back(), colors, this);
 
 		// create the model's MDI window
 		QMdiSubWindow	* mdi_window;
@@ -1407,7 +1413,7 @@ MainWindow::createNewAnalysisResultsWindow()
 {
 	std::cerr << __FILE__ << ":" << __LINE__ ;
 	std::cerr << "MainWindow::createNewAnalysisResultsWindow()" << std::endl;
-	if(document.project.result.empty())
+	if(document.getProject().result.empty())
 	{
 		std::cerr << __FILE__ << ":" << __LINE__ ;
 		std::cerr << "MainWindow::createNewAnalysisResultWindow(): tried to set a results window although there is no result available" << std::endl;
@@ -1415,7 +1421,7 @@ MainWindow::createNewAnalysisResultsWindow()
 	}
 
 	AnalysisResultsWindow *mdi_window;
-	mdi_window = new AnalysisResultsWindow(document.project, mdiArea);
+	mdi_window = new AnalysisResultsWindow(document.getProject(), mdiArea);
 	mdi_window->showMaximized();
 }
 
@@ -1425,14 +1431,14 @@ MainWindow::createNewFemEquationWindow()
 {
 	std::cerr << __FILE__ << ":" << __LINE__ ;
 	std::cerr << "MainWindow::createNewFemEquationWindow()" << std::endl;
-	if(document.project.result.empty())
+	if(document.getProject().result.empty())
 	{
 		std::cerr << "MainWindow::createNewFemEquationWindow(): tried to set a results window although there is no result available" << std::endl;
 		return;
 	}
 
 	MatrixWindow *mdi_window;
-	mdi_window = new MatrixWindow(document.project, mdiArea);
+	mdi_window = new MatrixWindow(document.getProject(), mdiArea);
 	mdi_window->showMaximized();
 }
 

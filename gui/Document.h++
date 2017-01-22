@@ -55,6 +55,12 @@ public:
 
 	void setProjectType(Type type)	{ document_type = type; }
 
+
+	/*!
+	 * Returns a reference to the Project object
+	 */
+	fem::Project &getProject() 	{ return this->project; }
+
 	/**
 	Saves the project in it's path
 	**/

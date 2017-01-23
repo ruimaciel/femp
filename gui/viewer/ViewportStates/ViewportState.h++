@@ -2,19 +2,14 @@
 #define VIEWPORT_STATE_HPP
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
-#include <assert.h>
 #include <iostream>
 #include <QMouseEvent>
 
-#include <libfemp/Model.h++>
 #include <libfemp/AnalysisResult.h++>
 
 #include "../../Selection.h++"
 
 #include "../BaseViewport.h++"
-#include "../ViewportData.h++"
-#include "../ViewportColors.h++"
-#include "../Camera.h++"
 #include "../SceneGraph.h++"
 
 

@@ -7,8 +7,6 @@
 
 #include "ViewportState.h++"
 #include "../BaseViewport.h++"
-#include "../ViewportData.h++"
-#include "../ViewportColors.h++"
 
 #include "../SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationFlyweightFactory.h++"
 #include "../SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.h++"

@@ -2,7 +2,7 @@
 #define DISPLAY_OPTIONS_HPP
 
 
-#include <libfemp/Model.h++>
+#include <libfemp/LoadPattern.h++>
 
 /** 
 Helper class belonging to glwidget (a has-a relationship) that states what model properties should be rendered

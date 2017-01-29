@@ -6,26 +6,13 @@
 #include <QWidget>
 #include <QGLWidget>
 
-#include "../MdiWindowProperties.h++"
-
 #include "../Project.h++"
-#include <libfemp/Model.h++>
 
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/ElementResults/ResultsRanges.h++>
-#include <libfemp/LinearAnalysis.h++>
 
 #include "BaseViewport.h++"
-#include "Camera.h++"
-#include "ViewportColors.h++"
-#include "DisplayOptions.h++"
 
-#include "ViewportData.h++"
-
-#include "ViewportStates/ViewportState.h++"	// for the vieport's state pattern base class
-
-#include "ViewportStates/VPStateDisplacements.h++"
-#include "ViewportStates/VPStateGradients.h++"
 #include "ViewportStates/VPStateTensorFields.h++"
 
 

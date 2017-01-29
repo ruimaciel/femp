@@ -14,10 +14,10 @@ class NewMaterialDialog
 	Q_OBJECT
 
 	private:
-		fem::Model *model;	// a pointer to a fem::Model object
+		fem::Model &m_model;	// a pointer to a fem::Model object
 
 	public:
-		NewMaterialDialog(fem::Model *model, QWidget *parent = NULL);
+		NewMaterialDialog(fem::Model &model, QWidget *parent = NULL);
 		~NewMaterialDialog();
 
 

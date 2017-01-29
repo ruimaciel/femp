@@ -5,15 +5,11 @@
 #include <libfemp/Material.h++>
 
 
-NewMaterialDialog::NewMaterialDialog(fem::Model *model, QWidget *parent)
-	: QDialog(parent)
+NewMaterialDialog::NewMaterialDialog(fem::Model &model, QWidget *parent)
+	: QDialog(parent), m_model(model)
 {
-	assert(model != NULL);
-
 	setupUi(this);
 	
-	this->model = model;
-
 	lineEditPoisson->setValidator(new QDoubleValidator(-1.5,0.5,5,this));
 	lineEditYoung->setValidator(new QDoubleValidator(0,10e20,8,this));
 
@@ -29,7 +25,7 @@ NewMaterialDialog::~NewMaterialDialog()
 
 bool NewMaterialDialog::isDuplicate(QString name)
 {
-	for(std::vector<fem::Material>::iterator i = model->material_list.begin(); i != model->material_list.end(); i++)
+	for(std::vector<fem::Material>::iterator i = m_model.material_list.begin(); i != m_model.material_list.end(); i++)
 	{
 		if(i->label == name.toStdString())
 			return true;
@@ -72,7 +68,7 @@ void NewMaterialDialog::addNewMaterial()
 	new_material.E = lineEditYoung->text().toDouble();
 	new_material.nu = lineEditPoisson->text().toDouble();
 
-	model->material_list.push_back(new_material);
+	m_model.material_list.push_back(new_material);
 
 	accept();
 

@@ -20,14 +20,8 @@ NewProjectWizard::NewProjectWizard(Document &doc, QWidget *parent)
 	page2 = new NewProjectWizardPage2;
 	addPage(page2);
 
-	page3 = new NewProjectWizardPage3(&doc);
-	page3->document = &doc;
+	page3 = new NewProjectWizardPage3(doc);
 	addPage(page3);
-
-	/*
-	pageLast = new NewProjectWizardPageLast;
-	addPage(pageLast);
-	*/
 
 	//TODO crude hack
 	doc.setProjectType(Document::TYPE_SOLID3D);

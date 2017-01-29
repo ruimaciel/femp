@@ -9,11 +9,9 @@
 #include <libfemp/SurfaceLoadOperators/ConcentricLoad.h++>
 
 
-NewProjectWizardPage3::NewProjectWizardPage3(Document *document)
+NewProjectWizardPage3::NewProjectWizardPage3(Document &document)
+	: m_document(document)
 {
-	assert(document != NULL);
-	this->document = document;
-
 	setupUi(this);
 
 	// set the variable
@@ -98,17 +96,8 @@ void NewProjectWizardPage3::loadMeshFile()
 			return;
 		}
 
-		/*
-		fem::ConstantLoad o;
-		o.setLoad(fem::Point(1,0,0));
-		*/
 		fem::SurfaceNormalLoad o;
 		o.setLoadMagnitude(-1.0f);
-		/*
-		fem::ConcentricLoad o;
-		o.setLoadMagnitude(1.0f);
-		o.setConvergencePoint(fem::Point(0,0,0));
-		*/
 
 		parser.setSurfaceLoadOperator(o);
 		// parse the file

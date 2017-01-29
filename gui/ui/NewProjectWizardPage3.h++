@@ -23,11 +23,10 @@ class NewProjectWizardPage3
 		bool successful_import;
 		MshParser parser;
 
-	public:
-		Document *document;	// must point to a valid instance or it crashes
+		Document &m_document;	// must point to a valid instance or it crashes
 
 	public:
-		NewProjectWizardPage3(Document *document);
+		NewProjectWizardPage3(Document &document);
 		~NewProjectWizardPage3();
 
 		bool validatePage();

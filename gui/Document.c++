@@ -54,9 +54,6 @@ Document::clear()
 	}
 	document_type = TYPE_NONE;
 	this->project.clear();
-
-	// clear all selections
-	model_selection.deselectAll();
 }
 
 
@@ -496,67 +493,3 @@ Document::save()
 }
 
 
-enum Document::Error 
-Document::importMesh(QString file_name)
-{
-	QFile           mesh_file;
-
-	mesh_file.setFileName(file_name);
-	if (!mesh_file.open(QIODevice::ReadOnly | QIODevice::Text)) 
-	{	// failed to open file
-		return ERR_FILE_OPEN;
-	}
-
-	// TODO import mesh from a Gmsh file
-	FILE           *f = fdopen(mesh_file.handle(), "r");
-	fem_model_import_msh(f, this->project.getModel());
-	mesh_file.close();
-
-	return ERR_OK;
-}
-
-
-enum Document::Error 
-Document::importMesh(std::string file_name)
-{
-	std::ifstream file;
-
-	file.open(file_name);
-
-	if(!file.good())
-	{
-		std::cerr << "error opening file: " << file_name << std::endl;
-		return ERR_FILE_OPEN;
-	}
-
-	MshParser parser;
-	if(parser(file, this->project.getModel()) != MshParser::Error::ERR_OK)
-	{
-		file.close();
-		return ERR_UNKNOWN;
-	}
-
-	file.close();
-	return ERR_OK;
-}
-
-void
-Document::selectNode(const size_t & node)
-{
-	model_selection.selectNode(node);
-
-}
-
-
-void
-Document::deselectNode(const size_t & node)
-{
-	model_selection.deselectNode(node);
-}
-
-
-void
-Document::deselectAll()
-{
-	model_selection.deselectAll();
-}

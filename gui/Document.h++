@@ -7,7 +7,6 @@
 #include <list>
 
 #include "Project.h++"
-#include "ModelSelection.h++"
 
 
 class Document
@@ -30,11 +29,6 @@ protected:
 public:
 	QString *file_name;	// path for the project's directory
 	fem::Project project;	// the FEM project
-
-
-	// data structures for storing selected objects
-	// std::map<size_t,bool> selected_nodes;
-	ModelSelection model_selection;	// list of which model elements have been selected
 
 public:
 	Document();
@@ -65,13 +59,6 @@ public:
 	Saves the project in it's path
 	**/
 	enum Error save();
-	enum Error importMesh(QString file_name);
-	enum Error importMesh(std::string file_name);
-
-	// object selection routines
-	void selectNode(const size_t &node);
-	void deselectNode(const size_t &node);
-	void deselectAll();
 
 	void setUnsaved()	{unsaved = true; }
 };

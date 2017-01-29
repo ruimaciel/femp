@@ -16,7 +16,6 @@ INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${SRCDIR}}
 LIBS += -lumfpack -lGLU -L$${BUILD_DIR} -llibla -llibfemp
 
 HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
-	ModelSelection.h++ \
 	MdiWindowProperties.h++ \
 	Selection*.h++ \
 	ui/*.h++ \
@@ -52,14 +51,12 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	viewer/InputStates/ISLeftDrag.h++ \
 	viewer/InputStates/ISRightClick.h++ \
 	viewer/InputStates/ISRightDrag.h++ \
-	NodeRestrainsDialog.h++ NodeActionsDialog.h++ DisplayOptionsDialog.h++\
 	DefaultProgressIndicator.h++ \
 
 SOURCES += main.c++ \
 	MainWindow.c++ \
 	Document.c++ \
 	ProgramOptions.c++ \
-	ModelSelection.c++ \
 	MdiWindowProperties.c++ \
 	Project.c++ \
 	ProjectVisitor/*.c++ \
@@ -94,9 +91,6 @@ SOURCES += main.c++ \
 	viewer/InputStates/ISLeftDrag.c++ \
 	viewer/InputStates/ISRightClick.c++ \
 	viewer/InputStates/ISRightDrag.c++ \
-	NodeRestrainsDialog.c++ \
-	NodeActionsDialog.c++ \
-	DisplayOptionsDialog.c++ \
 	DefaultProgressIndicator.c++
 
 FORMS += ui/AnalysisDialog.ui \

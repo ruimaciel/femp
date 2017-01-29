@@ -59,6 +59,11 @@ public:
 	std::vector<Element>::size_type numberOfElements() const	{ return element_list.size(); }
 
 	/**
+	 * getter function for the element list
+	 **/
+	std::vector<Element> getElementList() {return element_list;}
+
+	/**
 	Adds a new material to the list
 	**/
 	void pushMaterial(fem::Material &);

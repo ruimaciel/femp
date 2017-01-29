@@ -40,7 +40,7 @@ bool NewProjectWizardPage3::validatePage()
 
 void NewProjectWizardPage3::loadMaterialsCombo()
 {
-	fem::Model &femp_model = document->getProject().getModel();
+	fem::Model &femp_model = this->m_document.getProject().getModel();
 	for(std::vector<fem::Material>::iterator i = femp_model.material_list.begin(); i != femp_model.material_list.end(); i++)
 	{
 		comboBoxMaterialsList->addItem(QString::fromStdString(i->label));
@@ -78,7 +78,7 @@ void NewProjectWizardPage3::loadMeshFile()
 
 		file.open(file_name);
 
-		fem::Model &femp_model = document->getProject().getModel();
+		fem::Model &femp_model = m_document.getProject().getModel();
 		if(!file.good())
 		{
 			// clear the model except the materials list
@@ -164,7 +164,7 @@ void NewProjectWizardPage3::getFileFromDialog(void)
 
 void NewProjectWizardPage3::addNewMaterial(void)
 {
-	NewMaterialDialog dialog(&document->getProject().getModel(), this);
+	NewMaterialDialog dialog(m_document.getProject().getModel(), this);
 	switch(dialog.exec())
 	{
 		case QDialog::Accepted:

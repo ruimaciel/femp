@@ -161,7 +161,8 @@ MainWindow::openProject()
 	}
 
 	FemJsonParser parser;
-	parser.parse(file, document.getProject().model);
+	fem::Model &model = document.getProject().getModel();
+	parser.parse(file, model);
 
 	switch(parser.error.code)
 	{
@@ -195,7 +196,8 @@ MainWindow::reopenProject()
 	{
 		// clear the document
 		setUserInterfaceAsClosed();
-		this->document.getProject().model.clear();
+		fem::Model &femp_model = this->document.getProject().getModel();
+		femp_model.clear();
 		this->m_selection_manager.clearSelection();
 
 		std::string my_file_name( document.file_name->toUtf8() ); 
@@ -210,7 +212,7 @@ MainWindow::reopenProject()
 		}
 
 		FemJsonParser parser;
-		parser.parse(file, document.getProject().model);
+		parser.parse(file, femp_model);
 
 		switch(parser.error.code)
 		{
@@ -845,12 +847,13 @@ MainWindow::setNodeRestraints()
 void 
 MainWindow::setNodeActions()
 {
-	LoadPatternsModel model(document.getProject().model, this);
+	fem::Model &femp_model = document.getProject().getModel();
+	LoadPatternsModel load_patterns_model(femp_model, this);
 
-	NodeActionsDialog na(model, this);
+	NodeActionsDialog na(load_patterns_model, this);
 
 	// Connect the sigc++ signals
-	na.create_load_pattern.connect( sigc::mem_fun(document.getProject().model, &fem::Model::createEmptyLoadPattern));
+	na.create_load_pattern.connect( sigc::mem_fun(femp_model, &fem::Model::createEmptyLoadPattern));
 
 	if(na.exec() == QDialog::Accepted)
 	{
@@ -862,8 +865,7 @@ MainWindow::setNodeActions()
 		if(force != fem::Point(0,0,0))
 		{
 			// shortcut just to reduce code clutter
-			fem::Model &model = document.getProject().model;
-			fem::LoadPattern &load_pattern = model.load_pattern_list[ na.getLoadPattern() ];
+			fem::LoadPattern &load_pattern = femp_model.load_pattern_list[ na.getLoadPattern() ];
 
 			// assign nodal loads
 			for(fem::node_ref_t const &node: selection.m_nodes_selected)
@@ -878,7 +880,7 @@ MainWindow::setNodeActions()
 void 
 MainWindow::setDomainLoads()
 {
-	fem::Model &femp_model = document.getProject().model;
+	fem::Model &femp_model = document.getProject().getModel();
 
 	LoadPatternsModel model(femp_model, this);
 
@@ -892,7 +894,7 @@ MainWindow::setDomainLoads()
 	https://developer.gnome.org/libsigc++-tutorial/stable/ch04.html#id455954
 	myaliendetector.signal_detected.connect( sigc::hide<std::string>( sigc::ptr_fun(warn_people) ) );
 	*/
-	//document.getProject().model.load_pattern_created.connect(sigc::hide<size_t const, fem::LoadPattern const &>(dialog.loadPatternCreated() ) );
+	//document.getProject().getModel().load_pattern_created.connect(sigc::hide<size_t const, fem::LoadPattern const &>(dialog.loadPatternCreated() ) );
 
 
 	// call the dialog box
@@ -933,12 +935,12 @@ MainWindow::setDisplayOptions()
 {
 	//TODO make this generic
 	/*
-	   DisplayOptionsDialog da(document.getProject().model, this);
+	   DisplayOptionsDialog da(document.getProject().getModel(), this);
 	   if(da.exec() == QDialog::Accepted)
 	   {
 	// set the LoadPattern pointer
 	size_t n = da.getLoadPatternIndex();
-	glWidget->display_options.load_pattern = &document.getProject().model.load_pattern_list[n];
+	glWidget->display_options.load_pattern = &document.getProject().getModel().load_pattern_list[n];
 
 	// set the other visualization options
 	glWidget->display_options.nodal_forces = da.renderNodalForces();
@@ -953,7 +955,8 @@ MainWindow::setDisplayOptions()
 void 
 MainWindow::editMaterials()
 {
-	MaterialsEditorDialog dialog(&document.getProject().model, this);
+	fem::Model & femp_model = document.getProject().getModel();
+	MaterialsEditorDialog dialog(&femp_model, this);
 	dialog.exec();
 }
 
@@ -991,7 +994,7 @@ MainWindow::runAnalysis()
 {
 	using namespace std;
 
-	fem::Model &femp_model = this->document.getProject().model;
+	fem::Model &femp_model = this->document.getProject().getModel();
 
 	// check if ther is a load pattern
 	if( femp_model.load_pattern_list.empty() ) 

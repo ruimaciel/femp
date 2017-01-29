@@ -20,6 +20,13 @@ Project::pushAnalysisResult(fem::AnalysisResult<double> &new_result)
 }
 
 
+Model & 
+Project::getModel()
+{
+	return this->model;
+}
+
+
 void 
 Project::accept(ProjectVisitor &visitor)
 {

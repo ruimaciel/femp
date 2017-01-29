@@ -19,14 +19,14 @@ TensorFieldViewport::TensorFieldViewport(fem::Project &project, fem::AnalysisRes
 	this->showTensionField();
 
 	// set this widget's load pattern pointer
-	if(project.model.load_pattern_list.empty())
+	if(project.getModel().load_pattern_list.empty())
 	{
 		display_options.load_pattern = NULL;
 	}
 	else
 	{
 		// set the first load pattern
-		display_options.load_pattern = &project.model.load_pattern_list.front();
+		display_options.load_pattern = &project.getModel().load_pattern_list.front();
 	}
 	this->setFocusPolicy(Qt::StrongFocus);
 }

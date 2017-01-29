@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 
+#include <libfemp/Model.h++>
 #include <libfemp/parsers/fem_msh.h++>
 #include <libfemp/parsers/json.h>
 #include <libfemp/parsers/MshParser.h++>
@@ -100,6 +101,8 @@ Document::save()
 	//TODO drop support for Qt's text stream objects in favour of standard containers
 
 	QFile           file;
+	fem::Model &model = this->project.getModel();
+
 	// TODO check version
 
 	// check if if the given file_name exists
@@ -133,11 +136,11 @@ Document::save()
 
 	// dump the materials list
 	out << "\t\"materials\": [";
-	for (std::vector < fem::Material >::iterator it = this->project.model.material_list.begin(); it != this->project.model.material_list.end(); it++) 
+	for (std::vector < fem::Material >::iterator it = model.material_list.begin(); it != model.material_list.end(); it++) 
 	{
 		// to print the comman between entries and avoiding printing it
 		// after the last
-		if (it != this->project.model.material_list.begin())
+		if (it != model.material_list.begin())
 			out << ",\n\t";
 		else
 			out << "\n\t";
@@ -155,9 +158,9 @@ Document::save()
 
 	// dump the nodes list
 	out << "\t\"nodes\":[";
-	for (std::map < fem::node_ref_t, fem::Node >::iterator it = this->project.model.node_list.begin(); it != this->project.model.node_list.end(); it++) 
+	for (std::map < fem::node_ref_t, fem::Node >::iterator it = model.node_list.begin(); it != model.node_list.end(); it++) 
 	{
-		if (it != this->project.model.node_list.begin())
+		if (it != model.node_list.begin())
 			out << ",\n\t";
 		else
 			out << "\n\t";
@@ -169,9 +172,9 @@ Document::save()
 	// dump the elements list
 	out << "\t\"elements\":[";
 	fem::material_ref_t material = 0;
-	for (std::vector < fem::Element >::iterator it = this->project.model.element_list.begin(); it != this->project.model.element_list.end(); it++)
+	for (std::vector < fem::Element >::iterator it = model.element_list.begin(); it != model.element_list.end(); it++)
 	{
-		if (it != this->project.model.element_list.begin())
+		if (it != model.element_list.begin())
 			out << ",\n\t\t";
 		else
 			out << "\n\t\t";
@@ -229,7 +232,7 @@ Document::save()
 		out << "]";
 		// output the element's material
 		if ((it->material != material)
-				|| (it == this->project.model.element_list.begin())) {
+				|| (it == model.element_list.begin())) {
 			material = it->material;
 			out << ", \"material\": " << material;
 		}
@@ -237,19 +240,19 @@ Document::save()
 	}
 	out << "\n\t]";
 
-	if(this->project.model.m_node_groups.size() > 0 && this->project.model.m_node_groups.size() > 0 )
+	if(model.m_node_groups.size() > 0 && model.m_node_groups.size() > 0 )
 	{
 		out << ",\n";
 		out << "\n\t";
 		out << "\"groups\": {";
-		if(this->project.model.m_node_groups.size() > 0)
+		if(model.m_node_groups.size() > 0)
 		{
 			// output node groups
 			out << "\n\t\t";
 			out << "\"nodes\": [";
 			out << "\n\t\t\t";
 
-			for(std::vector<fem::NodeGroup>::iterator n = this->project.model.m_node_groups.begin(); n != this->project.model.m_node_groups.end(); ++n)
+			for(std::vector<fem::NodeGroup>::iterator n = model.m_node_groups.begin(); n != model.m_node_groups.end(); ++n)
 			{
 				out << "{";
 				out << "\n\t\t\t\t";
@@ -272,18 +275,18 @@ Document::save()
 			// iterate each group
 			out << "\n\t\t";
 			out << "]";
-			if(this->project.model.m_element_groups.size() > 0)
+			if(model.m_element_groups.size() > 0)
 				out << ",";
 		}
 
-		if(this->project.model.m_element_groups.size() > 0)
+		if(model.m_element_groups.size() > 0)
 		{
 			// output element groups
 			out << "\n\t\t";
 			out << "\"elements\": [";
 			out << "\n\t\t\t";
 
-			for(std::vector<fem::ElementGroup>::iterator n = this->project.model.m_element_groups.begin(); n != this->project.model.m_element_groups.end(); ++n)
+			for(std::vector<fem::ElementGroup>::iterator n = model.m_element_groups.begin(); n != model.m_element_groups.end(); ++n)
 			{
 				out << "{";
 				out << "\n\t\t\t\t";
@@ -312,15 +315,15 @@ Document::save()
 
 	}
 
-	if(!this->project.model.node_restrictions_list.empty())
+	if(!model.node_restrictions_list.empty())
 	{
 		out << ",\n\n";
 		// dump the load restrictions list
 		out << "\t\"node restrictions\": [";
-		for (std::map < fem::node_restriction_ref_t, fem::NodeRestrictions >::iterator it = this->project.model.node_restrictions_list.begin(); it != this->project.model.node_restrictions_list.end(); it++) 
+		for (std::map < fem::node_restriction_ref_t, fem::NodeRestrictions >::iterator it = model.node_restrictions_list.begin(); it != model.node_restrictions_list.end(); it++) 
 		{
 			// TODO test this
-			if (it != this->project.model.node_restrictions_list.begin())
+			if (it != model.node_restrictions_list.begin())
 				out << ",";
 			out << "\n\t\t";
 			out << "{ \"node\":" << it->first;
@@ -335,15 +338,15 @@ Document::save()
 		out << "\n\t]";
 	}
 
-	if(!this->project.model.load_pattern_list.empty())
+	if(!model.load_pattern_list.empty())
 	{
 		out << ",\n\n";
 
 		// dump the load patterns list
 		out << "\t\"load patterns\":[";
-		for (std::vector < fem::LoadPattern >::iterator it = this->project.model.load_pattern_list.begin(); it != this->project.model.load_pattern_list.end(); it++) 
+		for (std::vector < fem::LoadPattern >::iterator it = model.load_pattern_list.begin(); it != model.load_pattern_list.end(); it++) 
 		{
-			if (it != this->project.model.load_pattern_list.begin())
+			if (it != model.load_pattern_list.begin())
 				out << ",";
 			out << "\n\t\t{";
 			out << "\n\t\t\t";
@@ -506,7 +509,7 @@ Document::importMesh(QString file_name)
 
 	// TODO import mesh from a Gmsh file
 	FILE           *f = fdopen(mesh_file.handle(), "r");
-	fem_model_import_msh(f, this->project.model);
+	fem_model_import_msh(f, this->project.getModel());
 	mesh_file.close();
 
 	return ERR_OK;
@@ -527,7 +530,7 @@ Document::importMesh(std::string file_name)
 	}
 
 	MshParser parser;
-	if(parser(file, this->project.model) != MshParser::Error::ERR_OK)
+	if(parser(file, this->project.getModel()) != MshParser::Error::ERR_OK)
 	{
 		file.close();
 		return ERR_UNKNOWN;

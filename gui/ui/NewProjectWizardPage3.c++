@@ -42,7 +42,8 @@ bool NewProjectWizardPage3::validatePage()
 
 void NewProjectWizardPage3::loadMaterialsCombo()
 {
-	for(std::vector<fem::Material>::iterator i = document->project.model.material_list.begin(); i != document->project.model.material_list.end(); i++)
+	fem::Model &femp_model = document->getProject().getModel();
+	for(std::vector<fem::Material>::iterator i = femp_model.material_list.begin(); i != femp_model.material_list.end(); i++)
 	{
 		comboBoxMaterialsList->addItem(QString::fromStdString(i->label));
 	}
@@ -79,13 +80,14 @@ void NewProjectWizardPage3::loadMeshFile()
 
 		file.open(file_name);
 
+		fem::Model &femp_model = document->getProject().getModel();
 		if(!file.good())
 		{
 			// clear the model except the materials list
-			document->project.model.node_list.clear();
-			document->project.model.element_list.clear();
-			document->project.model.node_restrictions_list.clear();
-			document->project.model.load_pattern_list.clear();
+			femp_model.node_list.clear();
+			femp_model.element_list.clear();
+			femp_model.node_restrictions_list.clear();
+			femp_model.load_pattern_list.clear();
 
 			// update the UI
 			labelNodesNumber->setText("");
@@ -110,15 +112,15 @@ void NewProjectWizardPage3::loadMeshFile()
 
 		parser.setSurfaceLoadOperator(o);
 		// parse the file
-		switch(parser(file, document->project.model) )
+		switch(parser(file, femp_model) )
 		{
 			case Parser::Error::ERR_OK:
 				{
 				// update the UI accordingly
 				QString temp;
-				temp.setNum(document->project.model.node_list.size());
+				temp.setNum(femp_model.node_list.size());
 				labelNodesNumber->setText(temp);
-				temp.setNum(document->project.model.element_list.size());
+				temp.setNum(femp_model.element_list.size());
 				labelElementsNumber->setText(temp);
 				labelError->setText("");
 
@@ -128,10 +130,10 @@ void NewProjectWizardPage3::loadMeshFile()
 
 			default:
 				// clear the model except the materials list
-				document->project.model.node_list.clear();
-				document->project.model.element_list.clear();
-				document->project.model.node_restrictions_list.clear();
-				document->project.model.load_pattern_list.clear();
+				femp_model.node_list.clear();
+				femp_model.element_list.clear();
+				femp_model.node_restrictions_list.clear();
+				femp_model.load_pattern_list.clear();
 				//TODO clear the list when exiting
 
 				// update the UI
@@ -173,7 +175,7 @@ void NewProjectWizardPage3::getFileFromDialog(void)
 
 void NewProjectWizardPage3::addNewMaterial(void)
 {
-	NewMaterialDialog dialog(&document->project.model, this);
+	NewMaterialDialog dialog(&document->getProject().getModel(), this);
 	switch(dialog.exec())
 	{
 		case QDialog::Accepted:

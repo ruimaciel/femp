@@ -15,9 +15,10 @@ AnalysisResultsModel::AnalysisResultsModel(fem::Project &project, QObject *paren
 	m_rows = 0;
 
 	//for(auto e: project.model.element_list)
-	for(std::vector<fem::Element>::iterator e = project.model.element_list.begin(); e != project.model.element_list.end(); e++)
+	fem::Model & femp_model = project.getModel();
+	for(std::vector<fem::Element>::iterator e = femp_model.element_list.begin(); e != femp_model.element_list.end(); e++)
 	{
-		m_line_map[m_rows] = std::distance(project.model.element_list.begin(), e);
+		m_line_map[m_rows] = std::distance(femp_model.element_list.begin(), e);
 		m_rows += e->nodes.size();
 	}
 }
@@ -131,6 +132,7 @@ AnalysisResultsModel::data(const QModelIndex &index, int role ) const
 	}
 	else
 	{
+		fem::Model & femp_model = m_project->getModel();
 		std::map<int, std::vector<fem::Element>::size_type>::const_reverse_iterator i;
 
 		for(i = m_line_map.rbegin(); i->first > index.row(); i++);
@@ -153,7 +155,7 @@ AnalysisResultsModel::data(const QModelIndex &index, int role ) const
 			case 1:	// element type
 				// return QString("Element type");
 				{
-					switch(m_project->model.element_list[eref].type)
+					switch(femp_model.element_list[eref].type)
 					{
 						case fem::Element::FE_TETRAHEDRON4:
 							return QString("Tetra4");
@@ -195,48 +197,48 @@ AnalysisResultsModel::data(const QModelIndex &index, int role ) const
 
 			case 3:	// node global reference
 				{
-					return QVariant((int)m_project->model.element_list[eref].nodes[local_ref]);
+					return QVariant((int)m_project->getModel().element_list[eref].nodes[local_ref]);
 				}
 				break;
 
 			case 4:	// node coordinate: x
 				{
-					fem::node_ref_t nref = m_project->model.element_list[eref].nodes[local_ref];
-					return QVariant(m_project->model.node_list[nref].x());
+					fem::node_ref_t nref = m_project->getModel().element_list[eref].nodes[local_ref];
+					return QVariant(m_project->getModel().node_list[nref].x());
 				}
 				break;
 
 			case 5:	// node coordinate: y
 				{
-					fem::node_ref_t nref = m_project->model.element_list[eref].nodes[local_ref];
-					return QVariant(m_project->model.node_list[nref].y());
+					fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
+					return QVariant(femp_model.node_list[nref].y());
 				}
 				break;
 
 			case 6:	// node coordinate: z
 				{
-					fem::node_ref_t nref = m_project->model.element_list[eref].nodes[local_ref];
-					return QVariant(m_project->model.node_list[nref].z());
+					fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
+					return QVariant(femp_model.node_list[nref].z());
 				}
 				break;
 
 			case 7:	// node displacement: x
 				{
-					fem::node_ref_t nref = m_project->model.element_list[eref].nodes[local_ref];
+					fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
 					return QVariant(m_result->displacements[nref].x());
 				}
 				break;
 
 			case 8:	// node displacement: y
 				{
-					fem::node_ref_t nref = m_project->model.element_list[eref].nodes[local_ref];
+					fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
 					return QVariant(m_result->displacements[nref].y());
 				}
 				break;
 
 			case 9:	// node displacement: z
 				{
-					fem::node_ref_t nref = m_project->model.element_list[eref].nodes[local_ref];
+					fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
 					return QVariant(m_result->displacements[nref].z());
 				}
 				break;

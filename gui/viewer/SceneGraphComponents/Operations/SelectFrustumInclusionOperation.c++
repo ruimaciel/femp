@@ -50,15 +50,16 @@ SelectFrustumInclusionOperation::visit(SGC::Element & /*element*/)
 
 
 void 
-SelectFrustumInclusionOperation::selectInclusiveElements(fem::Project const &project)
+SelectFrustumInclusionOperation::selectInclusiveElements(fem::Project &project)
 {
 	std::set<fem::node_ref_t>::const_iterator i;
 
-	//for(auto element: project.model.element_list)
-	for( std::vector<fem::Element>::size_type n = 0; n < project.model.element_list.size(); n++)
+	fem::Model &femp_model = project.getModel();
+	auto element_list = femp_model.getElementList();
+	for( std::vector<fem::Element>::size_type n = 0; n < element_list.size(); n++)
 	{
 		
-		for(auto node: project.model.element_list[n].nodes)
+		for(auto node: element_list[n].nodes)
 		{
 			i = m_selection->m_nodes_selected.find(node);
 			if(i == m_selection->m_nodes_selected.end())

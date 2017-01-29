@@ -43,7 +43,7 @@ VPStateDisplacements::initialize(BaseViewport *viewport)
 	assert(viewport != NULL);
 
 	this->setDisplacementsScale(1.0);	//TODO tweak this value 
-	this->m_displacements.setModel(viewport->project->model);
+	this->m_displacements.setModel(viewport->project->getModel());
 }
 
 
@@ -55,24 +55,25 @@ VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 	scenegraph.clear();
 	
 	SceneGraphComponent * component;
+	fem::Model &femp_model = viewport->project->getModel();
 
 	// add the nodes to the scenegraph
-	for(std::map<size_t, fem::Node>::iterator i = viewport->project->model.node_list.begin(); i != viewport->project->model.node_list.end(); i++)
+	for(std::map<size_t, fem::Node>::iterator i = femp_model.node_list.begin(); i != femp_model.node_list.end(); i++)
 	{
 		component =  new SGC::Node(i->first, i->second, &this->m_displacements);
 		if(component)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
 	}
 
-	for( std::map<fem::node_restriction_ref_t, fem::NodeRestrictions>::iterator i = viewport->project->model.node_restrictions_list.begin(); i != viewport->project->model.node_restrictions_list.end(); i++)
+	for( std::map<fem::node_restriction_ref_t, fem::NodeRestrictions>::iterator i = femp_model.node_restrictions_list.begin(); i != femp_model.node_restrictions_list.end(); i++)
 	{
 		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, new SGC::NodeRestrictions(i->first, i->first, i->second, &this->m_displacements) );
 	}
 
 	// add the elements to the scenegraph
-	for( std::vector<fem::Element>::size_type n = 0; n < viewport->project->model.element_list.size(); n++)
+	for( std::vector<fem::Element>::size_type n = 0; n < femp_model.element_list.size(); n++)
 	{
-		component = this->m_factory(n, viewport->project->model.element_list[n]);
+		component = this->m_factory(n, femp_model.element_list[n]);
 		if(component) 
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
 	}

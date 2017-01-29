@@ -43,7 +43,7 @@ public:
 	void visit(SGC::Node &element);
 	void visit(SGC::Element &element);
 
-	void selectInclusiveElements(fem::Project const &project);
+	void selectInclusiveElements(fem::Project &project);
 
 protected:
 	void calculateNormalVectors(std::array<fem::Point, 4> const &near, std::array<fem::Point, 4> const &far);

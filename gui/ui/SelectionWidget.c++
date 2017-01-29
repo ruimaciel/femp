@@ -34,7 +34,7 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 	//TODO test memory allocation
 
 	//for( std::vector<fem::Element>::iterator i = project.model.element_list.begin(); i != project.model.element_list.end(); i++)
-	for( std::vector<fem::Element>::size_type n = 0;  n < project.model.element_list.size(); n++)
+	for( std::vector<fem::Element>::size_type n = 0;  n < project.getModel().element_list.size(); n++)
 	{
 		QTreeWidgetItem *item = new QTreeWidgetItem(m_element_item);
 		item->setText(0, QString::number(n));
@@ -44,7 +44,7 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 
 	m_node_item = new QTreeWidgetItem(this->objectTreeWidget);
 	m_node_item->setText(0, tr("Nodes") );
-	for(std::map<fem::node_ref_t, fem::Node>::iterator i = project.model.node_list.begin(); i != project.model.node_list.end();  i++)
+	for(std::map<fem::node_ref_t, fem::Node>::iterator i = project.getModel().node_list.begin(); i != project.getModel().node_list.end();  i++)
 	{
 		QTreeWidgetItem *item = new QTreeWidgetItem(m_node_item);
 		item->setText(0, QString::number(i->first));
@@ -181,7 +181,9 @@ void
 SelectionWidget::initializeSelectionGroups(fem::Project &project)
 {
 	fem::Group group;
-	for( auto i = project.model.m_node_groups.begin(); i != project.model.m_node_groups.end(); i++)
+	fem::Model & femp_model = project.getModel();
+
+	for( auto i = femp_model.m_node_groups.begin(); i != femp_model.m_node_groups.end(); i++)
 	{
 		group.clear();
 		group.label = i->label;
@@ -194,7 +196,7 @@ SelectionWidget::initializeSelectionGroups(fem::Project &project)
 	}
 
 
-	for( auto i = project.model.m_element_groups.begin(); i != project.model.m_element_groups.end(); i++)
+	for( auto i = femp_model.m_element_groups.begin(); i != femp_model.m_element_groups.end(); i++)
 	{
 		group.clear();
 		group.label = i->label;

@@ -26,8 +26,11 @@ public:
 
 	void selectElement(const fem::element_ref_t &ref);
 	void deselectElement(const fem::element_ref_t &ref);
+	std::set<fem::element_ref_t> getElementReferences() const;
+
 	void selectNode(const fem::node_ref_t &ref);
 	void deselectNode(const fem::node_ref_t &ref);
+	std::set<fem::node_ref_t> getNodeReferences() const; 
 };
 
 #endif

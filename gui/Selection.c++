@@ -31,6 +31,13 @@ Selection::deselectElement(const fem::element_ref_t &ref)
 }
 
 
+std::set<fem::element_ref_t> 
+Selection::getElementReferences() const
+{
+	return m_elements_selected;
+}
+
+
 void 
 Selection::selectNode(const fem::node_ref_t &ref)
 {
@@ -43,4 +50,12 @@ Selection::deselectNode(const fem::node_ref_t &ref)
 {
 	m_nodes_selected.erase(ref);
 }
+
+
+std::set<fem::node_ref_t> 
+Selection::getNodeReferences() const
+{
+	return m_nodes_selected;
+}
+
 

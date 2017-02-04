@@ -8,9 +8,9 @@
 
 
 OutputResultsInNodesCSVVisitor::OutputResultsInNodesCSVVisitor(Selection &selection, fem::AnalysisResult<double> *result, QTextStream &os)
+	: m_selection(selection)
 {
 	m_result = result;
-	m_selection = &selection;
 	m_out = &os;	//TODO make this more generic
 	
 	*m_out << "%";
@@ -41,7 +41,6 @@ OutputResultsInNodesCSVVisitor::visit(fem::Model &model, std::vector<fem::Analys
 {
 	assert(m_out != NULL);
 	assert(m_result != NULL);
-	assert(m_selection != NULL);
 
 	for( std::map<fem::element_ref_t, fem::ElementResults<double> *>::iterator e = m_result->results.begin(); e != m_result->results.end(); e++)
 	{
@@ -53,8 +52,9 @@ OutputResultsInNodesCSVVisitor::visit(fem::Model &model, std::vector<fem::Analys
 		for(size_t n = 0; n < element->nodes.size(); n++)	
 		{
 			std::set<fem::node_ref_t>::iterator	i;
-			i = m_selection->m_nodes_selected.find(element->nodes[n]);
-			if(i != m_selection->m_nodes_selected.end())
+			auto selected_nodes = m_selection.getNodeReferences();
+			i = selected_nodes.find(element->nodes[n]);
+			if(i != selected_nodes.end())
 			{
 				// element has a selected node.  Let's output the result
 				*m_out << e->first << "\t";

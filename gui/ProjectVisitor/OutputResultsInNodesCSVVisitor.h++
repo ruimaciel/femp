@@ -21,7 +21,7 @@ class OutputResultsInNodesCSVVisitor
 protected:
 	fem::AnalysisResult<double>	*m_result;
 	QTextStream	*m_out;
-	Selection	*m_selection;
+	Selection const & m_selection;
 	
 public:
 	OutputResultsInNodesCSVVisitor(Selection &selection, fem::AnalysisResult<double> *result, QTextStream &os);

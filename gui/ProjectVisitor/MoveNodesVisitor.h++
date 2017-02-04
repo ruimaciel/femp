@@ -19,7 +19,7 @@ class MoveNodesVisitor
 {
 protected:
 	fem::Point	m_translation;
-	Selection	const *m_selection;
+	Selection	const &m_selection;
 	
 public:
 	MoveNodesVisitor(Selection const &selection, fem::Point const &translation);

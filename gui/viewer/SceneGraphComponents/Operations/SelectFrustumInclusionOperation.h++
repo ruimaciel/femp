@@ -28,7 +28,7 @@ protected:
 
 	std::array<fem::Point, 4> m_normal;		// normal vector of each side plane, facing inward
 
-	Selection	*m_selection;	// pointer to selection object, where all the selected objects will be set
+	Selection	&m_selection;
 
 public:
 	/**

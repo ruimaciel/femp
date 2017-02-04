@@ -22,7 +22,8 @@ ToggleSelectionOperation::visit(SceneGraphComponent &)
 void 
 ToggleSelectionOperation::visit(SGC::Node &node)
 {
-	if( m_selection.m_nodes_selected.find(node.reference()) != m_selection.m_nodes_selected.end())
+	auto selected_nodes = m_selection.getNodeReferences();
+	if( selected_nodes.find(node.reference()) != selected_nodes.end())
 		node.selected = m_selection_state;
 	else
 		node.selected = !m_selection_state;
@@ -32,7 +33,8 @@ ToggleSelectionOperation::visit(SGC::Node &node)
 void 
 ToggleSelectionOperation::visit(SGC::Element &element)
 {
-	if( m_selection.m_elements_selected.find(element.reference()) != m_selection.m_elements_selected.end())
+	auto selected_elements = m_selection.getElementReferences();
+	if( selected_elements.find(element.reference()) != selected_elements.end())
 		element.selected = m_selection_state;
 	else
 		element.selected = !m_selection_state;

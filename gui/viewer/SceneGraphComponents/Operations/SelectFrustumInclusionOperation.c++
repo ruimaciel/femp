@@ -10,8 +10,8 @@ namespace Operation
 
 
 SelectFrustumInclusionOperation::SelectFrustumInclusionOperation(Selection &selection, std::array<fem::Point,4> const &near, std::array<fem::Point,4> const &far)
+	: m_selection(selection)
 {
-	this->m_selection = &selection;
 	m_near = near;
 	m_far = far;
 
@@ -37,7 +37,7 @@ SelectFrustumInclusionOperation::visit(SGC::Node &node)
 				return;
 		}
 
-		m_selection->selectNode(node.reference());
+		m_selection.selectNode(node.reference());
 	}
 }
 
@@ -59,17 +59,19 @@ SelectFrustumInclusionOperation::selectInclusiveElements(fem::Project &project)
 	for( std::vector<fem::Element>::size_type n = 0; n < element_list.size(); n++)
 	{
 		
+		auto selected_nodes = m_selection.getNodeReferences();
+
 		for(auto node: element_list[n].nodes)
 		{
-			i = m_selection->m_nodes_selected.find(node);
-			if(i == m_selection->m_nodes_selected.end())
+			i = selected_nodes.find(node);
+			if(i == selected_nodes.end())
 				break;
 		}
 
 		// all elements in the node were found
-		if(i != m_selection->m_nodes_selected.end())
+		if(i != selected_nodes.end())
 		{
-			m_selection->selectElement(n);
+			m_selection.selectElement(n);
 		}
 	}
 }

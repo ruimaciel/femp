@@ -14,27 +14,10 @@ SetDomainLoadsVisitor::SetDomainLoadsVisitor(Selection const &selection, fem::Lo
 void 
 SetDomainLoadsVisitor::visit(fem::Model &, std::vector<fem::AnalysisResult<double> > &)
 {
-	for(fem::element_ref_t const &eref: m_selection.m_elements_selected)
+	for(fem::element_ref_t const &eref: m_selection.getElementReferences())
 	{
 		m_load_pattern.addDomainLoad(eref, m_force);
 	}
-
-	/*
-	if(m_restrictions.free())
-	{
-		for(auto node: m_selection->m_nodes_selected)
-		{
-			model.popNodeRestrictions(node);
-		}
-	}
-	else
-	{
-		for(auto node: m_selection->m_nodes_selected)
-		{
-			model.pushNodeRestrictions(node, m_restrictions);
-		}
-	}
-	*/
 }
 
 

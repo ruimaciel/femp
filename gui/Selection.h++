@@ -13,7 +13,7 @@ A set of objects contained in a given fem::Project object which have been select
 **/
 class Selection
 {
-public:
+protected:
 	//TODO add support for a data type that specifies a selection range
 	//crude hack.  must implement some iterator of sorts
 	std::set<fem::element_ref_t>	m_elements_selected;

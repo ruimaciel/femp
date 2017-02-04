@@ -38,7 +38,7 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 	{
 		QTreeWidgetItem *item = new QTreeWidgetItem(m_element_item);
 		item->setText(0, QString::number(n));
-		item->setSelected( s.m_elements_selected.find(n) != s.m_elements_selected.end()) ; 
+		item->setSelected( s.getElementReferences().find(n) != s.getElementReferences().end()) ; 
 		m_element_map[n] = item;
 	}
 
@@ -48,7 +48,7 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 	{
 		QTreeWidgetItem *item = new QTreeWidgetItem(m_node_item);
 		item->setText(0, QString::number(i->first));
-		item->setSelected( s.m_nodes_selected.find(i->first) != s.m_nodes_selected.end()) ; 
+		item->setSelected( s.getNodeReferences().find(i->first) != s.getNodeReferences().end()) ; 
 		m_node_map[i->first] = item;
 	}
 
@@ -80,7 +80,8 @@ SelectionWidget::setSelection(Selection const &selection)
 		i->second->setSelected(false);
 	}
 
-	for( std::set<fem::element_ref_t>::iterator i = selection.m_elements_selected.begin(); i != selection.m_elements_selected.end(); i++)
+	auto selected_elements = selection.getElementReferences();
+	for( std::set<fem::element_ref_t>::iterator i = selected_elements.begin(); i != selected_elements.end(); i++)
 	{
 		m_element_map[*i]->setSelected(true);
 	}
@@ -90,7 +91,9 @@ SelectionWidget::setSelection(Selection const &selection)
 	{
 		i->second->setSelected(false);
 	}
-	for( std::set<fem::node_ref_t>::iterator i = selection.m_nodes_selected.begin(); i != selection.m_nodes_selected.end(); i++)
+
+	auto selected_nodes = selection.getNodeReferences();
+	for( std::set<fem::node_ref_t>::iterator i = selected_nodes.begin(); i != selected_nodes.end(); i++)
 	{
 		m_node_map[*i]->setSelected(true);
 	}
@@ -107,13 +110,13 @@ SelectionWidget::updateSelection()
 	for(std::map<fem::element_ref_t, QTreeWidgetItem *>::iterator i = m_element_map.begin(); i != m_element_map.end(); i++)
 	{
 		if(i->second->isSelected())
-			new_selection.m_elements_selected.insert(i->first);
+			new_selection.selectElement(i->first);
 	}
 
 	for(std::map<fem::node_ref_t, QTreeWidgetItem *>::iterator i = m_node_map.begin(); i != m_node_map.end(); i++)
 	{
 		if(i->second->isSelected())
-			new_selection.m_nodes_selected.insert(i->first);
+			new_selection.selectNode(i->first);
 	}
 	// */
 
@@ -125,22 +128,27 @@ SelectionWidget::updateSelection()
 void 
 SelectionWidget::setGroupList()
 {
-	//TODO finish this
-	std::cout <<  "SelectionWidget::setGroupList()" << std::endl;
-
 	// get current index
 	int index = groupsComboBox->currentIndex();
 
 	if(index == -1)
 	{
-		std::cerr <<  "SelectionWidget::setGroupList(): combo box is empty" << std::cerr;
+		// SelectionWidget::setGroupList(): combo box is empty
 		return;
 	}
 
 	// set selection group
 	Selection new_selection;
-	new_selection.m_nodes_selected = m_selection_groups[index].m_node_references;
-	new_selection.m_elements_selected = m_selection_groups[index].m_element_references;
+
+	for(auto node_ref: m_selection_groups[index].m_node_references)
+	{
+		new_selection.selectNode(node_ref);
+	}
+
+	for(auto element_ref: m_selection_groups[index].m_element_references)
+	{
+		new_selection.selectElement(element_ref);
+	}
 
 	this->selection_changed(new_selection);
 }

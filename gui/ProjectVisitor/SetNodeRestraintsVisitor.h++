@@ -19,7 +19,7 @@ class SetNodeRestraintsVisitor
 {
 protected:
 	fem::NodeRestrictions	m_restrictions;
-	Selection	const *m_selection;
+	Selection	const &m_selection;
 	
 public:
 	SetNodeRestraintsVisitor(Selection const &selection, fem::NodeRestrictions const &restrictions);

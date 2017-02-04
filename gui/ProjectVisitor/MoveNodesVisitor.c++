@@ -7,8 +7,8 @@
 
 
 MoveNodesVisitor::MoveNodesVisitor(Selection const &selection, fem::Point const &translation)
+	: m_selection(selection)
 {
-	m_selection = &selection;
 	m_translation = translation;
 }
 
@@ -16,9 +16,7 @@ MoveNodesVisitor::MoveNodesVisitor(Selection const &selection, fem::Point const 
 void 
 MoveNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult<double> > &)
 {
-	assert(m_selection != NULL);
-
-	for(auto node: m_selection->m_nodes_selected)
+	for(auto node: m_selection.getNodeReferences())
 	{
 		model.getNode(node) += m_translation;
 	}

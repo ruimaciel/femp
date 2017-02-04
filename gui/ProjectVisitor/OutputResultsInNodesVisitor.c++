@@ -8,9 +8,9 @@
 
 
 OutputResultsInNodesVisitor::OutputResultsInNodesVisitor(Selection &selection, fem::AnalysisResult<double> *result, QTextStream &os)
+	: m_selection(selection)
 {
 	m_result = result;
-	m_selection = &selection;
 	m_out = &os;	//TODO make this more generic
 }
 
@@ -20,7 +20,6 @@ OutputResultsInNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisR
 {
 	assert(m_out != NULL);
 	assert(m_result != NULL);
-	assert(m_selection != NULL);
 
 	*m_out << "test\n";
 
@@ -35,8 +34,9 @@ OutputResultsInNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisR
 		for(size_t n = 0; n < element->nodes.size(); n++)	
 		{
 			std::set<fem::node_ref_t>::iterator	i;
-			i = m_selection->m_nodes_selected.find(element->nodes[n]);
-			if(i != m_selection->m_nodes_selected.end())
+			auto selected_nodes = m_selection.getNodeReferences();
+			i = selected_nodes.find(element->nodes[n]);
+			if(i != selected_nodes.end())
 			{
 				// element has a selected node.  Let's output the result
 				*m_out << "element:" << e->first;

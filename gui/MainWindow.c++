@@ -868,7 +868,7 @@ MainWindow::setNodeActions()
 			fem::LoadPattern &load_pattern = femp_model.load_pattern_list[ na.getLoadPattern() ];
 
 			// assign nodal loads
-			for(fem::node_ref_t const &node: selection.m_nodes_selected)
+			for(fem::node_ref_t const &node: selection.getNodeReferences())
 			{
 				load_pattern.addNodalLoad(node, force);
 			}

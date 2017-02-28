@@ -21,9 +21,7 @@
 	]
 	,
 	"node restrictions": [
-		{ "node":[ 1, 4], "dx":true, "dy":true, "dz":true},
-		{ "node":[ 9,12], "dx":true, "dy":true, "dz":true},
-		{ "node":21, "dx":true, "dy":true, "dz":true}
+		{ "node":[ 1, 4], "dx":true, "dy":true, "dz":true}
 	],
 
 	"load patterns":[

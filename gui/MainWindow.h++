@@ -12,8 +12,8 @@
 
 #include "ui/ui_MainWindow.h"
 
-#include "CommandLineDockWidget.h++"
-#include "SelectionDockWidget.h++"
+#include "ui/CommandLineDockWidget.h++"
+#include "ui/SelectionDockWidget.h++"
 
 #include "ProgramOptions.h++"
 #include "viewer/ViewportColors.h++"

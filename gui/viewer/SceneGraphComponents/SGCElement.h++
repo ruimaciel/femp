@@ -7,8 +7,6 @@
 #include "SceneGraphComponent.h++"
 #include "Operations/OperationsVisitor.h++"
 
-#include "FrameStates/FrameState.h++"
-
 #include "../ViewportColors.h++"
 
 #include <libfemp/Element.h++>
@@ -52,8 +50,6 @@ public:
 	**/
 	fem::element_ref_t reference() const	{ return m_element_reference; }
 
-
-	//void setFramePolicy(FrameState *state);
 
 	void setElementRepresentationPolicy(ElementRepresentationPolicy *representation);
 	void setDisplacementsPolicy(DisplacementsRepresentationPolicy *displacements);

@@ -111,10 +111,6 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress13GradientFieldPolicy.h++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain22GradientFieldPolicy.h++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/GradientFieldFlyweightFactory.h++ \
-	viewer/SceneGraphComponents/FrameStates/NoFrameState.h++ \
-	viewer/SceneGraphComponents/FrameStates/FrameStateFlyweightFactory.h++ \
-	viewer/SceneGraphComponents/FrameStates/WireFrameState.h++ \
-	viewer/SceneGraphComponents/FrameStates/FrameState.h++ \
 	viewer/SceneGraphComponents/SGCElement.h++ \
 	viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.h++ \
 	viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.h++ \
@@ -247,7 +243,6 @@ SOURCES += main.c++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain12GradientFieldPolicy.c++ \
 	viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/GradientFieldFlyweightFactory.c++ \
 	viewer/SceneGraphComponents/SceneComponentFactory.c++ \
-	viewer/SceneGraphComponents/FrameStates/FrameStateFlyweightFactory.c++ \
 	viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.c++ \
 	viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.c++ \
 	viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.c++ \

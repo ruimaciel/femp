@@ -99,22 +99,21 @@ MshParserRe2c.commands = re2c -o parsers/MshParser.c++ parsers/MshParser.c++.re2
 MshParserRe2c.depends = parsers/MshParser.c++.re2c
 MshParserRe2c.output = parsers/MshParser.c++
 
-FlexOutput.target = lex.msh_yy.h 
-FlexOutput.commands = flex --header-file=lex.msh_yy.h -o lex.msh_yy.c++ msh.l
-FlexOutput.depends = msh.l 
-FlexOutput.output = lex.msh_yy.c++ lex.msh_yy.h
+Flex.target = lex.msh_yy.h 
+Flex.commands = flex --header-file=lex.msh_yy.h -o lex.msh_yy.c++ msh.l
+Flex.depends = msh.l 
+Flex.output = lex.msh_yy.c++ lex.msh_yy.h
 
-BisonOutput.target = msh.tab.h
-BisonOutput.commands = bison -d --debug msh.y
-BisonOutput.depends = msh.y lex.msh_yy.h 
-BisonOutput.output = msh.tab.c msh.tab.h
+Bison.name = Bison ${QMAKE_FILE_IN}
+Bison.input = msh.y
+Bison.output = msh.tab.c msh.tab.h
+Bison.commands = bison -d --debug msh.y -o ${QMAKE_FILE_PATH}/
+Bison.depends = msh.y lex.msh_yy.h 
 
-BisonCompile.target = msh.tab.o
-BisonCompile.commands = g++ -c msh.tab.c $(INCPATH)
-BisonCompile.depends = msh.tab.h
+BisonCompile.input = msh.tab.c
 BisonCompile.output = msh.tab.o
+BisonCompile.commands = g++ -c msh.tab.c $(INCPATH)
 
-OBJECTS += msh.tab.o
 QMAKE_CLEAN += lex.msh_yy.h lex.msh_yy.c++ msh.tab.c msh.tab.h msh.tab.o
 
-QMAKE_EXTRA_TARGETS += FemJsonParserRe2c MshParserRe2c FlexOutput BisonOutput BisonCompile 
+QMAKE_EXTRA_TARGETS += FemJsonParserRe2c MshParserRe2c Flex Bison BisonCompile 

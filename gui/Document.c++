@@ -2,8 +2,6 @@
 
 #include <QTextStream>
 
-#include <stack>
-#include <string>
 #include <iostream>
 #include <fstream>
 

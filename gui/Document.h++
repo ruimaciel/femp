@@ -3,8 +3,6 @@
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QDir>	// for the project path
-#include <string>
-#include <list>
 
 #include "Project.h++"
 

@@ -1,8 +1,6 @@
 #include "SceneGraph.h++"
 
 #include <assert.h>
-#include <iostream>
-#include <map>
 
 #include "ModelViewport.h++"
 

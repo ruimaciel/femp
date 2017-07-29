@@ -16,6 +16,11 @@ int main(int argc, char *argv[])
 	qRegisterMetaType<size_t>("size_t");
 	qRegisterMetaType<std::string>("std::string");
 
+	// set QSettings data
+	QCoreApplication::setOrganizationName("Rui Maciel");
+	QCoreApplication::setOrganizationDomain("github.com/ruimaciel/");
+	QCoreApplication::setApplicationName("femp");
+
 	QApplication app(argc, argv);
 
 	// register types

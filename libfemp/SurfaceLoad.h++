@@ -9,6 +9,10 @@
 namespace fem
 {
 
+
+/**
+ * Represents a pressure applied on a surface
+ **/
 class SurfaceLoad
 	: public Element
 {
@@ -20,12 +24,12 @@ public:
 	SurfaceLoad(const SurfaceLoad &);
 	~SurfaceLoad();
 
-
 	/**
 	Clears all attributes
 	**/
 	void clear();
 };
 
-}
+}	// namespace fem
+
 #endif

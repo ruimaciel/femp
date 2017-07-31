@@ -22,6 +22,10 @@
 namespace fem
 {
 
+
+/**
+ * Represents a finite element model to be used to analyse static equilibrium problems
+ **/
 class Model 
 {
 private:

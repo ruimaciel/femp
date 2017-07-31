@@ -7,6 +7,9 @@ namespace fem
 {
 
 
+/**
+ * Represents a load prescribed on a finite element node
+ **/
 class NodalLoad 
 {
 public:
@@ -25,6 +28,6 @@ public:
 };
 
 
-}
+}	// namespace fem
 
 #endif

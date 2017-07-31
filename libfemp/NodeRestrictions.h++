@@ -8,7 +8,11 @@ namespace fem
 typedef unsigned int node_restriction_ref_t;
 
 
-class NodeRestrictions {
+/**
+ * Prescribes a zero displacement on a degree of freedom
+ **/
+class NodeRestrictions 
+{
 public:
 	enum Type {NR_INVALID, NR_DX, NR_DY, NR_DZ};
 

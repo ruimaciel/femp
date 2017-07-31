@@ -10,7 +10,11 @@ namespace fem
 typedef size_t node_ref_t;
 
 
-class Node: public Point 
+/**
+ * Data type representing a finite element node
+ **/
+class Node
+	: public Point 
 {
 public:
 	Node();

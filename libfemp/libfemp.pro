@@ -28,6 +28,7 @@ HEADERS = Group.h++ \
 	ElementGroup.h++ \
 	NodeGroup.h++ \
 	elements/all.h++ \
+	elements/BaseElement.h++ \
 	elements/Triangle3.h++ \
 	elements/Triangle6.h++ \
 	elements/Quadrangle4.h++ \
@@ -78,6 +79,7 @@ SOURCES = Group.c++ \
 	SurfaceLoad.c++\
 	ElementGroup.c++ \
 	NodeGroup.c++ \
+	elements/BaseElement.c++ \
 	Analysis.c++ \
 	LinearAnalysis.c++ \
 	SurfaceLoadOperators/ConcentricLoad.c++	\

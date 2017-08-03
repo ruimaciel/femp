@@ -114,6 +114,11 @@ public:
 	**/
 	virtual int node_number() const = 0;
 	
+	/**
+	 * return a vector with the value of each basis function evaluated at a point
+	 **/
+	virtual std::vector<T> const getN(const Point &p);
+
 
 public:	//WARNING: BaseElement member functions are deprecated 
 
@@ -167,6 +172,14 @@ protected:	// WARNING: to be removed
 	virtual void generateQuadratureData() = 0;
 };
 
+
+
+template<typename T>
+std::vector<T> const 
+BaseElement<T>::getN(const Point &p)
+{
+	return this->setN(p);
+}
 
 
 /*******************************************************************************

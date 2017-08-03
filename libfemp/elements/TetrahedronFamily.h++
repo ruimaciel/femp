@@ -16,6 +16,10 @@ struct TetrahedronFamily
 
 	enum BaseElement<T>::ElementFamily family() const;
 
+	/**
+	 * Returns the total number of degrees of freedom
+	 **/
+	virtual unsigned int getDofAmount() const	{ return 3*this->node_number(); }
 
 protected:
 	void generateQuadratureData();

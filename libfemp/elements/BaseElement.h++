@@ -6,6 +6,8 @@
 #include <math.h>
 #include <boost/tuple/tuple.hpp>
 
+#include <Eigen/Sparse>
+
 #include "../Node.h++"
 #include "../Material.h++"
 #include "../Point.h++"
@@ -22,9 +24,15 @@ template <typename T>
 struct BaseElement
 {
 public:
+	using MatrixDataType	= Eigen::Matrix<T, Eigen::Dynamic,  Eigen::Dynamic>;
+
+	//TODO move to each element
 	int stiffness_degree;	// Quadrature rule degree to integrate stiffness matrices
+
+	//TODO move to each element
 	int domain_degree;	// Quadrature rule degree to integrate domain loads
 
+	//TODO to be removed
 	enum Type 
 	{
 		FE_INVALID	= 0,	/* test entry */
@@ -61,6 +69,7 @@ public:
 		FE_TETRAHEDRON56        = 31    /* 56-node fifth order tetrahedron */
 	};
 
+	//TODO to be removed
 	/**
 	// introduced to facilitate merging BaseElement with Element. remove this
 	**/
@@ -77,7 +86,7 @@ public:
 
 
 
-public:
+public:	// WARNING: deprecated. to be removed.
 	std::map<int, std::vector<boost::tuple<fem::Point, T> > > ipwpl;	// integration points/weights pair list
 
 	std::vector<fem::Point>	coordinates;
@@ -94,8 +103,19 @@ public:	// merging with fem::Element
 	Type type;
 
 public:
-	BaseElement(){};
-	~BaseElement(){};
+	/**
+	 * Returns the total number of degrees of freedom
+	 **/
+	virtual unsigned int getDofAmount() const = 0;
+
+	/**
+	return the number of nodes that an element of this particular type has
+	@return	the number of nodes
+	**/
+	virtual int node_number() const = 0;
+	
+
+public:	//WARNING: BaseElement member functions are deprecated 
 
 	/**
 	Sets this element's local coordinates for each of its nodes
@@ -120,22 +140,17 @@ public:
 	std::vector<boost::tuple<fem::Point, T> > &stiffness_quadrature()	{ return this->ipwpl[stiffness_degree]; }
 	std::vector<boost::tuple<fem::Point, T> > &domain_quadrature()	{ return this->ipwpl[domain_degree]; }
 
-public:	// merging with fem::Element
+public:	//WARNING: fem::Element member functions are deprecated
+
 	virtual void set(std::vector<size_t> &nodes) = 0;
 
-	/**
-	return the number of nodes that an element of this particular type has
-	@return	the number of nodes
-	**/
-	virtual int node_number() const = 0;
-	
 	/**
 	returns enum representing family type.
 	TODO: This member function was introduced to facilitate merging Element with BaseElement.  Remove after cleanup
 	**/
 	virtual enum ElementFamily family() const = 0;
 
-protected:
+protected:	// WARNING: to be removed
 	/**
 	  Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
 	  (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and
@@ -151,6 +166,7 @@ protected:
 	*/
 	virtual void generateQuadratureData() = 0;
 };
+
 
 
 /*******************************************************************************

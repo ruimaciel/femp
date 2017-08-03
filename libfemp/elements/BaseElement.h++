@@ -119,6 +119,13 @@ public:
 	 **/
 	virtual std::vector<T> const getN(const Point &p);
 
+	/**
+	 * return a vector with the value of the derivative of each basis function wrt csi evaluated at a point
+	 * @param p a point
+	 * @return vector with dN/dcsi values
+	 **/
+	virtual std::vector<T> const getdNdcsi(const Point &p);
+
 
 public:	//WARNING: BaseElement member functions are deprecated 
 

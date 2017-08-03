@@ -126,6 +126,13 @@ public:
 	 **/
 	virtual std::vector<T> const getdNdcsi(const Point &p);
 
+	/**
+	 * return a vector with the value of the derivative of each basis function wrt eta evaluated at a point
+	 * @param p a point
+	 * @return vector with dN/deta values
+	 **/
+	virtual std::vector<T> const getdNdeta(const Point &p);
+
 
 public:	//WARNING: BaseElement member functions are deprecated 
 

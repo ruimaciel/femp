@@ -20,6 +20,14 @@ BaseElement<T>::getdNdcsi(const Point &p)
 }
 
 
+template<typename T>
+std::vector<T> const 
+BaseElement<T>::getdNdeta(const Point &p)
+{
+	return this->setdNdeta(p);
+}
+
+
 /*******************************************************************************
 Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
 (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and

@@ -282,7 +282,9 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					ss.push(TT_VALUE_SEPARATOR);
 					ss.push(NT_LABEL);
 					ss.push(TT_VALUE_SEPARATOR);
-					temp_material.type = fem::Material::MAT_LINEAR_ELASTIC;
+
+					// material is linear elastic
+
 					ss.push(NT_MATERIAL_TYPE);
 					ss.push(TT_OBJECT_OPEN);
 					break;

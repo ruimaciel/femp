@@ -139,15 +139,8 @@ Document::save()
 			out << ",\n\t";
 		else
 			out << "\n\t";
-		switch (it->type) {
-			case fem::Material::MAT_LINEAR_ELASTIC:
-				out << "\t{\"type\":" << "\"linear elastic\", \"label\": \"" << QString::fromStdString(it->label) << "\", \"E\":" << it->E << ",\"nu\":" << it-> nu << ", \"fy\": " << it->fy << "}";
-				break;
 
-			default:
-				qWarning("defaulted while outputting");
-				break;
-		}
+		out << "\t{\"type\":" << "\"linear elastic\", \"label\": \"" << QString::fromStdString(it->label) << "\", \"E\":" << it->E << ",\"nu\":" << it-> nu << ", \"fy\": " << it->fy << "}";
 	}
 	out << "\n\t],\n";
 

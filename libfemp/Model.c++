@@ -21,7 +21,6 @@ Model::Model()
 	Material material;
 
 	material.label = "Steel";
-	material.type = Material::MAT_LINEAR_ELASTIC;
 	material.E = 200e9;
 	material.nu = 0.3;
 

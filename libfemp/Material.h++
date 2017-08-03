@@ -16,12 +16,7 @@ Class representing a linear elastic material
 class Material 
 {
 public:
-	enum Type {
-		MAT_LINEAR_ELASTIC = 0
-	};
-
 	std::string label;	// a label describing this material
-	enum Type type;
 
 	double E, nu;	// linear elastic material
 

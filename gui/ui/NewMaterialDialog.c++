@@ -63,7 +63,6 @@ void NewMaterialDialog::addNewMaterial()
 	// if all went well then add a new material
 	fem::Material new_material;
 
-	new_material.type = fem::Material::MAT_LINEAR_ELASTIC;
 	new_material.label = lineEditMaterialName->text().toStdString();
 	new_material.E = lineEditYoung->text().toDouble();
 	new_material.nu = lineEditPoisson->text().toDouble();

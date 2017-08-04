@@ -96,6 +96,7 @@ public:
 
 	enum Error generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress);
 	enum Error generateGlobalDomainForceVector(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress);
+	enum Error generateGlobalSurfaceForceVector(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress);
 
 
 	/**

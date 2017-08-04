@@ -19,18 +19,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		// generate the location matrix
 	make_location_matrix(model, result);
 
-		// declare variables
-	Scalar detJ = 0;
-
-	Matrix3d J, invJ;
-	std::vector< Eigen::Matrix<Scalar,6,6> > D_list;
-
 		// set up the temporary variables for the elementary matrix and vector
-	Matrix<Scalar,Dynamic,1> f_elem;
-
-	BaseElement<Scalar> *element = NULL;	// points to the current element class
-
-	int nnodes;	// number of nodes
 	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
 
 
@@ -63,118 +52,12 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		// integrate the surface loads
 	progress.markSectionStart("surface loads");
 	progress.markSectionLimit(lp.surface_loads.size());
-	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
-	{
-		switch(surface_load->type)
-		{
-			case Element::FE_TRIANGLE3:
-				element = &tri3;
-				break;
-
-			case Element::FE_TRIANGLE6:
-				element = &tri6;
-				break;
-
-			case Element::FE_QUADRANGLE4:
-				element = &quad4;
-				break;
-
-			case Element::FE_QUADRANGLE8:
-				element = &quad8;
-				break;
-
-			case Element::FE_QUADRANGLE9:
-				element = &quad9;
-				break;
-
-			default:
-				std::cerr << __FILE__ << ":" << __LINE__ ;
-				std::cerr << "unsupported element" << std::endl;
-				return ERR_UNSUPPORTED_ELEMENT;
-				break;
-		}
-
-		nnodes = surface_load->node_number();
-		f_elem.resize(nnodes*3);
-		f_elem.setZero();
-
-		for (typename std::vector<boost::tuple<fem::Point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
-		{
-				// get shape function and shape function derivatives in this integration Point's coordinate
-			element->setN( i->template get<0>() );
-			element->setdNdcsi(i->template get<0>() );
-			element->setdNdeta(i->template get<0>() );
-
-				// calculate the Jacobian
-			J.setZero();
-#define X(N)	model.node_list[surface_load->nodes[N]].x()
-#define Y(N)	model.node_list[surface_load->nodes[N]].y()
-#define Z(N)	model.node_list[surface_load->nodes[N]].z()
-
-			for(int n = 0; n < nnodes; n++)
-			{
-				J(0,0) += element->dNdcsi[n]*X(n);	J(0,1) += element->dNdcsi[n]*Y(n);	J(0,2) += element->dNdcsi[n]*Z(n);
-				J(1,0) += element->dNdeta[n]*X(n);	J(1,1) += element->dNdeta[n]*Y(n);	J(1,2) += element->dNdeta[n]*Z(n);
-			}
-			
-			J = J * J.transpose();
-
-			detJ = J(0,0)*J(1,1)-J(1,0)*J(0,1);
-
-			if(detJ <= 0)
-			{
-				std::cerr << __FILE__ << ":" << __LINE__ ;
-				std::cerr << "stumbled on a negative determinant on the surface load" << std::endl;
-
-				// quit
-				return ERR_NEGATIVE_DETERMINANT;
-			}
-
-			detJ = sqrt(detJ);
-
-#define N(n) element->N[n]
-#define W    i->template get<1>()
-				// calculate q(csi, eta, zeta)
-			fem::Point q(0,0,0);
-			for(int j = 0; j < nnodes; j++)
-			{
-				q += N(j)*surface_load->surface_forces[j];
-			}
-			
-			for(int n = 0; n < nnodes; n++)
-			{
-
-				f_elem(3*n  ) += N(n)*q.x()*detJ*W;
-				f_elem(3*n+1) += N(n)*q.y()*detJ*W;
-				f_elem(3*n+2) += N(n)*q.z()*detJ*W;
-			}
-#undef N
-#undef W
-		}
-
-
-			//add the surface load's f_elem contribution to result.f
-		for(int i = 0; i < nnodes; i++)
-		{
-			dof = result.lm.find(surface_load->nodes[i]);
-			if(dof == result.lm.end())
-				continue;	// no degrees of freedom on this node
-			else
-			{
-				size_t n = dof->second.get<0>();
-				if(n != 0)
-					result.f(n-1) += f_elem(3*i);
-				n = dof->second.get<1>();
-				if(n != 0)
-					result.f(n-1) += f_elem(3*i+1);
-				n = dof->second.get<2>();
-				if(n != 0)
-					result.f(n-1) += f_elem(3*i+2);
-			}
-		}
-		progress.markSectionIterationIncrement();
-	}
+	error = this->generateGlobalSurfaceForceVector(model, lp, result, progress);
 	progress.markSectionEnd();
+	if(error != ERR_OK)
+	{
+		return error;
+	}
 
 	// set nodal forces
 	progress.markSectionStart("nodal loads");
@@ -480,6 +363,136 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 		{
 			std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
 			dof = result.lm.find(model.element_list[domain_load->first].nodes[i]);
+			if(dof == result.lm.end())
+				continue;	// no degrees of freedom on this node
+			else
+			{
+				size_t n = dof->second.get<0>();
+				if(n != 0)
+					result.f(n-1) += f_elem(3*i);
+				n = dof->second.get<1>();
+				if(n != 0)
+					result.f(n-1) += f_elem(3*i+1);
+				n = dof->second.get<2>();
+				if(n != 0)
+					result.f(n-1) += f_elem(3*i+2);
+			}
+		}
+		progress.markSectionIterationIncrement();
+	}
+
+	// fem equation is set.
+	return ERR_OK;
+}
+
+
+
+template<typename Scalar>
+enum Analysis<Scalar>::Error 
+Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress)
+{
+	using namespace Eigen;
+
+	Matrix<Scalar,Dynamic,1> f_elem;
+	Matrix3d J, invJ;
+	Scalar detJ = 0;
+
+	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
+	{
+		BaseElement<Scalar> *element = NULL;	// points to the current element class
+		switch(surface_load->type)
+		{
+			case Element::FE_TRIANGLE3:
+				element = &tri3;
+				break;
+
+			case Element::FE_TRIANGLE6:
+				element = &tri6;
+				break;
+
+			case Element::FE_QUADRANGLE4:
+				element = &quad4;
+				break;
+
+			case Element::FE_QUADRANGLE8:
+				element = &quad8;
+				break;
+
+			case Element::FE_QUADRANGLE9:
+				element = &quad9;
+				break;
+
+			default:
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "unsupported element" << std::endl;
+				return ERR_UNSUPPORTED_ELEMENT;
+				break;
+		}
+
+		int nnodes = surface_load->node_number();
+		f_elem.resize(nnodes*3);
+		f_elem.setZero();
+
+		for (typename std::vector<boost::tuple<fem::Point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
+		{
+				// get shape function and shape function derivatives in this integration Point's coordinate
+			element->setN( i->template get<0>() );
+			element->setdNdcsi(i->template get<0>() );
+			element->setdNdeta(i->template get<0>() );
+
+				// calculate the Jacobian
+			J.setZero();
+
+			for(int n = 0; n < nnodes; n++)
+			{
+				Scalar const &X = model.node_list[surface_load->nodes[n]].x();
+				Scalar const &Y = model.node_list[surface_load->nodes[n]].y();
+				Scalar const &Z = model.node_list[surface_load->nodes[n]].z();
+
+				J(0,0) += element->dNdcsi[n]*X;	J(0,1) += element->dNdcsi[n]*Y;	J(0,2) += element->dNdcsi[n]*Z;
+				J(1,0) += element->dNdeta[n]*X;	J(1,1) += element->dNdeta[n]*Y;	J(1,2) += element->dNdeta[n]*Z;
+			}
+			
+			J = J * J.transpose();
+
+			detJ = J(0,0)*J(1,1)-J(1,0)*J(0,1);
+
+			if(detJ <= 0)
+			{
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "stumbled on a negative determinant on the surface load" << std::endl;
+
+				// quit
+				return ERR_NEGATIVE_DETERMINANT;
+			}
+
+			detJ = sqrt(detJ);
+
+				// calculate q(csi, eta, zeta)
+			fem::Point q(0,0,0);
+			for(int j = 0; j < nnodes; j++)
+			{
+				const Scalar N = element->N[j];
+				q += N*surface_load->surface_forces[j];
+			}
+			
+			const Scalar &W = i->template get<1>();
+			for(int n = 0; n < nnodes; n++)
+			{
+				const Scalar N = element->N[n];
+
+				f_elem(3*n  ) += N*q.x()*detJ*W;
+				f_elem(3*n+1) += N*q.y()*detJ*W;
+				f_elem(3*n+2) += N*q.z()*detJ*W;
+			}
+		}
+
+
+			//add the surface load's f_elem contribution to result.f
+		for(int i = 0; i < nnodes; i++)
+		{
+			std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
+			dof = result.lm.find(surface_load->nodes[i]);
 			if(dof == result.lm.end())
 				continue;	// no degrees of freedom on this node
 			else

@@ -26,13 +26,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 	std::vector< Eigen::Matrix<Scalar,6,6> > D_list;
 
 		// set up the temporary variables for the elementary matrix and vector
-	Matrix<Scalar,Dynamic, Dynamic> k_elem;
 	Matrix<Scalar,Dynamic,1> f_elem;
-	Matrix<Scalar,Dynamic,Dynamic> B;
-	Matrix<Scalar,Dynamic,Dynamic> Bt;
-	Matrix<Scalar,6,6> D = model.material_list[0].generateD().cast<Scalar>();
-
-	material_ref_t material_index = 0;
 
 	BaseElement<Scalar> *element = NULL;	// points to the current element class
 
@@ -43,143 +37,14 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		// generate stiffness matrix by cycling through all elements in the model
 	progress.markSectionStart("stiffness matrix");
 	progress.markSectionLimit(model.element_list.size());
-	for(std::vector<Element>::iterator element_iterator = model.element_list.begin(); element_iterator != model.element_list.end(); element_iterator++)
-	{
-			// sets the current element routines
-		switch(element_iterator->type)
-		{
-			case Element::FE_TETRAHEDRON4:
-				element = &tetra4;
-				break;
 
-			case Element::FE_TETRAHEDRON10:
-				element = &tetra10;
-				break;
-
-			case Element::FE_HEXAHEDRON8:
-				element = &hexa8;
-				break;
-
-			case Element::FE_HEXAHEDRON20:
-				element = &hexa20;
-				break;
-
-			case Element::FE_HEXAHEDRON27:
-				element = &hexa27;
-				break;
-
-			case Element::FE_PRISM6:
-				element = &prism6;
-				break;
-
-			case Element::FE_PRISM15:
-				element = &prism15;
-				break;
-
-			case Element::FE_PRISM18:
-				element = &prism18;
-				break;
-
-			default:
-				std::cerr << __FILE__ << ":" << __LINE__ ;
-				std::cerr << "Analysis<Scalar>::build_fem_equation(): unsupported element" << std::endl;
-				return ERR_UNSUPPORTED_ELEMENT;
-				break;
-		}
-
-			// get the number of expected nodes used by the current element_iterator type
-		nnodes = element_iterator->node_number();
-
-			// resize the elementary matrices to fit the new node size
-		k_elem.resize(nnodes*3,nnodes*3);
-		f_elem.resize(nnodes*3);
-		B.resize(6,3*nnodes);
-		Bt.resize(3*nnodes,6);
-
-			// initialize variables
-		k_elem.setZero();
-		f_elem.setZero();
-		B.setZero();
-
-			// build the element_iterator stiffness matrix: cycle through the number of integration points
-		for (typename std::vector<boost::tuple<fem::Point,Scalar> >::iterator i = element->stiffness_quadrature().begin(); i != element->stiffness_quadrature().end(); i++)
-		{
-#define X(N) model.node_list[element_iterator->nodes[N]].x()
-#define Y(N) model.node_list[element_iterator->nodes[N]].y()
-#define Z(N) model.node_list[element_iterator->nodes[N]].z()
-
-				// set the shape function and it's partial derivatives for this integration Point
-			element->setdNdcsi( i->template get<0>() );
-			element->setdNdeta( i->template get<0>() );
-			element->setdNdzeta( i->template get<0>() );
-
-				// generate the jacobian
-			J.setZero();
-			for(int n = 0; n < nnodes; n++)
-			{
-				J(0,0) += element->dNdcsi[n]*X(n);	J(0,1) += element->dNdcsi[n]*Y(n);	J(0,2) += element->dNdcsi[n]*Z(n);
-				J(1,0) += element->dNdeta[n]*X(n);	J(1,1) += element->dNdeta[n]*Y(n);	J(1,2) += element->dNdeta[n]*Z(n);
-				J(2,0) += element->dNdzeta[n]*X(n);	J(2,1) += element->dNdzeta[n]*Y(n);	J(2,2) += element->dNdzeta[n]*Z(n);
-			}
-
-			detJ = J.determinant();
-
-				// return error if we stumble on a negative determinant
-			if(detJ <= 0)
-			{
-				std::cerr << __FILE__ << ":" << __LINE__ ;
-				std::cerr << " Analysis<Scalar>::build_fem_equation(): stumbled on a negative determinant on element_iterator " << distance(model.element_list.begin(), element_iterator) << std::endl;
-				
-				return ERR_NEGATIVE_DETERMINANT;
-			}
-
-			invJ = J.inverse();
-
-				// Set up the B matrix
-			for(int n = 0; n < nnodes; n++)
-			{
-				// set the variables
-				// set the partial derivatives
-#undef X
-#undef Y
-#undef Z
-				double dNdx = invJ(0,0)*element->dNdcsi[n] + invJ(0,1)*element->dNdeta[n] + invJ(0,2)*element->dNdzeta[n];
-				double dNdy = invJ(1,0)*element->dNdcsi[n] + invJ(1,1)*element->dNdeta[n] + invJ(1,2)*element->dNdzeta[n];
-				double dNdz = invJ(2,0)*element->dNdcsi[n] + invJ(2,1)*element->dNdeta[n] + invJ(2,2)*element->dNdzeta[n];
-
-				// set the current node portion of the B matrix
-				B(0,3*n)	= dNdx;
-				B(1,3*n+1)	= dNdy;
-				B(2,3*n+2)	= dNdz;
-				B(3,3*n)	= dNdy;	B(3,3*n+1) = dNdx;
-				B(4,3*n)	= dNdz;	B(4,3*n+2) = dNdx;
-				B(5,3*n+1)	= dNdz;	B(5,3*n+2) = dNdy;
-
-				//TODO consider also setting Bt, avoid trans(b)
-			}
-
-			Bt = B.transpose();
-
-			if(material_index != element_iterator->material)
-			{
-				D = model.material_list[element_iterator->material].generateD().cast<Scalar>();
-				material_index = element_iterator->material;
-			}
-
-			// add this integration Point's contribution
-			k_elem += Bt*D*B*detJ*i->get<1>();
-
-			// calculate this element's contribution to the model's volume
-			result->volume += detJ*i->get<1>();
-		}
-
-		// add elementary stiffness matrix to the global stiffness matrix 
-		add_elementary_stiffness_to_global(k_elem, result->lm, *element_iterator, result);
-
-		// mark progress
-		progress.markSectionIterationIncrement();
-	}
+	Error error;
+	error = this->generateGlobalStiffnessMatrix(model, result, progress);
 	progress.markSectionEnd();
+	if(error != ERR_OK)
+	{
+		return error;
+	}
 
 		// now set up the equivalent forces vector
 	// set nodal force contribution made by the domain loads

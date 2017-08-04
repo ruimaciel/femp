@@ -33,7 +33,7 @@ OutputElementStatisticsVisitor::visit(fem::Model &model, std::vector<fem::Analys
 			return (p1-p2).norm();
 		};
 
-		auto set = [&](int const i, int const j) -> float
+		auto set = [&](int const i, int const j)
 		{
 			de = ( de < dim(i,j) )? dim(i,j): de;
 			di = ( di > dim(i,j) )? dim(i,j): di;

@@ -318,9 +318,11 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 
 			for(int n = 0; n < nnodes; n++)
 			{
-				Scalar const &X = model.node_list[element_reference->nodes[n]].x();
-				Scalar const &Y = model.node_list[element_reference->nodes[n]].y();
-				Scalar const &Z = model.node_list[element_reference->nodes[n]].z();
+				auto const & node_ref = element_reference->nodes[n];
+
+				Scalar const &X = model.node_list[node_ref].x();
+				Scalar const &Y = model.node_list[node_ref].y();
+				Scalar const &Z = model.node_list[node_ref].z();
 
 				J(0,0) += element->dNdcsi[n]*X;	J(0,1) += element->dNdcsi[n]*Y;	J(0,2) += element->dNdcsi[n]*Z;
 				J(1,0) += element->dNdeta[n]*X;	J(1,1) += element->dNdeta[n]*Y;	J(1,2) += element->dNdeta[n]*Z;
@@ -338,16 +340,14 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			}
 
 			// and now the f_elem
+			double W = i->template get<1>();
 			for(int n = 0; n < nnodes; n++)
 			{
-#define N(n) element->N[n]
-#define b(COORD) domain_load->second.force.COORD()
-				double W = i->template get<1>();
-				f_elem(3*n) += N(n)*b(x)*detJ*W;
-				f_elem(3*n+1) += N(n)*b(y)*detJ*W;
-				f_elem(3*n+2) += N(n)*b(z)*detJ*W;
-#undef N
-#undef b
+				Point const &f = domain_load->second.force;
+				const Scalar N = element->N[n]; 
+				f_elem(3*n) += N*f.x()*detJ*W;
+				f_elem(3*n+1) += N*f.y()*detJ*W;
+				f_elem(3*n+2) += N*f.z()*detJ*W;
 			}
 		}
 

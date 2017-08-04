@@ -94,6 +94,8 @@ public:
 	**/
 	virtual enum Error run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress) = 0;
 
+	enum Error generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
+
 
 	/**
 	Returns a map of all nodes which had any relative displacement

@@ -7,7 +7,7 @@ namespace fem
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
+enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace std;
 	using namespace Eigen;
@@ -152,23 +152,23 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 #undef Y
 #undef Z
 
-			//add the domain load's f_elem contribution to result->f
+			//add the domain load's f_elem contribution to result.f
 		for(size_t i = 0; i < model.element_list[domain_load->first].nodes.size(); i++)
 		{
-			dof = result->lm.find(model.element_list[domain_load->first].nodes[i]);
-			if(dof == result->lm.end())
+			dof = result.lm.find(model.element_list[domain_load->first].nodes[i]);
+			if(dof == result.lm.end())
 				continue;	// no degrees of freedom on this node
 			else
 			{
 				size_t n = dof->second.get<0>();
 				if(n != 0)
-					result->f(n-1) += f_elem(3*i);
+					result.f(n-1) += f_elem(3*i);
 				n = dof->second.get<1>();
 				if(n != 0)
-					result->f(n-1) += f_elem(3*i+1);
+					result.f(n-1) += f_elem(3*i+1);
 				n = dof->second.get<2>();
 				if(n != 0)
-					result->f(n-1) += f_elem(3*i+2);
+					result.f(n-1) += f_elem(3*i+2);
 			}
 		}
 		progress.markSectionIterationIncrement();
@@ -268,23 +268,23 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		}
 
 
-			//add the surface load's f_elem contribution to result->f
+			//add the surface load's f_elem contribution to result.f
 		for(int i = 0; i < nnodes; i++)
 		{
-			dof = result->lm.find(surface_load->nodes[i]);
-			if(dof == result->lm.end())
+			dof = result.lm.find(surface_load->nodes[i]);
+			if(dof == result.lm.end())
 				continue;	// no degrees of freedom on this node
 			else
 			{
 				size_t n = dof->second.get<0>();
 				if(n != 0)
-					result->f(n-1) += f_elem(3*i);
+					result.f(n-1) += f_elem(3*i);
 				n = dof->second.get<1>();
 				if(n != 0)
-					result->f(n-1) += f_elem(3*i+1);
+					result.f(n-1) += f_elem(3*i+1);
 				n = dof->second.get<2>();
 				if(n != 0)
-					result->f(n-1) += f_elem(3*i+2);
+					result.f(n-1) += f_elem(3*i+2);
 			}
 		}
 		progress.markSectionIterationIncrement();
@@ -300,12 +300,12 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		n = nodal_load->first;
 
 		// set the nodal loads
-		if(result->lm[n].get<0>() != 0)
-			result->f(result->lm[n].get<0>()-1) += nodal_load->second.x();
-		if(result->lm[n].get<1>() != 0)
-			result->f(result->lm[n].get<1>()-1) += nodal_load->second.y();
-		if(result->lm[n].get<2>() != 0)
-			result->f(result->lm[n].get<2>()-1) += nodal_load->second.z();
+		if(result.lm[n].get<0>() != 0)
+			result.f(result.lm[n].get<0>()-1) += nodal_load->second.x();
+		if(result.lm[n].get<1>() != 0)
+			result.f(result.lm[n].get<1>()-1) += nodal_load->second.y();
+		if(result.lm[n].get<2>() != 0)
+			result.f(result.lm[n].get<2>()-1) += nodal_load->second.z();
 
 		progress.markSectionIterationIncrement();
 	}
@@ -318,7 +318,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 
 template<typename Scalar>
 enum Analysis<Scalar>::Error 
-Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
+Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace Eigen;
 
@@ -463,11 +463,11 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 			k_elem += Bt*D*B*detJ*weight;
 
 			// calculate this element's contribution to the model's volume
-			result->volume += detJ*weight;
+			result.volume += detJ*weight;
 		}
 
 		// add elementary stiffness matrix to the global stiffness matrix 
-		add_elementary_stiffness_to_global(k_elem, result->lm, *element_iterator, result);
+		add_elementary_stiffness_to_global(k_elem, result.lm, *element_iterator, result);
 
 		// mark progress
 		progress.markSectionIterationIncrement();
@@ -479,7 +479,7 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 
 
 template<typename Scalar>
-std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar> *result)
+std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar> &result)
 {
 	using namespace std;
 
@@ -487,7 +487,7 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar
 	size_t n = 0;
 	Node node;
 
-	for(map<size_t, boost::tuple<size_t,size_t,size_t> >::const_iterator i = result->lm.begin(); i != result->lm.end(); i++)
+	for(map<size_t, boost::tuple<size_t,size_t,size_t> >::const_iterator i = result.lm.begin(); i != result.lm.end(); i++)
 	{
 		node.zero();
 
@@ -497,11 +497,11 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar
 
 		// assign the displacements
 		if(i->second.get<0>() != 0)
-			node.data[0] = result->d(n++);
+			node.data[0] = result.d(n++);
 		if(i->second.get<1>() != 0)
-			node.data[1] = result->d(n++);
+			node.data[1] = result.d(n++);
 		if(i->second.get<2>() != 0)
-			node.data[2] = result->d(n++);
+			node.data[2] = result.d(n++);
 
 		// add the displacement field to the map
 		df[i->first] = node;
@@ -559,7 +559,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::calculateStrainEnergy(Model &, An
 
 
 template<typename Scalar>
-void Analysis<Scalar>::make_location_matrix(Model &model, AnalysisResult<Scalar> *result)
+void Analysis<Scalar>::make_location_matrix(Model &model, AnalysisResult<Scalar> &result)
 {
 	size_t dof = 1;	// degree of freedom count, the 0 value is interpreted as a prescribed movement
 
@@ -569,41 +569,41 @@ void Analysis<Scalar>::make_location_matrix(Model &model, AnalysisResult<Scalar>
 		if(model.node_restrictions_list.find(i->first) == model.node_restrictions_list.end())
 		{
 			// there are no node restrictions set for this node
-			result->lm[i->first].template get<0>() = dof++;
-			result->lm[i->first].template get<1>() = dof++;
-			result->lm[i->first].template get<2>() = dof++;
+			result.lm[i->first].template get<0>() = dof++;
+			result.lm[i->first].template get<1>() = dof++;
+			result.lm[i->first].template get<2>() = dof++;
 		}
 		else
 		{
 				// there are some node restrictions set for this node
 			if(model.node_restrictions_list[i->first].dx() == false)
-				result->lm[i->first].template get<0>() = dof++;
+				result.lm[i->first].template get<0>() = dof++;
 			else
-				result->lm[i->first].template get<0>() = 0;
+				result.lm[i->first].template get<0>() = 0;
 
 			if(model.node_restrictions_list[i->first].dy() == false)
-				result->lm[i->first].template get<1>() = dof++;
+				result.lm[i->first].template get<1>() = dof++;
 			else
-				result->lm[i->first].template get<1>() = 0;
+				result.lm[i->first].template get<1>() = 0;
 
 			if(model.node_restrictions_list[i->first].dz() == false)
-				result->lm[i->first].template get<2>() = dof++;
+				result.lm[i->first].template get<2>() = dof++;
 			else
-				result->lm[i->first].template get<2>() = 0;
+				result.lm[i->first].template get<2>() = 0;
 		}
 	}
 
 	dof--;	// avoid the off by one error in resizing K_g and f_g
 
 		// resize the FEM equation
-	result->K.resize(dof,dof);
-	result->f.resize(dof);
-	result->d.resize(dof);
+	result.K.resize(dof,dof);
+	result.f.resize(dof);
+	result.d.resize(dof);
 }
 
 
 template<typename Scalar>
-inline void Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Matrix<Scalar,Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult<Scalar> *result)
+inline void Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Matrix<Scalar,Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult<Scalar> &result)
 {
 	using namespace std;	//TODO remove cleanup code
 
@@ -648,7 +648,7 @@ inline void Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Ma
 				{
 					if( (id[u] != 0) && (jd[v] != 0) )
 					{
-						result->K(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
+						result.K(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
 					}
 				}
 			}

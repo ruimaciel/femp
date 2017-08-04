@@ -83,7 +83,7 @@ public:
 	@param result	a pointer to a AnalysisResult<Scalar> object, where the run results will be stored
 	@return an error
 	**/
-	enum Error build_fem_equation(Model &Model, const LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
+	enum Error build_fem_equation(Model &Model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress);
 
 
 	/** runs the analysis
@@ -94,13 +94,13 @@ public:
 	**/
 	virtual enum Error run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress) = 0;
 
-	enum Error generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
+	enum Error generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress);
 
 
 	/**
 	Returns a map of all nodes which had any relative displacement
 	**/
-	std::map<size_t, Node> displacements_map(AnalysisResult<Scalar> *result);
+	std::map<size_t, Node> displacements_map(AnalysisResult<Scalar> &result);
 
 
 	/**
@@ -122,9 +122,9 @@ protected:
 	/**
 	Builds the location matrix, a map between the node number and a 3-tuple holding the degree of freedom reference numbers for each degree of freedom, and resizes the temp FemEquation object
 	@param model	the reference of a fem::Model object
-	@param result	the pointer to a fem::AnalysisResult<Scalar> object, where the information will be stored
+	@param result	a fem::AnalysisResult<Scalar> object, where the information will be stored
 	**/
-	void make_location_matrix(Model &model, AnalysisResult<Scalar> *result);
+	void make_location_matrix(Model &model, AnalysisResult<Scalar> &result);
 
 
 	/**
@@ -135,7 +135,7 @@ protected:
 	@param f	FemEquation
 	@param element	reference to the element
 	**/
-	void add_elementary_stiffness_to_global(const Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult<Scalar> *result);
+	void add_elementary_stiffness_to_global(const Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult<Scalar> &result);
 
 };
 

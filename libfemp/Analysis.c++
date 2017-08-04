@@ -8,7 +8,7 @@ namespace fem
 
 template<typename Scalar>
 enum Analysis<Scalar>::Error
-Analysis<Scalar>::build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress)
+Analysis<Scalar>::buildEquation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace std;
 
@@ -137,7 +137,7 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 
 			default:
 				std::cerr << __FILE__ << ":" << __LINE__ ;
-				std::cerr << "Analysis<Scalar>::build_fem_equation(): unsupported element" << std::endl;
+				std::cerr << "Analysis<Scalar>::buildEquation(): unsupported element" << std::endl;
 				return ERR_UNSUPPORTED_ELEMENT;
 				break;
 		}
@@ -184,7 +184,7 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 			if(detJ <= 0)
 			{
 				std::cerr << __FILE__ << ":" << __LINE__ ;
-				std::cerr << " Analysis<Scalar>::build_fem_equation(): stumbled on a negative determinant on element_iterator " << distance(model.element_list.begin(), element_iterator) << std::endl;
+				std::cerr << " Analysis<Scalar>::buildEquation(): stumbled on a negative determinant on element_iterator " << distance(model.element_list.begin(), element_iterator) << std::endl;
 
 				return ERR_NEGATIVE_DETERMINANT;
 			}
@@ -294,7 +294,7 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 
 			default:
 				std::cerr << __FILE__ << ":" << __LINE__ ;
-				std::cerr << "Analysis<Scalar>::build_fem_equation(): unsupported element" << std::endl;
+				std::cerr << "Analysis<Scalar>::buildEquation(): unsupported element" << std::endl;
 				return ERR_UNSUPPORTED_ELEMENT;
 				break;
 		}

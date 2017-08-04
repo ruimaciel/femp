@@ -113,7 +113,7 @@ LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult<Scalar
 
 	typename Analysis<Scalar>::Error error = Analysis<Scalar>::ERR_OK;
 
-	if( ( error = this->build_fem_equation(model, lp, *result, progress)) != Analysis<Scalar>::ERR_OK )
+	if( ( error = this->buildEquation(model, lp, *result, progress)) != Analysis<Scalar>::ERR_OK )
 	{
 		// some error happened when building the FEM equation
 		return error;

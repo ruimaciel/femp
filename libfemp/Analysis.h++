@@ -83,7 +83,7 @@ public:
 	@param result	a pointer to a AnalysisResult<Scalar> object, where the run results will be stored
 	@return an error
 	**/
-	enum Error build_fem_equation(Model &Model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress);
+	enum Error buildEquation(Model &Model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress);
 
 
 	/** runs the analysis

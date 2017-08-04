@@ -17,5 +17,5 @@ HEADERS = Matrix.h++ \
 	ProgressIndicatorStrategy.h++ \
 	solvers/*.h++ 
 
-SOURCES =
+SOURCES = solvers/Umfpack.c++
 

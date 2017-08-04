@@ -7,7 +7,8 @@ namespace fem
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress)
+enum Analysis<Scalar>::Error
+Analysis<Scalar>::build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace std;
 
@@ -64,7 +65,6 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 	progress.markSectionLimit(lp.nodal_loads.size());
 
 	error = this->generateGlobalPointForceVector(model, lp, result, progress);
-
 	progress.markSectionEnd();
 	if(error != ERR_OK)
 	{
@@ -537,7 +537,8 @@ Analysis<Scalar>::generateGlobalPointForceVector(Model &model, const LoadPattern
 
 
 template<typename Scalar>
-std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar> &result)
+std::map<size_t, Node>
+Analysis<Scalar>::displacements_map(AnalysisResult<Scalar> &result)
 {
 	using namespace std;
 
@@ -570,7 +571,8 @@ std::map<size_t, Node> Analysis<Scalar>::displacements_map(AnalysisResult<Scalar
 
 
 template<typename Scalar>
-void Analysis<Scalar>::generateDisplacementsMap(Model &model, AnalysisResult<Scalar> &result)
+void
+Analysis<Scalar>::generateDisplacementsMap(Model &model, AnalysisResult<Scalar> &result)
 {
 	fem::Point d;	// displacements field
 	boost::tuple<size_t,size_t,size_t> references;
@@ -609,7 +611,8 @@ Analysis<Scalar>::recoverValues(Model &model, AnalysisResult<Scalar> &result)
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error Analysis<Scalar>::calculateStrainEnergy(Model &, AnalysisResult<Scalar> &result)
+enum Analysis<Scalar>::Error
+Analysis<Scalar>::calculateStrainEnergy(Model &, AnalysisResult<Scalar> &result)
 {
 	result.energy = 0.5*ppmvm(result.d, result.K, result.d);
 	return ERR_OK;
@@ -617,7 +620,8 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::calculateStrainEnergy(Model &, An
 
 
 template<typename Scalar>
-void Analysis<Scalar>::make_location_matrix(Model &model, AnalysisResult<Scalar> &result)
+void
+Analysis<Scalar>::make_location_matrix(Model &model, AnalysisResult<Scalar> &result)
 {
 	size_t dof = 1;	// degree of freedom count, the 0 value is interpreted as a prescribed movement
 
@@ -661,7 +665,8 @@ void Analysis<Scalar>::make_location_matrix(Model &model, AnalysisResult<Scalar>
 
 
 template<typename Scalar>
-inline void Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Matrix<Scalar,Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult<Scalar> &result)
+inline void
+Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Matrix<Scalar,Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult<Scalar> &result)
 {
 	using namespace std;	//TODO remove cleanup code
 

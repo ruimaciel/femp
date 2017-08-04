@@ -94,9 +94,43 @@ public:
 	**/
 	virtual enum Error run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress) = 0;
 
+
+	/**
+	 * generates the global stiffness matrix
+	 * @param model the model
+	 * @param result where the result
+	 * @param progress 
+	 **/
 	enum Error generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress);
+
+
+	/**
+	 * generates the global domain force vector contribution defined by a load pattern
+	 * @param model the model
+	 * @param lp the load pattern
+	 * @param result
+	 * @param progress
+	 **/
 	enum Error generateGlobalDomainForceVector(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress);
+
+
+	/**
+	 * generates the global surface force vector contribution defined by a load pattern
+	 * @param model the model
+	 * @param lp the load pattern
+	 * @param result
+	 * @param progress
+	 **/
 	enum Error generateGlobalSurfaceForceVector(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress);
+
+
+	/**
+	 * generates the global point force vector contribution defined by a load pattern
+	 * @param model the model
+	 * @param lp the load pattern
+	 * @param result
+	 * @param progress
+	 **/
 	enum Error generateGlobalPointForceVector(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress);
 
 
@@ -111,17 +145,21 @@ public:
 	**/
 	void generateDisplacementsMap(Model &model, AnalysisResult<Scalar> &result);
 
+
 	/**
 	Calculates a set of recovered values in every node of each individual element
 	**/
 	enum Error recoverValues(Model &model, AnalysisResult<Scalar> &result);
+
 
 	/**
 	Calculates a set of recovered values in every node of each individual element
 	**/
 	enum Error calculateStrainEnergy(Model &model, AnalysisResult<Scalar> &result);
 
+
 protected:
+
 	/**
 	Builds the location matrix, a map between the node number and a 3-tuple holding the degree of freedom reference numbers for each degree of freedom, and resizes the temp FemEquation object
 	@param model	the reference of a fem::Model object

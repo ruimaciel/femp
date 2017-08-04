@@ -77,6 +77,7 @@ SOURCES = Group.c++ \
 	ElementGroup.c++ \
 	NodeGroup.c++ \
 	Analysis.c++ \
+	LinearAnalysis.c++ \
 	SurfaceLoadOperators/ConcentricLoad.c++	\
 	SurfaceLoadOperators/ConstantLoad.c++ \
 	SurfaceLoadOperators/SurfaceLoadOperator.c++ \

@@ -398,9 +398,11 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 		{
 
 			// set the shape function and it's partial derivatives for this integration Point
-			element->setdNdcsi( i->template get<0>() );
-			element->setdNdeta( i->template get<0>() );
-			element->setdNdzeta( i->template get<0>() );
+			const Point &point = i->template get<0>();
+
+			element->setdNdcsi( point );
+			element->setdNdeta( point );
+			element->setdNdzeta( point );
 
 			// generate the jacobian
 			J.setZero();
@@ -457,10 +459,11 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 			}
 
 			// add this integration Point's contribution
-			k_elem += Bt*D*B*detJ*i->template get<1>();
+			const Scalar &weight = i->template get<1>();
+			k_elem += Bt*D*B*detJ*weight;
 
 			// calculate this element's contribution to the model's volume
-			result->volume += detJ*i->template get<1>();
+			result->volume += detJ*weight;
 		}
 
 		// add elementary stiffness matrix to the global stiffness matrix 

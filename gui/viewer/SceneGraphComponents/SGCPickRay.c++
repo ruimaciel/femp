@@ -24,7 +24,7 @@ PickRay::~PickRay()
 }
 
 
-void PickRay::paintGL(ViewportData &data, ViewportColors &colors)
+void PickRay::paintGL(ViewportData &, ViewportColors &)
 {
 	glPushMatrix();
 

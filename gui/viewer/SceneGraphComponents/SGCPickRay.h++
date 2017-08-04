@@ -9,6 +9,8 @@
 #include <libfemp/NodeRestrictions.h++>
 #include <libfemp/LinearAnalysis.h++>
 
+#include "../ViewportData.h++"
+#include "../ViewportColors.h++"
 #include "DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++"
 
 

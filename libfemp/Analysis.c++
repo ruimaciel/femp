@@ -10,7 +10,6 @@ template<typename Scalar>
 enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace std;
-	using namespace Eigen;
 
 	// perform sanity checks on the model
 	if(model.element_list.empty() )
@@ -52,6 +51,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		// integrate the surface loads
 	progress.markSectionStart("surface loads");
 	progress.markSectionLimit(lp.surface_loads.size());
+
 	error = this->generateGlobalSurfaceForceVector(model, lp, result, progress);
 	progress.markSectionEnd();
 	if(error != ERR_OK)
@@ -62,20 +62,13 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 	// set nodal forces
 	progress.markSectionStart("nodal loads");
 	progress.markSectionLimit(lp.nodal_loads.size());
-	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
+
+	error = this->generateGlobalPointForceVector(model, lp, result, progress);
+
+	progress.markSectionEnd();
+	if(error != ERR_OK)
 	{
-		size_t n;
-		n = nodal_load->first;
-
-		// set the nodal loads
-		if(result.lm[n].get<0>() != 0)
-			result.f(result.lm[n].get<0>()-1) += nodal_load->second.x();
-		if(result.lm[n].get<1>() != 0)
-			result.f(result.lm[n].get<1>()-1) += nodal_load->second.y();
-		if(result.lm[n].get<2>() != 0)
-			result.f(result.lm[n].get<2>()-1) += nodal_load->second.z();
-
-		progress.markSectionIterationIncrement();
+		return error;
 	}
 	progress.markSectionEnd();
 
@@ -508,6 +501,33 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 					result.f(n-1) += f_elem(3*i+2);
 			}
 		}
+		progress.markSectionIterationIncrement();
+	}
+
+	// fem equation is set.
+	return ERR_OK;
+}
+
+
+template<typename Scalar>
+enum Analysis<Scalar>::Error 
+Analysis<Scalar>::generateGlobalPointForceVector(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress)
+{
+	using namespace Eigen;
+	Matrix<Scalar,Dynamic,1> f_elem;
+
+	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
+	{
+		size_t n = nodal_load->first;
+
+		// set the nodal loads
+		if(result.lm[n].template get<0>() != 0)
+			result.f(result.lm[n].template get<0>()-1) += nodal_load->second.x();
+		if(result.lm[n].template get<1>() != 0)
+			result.f(result.lm[n].template get<1>()-1) += nodal_load->second.y();
+		if(result.lm[n].template get<2>() != 0)
+			result.f(result.lm[n].template get<2>()-1) += nodal_load->second.z();
+
 		progress.markSectionIterationIncrement();
 	}
 

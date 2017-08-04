@@ -39,6 +39,7 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 	progress.markSectionLimit(model.element_list.size());
 
 	Error error;
+
 	error = this->generateGlobalStiffnessMatrix(model, result, progress);
 	progress.markSectionEnd();
 	if(error != ERR_OK)
@@ -46,134 +47,18 @@ enum Analysis<Scalar>::Error Analysis<Scalar>::build_fem_equation(Model &model, 
 		return error;
 	}
 
-		// now set up the equivalent forces vector
+	// now set up the equivalent forces vector
+
 	// set nodal force contribution made by the domain loads
 	progress.markSectionStart("domain loads");
 	progress.markSectionLimit(lp.domain_loads.size());
-	for(std::map<size_t,fem::DomainLoad>::const_iterator domain_load = lp.domain_loads.begin(); domain_load != lp.domain_loads.end(); domain_load++)
-	{
-		//TODO rewrite to rely on the element_reference classes
-		fem::Element *element_reference;
-		element_reference = &model.element_list[domain_load->first];
-		nnodes = element_reference->node_number();
 
-		// set the routines for the current element
-		switch(element_reference->type)
-		{
-			case Element::FE_TETRAHEDRON4:
-				element = &tetra4;
-				break;
-
-			case Element::FE_TETRAHEDRON10:
-				element = &tetra10;
-				break;
-
-			case Element::FE_HEXAHEDRON8:
-				element = &hexa8;
-				break;
-
-			case Element::FE_HEXAHEDRON20:
-				element = &hexa20;
-				break;
-
-			case Element::FE_HEXAHEDRON27:
-				element = &hexa27;
-				break;
-
-			case Element::FE_PRISM6:
-				element = &prism6;
-				break;
-
-			case Element::FE_PRISM15:
-				element = &prism15;
-				break;
-
-			case Element::FE_PRISM18:
-				element = &prism18;
-				break;
-
-			default:
-				std::cerr << __FILE__ << ":" << __LINE__ ;
-				std::cerr << "Analysis<Scalar>::build_fem_equation(): unsupported element" << std::endl;
-				return ERR_UNSUPPORTED_ELEMENT;
-				break;
-		}
-
-		f_elem.resize(nnodes*3);
-		f_elem.setZero();
-
-		// as the distribution is linear across the domain then degree 1 is enough
-		for (typename std::vector<boost::tuple<fem::Point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
-		{
-				// build the Jacobian
-			Point quadrature_point = i->template get<0>();
-
-			element->setN( quadrature_point);
-			element->setdNdcsi(quadrature_point);
-			element->setdNdeta( quadrature_point);
-			element->setdNdzeta( quadrature_point);
-
-				// generate the jacobian
-			J.setZero();
-#define X(N)	model.node_list[element_reference->nodes[N]].x()
-#define Y(N)	model.node_list[element_reference->nodes[N]].y()
-#define Z(N)	model.node_list[element_reference->nodes[N]].z()
-			for(int n = 0; n < nnodes; n++)
-			{
-				J(0,0) += element->dNdcsi[n]*X(n);	J(0,1) += element->dNdcsi[n]*Y(n);	J(0,2) += element->dNdcsi[n]*Z(n);
-				J(1,0) += element->dNdeta[n]*X(n);	J(1,1) += element->dNdeta[n]*Y(n);	J(1,2) += element->dNdeta[n]*Z(n);
-				J(2,0) += element->dNdzeta[n]*X(n);	J(2,1) += element->dNdzeta[n]*Y(n);	J(2,2) += element->dNdzeta[n]*Z(n);
-			}
-
-			detJ = J.determinant();
-			if(detJ <= 0)
-			{
-				std::cerr << __FILE__ << ":" << __LINE__ ;
-				std::cerr << "stumbled on a negative determinant on element_reference " <<  domain_load->first << std::endl;
-
-				// quit
-				return ERR_NEGATIVE_DETERMINANT;
-			}
-
-			// and now the f_elem
-			for(int n = 0; n < nnodes; n++)
-			{
-#define N(n) element->N[n]
-#define b(COORD) domain_load->second.force.COORD()
-				double W = i->template get<1>();
-				f_elem(3*n) += N(n)*b(x)*detJ*W;
-				f_elem(3*n+1) += N(n)*b(y)*detJ*W;
-				f_elem(3*n+2) += N(n)*b(z)*detJ*W;
-#undef N
-#undef b
-			}
-		}
-#undef X
-#undef Y
-#undef Z
-
-			//add the domain load's f_elem contribution to result.f
-		for(size_t i = 0; i < model.element_list[domain_load->first].nodes.size(); i++)
-		{
-			dof = result.lm.find(model.element_list[domain_load->first].nodes[i]);
-			if(dof == result.lm.end())
-				continue;	// no degrees of freedom on this node
-			else
-			{
-				size_t n = dof->second.get<0>();
-				if(n != 0)
-					result.f(n-1) += f_elem(3*i);
-				n = dof->second.get<1>();
-				if(n != 0)
-					result.f(n-1) += f_elem(3*i+1);
-				n = dof->second.get<2>();
-				if(n != 0)
-					result.f(n-1) += f_elem(3*i+2);
-			}
-		}
-		progress.markSectionIterationIncrement();
-	}
+	error = this->generateGlobalDomainForceVector(model, lp, result, progress);
 	progress.markSectionEnd();
+	if(error != ERR_OK)
+	{
+		return error;
+	}
 
 		// integrate the surface loads
 	progress.markSectionStart("surface loads");
@@ -470,6 +355,146 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 		add_elementary_stiffness_to_global(k_elem, result.lm, *element_iterator, result);
 
 		// mark progress
+		progress.markSectionIterationIncrement();
+	}
+
+	// fem equation is set.
+	return ERR_OK;
+}
+
+
+template<typename Scalar>
+enum Analysis<Scalar>::Error 
+Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress)
+{
+	using namespace Eigen;
+
+	Matrix<Scalar,Dynamic,1> f_elem;
+	Matrix3d J, invJ;
+	Scalar detJ = 0;
+
+	for(std::map<size_t,fem::DomainLoad>::const_iterator domain_load = lp.domain_loads.begin(); domain_load != lp.domain_loads.end(); domain_load++)
+	{
+		//TODO rewrite to rely on the element_reference classes
+		fem::Element *element_reference;
+		element_reference = &model.element_list[domain_load->first];
+		const int nnodes = element_reference->node_number();
+
+		// set the routines for the current element
+		BaseElement<Scalar> *element = NULL;	// points to the current element class
+		switch(element_reference->type)
+		{
+			case Element::FE_TETRAHEDRON4:
+				element = &tetra4;
+				break;
+
+			case Element::FE_TETRAHEDRON10:
+				element = &tetra10;
+				break;
+
+			case Element::FE_HEXAHEDRON8:
+				element = &hexa8;
+				break;
+
+			case Element::FE_HEXAHEDRON20:
+				element = &hexa20;
+				break;
+
+			case Element::FE_HEXAHEDRON27:
+				element = &hexa27;
+				break;
+
+			case Element::FE_PRISM6:
+				element = &prism6;
+				break;
+
+			case Element::FE_PRISM15:
+				element = &prism15;
+				break;
+
+			case Element::FE_PRISM18:
+				element = &prism18;
+				break;
+
+			default:
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "Analysis<Scalar>::build_fem_equation(): unsupported element" << std::endl;
+				return ERR_UNSUPPORTED_ELEMENT;
+				break;
+		}
+
+		f_elem.resize(nnodes*3);
+		f_elem.setZero();
+
+		// as the distribution is linear across the domain then degree 1 is enough
+		for (typename std::vector<boost::tuple<fem::Point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
+		{
+			// build the Jacobian
+			Point quadrature_point = i->template get<0>();
+
+			element->setN( quadrature_point);
+			element->setdNdcsi(quadrature_point);
+			element->setdNdeta( quadrature_point);
+			element->setdNdzeta( quadrature_point);
+
+			// generate the jacobian
+			J.setZero();
+
+			for(int n = 0; n < nnodes; n++)
+			{
+				Scalar const &X = model.node_list[element_reference->nodes[n]].x();
+				Scalar const &Y = model.node_list[element_reference->nodes[n]].y();
+				Scalar const &Z = model.node_list[element_reference->nodes[n]].z();
+
+				J(0,0) += element->dNdcsi[n]*X;	J(0,1) += element->dNdcsi[n]*Y;	J(0,2) += element->dNdcsi[n]*Z;
+				J(1,0) += element->dNdeta[n]*X;	J(1,1) += element->dNdeta[n]*Y;	J(1,2) += element->dNdeta[n]*Z;
+				J(2,0) += element->dNdzeta[n]*X;	J(2,1) += element->dNdzeta[n]*Y;	J(2,2) += element->dNdzeta[n]*Z;
+			}
+
+			detJ = J.determinant();
+			if(detJ <= 0)
+			{
+				std::cerr << __FILE__ << ":" << __LINE__ ;
+				std::cerr << "stumbled on a negative determinant on element_reference " <<  domain_load->first << std::endl;
+
+				// quit
+				return ERR_NEGATIVE_DETERMINANT;
+			}
+
+			// and now the f_elem
+			for(int n = 0; n < nnodes; n++)
+			{
+#define N(n) element->N[n]
+#define b(COORD) domain_load->second.force.COORD()
+				double W = i->template get<1>();
+				f_elem(3*n) += N(n)*b(x)*detJ*W;
+				f_elem(3*n+1) += N(n)*b(y)*detJ*W;
+				f_elem(3*n+2) += N(n)*b(z)*detJ*W;
+#undef N
+#undef b
+			}
+		}
+
+		//add the domain load's f_elem contribution to result.f
+		for(size_t i = 0; i < model.element_list[domain_load->first].nodes.size(); i++)
+		{
+			std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
+			dof = result.lm.find(model.element_list[domain_load->first].nodes[i]);
+			if(dof == result.lm.end())
+				continue;	// no degrees of freedom on this node
+			else
+			{
+				size_t n = dof->second.get<0>();
+				if(n != 0)
+					result.f(n-1) += f_elem(3*i);
+				n = dof->second.get<1>();
+				if(n != 0)
+					result.f(n-1) += f_elem(3*i+1);
+				n = dof->second.get<2>();
+				if(n != 0)
+					result.f(n-1) += f_elem(3*i+2);
+			}
+		}
 		progress.markSectionIterationIncrement();
 	}
 

@@ -1,5 +1,7 @@
 #include "BaseElement.h++"
 
+#include "../Model.h++"
+#include "../Analysis.h++"	// for the error codes
 
 namespace fem
 {
@@ -33,6 +35,103 @@ std::vector<T> const
 BaseElement<T>::getdNdzeta(const Point &p)
 {
 	return this->setdNdzeta(p);
+}
+
+
+template<typename T>
+Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> 
+BaseElement<T>::getStiffnessMatrix(fem::Model &model)
+{
+	using namespace Eigen;
+
+	Matrix<T,Dynamic,Dynamic> k_elem;
+	Matrix<T,Dynamic,Dynamic> B, Bt;
+	Matrix3d J, invJ;
+
+	// get the number of expected nodes
+	int nnodes = this->node_number();
+
+	// resize the elementary matrices to fit the new node size
+	k_elem.resize(nnodes*3,nnodes*3);
+
+	B.resize(6,3*nnodes);
+	Bt.resize(3*nnodes,6);
+
+	// initialize variables
+	k_elem.setZero();
+	B.setZero();
+
+	//TODO fix how the material properties are passed
+	const fem::Material &material = model.material_list[this->material];
+	Matrix<T,6,6> D = material.generateD().template cast<T>();
+
+	// build the stiffness matrix: cycle through the number of integration points
+	for (typename std::vector<boost::tuple<fem::Point,T> >::iterator i = this->stiffness_quadrature().begin(); i != this->stiffness_quadrature().end(); i++)
+	{
+
+		// set the shape function and it's partial derivatives for this integration Point
+		const Point &point = i->template get<0>();
+
+		this->setdNdcsi( point );
+		this->setdNdeta( point );
+		this->setdNdzeta( point );
+
+		// generate the jacobian
+		J.setZero();
+		for(int n = 0; n < nnodes; n++)
+		{
+			auto const & node_ref = this->nodes[n];
+			fem::Node const &node = model.getNode(node_ref);
+			T const &X = node.x();
+			T const &Y = node.y();
+			T const &Z = node.z();
+
+			J(0,0) += this->dNdcsi[n]*X;		J(0,1) += this->dNdcsi[n]*Y;		J(0,2) += this->dNdcsi[n]*Z;
+			J(1,0) += this->dNdeta[n]*X;		J(1,1) += this->dNdeta[n]*Y;		J(1,2) += this->dNdeta[n]*Z;
+			J(2,0) += this->dNdzeta[n]*X;	J(2,1) += this->dNdzeta[n]*Y;	J(2,2) += this->dNdzeta[n]*Z;
+		}
+
+		const T detJ = J.determinant();
+
+		//TODO throw exception if determinant is negative
+		/*
+		if(detJ <= 0)
+		{
+			std::cerr << __FILE__ << ":" << __LINE__ ;
+			std::cerr << " BaseElement<T>::getStiffnessMatrix(): stumbled on a negative determinant" << std::endl;
+		}
+		*/
+
+		invJ = J.inverse();
+
+		// Set up the B matrix
+		for(int n = 0; n < nnodes; n++)
+		{
+			// set the variables
+			// set the partial derivatives
+			double dNdx = invJ(0,0)*this->dNdcsi[n] + invJ(0,1)*this->dNdeta[n] + invJ(0,2)*this->dNdzeta[n];
+			double dNdy = invJ(1,0)*this->dNdcsi[n] + invJ(1,1)*this->dNdeta[n] + invJ(1,2)*this->dNdzeta[n];
+			double dNdz = invJ(2,0)*this->dNdcsi[n] + invJ(2,1)*this->dNdeta[n] + invJ(2,2)*this->dNdzeta[n];
+
+			// set the current node portion of the B matrix
+			B(0,3*n)	= dNdx;
+			B(1,3*n+1)	= dNdy;
+			B(2,3*n+2)	= dNdz;
+			B(3,3*n)	= dNdy;	B(3,3*n+1) = dNdx;
+			B(4,3*n)	= dNdz;	B(4,3*n+2) = dNdx;
+			B(5,3*n+1)	= dNdz;	B(5,3*n+2) = dNdy;
+
+			//TODO consider also setting Bt, avoid trans(b)
+		}
+
+		Bt = B.transpose();
+
+		// add this integration Point's contribution
+		const T &weight = i->template get<1>();
+		k_elem += Bt*D*B*detJ*weight;
+	}
+
+	return k_elem;
 }
 
 

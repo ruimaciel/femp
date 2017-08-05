@@ -17,6 +17,8 @@ namespace fem
 {
 
 
+class Model;	// forward declaration
+
 /*
 Base class for all classes which are used to describe specific FEM element types
 */
@@ -139,6 +141,14 @@ public:
 	 * @return vector with dN/dzeta values
 	 **/
 	virtual std::vector<T> const getdNdzeta(const Point &p);
+
+
+	/**
+	 * Returns the element's stiffness matrix
+	 * @param model a fem::Model object
+	 * @return stiffness matrix
+	 **/
+	Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> getStiffnessMatrix(fem::Model &model);
 
 
 public:	//WARNING: BaseElement member functions are deprecated 

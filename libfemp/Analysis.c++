@@ -169,9 +169,11 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 			J.setZero();
 			for(int n = 0; n < nnodes; n++)
 			{
-				Scalar const &X = model.node_list[element_iterator->nodes[n]].x();
-				Scalar const &Y = model.node_list[element_iterator->nodes[n]].y();
-				Scalar const &Z = model.node_list[element_iterator->nodes[n]].z();
+				auto const & node_ref = element_iterator->nodes[n];
+				fem::Node const &node = model.getNode(node_ref);
+				Scalar const &X = node.x();
+				Scalar const &Y = node.y();
+				Scalar const &Z = node.z();
 
 				J(0,0) += element->dNdcsi[n]*X;		J(0,1) += element->dNdcsi[n]*Y;		J(0,2) += element->dNdcsi[n]*Z;
 				J(1,0) += element->dNdeta[n]*X;		J(1,1) += element->dNdeta[n]*Y;		J(1,2) += element->dNdeta[n]*Z;
@@ -319,10 +321,11 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			for(int n = 0; n < nnodes; n++)
 			{
 				auto const & node_ref = element_reference->nodes[n];
+				fem::Node const &node = model.getNode(node_ref);
 
-				Scalar const &X = model.node_list[node_ref].x();
-				Scalar const &Y = model.node_list[node_ref].y();
-				Scalar const &Z = model.node_list[node_ref].z();
+				Scalar const &X = node.x();
+				Scalar const &Y = node.y();
+				Scalar const &Z = node.z();
 
 				J(0,0) += element->dNdcsi[n]*X;	J(0,1) += element->dNdcsi[n]*Y;	J(0,2) += element->dNdcsi[n]*Z;
 				J(1,0) += element->dNdeta[n]*X;	J(1,1) += element->dNdeta[n]*Y;	J(1,2) += element->dNdeta[n]*Z;
@@ -438,9 +441,11 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 
 			for(int n = 0; n < nnodes; n++)
 			{
-				Scalar const &X = model.node_list[surface_load->nodes[n]].x();
-				Scalar const &Y = model.node_list[surface_load->nodes[n]].y();
-				Scalar const &Z = model.node_list[surface_load->nodes[n]].z();
+				auto const & node_ref = surface_load->nodes[n];
+				fem::Node const &node = model.getNode(node_ref);
+				Scalar const &X = node.x();
+				Scalar const &Y = node.y();
+				Scalar const &Z = node.z();
 
 				J(0,0) += element->dNdcsi[n]*X;	J(0,1) += element->dNdcsi[n]*Y;	J(0,2) += element->dNdcsi[n]*Z;
 				J(1,0) += element->dNdeta[n]*X;	J(1,1) += element->dNdeta[n]*Y;	J(1,2) += element->dNdeta[n]*Z;

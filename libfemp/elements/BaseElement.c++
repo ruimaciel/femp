@@ -50,12 +50,13 @@ BaseElement<T>::getStiffnessMatrix(fem::Model &model)
 
 	// get the number of expected nodes
 	int nnodes = this->node_number();
+	const int n_dofs = nnodes*3;
 
 	// resize the elementary matrices to fit the new node size
-	k_elem.resize(nnodes*3,nnodes*3);
+	k_elem.resize(n_dofs, n_dofs);
 
-	B.resize(6,3*nnodes);
-	Bt.resize(3*nnodes,6);
+	B.resize(6, n_dofs);
+	Bt.resize(n_dofs, 6);
 
 	// initialize variables
 	k_elem.setZero();

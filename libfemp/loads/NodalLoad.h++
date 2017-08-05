@@ -25,6 +25,11 @@ public:
 	double y()	const {return force.y();};
 	double z()	const {return force.z();};
 
+	/**
+	 * returns the force vector
+	 **/
+	const Point & getForce() const;
+
 };
 
 

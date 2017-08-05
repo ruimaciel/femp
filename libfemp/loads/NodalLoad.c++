@@ -19,5 +19,12 @@ NodalLoad::~NodalLoad ()
 }
 
 
+const Point & 
+NodalLoad::getForce() const
+{
+	return this->force;
+}
+
+
 }	// namespace fem
 

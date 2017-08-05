@@ -348,14 +348,15 @@ Analysis<Scalar>::generateGlobalPointForceVector(Model &, const LoadPattern &lp,
 	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
 	{
 		size_t n = nodal_load->first;
+		const Point &force = nodal_load->second.getForce();
 
 		// set the nodal loads
 		if(result.lm[n].template get<0>() != 0)
-			result.f(result.lm[n].template get<0>()-1) += nodal_load->second.x();
+			result.f(result.lm[n].template get<0>()-1) += force.x();
 		if(result.lm[n].template get<1>() != 0)
-			result.f(result.lm[n].template get<1>()-1) += nodal_load->second.y();
+			result.f(result.lm[n].template get<1>()-1) += force.y();
 		if(result.lm[n].template get<2>() != 0)
-			result.f(result.lm[n].template get<2>()-1) += nodal_load->second.z();
+			result.f(result.lm[n].template get<2>()-1) += force.z();
 
 		progress.markSectionIterationIncrement();
 	}

@@ -3,7 +3,7 @@
 
 
 #include <libfemp/Model.h++>
-#include <libfemp/SurfaceLoad.h++>
+#include <libfemp/loads/SurfaceLoad.h++>
 
 namespace fem
 {

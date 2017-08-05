@@ -5,10 +5,10 @@
 #include <map>
 #include <vector>
 
-#include <libfemp/NodalLoad.h++>
 #include <libfemp/NodalDisplacement.h++>
-#include <libfemp/DomainLoad.h++>
-#include <libfemp/SurfaceLoad.h++>
+#include <libfemp/loads/NodalLoad.h++>
+#include <libfemp/loads/SurfaceLoad.h++>
+#include <libfemp/loads/DomainLoad.h++>
 
 
 namespace fem

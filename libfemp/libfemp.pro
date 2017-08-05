@@ -21,13 +21,13 @@ HEADERS = Group.h++ \
 	Element.h++ \
 	Material.h++ \
 	LoadPattern.h++ \
-	NodalLoad.h++ \
 	NodalDisplacement.h++ \
 	Point.h++ \
 	Point2D.h++ \
 	NodeRestrictions.h++ \
-	DomainLoad.h++ \
-	SurfaceLoad.h++ \
+	loads/NodalLoad.h++ \
+	loads/DomainLoad.h++ \
+	loads/SurfaceLoad.h++ \
 	ElementGroup.h++ \
 	NodeGroup.h++ \
 	elements/all.h++ \
@@ -82,13 +82,13 @@ SOURCES = Group.c++ \
 	Element.c++ \
 	Material.c++ \
 	LoadPattern.c++ \
-	NodalLoad.c++ \
 	NodalDisplacement.c++ \
 	Point.c++ \
 	Point2D.c++ \
 	NodeRestrictions.c++ \
-	DomainLoad.c++ \
-	SurfaceLoad.c++\
+	loads/NodalLoad.c++ \
+	loads/DomainLoad.c++ \
+	loads/SurfaceLoad.c++\
 	ElementGroup.c++ \
 	NodeGroup.c++ \
 	elements/ElementFactory.c++ \

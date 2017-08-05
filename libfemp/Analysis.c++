@@ -169,8 +169,9 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			double W = i->get<1>();
 			for(int n = 0; n < nnodes; n++)
 			{
-				Point const &f = domain_load->second.force;
+				Point const &f = domain_load->second.getForce();
 				const double cN = N[n]; 
+
 				f_elem(3*n) += cN*f.x()*detJ*W;
 				f_elem(3*n+1) += cN*f.y()*detJ*W;
 				f_elem(3*n+2) += cN*f.z()*detJ*W;

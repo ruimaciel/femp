@@ -20,4 +20,11 @@ DomainLoad::~DomainLoad()
 }
 
 
+const Point & 
+DomainLoad::getForce() const
+{
+	return this->force;
+}
+
+
 }	// namespace fem

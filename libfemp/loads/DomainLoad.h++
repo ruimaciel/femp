@@ -16,6 +16,12 @@ public:
 	DomainLoad();
 	DomainLoad(const DomainLoad &);
 	~DomainLoad();
+
+
+	/**
+	 * returns the force
+	 **/
+	const Point & getForce() const;
 };
 
 }	// namespace fem

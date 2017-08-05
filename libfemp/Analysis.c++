@@ -79,8 +79,6 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 {
 	using namespace Eigen;
 
-	Scalar detJ = 0;
-
 	Matrix3d J, invJ;
 	std::vector< Eigen::Matrix<Scalar,6,6> > D_list;
 
@@ -176,7 +174,7 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 				J(2,0) += element->dNdzeta[n]*X;	J(2,1) += element->dNdzeta[n]*Y;	J(2,2) += element->dNdzeta[n]*Z;
 			}
 
-			detJ = J.determinant();
+			const Scalar detJ = J.determinant();
 
 			// return error if we stumble on a negative determinant
 			if(detJ <= 0)
@@ -245,7 +243,6 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 
 	Matrix<Scalar,Dynamic,1> f_elem;
 	Matrix3d J, invJ;
-	Scalar detJ = 0;
 
 	for(std::map<size_t,fem::DomainLoad>::const_iterator domain_load = lp.domain_loads.begin(); domain_load != lp.domain_loads.end(); domain_load++)
 	{
@@ -328,7 +325,7 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 				J(2,0) += element->dNdzeta[n]*X;	J(2,1) += element->dNdzeta[n]*Y;	J(2,2) += element->dNdzeta[n]*Z;
 			}
 
-			detJ = J.determinant();
+			const Scalar detJ = J.determinant();
 			if(detJ <= 0)
 			{
 				std::cerr << __FILE__ << ":" << __LINE__ ;
@@ -387,7 +384,6 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 
 	Matrix<Scalar,Dynamic,1> f_elem;
 	Matrix3d J, invJ;
-	Scalar detJ = 0;
 
 	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
 	{
@@ -449,7 +445,7 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 			
 			J = J * J.transpose();
 
-			detJ = J(0,0)*J(1,1)-J(1,0)*J(0,1);
+			Scalar detJ = J(0,0)*J(1,1)-J(1,0)*J(0,1);
 
 			if(detJ <= 0)
 			{

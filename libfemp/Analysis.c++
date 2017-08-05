@@ -19,10 +19,6 @@ Analysis<Scalar>::buildEquation(Model &model, const LoadPattern &lp, AnalysisRes
 		// generate the location matrix
 	make_location_matrix(model, result);
 
-		// set up the temporary variables for the elementary matrix and vector
-	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
-
-
 		// generate stiffness matrix by cycling through all elements in the model
 	progress.markSectionStart("stiffness matrix");
 	progress.markSectionLimit(model.element_list.size());

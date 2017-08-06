@@ -26,6 +26,7 @@ HEADERS = Group.h++ \
 	SurfaceLoad.h++ \
 	ElementGroup.h++ \
 	NodeGroup.h++ \
+	elements/all.h++ \
 	elements/Triangle3.h++ \
 	elements/Triangle6.h++ \
 	elements/Quadrangle4.h++ \

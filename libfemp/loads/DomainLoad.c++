@@ -27,4 +27,12 @@ DomainLoad::getForce() const
 }
 
 
+DomainLoad 
+DomainLoad::operator=(DomainLoad const &copied)
+{
+	this->force = copied.force;
+	return *this;
+}
+
+
 }	// namespace fem

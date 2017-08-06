@@ -22,6 +22,12 @@ public:
 	 * returns the force
 	 **/
 	const Point & getForce() const;
+
+
+	/**
+	 * Copy assignment operator
+	 **/
+	DomainLoad operator=(DomainLoad const &copied);
 };
 
 }	// namespace fem

@@ -68,10 +68,10 @@ Model::setNode(size_t ref, fem::Point p)
 }
 
 
-Element 
+const Element *
 Model::getElementById(size_t element_id) const
 {
-	return this->element_list[element_id];
+	return &this->element_list[element_id];
 }
 
 

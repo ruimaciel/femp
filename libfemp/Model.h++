@@ -68,6 +68,12 @@ public:
 	std::vector<Element> getElementList() {return element_list;}
 
 	/**
+	 * given an element ID, returns the corresponding element
+	 * @param element_id the id of the element
+	 **/
+	Element getElementById(size_t element_id) const;
+
+	/**
 	Adds a new material to the list
 	**/
 	void pushMaterial(fem::Material &);

@@ -68,6 +68,13 @@ Model::setNode(size_t ref, fem::Point p)
 }
 
 
+Element 
+Model::getElementById(size_t element_id) const
+{
+	return this->element_list[element_id];
+}
+
+
 void
 Model::pushMaterial(fem::Material &material)
 {

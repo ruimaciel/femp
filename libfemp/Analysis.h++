@@ -18,20 +18,7 @@
 #include <libfemp/LoadPattern.h++>
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/elements/BaseElement.h++>
-//TODO remove individual elements after elements are refactored
-#include "elements/Triangle3.h++"
-#include "elements/Triangle6.h++"
-#include "elements/Quadrangle4.h++"
-#include "elements/Quadrangle8.h++"
-#include "elements/Quadrangle9.h++"
-#include "elements/Tetrahedron4.h++"
-#include "elements/Tetrahedron10.h++"
-#include "elements/Hexahedron8.h++"
-#include "elements/Hexahedron20.h++"
-#include "elements/Hexahedron27.h++"
-#include "elements/Prism6.h++"
-#include "elements/Prism15.h++"
-#include "elements/Prism18.h++"
+#include <libfemp/elements/all.h++> // remove individual elements after elements are refactored
 #include <libfemp/ElementResults/ElementResults.h++>
 #include <libfemp/ElementResults/ElementResultsFactory.h++>
 

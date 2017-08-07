@@ -8,7 +8,7 @@ CONFIG -= qt
 OBJECTS_DIR += $${BUILD_DIR}/libfemp
 DESTDIR = $${BUILD_DIR}
 
-INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${LIBFEMP_SRC}
+INCLUDEPATH += /usr/include/eigen3
 
 LIBS += -lumfpack -lblas -lamd -lGLU -llibla
 

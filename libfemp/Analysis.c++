@@ -78,14 +78,7 @@ enum Analysis<Scalar>::Error
 Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace Eigen;
-
-	Matrix3d J, invJ;
-	std::vector< Eigen::Matrix<Scalar,6,6> > D_list;
-
-		// set up the temporary variables for the elementary matrix and vector
 	Matrix<Scalar,Dynamic, Dynamic> k_elem;
-	Matrix<Scalar,Dynamic,Dynamic> B;
-	Matrix<Scalar,Dynamic,Dynamic> Bt;
 
 	BaseElement<Scalar> *element = NULL;	// points to the current element class
 

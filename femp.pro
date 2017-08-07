@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 
-CONFIG+=ordered debug
+CONFIG+=ordered debug c++11
 
 SUBDIRS = \
 	libla \
@@ -10,6 +10,6 @@ SUBDIRS = \
 	unittests
 
 libfemp.depends = libla
-gui.depends = libla libfemp
-cmdline.depends = libla libfemp
-tests.depends = gui cmdline
+gui.depends = libfemp
+cmdline.depends = libfemp
+tests.depends = libla libfemp

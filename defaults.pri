@@ -9,4 +9,3 @@ QMAKE_EXT_CPP += c++
 
 CONFIG += debug
 
-LIBFEMP_SRC = $${PWD}/libfemp

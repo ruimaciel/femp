@@ -12,6 +12,7 @@ QT += opengl
 OBJECTS_DIR += $${BUILD_DIR}/gui
 DESTDIR = $${BUILD_DIR}
 
+LIBFEMP_SRC = $${PWD}/libfemp
 
 INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${SRCDIR}}
 

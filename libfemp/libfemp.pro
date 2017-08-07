@@ -80,6 +80,7 @@ SOURCES = Group.c++ \
 	SurfaceLoad.c++\
 	ElementGroup.c++ \
 	NodeGroup.c++ \
+	elements/ElementFactory.c++ \
 	elements/BaseElement.c++ \
 	Analysis.c++ \
 	LinearAnalysis.c++ \

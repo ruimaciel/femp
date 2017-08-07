@@ -412,7 +412,7 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 
 template<typename Scalar>
 enum Analysis<Scalar>::Error 
-Analysis<Scalar>::generateGlobalPointForceVector(Model &model, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress)
+Analysis<Scalar>::generateGlobalPointForceVector(Model &, const LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace Eigen;
 	Matrix<Scalar,Dynamic,1> f_elem;

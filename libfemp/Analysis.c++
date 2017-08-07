@@ -215,10 +215,10 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			// build the Jacobian
 			Point quadrature_point = i->template get<0>();
 
-			element->setN( quadrature_point);
-			element->setdNdcsi(quadrature_point);
-			element->setdNdeta( quadrature_point);
-			element->setdNdzeta( quadrature_point);
+			std::vector<Scalar> N = element->setN( quadrature_point);
+			std::vector<Scalar> dNdcsi = element->setdNdcsi(quadrature_point);
+			std::vector<Scalar> dNdeta = element->setdNdeta( quadrature_point);
+			std::vector<Scalar> dNdzeta = element->setdNdzeta( quadrature_point);
 
 			// generate the jacobian
 			J.setZero();
@@ -232,9 +232,9 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 				Scalar const &Y = node.y();
 				Scalar const &Z = node.z();
 
-				J(0,0) += element->dNdcsi[n]*X;	J(0,1) += element->dNdcsi[n]*Y;	J(0,2) += element->dNdcsi[n]*Z;
-				J(1,0) += element->dNdeta[n]*X;	J(1,1) += element->dNdeta[n]*Y;	J(1,2) += element->dNdeta[n]*Z;
-				J(2,0) += element->dNdzeta[n]*X;	J(2,1) += element->dNdzeta[n]*Y;	J(2,2) += element->dNdzeta[n]*Z;
+				J(0,0) += dNdcsi[n]*X;	J(0,1) += dNdcsi[n]*Y;	J(0,2) += dNdcsi[n]*Z;
+				J(1,0) += dNdeta[n]*X;	J(1,1) += dNdeta[n]*Y;	J(1,2) += dNdeta[n]*Z;
+				J(2,0) += dNdzeta[n]*X;	J(2,1) += dNdzeta[n]*Y;	J(2,2) += dNdzeta[n]*Z;
 			}
 
 			const Scalar detJ = J.determinant();
@@ -252,10 +252,10 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			for(int n = 0; n < nnodes; n++)
 			{
 				Point const &f = domain_load->second.force;
-				const Scalar N = element->N[n]; 
-				f_elem(3*n) += N*f.x()*detJ*W;
-				f_elem(3*n+1) += N*f.y()*detJ*W;
-				f_elem(3*n+2) += N*f.z()*detJ*W;
+				const Scalar cN = N[n]; 
+				f_elem(3*n) += cN*f.x()*detJ*W;
+				f_elem(3*n+1) += cN*f.y()*detJ*W;
+				f_elem(3*n+2) += cN*f.z()*detJ*W;
 			}
 		}
 
@@ -336,9 +336,9 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 		for (typename std::vector<boost::tuple<fem::Point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
 		{
 				// get shape function and shape function derivatives in this integration Point's coordinate
-			element->setN( i->template get<0>() );
-			element->setdNdcsi(i->template get<0>() );
-			element->setdNdeta(i->template get<0>() );
+			std::vector<Scalar> N = element->setN( i->template get<0>() );
+			std::vector<Scalar> dNdcsi = element->setdNdcsi(i->template get<0>() );
+			std::vector<Scalar> dNdeta = element->setdNdeta(i->template get<0>() );
 
 				// calculate the Jacobian
 			J.setZero();
@@ -351,8 +351,8 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 				Scalar const &Y = node.y();
 				Scalar const &Z = node.z();
 
-				J(0,0) += element->dNdcsi[n]*X;	J(0,1) += element->dNdcsi[n]*Y;	J(0,2) += element->dNdcsi[n]*Z;
-				J(1,0) += element->dNdeta[n]*X;	J(1,1) += element->dNdeta[n]*Y;	J(1,2) += element->dNdeta[n]*Z;
+				J(0,0) += dNdcsi[n]*X;	J(0,1) += dNdcsi[n]*Y;	J(0,2) += dNdcsi[n]*Z;
+				J(1,0) += dNdeta[n]*X;	J(1,1) += dNdeta[n]*Y;	J(1,2) += dNdeta[n]*Z;
 			}
 			
 			J = J * J.transpose();
@@ -374,18 +374,17 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 			fem::Point q(0,0,0);
 			for(int j = 0; j < nnodes; j++)
 			{
-				const Scalar N = element->N[j];
-				q += N*surface_load->surface_forces[j];
+				q += N[j]*surface_load->surface_forces[j];
 			}
 			
 			const Scalar &W = i->template get<1>();
 			for(int n = 0; n < nnodes; n++)
 			{
-				const Scalar N = element->N[n];
+				const Scalar cN = N[n];
 
-				f_elem(3*n  ) += N*q.x()*detJ*W;
-				f_elem(3*n+1) += N*q.y()*detJ*W;
-				f_elem(3*n+2) += N*q.z()*detJ*W;
+				f_elem(3*n  ) += cN*q.x()*detJ*W;
+				f_elem(3*n+1) += cN*q.y()*detJ*W;
+				f_elem(3*n+2) += cN*q.z()*detJ*W;
 			}
 		}
 

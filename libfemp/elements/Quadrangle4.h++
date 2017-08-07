@@ -11,9 +11,9 @@
 namespace fem
 {
 
-template <typename T>
+template <typename Scalar>
 struct Quadrangle4
-	: public QuadrangleFamily<T>
+	: public QuadrangleFamily<Scalar>
 {
 	public:
 		Quadrangle4();
@@ -21,17 +21,17 @@ struct Quadrangle4
 
 		std::vector<fem::Point> & setCoordinates();
 
-		std::vector<T> & setN(const Point & p);
-		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
+		std::vector<Scalar> & setN(const Point & p);
+		std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<T> & setdNdcsi(const Point &p);
-		std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
+		std::vector<Scalar> & setdNdcsi(const Point &p);
+		std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<T> & setdNdeta(const Point &p);
-		std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
+		std::vector<Scalar> & setdNdeta(const Point &p);
+		std::vector<Scalar> & setdNdeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<T> & setdNdzeta(const Point &p);
-		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
+		std::vector<Scalar> & setdNdzeta(const Point &p);
+		std::vector<Scalar> & setdNdzeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
 public: // merging with fem::Element
         void set(std::vector<size_t> &nodes);
@@ -45,8 +45,8 @@ public: // merging with fem::Element
 };
 
 
-template<typename T>
-Quadrangle4<T>::Quadrangle4()
+template<typename Scalar>
+Quadrangle4<Scalar>::Quadrangle4()
 {
 	this->stiffness_degree = 1;
 	this->domain_degree = 1;
@@ -60,15 +60,15 @@ Quadrangle4<T>::Quadrangle4()
 }
 
 
-template<typename T>
-std::vector<T> & Quadrangle4<T>::setN(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & Quadrangle4<Scalar>::setN(const Point &p)
 {
 	return this->setN(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & Quadrangle4<T>::setN(const T &csi, const T &eta, const T &)
+template<typename Scalar>
+std::vector<Scalar> & Quadrangle4<Scalar>::setN(const Scalar &csi, const Scalar &eta, const Scalar &)
 {
 	this->N[0] = (1-csi)*(1-eta)/4;
 	this->N[1] = (1+csi)*(1-eta)/4;
@@ -79,15 +79,15 @@ std::vector<T> & Quadrangle4<T>::setN(const T &csi, const T &eta, const T &)
 }
 
 
-template<typename T>
-std::vector<T> & Quadrangle4<T>::setdNdcsi(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & Quadrangle4<Scalar>::setdNdcsi(const Point &p)
 {
 	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & Quadrangle4<T>::setdNdcsi(const T &, const T &eta, const T &)
+template<typename Scalar>
+std::vector<Scalar> & Quadrangle4<Scalar>::setdNdcsi(const Scalar &, const Scalar &eta, const Scalar &)
 {
 	// this->dNdcsi
 	this->dNdcsi[0] = (eta-1)/4;
@@ -99,15 +99,15 @@ std::vector<T> & Quadrangle4<T>::setdNdcsi(const T &, const T &eta, const T &)
 }
 
 
-template<typename T>
-std::vector<T> & Quadrangle4<T>::setdNdeta(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & Quadrangle4<Scalar>::setdNdeta(const Point &p)
 {
 	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & Quadrangle4<T>::setdNdeta(const T &csi, const T &, const T &)
+template<typename Scalar>
+std::vector<Scalar> & Quadrangle4<Scalar>::setdNdeta(const Scalar &csi, const Scalar &, const Scalar &)
 {
 	// this->dNdeta
 	this->dNdeta[0] = (csi-1)/4;
@@ -119,15 +119,15 @@ std::vector<T> & Quadrangle4<T>::setdNdeta(const T &csi, const T &, const T &)
 }
 
 
-template<typename T>
-std::vector<T> & Quadrangle4<T>::setdNdzeta(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & Quadrangle4<Scalar>::setdNdzeta(const Point &p)
 {
 	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & Quadrangle4<T>::setdNdzeta(const T &, const T &, const T &)
+template<typename Scalar>
+std::vector<Scalar> & Quadrangle4<Scalar>::setdNdzeta(const Scalar &, const Scalar &, const Scalar &)
 {
 	// this->dNdzeta
 	this->dNdzeta[0] = 0;
@@ -139,8 +139,8 @@ std::vector<T> & Quadrangle4<T>::setdNdzeta(const T &, const T &, const T &)
 }
 
 
-template<typename T>
-std::vector<fem::Point> & Quadrangle4<T>::setCoordinates()
+template<typename Scalar>
+std::vector<fem::Point> & Quadrangle4<Scalar>::setCoordinates()
 {
 	this->coordinates[0] = Point(	-0.5,	-0.5,	0	);
 	this->coordinates[1] = Point(	0.5,	-0.5,	0	);
@@ -151,9 +151,9 @@ std::vector<fem::Point> & Quadrangle4<T>::setCoordinates()
 }
 
 
-template<typename T>
+template<typename Scalar>
 void
-Quadrangle4<T>::set(std::vector<size_t> &nodes)
+Quadrangle4<Scalar>::set(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 4)
 	{

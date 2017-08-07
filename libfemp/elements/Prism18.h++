@@ -12,9 +12,9 @@
 namespace fem
 {
 
-template <typename T>
+template <typename Scalar>
 struct Prism18
-	: public PrismFamily<T>
+	: public PrismFamily<Scalar>
 {
 	public:
 		Prism18();
@@ -22,17 +22,17 @@ struct Prism18
 
 		std::vector<fem::Point> & setCoordinates();
 
-		std::vector<T> & setN(const Point & p);
-		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
+		std::vector<Scalar> & setN(const Point & p);
+		std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<T> & setdNdcsi(const Point &p);
-		std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
+		std::vector<Scalar> & setdNdcsi(const Point &p);
+		std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<T> & setdNdeta(const Point &p);
-		std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
+		std::vector<Scalar> & setdNdeta(const Point &p);
+		std::vector<Scalar> & setdNdeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<T> & setdNdzeta(const Point &p);
-		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
+		std::vector<Scalar> & setdNdzeta(const Point &p);
+		std::vector<Scalar> & setdNdzeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
 public: // merging with fem::Element
         void set(std::vector<size_t> &nodes);
@@ -45,10 +45,10 @@ public: // merging with fem::Element
 };
 
 
-template<typename T>
-Prism18<T>::Prism18()
+template<typename Scalar>
+Prism18<Scalar>::Prism18()
 {
-	this->type = BaseElement<T>::FE_PRISM18;
+	this->type = BaseElement<Scalar>::FE_PRISM18;
 	this->stiffness_degree = 5;
 	this->domain_degree = 2;
 
@@ -61,15 +61,15 @@ Prism18<T>::Prism18()
 }
 
 
-template<typename T>
-std::vector<T> & Prism18<T>::setN(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & Prism18<Scalar>::setN(const Point &p)
 {
 	return this->setN(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & Prism18<T>::setN(const T &csi, const T &eta, const T &zeta)
+template<typename Scalar>
+std::vector<Scalar> & Prism18<Scalar>::setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta)
 {
 	//TODO test this
 
@@ -96,15 +96,15 @@ std::vector<T> & Prism18<T>::setN(const T &csi, const T &eta, const T &zeta)
 }
 
 
-template<typename T>
-std::vector<T> & Prism18<T>::setdNdcsi(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & Prism18<Scalar>::setdNdcsi(const Point &p)
 {
 	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & Prism18<T>::setdNdcsi(const T &csi, const T &eta, const T &zeta)
+template<typename Scalar>
+std::vector<Scalar> & Prism18<Scalar>::setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta)
 {
 	//TODO test this
 	// this->dNdcsi
@@ -133,15 +133,15 @@ std::vector<T> & Prism18<T>::setdNdcsi(const T &csi, const T &eta, const T &zeta
 }
 
 
-template<typename T>
-std::vector<T> & Prism18<T>::setdNdeta(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & Prism18<Scalar>::setdNdeta(const Point &p)
 {
 	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & Prism18<T>::setdNdeta(const T &csi, const T &eta, const T &zeta)
+template<typename Scalar>
+std::vector<Scalar> & Prism18<Scalar>::setdNdeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta)
 {
 	//TODO test this
 	// this->dNdeta
@@ -169,15 +169,15 @@ std::vector<T> & Prism18<T>::setdNdeta(const T &csi, const T &eta, const T &zeta
 }
 
 
-template<typename T>
-std::vector<T> & Prism18<T>::setdNdzeta(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & Prism18<Scalar>::setdNdzeta(const Point &p)
 {
 	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & Prism18<T>::setdNdzeta(const T &csi, const T &eta, const T &zeta)
+template<typename Scalar>
+std::vector<Scalar> & Prism18<Scalar>::setdNdzeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta)
 {
 	//TODO test this
 
@@ -203,8 +203,8 @@ std::vector<T> & Prism18<T>::setdNdzeta(const T &csi, const T &eta, const T &zet
 	return this->dNdzeta;
 }
 
-template<typename T>
-std::vector<fem::Point> & Prism18<T>::setCoordinates()
+template<typename Scalar>
+std::vector<fem::Point> & Prism18<Scalar>::setCoordinates()
 {
 	this->coordinates[0] = Point(	0,	0,	-1	);
 	this->coordinates[1] = Point(	1,	0,	-1	);
@@ -231,9 +231,9 @@ std::vector<fem::Point> & Prism18<T>::setCoordinates()
 }
 
 
-template<typename T>
+template<typename Scalar>
 void
-Prism18<T>::set(std::vector<size_t> &nodes)
+Prism18<Scalar>::set(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 18)
 	{

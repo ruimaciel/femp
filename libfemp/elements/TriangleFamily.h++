@@ -8,13 +8,13 @@
 namespace fem
 {
 
-template <typename T>
+template <typename Scalar>
 struct TriangleFamily
-	: public BaseElement<T>
+	: public BaseElement<Scalar>
 {
 	TriangleFamily();
 
-	enum BaseElement<T>::ElementFamily family() const;
+	enum BaseElement<Scalar>::ElementFamily family() const;
 
 	/**
 	 * Returns the total number of degrees of freedom
@@ -26,33 +26,33 @@ protected:
 };
 
 
-template<typename T>
-TriangleFamily<T>::TriangleFamily()
-	: BaseElement<T>()
+template<typename Scalar>
+TriangleFamily<Scalar>::TriangleFamily()
+	: BaseElement<Scalar>()
 {
 	generateQuadratureData();
 }
 
 
-template<typename T>
-enum BaseElement<T>::ElementFamily
-TriangleFamily<T>::family() const
+template<typename Scalar>
+enum BaseElement<Scalar>::ElementFamily
+TriangleFamily<Scalar>::family() const
 {
-	return BaseElement<T>::EF_TRIANGLE;
+	return BaseElement<Scalar>::EF_TRIANGLE;
 }
 
 
-template<typename T>
-void TriangleFamily<T>::generateQuadratureData()
+template<typename Scalar>
+void TriangleFamily<Scalar>::generateQuadratureData()
 {
 	using namespace boost;
-	std::vector<tuple<fem::Point, T> > ips;
+	std::vector<tuple<fem::Point, Scalar> > ips;
 
 	// triangle family, level 1
 	{
 		//TODO needs testing
 		ips.clear();
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1.0/3,1.0/3,1.0/3), 0.5));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1.0/3,1.0/3,1.0/3), 0.5));
 		this->ipwpl[1] = ips;
 	}
 
@@ -60,9 +60,9 @@ void TriangleFamily<T>::generateQuadratureData()
 	{
 		//TODO needs testing
 		ips.clear();
-		ips.push_back(tuple<fem::Point,T>(fem::Point(	2.0/3,	1.0/6,	1.0/6), 1.0/6));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(	1.0/6,	2.0/3,	1.0/6), 1.0/6));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(	1.0/6,	1.0/6,	2.0/3), 1.0/6));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(	2.0/3,	1.0/6,	1.0/6), 1.0/6));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(	1.0/6,	2.0/3,	1.0/6), 1.0/6));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(	1.0/6,	1.0/6,	2.0/3), 1.0/6));
 		this->ipwpl[2] = ips;
 	}
 
@@ -70,16 +70,16 @@ void TriangleFamily<T>::generateQuadratureData()
 	{
 		//TODO needs testing
 		ips.clear();
-		T g1=(8-sqrt(10.0)+sqrt(38.0-44.0*sqrt(2.0/5)))/18;
-		T g2=(8-sqrt(10.0)-sqrt(38.0-44.0*sqrt(2.0/5)))/18;
+		Scalar g1=(8-sqrt(10.0)+sqrt(38.0-44.0*sqrt(2.0/5)))/18;
+		Scalar g2=(8-sqrt(10.0)-sqrt(38.0-44.0*sqrt(2.0/5)))/18;
 
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1-2*g1, g1, g1), (620+sqrt(213125-53320*sqrt(10)))/(2*3720)) );
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g1, 1-2*g1, g1), (620+sqrt(213125-53320*sqrt(10)))/(2*3720)) );
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g1, g1, 1-2*g1), (620+sqrt(213125-53320*sqrt(10)))/(2*3720)) );
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1-2*g1, g1, g1), (620+sqrt(213125-53320*sqrt(10)))/(2*3720)) );
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g1, 1-2*g1, g1), (620+sqrt(213125-53320*sqrt(10)))/(2*3720)) );
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g1, g1, 1-2*g1), (620+sqrt(213125-53320*sqrt(10)))/(2*3720)) );
 
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1-2*g2, g2, g2), (620-sqrt(213125-53320*sqrt(10)))/(2*3720)) );
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g2, 1-2*g2, g2), (620-sqrt(213125-53320*sqrt(10)))/(2*3720)) );
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g2, g2, 1-2*g2), (620-sqrt(213125-53320*sqrt(10)))/(2*3720)) );
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1-2*g2, g2, g2), (620-sqrt(213125-53320*sqrt(10)))/(2*3720)) );
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g2, 1-2*g2, g2), (620-sqrt(213125-53320*sqrt(10)))/(2*3720)) );
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g2, g2, 1-2*g2), (620-sqrt(213125-53320*sqrt(10)))/(2*3720)) );
 
 		this->ipwpl[3] = ips;
 	}
@@ -89,18 +89,18 @@ void TriangleFamily<T>::generateQuadratureData()
 		//TODO needs testing
 		ips.clear();
 	
-		T g1=(6.0-sqrt(15))/21; 
-		T g2=(6.0+sqrt(15))/21;
+		Scalar g1=(6.0-sqrt(15))/21; 
+		Scalar g2=(6.0+sqrt(15))/21;
 
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1.0-2*g1, g1, g1), (155.0-sqrt(15))/(2*1200)));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g1, 1.0-2*g1, g1), (155.0-sqrt(15))/(2*1200)));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g1, g1, 1.0-2*g1), (155.0-sqrt(15))/(2*1200)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1.0-2*g1, g1, g1), (155.0-sqrt(15))/(2*1200)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g1, 1.0-2*g1, g1), (155.0-sqrt(15))/(2*1200)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g1, g1, 1.0-2*g1), (155.0-sqrt(15))/(2*1200)));
 
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1.0-2*g2, g2, g2), (155.0+sqrt(15))/(2*1200)));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g2, 1.0-2*g2, g2), (155.0+sqrt(15))/(2*1200)));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g2, g2, 1.0-2*g2), (155.0+sqrt(15))/(2*1200)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1.0-2*g2, g2, g2), (155.0+sqrt(15))/(2*1200)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g2, 1.0-2*g2, g2), (155.0+sqrt(15))/(2*1200)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g2, g2, 1.0-2*g2), (155.0+sqrt(15))/(2*1200)));
 
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1.0/3, 1.0/3, 1.0/3), 9.0/(2*40)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1.0/3, 1.0/3, 1.0/3), 9.0/(2*40)));
 
 		this->ipwpl[4] = ips;
 	}

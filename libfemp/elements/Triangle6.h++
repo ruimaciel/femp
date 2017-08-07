@@ -11,9 +11,9 @@
 namespace fem
 {
 
-template <typename T>
+template <typename Scalar>
 struct Triangle6
-	: public TriangleFamily<T>
+	: public TriangleFamily<Scalar>
 {
 	public:
 		Triangle6();
@@ -21,17 +21,17 @@ struct Triangle6
 
 		std::vector<fem::Point> & setCoordinates();
 
-		std::vector<T> & setN(const Point & p);
-		std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
+		std::vector<Scalar> & setN(const Point & p);
+		std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<T> & setdNdcsi(const Point &p);
-		std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
+		std::vector<Scalar> & setdNdcsi(const Point &p);
+		std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<T> & setdNdeta(const Point &p);
-		std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
+		std::vector<Scalar> & setdNdeta(const Point &p);
+		std::vector<Scalar> & setdNdeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<T> & setdNdzeta(const Point &p);
-		std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
+		std::vector<Scalar> & setdNdzeta(const Point &p);
+		std::vector<Scalar> & setdNdzeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
 public: // merging with fem::Element
 	void set(std::vector<size_t> &nodes);
@@ -44,8 +44,8 @@ public: // merging with fem::Element
 };
 
 
-template<typename T>
-Triangle6<T>::Triangle6()
+template<typename Scalar>
+Triangle6<Scalar>::Triangle6()
 {
 	this->stiffness_degree = 1;
 	this->domain_degree = 2;
@@ -59,15 +59,15 @@ Triangle6<T>::Triangle6()
 }
 
 
-template<typename T>
-std::vector<T> & Triangle6<T>::setN(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & Triangle6<Scalar>::setN(const Point &p)
 {
 	return this->setN(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & Triangle6<T>::setN(const T &csi, const T &eta, const T &)
+template<typename Scalar>
+std::vector<Scalar> & Triangle6<Scalar>::setN(const Scalar &csi, const Scalar &eta, const Scalar &)
 {
 	//TODO finish this
 	this->N[0] = (2*(1-eta-csi)-1)*(1-eta-csi);
@@ -81,15 +81,15 @@ std::vector<T> & Triangle6<T>::setN(const T &csi, const T &eta, const T &)
 }
 
 
-template<typename T>
-std::vector<T> & Triangle6<T>::setdNdcsi(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & Triangle6<Scalar>::setdNdcsi(const Point &p)
 {
 	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & Triangle6<T>::setdNdcsi(const T &csi, const T &eta, const T &)
+template<typename Scalar>
+std::vector<Scalar> & Triangle6<Scalar>::setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &)
 {
 	//TODO test this
 	// this->dNdcsi
@@ -104,15 +104,15 @@ std::vector<T> & Triangle6<T>::setdNdcsi(const T &csi, const T &eta, const T &)
 }
 
 
-template<typename T>
-std::vector<T> & Triangle6<T>::setdNdeta(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & Triangle6<Scalar>::setdNdeta(const Point &p)
 {
 	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & Triangle6<T>::setdNdeta(const T &csi, const T &eta, const T &)
+template<typename Scalar>
+std::vector<Scalar> & Triangle6<Scalar>::setdNdeta(const Scalar &csi, const Scalar &eta, const Scalar &)
 {
 	//TODO test this
 	// this->dNdeta
@@ -127,15 +127,15 @@ std::vector<T> & Triangle6<T>::setdNdeta(const T &csi, const T &eta, const T &)
 }
 
 
-template<typename T>
-std::vector<T> & Triangle6<T>::setdNdzeta(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & Triangle6<Scalar>::setdNdzeta(const Point &p)
 {
 	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & Triangle6<T>::setdNdzeta(const T &, const T &, const T &)
+template<typename Scalar>
+std::vector<Scalar> & Triangle6<Scalar>::setdNdzeta(const Scalar &, const Scalar &, const Scalar &)
 {
 	//TODO test this
 	// this->dNdzeta
@@ -150,8 +150,8 @@ std::vector<T> & Triangle6<T>::setdNdzeta(const T &, const T &, const T &)
 }
 
 
-template<typename T>
-std::vector<fem::Point> & Triangle6<T>::setCoordinates()
+template<typename Scalar>
+std::vector<fem::Point> & Triangle6<Scalar>::setCoordinates()
 {
 	//TODO finish
 	this->coordinates[0] = Point(	0,	0,	0	);
@@ -165,9 +165,9 @@ std::vector<fem::Point> & Triangle6<T>::setCoordinates()
 }
 
 
-template<typename T>
+template<typename Scalar>
 void
-Triangle6<T>::set(std::vector<size_t> &nodes)
+Triangle6<Scalar>::set(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 6)
 	{

@@ -22,11 +22,11 @@ class Model;	// forward declaration
 /*
 Base class for all classes which are used to describe specific FEM element types
 */
-template <typename T>
+template <typename Scalar>
 struct BaseElement
 {
 public:
-	using MatrixDataType	= Eigen::Matrix<T, Eigen::Dynamic,  Eigen::Dynamic>;
+	using MatrixDataType	= Eigen::Matrix<Scalar, Eigen::Dynamic,  Eigen::Dynamic>;
 
 	//TODO move to each element
 	int stiffness_degree;	// Quadrature rule degree to integrate stiffness matrices
@@ -89,14 +89,14 @@ public:
 
 
 public:	// WARNING: deprecated. to be removed.
-	std::map<int, std::vector<boost::tuple<fem::Point, T> > > ipwpl;	// integration points/weights pair list
+	std::map<int, std::vector<boost::tuple<fem::Point, Scalar> > > ipwpl;	// integration points/weights pair list
 
 	std::vector<fem::Point>	coordinates;
 
-	std::vector<T>	N;
-	std::vector<T>	dNdcsi;
-	std::vector<T>	dNdeta;
-	std::vector<T>	dNdzeta;
+	std::vector<Scalar>	N;
+	std::vector<Scalar>	dNdcsi;
+	std::vector<Scalar>	dNdeta;
+	std::vector<Scalar>	dNdzeta;
 	
 
 public:	// merging with fem::Element
@@ -119,28 +119,28 @@ public:
 	/**
 	 * return a vector with the value of each basis function evaluated at a point
 	 **/
-	virtual std::vector<T> const getN(const Point &p);
+	virtual std::vector<Scalar> const getN(const Point &p);
 
 	/**
 	 * return a vector with the value of the derivative of each basis function wrt csi evaluated at a point
 	 * @param p a point
 	 * @return vector with dN/dcsi values
 	 **/
-	virtual std::vector<T> const getdNdcsi(const Point &p);
+	virtual std::vector<Scalar> const getdNdcsi(const Point &p);
 
 	/**
 	 * return a vector with the value of the derivative of each basis function wrt eta evaluated at a point
 	 * @param p a point
 	 * @return vector with dN/deta values
 	 **/
-	virtual std::vector<T> const getdNdeta(const Point &p);
+	virtual std::vector<Scalar> const getdNdeta(const Point &p);
 
 	/**
 	 * return a vector with the value of the derivative of each basis function wrt zeta evaluated at a point
 	 * @param p a point
 	 * @return vector with dN/dzeta values
 	 **/
-	virtual std::vector<T> const getdNdzeta(const Point &p);
+	virtual std::vector<Scalar> const getdNdzeta(const Point &p);
 
 
 	/**
@@ -148,7 +148,7 @@ public:
 	 * @param model a fem::Model object
 	 * @return stiffness matrix
 	 **/
-	Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> getStiffnessMatrix(fem::Model &model);
+	Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> getStiffnessMatrix(fem::Model &model);
 
 
 public:	//WARNING: BaseElement member functions are deprecated 
@@ -161,20 +161,20 @@ public:	//WARNING: BaseElement member functions are deprecated
 	/**
 	Calculates the values for vector N according to a given Point expressed in local coordinates
 	**/
-	virtual std::vector<T> & setN(const Point & p) = 0;
-	virtual std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0) = 0;
-	virtual std::vector<T> & setdNdcsi(const Point &p) = 0;
-	virtual std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0) = 0;
-	virtual std::vector<T> & setdNdeta(const Point &p) = 0;
-	virtual std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0) = 0;
-	virtual std::vector<T> & setdNdzeta(const Point &p) = 0;
-	virtual std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0) = 0;
+	virtual std::vector<Scalar> & setN(const Point & p) = 0;
+	virtual std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0) = 0;
+	virtual std::vector<Scalar> & setdNdcsi(const Point &p) = 0;
+	virtual std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0) = 0;
+	virtual std::vector<Scalar> & setdNdeta(const Point &p) = 0;
+	virtual std::vector<Scalar> & setdNdeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0) = 0;
+	virtual std::vector<Scalar> & setdNdzeta(const Point &p) = 0;
+	virtual std::vector<Scalar> & setdNdzeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0) = 0;
 
 	/**
 	Returns a list of
 	**/
-	std::vector<boost::tuple<fem::Point, T> > &stiffness_quadrature()	{ return this->ipwpl[stiffness_degree]; }
-	std::vector<boost::tuple<fem::Point, T> > &domain_quadrature()	{ return this->ipwpl[domain_degree]; }
+	std::vector<boost::tuple<fem::Point, Scalar> > &stiffness_quadrature()	{ return this->ipwpl[stiffness_degree]; }
+	std::vector<boost::tuple<fem::Point, Scalar> > &domain_quadrature()	{ return this->ipwpl[domain_degree]; }
 
 public:	//WARNING: fem::Element member functions are deprecated
 
@@ -189,13 +189,13 @@ public:	//WARNING: fem::Element member functions are deprecated
 protected:	// WARNING: to be removed
 	/**
 	  Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
-	  (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.T. Vetterling, and
+	  (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.Scalar. Vetterling, and
 	  B.P. Flannery
-	@param x	array of T, stores the abcissa of the integration Point
-	@param w	array of T, stores the weights of the integration points
+	@param x	array of Scalar, stores the abcissa of the integration Point
+	@param w	array of Scalar, stores the weights of the integration points
 	@param n	the number of Gauss points
 	*/
-	void gauleg (T x[], T w[], int n);
+	void gauleg (Scalar x[], Scalar w[], int n);
 
 	/*
 	Generates the lists of integration points/weights for this type of element

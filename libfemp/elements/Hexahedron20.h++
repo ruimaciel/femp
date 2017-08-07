@@ -12,9 +12,9 @@
 namespace fem
 {
 
-template <typename T>
+template <typename Scalar>
 struct Hexahedron20
-	: public HexahedronFamily<T>
+	: public HexahedronFamily<Scalar>
 {
 public:
 	Hexahedron20();
@@ -22,17 +22,17 @@ public:
 
 	std::vector<fem::Point> & setCoordinates();
 
-	std::vector<T> & setN(const Point & p);
-	std::vector<T> & setN(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<Scalar> & setN(const Point & p);
+	std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-	std::vector<T> & setdNdcsi(const Point &p);
-	std::vector<T> & setdNdcsi(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<Scalar> & setdNdcsi(const Point &p);
+	std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-	std::vector<T> & setdNdeta(const Point &p);
-	std::vector<T> & setdNdeta(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<Scalar> & setdNdeta(const Point &p);
+	std::vector<Scalar> & setdNdeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-	std::vector<T> & setdNdzeta(const Point &p);
-	std::vector<T> & setdNdzeta(const T &csi, const T &eta, const T &zeta = 0);
+	std::vector<Scalar> & setdNdzeta(const Point &p);
+	std::vector<Scalar> & setdNdzeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
 public: // merging with fem::Element
         void set(std::vector<size_t> &nodes);
@@ -45,11 +45,11 @@ public: // merging with fem::Element
 };
 
 
-template<typename T>
-Hexahedron20<T>::Hexahedron20()
-	: HexahedronFamily<T>()
+template<typename Scalar>
+Hexahedron20<Scalar>::Hexahedron20()
+	: HexahedronFamily<Scalar>()
 {
-	this->type = BaseElement<T>::FE_HEXAHEDRON20;
+	this->type = BaseElement<Scalar>::FE_HEXAHEDRON20;
 	this->stiffness_degree = 3;
 	this->domain_degree = 2;
 
@@ -62,17 +62,17 @@ Hexahedron20<T>::Hexahedron20()
 }
 
 
-template<typename T>
-std::vector<T> & 
-Hexahedron20<T>::setN(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & 
+Hexahedron20<Scalar>::setN(const Point &p)
 {
 	return this->setN(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & 
-Hexahedron20<T>::setN(const T &csi, const T &eta, const T &zeta)
+template<typename Scalar>
+std::vector<Scalar> & 
+Hexahedron20<Scalar>::setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta)
 {
 	this->N[ 0] = (1-csi)*(1-eta)*(1-zeta)*(-zeta-eta-csi-2)/8;
 	this->N[ 1] = (csi+1)*(1-eta)*(1-zeta)*(-zeta-eta+csi-2)/8;
@@ -99,17 +99,17 @@ Hexahedron20<T>::setN(const T &csi, const T &eta, const T &zeta)
 }
 
 
-template<typename T>
-std::vector<T> & 
-Hexahedron20<T>::setdNdcsi(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & 
+Hexahedron20<Scalar>::setdNdcsi(const Point &p)
 {
 	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & 
-Hexahedron20<T>::setdNdcsi(const T &csi, const T &eta, const T &zeta)
+template<typename Scalar>
+std::vector<Scalar> & 
+Hexahedron20<Scalar>::setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta)
 {
 	// this->dNdcsi
 	this->dNdcsi[ 0] = (eta-1)*(zeta-1)*(zeta+eta+2*csi+1)/8;
@@ -137,17 +137,17 @@ Hexahedron20<T>::setdNdcsi(const T &csi, const T &eta, const T &zeta)
 }
 
 
-template<typename T>
-std::vector<T> & 
-Hexahedron20<T>::setdNdeta(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & 
+Hexahedron20<Scalar>::setdNdeta(const Point &p)
 {
 	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & 
-Hexahedron20<T>::setdNdeta(const T &csi, const T &eta, const T &zeta)
+template<typename Scalar>
+std::vector<Scalar> & 
+Hexahedron20<Scalar>::setdNdeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta)
 {
 	// this->dNdeta
 	this->dNdeta[ 0] = (csi-1)*(zeta-1)*(zeta+2*eta+csi+1)/8;
@@ -175,17 +175,17 @@ Hexahedron20<T>::setdNdeta(const T &csi, const T &eta, const T &zeta)
 }
 
 
-template<typename T>
-std::vector<T> & 
-Hexahedron20<T>::setdNdzeta(const Point &p)
+template<typename Scalar>
+std::vector<Scalar> & 
+Hexahedron20<Scalar>::setdNdzeta(const Point &p)
 {
 	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
-template<typename T>
-std::vector<T> & 
-Hexahedron20<T>::setdNdzeta(const T &csi, const T &eta, const T &zeta)
+template<typename Scalar>
+std::vector<Scalar> & 
+Hexahedron20<Scalar>::setdNdzeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta)
 {
 	// this->dNdzeta
 	this->dNdzeta[ 0] = (csi-1)*(eta-1)*(2*zeta+eta+csi+1)/8;
@@ -213,9 +213,9 @@ Hexahedron20<T>::setdNdzeta(const T &csi, const T &eta, const T &zeta)
 }
 
 
-template<typename T>
+template<typename Scalar>
 std::vector<fem::Point> & 
-Hexahedron20<T>::setCoordinates()
+Hexahedron20<Scalar>::setCoordinates()
 {
 	this->coordinates[0] = Point(	-1,	-1,	-1	);
 	this->coordinates[1] = Point(	1,	-1,	-1	);
@@ -244,9 +244,9 @@ Hexahedron20<T>::setCoordinates()
 }
 
 
-template<typename T>
+template<typename Scalar>
 void
-Hexahedron20<T>::set(std::vector<size_t> &nodes)
+Hexahedron20<Scalar>::set(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 20)
 	{

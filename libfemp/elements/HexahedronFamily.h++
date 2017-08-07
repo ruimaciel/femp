@@ -8,13 +8,13 @@
 namespace fem
 {
 
-template <typename T>
+template <typename Scalar>
 struct HexahedronFamily
-	: public BaseElement<T>
+	: public BaseElement<Scalar>
 {
 	HexahedronFamily();
 
-	enum BaseElement<T>::ElementFamily family() const;
+	enum BaseElement<Scalar>::ElementFamily family() const;
 
 	/**
 	 * Returns the total number of degrees of freedom
@@ -26,29 +26,29 @@ protected:
 };
 
 
-template<typename T>
-enum BaseElement<T>::ElementFamily
-HexahedronFamily<T>::family() const
+template<typename Scalar>
+enum BaseElement<Scalar>::ElementFamily
+HexahedronFamily<Scalar>::family() const
 {
-	return BaseElement<T>::EF_HEXAHEDRON;
+	return BaseElement<Scalar>::EF_HEXAHEDRON;
 }
 
 
 
-template<typename T>
-HexahedronFamily<T>::HexahedronFamily()
-	: BaseElement<T>()
+template<typename Scalar>
+HexahedronFamily<Scalar>::HexahedronFamily()
+	: BaseElement<Scalar>()
 {
 	generateQuadratureData();
 }
 
 
-template<typename T>
-void HexahedronFamily<T>::generateQuadratureData()
+template<typename Scalar>
+void HexahedronFamily<Scalar>::generateQuadratureData()
 {
 	for(int d = 1; d <= 5; d++)
 	{
-		T x[d], w[d];	// for the Gauss-Legendre integration points and weights
+		Scalar x[d], w[d];	// for the Gauss-Legendre integration points and weights
 		// get the Gauss-Legendre integration points and weights
 		this->template gauleg(x,w,d);
 
@@ -59,7 +59,7 @@ void HexahedronFamily<T>::generateQuadratureData()
 			{
 				for(int k = 0; k < d; k++)
 				{
-					this->ipwpl[d].push_back(boost::tuple<fem::Point,T>(fem::Point(x[i],x[j],x[k]), w[i]*w[j]*w[k]));
+					this->ipwpl[d].push_back(boost::tuple<fem::Point,Scalar>(fem::Point(x[i],x[j],x[k]), w[i]*w[j]*w[k]));
 				}
 			}
 		}

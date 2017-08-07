@@ -8,13 +8,13 @@
 namespace fem
 {
 
-template <typename T>
+template <typename Scalar>
 struct TetrahedronFamily
-	: public BaseElement<T>
+	: public BaseElement<Scalar>
 {
 	TetrahedronFamily();
 
-	enum BaseElement<T>::ElementFamily family() const;
+	enum BaseElement<Scalar>::ElementFamily family() const;
 
 	/**
 	 * Returns the total number of degrees of freedom
@@ -26,34 +26,34 @@ protected:
 };
 
 
-template<typename T>
-enum BaseElement<T>::ElementFamily
-TetrahedronFamily<T>::family() const
+template<typename Scalar>
+enum BaseElement<Scalar>::ElementFamily
+TetrahedronFamily<Scalar>::family() const
 {
-	return BaseElement<T>::EF_TETRAHEDRON;
+	return BaseElement<Scalar>::EF_TETRAHEDRON;
 }
 
 
-template<typename T>
-TetrahedronFamily<T>::TetrahedronFamily()
-	: BaseElement<T>()
+template<typename Scalar>
+TetrahedronFamily<Scalar>::TetrahedronFamily()
+	: BaseElement<Scalar>()
 {
 	generateQuadratureData();
 }
 
 
-template<typename T>
-void TetrahedronFamily<T>::generateQuadratureData()
+template<typename Scalar>
+void TetrahedronFamily<Scalar>::generateQuadratureData()
 {
 	//TODO test this
 	using namespace boost;
 
-	std::vector<boost::tuple<fem::Point, T> > ips;	//TODO remove ips as a temporary
+	std::vector<boost::tuple<fem::Point, Scalar> > ips;	//TODO remove ips as a temporary
 
 	// Tetrahedron family, degree 1
 	{
 		ips.clear();
-		ips.push_back(tuple<fem::Point,T>(fem::Point(0.25,0.25,0.25), 1.0/6.0));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(0.25,0.25,0.25), 1.0/6.0));
 		this->ipwpl[1] = ips;
 	}
 
@@ -61,10 +61,10 @@ void TetrahedronFamily<T>::generateQuadratureData()
 	{
 		ips.clear();
 
-		ips.push_back(tuple<fem::Point,T>(fem::Point(0.58541019662496845446,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(0.13819660112501051518,0.58541019662496845446,0.13819660112501051518),1.0/(6*4)));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(0.13819660112501051518,0.13819660112501051518,0.58541019662496845446),1.0/(6*4)));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(0.13819660112501051518,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(0.58541019662496845446,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(0.13819660112501051518,0.58541019662496845446,0.13819660112501051518),1.0/(6*4)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(0.13819660112501051518,0.13819660112501051518,0.58541019662496845446),1.0/(6*4)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(0.13819660112501051518,0.13819660112501051518,0.13819660112501051518),1.0/(6*4)));
 
 		this->ipwpl[2] = ips;
 	}
@@ -73,8 +73,8 @@ void TetrahedronFamily<T>::generateQuadratureData()
 	{
 		ips.clear();
 
-		T g[2];
-		T w[2];
+		Scalar g[2];
+		Scalar w[2];
 
 		g[0]=(55-3*sqrt(17)+sqrt(1022-134*sqrt(17)))/196;
 		g[1]=(55-3*sqrt(17)-sqrt(1022-134*sqrt(17)))/196;
@@ -83,16 +83,16 @@ void TetrahedronFamily<T>::generateQuadratureData()
 		w[1]= (1.0/8 - sqrt((1715161837-406006699*sqrt(17))/23101)/3120) /6.0;
 
 		// 1 to 4
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1-3*g[0], g[0], g[0]), w[0] ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[0], 1-3*g[0], g[0]), w[0] ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[0], g[0], 1-3*g[0]), w[0] ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[0], g[0], g[0]), w[0] ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1-3*g[0], g[0], g[0]), w[0] ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[0], 1-3*g[0], g[0]), w[0] ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[0], g[0], 1-3*g[0]), w[0] ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[0], g[0], g[0]), w[0] ));
 
 		// 5 to 8
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1-3*g[1], g[1], g[1]), w[1] ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[1], 1-3*g[1], g[1]), w[1] ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[1], g[1], 1-3*g[1]), w[1] ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[1], g[1], g[1]), w[1] ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1-3*g[1], g[1], g[1]), w[1] ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[1], 1-3*g[1], g[1]), w[1] ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[1], g[1], 1-3*g[1]), w[1] ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[1], g[1], g[1]), w[1] ));
 
 		this->ipwpl[3] = ips;
 	}
@@ -100,8 +100,8 @@ void TetrahedronFamily<T>::generateQuadratureData()
 	// Tetrahedron family, degree 4
 	{
 		ips.clear();
-		T g[3];
-		T w[2];
+		Scalar g[3];
+		Scalar w[2];
 		g[0]=0.09273525031089122640232391373703060;
 		g[1]=0.31088591926330060979734573376345783;
 		g[2]=0.45449629587435035050811947372066056;
@@ -110,56 +110,56 @@ void TetrahedronFamily<T>::generateQuadratureData()
 		w[1] = (-1-20*(1+12*g[0]*(2*g[0]-1))*w[0]+20*g[2]*(2*g[2]-1)*(4*w[0]-1))/ (20*(1+12*g[1]*(2*g[1]-1)+4*g[2]-8*g[2]*g[2]));
 
 		// 1 to 4
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1-3*g[0], g[0], g[0]), w[0]/6.0 ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[0], 1-3*g[0], g[0]), w[0]/6.0 ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[0], g[0], 1-3*g[0]), w[0]/6.0 ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[0], g[0], g[0]), w[0]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1-3*g[0], g[0], g[0]), w[0]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[0], 1-3*g[0], g[0]), w[0]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[0], g[0], 1-3*g[0]), w[0]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[0], g[0], g[0]), w[0]/6.0 ));
 		// 5 to 8
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1-3*g[1], g[1], g[1]), w[1]/6.0 ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[1], 1-3*g[1], g[1]), w[1]/6.0 ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[1], g[1], 1-3*g[1]), w[1]/6.0 ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[1], g[1], g[1]), w[1]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1-3*g[1], g[1], g[1]), w[1]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[1], 1-3*g[1], g[1]), w[1]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[1], g[1], 1-3*g[1]), w[1]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[1], g[1], g[1]), w[1]/6.0 ));
 		// 9 to 14
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1.0/2-g[2], 1.0/2-g[2], g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1.0/2-g[2], g[2], 1.0/2-g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1.0/2-g[2], g[2], g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[2], 1.0/2-g[2], 1.0/2-g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[2], 1.0/2-g[2], g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[2], g[2], 1.0/2-g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1.0/2-g[2], 1.0/2-g[2], g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1.0/2-g[2], g[2], 1.0/2-g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1.0/2-g[2], g[2], g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[2], 1.0/2-g[2], 1.0/2-g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[2], 1.0/2-g[2], g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[2], g[2], 1.0/2-g[2]), (1.0/6.0 - 2*(w[0]+w[1])/3)/6.0  ));
 		this->ipwpl[4] = ips;
 	}
 
 	// Tetrahedron family, degree 5
 	{
 		ips.clear();
-		T g[3];
-		T w[2];
+		Scalar g[3];
+		Scalar w[2];
 
 		g[0]=(7-sqrt(15))/34; 	g[1]=7/17-g[0]; 	g[2]=(10-2*sqrt(15))/40;
 		w[0]=(2665+14*sqrt(15))/(37800);	w[1]=(2665-14*sqrt(15))/(37800);
 
 		// 1 to 4
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1-3*g[0], g[0], g[0]), w[0]/6.0 ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[0], 1-3*g[0], g[0]), w[0]/6.0 ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[0], g[0], 1-3*g[0]), w[0]/6.0 ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[0], g[0], g[0]), w[0]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1-3*g[0], g[0], g[0]), w[0]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[0], 1-3*g[0], g[0]), w[0]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[0], g[0], 1-3*g[0]), w[0]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[0], g[0], g[0]), w[0]/6.0 ));
 
 		// 5 to 8
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1-3*g[1], g[1], g[1]), w[1]/6.0 ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[1], 1-3*g[1], g[1]), w[1]/6.0 ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[1], g[1], 1-3*g[1]), w[1]/6.0 ));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[1], g[1], g[1] ), w[1]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1-3*g[1], g[1], g[1]), w[1]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[1], 1-3*g[1], g[1]), w[1]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[1], g[1], 1-3*g[1]), w[1]/6.0 ));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[1], g[1], g[1] ), w[1]/6.0 ));
 
 		// 9 to 14
-		ips.push_back(tuple<fem::Point,T>(fem::Point(0.5-g[2], 0.5 - g[2], g[2] ), 10.0/(6.0*189)) );
-		ips.push_back(tuple<fem::Point,T>(fem::Point(0.5-g[2], g[2], 0.5-g[2] ), 10.0/(6*189)) );
-		ips.push_back(tuple<fem::Point,T>(fem::Point(0.5-g[2], g[2], g[2] ), 10.0/(6*189)));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[2], 0.5-g[2], 0.5-g[2] ), 10.0/(6*189)));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[2], 0.5-g[2], g[2] ), 10.0/(6*189)));
-		ips.push_back(tuple<fem::Point,T>(fem::Point(g[2], g[2], 0.5-g[2] ), 10.0/(6*189)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(0.5-g[2], 0.5 - g[2], g[2] ), 10.0/(6.0*189)) );
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(0.5-g[2], g[2], 0.5-g[2] ), 10.0/(6*189)) );
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(0.5-g[2], g[2], g[2] ), 10.0/(6*189)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[2], 0.5-g[2], 0.5-g[2] ), 10.0/(6*189)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[2], 0.5-g[2], g[2] ), 10.0/(6*189)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(g[2], g[2], 0.5-g[2] ), 10.0/(6*189)));
 
 		// 15
-		ips.push_back(tuple<fem::Point,T>(fem::Point(1.0/4, 1.0/4, 1.0/4 ), 16.0/(6*135)));
+		ips.push_back(tuple<fem::Point,Scalar>(fem::Point(1.0/4, 1.0/4, 1.0/4 ), 16.0/(6*135)));
 
 		this->ipwpl[5] = ips;
 	}

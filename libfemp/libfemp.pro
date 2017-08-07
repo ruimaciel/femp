@@ -28,6 +28,7 @@ HEADERS = Group.h++ \
 	ElementGroup.h++ \
 	NodeGroup.h++ \
 	elements/all.h++ \
+	elements/ElementFactory.h++ \
 	elements/BaseElement.h++ \
 	elements/Triangle3.h++ \
 	elements/Triangle6.h++ \

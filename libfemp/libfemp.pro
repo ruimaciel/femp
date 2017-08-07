@@ -3,6 +3,7 @@ include(../defaults.pri)
 TEMPLATE = lib
 
 CONFIG += staticlib
+CONFIG -= qt
 
 OBJECTS_DIR += $${BUILD_DIR}/libfemp
 DESTDIR = $${BUILD_DIR}

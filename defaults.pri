@@ -7,8 +7,6 @@ QMAKE_CXXFLAGS_DEBUG +=-O0 -Wfatal-errors
 
 QMAKE_EXT_CPP += c++
 
-CONFIG += link_pkgconfig debug
-
-PKGCONFIG += sigc++-2.0
+CONFIG += debug
 
 LIBFEMP_SRC = $${PWD}/libfemp

@@ -3,7 +3,6 @@ include(../defaults.pri)
 TEMPLATE = app
 TARGET = clfemp
 
-CONFIG += debug 
 CONFIG -= qt
 
 OBJECTS_DIR += $${BUILD_DIR}/cmdline

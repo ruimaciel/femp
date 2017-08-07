@@ -3,7 +3,9 @@ include(../defaults.pri)
 TEMPLATE = app
 TARGET = femp
 
-CONFIG += qt debug 
+CONFIG += qt link_pkgconfig
+
+PKGCONFIG += sigc++-2.0
 
 QT += opengl
 

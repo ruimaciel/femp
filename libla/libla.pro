@@ -4,6 +4,8 @@ TEMPLATE = lib
 
 CONFIG += staticlib
 
+CONFIG -= qt
+
 OBJECTS_DIR += $${BUILD_DIR}/libla
 DESTDIR = $${BUILD_DIR}
 

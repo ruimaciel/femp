@@ -23,7 +23,6 @@ public:
 	std::vector<fem::Point> & setCoordinates();
 
 	std::vector<Scalar> & setN(const Point & p);
-	std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
 	std::vector<Scalar> & setdNdcsi(const Point &p);
 	std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
@@ -64,14 +63,10 @@ Tetrahedron4<Scalar>::Tetrahedron4()
 template<typename Scalar>
 std::vector<Scalar> & Tetrahedron4<Scalar>::setN(const Point &p)
 {
-	return this->setN(p.data[0], p.data[1], p.data[2]);
-}
+	const Scalar csi = p.x();
+	const Scalar eta = p.y();
+	const Scalar zeta = p.z();
 
-
-template<typename Scalar>
-std::vector<Scalar> & Tetrahedron4<Scalar>::setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta)
-{
-	//TODO finish this
 	this->N[0] = 1.0-zeta-eta-csi;
 	this->N[1] = csi;
 	this->N[2] = eta;

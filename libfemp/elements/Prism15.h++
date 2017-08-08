@@ -23,7 +23,6 @@ public:
 	std::vector<fem::Point> & setCoordinates();
 
 	std::vector<Scalar> & setN(const Point & p);
-	std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
 	std::vector<Scalar> & setdNdcsi(const Point &p);
 	std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
@@ -65,13 +64,10 @@ Prism15<Scalar>::Prism15()
 template<typename Scalar>
 std::vector<Scalar> & Prism15<Scalar>::setN(const Point &p)
 {
-	return this->setN(p.data[0], p.data[1], p.data[2]);
-}
+	const Scalar csi = p.x();
+	const Scalar eta = p.y();
+	const Scalar zeta = p.z();
 
-
-template<typename Scalar>
-std::vector<Scalar> & Prism15<Scalar>::setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta)
-{
 	this->N[0] = -((-1 + csi + eta)*(-1 + zeta)*(2*(csi + eta) + zeta))/2.0;
 	this->N[1] =  (csi*(-1 + zeta)*(2 - 2*csi + zeta))/2.0;
 	this->N[2] =  (eta*(-1 + zeta)*(2 - 2*eta + zeta))/2.0;

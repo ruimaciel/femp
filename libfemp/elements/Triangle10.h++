@@ -22,7 +22,6 @@ public:
 	std::vector<fem::Point> & setCoordinates();
 
 	std::vector<Scalar> & setN(const Point & p);
-	std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
 	std::vector<Scalar> & setdNdcsi(const Point &p);
 	std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
@@ -63,15 +62,9 @@ template<typename Scalar>
 std::vector<Scalar> & 
 Triangle10<Scalar>::setN(const Point &p)
 {
-	return this->setN(p.data[0], p.data[1], p.data[2]);
-}
+	const Scalar csi = p.x();
+	const Scalar eta = p.y();
 
-
-template<typename Scalar>
-std::vector<Scalar> & 
-Triangle10<Scalar>::setN(const Scalar &csi, const Scalar &eta, const Scalar &)
-{
-	//TODO test this
 	this->N[0] = 4.5*(-eta-csi+1.0/3)*(-eta-csi+2.0/3)*(-eta-csi+1);
 	this->N[1] = 4.5*(csi-2.0/3)*(csi-1.0/3)*csi;
 	this->N[2] = 4.5*(eta-2.0/3)*(eta-1.0/3)*eta;

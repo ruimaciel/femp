@@ -22,7 +22,6 @@ struct Quadrangle9
 		std::vector<fem::Point> & setCoordinates();
 
 		std::vector<Scalar> & setN(const Point & p);
-		std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
 		std::vector<Scalar> & setdNdcsi(const Point &p);
 		std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
@@ -60,9 +59,11 @@ Quadrangle9<Scalar>::Quadrangle9()
 
 
 template<typename Scalar>
-std::vector<Scalar> & Quadrangle9<Scalar>::setN(const Scalar &csi, const Scalar &eta, const Scalar &)
+std::vector<Scalar> & Quadrangle9<Scalar>::setN(const Point &p)
 {
-	//TODO test this
+	const Scalar csi = p.x();
+	const Scalar eta = p.y();
+
 	this->N[0] = (csi-1)*csi*(eta-1)*eta/4;
 	this->N[1] = csi*(csi+1)*(eta-1)*eta/4;
 	this->N[2] = csi*(csi+1)*eta*(eta+1)/4;
@@ -72,14 +73,8 @@ std::vector<Scalar> & Quadrangle9<Scalar>::setN(const Scalar &csi, const Scalar 
 	this->N[6] = (1-csi)*(csi+1)*eta*(eta+1)/2;
 	this->N[7] = (csi-1)*csi*(1-eta)*(eta+1)/2;
 	this->N[8] = (1-csi)*(csi+1)*(1-eta)*(eta+1);
+
 	return this->N;
-}
-
-
-template<typename Scalar>
-std::vector<Scalar> & Quadrangle9<Scalar>::setN(const Point &p)
-{
-	return this->setN(p.data[0], p.data[1], p.data[2]);
 }
 
 

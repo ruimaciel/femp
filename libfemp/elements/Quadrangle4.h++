@@ -22,7 +22,6 @@ struct Quadrangle4
 		std::vector<fem::Point> & setCoordinates();
 
 		std::vector<Scalar> & setN(const Point & p);
-		std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
 		std::vector<Scalar> & setdNdcsi(const Point &p);
 		std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
@@ -63,13 +62,9 @@ Quadrangle4<Scalar>::Quadrangle4()
 template<typename Scalar>
 std::vector<Scalar> & Quadrangle4<Scalar>::setN(const Point &p)
 {
-	return this->setN(p.data[0], p.data[1], p.data[2]);
-}
+	const Scalar csi = p.x();
+	const Scalar eta = p.y();
 
-
-template<typename Scalar>
-std::vector<Scalar> & Quadrangle4<Scalar>::setN(const Scalar &csi, const Scalar &eta, const Scalar &)
-{
 	this->N[0] = (1-csi)*(1-eta)/4;
 	this->N[1] = (1+csi)*(1-eta)/4;
 	this->N[2] = (1+csi)*(1+eta)/4;

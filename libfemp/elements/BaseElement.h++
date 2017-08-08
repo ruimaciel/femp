@@ -165,7 +165,6 @@ public:	//WARNING: BaseElement member functions are deprecated
 	Calculates the values for vector N according to a given Point expressed in local coordinates
 	**/
 	virtual std::vector<Scalar> & setN(const Point & p) = 0;
-	virtual std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0) = 0;
 	virtual std::vector<Scalar> & setdNdcsi(const Point &p) = 0;
 	virtual std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0) = 0;
 	virtual std::vector<Scalar> & setdNdeta(const Point &p) = 0;

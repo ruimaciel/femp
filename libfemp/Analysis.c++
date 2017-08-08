@@ -84,8 +84,9 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 
 	for(std::vector<Element>::iterator element_iterator = model.element_list.begin(); element_iterator != model.element_list.end(); element_iterator++)
 	{
+		const Element &el = *element_iterator;
 		// sets the current element routines
-		switch(element_iterator->type)
+		switch(el.type)
 		{
 			case Element::FE_TETRAHEDRON4:
 				element = &tetra4;
@@ -126,6 +127,7 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 				break;
 		}
 
+		element->nodes = el.nodes;
 		k_elem = element->getStiffnessMatrix(model);
 
 		// add elementary stiffness matrix to the global stiffness matrix 

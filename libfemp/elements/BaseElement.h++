@@ -105,6 +105,9 @@ public:	// merging with fem::Element
 	Type type;
 
 public:
+
+	virtual ~BaseElement() {};
+	
 	/**
 	 * Returns the total number of degrees of freedom
 	 **/

@@ -22,6 +22,7 @@ HEADERS = Group.h++ \
 	NodalLoad.h++ \
 	NodalDisplacement.h++ \
 	Point.h++ \
+	Point2D.h++ \
 	NodeRestrictions.h++ \
 	DomainLoad.h++ \
 	SurfaceLoad.h++ \
@@ -75,6 +76,7 @@ SOURCES = Group.c++ \
 	NodalLoad.c++ \
 	NodalDisplacement.c++ \
 	Point.c++ \
+	Point2D.c++ \
 	NodeRestrictions.c++ \
 	DomainLoad.c++ \
 	SurfaceLoad.c++\

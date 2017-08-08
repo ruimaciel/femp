@@ -16,23 +16,23 @@ template <typename Scalar>
 struct Tetrahedron4
 	: public TetrahedronFamily<Scalar>
 {
-	public:
-		Tetrahedron4();
-		~Tetrahedron4()	{};
+public:
+	Tetrahedron4();
+	~Tetrahedron4()	{};
 
-		std::vector<fem::Point> & setCoordinates();
+	std::vector<fem::Point> & setCoordinates();
 
-		std::vector<Scalar> & setN(const Point & p);
-		std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
+	std::vector<Scalar> & setN(const Point & p);
+	std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<Scalar> & setdNdcsi(const Point &p);
-		std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
+	std::vector<Scalar> & setdNdcsi(const Point &p);
+	std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<Scalar> & setdNdeta(const Point &p);
-		std::vector<Scalar> & setdNdeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
+	std::vector<Scalar> & setdNdeta(const Point &p);
+	std::vector<Scalar> & setdNdeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<Scalar> & setdNdzeta(const Point &p);
-		std::vector<Scalar> & setdNdzeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
+	std::vector<Scalar> & setdNdzeta(const Point &p);
+	std::vector<Scalar> & setdNdzeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
 public: // merging with fem::Element
         void set(std::vector<size_t> &nodes);

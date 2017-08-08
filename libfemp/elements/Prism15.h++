@@ -16,23 +16,23 @@ template <typename Scalar>
 struct Prism15
 	: public PrismFamily<Scalar>
 {
-	public:
-		Prism15();
-		~Prism15()	{};
+public:
+	Prism15();
+	~Prism15()	{};
 
-		std::vector<fem::Point> & setCoordinates();
+	std::vector<fem::Point> & setCoordinates();
 
-		std::vector<Scalar> & setN(const Point & p);
-		std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
+	std::vector<Scalar> & setN(const Point & p);
+	std::vector<Scalar> & setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<Scalar> & setdNdcsi(const Point &p);
-		std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
+	std::vector<Scalar> & setdNdcsi(const Point &p);
+	std::vector<Scalar> & setdNdcsi(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<Scalar> & setdNdeta(const Point &p);
-		std::vector<Scalar> & setdNdeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
+	std::vector<Scalar> & setdNdeta(const Point &p);
+	std::vector<Scalar> & setdNdeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
-		std::vector<Scalar> & setdNdzeta(const Point &p);
-		std::vector<Scalar> & setdNdzeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
+	std::vector<Scalar> & setdNdzeta(const Point &p);
+	std::vector<Scalar> & setdNdzeta(const Scalar &csi, const Scalar &eta, const Scalar &zeta = 0);
 
 public: // merging with fem::Element
 	void set(std::vector<size_t> &nodes);
@@ -71,8 +71,6 @@ std::vector<Scalar> & Prism15<Scalar>::setN(const Point &p)
 template<typename Scalar>
 std::vector<Scalar> & Prism15<Scalar>::setN(const Scalar &csi, const Scalar &eta, const Scalar &zeta)
 {
-	//TODO test this
-
 	this->N[0] = -((-1 + csi + eta)*(-1 + zeta)*(2*(csi + eta) + zeta))/2.0;
 	this->N[1] =  (csi*(-1 + zeta)*(2 - 2*csi + zeta))/2.0;
 	this->N[2] =  (eta*(-1 + zeta)*(2 - 2*eta + zeta))/2.0;

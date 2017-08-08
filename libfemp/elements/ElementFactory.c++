@@ -65,6 +65,6 @@ fem::BaseElement<Scalar> * getElement(fem::Element const &old_element)
 
 
 // template function explicit instantiation
-template<> fem::BaseElement<float> * getElement<float>(fem::Element const &);
-template<> fem::BaseElement<double> * getElement<double>(fem::Element const &);
+template fem::BaseElement<float> * getElement<float>(fem::Element const &);
+template fem::BaseElement<double> * getElement<double>(fem::Element const &);
 

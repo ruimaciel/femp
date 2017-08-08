@@ -1,6 +1,8 @@
 #include "Analysis.h++"
 
 
+#include <libfemp/elements/ElementFactory.h++>
+
 
 namespace fem
 {
@@ -85,49 +87,9 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 	for(std::vector<Element>::iterator element_iterator = model.element_list.begin(); element_iterator != model.element_list.end(); element_iterator++)
 	{
 		const Element &el = *element_iterator;
-		// sets the current element routines
-		switch(el.type)
-		{
-			case Element::FE_TETRAHEDRON4:
-				element = &tetra4;
-				break;
 
-			case Element::FE_TETRAHEDRON10:
-				element = &tetra10;
-				break;
+		element = getElement<Scalar>(el); //TODO remove after migration to polymorphic elements
 
-			case Element::FE_HEXAHEDRON8:
-				element = &hexa8;
-				break;
-
-			case Element::FE_HEXAHEDRON20:
-				element = &hexa20;
-				break;
-
-			case Element::FE_HEXAHEDRON27:
-				element = &hexa27;
-				break;
-
-			case Element::FE_PRISM6:
-				element = &prism6;
-				break;
-
-			case Element::FE_PRISM15:
-				element = &prism15;
-				break;
-
-			case Element::FE_PRISM18:
-				element = &prism18;
-				break;
-
-			default:
-				std::cerr << __FILE__ << ":" << __LINE__ ;
-				std::cerr << "Analysis<Scalar>::buildEquation(): unsupported element" << std::endl;
-				return ERR_UNSUPPORTED_ELEMENT;
-				break;
-		}
-
-		element->nodes = el.nodes;
 		k_elem = element->getStiffnessMatrix(model);
 
 		// add elementary stiffness matrix to the global stiffness matrix 
@@ -135,6 +97,8 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult<Sca
 
 		// mark progress
 		progress.markSectionIterationIncrement();
+
+		delete element;	//TODO remove after migration to polymorphic elements
 	}
 
 	// fem equation is set.
@@ -154,53 +118,12 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 	for(std::map<size_t,fem::DomainLoad>::const_iterator domain_load = lp.domain_loads.begin(); domain_load != lp.domain_loads.end(); domain_load++)
 	{
 		//TODO rewrite to rely on the element_reference classes
-		fem::Element *element_reference;
-		element_reference = &model.element_list[domain_load->first];
-		const int nnodes = element_reference->node_number();
+		fem::Element &el = model.element_list[domain_load->first];
 
 		// set the routines for the current element
-		BaseElement<Scalar> *element = NULL;	// points to the current element class
-		switch(element_reference->type)
-		{
-			case Element::FE_TETRAHEDRON4:
-				element = &tetra4;
-				break;
+		BaseElement<Scalar> *element = getElement<Scalar>(el);
 
-			case Element::FE_TETRAHEDRON10:
-				element = &tetra10;
-				break;
-
-			case Element::FE_HEXAHEDRON8:
-				element = &hexa8;
-				break;
-
-			case Element::FE_HEXAHEDRON20:
-				element = &hexa20;
-				break;
-
-			case Element::FE_HEXAHEDRON27:
-				element = &hexa27;
-				break;
-
-			case Element::FE_PRISM6:
-				element = &prism6;
-				break;
-
-			case Element::FE_PRISM15:
-				element = &prism15;
-				break;
-
-			case Element::FE_PRISM18:
-				element = &prism18;
-				break;
-
-			default:
-				std::cerr << __FILE__ << ":" << __LINE__ ;
-				std::cerr << "Analysis<Scalar>::buildEquation(): unsupported element" << std::endl;
-				return ERR_UNSUPPORTED_ELEMENT;
-				break;
-		}
-
+		const int nnodes = element->node_number();
 		f_elem.resize(nnodes*3);
 		f_elem.setZero();
 
@@ -220,7 +143,7 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 
 			for(int n = 0; n < nnodes; n++)
 			{
-				auto const & node_ref = element_reference->nodes[n];
+				auto const & node_ref = element->nodes[n];
 				fem::Node const &node = model.getNode(node_ref);
 
 				Scalar const &X = node.x();
@@ -275,6 +198,8 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			}
 		}
 		progress.markSectionIterationIncrement();
+
+		delete element;	//TODO remove after migration to polymorphic elements
 	}
 
 	// fem equation is set.

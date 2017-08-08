@@ -16,6 +16,7 @@ LIBS += -lumfpack -lblas -lamd -lGLU -llibla
 HEADERS = Group.h++ \
 	Model.h++ \
 	Node.h++ \
+	GlobalDof.h++ \
 	Element.h++ \
 	Material.h++ \
 	LoadPattern.h++ \
@@ -70,6 +71,7 @@ HEADERS = Group.h++ \
 SOURCES = Group.c++ \
 	Model.c++ \
 	Node.c++ \
+	GlobalDof.c++ \
 	Element.c++ \
 	Material.c++ \
 	LoadPattern.c++ \

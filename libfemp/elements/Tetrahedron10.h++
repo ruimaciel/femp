@@ -47,6 +47,7 @@ public: // merging with fem::Element
 
 template<typename Scalar>
 Tetrahedron10<Scalar>::Tetrahedron10()
+	: TetrahedronFamily<Scalar>()
 {
 	this->type = BaseElement<Scalar>::FE_TETRAHEDRON10;
 	this->stiffness_degree = 2;

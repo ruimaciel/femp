@@ -47,6 +47,7 @@ public: // merging with fem::Element
 
 template<typename Scalar>
 Prism18<Scalar>::Prism18()
+	: PrismFamily<Scalar>()
 {
 	this->type = BaseElement<Scalar>::FE_PRISM18;
 	this->stiffness_degree = 5;

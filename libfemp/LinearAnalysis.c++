@@ -1,9 +1,10 @@
 #include "LinearAnalysis.h++"
 
-
 #include <iostream>
 #include <fstream>
 
+#include <libla/Matrix.h++>
+#include <libla/Vector.h++>
 
 namespace fem
 {

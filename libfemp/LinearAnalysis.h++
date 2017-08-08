@@ -2,8 +2,6 @@
 #define FEMP_LINEAR_ANALYSIS_HPP
 
 
-#include <libla/Matrix.h++>
-#include <libla/Vector.h++>
 #include <libla/output.h++>
 #include <libla/ProgressIndicatorStrategy.h++>
 

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 #include <libfemp/NodalLoad.h++>
 #include <libfemp/NodalDisplacement.h++>

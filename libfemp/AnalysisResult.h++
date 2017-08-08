@@ -7,7 +7,6 @@
 #include <iostream>
 
 #include <libfemp/Point.h++>
-#include <libfemp/Element.h++>
 #include <libfemp/ElementResults/ElementResults.h++>
 #include <libfemp/ElementResults/ResultsRanges.h++>
 

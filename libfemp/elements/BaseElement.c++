@@ -2,6 +2,7 @@
 
 #include "../Model.h++"
 #include "../Analysis.h++"	// for the error codes
+#include <libfemp/FemException.h++>
 
 namespace fem
 {
@@ -44,6 +45,7 @@ BaseElement<Scalar>::getStiffnessMatrix(fem::Model &model)
 {
 	using namespace Eigen;
 
+
 	Matrix<Scalar,Dynamic,Dynamic> k_elem;
 	Matrix<Scalar,Dynamic,Dynamic> B, Bt;
 	Matrix3d J, invJ;
@@ -51,6 +53,15 @@ BaseElement<Scalar>::getStiffnessMatrix(fem::Model &model)
 	// get the number of expected nodes
 	const unsigned int nnodes = this->node_number();
 	const unsigned int n_dofs = nnodes*3;
+
+	if(this->nodes.size() == 0)
+	{
+		throw FemException("Element without nodes");
+	}
+	if(this->nodes.size() != nnodes)
+	{
+		throw FemException("Incompatible number of nodes");
+	}
 
 	// resize the elementary matrices to fit the new node size
 	k_elem.resize(n_dofs, n_dofs);

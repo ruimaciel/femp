@@ -49,8 +49,8 @@ BaseElement<Scalar>::getStiffnessMatrix(fem::Model &model)
 	Matrix3d J, invJ;
 
 	// get the number of expected nodes
-	int nnodes = this->node_number();
-	const int n_dofs = nnodes*3;
+	const unsigned int nnodes = this->node_number();
+	const unsigned int n_dofs = nnodes*3;
 
 	// resize the elementary matrices to fit the new node size
 	k_elem.resize(n_dofs, n_dofs);
@@ -79,7 +79,7 @@ BaseElement<Scalar>::getStiffnessMatrix(fem::Model &model)
 
 		// generate the jacobian
 		J.setZero();
-		for(int n = 0; n < nnodes; n++)
+		for(unsigned int n = 0; n < nnodes; n++)
 		{
 			auto const & node_ref = this->nodes[n];
 			fem::Node const &node = model.getNode(node_ref);
@@ -106,7 +106,7 @@ BaseElement<Scalar>::getStiffnessMatrix(fem::Model &model)
 		invJ = J.inverse();
 
 		// Set up the B matrix
-		for(int n = 0; n < nnodes; n++)
+		for(unsigned int n = 0; n < nnodes; n++)
 		{
 			// set the variables
 			// set the partial derivatives

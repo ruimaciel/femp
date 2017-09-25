@@ -35,7 +35,7 @@ GlobalDof::operator=(const GlobalDof & copied)
 
 
 /**
- * Relational order operator
+ * Equality operator
  **/
 bool operator==(const GlobalDof &lhs, const GlobalDof &rhs)
 {
@@ -48,6 +48,12 @@ bool operator==(const GlobalDof &lhs, const GlobalDof &rhs)
 		node_a.y() == node_b.y() && 
 		node_a.z() == node_b.z() && 
 		lhs.getParameterType() == rhs.getParameterType();
+}
+
+
+bool operator!=(const GlobalDof &lhs, const GlobalDof &rhs)
+{
+	return !(lhs == rhs);
 }
 
 

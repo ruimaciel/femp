@@ -17,7 +17,7 @@ enum class ParameterType
 
 
 /**
- * Data type that represents a global degree- of freedom (DoF)
+ * Data type that represents a global degree-of-freedom (DoF)
  **/
 class GlobalDof
 {
@@ -51,6 +51,7 @@ public:
 	 * Relational order operator
 	 **/
 	friend bool operator==(const GlobalDof &lhs, const GlobalDof &rhs);
+	friend bool operator!=(const GlobalDof &lhs, const GlobalDof &rhs);
 	friend bool operator<(const GlobalDof &lhs, const GlobalDof &rhs);
 
 };

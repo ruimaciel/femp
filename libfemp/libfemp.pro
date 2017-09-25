@@ -17,6 +17,7 @@ HEADERS = Group.h++ \
 	Model.h++ \
 	Node.h++ \
 	GlobalDof.h++ \
+	GlobalDofMap.h++ \
 	Element.h++ \
 	Material.h++ \
 	LoadPattern.h++ \
@@ -72,6 +73,7 @@ SOURCES = Group.c++ \
 	Model.c++ \
 	Node.c++ \
 	GlobalDof.c++ \
+	GlobalDofMap.c++ \
 	Element.c++ \
 	Material.c++ \
 	LoadPattern.c++ \

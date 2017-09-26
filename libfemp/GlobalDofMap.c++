@@ -33,9 +33,9 @@ GlobalDofMap::pushGlobalDof(GlobalDof const &new_gdof)
 
 
 size_t 
-GlobalDofMap::getIndex(GlobalDof const &gdof)
+GlobalDofMap::getIndex(GlobalDof const &gdof) const
 {
-	std::map<GlobalDof, MappingData>::iterator it;
+	std::map<GlobalDof, MappingData>::const_iterator it;
 	it = this->m_global_dof_map.find(gdof);
 
 	if(it == this->m_global_dof_map.end())

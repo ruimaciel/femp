@@ -42,7 +42,7 @@ public:
 	/**
 	 * Returns the index of a global dof
 	 **/
-	size_t getIndex(GlobalDof const &gdof);
+	size_t getIndex(GlobalDof const &gdof) const;
 
 };
 

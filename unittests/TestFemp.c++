@@ -24,7 +24,7 @@ TestFemp::test_GlobalDof_order()
 
 
 void 
-TestFemp::test_GlobalDofMap_insertion()
+TestFemp::test_GlobalDofMap_insertion_order()
 {
 	using namespace fem;
 
@@ -43,7 +43,6 @@ TestFemp::test_GlobalDofMap_insertion()
 
 	size_t index1 = 0;
 	index1 = mapping.getIndex(dof1);
-
 	QVERIFY( index1 == 0 );
 
 	// push another GlobalDof
@@ -51,7 +50,10 @@ TestFemp::test_GlobalDofMap_insertion()
 
 	size_t index2 = 0;
 	index2 = mapping.getIndex(dof2);
-
 	QVERIFY( index2 == 1 );
+
+	// check if previous index retains its value
+	index1 = mapping.getIndex(dof1);
+	QVERIFY( index1 == 0 );
 }
 

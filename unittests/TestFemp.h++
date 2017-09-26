@@ -15,7 +15,7 @@ class TestFemp
 private slots:
 	void test_GlobalDof_order();
 
-	void test_GlobalDofMap_insertion();
+	void test_GlobalDofMap_insertion_order();
 };
 
 

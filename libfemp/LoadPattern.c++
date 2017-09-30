@@ -7,21 +7,7 @@ namespace fem
 
 LoadPattern::LoadPattern()
 {
-}
-
-
-LoadPattern::LoadPattern(const LoadPattern &copied)
-{
-	this->setLabel(copied.getLabel() );
-	this->nodal_loads = copied.nodal_loads;
-	this->nodal_displacements = copied.nodal_displacements;
-	this->domain_loads = copied.domain_loads;
-	this->surface_loads = copied.surface_loads;
-}
-
-
-LoadPattern::~LoadPattern()
-{
+	this->clear();
 }
 
 

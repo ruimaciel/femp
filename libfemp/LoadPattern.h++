@@ -29,9 +29,10 @@ public:
 	std::vector<SurfaceLoad>	surface_loads;	// lists surface loads
 
 public:
+	/**
+	 * Class default constructor
+	 **/
 	LoadPattern();
-	LoadPattern(const LoadPattern &);
-	~LoadPattern();
 
 	/** Clears all info contained in this load pattern object
 	**/

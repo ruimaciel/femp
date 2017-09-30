@@ -12,7 +12,7 @@ LoadPattern::LoadPattern()
 
 LoadPattern::LoadPattern(const LoadPattern &copied)
 {
-	this->label = copied.label;
+	this->setLabel(copied.getLabel() );
 	this->nodal_loads = copied.nodal_loads;
 	this->nodal_displacements = copied.nodal_displacements;
 	this->domain_loads = copied.domain_loads;
@@ -28,7 +28,7 @@ LoadPattern::~LoadPattern()
 void 
 LoadPattern::clear()
 {
-	label.clear();
+	m_label.clear();
 	nodal_loads.clear();
 	nodal_displacements.clear();
 	domain_loads.clear();
@@ -44,6 +44,20 @@ LoadPattern::empty() const
 	if(!surface_loads.empty()) return false;
 	if(!nodal_displacements.empty()) return false;
 	return true;
+}
+
+
+std::string const & 
+LoadPattern::getLabel() const
+{
+	return this->m_label;
+}
+
+
+void 
+LoadPattern::setLabel(std::string const &label)
+{
+	this->m_label = label;
 }
 
 

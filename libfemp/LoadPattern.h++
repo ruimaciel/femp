@@ -19,8 +19,10 @@ This class defines a set of loads which are applied on the FEM model
 **/
 class LoadPattern
 {
+private:
+	std::string m_label;	// this load pattern's label
+
 public:
-	std::string label;	// this load pattern's label
 	std::map<size_t,NodalLoad> 	nodal_loads;	// maps nodal loads to node references
 	std::map<size_t,NodalDisplacement> 	nodal_displacements;	// maps nodal loads to node references
 	std::map<size_t,DomainLoad>	domain_loads;	// maps to element references
@@ -37,6 +39,17 @@ public:
 
 	/** checks if this load pattern has any load set **/
 	bool empty() const;
+
+
+	/**
+	 * returns the label
+	 **/
+	std::string const & getLabel() const;
+
+	/**
+	 * sets the label
+	 **/
+	void setLabel(std::string const &label);
 
 	void addNodalLoad(size_t, Point);
 	void addNodalDisplacement(size_t, Point);

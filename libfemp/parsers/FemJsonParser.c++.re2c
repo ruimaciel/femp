@@ -993,7 +993,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					break;
 
 				case PR_LOAD_PATTERN_SET:
-					temp_load_pattern.label = label;
+					temp_load_pattern.setLabel(label);
 					model.pushLoadPattern(temp_load_pattern);
 					break;
 

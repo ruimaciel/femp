@@ -581,7 +581,7 @@ void
 Model::createEmptyLoadPattern(std::string const &label)
 {
 	LoadPattern lp;
-	lp.label = label;
+	lp.setLabel(label);
 
 	pushLoadPattern(lp);
 }

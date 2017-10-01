@@ -424,8 +424,8 @@ template<typename Scalar>
 enum Analysis<Scalar>::Error 
 Analysis<Scalar>::recoverValues(Model &model, AnalysisResult &result)
 {
-	ElementResultsFactory<double> factory(model, result);
-	ElementResults<double> *element_results;
+	ElementResultsFactory factory(model, result);
+	ElementResults *element_results;
 
 	for(element_ref_t n = 0; n < model.element_list.size(); n++)
 	{

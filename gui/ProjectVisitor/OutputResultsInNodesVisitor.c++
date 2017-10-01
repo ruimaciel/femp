@@ -24,10 +24,10 @@ OutputResultsInNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisR
 	*m_out << "test\n";
 
 	//for(auto e: m_result->results)
-	for( std::map<fem::element_ref_t, fem::ElementResults<double> *>::iterator e = m_result->results.begin(); e != m_result->results.end(); e++)
+	for( std::map<fem::element_ref_t, fem::ElementResults *>::iterator e = m_result->results.begin(); e != m_result->results.end(); e++)
 	{
 		fem::Element *element;
-		fem::ElementResults<double> *element_results;
+		fem::ElementResults *element_results;
 		element = &model.element_list[e->first];
 
 		

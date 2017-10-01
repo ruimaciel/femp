@@ -45,7 +45,7 @@ AnalysisResult::clear()
 	lm.clear();
 	displacements.clear();
 
-	for( typename std::map<element_ref_t, ElementResults<double> *>::iterator i =  results.begin(); i!= results.end(); i++)
+	for( typename std::map<element_ref_t, ElementResults *>::iterator i =  results.begin(); i!= results.end(); i++)
 	{
 		delete i->second;
 	}

@@ -37,7 +37,7 @@ struct AnalysisResult
 	std::map<size_t , fem::Point> displacements;
 
 	// map between a element reference and the element's recovered values
-	std::map<element_ref_t, ElementResults<double> *> results;
+	std::map<element_ref_t, ElementResults *> results;
 
 	// this replaces the above code
 	ResultsRanges<double>	ranges;

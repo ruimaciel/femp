@@ -245,91 +245,91 @@ AnalysisResultsModel::data(const QModelIndex &index, int role ) const
 
 			case 10:	// strains e11
 				{
-					fem::ElementResults<double> *result = m_result->results[eref];
+					fem::ElementResults *result = m_result->results[eref];
 					return QVariant(result->strains[local_ref].e11);
 				}
 				break;
 
 			case 11:	// strains e22
 				{
-					fem::ElementResults<double> *result = m_result->results[eref];
+					fem::ElementResults *result = m_result->results[eref];
 					return QVariant(result->strains[local_ref].e22);
 				}
 				break;
 
 			case 12:	// strains e33
 				{
-					fem::ElementResults<double> *result = m_result->results[eref];
+					fem::ElementResults *result = m_result->results[eref];
 					return QVariant(result->strains[local_ref].e33);
 				}
 				break;
 
 			case 13:	// strains e12
 				{
-					fem::ElementResults<double> *result = m_result->results[eref];
+					fem::ElementResults *result = m_result->results[eref];
 					return QVariant(result->strains[local_ref].e12);
 				}
 				break;
 
 			case 14:	// strains e13
 				{
-					fem::ElementResults<double> *result = m_result->results[eref];
+					fem::ElementResults *result = m_result->results[eref];
 					return QVariant(result->strains[local_ref].e13);
 				}
 				break;
 
 			case 15:	// strains e23
 				{
-					fem::ElementResults<double> *result = m_result->results[eref];
+					fem::ElementResults *result = m_result->results[eref];
 					return QVariant(result->strains[local_ref].e23);
 				}
 				break;
 
 			case 16:	// stresses s11
 				{
-					fem::ElementResults<double> *result = m_result->results[eref];
+					fem::ElementResults *result = m_result->results[eref];
 					return QVariant(result->stresses[local_ref].s11);
 				}
 				break;
 
 			case 17:	// stresses s22
 				{
-					fem::ElementResults<double> *result = m_result->results[eref];
+					fem::ElementResults *result = m_result->results[eref];
 					return QVariant(result->stresses[local_ref].s22);
 				}
 				break;
 
 			case 18:	// stresses s33
 				{
-					fem::ElementResults<double> *result = m_result->results[eref];
+					fem::ElementResults *result = m_result->results[eref];
 					return QVariant(result->stresses[local_ref].s33);
 				}
 				break;
 
 			case 19:	// stresses s12
 				{
-					fem::ElementResults<double> *result = m_result->results[eref];
+					fem::ElementResults *result = m_result->results[eref];
 					return QVariant(result->stresses[local_ref].s12);
 				}
 				break;
 
 			case 20:	// stresses s13
 				{
-					fem::ElementResults<double> *result = m_result->results[eref];
+					fem::ElementResults *result = m_result->results[eref];
 					return QVariant(result->stresses[local_ref].s13);
 				}
 				break;
 
 			case 21:	// stresses s23
 				{
-					fem::ElementResults<double> *result = m_result->results[eref];
+					fem::ElementResults *result = m_result->results[eref];
 					return QVariant(result->stresses[local_ref].s23);
 				}
 				break;
 
 			case 22:	// von mises
 				{
-					fem::ElementResults<double> *result = m_result->results[eref];
+					fem::ElementResults *result = m_result->results[eref];
 					return QVariant(result->von_mises[local_ref]);
 				}
 				break;

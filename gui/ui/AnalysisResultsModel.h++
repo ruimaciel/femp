@@ -20,7 +20,7 @@ class AnalysisResultsModel
 	Q_OBJECT
 protected:
 	fem::Project *m_project;
-	std::vector<fem::AnalysisResult<double>>::iterator m_result;
+	std::vector<fem::AnalysisResult>::iterator m_result;
 	int 	m_rows;
 	std::map<int, std::vector<fem::Element>::size_type>	m_line_map;
 

@@ -23,7 +23,7 @@ protected:
 	GLfloat m_temp_color[3];	// temporary value used to set a color
 
 	fem::Model *m_model;
-	fem::AnalysisResult<double> *m_result;
+	fem::AnalysisResult *m_result;
 	bool	m_negative_principal_stress_visible;	// flag to represent negative principal stresses
 	bool	m_positive_principal_stress_visible;	// flag to represent positive principal stresses
 
@@ -53,7 +53,7 @@ public:
 
 	//setter functions
 	void setModel(fem::Model &model);
-	void setAnalysisResult(fem::AnalysisResult<double> &result);
+	void setAnalysisResult(fem::AnalysisResult &result);
 
 	// used to toggle the representation of positive and negative principal stresses
 	void showNegativePrincipalStressesVisibility(bool state);

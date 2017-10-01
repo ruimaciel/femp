@@ -1038,7 +1038,7 @@ MainWindow::runAnalysis()
 	connect(&progress,	SIGNAL(finish()),	&dialog,	SLOT(finish() ));
 
 	//TODO finish this
-	fem::AnalysisResult<double> analysis_result;
+	fem::AnalysisResult analysis_result;
 	analysis.set(femp_model, femp_model.load_pattern_list[analysis_dialog.loadPattern()], analysis_result, progress, solver);
 
 	std::thread t(analysis);
@@ -1233,7 +1233,7 @@ MainWindow::dumpResultsFromSelection()
 
 	QTextStream     out(&file);
 	//dump the text to a text file
-	fem::AnalysisResult<double> & femp_result = this->document.getProject().result.back();	// nasty hack
+	fem::AnalysisResult & femp_result = this->document.getProject().result.back();	// nasty hack
 
 	Selection selection = m_selection_manager.getSelection();
 

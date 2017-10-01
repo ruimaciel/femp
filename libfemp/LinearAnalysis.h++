@@ -21,7 +21,7 @@ class LinearAnalysis
 protected:
 	Model *m_model;
 	LoadPattern *m_load_pattern;
-	AnalysisResult<Scalar> *m_result;
+	AnalysisResult *m_result;
 	ProgressIndicatorStrategy *m_progress;
 	Solver<Scalar>	* m_solver;
 	typename Analysis<Scalar>::Error m_error;
@@ -30,7 +30,7 @@ public:
 	LinearAnalysis();
 	~LinearAnalysis();
 
-	void set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver);
+	void set(Model &model, LoadPattern &lp, AnalysisResult &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver);
 
 	/**
 	Operator intended to run the analysis through a thread
@@ -41,7 +41,7 @@ public:
 	typename Analysis<Scalar>::Error const error() const;
 
 protected:
-	enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress);
+	enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp, AnalysisResult *result, ProgressIndicatorStrategy &progress);
 };
 
 

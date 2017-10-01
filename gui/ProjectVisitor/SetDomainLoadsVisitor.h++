@@ -25,7 +25,7 @@ protected:
 public:
 	SetDomainLoadsVisitor(Selection const &selection, fem::LoadPattern &load_pattern, fem::Point const &force);
 
-	void visit(fem::Model &model, std::vector<fem::AnalysisResult<double> > &);
+	void visit(fem::Model &model, std::vector<fem::AnalysisResult > &);
 };
 
 

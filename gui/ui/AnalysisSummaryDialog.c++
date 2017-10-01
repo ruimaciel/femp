@@ -1,7 +1,7 @@
 #include "AnalysisSummaryDialog.h++"
 
 
-AnalysisSummaryDialog::AnalysisSummaryDialog(fem::AnalysisResult<double> const &results, QWidget *parent)
+AnalysisSummaryDialog::AnalysisSummaryDialog(fem::AnalysisResult const &results, QWidget *parent)
 	: QDialog(parent)
 {
 	setupUi(this);

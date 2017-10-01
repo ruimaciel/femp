@@ -30,7 +30,7 @@ LinearAnalysis<Scalar>::~LinearAnalysis()
 
 template<typename Scalar>
 void 
-LinearAnalysis<Scalar>::set(Model &model, LoadPattern &lp, AnalysisResult<Scalar> &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver)
+LinearAnalysis<Scalar>::set(Model &model, LoadPattern &lp, AnalysisResult &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver)
 {
 	assert(solver != NULL);
 
@@ -60,7 +60,7 @@ LinearAnalysis<Scalar>::error() const
 
 template<typename Scalar>
 enum Analysis<Scalar>::Error 
-LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult<Scalar> *result, ProgressIndicatorStrategy &progress)
+LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult *result, ProgressIndicatorStrategy &progress)
 {
 	using namespace std;
 	using namespace Eigen;

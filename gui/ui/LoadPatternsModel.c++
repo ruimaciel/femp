@@ -26,16 +26,15 @@ LoadPatternsModel::data(const QModelIndex &index, int role ) const
 			if( i < m_model.load_pattern_list.size())
 			{
 				fem::LoadPattern const &lp = m_model.load_pattern_list[i];
-				QVariant out;
-				out = QString::fromStdString(lp.label);	
+				QVariant out = QString::fromStdString(lp.getLabel() );	
 				return out;
 			}
 			else
 			{
 				return QVariant();
 			}
-	}
-			break;
+		}
+		break;
 
 		default:
 			return QVariant();

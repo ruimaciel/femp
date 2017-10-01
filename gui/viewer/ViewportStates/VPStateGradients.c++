@@ -91,7 +91,7 @@ VPStateGradients::populateScenegraph(BaseViewport *viewport)
 
 
 void
-VPStateGradients::setAnalysisResult(fem::AnalysisResult<double> &new_result)
+VPStateGradients::setAnalysisResult(fem::AnalysisResult &new_result)
 {
 	this->m_gradient_representation.setAnalysisResult(new_result);
 	this->m_displacements.setAnalysisResult(new_result);

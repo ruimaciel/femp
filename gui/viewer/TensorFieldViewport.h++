@@ -25,18 +25,18 @@ class TensorFieldViewport
 	Q_OBJECT
 
 protected:
-	fem::AnalysisResult<double> *m_analysis_result;
+	fem::AnalysisResult *m_analysis_result;
 	VPStateTensorFields	m_vp_state_tensor_fields;
 
 public:
-	TensorFieldViewport(fem::Project &project, fem::AnalysisResult<double> &result, fem::ResultsRanges<double> &ranges, QWidget *parent = NULL);
+	TensorFieldViewport(fem::Project &project, fem::AnalysisResult &result, fem::ResultsRanges<double> &ranges, QWidget *parent = NULL);
 	~TensorFieldViewport();
 
 	/**
 	Sets this viewport to represent a given analysis result 
 	@param	result	an analysis result
 	**/
-	void setAnalysisResult(fem::AnalysisResult<double> &result);
+	void setAnalysisResult(fem::AnalysisResult &result);
 
 	void setResultsRanges(fem::ResultsRanges<double> &ranges);
 

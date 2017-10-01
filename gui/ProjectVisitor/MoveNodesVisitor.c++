@@ -14,7 +14,7 @@ MoveNodesVisitor::MoveNodesVisitor(Selection const &selection, fem::Point const 
 
 
 void 
-MoveNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult<double> > &)
+MoveNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult> &)
 {
 	for(auto node: m_selection.getNodeReferences())
 	{

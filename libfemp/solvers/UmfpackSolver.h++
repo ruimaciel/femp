@@ -22,15 +22,15 @@ protected:
 	lalib::Matrix<Scalar, lalib::SparseCCS> A;
 
 public:
-	enum Solver<Scalar>::Error initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
-	enum Solver<Scalar>::Error solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
-	enum Solver<Scalar>::Error cleanup(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
+	enum Solver<Scalar>::Error initialize(AnalysisResult &result, ProgressIndicatorStrategy *progress);
+	enum Solver<Scalar>::Error solve(AnalysisResult &result, ProgressIndicatorStrategy *progress);
+	enum Solver<Scalar>::Error cleanup(AnalysisResult &result, ProgressIndicatorStrategy *progress);
 };
 
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error UmfpackSolver<Scalar>::initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *)
+enum Solver<Scalar>::Error UmfpackSolver<Scalar>::initialize(AnalysisResult &result, ProgressIndicatorStrategy *)
 {
 	assign(A, result.K);
 	return Solver<Scalar>::ERR_OK;
@@ -38,7 +38,7 @@ enum Solver<Scalar>::Error UmfpackSolver<Scalar>::initialize(AnalysisResult<Scal
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error UmfpackSolver<Scalar>::solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress)
+enum Solver<Scalar>::Error UmfpackSolver<Scalar>::solve(AnalysisResult &result, ProgressIndicatorStrategy *progress)
 {
 	lalib::umfpack(A, result.d, result.f, progress);
 
@@ -47,7 +47,7 @@ enum Solver<Scalar>::Error UmfpackSolver<Scalar>::solve(AnalysisResult<Scalar> &
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error UmfpackSolver<Scalar>::cleanup(AnalysisResult<Scalar> &, ProgressIndicatorStrategy *)
+enum Solver<Scalar>::Error UmfpackSolver<Scalar>::cleanup(AnalysisResult &, ProgressIndicatorStrategy *)
 {
 	return Solver<Scalar>::ERR_OK;
 }

@@ -3,7 +3,7 @@
 #include "SceneGraph.h++"
 
 
-PostprocessingViewport::PostprocessingViewport(fem::Project &project, fem::AnalysisResult<double> &result, fem::ResultsRanges<double> &ranges, QWidget *parent)
+PostprocessingViewport::PostprocessingViewport(fem::Project &project, fem::AnalysisResult &result, fem::ResultsRanges<double> &ranges, QWidget *parent)
 	: BaseViewport(project, parent)
 {
 	this->project = &project;
@@ -33,7 +33,7 @@ PostprocessingViewport::~PostprocessingViewport()
 
 
 void
-PostprocessingViewport::setAnalysisResult(fem::AnalysisResult<double> &result)
+PostprocessingViewport::setAnalysisResult(fem::AnalysisResult &result)
 {
 	this->m_analysis_result = &result;
 	this->m_vp_state_displacements.setAnalysisResult(result);

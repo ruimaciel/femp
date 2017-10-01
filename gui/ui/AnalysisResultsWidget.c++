@@ -29,7 +29,7 @@ AnalysisResultsWidget::AnalysisResultsWidget(fem::Project &project, QWidget *par
 
 
 void 
-AnalysisResultsWidget::setProjectResults(fem::AnalysisResult<double> const &results)
+AnalysisResultsWidget::setProjectResults(fem::AnalysisResult const &results)
 {
 	m_result  = &results;
 }

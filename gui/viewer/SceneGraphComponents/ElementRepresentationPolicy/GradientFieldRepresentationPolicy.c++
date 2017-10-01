@@ -798,7 +798,7 @@ GradientFieldRepresentationPolicy::setModel(fem::Model &model)
 
 
 void 
-GradientFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult<double> &result)
+GradientFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult &result)
 {
 	m_gradient_flyweight_factory.setAnalysisResult(result);
 }

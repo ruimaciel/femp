@@ -8,7 +8,7 @@
 
 
 
-TensorFieldWindow::TensorFieldWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent)
+TensorFieldWindow::TensorFieldWindow (fem::Project &project, fem::AnalysisResult &result, ViewportColors &colors, QWidget *parent)
 	: MdiWindow(parent), 
 	WindowWithResults(),
 	BaseWindow("Tensor field")
@@ -39,7 +39,7 @@ TensorFieldWindow::setDisplacementsScale(double scale)
 
 
 void 
-TensorFieldWindow::setAnalysisResult(fem::AnalysisResult<double> &result)
+TensorFieldWindow::setAnalysisResult(fem::AnalysisResult &result)
 {
 	this->m_result = &result;
 	this->setGradientValuesRange(result);
@@ -86,7 +86,7 @@ TensorFieldWindow::createToolBars(fem::Project &project)
 
 
 void 
-TensorFieldWindow::setGradientValuesRange(const fem::AnalysisResult<double> &result)
+TensorFieldWindow::setGradientValuesRange(const fem::AnalysisResult &result)
 {
 	//TODO finish this
 	this->m_results_ranges = result.ranges;

@@ -24,7 +24,7 @@ protected:
 public:
 	MoveNodesVisitor(Selection const &selection, fem::Point const &translation);
 
-	void visit(fem::Model &model, std::vector<fem::AnalysisResult<double> > &result);
+	void visit(fem::Model &model, std::vector<fem::AnalysisResult > &result);
 };
 
 

@@ -106,7 +106,7 @@ StressFieldRepresentationPolicy::setModel(fem::Model &model)
 
 
 void 
-StressFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult<double> &result)
+StressFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult &result)
 {
 	m_result = &result;
 

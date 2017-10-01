@@ -341,7 +341,7 @@ BaseViewport::setPosition(double x, double y, double z)
 
 
 void 
-BaseViewport::setAnalysisResult(fem::AnalysisResult<double> &new_result)
+BaseViewport::setAnalysisResult(fem::AnalysisResult &new_result)
 {
 	this->state->setAnalysisResult(new_result);
 }

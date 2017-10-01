@@ -13,7 +13,7 @@ class DisplacementsPolicy
 	: virtual public DisplacementsRepresentationPolicy
 {
 protected:
-	fem::AnalysisResult<double> * m_result;
+	fem::AnalysisResult * m_result;
 	float m_scale;
 	
 public:
@@ -30,7 +30,7 @@ public:
 	fem::Point operator[](size_t &node_reference);
 
 
-	void setAnalysisResult(fem::AnalysisResult<double> &result);
+	void setAnalysisResult(fem::AnalysisResult &result);
 	void setDisplacementsScale(float scale);
 
 };

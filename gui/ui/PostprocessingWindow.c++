@@ -8,7 +8,7 @@
 
 
 
-PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent)
+PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::AnalysisResult &result, ViewportColors &colors, QWidget *parent)
 	: MdiWindow(parent), 
 	WindowWithResults(),
 	WindowWithPostprocessing(),
@@ -40,7 +40,7 @@ PostprocessingWindow::setDisplacementsScale(double scale)
 
 
 void 
-PostprocessingWindow::setAnalysisResult(fem::AnalysisResult<double> &result)
+PostprocessingWindow::setAnalysisResult(fem::AnalysisResult &result)
 {
 	this->m_result = &result;
 	this->setGradientValuesRange(result);
@@ -76,7 +76,7 @@ PostprocessingWindow::createToolBars(fem::Project &project)
 
 
 void 
-PostprocessingWindow::setGradientValuesRange(const fem::AnalysisResult<double> &result)
+PostprocessingWindow::setGradientValuesRange(const fem::AnalysisResult &result)
 {
 	//TODO finish this
 	this->m_results_ranges = result.ranges;

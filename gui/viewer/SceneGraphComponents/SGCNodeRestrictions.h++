@@ -37,7 +37,7 @@ public:
 	/*
 	Renders this node
 	*/
-	// void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult<double> * result,  float &scale, ViewportColors &colors);
+	// void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult * result,  float &scale, ViewportColors &colors);
 	void paintGL(ViewportData &data, ViewportColors &colors);
 
 	/*

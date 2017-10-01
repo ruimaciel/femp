@@ -25,7 +25,7 @@ protected:
 	Model model;	// the FEM model
 
 public:
-	std::vector<AnalysisResult<double> > result;	// a list with all analysis
+	std::vector<AnalysisResult> result;	// a list with all analysis
 		
 public:
 	void clear();
@@ -33,7 +33,7 @@ public:
 	/**
 	Adds the result of a new analysis process to the result list
 	**/
-	void pushAnalysisResult(fem::AnalysisResult<double> &new_result);
+	void pushAnalysisResult(fem::AnalysisResult &new_result);
 
 	/**
 	 * returns a reference to the Project's model

@@ -26,14 +26,14 @@ protected:
 	GLfloat m_temp_color[3];	// temporary value used to set a color
 
 	fem::Model	*m_model;	// pointer to the fem::Model structure, in order to access the materials list
-	fem::AnalysisResult<double>	*m_analysis_result;	// pointer to the current analysis result, needed to access the displacements field
+	fem::AnalysisResult	*m_analysis_result;	// pointer to the current analysis result, needed to access the displacements field
 	fem::ResultsRanges<double>	*m_results_ranges;	// pointer to the current results ranges
 		
 public:
 	GradientFieldPolicy();
 
 	void setModel(fem::Model &model);
-	void setAnalysisResult(fem::AnalysisResult<double> &result);
+	void setAnalysisResult(fem::AnalysisResult &result);
 	void setResultsRanges(fem::ResultsRanges<double> &ranges);
 
 	/**

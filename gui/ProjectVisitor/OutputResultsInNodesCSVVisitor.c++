@@ -7,7 +7,7 @@
 #include <libfemp/AnalysisResult.h++>
 
 
-OutputResultsInNodesCSVVisitor::OutputResultsInNodesCSVVisitor(Selection &selection, fem::AnalysisResult<double> *result, QTextStream &os)
+OutputResultsInNodesCSVVisitor::OutputResultsInNodesCSVVisitor(Selection &selection, fem::AnalysisResult *result, QTextStream &os)
 	: m_selection(selection)
 {
 	m_result = result;
@@ -37,7 +37,7 @@ OutputResultsInNodesCSVVisitor::OutputResultsInNodesCSVVisitor(Selection &select
 
 
 void 
-OutputResultsInNodesCSVVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult<double> > &)
+OutputResultsInNodesCSVVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult> &)
 {
 	assert(m_out != NULL);
 	assert(m_result != NULL);

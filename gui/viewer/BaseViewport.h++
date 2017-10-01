@@ -111,7 +111,7 @@ public Q_SLOTS:
 	/**
 	Configures the current viewport to render new_result
 	**/
-	void setAnalysisResult(fem::AnalysisResult<double> &new_result);
+	void setAnalysisResult(fem::AnalysisResult &new_result);
 
 	void setDisplacementsScale(float scale);
 

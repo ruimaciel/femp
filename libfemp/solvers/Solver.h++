@@ -28,9 +28,9 @@ public:
 	/*
 	If necessary, initializes any data structure specific for this solver
 	*/
-	virtual enum Error initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress) = 0;
-	virtual enum Error solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress) = 0;
-	virtual enum Error cleanup(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress) = 0;
+	virtual enum Error initialize(AnalysisResult &result, ProgressIndicatorStrategy *progress) = 0;
+	virtual enum Error solve(AnalysisResult &result, ProgressIndicatorStrategy *progress) = 0;
+	virtual enum Error cleanup(AnalysisResult &result, ProgressIndicatorStrategy *progress) = 0;
 };
 
 

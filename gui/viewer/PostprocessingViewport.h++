@@ -25,19 +25,19 @@ class PostprocessingViewport
 	Q_OBJECT
 
 protected:
-	fem::AnalysisResult<double> *m_analysis_result;
+	fem::AnalysisResult *m_analysis_result;
 	VPStateDisplacements 	m_vp_state_displacements;
 	VPStateGradients	m_vp_state_gradients;
 
 public:
-	PostprocessingViewport(fem::Project &project, fem::AnalysisResult<double> &result, fem::ResultsRanges<double> &ranges, QWidget *parent = NULL);
+	PostprocessingViewport(fem::Project &project, fem::AnalysisResult &result, fem::ResultsRanges<double> &ranges, QWidget *parent = NULL);
 	~PostprocessingViewport();
 
 	/**
 	Sets this viewport to represent a given analysis result 
 	@param	result	an analysis result
 	**/
-	void setAnalysisResult(fem::AnalysisResult<double> &result);
+	void setAnalysisResult(fem::AnalysisResult &result);
 
 	void setResultsRanges(fem::ResultsRanges<double> &ranges);
 

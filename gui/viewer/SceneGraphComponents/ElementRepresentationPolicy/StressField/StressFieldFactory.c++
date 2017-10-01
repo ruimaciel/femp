@@ -5,7 +5,7 @@ namespace StressFieldRepresentation
 {
 
 
-StressFieldFactory::StressFieldFactory(float &diameter, fem::Model &model, fem::AnalysisResult<double> &result)
+StressFieldFactory::StressFieldFactory(float &diameter, fem::Model &model, fem::AnalysisResult &result)
 {
 	this->m_diameter = &diameter;
 	this->m_model = &model;

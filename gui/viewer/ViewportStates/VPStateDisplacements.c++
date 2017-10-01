@@ -84,7 +84,7 @@ VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 
 
 void
-VPStateDisplacements::setAnalysisResult(fem::AnalysisResult<double> &new_result)
+VPStateDisplacements::setAnalysisResult(fem::AnalysisResult &new_result)
 {
 	this->m_displacements.setAnalysisResult(new_result);
 }

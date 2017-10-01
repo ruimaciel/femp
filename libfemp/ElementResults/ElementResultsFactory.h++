@@ -36,7 +36,7 @@ class ElementResultsFactory
 {
 protected:
 	Model *m_model;
-	AnalysisResult<Scalar> 	*m_analysis_result;
+	AnalysisResult 	*m_analysis_result;
 
 	fem::Tetrahedron4<Scalar>       m_tetrahedron4;
 	fem::Tetrahedron10<Scalar>      m_tetrahedron10;
@@ -52,7 +52,7 @@ protected:
 
 
 public:
-	ElementResultsFactory(Model &, AnalysisResult<Scalar> &);
+	ElementResultsFactory(Model &, AnalysisResult &);
 
 	/**
 	Factory method that produces pointers to ElementResults<Scalar> objects from a given fem::Element object
@@ -74,7 +74,7 @@ protected:
 
 
 template<typename Scalar>
-ElementResultsFactory<Scalar>::ElementResultsFactory(fem::Model &model, AnalysisResult<Scalar> &results)
+ElementResultsFactory<Scalar>::ElementResultsFactory(fem::Model &model, AnalysisResult &results)
 {
 	this->m_model = &model;
 	this->m_analysis_result = &results;

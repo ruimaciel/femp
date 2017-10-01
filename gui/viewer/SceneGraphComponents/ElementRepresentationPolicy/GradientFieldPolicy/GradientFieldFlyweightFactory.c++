@@ -132,9 +132,9 @@ GradientFieldFlyweightFactory::setModel(fem::Model &model)
 
 
 void 
-GradientFieldFlyweightFactory::setAnalysisResult(fem::AnalysisResult<double> &result)
+GradientFieldFlyweightFactory::setAnalysisResult(fem::AnalysisResult &result)
 {
-	std::cout << "GradientFieldFlyweightFactory::setAnalysisResult(fem::AnalysisResult<double> &result)" << std::endl;
+	std::cout << "GradientFieldFlyweightFactory::setAnalysisResult(fem::AnalysisResult &result)" << std::endl;
 	m_neutral_policy.setAnalysisResult(result);	// test pattern
 	m_constant_policy.setAnalysisResult(result);
 

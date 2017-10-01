@@ -19,7 +19,7 @@ ViewportState::~ViewportState()
 
 
 void
-ViewportState::setAnalysisResult(fem::AnalysisResult<double> &)
+ViewportState::setAnalysisResult(fem::AnalysisResult &)
 {
 }
 

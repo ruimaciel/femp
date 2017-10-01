@@ -40,13 +40,13 @@ protected:
 	QToolBar *toggleMenuBarVisibilityToolBar;	
 	QComboBox *analysisComboBox;
 
-	fem::AnalysisResult<double> *m_result;	// pointer to the current analysis result, which will point to a reference
+	fem::AnalysisResult *m_result;	// pointer to the current analysis result, which will point to a reference
 
 	//gradient values
 	fem::ResultsRanges<double> m_results_ranges;	// used to set values for representation
 
 public:
-	PostprocessingWindow (fem::Project &project, fem::AnalysisResult<double> &result, ViewportColors &colors, QWidget *parent = 0);
+	PostprocessingWindow (fem::Project &project, fem::AnalysisResult &result, ViewportColors &colors, QWidget *parent = 0);
 
 
 public Q_SLOTS:
@@ -56,7 +56,7 @@ public Q_SLOTS:
 	void setPostprocessingState(int state);
 	void toggleMenuBarVisibility(bool);
 
-	void setAnalysisResult(fem::AnalysisResult<double> &result);
+	void setAnalysisResult(fem::AnalysisResult &result);
 
 	/**
 	Calls ResultsRangeDialog and sets m_results_ranges accordingly
@@ -67,14 +67,14 @@ Q_SIGNALS:
 	/**
 	emits a signal to dump the results from a given set of project objets
 	**/
-	void dumpResultsFromSelection(fem::AnalysisResult<double> *result);
+	void dumpResultsFromSelection(fem::AnalysisResult *result);
 	
 protected:
 	void connectSignalsToSlots();
 
 	void createToolBars(fem::Project &);
 
-	void setGradientValuesRange(const fem::AnalysisResult<double> &result);
+	void setGradientValuesRange(const fem::AnalysisResult &result);
 
 
 };	

@@ -26,7 +26,7 @@ DisplacementsPolicy::operator[](size_t &node_reference)
 
 
 void 
-DisplacementsPolicy::setAnalysisResult(fem::AnalysisResult<double> &result)
+DisplacementsPolicy::setAnalysisResult(fem::AnalysisResult &result)
 {
 	this->m_result = &result;
 }

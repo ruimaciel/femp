@@ -23,15 +23,15 @@ class CholeskySolver
 		lalib::Matrix<Scalar, lalib::SparseCRS> L;
 
 	public:
-		enum Solver<Scalar>::Error initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
-		enum Solver<Scalar>::Error solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
-		enum Solver<Scalar>::Error cleanup(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *progress);
+		enum Solver<Scalar>::Error initialize(AnalysisResult &result, ProgressIndicatorStrategy *progress);
+		enum Solver<Scalar>::Error solve(AnalysisResult &result, ProgressIndicatorStrategy *progress);
+		enum Solver<Scalar>::Error cleanup(AnalysisResult &result, ProgressIndicatorStrategy *progress);
 };
 
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error CholeskySolver<Scalar>::initialize(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *)
+enum Solver<Scalar>::Error CholeskySolver<Scalar>::initialize(AnalysisResult &result, ProgressIndicatorStrategy *)
 {
 	assign(L, result.K);
 	return Solver<Scalar>::ERR_OK;
@@ -39,7 +39,7 @@ enum Solver<Scalar>::Error CholeskySolver<Scalar>::initialize(AnalysisResult<Sca
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error CholeskySolver<Scalar>::solve(AnalysisResult<Scalar> &result, ProgressIndicatorStrategy *)
+enum Solver<Scalar>::Error CholeskySolver<Scalar>::solve(AnalysisResult &result, ProgressIndicatorStrategy *)
 {
 	//using namespace std;
 	//cout << "K\n" << result.K << "\n\nL:\n" << L << endl;
@@ -50,7 +50,7 @@ enum Solver<Scalar>::Error CholeskySolver<Scalar>::solve(AnalysisResult<Scalar> 
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error CholeskySolver<Scalar>::cleanup(AnalysisResult<Scalar> &, ProgressIndicatorStrategy *)
+enum Solver<Scalar>::Error CholeskySolver<Scalar>::cleanup(AnalysisResult &, ProgressIndicatorStrategy *)
 {
 	return Solver<Scalar>::ERR_OK;
 }

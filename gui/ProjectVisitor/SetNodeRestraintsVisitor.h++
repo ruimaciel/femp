@@ -24,7 +24,7 @@ protected:
 public:
 	SetNodeRestraintsVisitor(Selection const &selection, fem::NodeRestrictions const &restrictions);
 
-	void visit(fem::Model &model, std::vector<fem::AnalysisResult<double> > &result);
+	void visit(fem::Model &model, std::vector<fem::AnalysisResult > &result);
 };
 
 

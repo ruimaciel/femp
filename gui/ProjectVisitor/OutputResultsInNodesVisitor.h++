@@ -19,14 +19,14 @@ class OutputResultsInNodesVisitor
 	: public ProjectVisitor
 {
 protected:
-	fem::AnalysisResult<double>	*m_result;
+	fem::AnalysisResult	*m_result;
 	QTextStream	*m_out;
 	Selection const &m_selection;
 	
 public:
-	OutputResultsInNodesVisitor(Selection &selection, fem::AnalysisResult<double> *result, QTextStream &os);
+	OutputResultsInNodesVisitor(Selection &selection, fem::AnalysisResult *result, QTextStream &os);
 
-	void visit(fem::Model &model, std::vector<fem::AnalysisResult<double> > &result);
+	void visit(fem::Model &model, std::vector<fem::AnalysisResult > &result);
 };
 
 

@@ -32,7 +32,7 @@ class StressFieldFactory
 protected:
 	float *m_diameter;
 	fem::Model *m_model;
-	fem::AnalysisResult<double> *m_result;
+	fem::AnalysisResult *m_result;
 	float m_max, m_min;	// maximum and minimum value from any stress
 
 	// temp values for dsyevj3
@@ -55,7 +55,7 @@ protected:
 	fem::Prism18<double>    	m_prism18;
 
 public:
-	StressFieldFactory(float &diameter, fem::Model &model, fem::AnalysisResult<double> &result);
+	StressFieldFactory(float &diameter, fem::Model &model, fem::AnalysisResult &result);
 
 	/**
 	The factory functor

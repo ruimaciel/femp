@@ -42,7 +42,7 @@ public:
 	/**
 	Configures the viewport to render the scene according to new_result
 	**/
-	virtual void setAnalysisResult(fem::AnalysisResult<double> &new_result);
+	virtual void setAnalysisResult(fem::AnalysisResult &new_result);
 
 	virtual void setDisplacementsScale(float new_scale);
 

@@ -14,7 +14,7 @@ Project::clear()
 
 
 void 
-Project::pushAnalysisResult(fem::AnalysisResult<double> &new_result)
+Project::pushAnalysisResult(fem::AnalysisResult &new_result)
 {
 	this->result.push_back(new_result);
 }

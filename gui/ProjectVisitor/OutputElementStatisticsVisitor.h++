@@ -24,7 +24,7 @@ protected:
 public:
 	OutputElementStatisticsVisitor(Selection const &selection);
 
-	void visit(fem::Model &model, std::vector<fem::AnalysisResult<double> > &result);
+	void visit(fem::Model &model, std::vector<fem::AnalysisResult > &result);
 };
 
 

@@ -338,7 +338,7 @@ Document::save()
 				out << ",";
 			out << "\n\t\t{";
 			out << "\n\t\t\t";
-			out << "\"label\": \"" << QString::fromStdString(it->label) << "\"";
+			out << "\"label\": \"" << QString::fromStdString(it->getLabel()) << "\"";
 			// take care of the nodal loads
 			if (!it->nodal_loads.empty()) {
 				out << ",\n\t\t\t";

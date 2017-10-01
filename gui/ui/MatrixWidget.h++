@@ -21,7 +21,7 @@ class MatrixWidget
 
 protected:
 	fem::Project const *m_project;
-	fem::AnalysisResult<double> const *m_result;
+	fem::AnalysisResult const *m_result;
 	MatrixModel *m_model;
 
 public:

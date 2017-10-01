@@ -88,7 +88,7 @@ VPStateTensorFields::populateScenegraph(BaseViewport *viewport)
 
 
 void
-VPStateTensorFields::setAnalysisResult(fem::AnalysisResult<double> &new_result)
+VPStateTensorFields::setAnalysisResult(fem::AnalysisResult &new_result)
 {
 	this->m_stress_field_representation.setAnalysisResult(new_result);
 }

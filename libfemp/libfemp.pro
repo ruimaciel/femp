@@ -90,6 +90,7 @@ SOURCES = Group.c++ \
 	elements/BaseElement.c++ \
 	Analysis.c++ \
 	LinearAnalysis.c++ \
+	AnalysisResult.c++\
 	SurfaceLoadOperators/ConcentricLoad.c++	\
 	SurfaceLoadOperators/ConstantLoad.c++ \
 	SurfaceLoadOperators/SurfaceLoadOperator.c++ \

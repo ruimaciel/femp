@@ -23,7 +23,7 @@ GradientFieldPolicy::setModel(fem::Model &model)
 
 
 void 
-GradientFieldPolicy::setAnalysisResult(fem::AnalysisResult<double> &result)
+GradientFieldPolicy::setAnalysisResult(fem::AnalysisResult &result)
 {
 	this->m_analysis_result = &result;
 }

@@ -16,7 +16,7 @@ OutputElementStatisticsVisitor::OutputElementStatisticsVisitor(Selection const &
 
 
 void 
-OutputElementStatisticsVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult<double> > &)
+OutputElementStatisticsVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult> &)
 {
 	assert(m_selection != NULL);
 

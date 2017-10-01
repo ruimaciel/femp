@@ -31,7 +31,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 	this->error.message.clear();
 
 	// set the temp variable's default values
-	load_pattern.label = "Default MSH import load pattern";
+	load_pattern.setLabel("Default MSH import load pattern");
 	//TODO set default material
 
 	while(!ss.empty())

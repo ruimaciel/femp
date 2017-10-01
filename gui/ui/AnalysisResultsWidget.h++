@@ -23,7 +23,7 @@ class AnalysisResultsWidget
 
 protected:
 	fem::Project const &m_project;
-	fem::AnalysisResult<double> const *m_result;
+	fem::AnalysisResult const *m_result;
 	AnalysisResultsModel *m_model;
 
 	// proxy model to provide a way to filter stuff from the results
@@ -35,7 +35,7 @@ public:
 	/**
 	Sets which project to represent
 	**/
-	void setProjectResults(fem::AnalysisResult<double> const &result);
+	void setProjectResults(fem::AnalysisResult const &result);
 
 private:
 	// adds load pattern names to the combo box

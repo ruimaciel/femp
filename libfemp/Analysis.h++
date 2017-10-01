@@ -32,21 +32,21 @@ class Analysis
 public:
 	// list of supported elements
 	// area elements, used to integrate surface loads
-	Triangle3<Scalar>	tri3;
-	Triangle6<Scalar>	tri6;
-	Quadrangle4<Scalar> 	quad4;
-	Quadrangle8<Scalar> 	quad8;
-	Quadrangle9<Scalar> 	quad9;
+	Triangle3	tri3;
+	Triangle6	tri6;
+	Quadrangle4 	quad4;
+	Quadrangle8 	quad8;
+	Quadrangle9 	quad9;
 
 	// volume elements
-	Tetrahedron4<Scalar>	tetra4;
-	Tetrahedron10<Scalar>	tetra10;
-	Hexahedron8<Scalar> 	hexa8;
-	Hexahedron20<Scalar> 	hexa20;
-	Hexahedron27<Scalar> 	hexa27;
-	Prism6<Scalar>		prism6;
-	Prism15<Scalar>		prism15;
-	Prism18<Scalar>		prism18;
+	Tetrahedron4	tetra4;
+	Tetrahedron10	tetra10;
+	Hexahedron8 	hexa8;
+	Hexahedron20 	hexa20;
+	Hexahedron27 	hexa27;
+	Prism6		prism6;
+	Prism15		prism15;
+	Prism18		prism18;
 
 public:
 	enum Error {	
@@ -163,7 +163,7 @@ protected:
 	@param f	FemEquation
 	@param element	reference to the element
 	**/
-	void add_elementary_stiffness_to_global(const Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult &result);
+	void add_elementary_stiffness_to_global(const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult &result);
 
 };
 

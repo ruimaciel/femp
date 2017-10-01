@@ -33,16 +33,21 @@ HEADERS = Group.h++ \
 	elements/all.h++ \
 	elements/ElementFactory.h++ \
 	elements/BaseElement.h++ \
+	elements/TriangleFamily.h++ \
 	elements/Triangle3.h++ \
 	elements/Triangle6.h++ \
+	elements/QuadrangleFamily.h++ \
 	elements/Quadrangle4.h++ \
 	elements/Quadrangle8.h++ \
 	elements/Quadrangle9.h++ \
+	elements/HexahedronFamily.h++ \
 	elements/Hexahedron8.h++ \
 	elements/Hexahedron20.h++ \
 	elements/Hexahedron27.h++ \
+	elements/TetrahedronFamily.h++ \
 	elements/Tetrahedron4.h++ \
 	elements/Tetrahedron10.h++ \
+	elements/PrismFamily.h++ \
 	elements/Prism6.h++ \
 	elements/Prism18.h++ \
 	SurfaceLoadOperators/ConcentricLoad.h++	\
@@ -88,6 +93,25 @@ SOURCES = Group.c++ \
 	NodeGroup.c++ \
 	elements/ElementFactory.c++ \
 	elements/BaseElement.c++ \
+	elements/TriangleFamily.c++ \
+	elements/Triangle3.c++ \
+	elements/Triangle6.c++ \
+	elements/Triangle10.c++ \
+	elements/QuadrangleFamily.c++ \
+	elements/Quadrangle4.c++ \
+	elements/Quadrangle8.c++ \
+	elements/Quadrangle9.c++ \
+	elements/HexahedronFamily.c++ \
+	elements/Hexahedron8.c++ \
+	elements/Hexahedron20.c++ \
+	elements/Hexahedron27.c++ \
+	elements/TetrahedronFamily.c++ \
+	elements/Tetrahedron4.c++ \
+	elements/Tetrahedron10.c++ \
+	elements/PrismFamily.c++ \
+	elements/Prism6.c++ \
+	elements/Prism15.c++ \
+	elements/Prism18.c++ \
 	Analysis.c++ \
 	LinearAnalysis.c++ \
 	AnalysisResult.c++\

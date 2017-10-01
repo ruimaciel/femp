@@ -22,13 +22,13 @@ class SurfaceNormalLoad
 {
 protected:
 	float m_magnitude;
-	fem::BaseElement<float> *element;	// used to store a pointer to the current object: nasty hack due to the way fem::Element was done
+	fem::BaseElement *element;	// used to store a pointer to the current object: nasty hack due to the way fem::Element was done
 
-	fem::Triangle3<float> m_tri3;
-	fem::Triangle6<float> m_tri6;
-	fem::Quadrangle4<float> m_quad4;
-	fem::Quadrangle8<float> m_quad8;
-	fem::Quadrangle9<float> m_quad9;
+	fem::Triangle3 m_tri3;
+	fem::Triangle6 m_tri6;
+	fem::Quadrangle4 m_quad4;
+	fem::Quadrangle8 m_quad8;
+	fem::Quadrangle9 m_quad9;
 
 public:
 	SurfaceNormalLoad();

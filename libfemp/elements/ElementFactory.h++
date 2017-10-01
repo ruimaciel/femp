@@ -11,8 +11,7 @@
 /**
  * Factory function created to ease the transition to properly polymorphic element definitions
  **/
-template<typename Scalar>
-fem::BaseElement<Scalar> * getElement(fem::Element const &old_element);
+fem::BaseElement * getElement(fem::Element const &old_element);
 
 
 #endif

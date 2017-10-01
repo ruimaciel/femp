@@ -7,47 +7,42 @@
 namespace fem
 {
 
-template<typename Scalar>
-std::vector<Scalar> const 
-BaseElement<Scalar>::getN(const Point &p)
+std::vector<double> const 
+BaseElement::getN(const Point &p)
 {
 	return this->setN(p);
 }
 
 
-template<typename Scalar>
-std::vector<Scalar> const 
-BaseElement<Scalar>::getdNdcsi(const Point &p)
+std::vector<double> const 
+BaseElement::getdNdcsi(const Point &p)
 {
 	return this->setdNdcsi(p);
 }
 
 
-template<typename Scalar>
-std::vector<Scalar> const 
-BaseElement<Scalar>::getdNdeta(const Point &p)
+std::vector<double> const 
+BaseElement::getdNdeta(const Point &p)
 {
 	return this->setdNdeta(p);
 }
 
 
-template<typename Scalar>
-std::vector<Scalar> const 
-BaseElement<Scalar>::getdNdzeta(const Point &p)
+std::vector<double> const 
+BaseElement::getdNdzeta(const Point &p)
 {
 	return this->setdNdzeta(p);
 }
 
 
-template<typename Scalar>
-Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> 
-BaseElement<Scalar>::getStiffnessMatrix(fem::Model &model)
+Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> 
+BaseElement::getStiffnessMatrix(fem::Model &model)
 {
 	using namespace Eigen;
 
 
-	Matrix<Scalar,Dynamic,Dynamic> k_elem;
-	Matrix<Scalar,Dynamic,Dynamic> B, Bt;
+	Matrix<double,Dynamic,Dynamic> k_elem;
+	Matrix<double,Dynamic,Dynamic> B, Bt;
 	Matrix3d J, invJ;
 
 	// get the number of expected nodes
@@ -75,14 +70,14 @@ BaseElement<Scalar>::getStiffnessMatrix(fem::Model &model)
 
 	//TODO fix how the material properties are passed
 	const fem::Material &material = model.material_list[this->material];
-	Matrix<Scalar,6,6> D = material.generateD().template cast<Scalar>();
+	Matrix<double,6,6> D = material.generateD().cast<double>();
 
 	// build the stiffness matrix: cycle through the number of integration points
-	for (typename std::vector<boost::tuple<fem::Point,Scalar> >::const_iterator i = this->stiffness_quadrature().begin(); i != this->stiffness_quadrature().end(); i++)
+	for (typename std::vector<boost::tuple<fem::Point,double> >::const_iterator i = this->stiffness_quadrature().begin(); i != this->stiffness_quadrature().end(); i++)
 	{
 
 		// set the shape function and it's partial derivatives for this integration Point
-		const Point &point = i->template get<0>();
+		const Point &point = i->get<0>();
 
 		this->setdNdcsi( point );
 		this->setdNdeta( point );
@@ -94,23 +89,23 @@ BaseElement<Scalar>::getStiffnessMatrix(fem::Model &model)
 		{
 			auto const & node_ref = this->nodes[n];
 			fem::Node const &node = model.getNode(node_ref);
-			Scalar const &X = node.x();
-			Scalar const &Y = node.y();
-			Scalar const &Z = node.z();
+			double const &X = node.x();
+			double const &Y = node.y();
+			double const &Z = node.z();
 
 			J(0,0) += this->dNdcsi[n]*X;		J(0,1) += this->dNdcsi[n]*Y;		J(0,2) += this->dNdcsi[n]*Z;
 			J(1,0) += this->dNdeta[n]*X;		J(1,1) += this->dNdeta[n]*Y;		J(1,2) += this->dNdeta[n]*Z;
 			J(2,0) += this->dNdzeta[n]*X;	J(2,1) += this->dNdzeta[n]*Y;	J(2,2) += this->dNdzeta[n]*Z;
 		}
 
-		const Scalar detJ = J.determinant();
+		const double detJ = J.determinant();
 
 		//TODO throw exception if determinant is negative
 		/*
 		if(detJ <= 0)
 		{
 			std::cerr << __FILE__ << ":" << __LINE__ ;
-			std::cerr << " BaseElement<Scalar>::getStiffnessMatrix(): stumbled on a negative determinant" << std::endl;
+			std::cerr << " BaseElement::getStiffnessMatrix(): stumbled on a negative determinant" << std::endl;
 		}
 		*/
 
@@ -139,7 +134,7 @@ BaseElement<Scalar>::getStiffnessMatrix(fem::Model &model)
 		Bt = B.transpose();
 
 		// add this integration Point's contribution
-		const Scalar &weight = i->template get<1>();
+		const double &weight = i->get<1>();
 		k_elem += Bt*D*B*detJ*weight;
 	}
 
@@ -149,7 +144,7 @@ BaseElement<Scalar>::getStiffnessMatrix(fem::Model &model)
 
 /*******************************************************************************
 Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
-(Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.Scalar. Vetterling, and
+(Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.double. Vetterling, and
 B.P. Flannery
 *******************************************************************************/
 /*******************************************************************************
@@ -157,12 +152,11 @@ Given n, this
 routine returns arrays x[1..n] and w[1..n] of length n, containing the abscissas
 and weights of the Gauss-Legendre n-Point quadrature formula.
 *******************************************************************************/
-template<typename Scalar>
 void 
-BaseElement<Scalar>::gauleg (Scalar x[], Scalar w[], int n)
+BaseElement::gauleg (double x[], double w[], int n)
 {
 	int m,j,i;
-	Scalar z1,z,pp,p3,p2,p1;
+	double z1,z,pp,p3,p2,p1;
 	m=(n+1)/2; /* The roots are symmetric, so we only find half of them. */
 
 	for (i=1;i<=m;i++) 
@@ -192,11 +186,6 @@ BaseElement<Scalar>::gauleg (Scalar x[], Scalar w[], int n)
 	}
 }
 
-
-// template explicit instantiation
-
-template class BaseElement<float>;
-template class BaseElement<double>;
 
 }	// namespace fem
 

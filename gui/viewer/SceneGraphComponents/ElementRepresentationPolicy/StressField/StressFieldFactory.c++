@@ -22,7 +22,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 
 	StressFieldRepresentation representation;
 
-	fem::BaseElement<double> *e = nullptr;
+	fem::BaseElement *e = nullptr;
 	std::vector<fem::Point>	local_points;	// list of local_points coordinates where the tensors will be evaluated
 	fem::Point dxdcsi, dxdeta, dxdzeta;
 

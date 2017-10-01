@@ -21,7 +21,7 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 	ElementResults *results;
 	results = new ElementResults;
 
-	fem::BaseElement<double> *element;
+	fem::BaseElement *element;
 
 	switch(reference_element.type)
 	{

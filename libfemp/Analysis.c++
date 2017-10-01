@@ -80,15 +80,15 @@ enum Analysis<Scalar>::Error
 Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace Eigen;
-	Matrix<Scalar,Dynamic, Dynamic> k_elem;
+	Matrix<double,Dynamic, Dynamic> k_elem;
 
-	BaseElement<Scalar> *element = NULL;	// points to the current element class
+	BaseElement *element = NULL;	// points to the current element class
 
 	for(std::vector<Element>::iterator element_iterator = model.element_list.begin(); element_iterator != model.element_list.end(); element_iterator++)
 	{
 		const Element &el = *element_iterator;
 
-		element = getElement<Scalar>(el); //TODO remove after migration to polymorphic elements
+		element = getElement(el); //TODO remove after migration to polymorphic elements
 
 		k_elem = element->getStiffnessMatrix(model);
 
@@ -121,22 +121,22 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 		fem::Element &el = model.element_list[domain_load->first];
 
 		// set the routines for the current element
-		BaseElement<Scalar> *element = getElement<Scalar>(el);
+		BaseElement *element = getElement(el);
 
 		const int nnodes = element->node_number();
 		f_elem.resize(nnodes*3);
 		f_elem.setZero();
 
 		// as the distribution is linear across the domain then degree 1 is enough
-		for (typename std::vector<boost::tuple<fem::Point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
+		for (typename std::vector<boost::tuple<fem::Point,double> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
 		{
 			// build the Jacobian
-			Point quadrature_point = i->template get<0>();
+			Point quadrature_point = i->get<0>();
 
-			std::vector<Scalar> N = element->setN( quadrature_point);
-			std::vector<Scalar> dNdcsi = element->setdNdcsi(quadrature_point);
-			std::vector<Scalar> dNdeta = element->setdNdeta( quadrature_point);
-			std::vector<Scalar> dNdzeta = element->setdNdzeta( quadrature_point);
+			std::vector<double> N = element->setN( quadrature_point);
+			std::vector<double> dNdcsi = element->setdNdcsi(quadrature_point);
+			std::vector<double> dNdeta = element->setdNdeta( quadrature_point);
+			std::vector<double> dNdzeta = element->setdNdzeta( quadrature_point);
 
 			// generate the jacobian
 			J.setZero();
@@ -146,16 +146,16 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 				auto const & node_ref = element->nodes[n];
 				fem::Node const &node = model.getNode(node_ref);
 
-				Scalar const &X = node.x();
-				Scalar const &Y = node.y();
-				Scalar const &Z = node.z();
+				double const &X = node.x();
+				double const &Y = node.y();
+				double const &Z = node.z();
 
 				J(0,0) += dNdcsi[n]*X;	J(0,1) += dNdcsi[n]*Y;	J(0,2) += dNdcsi[n]*Z;
 				J(1,0) += dNdeta[n]*X;	J(1,1) += dNdeta[n]*Y;	J(1,2) += dNdeta[n]*Z;
 				J(2,0) += dNdzeta[n]*X;	J(2,1) += dNdzeta[n]*Y;	J(2,2) += dNdzeta[n]*Z;
 			}
 
-			const Scalar detJ = J.determinant();
+			const double detJ = J.determinant();
 			if(detJ <= 0)
 			{
 				std::cerr << __FILE__ << ":" << __LINE__ ;
@@ -166,11 +166,11 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			}
 
 			// and now the f_elem
-			double W = i->template get<1>();
+			double W = i->get<1>();
 			for(int n = 0; n < nnodes; n++)
 			{
 				Point const &f = domain_load->second.force;
-				const Scalar cN = N[n]; 
+				const double cN = N[n]; 
 				f_elem(3*n) += cN*f.x()*detJ*W;
 				f_elem(3*n+1) += cN*f.y()*detJ*W;
 				f_elem(3*n+2) += cN*f.z()*detJ*W;
@@ -219,7 +219,7 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 
 	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
 	{
-		BaseElement<Scalar> *element = NULL;	// points to the current element class
+		BaseElement *element = NULL;	// points to the current element class
 		switch(surface_load->type)
 		{
 			case Element::FE_TRIANGLE3:
@@ -253,12 +253,12 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 		f_elem.resize(nnodes*3);
 		f_elem.setZero();
 
-		for (typename std::vector<boost::tuple<fem::Point,Scalar> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
+		for (typename std::vector<boost::tuple<fem::Point,double> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
 		{
 				// get shape function and shape function derivatives in this integration Point's coordinate
-			std::vector<Scalar> N = element->setN( i->template get<0>() );
-			std::vector<Scalar> dNdcsi = element->setdNdcsi(i->template get<0>() );
-			std::vector<Scalar> dNdeta = element->setdNdeta(i->template get<0>() );
+			std::vector<double> N = element->setN( i->get<0>() );
+			std::vector<double> dNdcsi = element->setdNdcsi(i->get<0>() );
+			std::vector<double> dNdeta = element->setdNdeta(i->get<0>() );
 
 				// calculate the Jacobian
 			J.setZero();
@@ -267,9 +267,9 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 			{
 				auto const & node_ref = surface_load->nodes[n];
 				fem::Node const &node = model.getNode(node_ref);
-				Scalar const &X = node.x();
-				Scalar const &Y = node.y();
-				Scalar const &Z = node.z();
+				double const &X = node.x();
+				double const &Y = node.y();
+				double const &Z = node.z();
 
 				J(0,0) += dNdcsi[n]*X;	J(0,1) += dNdcsi[n]*Y;	J(0,2) += dNdcsi[n]*Z;
 				J(1,0) += dNdeta[n]*X;	J(1,1) += dNdeta[n]*Y;	J(1,2) += dNdeta[n]*Z;
@@ -297,10 +297,10 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 				q += N[j]*surface_load->surface_forces[j];
 			}
 			
-			const Scalar &W = i->template get<1>();
+			const double &W = i->template get<1>();
 			for(int n = 0; n < nnodes; n++)
 			{
-				const Scalar cN = N[n];
+				const double cN = N[n];
 
 				f_elem(3*n  ) += cN*q.x()*detJ*W;
 				f_elem(3*n+1) += cN*q.y()*detJ*W;
@@ -494,7 +494,7 @@ Analysis<Scalar>::make_location_matrix(Model &model, AnalysisResult &result)
 
 template<typename Scalar>
 inline void
-Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Matrix<Scalar,Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult &result)
+Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Matrix<double,Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult &result)
 {
 	using namespace std;	//TODO remove cleanup code
 

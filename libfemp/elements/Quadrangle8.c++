@@ -22,7 +22,8 @@ Quadrangle8::Quadrangle8()
 }
 
 
-std::vector<double> & Quadrangle8::setN(const Point &p)
+std::vector<double> &
+Quadrangle8::setN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -40,13 +41,15 @@ std::vector<double> & Quadrangle8::setN(const Point &p)
 }
 
 
-std::vector<double> & Quadrangle8::setdNdcsi(const Point &p)
+std::vector<double> &
+Quadrangle8::setdNdcsi(const Point &p)
 {
 	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
 }
 
 
-std::vector<double> & Quadrangle8::setdNdcsi(const double &csi, const double &eta, const double &)
+std::vector<double> &
+Quadrangle8::setdNdcsi(const double &csi, const double &eta, const double &)
 {
 	//TODO test this
 	// this->dNdcsi
@@ -63,13 +66,15 @@ std::vector<double> & Quadrangle8::setdNdcsi(const double &csi, const double &et
 }
 
 
-std::vector<double> & Quadrangle8::setdNdeta(const Point &p)
+std::vector<double> &
+Quadrangle8::setdNdeta(const Point &p)
 {
 	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
-std::vector<double> & Quadrangle8::setdNdeta(const double &csi, const double &eta, const double &)
+std::vector<double> &
+Quadrangle8::setdNdeta(const double &csi, const double &eta, const double &)
 {
 	//TODO test this
 	// this->dNdeta
@@ -86,13 +91,15 @@ std::vector<double> & Quadrangle8::setdNdeta(const double &csi, const double &et
 }
 
 
-std::vector<double> & Quadrangle8::setdNdzeta(const Point &p)
+std::vector<double> &
+Quadrangle8::setdNdzeta(const Point &p)
 {
 	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
-std::vector<double> & Quadrangle8::setdNdzeta(const double &, const double &, const double &)
+std::vector<double> &
+Quadrangle8::setdNdzeta(const double &, const double &, const double &)
 {
 	//TODO test this
 	// this->dNdzeta

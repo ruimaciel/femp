@@ -24,7 +24,8 @@ Prism6::Prism6()
 }
 
 
-std::vector<double> & Prism6::setN(const Point &p)
+std::vector<double> &
+Prism6::setN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -41,13 +42,15 @@ std::vector<double> & Prism6::setN(const Point &p)
 }
 
 
-std::vector<double> & Prism6::setdNdcsi(const Point &p)
+std::vector<double> &
+Prism6::setdNdcsi(const Point &p)
 {
 	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
 }
 
 
-std::vector<double> & Prism6::setdNdcsi(const double &, const double &, const double &zeta)
+std::vector<double> &
+Prism6::setdNdcsi(const double &, const double &, const double &zeta)
 {
 	//TODO finish this
 	// this->dNdcsi
@@ -62,13 +65,15 @@ std::vector<double> & Prism6::setdNdcsi(const double &, const double &, const do
 }
 
 
-std::vector<double> & Prism6::setdNdeta(const Point &p)
+std::vector<double> &
+Prism6::setdNdeta(const Point &p)
 {
 	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
-std::vector<double> & Prism6::setdNdeta(const double &, const double &, const double &zeta)
+std::vector<double> &
+Prism6::setdNdeta(const double &, const double &, const double &zeta)
 {
 	//TODO finish this
 	// this->dNdeta
@@ -83,13 +88,15 @@ std::vector<double> & Prism6::setdNdeta(const double &, const double &, const do
 }
 
 
-std::vector<double> & Prism6::setdNdzeta(const Point &p)
+std::vector<double> &
+Prism6::setdNdzeta(const Point &p)
 {
 	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
 }
 
 
-std::vector<double> & Prism6::setdNdzeta(const double &csi, const double &eta, const double &)
+std::vector<double> &
+Prism6::setdNdzeta(const double &csi, const double &eta, const double &)
 {
 	//TODO finish this
 	// this->dNdzeta

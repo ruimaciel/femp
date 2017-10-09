@@ -47,14 +47,10 @@ Hexahedron8::setN(const Point &p)
 std::vector<double> & 
 Hexahedron8::setdNdcsi(const Point &p)
 {
-	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
-}
+	double csi = p.x();
+	double eta = p.y();
+	double zeta = p.z();
 
-
-std::vector<double> & 
-Hexahedron8::setdNdcsi(const double &, const double &eta, const double &zeta)
-{
-	// this->dNdcsi
 	this->dNdcsi[ 0] = -(1-eta)*(1-zeta)/8;
 	this->dNdcsi[ 1] = (1-eta)*(1-zeta)/8;
 	this->dNdcsi[ 2] = (eta+1)*(1-zeta)/8;
@@ -71,14 +67,10 @@ Hexahedron8::setdNdcsi(const double &, const double &eta, const double &zeta)
 std::vector<double> & 
 Hexahedron8::setdNdeta(const Point &p)
 {
-	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
-}
+	double csi = p.x();
+	double eta = p.y();
+	double zeta = p.z();
 
-
-std::vector<double> & 
-Hexahedron8::setdNdeta(const double &csi, const double &, const double &zeta)
-{
-	// this->dNdeta
 	this->dNdeta[ 0] = -(1-csi)*(1-zeta)/8;
 	this->dNdeta[ 1] = -(csi+1)*(1-zeta)/8;
 	this->dNdeta[ 2] = (csi+1)*(1-zeta)/8;
@@ -95,14 +87,10 @@ Hexahedron8::setdNdeta(const double &csi, const double &, const double &zeta)
 std::vector<double> & 
 Hexahedron8::setdNdzeta(const Point &p)
 {
-	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
-}
+	double csi = p.x();
+	double eta = p.y();
+	double zeta = p.z();
 
-
-std::vector<double> & 
-Hexahedron8::setdNdzeta(const double &csi, const double &eta, const double &)
-{
-	// this->dNdzeta
 	this->dNdzeta[ 0] = -(1-csi)*(1-eta)/8;
 	this->dNdzeta[ 1] = -(csi+1)*(1-eta)/8;
 	this->dNdzeta[ 2] = -(csi+1)*(eta+1)/8;

@@ -57,15 +57,9 @@ Prism18::setN(const Point &p)
 std::vector<double> &
 Prism18::setdNdcsi(const Point &p)
 {
-	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
-}
-
-
-std::vector<double> &
-Prism18::setdNdcsi(const double &csi, const double &eta, const double &zeta)
-{
-	//TODO test this
-	// this->dNdcsi
+	double csi = p.x();
+	double eta = p.y();
+	double zeta = p.z();
 
 	this->dNdcsi[0] = (2*eta+2*csi-1)*(zeta-1)*zeta/2+(eta+csi-1)*(zeta-1)*zeta;
 	this->dNdcsi[1] = (2*csi-1)*(zeta-1)*zeta/2+csi*(zeta-1)*zeta;
@@ -94,15 +88,9 @@ Prism18::setdNdcsi(const double &csi, const double &eta, const double &zeta)
 std::vector<double> &
 Prism18::setdNdeta(const Point &p)
 {
-	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
-}
-
-
-std::vector<double> &
-Prism18::setdNdeta(const double &csi, const double &eta, const double &zeta)
-{
-	//TODO test this
-	// this->dNdeta
+	double csi = p.x();
+	double eta = p.y();
+	double zeta = p.z();
 
 	this->dNdeta[0] = (2*eta+2*csi-1)*(zeta-1)*zeta/2+(eta+csi-1)*(zeta-1)*zeta;
 	this->dNdeta[1] = 0;
@@ -130,14 +118,9 @@ Prism18::setdNdeta(const double &csi, const double &eta, const double &zeta)
 std::vector<double> &
 Prism18::setdNdzeta(const Point &p)
 {
-	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
-}
-
-
-std::vector<double> &
-Prism18::setdNdzeta(const double &csi, const double &eta, const double &zeta)
-{
-	//TODO test this
+	double csi = p.x();
+	double eta = p.y();
+	double zeta = p.z();
 
 	this->dNdzeta[0] = (eta+csi-1)*(2*eta+2*csi-1)*zeta/2+(eta+csi-1)*(2*eta+2*csi-1)*(zeta-1)/2;
 	this->dNdzeta[1] = csi*(2*csi-1)*zeta/2+csi*(2*csi-1)*(zeta-1)/2;

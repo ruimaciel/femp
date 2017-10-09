@@ -48,15 +48,10 @@ Tetrahedron10::setN(const Point &p)
 std::vector<double> &
 Tetrahedron10::setdNdcsi(const Point &p)
 {
-	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
-}
+	double csi = p.x();
+	double eta = p.y();
+	double zeta = p.z();
 
-
-std::vector<double> &
-Tetrahedron10::setdNdcsi(const double &csi, const double &eta, const double &zeta)
-{
-	//TODO finish this
-	// this->dNdcsi
 	this->dNdcsi[0] = -2*(-zeta-eta-csi+1)-2*(-zeta-eta-csi+0.5);
 	this->dNdcsi[1] = 2*csi+2*(csi-0.5);
 	this->dNdcsi[2] = 0;
@@ -75,15 +70,10 @@ Tetrahedron10::setdNdcsi(const double &csi, const double &eta, const double &zet
 std::vector<double> &
 Tetrahedron10::setdNdeta(const Point &p)
 {
-	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
-}
+	double csi = p.x();
+	double eta = p.y();
+	double zeta = p.z();
 
-
-std::vector<double> &
-Tetrahedron10::setdNdeta(const double &csi, const double &eta, const double &zeta)
-{
-	//TODO test this
-	// this->dNdeta
 	this->dNdeta[0] = -2*(-zeta-eta-csi+1)-2*(-zeta-eta-csi+0.5);
 	this->dNdeta[1] = 0;
 	this->dNdeta[2] = 2*eta+2*(eta-0.5);
@@ -102,15 +92,10 @@ Tetrahedron10::setdNdeta(const double &csi, const double &eta, const double &zet
 std::vector<double> &
 Tetrahedron10::setdNdzeta(const Point &p)
 {
-	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
-}
+	double csi = p.x();
+	double eta = p.y();
+	double zeta = p.z();
 
-
-std::vector<double> &
-Tetrahedron10::setdNdzeta(const double &csi, const double &eta, const double &zeta)
-{
-	//TODO test this
-	// this->dNdzeta
 	this->dNdzeta[0] = -2*(-zeta-eta-csi+1)-2*(-zeta-eta-csi+0.5);
 	this->dNdzeta[1] = 0;
 	this->dNdzeta[2] = 0;

@@ -40,14 +40,9 @@ Quadrangle4::setN(const Point &p)
 std::vector<double> &
 Quadrangle4::setdNdcsi(const Point &p)
 {
-	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
-}
+	double csi = p.x();
+	double eta = p.y();
 
-
-std::vector<double> &
-Quadrangle4::setdNdcsi(const double &, const double &eta, const double &)
-{
-	// this->dNdcsi
 	this->dNdcsi[0] = (eta-1)/4;
 	this->dNdcsi[1] = (1-eta)/4;
 	this->dNdcsi[2] = (1+eta)/4;
@@ -60,14 +55,9 @@ Quadrangle4::setdNdcsi(const double &, const double &eta, const double &)
 std::vector<double> &
 Quadrangle4::setdNdeta(const Point &p)
 {
-	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
-}
+	double csi = p.x();
+	double eta = p.y();
 
-
-std::vector<double> &
-Quadrangle4::setdNdeta(const double &csi, const double &, const double &)
-{
-	// this->dNdeta
 	this->dNdeta[0] = (csi-1)/4;
 	this->dNdeta[1] = (-1-csi)/4;
 	this->dNdeta[2] = (1+csi)/4;
@@ -78,16 +68,8 @@ Quadrangle4::setdNdeta(const double &csi, const double &, const double &)
 
 
 std::vector<double> &
-Quadrangle4::setdNdzeta(const Point &p)
+Quadrangle4::setdNdzeta(const Point &)
 {
-	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
-}
-
-
-std::vector<double> &
-Quadrangle4::setdNdzeta(const double &, const double &, const double &)
-{
-	// this->dNdzeta
 	this->dNdzeta[0] = 0;
 	this->dNdzeta[1] = 0;
 	this->dNdzeta[2] = 0;

@@ -165,11 +165,8 @@ public:	//WARNING: BaseElement member functions are deprecated
 	**/
 	virtual std::vector<double> & setN(const Point & p) = 0;
 	virtual std::vector<double> & setdNdcsi(const Point &p) = 0;
-	virtual std::vector<double> & setdNdcsi(const double &csi, const double &eta, const double &zeta = 0) = 0;
 	virtual std::vector<double> & setdNdeta(const Point &p) = 0;
-	virtual std::vector<double> & setdNdeta(const double &csi, const double &eta, const double &zeta = 0) = 0;
 	virtual std::vector<double> & setdNdzeta(const Point &p) = 0;
-	virtual std::vector<double> & setdNdzeta(const double &csi, const double &eta, const double &zeta = 0) = 0;
 
 	/**
 	Returns a list of

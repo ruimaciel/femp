@@ -66,14 +66,10 @@ Hexahedron27::setN(const Point &p)
 std::vector<double> & 
 Hexahedron27::setdNdcsi(const Point &p)
 {
-	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
-}
+	double csi = p.x();
+	double eta = p.y();
+	double zeta = p.z();
 
-
-std::vector<double> & 
-Hexahedron27::setdNdcsi(const double &csi, const double &eta, const double &zeta)
-{
-	// this->dNdcsi
 	this->dNdcsi[ 0] = csi*(eta-1)*eta*(zeta-1)*zeta/8+(csi-1)*(eta-1)*eta*(zeta-1)*zeta/8;
 	this->dNdcsi[ 1] = (csi+1)*(eta-1)*eta*(zeta-1)*zeta/8+csi*(eta-1)*eta*(zeta-1)*zeta/8;
 	this->dNdcsi[ 2] = (csi+1)*eta*(eta+1)*(zeta-1)*zeta/8+csi*eta*(eta+1)*(zeta-1)*zeta/8;
@@ -109,14 +105,10 @@ Hexahedron27::setdNdcsi(const double &csi, const double &eta, const double &zeta
 std::vector<double> & 
 Hexahedron27::setdNdeta(const Point &p)
 {
-	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
-}
+	double csi = p.x();
+	double eta = p.y();
+	double zeta = p.z();
 
-
-std::vector<double> & 
-Hexahedron27::setdNdeta(const double &csi, const double &eta, const double &zeta)
-{
-	// this->dNdeta
 	this->dNdeta[ 0] = (csi-1)*csi*eta*(zeta-1)*zeta/8+(csi-1)*csi*(eta-1)*(zeta-1)*zeta/8;
 	this->dNdeta[ 1] = csi*(csi+1)*eta*(zeta-1)*zeta/8+csi*(csi+1)*(eta-1)*(zeta-1)*zeta/8;
 	this->dNdeta[ 2] =  csi*(csi+1)*(eta+1)*(zeta-1)*zeta/8+csi*(csi+1)*eta*(zeta-1)*zeta/8;
@@ -152,14 +144,10 @@ Hexahedron27::setdNdeta(const double &csi, const double &eta, const double &zeta
 std::vector<double> & 
 Hexahedron27::setdNdzeta(const Point &p)
 {
-	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
-}
+	double csi = p.x();
+	double eta = p.y();
+	double zeta = p.z();
 
-
-std::vector<double> & 
-Hexahedron27::setdNdzeta(const double &csi, const double &eta, const double &zeta)
-{
-	// this->dNdzeta
 	this->dNdzeta[ 0] = (csi-1)*csi*(eta-1)*eta*zeta/8+(csi-1)*csi*(eta-1)*eta*(zeta-1)/8;
 	this->dNdzeta[ 1] = csi*(csi+1)*(eta-1)*eta*zeta/8+csi*(csi+1)*(eta-1)*eta*(zeta-1)/8;
 	this->dNdzeta[ 2] =  csi*(csi+1)*eta*(eta+1)*zeta/8+csi*(csi+1)*eta*(eta+1)*(zeta-1)/8;

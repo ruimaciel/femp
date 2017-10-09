@@ -46,15 +46,9 @@ Triangle10::setN(const Point &p)
 std::vector<double> & 
 Triangle10::setdNdcsi(const Point &p)
 {
-	return this->setdNdcsi(p.data[0], p.data[1], p.data[2]);
-}
+	double csi = p.x();
+	double eta = p.y();
 
-
-std::vector<double> & 
-Triangle10::setdNdcsi(const double &csi, const double &eta, const double &)
-{
-	//TODO test this
-	// this->dNdcsi
 	this->N[0] = -(27*eta*eta+(54*csi-36)*eta+27*csi*csi-36*csi+11)/2.0;
 	this->N[1] = (27*csi*csi-18*csi+2)/2.0;
 	this->N[2] = 0;
@@ -73,15 +67,9 @@ Triangle10::setdNdcsi(const double &csi, const double &eta, const double &)
 std::vector<double> & 
 Triangle10::setdNdeta(const Point &p)
 {
-	return this->setdNdeta(p.data[0], p.data[1], p.data[2]);
-}
+	double csi = p.x();
+	double eta = p.y();
 
-
-std::vector<double> & 
-Triangle10::setdNdeta(const double &csi, const double &eta, const double &)
-{
-	//TODO test this
-	// this->dNdeta
 	this->N[0] = -(27*eta*eta+(54*csi-36)*eta+27*csi*csi-36*csi+11)/2.0;
 	this->N[1] = 0;
 	this->N[2] = (27*eta*eta-18*eta+2)/2.0;
@@ -100,15 +88,6 @@ Triangle10::setdNdeta(const double &csi, const double &eta, const double &)
 std::vector<double> & 
 Triangle10::setdNdzeta(const Point &p)
 {
-	return this->setdNdzeta(p.data[0], p.data[1], p.data[2]);
-}
-
-
-std::vector<double> & 
-Triangle10::setdNdzeta(const double &, const double &, const double &)
-{
-	//TODO finish this
-	// this->dNdzeta
 	this->dNdzeta[0] = 0;
 	this->dNdzeta[1] = 0;
 	this->dNdzeta[2] = 0;

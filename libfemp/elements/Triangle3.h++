@@ -23,13 +23,10 @@ public:
 	std::vector<double> & setN(const Point & p);
 
 	std::vector<double> & setdNdcsi(const Point &p);
-	std::vector<double> & setdNdcsi(const double &csi, const double &eta, const double &zeta = 0);
 
 	std::vector<double> & setdNdeta(const Point &p);
-	std::vector<double> & setdNdeta(const double &csi, const double &eta, const double &zeta = 0);
 
 	std::vector<double> & setdNdzeta(const Point &p);
-	std::vector<double> & setdNdzeta(const double &csi, const double &eta, const double &zeta = 0);
 
 public: // merging with fem::Element
 	void set(std::vector<size_t> &nodes);

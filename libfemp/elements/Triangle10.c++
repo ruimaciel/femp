@@ -87,7 +87,7 @@ Triangle10::getdNdeta(const Point &p)
 
 
 std::vector<double>
-Triangle10::getdNdzeta(const Point &p)
+Triangle10::getdNdzeta(const Point &)
 {
 	std::vector<double> dNdzeta(this->node_number());
 

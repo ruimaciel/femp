@@ -37,7 +37,7 @@ Quadrangle4::getN(const Point &p)
 std::vector<double>
 Quadrangle4::getdNdcsi(const Point &p)
 {
-	double csi = p.x();
+	// double csi = p.x();
 	double eta = p.y();
 
 	std::vector<double> dNdcsi(this->node_number());
@@ -55,7 +55,7 @@ std::vector<double>
 Quadrangle4::getdNdeta(const Point &p)
 {
 	double csi = p.x();
-	double eta = p.y();
+	// double eta = p.y();
 
 	std::vector<double> dNdeta(this->node_number());
 

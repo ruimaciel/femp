@@ -111,7 +111,7 @@ public:
 	return the number of nodes that an element of this particular type has
 	@return	the number of nodes
 	**/
-	virtual int node_number() const = 0;
+	virtual int getNodeAmount() const = 0;
 	
 	/**
 	 * return a vector with the value of each basis function evaluated at a point

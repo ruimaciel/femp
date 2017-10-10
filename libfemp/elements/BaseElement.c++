@@ -25,7 +25,7 @@ BaseElement::getStiffnessMatrix(fem::Model &model)
 	Matrix3d J, invJ;
 
 	// get the number of expected nodes
-	const unsigned int nnodes = this->node_number();
+	const unsigned int nnodes = this->getNodeAmount();
 	const unsigned int n_dofs = nnodes*3;
 
 	if(this->nodes.size() == 0)

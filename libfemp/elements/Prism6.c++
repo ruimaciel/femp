@@ -26,7 +26,7 @@ Prism6::getN(const Point &p)
 	const double eta = p.y();
 	const double zeta = p.z();
 
-	std::vector<double> N(this->node_number());
+	std::vector<double> N(this->getNodeAmount());
 
 	N[0] = (-eta-csi+1)*(1-zeta)/2;
 	N[1] = csi*(1-zeta)/2;
@@ -46,7 +46,7 @@ Prism6::getdNdcsi(const Point &p)
 	// double eta = p.y();
 	double zeta = p.z();
 
-	std::vector<double> dNdcsi(this->node_number());
+	std::vector<double> dNdcsi(this->getNodeAmount());
 
 	dNdcsi[0] = -(1-zeta)/2;
 	dNdcsi[1] = (1-zeta)/2;
@@ -66,7 +66,7 @@ Prism6::getdNdeta(const Point &p)
 	// double eta = p.y();
 	double zeta = p.z();
 
-	std::vector<double> dNdeta(this->node_number());
+	std::vector<double> dNdeta(this->getNodeAmount());
 
 	dNdeta[0] = -(1-zeta)/2;
 	dNdeta[1] = 0;
@@ -86,7 +86,7 @@ Prism6::getdNdzeta(const Point &p)
 	double eta = p.y();
 	// double zeta = p.z();
 
-	std::vector<double> dNdzeta(this->node_number());
+	std::vector<double> dNdzeta(this->getNodeAmount());
 
 	dNdzeta[0] = -(-eta-csi+1)/2;
 	dNdzeta[1] = -csi/2;

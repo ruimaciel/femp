@@ -18,7 +18,7 @@ struct PrismFamily
 	/**
 	 * Returns the total number of degrees of freedom
 	 **/
-	virtual unsigned int getDofAmount() const	{ return 3*this->node_number(); }
+	virtual unsigned int getDofAmount() const	{ return 3*this->getNodeAmount(); }
 
 protected:
 	void generateQuadratureData();

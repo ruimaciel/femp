@@ -26,7 +26,7 @@ Hexahedron8::getN(const Point &p)
 	const double eta = p.y();
 	const double zeta = p.z();
 
-	std::vector<double> N(this->node_number());
+	std::vector<double> N(this->getNodeAmount());
 
 	N[0] = (1-csi)*(1-eta)*(1-zeta)/8;
 	N[1] = (csi+1)*(1-eta)*(1-zeta)/8;
@@ -48,7 +48,7 @@ Hexahedron8::getdNdcsi(const Point &p)
 	double eta = p.y();
 	double zeta = p.z();
 
-	std::vector<double> dNdcsi(this->node_number());
+	std::vector<double> dNdcsi(this->getNodeAmount());
 
 	dNdcsi[ 0] = -(1-eta)*(1-zeta)/8;
 	dNdcsi[ 1] = (1-eta)*(1-zeta)/8;
@@ -70,7 +70,7 @@ Hexahedron8::getdNdeta(const Point &p)
 	//double eta = p.y();
 	double zeta = p.z();
 
-	std::vector<double> dNdeta(this->node_number());
+	std::vector<double> dNdeta(this->getNodeAmount());
 
 	dNdeta[ 0] = -(1-csi)*(1-zeta)/8;
 	dNdeta[ 1] = -(csi+1)*(1-zeta)/8;
@@ -92,7 +92,7 @@ Hexahedron8::getdNdzeta(const Point &p)
 	double eta = p.y();
 	//double zeta = p.z();
 
-	std::vector<double> dNdzeta(this->node_number());
+	std::vector<double> dNdzeta(this->getNodeAmount());
 
 	dNdzeta[ 0] = -(1-csi)*(1-eta)/8;
 	dNdzeta[ 1] = -(csi+1)*(1-eta)/8;

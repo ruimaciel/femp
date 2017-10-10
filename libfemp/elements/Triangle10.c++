@@ -23,7 +23,7 @@ Triangle10::getN(const Point &p)
 	const double csi = p.x();
 	const double eta = p.y();
 
-	std::vector<double> N(this->node_number());
+	std::vector<double> N(this->getNodeAmount());
 
 	N[0] = 4.5*(-eta-csi+1.0/3)*(-eta-csi+2.0/3)*(-eta-csi+1);
 	N[1] = 4.5*(csi-2.0/3)*(csi-1.0/3)*csi;
@@ -46,7 +46,7 @@ Triangle10::getdNdcsi(const Point &p)
 	double csi = p.x();
 	double eta = p.y();
 
-	std::vector<double> dNdcsi(this->node_number());
+	std::vector<double> dNdcsi(this->getNodeAmount());
 
 	dNdcsi[0] = -(27*eta*eta+(54*csi-36)*eta+27*csi*csi-36*csi+11)/2.0;
 	dNdcsi[1] = (27*csi*csi-18*csi+2)/2.0;
@@ -69,7 +69,7 @@ Triangle10::getdNdeta(const Point &p)
 	double csi = p.x();
 	double eta = p.y();
 
-	std::vector<double> dNdeta(this->node_number());
+	std::vector<double> dNdeta(this->getNodeAmount());
 
 	dNdeta[0] = -(27*eta*eta+(54*csi-36)*eta+27*csi*csi-36*csi+11)/2.0;
 	dNdeta[1] = 0;
@@ -89,7 +89,7 @@ Triangle10::getdNdeta(const Point &p)
 std::vector<double>
 Triangle10::getdNdzeta(const Point &)
 {
-	std::vector<double> dNdzeta(this->node_number());
+	std::vector<double> dNdzeta(this->getNodeAmount());
 
 	dNdzeta[0] = 0;
 	dNdzeta[1] = 0;

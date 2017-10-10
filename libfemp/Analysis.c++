@@ -123,7 +123,7 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 		// set the routines for the current element
 		BaseElement *element = getElement(el);
 
-		const int nnodes = element->node_number();
+		const int nnodes = element->getNodeAmount();
 		f_elem.resize(nnodes*3);
 		f_elem.setZero();
 
@@ -250,7 +250,7 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 				break;
 		}
 
-		int nnodes = surface_load->node_number();
+		int nnodes = surface_load->getNodeAmount();
 		f_elem.resize(nnodes*3);
 		f_elem.setZero();
 

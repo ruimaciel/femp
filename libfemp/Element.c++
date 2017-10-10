@@ -101,7 +101,7 @@ Element::set(Type type, std::vector<size_t> nodes)
 
 
 int 
-Element::node_number() const
+Element::getNodeAmount() const
 {
 	switch(this->type)
 	{
@@ -162,7 +162,7 @@ Element::node_number() const
 			break;
 
 		default:
-			std::cerr << "Element::node_number(): unsupported element: type " << this->type << std::endl;
+			std::cerr << "Element::getNodeAmount(): unsupported element: type " << this->type << std::endl;
 			assert(0);
 			break;
 	}

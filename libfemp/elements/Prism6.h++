@@ -34,7 +34,7 @@ public: // merging with fem::Element
         return the number of nodes that an element of this particular type has
         @return the number of nodes
         **/
-        int node_number() const	{ return 16; };
+        int getNodeAmount() const	{ return 16; };
 };
 
 

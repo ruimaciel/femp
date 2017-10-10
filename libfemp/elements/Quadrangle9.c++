@@ -23,7 +23,7 @@ Quadrangle9::getN(const Point &p)
 	const double csi = p.x();
 	const double eta = p.y();
 
-	std::vector<double> N(this->node_number());
+	std::vector<double> N(this->getNodeAmount());
 
 	N[0] = (csi-1)*csi*(eta-1)*eta/4;
 	N[1] = csi*(csi+1)*(eta-1)*eta/4;
@@ -45,7 +45,7 @@ Quadrangle9::getdNdcsi(const Point &p)
 	double csi = p.x();
 	double eta = p.y();
 
-	std::vector<double> dNdcsi(this->node_number());
+	std::vector<double> dNdcsi(this->getNodeAmount());
 
 	dNdcsi[0] = csi*(eta-1)*eta/4+(csi-1)*(eta-1)*eta/4;
 	dNdcsi[1] = (csi+1)*(eta-1)*eta/4+csi*(eta-1)*eta/4;
@@ -67,7 +67,7 @@ Quadrangle9::getdNdeta(const Point &p)
 	double csi = p.x();
 	double eta = p.y();
 
-	std::vector<double> dNdeta(this->node_number());
+	std::vector<double> dNdeta(this->getNodeAmount());
 
 	dNdeta[0] = (csi-1)*csi*eta/4+(csi-1)*csi*(eta-1)/4;
 	dNdeta[1] = csi*(csi+1)*eta/4+csi*(csi+1)*(eta-1)/4;
@@ -86,7 +86,7 @@ Quadrangle9::getdNdeta(const Point &p)
 std::vector<double>
 Quadrangle9::getdNdzeta(const Point &)
 {
-	std::vector<double> dNdzeta(this->node_number());
+	std::vector<double> dNdzeta(this->getNodeAmount());
 
 	dNdzeta[0] = 0;
 	dNdzeta[1] = 0;

@@ -26,7 +26,7 @@ Tetrahedron4::getN(const Point &p)
 	const double eta = p.y();
 	const double zeta = p.z();
 
-	std::vector<double> N(this->node_number());
+	std::vector<double> N(this->getNodeAmount());
 
 	N[0] = 1.0-zeta-eta-csi;
 	N[1] = csi;
@@ -40,7 +40,7 @@ Tetrahedron4::getN(const Point &p)
 std::vector<double>
 Tetrahedron4::getdNdcsi(const Point &)
 {
-	std::vector<double> dNdcsi(this->node_number());
+	std::vector<double> dNdcsi(this->getNodeAmount());
 
 	dNdcsi[0] = -1.0;
 	dNdcsi[1] = 1;
@@ -54,7 +54,7 @@ Tetrahedron4::getdNdcsi(const Point &)
 std::vector<double>
 Tetrahedron4::getdNdeta(const Point &)
 {
-	std::vector<double> dNdeta(this->node_number());
+	std::vector<double> dNdeta(this->getNodeAmount());
 	
 	dNdeta[0] = -1.0;
 	dNdeta[1] = 0;
@@ -68,7 +68,7 @@ Tetrahedron4::getdNdeta(const Point &)
 std::vector<double>
 Tetrahedron4::getdNdzeta(const Point &)
 {
-	std::vector<double> dNdzeta(this->node_number());
+	std::vector<double> dNdzeta(this->getNodeAmount());
 
 	dNdzeta[0] = -1.0;
 	dNdzeta[1] = 0;

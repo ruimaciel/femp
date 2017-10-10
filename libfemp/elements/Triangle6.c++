@@ -23,7 +23,7 @@ Triangle6::getN(const Point &p)
 	const double csi = p.x();
 	const double eta = p.y();
 
-	std::vector<double> N(this->node_number());
+	std::vector<double> N(this->getNodeAmount());
 
 	N[0] = (2*(1-eta-csi)-1)*(1-eta-csi);
 	N[1] = csi*(2*csi-1);
@@ -42,7 +42,7 @@ Triangle6::getdNdcsi(const Point &p)
 	double csi = p.x();
 	double eta = p.y();
 
-	std::vector<double> dNdcsi(this->node_number());
+	std::vector<double> dNdcsi(this->getNodeAmount());
 
 	dNdcsi[0] = 1.0-4*(1-eta-csi);
 	dNdcsi[1] = 4*csi-1;
@@ -61,7 +61,7 @@ Triangle6::getdNdeta(const Point &p)
 	double csi = p.x();
 	double eta = p.y();
 
-	std::vector<double> dNdeta(this->node_number());
+	std::vector<double> dNdeta(this->getNodeAmount());
 
 	dNdeta[0] = 1-4*(1-eta-csi);
 	dNdeta[1] = 0;
@@ -77,7 +77,7 @@ Triangle6::getdNdeta(const Point &p)
 std::vector<double>
 Triangle6::getdNdzeta(const Point &)
 {
-	std::vector<double> dNdzeta(this->node_number());
+	std::vector<double> dNdzeta(this->getNodeAmount());
 
 	dNdzeta[0] = 0;
 	dNdzeta[1] = 0;

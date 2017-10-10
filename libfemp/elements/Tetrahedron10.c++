@@ -26,7 +26,7 @@ Tetrahedron10::getN(const Point &p)
 	const double eta = p.y();
 	const double zeta = p.z();
 
-	std::vector<double> N(this->node_number());
+	std::vector<double> N(this->getNodeAmount());
 
 	N[0] = 2*(-zeta-eta-csi+0.5)*(-zeta-eta-csi+1);
 	N[1] = 2*(csi-0.5)*csi;
@@ -50,7 +50,7 @@ Tetrahedron10::getdNdcsi(const Point &p)
 	double eta = p.y();
 	double zeta = p.z();
 
-	std::vector<double> dNdcsi(this->node_number());
+	std::vector<double> dNdcsi(this->getNodeAmount());
 
 	dNdcsi[0] = -2*(-zeta-eta-csi+1)-2*(-zeta-eta-csi+0.5);
 	dNdcsi[1] = 2*csi+2*(csi-0.5);
@@ -74,7 +74,7 @@ Tetrahedron10::getdNdeta(const Point &p)
 	double eta = p.y();
 	double zeta = p.z();
 
-	std::vector<double> dNdeta(this->node_number());
+	std::vector<double> dNdeta(this->getNodeAmount());
 
 	dNdeta[0] = -2*(-zeta-eta-csi+1)-2*(-zeta-eta-csi+0.5);
 	dNdeta[1] = 0;
@@ -98,7 +98,7 @@ Tetrahedron10::getdNdzeta(const Point &p)
 	double eta = p.y();
 	double zeta = p.z();
 
-	std::vector<double> dNdzeta(this->node_number());
+	std::vector<double> dNdzeta(this->getNodeAmount());
 
 	dNdzeta[0] = -2*(-zeta-eta-csi+1)-2*(-zeta-eta-csi+0.5);
 	dNdzeta[1] = 0;

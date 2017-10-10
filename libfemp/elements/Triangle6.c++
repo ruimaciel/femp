@@ -14,11 +14,6 @@ Triangle6::Triangle6()
 	this->domain_degree = 2;
 
 	this->coordinates.resize(6);
-
-	this->N.resize(6);
-	this->dNdcsi.resize(6);
-	this->dNdeta.resize(6);
-	this->dNdzeta.resize(6);
 }
 
 
@@ -28,14 +23,16 @@ Triangle6::getN(const Point &p)
 	const double csi = p.x();
 	const double eta = p.y();
 
-	this->N[0] = (2*(1-eta-csi)-1)*(1-eta-csi);
-	this->N[1] = csi*(2*csi-1);
-	this->N[2] = eta*(2*eta-1);
-	this->N[3] = 4*csi*(1-eta-csi);
-	this->N[4] = 4*csi*eta;
-	this->N[5] = 4*(1-eta-csi)*eta;
+	std::vector<double> N(this->node_number());
+
+	N[0] = (2*(1-eta-csi)-1)*(1-eta-csi);
+	N[1] = csi*(2*csi-1);
+	N[2] = eta*(2*eta-1);
+	N[3] = 4*csi*(1-eta-csi);
+	N[4] = 4*csi*eta;
+	N[5] = 4*(1-eta-csi)*eta;
 	
-	return this->N;
+	return N;
 }
 
 
@@ -45,14 +42,16 @@ Triangle6::getdNdcsi(const Point &p)
 	double csi = p.x();
 	double eta = p.y();
 
-	this->dNdcsi[0] = 1.0-4*(1-eta-csi);
-	this->dNdcsi[1] = 4*csi-1;
-	this->dNdcsi[2] = 0;
-	this->dNdcsi[3] = 4*(1-eta-csi)-4*csi;
-	this->dNdcsi[4] = 4*eta;
-	this->dNdcsi[5] = -4*eta;
+	std::vector<double> dNdcsi(this->node_number());
 
-	return this->dNdcsi;
+	dNdcsi[0] = 1.0-4*(1-eta-csi);
+	dNdcsi[1] = 4*csi-1;
+	dNdcsi[2] = 0;
+	dNdcsi[3] = 4*(1-eta-csi)-4*csi;
+	dNdcsi[4] = 4*eta;
+	dNdcsi[5] = -4*eta;
+
+	return dNdcsi;
 }
 
 
@@ -62,28 +61,32 @@ Triangle6::getdNdeta(const Point &p)
 	double csi = p.x();
 	double eta = p.y();
 
-	this->dNdeta[0] = 1-4*(1-eta-csi);
-	this->dNdeta[1] = 0;
-	this->dNdeta[2] = 4*eta-1;
-	this->dNdeta[3] = -4*csi;
-	this->dNdeta[4] = 4*csi;
-	this->dNdeta[5] = 4*(1-eta-csi)-4*eta;
+	std::vector<double> dNdeta(this->node_number());
+
+	dNdeta[0] = 1-4*(1-eta-csi);
+	dNdeta[1] = 0;
+	dNdeta[2] = 4*eta-1;
+	dNdeta[3] = -4*csi;
+	dNdeta[4] = 4*csi;
+	dNdeta[5] = 4*(1-eta-csi)-4*eta;
 	
-	return this->dNdeta;
+	return dNdeta;
 }
 
 
 std::vector<double>
 Triangle6::getdNdzeta(const Point &)
 {
-	this->dNdzeta[0] = 0;
-	this->dNdzeta[1] = 0;
-	this->dNdzeta[2] = 0;
-	this->dNdzeta[3] = 0;
-	this->dNdzeta[4] = 0;
-	this->dNdzeta[5] = 0;
+	std::vector<double> dNdzeta(this->node_number());
 
-	return this->dNdzeta;
+	dNdzeta[0] = 0;
+	dNdzeta[1] = 0;
+	dNdzeta[2] = 0;
+	dNdzeta[3] = 0;
+	dNdzeta[4] = 0;
+	dNdzeta[5] = 0;
+
+	return dNdzeta;
 }
 
 

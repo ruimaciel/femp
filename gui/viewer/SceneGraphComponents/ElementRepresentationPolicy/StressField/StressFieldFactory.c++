@@ -191,9 +191,9 @@ StressFieldFactory::operator() (fem::Element const &element)
 			d = m_result->displacements[ element.nodes[node] ];	// displacements calculated in this node
 
 			// calculate \epsilon_{11} = dNdx_1*d1
-			dNdx  = invDg(0,0)*e->dNdcsi[node] + invDg(0,1)*e->dNdeta[node] + invDg(0,2)*e->dNdzeta[node];
-			dNdy  = invDg(1,0)*e->dNdcsi[node] + invDg(1,1)*e->dNdeta[node] + invDg(1,2)*e->dNdzeta[node];
-			dNdz  = invDg(2,0)*e->dNdcsi[node] + invDg(2,1)*e->dNdeta[node] + invDg(2,2)*e->dNdzeta[node];
+			dNdx  = invDg(0,0)*dNdcsi[node] + invDg(0,1)*dNdeta[node] + invDg(0,2)*dNdzeta[node];
+			dNdy  = invDg(1,0)*dNdcsi[node] + invDg(1,1)*dNdeta[node] + invDg(1,2)*dNdzeta[node];
+			dNdz  = invDg(2,0)*dNdcsi[node] + invDg(2,1)*dNdeta[node] + invDg(2,2)*dNdzeta[node];
 			
 			//m_gradient_value[coord] += dNdx*d.x(); 
 			e11 += dNdx*d.x();
@@ -223,7 +223,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 		fem::Point pos;
 		//TODO get global position
 		auto N = e->getN(local);
-		for(std::vector<fem::node_ref_t>::size_type n = 0; n < e->N.size(); n++)
+		for(std::vector<fem::node_ref_t>::size_type n = 0; n < N.size(); n++)
 		{
 			pos += N[n]*m_model->node_list[ element.nodes[n]];
 		}

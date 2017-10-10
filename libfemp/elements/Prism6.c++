@@ -16,11 +16,6 @@ Prism6::Prism6()
 	this->domain_degree = 2;
 
 	this->coordinates.resize(6);
-
-	this->N.resize(6);
-	this->dNdcsi.resize(6);
-	this->dNdeta.resize(6);
-	this->dNdzeta.resize(6);
 }
 
 
@@ -31,14 +26,16 @@ Prism6::getN(const Point &p)
 	const double eta = p.y();
 	const double zeta = p.z();
 
-	this->N[0] = (-eta-csi+1)*(1-zeta)/2;
-	this->N[1] = csi*(1-zeta)/2;
-	this->N[2] = eta*(1-zeta)/2;
-	this->N[3] = (-eta-csi+1)*(zeta+1)/2;
-	this->N[4] = csi*(zeta+1)/2;
-	this->N[5] = eta*(zeta+1)/2;
+	std::vector<double> N(this->node_number());
+
+	N[0] = (-eta-csi+1)*(1-zeta)/2;
+	N[1] = csi*(1-zeta)/2;
+	N[2] = eta*(1-zeta)/2;
+	N[3] = (-eta-csi+1)*(zeta+1)/2;
+	N[4] = csi*(zeta+1)/2;
+	N[5] = eta*(zeta+1)/2;
 	
-	return this->N;
+	return N;
 }
 
 
@@ -49,14 +46,16 @@ Prism6::getdNdcsi(const Point &p)
 	// double eta = p.y();
 	double zeta = p.z();
 
-	this->dNdcsi[0] = -(1-zeta)/2;
-	this->dNdcsi[1] = (1-zeta)/2;
-	this->dNdcsi[2] = 0;
-	this->dNdcsi[3] = -(zeta+1)/2;
-	this->dNdcsi[4] = (zeta+1)/2;
-	this->dNdcsi[5] = 0;
+	std::vector<double> dNdcsi(this->node_number());
 
-	return this->dNdcsi;
+	dNdcsi[0] = -(1-zeta)/2;
+	dNdcsi[1] = (1-zeta)/2;
+	dNdcsi[2] = 0;
+	dNdcsi[3] = -(zeta+1)/2;
+	dNdcsi[4] = (zeta+1)/2;
+	dNdcsi[5] = 0;
+
+	return dNdcsi;
 }
 
 
@@ -67,14 +66,16 @@ Prism6::getdNdeta(const Point &p)
 	// double eta = p.y();
 	double zeta = p.z();
 
-	this->dNdeta[0] = -(1-zeta)/2;
-	this->dNdeta[1] = 0;
-	this->dNdeta[2] = (1-zeta)/2;
-	this->dNdeta[3] = -(zeta+1)/2;
-	this->dNdeta[4] = 0;
-	this->dNdeta[5] = (zeta+1)/2;
+	std::vector<double> dNdeta(this->node_number());
+
+	dNdeta[0] = -(1-zeta)/2;
+	dNdeta[1] = 0;
+	dNdeta[2] = (1-zeta)/2;
+	dNdeta[3] = -(zeta+1)/2;
+	dNdeta[4] = 0;
+	dNdeta[5] = (zeta+1)/2;
 	
-	return this->dNdeta;
+	return dNdeta;
 }
 
 
@@ -85,14 +86,16 @@ Prism6::getdNdzeta(const Point &p)
 	double eta = p.y();
 	// double zeta = p.z();
 
-	this->dNdzeta[0] = -(-eta-csi+1)/2;
-	this->dNdzeta[1] = -csi/2;
-	this->dNdzeta[2] = -eta/2;
-	this->dNdzeta[3] = (-eta-csi+1)/2;
-	this->dNdzeta[4] = csi/2;
-	this->dNdzeta[5] = eta/2;
+	std::vector<double> dNdzeta(this->node_number());
 
-	return this->dNdzeta;
+	dNdzeta[0] = -(-eta-csi+1)/2;
+	dNdzeta[1] = -csi/2;
+	dNdzeta[2] = -eta/2;
+	dNdzeta[3] = (-eta-csi+1)/2;
+	dNdzeta[4] = csi/2;
+	dNdzeta[5] = eta/2;
+
+	return dNdzeta;
 }
 
 std::vector<fem::Point> & Prism6::setCoordinates()

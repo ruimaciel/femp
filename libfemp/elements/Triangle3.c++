@@ -1,6 +1,5 @@
 #include "Triangle3.h++"
 
-
 #include <libfemp/FemException.h++>
 
 
@@ -14,11 +13,6 @@ Triangle3::Triangle3()
 	this->domain_degree = 1;
 
 	this->coordinates.resize(3);
-
-	this->N.resize(3);
-	this->dNdcsi.resize(3);
-	this->dNdeta.resize(3);
-	this->dNdzeta.resize(3);
 }
 
 
@@ -28,44 +22,52 @@ Triangle3::getN(const Point &p)
 	const double csi = p.x();
 	const double eta = p.y();
 
-	this->N[0] = 1-csi-eta;
-	this->N[1] = csi;
-	this->N[2] = eta;
+	std::vector<double> N(this->node_number());
+
+	N[0] = 1-csi-eta;
+	N[1] = csi;
+	N[2] = eta;
 	
-	return this->N;
+	return N;
 }
 
 
 std::vector<double>
 Triangle3::getdNdcsi(const Point &)
 {
-	this->dNdcsi[0] = -1;
-	this->dNdcsi[1] = 1;
-	this->dNdcsi[2] = 0;
+	std::vector<double> dNdcsi(this->node_number());
 
-	return this->dNdcsi;
+	dNdcsi[0] = -1;
+	dNdcsi[1] = 1;
+	dNdcsi[2] = 0;
+
+	return dNdcsi;
 }
 
 
 std::vector<double>
 Triangle3::getdNdeta(const Point &)
 {
-	this->dNdeta[0] = -1;
-	this->dNdeta[1] = 0;
-	this->dNdeta[2] = 1;
+	std::vector<double> dNdeta(this->node_number());
+
+	dNdeta[0] = -1;
+	dNdeta[1] = 0;
+	dNdeta[2] = 1;
 	
-	return this->dNdeta;
+	return dNdeta;
 }
 
 
 std::vector<double>
 Triangle3::getdNdzeta(const Point &)
 {
-	this->dNdzeta[0] = 0;
-	this->dNdzeta[1] = 0;
-	this->dNdzeta[2] = 0;
+	std::vector<double> dNdzeta(this->node_number());
 
-	return this->dNdzeta;
+	dNdzeta[0] = 0;
+	dNdzeta[1] = 0;
+	dNdzeta[2] = 0;
+
+	return dNdzeta;
 }
 
 

@@ -14,11 +14,6 @@ Quadrangle9::Quadrangle9()
 	this->domain_degree = 2;
 
 	this->coordinates.resize(9);
-
-	this->N.resize(9);
-	this->dNdcsi.resize(9);
-	this->dNdeta.resize(9);
-	this->dNdzeta.resize(9);
 }
 
 
@@ -28,17 +23,19 @@ Quadrangle9::getN(const Point &p)
 	const double csi = p.x();
 	const double eta = p.y();
 
-	this->N[0] = (csi-1)*csi*(eta-1)*eta/4;
-	this->N[1] = csi*(csi+1)*(eta-1)*eta/4;
-	this->N[2] = csi*(csi+1)*eta*(eta+1)/4;
-	this->N[3] = (csi-1)*csi*eta*(eta+1)/4;
-	this->N[4] = (1-csi)*(csi+1)*(eta-1)*eta/2;
-	this->N[5] = csi*(csi+1)*(1-eta)*(eta+1)/2;
-	this->N[6] = (1-csi)*(csi+1)*eta*(eta+1)/2;
-	this->N[7] = (csi-1)*csi*(1-eta)*(eta+1)/2;
-	this->N[8] = (1-csi)*(csi+1)*(1-eta)*(eta+1);
+	std::vector<double> N(this->node_number());
 
-	return this->N;
+	N[0] = (csi-1)*csi*(eta-1)*eta/4;
+	N[1] = csi*(csi+1)*(eta-1)*eta/4;
+	N[2] = csi*(csi+1)*eta*(eta+1)/4;
+	N[3] = (csi-1)*csi*eta*(eta+1)/4;
+	N[4] = (1-csi)*(csi+1)*(eta-1)*eta/2;
+	N[5] = csi*(csi+1)*(1-eta)*(eta+1)/2;
+	N[6] = (1-csi)*(csi+1)*eta*(eta+1)/2;
+	N[7] = (csi-1)*csi*(1-eta)*(eta+1)/2;
+	N[8] = (1-csi)*(csi+1)*(1-eta)*(eta+1);
+
+	return N;
 }
 
 
@@ -48,17 +45,19 @@ Quadrangle9::getdNdcsi(const Point &p)
 	double csi = p.x();
 	double eta = p.y();
 
-	this->dNdcsi[0] = csi*(eta-1)*eta/4+(csi-1)*(eta-1)*eta/4;
-	this->dNdcsi[1] = (csi+1)*(eta-1)*eta/4+csi*(eta-1)*eta/4;
-	this->dNdcsi[2] = (csi+1)*eta*(eta+1)/4+csi*eta*(eta+1)/4;
-	this->dNdcsi[3] = csi*eta*(eta+1)/4+(csi-1)*eta*(eta+1)/4;
-	this->dNdcsi[4] = (1-csi)*(eta-1)*eta/2-(csi+1)*(eta-1)*eta/2;
-	this->dNdcsi[5] = (csi+1)*(1-eta)*(eta+1)/2+csi*(1-eta)*(eta+1)/2;
-	this->dNdcsi[6] = (1-csi)*eta*(eta+1)/2-(csi+1)*eta*(eta+1)/2;
-	this->dNdcsi[7] = csi*(1-eta)*(eta+1)/2+(csi-1)*(1-eta)*(eta+1)/2;
-	this->dNdcsi[8] = (1-csi)*(1-eta)*(eta+1)-(csi+1)*(1-eta)*(eta+1);
+	std::vector<double> dNdcsi(this->node_number());
+
+	dNdcsi[0] = csi*(eta-1)*eta/4+(csi-1)*(eta-1)*eta/4;
+	dNdcsi[1] = (csi+1)*(eta-1)*eta/4+csi*(eta-1)*eta/4;
+	dNdcsi[2] = (csi+1)*eta*(eta+1)/4+csi*eta*(eta+1)/4;
+	dNdcsi[3] = csi*eta*(eta+1)/4+(csi-1)*eta*(eta+1)/4;
+	dNdcsi[4] = (1-csi)*(eta-1)*eta/2-(csi+1)*(eta-1)*eta/2;
+	dNdcsi[5] = (csi+1)*(1-eta)*(eta+1)/2+csi*(1-eta)*(eta+1)/2;
+	dNdcsi[6] = (1-csi)*eta*(eta+1)/2-(csi+1)*eta*(eta+1)/2;
+	dNdcsi[7] = csi*(1-eta)*(eta+1)/2+(csi-1)*(1-eta)*(eta+1)/2;
+	dNdcsi[8] = (1-csi)*(1-eta)*(eta+1)-(csi+1)*(1-eta)*(eta+1);
 	
-	return this->dNdcsi;
+	return dNdcsi;
 }
 
 
@@ -68,34 +67,38 @@ Quadrangle9::getdNdeta(const Point &p)
 	double csi = p.x();
 	double eta = p.y();
 
-	this->dNdeta[0] = (csi-1)*csi*eta/4+(csi-1)*csi*(eta-1)/4;
-	this->dNdeta[1] = csi*(csi+1)*eta/4+csi*(csi+1)*(eta-1)/4;
-	this->dNdeta[2] = csi*(csi+1)*(eta+1)/4+csi*(csi+1)*eta/4;
-	this->dNdeta[3] = (csi-1)*csi*(eta+1)/4+(csi-1)*csi*eta/4;
-	this->dNdeta[4] = (1-csi)*(csi+1)*eta/2+(1-csi)*(csi+1)*(eta-1)/2;
-	this->dNdeta[5] = csi*(csi+1)*(1-eta)/2-csi*(csi+1)*(eta+1)/2;
-	this->dNdeta[6] = (1-csi)*(csi+1)*(eta+1)/2+(1-csi)*(csi+1)*eta/2;
-	this->dNdeta[7] = (csi-1)*csi*(1-eta)/2-(csi-1)*csi*(eta+1)/2;
-	this->dNdeta[8] = (1-csi)*(csi+1)*(1-eta)-(1-csi)*(csi+1)*(eta+1);
+	std::vector<double> dNdeta(this->node_number());
+
+	dNdeta[0] = (csi-1)*csi*eta/4+(csi-1)*csi*(eta-1)/4;
+	dNdeta[1] = csi*(csi+1)*eta/4+csi*(csi+1)*(eta-1)/4;
+	dNdeta[2] = csi*(csi+1)*(eta+1)/4+csi*(csi+1)*eta/4;
+	dNdeta[3] = (csi-1)*csi*(eta+1)/4+(csi-1)*csi*eta/4;
+	dNdeta[4] = (1-csi)*(csi+1)*eta/2+(1-csi)*(csi+1)*(eta-1)/2;
+	dNdeta[5] = csi*(csi+1)*(1-eta)/2-csi*(csi+1)*(eta+1)/2;
+	dNdeta[6] = (1-csi)*(csi+1)*(eta+1)/2+(1-csi)*(csi+1)*eta/2;
+	dNdeta[7] = (csi-1)*csi*(1-eta)/2-(csi-1)*csi*(eta+1)/2;
+	dNdeta[8] = (1-csi)*(csi+1)*(1-eta)-(1-csi)*(csi+1)*(eta+1);
 	
-	return this->dNdeta;
+	return dNdeta;
 }
 
 
 std::vector<double>
 Quadrangle9::getdNdzeta(const Point &)
 {
-	this->dNdzeta[0] = 0;
-	this->dNdzeta[1] = 0;
-	this->dNdzeta[2] = 0;
-	this->dNdzeta[3] = 0;
-	this->dNdzeta[4] = 0;
-	this->dNdzeta[5] = 0;
-	this->dNdzeta[6] = 0;
-	this->dNdzeta[7] = 0;
-	this->dNdzeta[8] = 0;
+	std::vector<double> dNdzeta(this->node_number());
 
-	return this->dNdzeta;
+	dNdzeta[0] = 0;
+	dNdzeta[1] = 0;
+	dNdzeta[2] = 0;
+	dNdzeta[3] = 0;
+	dNdzeta[4] = 0;
+	dNdzeta[5] = 0;
+	dNdzeta[6] = 0;
+	dNdzeta[7] = 0;
+	dNdzeta[8] = 0;
+
+	return dNdzeta;
 }
 
 std::vector<fem::Point> &

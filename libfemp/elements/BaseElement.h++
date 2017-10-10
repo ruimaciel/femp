@@ -92,11 +92,6 @@ public:	// WARNING: deprecated. to be removed.
 
 	std::vector<fem::Point>	coordinates;
 
-	std::vector<double>	N;
-	std::vector<double>	dNdcsi;
-	std::vector<double>	dNdeta;
-	std::vector<double>	dNdzeta;
-	
 
 public:	// merging with fem::Element
 	material_ref_t material;		// reference to a material in Model's material map

@@ -118,9 +118,9 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 			d = this->m_analysis_result->displacements[ reference_element.nodes[node] ];	// displacements calculated in this node
 
 			// calculate \epsilon_{11} = dNdx_1*d1
-			dNdx  = invDg(0,0)*element->dNdcsi[node] + invDg(0,1)*element->dNdeta[node] + invDg(0,2)*element->dNdzeta[node];
-			dNdy  = invDg(1,0)*element->dNdcsi[node] + invDg(1,1)*element->dNdeta[node] + invDg(1,2)*element->dNdzeta[node];
-			dNdz  = invDg(2,0)*element->dNdcsi[node] + invDg(2,1)*element->dNdeta[node] + invDg(2,2)*element->dNdzeta[node];
+			dNdx  = invDg(0,0)*dNdcsi[node] + invDg(0,1)*dNdeta[node] + invDg(0,2)*dNdzeta[node];
+			dNdy  = invDg(1,0)*dNdcsi[node] + invDg(1,1)*dNdeta[node] + invDg(1,2)*dNdzeta[node];
+			dNdz  = invDg(2,0)*dNdcsi[node] + invDg(2,1)*dNdeta[node] + invDg(2,2)*dNdzeta[node];
 			
 			//m_gradient_value[coord] += dNdx*d.x(); 
 			results->strains[coord].e11 += dNdx*d.x();

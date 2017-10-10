@@ -14,11 +14,6 @@ Triangle10::Triangle10()
 	this->domain_degree = 1;
 
 	this->coordinates.resize(10);
-
-	this->N.resize(10);
-	this->dNdcsi.resize(10);
-	this->dNdeta.resize(10);
-	this->dNdzeta.resize(10);
 }
 
 
@@ -28,18 +23,20 @@ Triangle10::getN(const Point &p)
 	const double csi = p.x();
 	const double eta = p.y();
 
-	this->N[0] = 4.5*(-eta-csi+1.0/3)*(-eta-csi+2.0/3)*(-eta-csi+1);
-	this->N[1] = 4.5*(csi-2.0/3)*(csi-1.0/3)*csi;
-	this->N[2] = 4.5*(eta-2.0/3)*(eta-1.0/3)*eta;
-	this->N[3] = 13.5*csi*(-eta-csi+2.0/3)*(-eta-csi+1);
-	this->N[4] = 13.5*(csi-1.0/3)*csi*(-eta-csi+1);
-	this->N[5] = 13.5*(csi-1.0/3)*csi*eta;
-	this->N[6] = 13.5*csi*(eta-1.0/3)*eta;
-	this->N[7] = 13.5*(-eta-csi+1)*(eta-1.0/3)*eta;
-	this->N[8] = 13.5*(-eta-csi+2.0/3)*(-eta-csi+1)*eta;
-	this->N[9] = 27*csi*(-eta-csi+1)*eta;
+	std::vector<double> N(this->node_number());
 
-	return this->N;
+	N[0] = 4.5*(-eta-csi+1.0/3)*(-eta-csi+2.0/3)*(-eta-csi+1);
+	N[1] = 4.5*(csi-2.0/3)*(csi-1.0/3)*csi;
+	N[2] = 4.5*(eta-2.0/3)*(eta-1.0/3)*eta;
+	N[3] = 13.5*csi*(-eta-csi+2.0/3)*(-eta-csi+1);
+	N[4] = 13.5*(csi-1.0/3)*csi*(-eta-csi+1);
+	N[5] = 13.5*(csi-1.0/3)*csi*eta;
+	N[6] = 13.5*csi*(eta-1.0/3)*eta;
+	N[7] = 13.5*(-eta-csi+1)*(eta-1.0/3)*eta;
+	N[8] = 13.5*(-eta-csi+2.0/3)*(-eta-csi+1)*eta;
+	N[9] = 27*csi*(-eta-csi+1)*eta;
+
+	return N;
 }
 
 
@@ -49,18 +46,20 @@ Triangle10::getdNdcsi(const Point &p)
 	double csi = p.x();
 	double eta = p.y();
 
-	this->N[0] = -(27*eta*eta+(54*csi-36)*eta+27*csi*csi-36*csi+11)/2.0;
-	this->N[1] = (27*csi*csi-18*csi+2)/2.0;
-	this->N[2] = 0;
-	this->N[3] = (27*eta*eta+(108*csi-45)*eta+81*csi*csi-90*csi+18)/2.0;
-	this->N[4] = -((54*csi-9)*eta+81*csi*csi-72*csi+9)/2.0;
-	this->N[5] = (54*csi-9)*eta/2.0;
-	this->N[6] = (27*eta*eta-9*eta)/2.0;
-	this->N[7] = -(27*eta*eta-9*eta)/2.0;
-	this->N[8] = (54*eta*eta+(54*csi-45)*eta)/2.0;
-	this->N[9] = (27-54*csi)*eta-27*eta*eta;
+	std::vector<double> dNdcsi(this->node_number());
 
-	return this->dNdcsi;
+	dNdcsi[0] = -(27*eta*eta+(54*csi-36)*eta+27*csi*csi-36*csi+11)/2.0;
+	dNdcsi[1] = (27*csi*csi-18*csi+2)/2.0;
+	dNdcsi[2] = 0;
+	dNdcsi[3] = (27*eta*eta+(108*csi-45)*eta+81*csi*csi-90*csi+18)/2.0;
+	dNdcsi[4] = -((54*csi-9)*eta+81*csi*csi-72*csi+9)/2.0;
+	dNdcsi[5] = (54*csi-9)*eta/2.0;
+	dNdcsi[6] = (27*eta*eta-9*eta)/2.0;
+	dNdcsi[7] = -(27*eta*eta-9*eta)/2.0;
+	dNdcsi[8] = (54*eta*eta+(54*csi-45)*eta)/2.0;
+	dNdcsi[9] = (27-54*csi)*eta-27*eta*eta;
+
+	return dNdcsi;
 }
 
 
@@ -70,36 +69,40 @@ Triangle10::getdNdeta(const Point &p)
 	double csi = p.x();
 	double eta = p.y();
 
-	this->N[0] = -(27*eta*eta+(54*csi-36)*eta+27*csi*csi-36*csi+11)/2.0;
-	this->N[1] = 0;
-	this->N[2] = (27*eta*eta-18*eta+2)/2.0;
-	this->N[3] = (54*csi*eta+54*csi*csi-45*csi)/2.0;
-	this->N[4] = -(27*csi*csi-9*csi)/2.0;
-	this->N[5] = (27*csi*csi-9*csi)/2.0;
-	this->N[6] = (54*csi*eta-9*csi)/2.0;
-	this->N[7] = -(81*eta*eta+(54*csi-72)*eta-9*csi+9)/2.0;
-	this->N[8] = (81*eta*eta+(108*csi-90)*eta+27*csi*csi-45*csi+18)/2.0;
-	this->N[9] = -54*csi*eta-27*csi*csi+27*csi;
+	std::vector<double> dNdeta(this->node_number());
 
-	return this->dNdeta;
+	dNdeta[0] = -(27*eta*eta+(54*csi-36)*eta+27*csi*csi-36*csi+11)/2.0;
+	dNdeta[1] = 0;
+	dNdeta[2] = (27*eta*eta-18*eta+2)/2.0;
+	dNdeta[3] = (54*csi*eta+54*csi*csi-45*csi)/2.0;
+	dNdeta[4] = -(27*csi*csi-9*csi)/2.0;
+	dNdeta[5] = (27*csi*csi-9*csi)/2.0;
+	dNdeta[6] = (54*csi*eta-9*csi)/2.0;
+	dNdeta[7] = -(81*eta*eta+(54*csi-72)*eta-9*csi+9)/2.0;
+	dNdeta[8] = (81*eta*eta+(108*csi-90)*eta+27*csi*csi-45*csi+18)/2.0;
+	dNdeta[9] = -54*csi*eta-27*csi*csi+27*csi;
+
+	return dNdeta;
 }
 
 
 std::vector<double>
 Triangle10::getdNdzeta(const Point &p)
 {
-	this->dNdzeta[0] = 0;
-	this->dNdzeta[1] = 0;
-	this->dNdzeta[2] = 0;
-	this->dNdzeta[3] = 0;
-	this->dNdzeta[4] = 0;
-	this->dNdzeta[5] = 0;
-	this->dNdzeta[6] = 0;
-	this->dNdzeta[7] = 0;
-	this->dNdzeta[8] = 0;
-	this->dNdzeta[9] = 0;
+	std::vector<double> dNdzeta(this->node_number());
 
-	return this->dNdzeta;
+	dNdzeta[0] = 0;
+	dNdzeta[1] = 0;
+	dNdzeta[2] = 0;
+	dNdzeta[3] = 0;
+	dNdzeta[4] = 0;
+	dNdzeta[5] = 0;
+	dNdzeta[6] = 0;
+	dNdzeta[7] = 0;
+	dNdzeta[8] = 0;
+	dNdzeta[9] = 0;
+
+	return dNdzeta;
 }
 
 

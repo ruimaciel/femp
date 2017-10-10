@@ -124,16 +124,4 @@ Hexahedron8::setCoordinates()
 }
 
 
-void
-Hexahedron8::get(std::vector<size_t> &nodes)
-{
-	if(nodes.size() == 8)
-	{
-		throw FemException("wrong number of nodes");
-	}
-
-	this->nodes = nodes;
-}
-
-
 }	//namespace fem

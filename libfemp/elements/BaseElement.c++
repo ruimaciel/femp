@@ -7,6 +7,13 @@
 namespace fem
 {
 
+std::vector<size_t> 
+BaseElement::getNodeReferences() const
+{
+	return this->nodes;
+}
+
+
 Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> 
 BaseElement::getStiffnessMatrix(fem::Model &model)
 {

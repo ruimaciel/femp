@@ -221,17 +221,5 @@ Hexahedron27::setCoordinates()
 }
 
 
-void
-Hexahedron27::get(std::vector<size_t> &nodes)
-{
-	if(nodes.size() == 27)
-	{
-		throw FemException("wrong number of nodes");
-	}
-
-	this->nodes = nodes;
-}
-
-
 }	// namespace fem
 

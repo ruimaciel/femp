@@ -30,8 +30,6 @@ public:
 	std::vector<double> getdNdzeta(const Point &p);
 
 public: // merging with fem::Element
-        void get(std::vector<size_t> &nodes);
-
         /** 
         return the number of nodes that an element of this particular type has
         @return the number of nodes

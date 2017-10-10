@@ -118,17 +118,5 @@ Quadrangle9::setCoordinates()
 }
 
 
-void
-Quadrangle9::get(std::vector<size_t> &nodes)
-{
-	if(nodes.size() == 9)
-	{
-		throw FemException("wrong number of nodes");
-	}
-
-	this->nodes = nodes;
-}
-
-
 }	// namespace fem
 

@@ -111,16 +111,5 @@ std::vector<fem::Point> & Prism6::setCoordinates()
 }
 
 
-void
-Prism6::get(std::vector<size_t> &nodes)
-{
-	if(nodes.size() == 6)
-	{
-		throw FemException("wrong number of nodes");
-	}
-	this->nodes = nodes;
-}
-
-
 }	// namespace fem
 

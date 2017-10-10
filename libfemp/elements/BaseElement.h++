@@ -148,6 +148,12 @@ public:
 	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> getStiffnessMatrix(fem::Model &model);
 
 
+	/**
+	 * Returns a vector with the reference IDs of all nodes associated with the element
+	 **/
+	virtual std::vector<size_t> getNodeReferences() const;
+
+
 public:	//WARNING: BaseElement member functions are deprecated 
 
 	/**
@@ -162,9 +168,6 @@ public:	//WARNING: BaseElement member functions are deprecated
 	std::vector<boost::tuple<fem::Point, double> > &domain_quadrature()	{ return this->ipwpl[domain_degree]; }
 
 public:	//WARNING: fem::Element member functions are deprecated
-
-	virtual void get(std::vector<size_t> &nodes) = 0;
-
 	/**
 	returns enum representing family type.
 	TODO: This member function was introduced to facilitate merging Element with BaseElement.  Remove after cleanup

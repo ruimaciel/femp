@@ -105,17 +105,5 @@ Triangle6::setCoordinates()
 }
 
 
-void
-Triangle6::get(std::vector<size_t> &nodes)
-{
-	if(nodes.size() == 6)
-	{
-		throw FemException("wrong number of nodes");
-	}
-
-	this->nodes = nodes;
-}
-
-
-}	//namespace fem
+}	// namespace fem
 

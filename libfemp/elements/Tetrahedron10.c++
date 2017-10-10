@@ -133,16 +133,5 @@ std::vector<fem::Point> & Tetrahedron10::setCoordinates()
 }
 
 
-void
-Tetrahedron10::get(std::vector<size_t> &nodes)
-{
-	if(nodes.size() == 10)
-	{
-		throw FemException("wrong number of nodes");
-	}
-	this->nodes = nodes;
-}
-
-
 }	// namespace fem
 

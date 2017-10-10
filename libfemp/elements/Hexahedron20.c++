@@ -185,17 +185,5 @@ Hexahedron20::setCoordinates()
 }
 
 
-void
-Hexahedron20::get(std::vector<size_t> &nodes)
-{
-	if(nodes.size() == 20)
-	{
-		throw FemException("wrong number of nodes");
-	}
-
-	this->nodes = nodes;
-}
-
-
 }	// namespace fem
 

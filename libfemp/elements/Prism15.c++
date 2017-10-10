@@ -157,16 +157,5 @@ std::vector<fem::Point> & Prism15::setCoordinates()
 }
 
 
-void
-Prism15::get(std::vector<size_t> &nodes)
-{
-	if(nodes.size() == 15)
-	{
-		throw FemException("wrong number of nodes");
-	}
-	this->nodes = nodes;
-}
-
-
 }	// namespace fem
 

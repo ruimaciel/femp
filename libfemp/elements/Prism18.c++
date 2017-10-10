@@ -174,17 +174,5 @@ std::vector<fem::Point> & Prism18::setCoordinates()
 }
 
 
-void
-Prism18::get(std::vector<size_t> &nodes)
-{
-	if(nodes.size() == 18)
-	{
-		throw FemException("wrong number of nodes");
-	}
-	this->nodes = nodes;
-}
-
-
-
 }	// namespace fem
 

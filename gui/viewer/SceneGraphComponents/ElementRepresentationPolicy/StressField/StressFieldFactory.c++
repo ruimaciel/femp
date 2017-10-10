@@ -151,9 +151,9 @@ StressFieldFactory::operator() (fem::Element const &element)
 		//TODO calculate stresses
 		fem::Point global;	// node coordinate in x, the global coordinates
 
-		e->setdNdcsi(local);
-		e->setdNdeta(local);
-		e->setdNdzeta(local);
+		auto dNdcsi = e->getdNdcsi(local);
+		auto dNdeta = e->getdNdeta(local);
+		auto dNdzeta = e->getdNdzeta(local);
 
 		dxdcsi.zero(); dxdeta.zero(); dxdzeta.zero();
 
@@ -166,9 +166,9 @@ StressFieldFactory::operator() (fem::Element const &element)
 			// get the node's x coordinate, the coordinate in the global frame of reference
 			global = m_model->getNode(element.nodes[node]);
 
-			dxdcsi += e->dNdcsi[node]*global;
-			dxdeta += e->dNdeta[node]*global;
-			dxdzeta += e->dNdzeta[node]*global;
+			dxdcsi += dNdcsi[node]*global;
+			dxdeta += dNdeta[node]*global;
+			dxdzeta += dNdzeta[node]*global;
 		}
 
 		Dg(0,0) = dxdcsi.x();	Dg(0,1) = dxdcsi.y();	Dg(0,2) = dxdcsi.z();
@@ -222,10 +222,10 @@ StressFieldFactory::operator() (fem::Element const &element)
 		// get position
 		fem::Point pos;
 		//TODO get global position
-		e->setN(local);
+		auto N = e->getN(local);
 		for(std::vector<fem::node_ref_t>::size_type n = 0; n < e->N.size(); n++)
 		{
-			pos += e->N[n]*m_model->node_list[ element.nodes[n]];
+			pos += N[n]*m_model->node_list[ element.nodes[n]];
 		}
 
 

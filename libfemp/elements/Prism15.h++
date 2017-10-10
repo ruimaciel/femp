@@ -21,16 +21,16 @@ public:
 
 	std::vector<fem::Point> & setCoordinates();
 
-	std::vector<double> & setN(const Point & p);
+	std::vector<double> getN(const Point & p);
 
-	std::vector<double> & setdNdcsi(const Point &p);
+	std::vector<double> getdNdcsi(const Point &p);
 
-	std::vector<double> & setdNdeta(const Point &p);
+	std::vector<double> getdNdeta(const Point &p);
 
-	std::vector<double> & setdNdzeta(const Point &p);
+	std::vector<double> getdNdzeta(const Point &p);
 
 public: // merging with fem::Element
-	void set(std::vector<size_t> &nodes);
+	void get(std::vector<size_t> &nodes);
 
         /** 
         return the number of nodes that an element of this particular type has

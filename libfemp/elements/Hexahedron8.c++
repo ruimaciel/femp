@@ -24,8 +24,8 @@ Hexahedron8::Hexahedron8()
 }
 
 
-std::vector<double> & 
-Hexahedron8::setN(const Point &p)
+std::vector<double>
+Hexahedron8::getN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -44,8 +44,8 @@ Hexahedron8::setN(const Point &p)
 }
 
 
-std::vector<double> & 
-Hexahedron8::setdNdcsi(const Point &p)
+std::vector<double>
+Hexahedron8::getdNdcsi(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -64,8 +64,8 @@ Hexahedron8::setdNdcsi(const Point &p)
 }
 
 
-std::vector<double> & 
-Hexahedron8::setdNdeta(const Point &p)
+std::vector<double>
+Hexahedron8::getdNdeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -84,8 +84,8 @@ Hexahedron8::setdNdeta(const Point &p)
 }
 
 
-std::vector<double> & 
-Hexahedron8::setdNdzeta(const Point &p)
+std::vector<double>
+Hexahedron8::getdNdzeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -122,7 +122,7 @@ Hexahedron8::setCoordinates()
 
 
 void
-Hexahedron8::set(std::vector<size_t> &nodes)
+Hexahedron8::get(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 8)
 	{

@@ -24,8 +24,8 @@ Prism15::Prism15()
 }
 
 
-std::vector<double> &
-Prism15::setN(const Point &p)
+std::vector<double>
+Prism15::getN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -51,8 +51,8 @@ Prism15::setN(const Point &p)
 }
 
 
-std::vector<double> &
-Prism15::setdNdcsi(const Point &p)
+std::vector<double>
+Prism15::getdNdcsi(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -78,8 +78,8 @@ Prism15::setdNdcsi(const Point &p)
 }
 
 
-std::vector<double> &
-Prism15::setdNdeta(const Point &p)
+std::vector<double>
+Prism15::getdNdeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -105,8 +105,8 @@ Prism15::setdNdeta(const Point &p)
 }
 
 
-std::vector<double> &
-Prism15::setdNdzeta(const Point &p)
+std::vector<double>
+Prism15::getdNdzeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -155,7 +155,7 @@ std::vector<fem::Point> & Prism15::setCoordinates()
 
 
 void
-Prism15::set(std::vector<size_t> &nodes)
+Prism15::get(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 15)
 	{

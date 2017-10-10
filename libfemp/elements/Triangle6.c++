@@ -22,8 +22,8 @@ Triangle6::Triangle6()
 }
 
 
-std::vector<double> &
-Triangle6::setN(const Point &p)
+std::vector<double>
+Triangle6::getN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -39,8 +39,8 @@ Triangle6::setN(const Point &p)
 }
 
 
-std::vector<double> &
-Triangle6::setdNdcsi(const Point &p)
+std::vector<double>
+Triangle6::getdNdcsi(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -56,8 +56,8 @@ Triangle6::setdNdcsi(const Point &p)
 }
 
 
-std::vector<double> &
-Triangle6::setdNdeta(const Point &p)
+std::vector<double>
+Triangle6::getdNdeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -73,8 +73,8 @@ Triangle6::setdNdeta(const Point &p)
 }
 
 
-std::vector<double> &
-Triangle6::setdNdzeta(const Point &)
+std::vector<double>
+Triangle6::getdNdzeta(const Point &)
 {
 	this->dNdzeta[0] = 0;
 	this->dNdzeta[1] = 0;
@@ -103,7 +103,7 @@ Triangle6::setCoordinates()
 
 
 void
-Triangle6::set(std::vector<size_t> &nodes)
+Triangle6::get(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 6)
 	{

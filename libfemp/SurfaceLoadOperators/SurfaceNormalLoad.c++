@@ -74,8 +74,8 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 	{
 		cout << "node " << i << " at " << element->coordinates[i] << "\n";
 
-		element->setdNdcsi(element->coordinates[i]);
-		element->setdNdeta(element->coordinates[i]);
+		auto dNdcsi = element->getdNdcsi(element->coordinates[i]);
+		auto dNdeta = element->getdNdeta(element->coordinates[i]);
 		dPdcsi.zero();
 		dPdeta.zero();
 
@@ -83,8 +83,8 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 		{
 			fem::Point &p = model.node_list[ surface_load.nodes[n]];
 			cout << "Point : " << p << "\n";
-			dPdcsi += element->dNdcsi[n]*p;
-			dPdeta += element->dNdeta[n]*p;
+			dPdcsi += dNdcsi[n]*p;
+			dPdeta += dNdeta[n]*p;
 		}
 
 		f = cross_product(dPdcsi, dPdeta);

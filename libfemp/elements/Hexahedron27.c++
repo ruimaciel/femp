@@ -24,8 +24,8 @@ Hexahedron27::Hexahedron27()
 }
 
 
-std::vector<double> & 
-Hexahedron27::setN(const Point &p)
+std::vector<double>
+Hexahedron27::getN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -63,8 +63,8 @@ Hexahedron27::setN(const Point &p)
 }
 
 
-std::vector<double> & 
-Hexahedron27::setdNdcsi(const Point &p)
+std::vector<double>
+Hexahedron27::getdNdcsi(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -102,8 +102,8 @@ Hexahedron27::setdNdcsi(const Point &p)
 }
 
 
-std::vector<double> & 
-Hexahedron27::setdNdeta(const Point &p)
+std::vector<double>
+Hexahedron27::getdNdeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -141,8 +141,8 @@ Hexahedron27::setdNdeta(const Point &p)
 }
 
 
-std::vector<double> & 
-Hexahedron27::setdNdzeta(const Point &p)
+std::vector<double>
+Hexahedron27::getdNdzeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -219,7 +219,7 @@ Hexahedron27::setCoordinates()
 
 
 void
-Hexahedron27::set(std::vector<size_t> &nodes)
+Hexahedron27::get(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 27)
 	{

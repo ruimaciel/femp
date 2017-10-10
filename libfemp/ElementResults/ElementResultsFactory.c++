@@ -82,9 +82,9 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 		fem::Point local = element->coordinates[coord];	// Point in element in \xi, the local coordinates
 		fem::Point global;	// node coordinate in x, the global coordinates
 		
-		element->setdNdcsi(local);
-		element->setdNdeta(local);
-		element->setdNdzeta(local);
+		auto dNdcsi = element->getdNdcsi(local);
+		auto dNdeta = element->getdNdeta(local);
+		auto dNdzeta = element->getdNdzeta(local);
 
 		dxdcsi.zero(); dxdeta.zero(); dxdzeta.zero();
 
@@ -95,9 +95,9 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 			// get the node's x coordinate, the coordinate in the global frame of reference
 			global = m_model->getNode(reference_element.nodes[node]);
 
-			dxdcsi += element->dNdcsi[node]*global;
-			dxdeta += element->dNdeta[node]*global;
-			dxdzeta += element->dNdzeta[node]*global;
+			dxdcsi += dNdcsi[node]*global;
+			dxdeta += dNdeta[node]*global;
+			dxdzeta += dNdzeta[node]*global;
 		}
 
 		Dg(0,0) = dxdcsi.x();	Dg(0,1) = dxdcsi.y();	Dg(0,2) = dxdcsi.z();

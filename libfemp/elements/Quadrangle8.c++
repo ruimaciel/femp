@@ -22,8 +22,8 @@ Quadrangle8::Quadrangle8()
 }
 
 
-std::vector<double> &
-Quadrangle8::setN(const Point &p)
+std::vector<double>
+Quadrangle8::getN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -41,8 +41,8 @@ Quadrangle8::setN(const Point &p)
 }
 
 
-std::vector<double> &
-Quadrangle8::setdNdcsi(const Point &p)
+std::vector<double>
+Quadrangle8::getdNdcsi(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -60,8 +60,8 @@ Quadrangle8::setdNdcsi(const Point &p)
 }
 
 
-std::vector<double> &
-Quadrangle8::setdNdeta(const Point &p)
+std::vector<double>
+Quadrangle8::getdNdeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -79,8 +79,8 @@ Quadrangle8::setdNdeta(const Point &p)
 }
 
 
-std::vector<double> &
-Quadrangle8::setdNdzeta(const Point &)
+std::vector<double>
+Quadrangle8::getdNdzeta(const Point &)
 {
 	this->dNdzeta[0] = 0;
 	this->dNdzeta[1] = 0;
@@ -111,7 +111,7 @@ std::vector<fem::Point> & Quadrangle8::setCoordinates()
 
 
 void
-Quadrangle8::set(std::vector<size_t> &nodes)
+Quadrangle8::get(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 8)
 	{

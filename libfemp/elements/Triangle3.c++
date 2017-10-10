@@ -22,8 +22,8 @@ Triangle3::Triangle3()
 }
 
 
-std::vector<double> & 
-Triangle3::setN(const Point &p)
+std::vector<double>
+Triangle3::getN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -36,8 +36,8 @@ Triangle3::setN(const Point &p)
 }
 
 
-std::vector<double> & 
-Triangle3::setdNdcsi(const Point &)
+std::vector<double>
+Triangle3::getdNdcsi(const Point &)
 {
 	this->dNdcsi[0] = -1;
 	this->dNdcsi[1] = 1;
@@ -47,8 +47,8 @@ Triangle3::setdNdcsi(const Point &)
 }
 
 
-std::vector<double> & 
-Triangle3::setdNdeta(const Point &)
+std::vector<double>
+Triangle3::getdNdeta(const Point &)
 {
 	this->dNdeta[0] = -1;
 	this->dNdeta[1] = 0;
@@ -58,8 +58,8 @@ Triangle3::setdNdeta(const Point &)
 }
 
 
-std::vector<double> & 
-Triangle3::setdNdzeta(const Point &)
+std::vector<double>
+Triangle3::getdNdzeta(const Point &)
 {
 	this->dNdzeta[0] = 0;
 	this->dNdzeta[1] = 0;
@@ -81,7 +81,7 @@ Triangle3::setCoordinates()
 
 
 void
-Triangle3::set(std::vector<size_t> &nodes)
+Triangle3::get(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 3)
 	{

@@ -24,8 +24,8 @@ Prism18::Prism18()
 }
 
 
-std::vector<double> &
-Prism18::setN(const Point &p)
+std::vector<double>
+Prism18::getN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -54,8 +54,8 @@ Prism18::setN(const Point &p)
 }
 
 
-std::vector<double> &
-Prism18::setdNdcsi(const Point &p)
+std::vector<double>
+Prism18::getdNdcsi(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -85,8 +85,8 @@ Prism18::setdNdcsi(const Point &p)
 }
 
 
-std::vector<double> &
-Prism18::setdNdeta(const Point &p)
+std::vector<double>
+Prism18::getdNdeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -115,8 +115,8 @@ Prism18::setdNdeta(const Point &p)
 }
 
 
-std::vector<double> &
-Prism18::setdNdzeta(const Point &p)
+std::vector<double>
+Prism18::getdNdzeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -172,7 +172,7 @@ std::vector<fem::Point> & Prism18::setCoordinates()
 
 
 void
-Prism18::set(std::vector<size_t> &nodes)
+Prism18::get(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 18)
 	{

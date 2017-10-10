@@ -24,8 +24,8 @@ Prism6::Prism6()
 }
 
 
-std::vector<double> &
-Prism6::setN(const Point &p)
+std::vector<double>
+Prism6::getN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -42,8 +42,8 @@ Prism6::setN(const Point &p)
 }
 
 
-std::vector<double> &
-Prism6::setdNdcsi(const Point &p)
+std::vector<double>
+Prism6::getdNdcsi(const Point &p)
 {
 	// double csi = p.x();
 	// double eta = p.y();
@@ -60,8 +60,8 @@ Prism6::setdNdcsi(const Point &p)
 }
 
 
-std::vector<double> &
-Prism6::setdNdeta(const Point &p)
+std::vector<double>
+Prism6::getdNdeta(const Point &p)
 {
 	// double csi = p.x();
 	// double eta = p.y();
@@ -78,8 +78,8 @@ Prism6::setdNdeta(const Point &p)
 }
 
 
-std::vector<double> &
-Prism6::setdNdzeta(const Point &p)
+std::vector<double>
+Prism6::getdNdzeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -109,7 +109,7 @@ std::vector<fem::Point> & Prism6::setCoordinates()
 
 
 void
-Prism6::set(std::vector<size_t> &nodes)
+Prism6::get(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 6)
 	{

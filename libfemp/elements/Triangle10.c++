@@ -22,8 +22,8 @@ Triangle10::Triangle10()
 }
 
 
-std::vector<double> & 
-Triangle10::setN(const Point &p)
+std::vector<double>
+Triangle10::getN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -43,8 +43,8 @@ Triangle10::setN(const Point &p)
 }
 
 
-std::vector<double> & 
-Triangle10::setdNdcsi(const Point &p)
+std::vector<double>
+Triangle10::getdNdcsi(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -64,8 +64,8 @@ Triangle10::setdNdcsi(const Point &p)
 }
 
 
-std::vector<double> & 
-Triangle10::setdNdeta(const Point &p)
+std::vector<double>
+Triangle10::getdNdeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -85,8 +85,8 @@ Triangle10::setdNdeta(const Point &p)
 }
 
 
-std::vector<double> & 
-Triangle10::setdNdzeta(const Point &p)
+std::vector<double>
+Triangle10::getdNdzeta(const Point &p)
 {
 	this->dNdzeta[0] = 0;
 	this->dNdzeta[1] = 0;
@@ -118,7 +118,7 @@ Triangle10::setCoordinates()
 
 
 void
-Triangle10::set(std::vector<size_t> &nodes)
+Triangle10::get(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 10)
 	{

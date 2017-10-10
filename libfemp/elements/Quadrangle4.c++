@@ -22,8 +22,8 @@ Quadrangle4::Quadrangle4()
 }
 
 
-std::vector<double> &
-Quadrangle4::setN(const Point &p)
+std::vector<double>
+Quadrangle4::getN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -37,8 +37,8 @@ Quadrangle4::setN(const Point &p)
 }
 
 
-std::vector<double> &
-Quadrangle4::setdNdcsi(const Point &p)
+std::vector<double>
+Quadrangle4::getdNdcsi(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -52,8 +52,8 @@ Quadrangle4::setdNdcsi(const Point &p)
 }
 
 
-std::vector<double> &
-Quadrangle4::setdNdeta(const Point &p)
+std::vector<double>
+Quadrangle4::getdNdeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -67,8 +67,8 @@ Quadrangle4::setdNdeta(const Point &p)
 }
 
 
-std::vector<double> &
-Quadrangle4::setdNdzeta(const Point &)
+std::vector<double>
+Quadrangle4::getdNdzeta(const Point &)
 {
 	this->dNdzeta[0] = 0;
 	this->dNdzeta[1] = 0;
@@ -92,7 +92,7 @@ Quadrangle4::setCoordinates()
 
 
 void
-Quadrangle4::set(std::vector<size_t> &nodes)
+Quadrangle4::get(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 4)
 	{

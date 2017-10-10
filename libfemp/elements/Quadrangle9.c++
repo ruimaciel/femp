@@ -22,8 +22,8 @@ Quadrangle9::Quadrangle9()
 }
 
 
-std::vector<double> &
-Quadrangle9::setN(const Point &p)
+std::vector<double>
+Quadrangle9::getN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -42,8 +42,8 @@ Quadrangle9::setN(const Point &p)
 }
 
 
-std::vector<double> &
-Quadrangle9::setdNdcsi(const Point &p)
+std::vector<double>
+Quadrangle9::getdNdcsi(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -62,8 +62,8 @@ Quadrangle9::setdNdcsi(const Point &p)
 }
 
 
-std::vector<double> &
-Quadrangle9::setdNdeta(const Point &p)
+std::vector<double>
+Quadrangle9::getdNdeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -82,8 +82,8 @@ Quadrangle9::setdNdeta(const Point &p)
 }
 
 
-std::vector<double> &
-Quadrangle9::setdNdzeta(const Point &)
+std::vector<double>
+Quadrangle9::getdNdzeta(const Point &)
 {
 	this->dNdzeta[0] = 0;
 	this->dNdzeta[1] = 0;
@@ -116,7 +116,7 @@ Quadrangle9::setCoordinates()
 
 
 void
-Quadrangle9::set(std::vector<size_t> &nodes)
+Quadrangle9::get(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 9)
 	{

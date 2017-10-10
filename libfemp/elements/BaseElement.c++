@@ -7,34 +7,6 @@
 namespace fem
 {
 
-std::vector<double> const 
-BaseElement::getN(const Point &p)
-{
-	return this->setN(p);
-}
-
-
-std::vector<double> const 
-BaseElement::getdNdcsi(const Point &p)
-{
-	return this->setdNdcsi(p);
-}
-
-
-std::vector<double> const 
-BaseElement::getdNdeta(const Point &p)
-{
-	return this->setdNdeta(p);
-}
-
-
-std::vector<double> const 
-BaseElement::getdNdzeta(const Point &p)
-{
-	return this->setdNdzeta(p);
-}
-
-
 Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> 
 BaseElement::getStiffnessMatrix(fem::Model &model)
 {
@@ -79,9 +51,9 @@ BaseElement::getStiffnessMatrix(fem::Model &model)
 		// set the shape function and it's partial derivatives for this integration Point
 		const Point &point = i->get<0>();
 
-		this->setdNdcsi( point );
-		this->setdNdeta( point );
-		this->setdNdzeta( point );
+		auto dNdcsi = this->getdNdcsi( point );
+		auto dNdeta = this->getdNdeta( point );
+		auto dNdzeta = this->getdNdzeta( point );
 
 		// generate the jacobian
 		J.setZero();
@@ -93,9 +65,9 @@ BaseElement::getStiffnessMatrix(fem::Model &model)
 			double const &Y = node.y();
 			double const &Z = node.z();
 
-			J(0,0) += this->dNdcsi[n]*X;		J(0,1) += this->dNdcsi[n]*Y;		J(0,2) += this->dNdcsi[n]*Z;
-			J(1,0) += this->dNdeta[n]*X;		J(1,1) += this->dNdeta[n]*Y;		J(1,2) += this->dNdeta[n]*Z;
-			J(2,0) += this->dNdzeta[n]*X;	J(2,1) += this->dNdzeta[n]*Y;	J(2,2) += this->dNdzeta[n]*Z;
+			J(0,0) += dNdcsi[n]*X;	J(0,1) += dNdcsi[n]*Y;	J(0,2) += dNdcsi[n]*Z;
+			J(1,0) += dNdeta[n]*X;	J(1,1) += dNdeta[n]*Y;	J(1,2) += dNdeta[n]*Z;
+			J(2,0) += dNdzeta[n]*X;	J(2,1) += dNdzeta[n]*Y;	J(2,2) += dNdzeta[n]*Z;
 		}
 
 		const double detJ = J.determinant();
@@ -116,9 +88,9 @@ BaseElement::getStiffnessMatrix(fem::Model &model)
 		{
 			// set the variables
 			// set the partial derivatives
-			double dNdx = invJ(0,0)*this->dNdcsi[n] + invJ(0,1)*this->dNdeta[n] + invJ(0,2)*this->dNdzeta[n];
-			double dNdy = invJ(1,0)*this->dNdcsi[n] + invJ(1,1)*this->dNdeta[n] + invJ(1,2)*this->dNdzeta[n];
-			double dNdz = invJ(2,0)*this->dNdcsi[n] + invJ(2,1)*this->dNdeta[n] + invJ(2,2)*this->dNdzeta[n];
+			double dNdx = invJ(0,0)*dNdcsi[n] + invJ(0,1)*dNdeta[n] + invJ(0,2)*dNdzeta[n];
+			double dNdy = invJ(1,0)*dNdcsi[n] + invJ(1,1)*dNdeta[n] + invJ(1,2)*dNdzeta[n];
+			double dNdz = invJ(2,0)*dNdcsi[n] + invJ(2,1)*dNdeta[n] + invJ(2,2)*dNdzeta[n];
 
 			// set the current node portion of the B matrix
 			B(0,3*n)	= dNdx;

@@ -133,10 +133,10 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			// build the Jacobian
 			Point quadrature_point = i->get<0>();
 
-			std::vector<double> N = element->setN( quadrature_point);
-			std::vector<double> dNdcsi = element->setdNdcsi(quadrature_point);
-			std::vector<double> dNdeta = element->setdNdeta( quadrature_point);
-			std::vector<double> dNdzeta = element->setdNdzeta( quadrature_point);
+			std::vector<double> N = element->getN( quadrature_point);
+			std::vector<double> dNdcsi = element->getdNdcsi(quadrature_point);
+			std::vector<double> dNdeta = element->getdNdeta( quadrature_point);
+			std::vector<double> dNdzeta = element->getdNdzeta( quadrature_point);
 
 			// generate the jacobian
 			J.setZero();
@@ -257,9 +257,9 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 		for (typename std::vector<boost::tuple<fem::Point,double> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
 		{
 				// get shape function and shape function derivatives in this integration Point's coordinate
-			std::vector<double> N = element->setN( i->get<0>() );
-			std::vector<double> dNdcsi = element->setdNdcsi(i->get<0>() );
-			std::vector<double> dNdeta = element->setdNdeta(i->get<0>() );
+			std::vector<double> N = element->getN( i->get<0>() );
+			std::vector<double> dNdcsi = element->getdNdcsi(i->get<0>() );
+			std::vector<double> dNdeta = element->getdNdeta(i->get<0>() );
 
 				// calculate the Jacobian
 			J.setZero();

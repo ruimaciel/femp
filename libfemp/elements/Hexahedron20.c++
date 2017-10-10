@@ -24,8 +24,8 @@ Hexahedron20::Hexahedron20()
 }
 
 
-std::vector<double> & 
-Hexahedron20::setN(const Point &p)
+std::vector<double>
+Hexahedron20::getN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -56,8 +56,8 @@ Hexahedron20::setN(const Point &p)
 }
 
 
-std::vector<double> & 
-Hexahedron20::setdNdcsi(const Point &p)
+std::vector<double>
+Hexahedron20::getdNdcsi(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -88,8 +88,8 @@ Hexahedron20::setdNdcsi(const Point &p)
 }
 
 
-std::vector<double> & 
-Hexahedron20::setdNdeta(const Point &p)
+std::vector<double>
+Hexahedron20::getdNdeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -120,8 +120,8 @@ Hexahedron20::setdNdeta(const Point &p)
 }
 
 
-std::vector<double> & 
-Hexahedron20::setdNdzeta(const Point &p)
+std::vector<double>
+Hexahedron20::getdNdzeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -183,7 +183,7 @@ Hexahedron20::setCoordinates()
 
 
 void
-Hexahedron20::set(std::vector<size_t> &nodes)
+Hexahedron20::get(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 20)
 	{

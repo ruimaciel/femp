@@ -121,28 +121,28 @@ public:
 	/**
 	 * return a vector with the value of each basis function evaluated at a point
 	 **/
-	virtual std::vector<double> const getN(const Point &p);
+	virtual std::vector<double> getN(const Point &p) = 0;
 
 	/**
 	 * return a vector with the value of the derivative of each basis function wrt csi evaluated at a point
 	 * @param p a point
 	 * @return vector with dN/dcsi values
 	 **/
-	virtual std::vector<double> const getdNdcsi(const Point &p);
+	virtual std::vector<double> getdNdcsi(const Point &p) = 0;
 
 	/**
 	 * return a vector with the value of the derivative of each basis function wrt eta evaluated at a point
 	 * @param p a point
 	 * @return vector with dN/deta values
 	 **/
-	virtual std::vector<double> const getdNdeta(const Point &p);
+	virtual std::vector<double> getdNdeta(const Point &p) = 0;
 
 	/**
 	 * return a vector with the value of the derivative of each basis function wrt zeta evaluated at a point
 	 * @param p a point
 	 * @return vector with dN/dzeta values
 	 **/
-	virtual std::vector<double> const getdNdzeta(const Point &p);
+	virtual std::vector<double> getdNdzeta(const Point &p) = 0;
 
 
 	/**
@@ -161,14 +161,6 @@ public:	//WARNING: BaseElement member functions are deprecated
 	virtual std::vector<fem::Point> & setCoordinates() = 0;
 
 	/**
-	Calculates the values for vector N according to a given Point expressed in local coordinates
-	**/
-	virtual std::vector<double> & setN(const Point & p) = 0;
-	virtual std::vector<double> & setdNdcsi(const Point &p) = 0;
-	virtual std::vector<double> & setdNdeta(const Point &p) = 0;
-	virtual std::vector<double> & setdNdzeta(const Point &p) = 0;
-
-	/**
 	Returns a list of
 	**/
 	std::vector<boost::tuple<fem::Point, double> > &stiffness_quadrature()	{ return this->ipwpl[stiffness_degree]; }
@@ -176,7 +168,7 @@ public:	//WARNING: BaseElement member functions are deprecated
 
 public:	//WARNING: fem::Element member functions are deprecated
 
-	virtual void set(std::vector<size_t> &nodes) = 0;
+	virtual void get(std::vector<size_t> &nodes) = 0;
 
 	/**
 	returns enum representing family type.

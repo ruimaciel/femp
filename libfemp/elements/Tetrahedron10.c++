@@ -23,8 +23,8 @@ Tetrahedron10::Tetrahedron10()
 }
 
 
-std::vector<double> &
-Tetrahedron10::setN(const Point &p)
+std::vector<double>
+Tetrahedron10::getN(const Point &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -45,8 +45,8 @@ Tetrahedron10::setN(const Point &p)
 }
 
 
-std::vector<double> &
-Tetrahedron10::setdNdcsi(const Point &p)
+std::vector<double>
+Tetrahedron10::getdNdcsi(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -67,8 +67,8 @@ Tetrahedron10::setdNdcsi(const Point &p)
 }
 
 
-std::vector<double> &
-Tetrahedron10::setdNdeta(const Point &p)
+std::vector<double>
+Tetrahedron10::getdNdeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -89,8 +89,8 @@ Tetrahedron10::setdNdeta(const Point &p)
 }
 
 
-std::vector<double> &
-Tetrahedron10::setdNdzeta(const Point &p)
+std::vector<double>
+Tetrahedron10::getdNdzeta(const Point &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -130,7 +130,7 @@ std::vector<fem::Point> & Tetrahedron10::setCoordinates()
 
 
 void
-Tetrahedron10::set(std::vector<size_t> &nodes)
+Tetrahedron10::get(std::vector<size_t> &nodes)
 {
 	if(nodes.size() == 10)
 	{

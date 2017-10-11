@@ -105,11 +105,6 @@ public:
 	**/
 	void pushElementGroup(fem::ElementGroup &new_element_group);
 
-	/**
-	Performs a sanity check on the model
-	**/
-	void sanity_check();
-
 };
 
 

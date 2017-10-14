@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <libfemp/Element.h++>
+#include <libfemp/Node.h++>
 #include <libfemp/Point.h++>
 
 
@@ -23,6 +24,11 @@ public:
 public:
 	SurfaceLoad();
 	virtual ~SurfaceLoad() {};
+
+	/**
+	 * Returns a vector with the reference IDs of all nodes associated with the element
+	 **/
+	virtual std::vector<node_ref_t> getNodeReferences() const;
 };
 
 }	// namespace fem

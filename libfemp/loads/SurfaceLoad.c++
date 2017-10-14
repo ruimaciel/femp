@@ -10,5 +10,12 @@ SurfaceLoad::SurfaceLoad()
 }
 
 
+std::vector<node_ref_t> 
+SurfaceLoad::getNodeReferences() const
+{
+	return this->nodes;
+}
+
+
 }	// namespace fem
 

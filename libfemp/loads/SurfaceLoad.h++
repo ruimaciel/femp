@@ -1,10 +1,11 @@
-#ifndef FEMP_SURFACE_LOAD_HPP
-#define FEMP_SURFACE_LOAD_HPP
+#ifndef FEMP_LOADS_SURFACE_LOAD_HPP
+#define FEMP_LOADS_SURFACE_LOAD_HPP
 
 #include <vector>
 
 #include <libfemp/Element.h++>
 #include <libfemp/Point.h++>
+
 
 namespace fem
 {
@@ -21,13 +22,7 @@ public:
 
 public:
 	SurfaceLoad();
-	SurfaceLoad(const SurfaceLoad &);
-	~SurfaceLoad();
-
-	/**
-	Clears all attributes
-	**/
-	void clear();
+	virtual ~SurfaceLoad() {};
 };
 
 }	// namespace fem

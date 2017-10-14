@@ -50,7 +50,6 @@ HEADERS = Group.h++ \
 	elements/PrismFamily.h++ \
 	elements/Prism6.h++ \
 	elements/Prism18.h++ \
-	SurfaceLoadOperators/ConcentricLoad.h++	\
 	SurfaceLoadOperators/ConstantLoad.h++ \
 	SurfaceLoadOperators/SurfaceLoadOperator.h++ \
 	SurfaceLoadOperators/SurfaceNormalLoad.h++ \
@@ -117,7 +116,6 @@ SOURCES = Group.c++ \
 	AnalysisResult.c++\
 	ElementResults/ElementResultsFactory.c++ \
 	ElementResults/ElementResults.c++ \
-	SurfaceLoadOperators/ConcentricLoad.c++	\
 	SurfaceLoadOperators/ConstantLoad.c++ \
 	SurfaceLoadOperators/SurfaceLoadOperator.c++ \
 	SurfaceLoadOperators/SurfaceNormalLoad.c++ \

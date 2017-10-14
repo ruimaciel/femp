@@ -6,7 +6,6 @@
 #include "ui/NewMaterialDialog.h++"
 #include <libfemp/SurfaceLoadOperators/ConstantLoad.h++>
 #include <libfemp/SurfaceLoadOperators/SurfaceNormalLoad.h++>
-#include <libfemp/SurfaceLoadOperators/ConcentricLoad.h++>
 
 
 NewProjectWizardPage3::NewProjectWizardPage3(Document &document)

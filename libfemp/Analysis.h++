@@ -26,9 +26,36 @@
 namespace fem
 {
 
+
+/**
+ *TODO: these are placeholder member variables to help transition to new quadrature rules
+ **/
+struct QuadratureRulesOptions
+{
+	int stiffness_degree;	// Quadrature rule degree to integrate stiffness matrices
+	int domain_degree;	// Quadrature rule degree to integrate domain loads
+};
+
 template<typename Scalar>
 class Analysis
 {
+public:	//TODO: these are placeholder member variables to help transition to new quadrature rules
+	QuadratureRulesOptions tri3;
+	QuadratureRulesOptions tri6;
+	QuadratureRulesOptions quad4;
+	QuadratureRulesOptions quad8;
+	QuadratureRulesOptions quad9;
+
+	QuadratureRulesOptions tetra4;
+	QuadratureRulesOptions tetra10;
+	QuadratureRulesOptions hexa8;
+	QuadratureRulesOptions hexa20;
+	QuadratureRulesOptions hexa27;
+
+	QuadratureRulesOptions prism6;
+	QuadratureRulesOptions prism15;
+	QuadratureRulesOptions prism18;
+	
 public:
 	enum Error {	
 		ERR_OK = 0,	// no error

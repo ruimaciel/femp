@@ -15,13 +15,13 @@ namespace fem
 /**
  * Interface used by all quadrature rules over the square
  **/
-class SquareRule
+class QuadrangleRule
 {
 public:
 	typedef QuadraturePoint<2> Point;	// helper alias
 
 public:
-	virtual ~SquareRule() {};
+	virtual ~QuadrangleRule() {};
 	
 	/**
 	 * functor that returns the quadrature rule
@@ -32,17 +32,17 @@ public:
 
 
 /**
- * Assembles a cubature rule on a square with a cartesian product of two 
- * quadrature rules
+ * Assembles a cubature rule on a quadrangle with a cartesian product of
+ * two quadrature rules
  **/
-class SquareCartesianProduct
-	: public SquareRule
+class QuadrangleCartesianProduct
+	: public QuadrangleRule
 {
 private:
 	std::unique_ptr<LineRule> m_rule1, m_rule2;
 
 public:
-	SquareCartesianProduct(LineRule *rule1, LineRule *rule2);
+	QuadrangleCartesianProduct(LineRule *rule1, LineRule *rule2);
 
 	virtual std::vector<Point> operator() () const override;
 };

@@ -27,7 +27,7 @@ HEADERS = Group.h++ \
 	NodeRestrictions.h++ \
 	quadrature_rules/QuadraturePoint.h++ \
 	quadrature_rules/Line.h++ \
-	quadrature_rules/Square.h++ \
+	quadrature_rules/Quadrangle.h++ \
 	quadrature_rules/Triangle.h++ \
 	quadrature_rules/Cube.h++ \
 	quadrature_rules/Tetrahedron.h++ \
@@ -92,7 +92,7 @@ SOURCES = Group.c++ \
 	Point2D.c++ \
 	NodeRestrictions.c++ \
 	quadrature_rules/Line.c++ \
-	quadrature_rules/Square.c++ \
+	quadrature_rules/Quadrangle.c++ \
 	quadrature_rules/Triangle.c++ \
 	quadrature_rules/Cube.c++ \
 	quadrature_rules/Tetrahedron.c++ \

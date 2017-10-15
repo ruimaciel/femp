@@ -1,7 +1,7 @@
 #include "TestFempQuadratureRules.h++"
 
 #include <libfemp/quadrature_rules/Line.h++>
-#include <libfemp/quadrature_rules/Square.h++>
+#include <libfemp/quadrature_rules/Quadrangle.h++>
 #include <libfemp/quadrature_rules/Cube.h++>
 #include <libfemp/quadrature_rules/Triangle.h++>
 #include <libfemp/quadrature_rules/Tetrahedron.h++>
@@ -96,14 +96,14 @@ TestFempQuadratureRules::test_line_rules_Simpson()
 }
 
 void 
-TestFempQuadratureRules::test_square_rules_SquareCartesianProduct()
+TestFempQuadratureRules::test_quadrangle_rules_QuadrangleCartesianProduct()
 {
 	using namespace fem;
 
 	// constant function 
 	auto f = [](double x, double y)->double {return (x*x*x+1)*(y*y*y+1);};
 
-	auto quadrature_rule = SquareCartesianProduct( new GaussLegendre3(), new GaussLegendre3() );
+	auto quadrature_rule = QuadrangleCartesianProduct( new GaussLegendre3(), new GaussLegendre3() );
 
 	double A = 0;
 	const double A_exact = 4.0;

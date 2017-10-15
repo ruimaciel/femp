@@ -1,21 +1,21 @@
-#include "Square.h++"
+#include "Quadrangle.h++"
 
 
 namespace fem
 {
 
 
-SquareCartesianProduct::SquareCartesianProduct(LineRule *rule1, LineRule *rule2)
+QuadrangleCartesianProduct::QuadrangleCartesianProduct(LineRule *rule1, LineRule *rule2)
 {
 	m_rule1 = std::unique_ptr<LineRule>(rule1);
 	m_rule2 = std::unique_ptr<LineRule>(rule2);
 }
 
 
-std::vector<SquareRule::Point> 
-SquareCartesianProduct::operator() () const
+std::vector<QuadrangleRule::Point> 
+QuadrangleCartesianProduct::operator() () const
 {
-	std::vector<SquareRule::Point> square_rule;
+	std::vector<QuadrangleRule::Point> square_rule;
 
 	for(LineRule::Point &p1: (*m_rule1)() )
 	{

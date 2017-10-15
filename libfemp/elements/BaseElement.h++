@@ -158,7 +158,7 @@ public:	//WARNING: BaseElement member functions are deprecated
 	/**
 	Returns a list of quadrature rules
 	**/
-	virtual std::vector<boost::tuple<fem::Point, double> > stiffness_quadrature() = 0;
+	virtual std::vector<boost::tuple<fem::Point, double> > getStiffnessQuadratureRule() = 0;
 	virtual std::vector<boost::tuple<fem::Point, double> > domain_quadrature() = 0;
 
 public:	//WARNING: fem::Element member functions are deprecated

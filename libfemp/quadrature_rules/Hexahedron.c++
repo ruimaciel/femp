@@ -1,11 +1,11 @@
-#include "Cube.h++"
+#include "Hexahedron.h++"
 
 
 namespace fem
 {
 
 
-CubeCartesianProduct::CubeCartesianProduct(LineRule *rule_x, LineRule *rule_y, LineRule *rule_z)
+HexahedronCartesianProduct::HexahedronCartesianProduct(LineRule *rule_x, LineRule *rule_y, LineRule *rule_z)
 {
 	m_rule_x = std::unique_ptr<LineRule>(rule_x);
 	m_rule_y = std::unique_ptr<LineRule>(rule_y);
@@ -13,10 +13,10 @@ CubeCartesianProduct::CubeCartesianProduct(LineRule *rule_x, LineRule *rule_y, L
 }
 
 
-std::vector<CubeRule::Point> 
-CubeCartesianProduct::operator() () const
+std::vector<HexahedronRule::Point> 
+HexahedronCartesianProduct::operator() () const
 {
-	std::vector<CubeRule::Point> cube_rule;
+	std::vector<HexahedronRule::Point> cube_rule;
 
 	for(LineRule::Point &px: (*m_rule_x)() )
 	{

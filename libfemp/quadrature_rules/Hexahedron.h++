@@ -1,5 +1,5 @@
-#ifndef FEM_QUADRATURE_CUBE_HPP
-#define FEM_QUADRATURE_CUBE_HPP
+#ifndef FEM_QUADRATURE_HEXAHEDRON_HPP
+#define FEM_QUADRATURE_HEXAHEDRON_HPP
 
 
 #include <memory>
@@ -15,13 +15,13 @@ namespace fem
 /**
  * Interface used by all quadrature rules over the square
  **/
-class CubeRule
+class HexahedronRule
 {
 public:
 	typedef QuadraturePoint<3> Point;	// helper alias
 
 public:
-	virtual ~CubeRule() {};
+	virtual ~HexahedronRule() {};
 	
 	/**
 	 * functor that returns the quadrature rule
@@ -35,14 +35,14 @@ public:
  * Assembles a cubature rule on a square with a cartesian product of two 
  * quadrature rules
  **/
-class CubeCartesianProduct
-	: public CubeRule
+class HexahedronCartesianProduct
+	: public HexahedronRule
 {
 private:
 	std::unique_ptr<LineRule> m_rule_x, m_rule_y, m_rule_z;
 
 public:
-	CubeCartesianProduct(LineRule *rule_x, LineRule *rule_y, LineRule *rule_z);
+	HexahedronCartesianProduct(LineRule *rule_x, LineRule *rule_y, LineRule *rule_z);
 
 	virtual std::vector<Point> operator() () const override;
 };

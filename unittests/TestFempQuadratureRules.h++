@@ -20,7 +20,7 @@ private slots:
 
 	void test_quadrangle_rules_QuadrangleCartesianProduct();
 
-	void test_square_rules_CubeCartesianProduct();
+	void test_hexahedron_rules_HexahedronCartesianProduct();
 
 	void test_triangle_rules_Triangle1();
 	void test_triangle_rules_Triangle3();

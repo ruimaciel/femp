@@ -2,7 +2,7 @@
 
 #include <libfemp/quadrature_rules/Line.h++>
 #include <libfemp/quadrature_rules/Quadrangle.h++>
-#include <libfemp/quadrature_rules/Cube.h++>
+#include <libfemp/quadrature_rules/Hexahedron.h++>
 #include <libfemp/quadrature_rules/Triangle.h++>
 #include <libfemp/quadrature_rules/Tetrahedron.h++>
 
@@ -118,14 +118,14 @@ TestFempQuadratureRules::test_quadrangle_rules_QuadrangleCartesianProduct()
 
 
 void
-TestFempQuadratureRules::test_square_rules_CubeCartesianProduct()
+TestFempQuadratureRules::test_hexahedron_rules_HexahedronCartesianProduct()
 {
 	using namespace fem;
 
 	// cubic function 
 	auto f = [](double x, double y, double z)->double {return (x*x*x+1)*(y*y*y+1)*(z*z*z+1);};
 
-	auto quadrature_rule = CubeCartesianProduct( new GaussLegendre3(), new GaussLegendre3(), new GaussLegendre3() );
+	auto quadrature_rule = HexahedronCartesianProduct( new GaussLegendre3(), new GaussLegendre3(), new GaussLegendre3() );
 
 	double A = 0;
 	const double A_exact = 8.0;

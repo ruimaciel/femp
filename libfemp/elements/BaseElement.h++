@@ -27,12 +27,6 @@ struct BaseElement
 public:
 	using MatrixDataType	= Eigen::Matrix<double, Eigen::Dynamic,  Eigen::Dynamic>;
 
-	//TODO move to each element
-	int stiffness_degree;	// Quadrature rule degree to integrate stiffness matrices
-
-	//TODO move to each element
-	int domain_degree;	// Quadrature rule degree to integrate domain loads
-
 	//TODO to be removed
 	enum Type 
 	{
@@ -162,10 +156,10 @@ public:	//WARNING: BaseElement member functions are deprecated
 	virtual std::vector<fem::Point> & setCoordinates() = 0;
 
 	/**
-	Returns a list of
+	Returns a list of quadrature rules
 	**/
-	std::vector<boost::tuple<fem::Point, double> > &stiffness_quadrature()	{ return this->ipwpl[stiffness_degree]; }
-	std::vector<boost::tuple<fem::Point, double> > &domain_quadrature()	{ return this->ipwpl[domain_degree]; }
+	virtual std::vector<boost::tuple<fem::Point, double> > stiffness_quadrature() = 0;
+	virtual std::vector<boost::tuple<fem::Point, double> > domain_quadrature() = 0;
 
 public:	//WARNING: fem::Element member functions are deprecated
 	/**
@@ -184,11 +178,6 @@ protected:	// WARNING: to be removed
 	@param n	the number of Gauss points
 	*/
 	void gauleg (double x[], double w[], int n);
-
-	/*
-	Generates the lists of integration points/weights for this type of element
-	*/
-	virtual void generateQuadratureData() = 0;
 };
 
 

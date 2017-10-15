@@ -12,6 +12,10 @@ class TriangleFamily
 	: public BaseElement
 {
 public:
+	int stiffness_degree;	// Quadrature rule degree to integrate stiffness matrices
+	int domain_degree;	// Quadrature rule degree to integrate domain loads
+
+public:
 	TriangleFamily();
 
 	enum BaseElement::ElementFamily family() const;
@@ -20,6 +24,12 @@ public:
 	 * Returns the total number of degrees of freedom
 	 **/
 	virtual unsigned int getDofAmount() const	{ return 3*this->getNodeAmount(); }
+
+	/**
+	Returns a list of quadrature rules
+	**/
+	std::vector<boost::tuple<fem::Point, double> > stiffness_quadrature()	{ return this->ipwpl[stiffness_degree]; }
+	std::vector<boost::tuple<fem::Point, double> > domain_quadrature()	{ return this->ipwpl[domain_degree]; }
 
 protected:
 	void generateQuadratureData();

@@ -11,7 +11,7 @@
 void 
 TestFempQuadratureRules::test_line_rules_GaussLegendre1()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// constant function 
 	auto f = [](double)->double {return 1.0f;};

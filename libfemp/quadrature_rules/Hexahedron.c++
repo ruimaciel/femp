@@ -3,6 +3,8 @@
 
 namespace fem
 {
+namespace quadrature
+{
 
 
 HexahedronCartesianProduct::HexahedronCartesianProduct(LineRule *rule_x, LineRule *rule_y, LineRule *rule_z)
@@ -34,5 +36,6 @@ HexahedronCartesianProduct::operator() () const
 }
 
 
+}	// namespace quadrature
 }	// namespace fem
 

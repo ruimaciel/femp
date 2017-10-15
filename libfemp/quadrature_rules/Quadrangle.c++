@@ -3,6 +3,8 @@
 
 namespace fem
 {
+namespace quadrature
+{
 
 
 QuadrangleCartesianProduct::QuadrangleCartesianProduct(LineRule *rule1, LineRule *rule2)
@@ -29,5 +31,6 @@ QuadrangleCartesianProduct::operator() () const
 }
 
 
+}	// namespace quadrature
 }	// namespace fem
 

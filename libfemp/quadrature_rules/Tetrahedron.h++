@@ -10,6 +10,8 @@
 
 namespace fem
 {
+namespace quadrature
+{
 
 
 /**
@@ -74,6 +76,7 @@ public:
 };
 
 
+}	// namespace quadrature
 }	// namespace fem
 
 #endif

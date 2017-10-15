@@ -4,6 +4,8 @@
 
 namespace fem
 {
+namespace quadrature
+{
 
 
 std::vector<TetrahedronRule::Point>
@@ -88,5 +90,6 @@ Tetrahedron14::operator() () const
 }
 
 
+}	// namespace quadrature
 }	// namespace fem
 

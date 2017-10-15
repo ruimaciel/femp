@@ -4,6 +4,8 @@
 
 namespace fem
 {
+namespace quadrature
+{
 
 
 std::vector<TriangleRule::Point> 
@@ -65,5 +67,6 @@ Triangle7::operator() () const
 }
 
 
+}	// namespace quadrature
 }	// namespace fem
 

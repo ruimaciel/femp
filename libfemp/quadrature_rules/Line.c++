@@ -4,6 +4,8 @@
 
 namespace fem
 {
+namespace quadrature
+{
 
 
 std::vector<LineRule::Point>
@@ -45,5 +47,6 @@ Simpson::operator() () const
 };
 
 
+}	// namespace quadrature
 }	// namespace fem
 

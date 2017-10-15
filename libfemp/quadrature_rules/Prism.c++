@@ -3,6 +3,8 @@
 
 namespace fem
 {
+namespace quadrature
+{
 
 
 PrismCartesianProduct::PrismCartesianProduct(TriangleRule *rule_xy, LineRule *rule_z)
@@ -29,5 +31,6 @@ PrismCartesianProduct::operator() () const
 }
 
 
+}	// namespace quadrature
 }	// namespace fem
 

@@ -9,6 +9,8 @@
 
 namespace fem
 {
+namespace quadrature
+{
 
 
 template<size_t D>
@@ -19,6 +21,7 @@ struct QuadraturePoint
 };
 
 
+}	// namespace quadrature
 }	// namespace fem
 
 #endif

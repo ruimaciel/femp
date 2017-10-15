@@ -3,6 +3,7 @@ include(../defaults.pri)
 TEMPLATE = lib
 
 CONFIG += staticlib
+CONFIG += object_parallel_to_source
 CONFIG -= qt
 
 OBJECTS_DIR += $${BUILD_DIR}/libfemp

@@ -11,7 +11,7 @@
 namespace fem
 {
 
-struct Triangle6
+class Triangle6
 	: public TriangleFamily
 {
 	public:

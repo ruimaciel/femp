@@ -12,7 +12,7 @@
 namespace fem
 {
 
-struct Prism15
+class Prism15
 	: public PrismFamily
 {
 public:

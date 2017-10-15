@@ -12,7 +12,7 @@
 namespace fem
 {
 
-struct Hexahedron8
+class Hexahedron8
 	: public HexahedronFamily
 {
 public:

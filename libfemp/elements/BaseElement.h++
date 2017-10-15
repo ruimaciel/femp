@@ -22,7 +22,7 @@ class Model;	// forward declaration
 /*
 Base class for all classes which are used to describe specific FEM element types
 */
-struct BaseElement
+class BaseElement
 {
 public:
 	using MatrixDataType	= Eigen::Matrix<double, Eigen::Dynamic,  Eigen::Dynamic>;

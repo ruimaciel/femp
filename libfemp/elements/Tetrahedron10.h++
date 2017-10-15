@@ -12,7 +12,7 @@
 namespace fem
 {
 
-struct Tetrahedron10
+class Tetrahedron10
 	: public TetrahedronFamily
 {
 public:

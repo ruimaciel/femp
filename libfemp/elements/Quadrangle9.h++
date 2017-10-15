@@ -11,7 +11,7 @@
 namespace fem
 {
 
-struct Quadrangle9
+class Quadrangle9
 	: public QuadrangleFamily
 {
 	public:

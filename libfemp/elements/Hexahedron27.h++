@@ -12,7 +12,7 @@
 namespace fem
 {
 
-struct Hexahedron27
+class Hexahedron27
 	: public HexahedronFamily
 {
 public:

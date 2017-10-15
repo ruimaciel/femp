@@ -33,7 +33,7 @@ TestFempQuadratureRules::test_line_rules_GaussLegendre1()
 void 
 TestFempQuadratureRules::test_line_rules_GaussLegendre2()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// constant function 
 	auto f = [](double x)->double {return x*x;};
@@ -56,7 +56,7 @@ TestFempQuadratureRules::test_line_rules_GaussLegendre2()
 void 
 TestFempQuadratureRules::test_line_rules_GaussLegendre3()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// constant function 
 	auto f = [](double x)->double {return x*x*x+1;};
@@ -78,7 +78,7 @@ TestFempQuadratureRules::test_line_rules_GaussLegendre3()
 void 
 TestFempQuadratureRules::test_line_rules_Simpson()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// constant function 
 	auto f = [](double x)->double {return x*x*x+1;};
@@ -99,7 +99,7 @@ TestFempQuadratureRules::test_line_rules_Simpson()
 void 
 TestFempQuadratureRules::test_quadrangle_rules_QuadrangleCartesianProduct()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// constant function 
 	auto f = [](double x, double y)->double {return (x*x*x+1)*(y*y*y+1);};
@@ -121,7 +121,7 @@ TestFempQuadratureRules::test_quadrangle_rules_QuadrangleCartesianProduct()
 void
 TestFempQuadratureRules::test_hexahedron_rules_HexahedronCartesianProduct()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// cubic function 
 	auto f = [](double x, double y, double z)->double {return (x*x*x+1)*(y*y*y+1)*(z*z*z+1);};
@@ -143,7 +143,7 @@ TestFempQuadratureRules::test_hexahedron_rules_HexahedronCartesianProduct()
 void
 TestFempQuadratureRules::test_triangle_rules_Triangle1()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// cubic function 
 	auto f = [](double , double )->double {return 1.0; };
@@ -165,7 +165,7 @@ TestFempQuadratureRules::test_triangle_rules_Triangle1()
 void
 TestFempQuadratureRules::test_triangle_rules_Triangle3()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// cubic function 
 	auto f = [](double , double )->double {return 1.0; };
@@ -187,7 +187,7 @@ TestFempQuadratureRules::test_triangle_rules_Triangle3()
 void
 TestFempQuadratureRules::test_triangle_rules_Triangle6()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// cubic function 
 	auto f = [](double , double )->double {return 1.0; };
@@ -209,7 +209,7 @@ TestFempQuadratureRules::test_triangle_rules_Triangle6()
 void
 TestFempQuadratureRules::test_triangle_rules_Triangle7()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// cubic function 
 	auto f = [](double , double )->double {return 1.0; };
@@ -231,7 +231,7 @@ TestFempQuadratureRules::test_triangle_rules_Triangle7()
 void
 TestFempQuadratureRules::test_tetrahedron_rules_Tetrahedron1()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// cubic function 
 	auto f = [](double , double, double )->double {return 1.0; };
@@ -253,7 +253,7 @@ TestFempQuadratureRules::test_tetrahedron_rules_Tetrahedron1()
 void
 TestFempQuadratureRules::test_tetrahedron_rules_Tetrahedron4()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// cubic function 
 	auto f = [](double , double, double )->double {return 1.0; };
@@ -275,7 +275,7 @@ TestFempQuadratureRules::test_tetrahedron_rules_Tetrahedron4()
 void
 TestFempQuadratureRules::test_tetrahedron_rules_Tetrahedron8()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// cubic function 
 	auto f = [](double , double, double )->double {return 1.0; };
@@ -297,7 +297,7 @@ TestFempQuadratureRules::test_tetrahedron_rules_Tetrahedron8()
 void
 TestFempQuadratureRules::test_tetrahedron_rules_Tetrahedron14()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// cubic function 
 	auto f = [](double , double, double )->double {return 1.0; };
@@ -319,7 +319,7 @@ TestFempQuadratureRules::test_tetrahedron_rules_Tetrahedron14()
 void 
 TestFempQuadratureRules::test_prism_rules_PrismCartesianProduct()
 {
-	using namespace fem;
+	using namespace fem::quadrature;
 
 	// constant function 
 	auto f = [](double , double , double)->double {return 1.0;};

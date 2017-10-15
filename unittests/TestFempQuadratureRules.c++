@@ -3,6 +3,7 @@
 #include <libfemp/quadrature_rules/Line.h++>
 #include <libfemp/quadrature_rules/Square.h++>
 #include <libfemp/quadrature_rules/Cube.h++>
+#include <libfemp/quadrature_rules/Triangle.h++>
 
 
 void 
@@ -130,6 +131,94 @@ TestFempQuadratureRules::test_square_rules_CubeCartesianProduct()
 	for(auto point: quadrature_rule())
 	{
 		A += point.weight*f( point.x[0], point.x[1], point.x[2] );
+	}
+
+	double delta = 1e-7;
+	QVERIFY( abs(A-A_exact) < delta );
+}
+
+
+void
+TestFempQuadratureRules::test_triangle_rules_Triangle1()
+{
+	using namespace fem;
+
+	// cubic function 
+	auto f = [](double , double )->double {return 1.0; };
+
+	auto quadrature_rule = Triangle1();
+
+	double A = 0;
+	const double A_exact = 0.5;
+	for(auto point: quadrature_rule())
+	{
+		A += point.weight*f( point.x[0], point.x[1]);
+	}
+
+	double delta = 1e-7;
+	QVERIFY( abs(A-A_exact) < delta );
+}
+
+
+void
+TestFempQuadratureRules::test_triangle_rules_Triangle3()
+{
+	using namespace fem;
+
+	// cubic function 
+	auto f = [](double , double )->double {return 1.0; };
+
+	auto quadrature_rule = Triangle3();
+
+	double A = 0;
+	const double A_exact = 0.5;
+	for(auto point: quadrature_rule())
+	{
+		A += point.weight*f( point.x[0], point.x[1]);
+	}
+
+	double delta = 1e-7;
+	QVERIFY( abs(A-A_exact) < delta );
+}
+
+
+void
+TestFempQuadratureRules::test_triangle_rules_Triangle6()
+{
+	using namespace fem;
+
+	// cubic function 
+	auto f = [](double , double )->double {return 1.0; };
+
+	auto quadrature_rule = Triangle6();
+
+	double A = 0;
+	const double A_exact = 0.5;
+	for(auto point: quadrature_rule())
+	{
+		A += point.weight*f( point.x[0], point.x[1]);
+	}
+
+	double delta = 1e-7;
+	QVERIFY( abs(A-A_exact) < delta );
+}
+
+
+void
+TestFempQuadratureRules::test_triangle_rules_Triangle7()
+{
+	using namespace fem;
+
+	// cubic function 
+	auto f = [](double , double )->double {return 1.0; };
+
+	auto quadrature_rule = Triangle7();
+
+	double A = 0;
+	const double A_exact = 0.5;
+	for(auto point: quadrature_rule())
+	{
+		A += point.weight*f( point.x[0], point.x[1]);
 	}
 
 	double delta = 1e-7;

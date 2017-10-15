@@ -1,6 +1,8 @@
 #include "Hexahedron8.h++"
 
+#include <memory>
 
+#include <libfemp/quadrature_rules/Line.h++>
 #include <libfemp/FemException.h++>
 
 
@@ -16,6 +18,21 @@ Hexahedron8::Hexahedron8()
 	this->domain_degree = 1;
 
 	this->coordinates.resize(8);
+
+
+	// specify new quadrature rule
+	using namespace quadrature;
+	LineRule * rule_x = new GaussLegendre2();
+	LineRule * rule_y = new GaussLegendre2();
+	LineRule * rule_z = new GaussLegendre2();
+
+	m_stiffness_quadrature_rule = std::unique_ptr<HexahedronCartesianProduct>( new HexahedronCartesianProduct(rule_x, rule_y, rule_z));
+
+	rule_x = new GaussLegendre2();
+	rule_y = new GaussLegendre2();
+	rule_z = new GaussLegendre2();
+	m_domain_quadrature_rule = std::unique_ptr<HexahedronCartesianProduct>( new HexahedronCartesianProduct(rule_x, rule_y, rule_z));
+
 }
 
 

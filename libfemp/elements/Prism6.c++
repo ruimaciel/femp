@@ -16,6 +16,19 @@ Prism6::Prism6()
 	this->domain_degree = 2;
 
 	this->coordinates.resize(6);
+
+
+	// specify new quadrature rule
+	using namespace quadrature;
+	TriangleRule * rule_xy = new Triangle3();
+	LineRule * rule_z = new GaussLegendre2();
+
+	m_stiffness_quadrature_rule = std::unique_ptr<PrismCartesianProduct>( new PrismCartesianProduct(rule_xy, rule_z));
+
+	rule_xy = new Triangle3();
+	rule_z = new GaussLegendre2();
+	m_domain_quadrature_rule = std::unique_ptr<PrismCartesianProduct>( new PrismCartesianProduct(rule_xy, rule_z));
+
 }
 
 

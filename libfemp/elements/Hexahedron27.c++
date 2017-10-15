@@ -1,6 +1,8 @@
 #include "Hexahedron27.h++"
 
+#include <memory>
 
+#include <libfemp/quadrature_rules/Line.h++>
 #include <libfemp/FemException.h++>
 
 
@@ -16,6 +18,21 @@ Hexahedron27::Hexahedron27()
 	this->domain_degree = 2;
 
 	this->coordinates.resize(27);
+
+
+	// specify new quadrature rule
+	using namespace quadrature;
+	LineRule * rule_x = new GaussLegendre3();
+	LineRule * rule_y = new GaussLegendre3();
+	LineRule * rule_z = new GaussLegendre3();
+
+	m_stiffness_quadrature_rule = std::unique_ptr<HexahedronCartesianProduct>( new HexahedronCartesianProduct(rule_x, rule_y, rule_z));
+
+	rule_x = new GaussLegendre3();
+	rule_y = new GaussLegendre3();
+	rule_z = new GaussLegendre3();
+	m_domain_quadrature_rule = std::unique_ptr<HexahedronCartesianProduct>( new HexahedronCartesianProduct(rule_x, rule_y, rule_z));
+
 }
 
 

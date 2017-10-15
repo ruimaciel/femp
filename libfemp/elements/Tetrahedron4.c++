@@ -1,6 +1,8 @@
 #include "Tetrahedron4.h++"
 
+#include <memory>
 
+#include <libfemp/quadrature_rules/Tetrahedron.h++>
 #include <libfemp/FemException.h++>
 
 
@@ -16,6 +18,14 @@ Tetrahedron4::Tetrahedron4()
 	this->domain_degree = 1;
 
 	this->coordinates.resize(4);
+
+
+	// specify new quadrature rule
+	using namespace quadrature;
+	m_stiffness_quadrature_rule = std::unique_ptr<Tetrahedron1>( new Tetrahedron1() );
+
+	m_domain_quadrature_rule = std::unique_ptr<quadrature::Tetrahedron4>( new quadrature::Tetrahedron4() );
+
 }
 
 

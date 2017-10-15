@@ -2,7 +2,10 @@
 #define FEMP_PRISM_FAMILY_HPP
 
 
+#include <memory>
+
 #include "BaseElement.h++"
+#include <libfemp/quadrature_rules/Prism.h++>
 
 
 namespace fem
@@ -14,6 +17,9 @@ class PrismFamily
 public:
 	int stiffness_degree;	// Quadrature rule degree to integrate stiffness matrices
 	int domain_degree;	// Quadrature rule degree to integrate domain loads
+
+	std::unique_ptr<quadrature::PrismRule>	m_stiffness_quadrature_rule;	// quadrature rule for stiffness calculations
+	std::unique_ptr<quadrature::PrismRule>	m_domain_quadrature_rule;	// quadrature rule for domain calculations
 
 public:
 	PrismFamily();
@@ -28,8 +34,8 @@ public:
 	/**
 	Returns a list of
 	**/
-	std::vector<boost::tuple<fem::Point, double> > getStiffnessQuadratureRule()	{ return this->ipwpl[stiffness_degree]; }
-	std::vector<boost::tuple<fem::Point, double> > getDomainQuadratureRule()	{ return this->ipwpl[domain_degree]; }
+	std::vector<boost::tuple<fem::Point, double> > getStiffnessQuadratureRule();
+	std::vector<boost::tuple<fem::Point, double> > getDomainQuadratureRule();
 
 protected:
 	void generateQuadratureData();

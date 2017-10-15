@@ -22,6 +22,21 @@ TetrahedronFamily::family() const
 }
 
 
+std::vector<boost::tuple<fem::Point, double> >
+TetrahedronFamily::getStiffnessQuadratureRule()
+{
+	return this->ipwpl[stiffness_degree];
+}
+
+
+std::vector<boost::tuple<fem::Point, double> >
+TetrahedronFamily::getDomainQuadratureRule()
+{
+	return this->ipwpl[domain_degree];
+}
+
+
+
 void
 TetrahedronFamily::generateQuadratureData()
 {

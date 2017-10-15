@@ -22,6 +22,20 @@ QuadrangleFamily::family() const
 }
 
 
+std::vector<boost::tuple<fem::Point, double> >
+QuadrangleFamily::getStiffnessQuadratureRule()
+{
+	return this->ipwpl[stiffness_degree];
+}
+
+
+std::vector<boost::tuple<fem::Point, double> >
+QuadrangleFamily::getDomainQuadratureRule()
+{
+	return this->ipwpl[domain_degree];
+}
+
+
 void
 QuadrangleFamily::generateQuadratureData()
 {

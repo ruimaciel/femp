@@ -1,6 +1,9 @@
 #include "Triangle6.h++"
 
 
+#include <memory>
+
+#include <libfemp/quadrature_rules/Tetrahedron.h++>
 #include <libfemp/FemException.h++>
 
 
@@ -14,6 +17,14 @@ Triangle6::Triangle6()
 	this->domain_degree = 2;
 
 	this->coordinates.resize(6);
+
+
+	// specify new quadrature rule
+	using namespace quadrature;
+	m_stiffness_quadrature_rule = std::unique_ptr<quadrature::Triangle6>( new quadrature::Triangle6() );
+
+	m_domain_quadrature_rule = std::unique_ptr<quadrature::Triangle6>( new quadrature::Triangle6() );
+
 }
 
 

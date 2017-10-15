@@ -1,8 +1,8 @@
 #include "HexahedronFamily.h++"
 
 
-#include <libfemp/FemException.h++>
 
+#include <libfemp/FemException.h++>
 
 namespace fem
 {
@@ -19,6 +19,20 @@ enum BaseElement::ElementFamily
 HexahedronFamily::family() const
 {
 	return BaseElement::EF_HEXAHEDRON;
+}
+
+
+std::vector<boost::tuple<fem::Point, double> > 
+HexahedronFamily::getStiffnessQuadratureRule()
+{ 
+	return this->ipwpl[stiffness_degree];
+}
+
+
+std::vector<boost::tuple<fem::Point, double> > 
+HexahedronFamily::getDomainQuadratureRule()
+{ 
+	return this->ipwpl[domain_degree];
 }
 
 

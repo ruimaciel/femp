@@ -1,6 +1,8 @@
 #include "Quadrangle8.h++"
 
+#include <memory>
 
+#include <libfemp/quadrature_rules/Line.h++>
 #include <libfemp/FemException.h++>
 
 
@@ -14,6 +16,18 @@ Quadrangle8::Quadrangle8()
 	this->domain_degree = 2;
 
 	this->coordinates.resize(8);
+
+	// specify new quadrature rule
+	using namespace quadrature;
+	LineRule * rule_x = new GaussLegendre3();
+	LineRule * rule_y = new GaussLegendre3();
+
+	m_stiffness_quadrature_rule = std::unique_ptr<QuadrangleCartesianProduct>( new QuadrangleCartesianProduct(rule_x, rule_y));
+
+	rule_x = new GaussLegendre3();
+	rule_y = new GaussLegendre3();
+	m_domain_quadrature_rule = std::unique_ptr<QuadrangleCartesianProduct>( new QuadrangleCartesianProduct(rule_x, rule_y));
+
 }
 
 

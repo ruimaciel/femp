@@ -16,6 +16,7 @@ private slots:
 	void test_line_rules_GaussLegendre1();
 	void test_line_rules_GaussLegendre2();
 	void test_line_rules_GaussLegendre3();
+	void test_line_rules_Simpson();
 
 	void test_square_rules_SquareCartesianProduct();
 

@@ -61,6 +61,16 @@ public:
 };
 
 
+/**
+ * three-point Simpson's rule
+ **/
+class Simpson
+	: public LineRule
+{
+public:
+	virtual std::vector<Point> operator() () const override;
+};
+
 
 
 }	// namespace fem

@@ -34,5 +34,16 @@ GaussLegendre3::operator() () const
 };
 
 
+std::vector<LineRule::Point>
+Simpson::operator() () const
+{
+	return { 
+		Point{ 1.0/3, {-1.0} },
+		Point{ 4.0/3, { 0.0} },
+		Point{ 1.0/3, { 1.0} }
+	};
+};
+
+
 }	// namespace fem
 

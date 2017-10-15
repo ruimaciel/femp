@@ -2,6 +2,7 @@
 
 #include <libfemp/quadrature_rules/Line.h++>
 #include <libfemp/quadrature_rules/Square.h++>
+#include <libfemp/quadrature_rules/Cube.h++>
 
 
 void 
@@ -86,6 +87,28 @@ TestFempQuadratureRules::test_square_rules_SquareCartesianProduct()
 	for(auto point: quadrature_rule())
 	{
 		A += point.weight*f( point.x[0], point.x[1] );
+	}
+
+	double delta = 1e-7;
+	QVERIFY( abs(A-A_exact) < delta );
+}
+
+
+void
+TestFempQuadratureRules::test_square_rules_CubeCartesianProduct()
+{
+	using namespace fem;
+
+	// cubic function 
+	auto f = [](double x, double y, double z)->double {return (x*x*x+1)*(y*y*y+1)*(z*z*z+1);};
+
+	auto quadrature_rule = CubeCartesianProduct( new GaussLegendre3(), new GaussLegendre3(), new GaussLegendre3() );
+
+	double A = 0;
+	const double A_exact = 8.0;
+	for(auto point: quadrature_rule())
+	{
+		A += point.weight*f( point.x[0], point.x[1], point.x[2] );
 	}
 
 	double delta = 1e-7;

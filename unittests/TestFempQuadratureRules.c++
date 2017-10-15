@@ -4,6 +4,7 @@
 #include <libfemp/quadrature_rules/Square.h++>
 #include <libfemp/quadrature_rules/Cube.h++>
 #include <libfemp/quadrature_rules/Triangle.h++>
+#include <libfemp/quadrature_rules/Tetrahedron.h++>
 
 
 void 
@@ -219,6 +220,94 @@ TestFempQuadratureRules::test_triangle_rules_Triangle7()
 	for(auto point: quadrature_rule())
 	{
 		A += point.weight*f( point.x[0], point.x[1]);
+	}
+
+	double delta = 1e-7;
+	QVERIFY( abs(A-A_exact) < delta );
+}
+
+
+void
+TestFempQuadratureRules::test_tetrahedron_rules_Tetrahedron1()
+{
+	using namespace fem;
+
+	// cubic function 
+	auto f = [](double , double, double )->double {return 1.0; };
+
+	auto quadrature_rule = Tetrahedron1();
+
+	double A = 0;
+	const double A_exact = 1.0/6;
+	for(auto point: quadrature_rule())
+	{
+		A += point.weight*f( point.x[0], point.x[1], point.x[2]);
+	}
+
+	double delta = 1e-7;
+	QVERIFY( abs(A-A_exact) < delta );
+}
+
+
+void
+TestFempQuadratureRules::test_tetrahedron_rules_Tetrahedron4()
+{
+	using namespace fem;
+
+	// cubic function 
+	auto f = [](double , double, double )->double {return 1.0; };
+
+	auto quadrature_rule = Tetrahedron4();
+
+	double A = 0;
+	const double A_exact = 1.0/6;
+	for(auto point: quadrature_rule())
+	{
+		A += point.weight*f( point.x[0], point.x[1], point.x[2]);
+	}
+
+	double delta = 1e-7;
+	QVERIFY( abs(A-A_exact) < delta );
+}
+
+
+void
+TestFempQuadratureRules::test_tetrahedron_rules_Tetrahedron8()
+{
+	using namespace fem;
+
+	// cubic function 
+	auto f = [](double , double, double )->double {return 1.0; };
+
+	auto quadrature_rule = Tetrahedron8();
+
+	double A = 0;
+	const double A_exact = 1.0/6;
+	for(auto point: quadrature_rule())
+	{
+		A += point.weight*f( point.x[0], point.x[1], point.x[2]);
+	}
+
+	double delta = 1e-7;
+	QVERIFY( abs(A-A_exact) < delta );
+}
+
+
+void
+TestFempQuadratureRules::test_tetrahedron_rules_Tetrahedron14()
+{
+	using namespace fem;
+
+	// cubic function 
+	auto f = [](double , double, double )->double {return 1.0; };
+
+	auto quadrature_rule = Tetrahedron14();
+
+	double A = 0;
+	const double A_exact = 1.0/6;
+	for(auto point: quadrature_rule())
+	{
+		A += point.weight*f( point.x[0], point.x[1], point.x[2]);
 	}
 
 	double delta = 1e-7;

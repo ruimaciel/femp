@@ -26,6 +26,11 @@ private slots:
 	void test_triangle_rules_Triangle3();
 	void test_triangle_rules_Triangle6();
 	void test_triangle_rules_Triangle7();
+
+	void test_tetrahedron_rules_Tetrahedron1();
+	void test_tetrahedron_rules_Tetrahedron4();
+	void test_tetrahedron_rules_Tetrahedron8();
+	void test_tetrahedron_rules_Tetrahedron14();
 };
 
 

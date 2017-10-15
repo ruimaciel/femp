@@ -30,6 +30,7 @@ HEADERS = Group.h++ \
 	quadrature_rules/Square.h++ \
 	quadrature_rules/Triangle.h++ \
 	quadrature_rules/Cube.h++ \
+	quadrature_rules/Tetrahedron.h++ \
 	loads/NodalLoad.h++ \
 	loads/DomainLoad.h++ \
 	loads/SurfaceLoad.h++ \
@@ -94,6 +95,7 @@ SOURCES = Group.c++ \
 	quadrature_rules/Square.c++ \
 	quadrature_rules/Triangle.c++ \
 	quadrature_rules/Cube.c++ \
+	quadrature_rules/Tetrahedron.c++ \
 	loads/NodalLoad.c++ \
 	loads/DomainLoad.c++ \
 	loads/SurfaceLoad.c++\

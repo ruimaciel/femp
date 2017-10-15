@@ -52,11 +52,11 @@ BaseElement::getStiffnessMatrix(fem::Model &model)
 	Matrix<double,6,6> D = material.generateD().cast<double>();
 
 	// build the stiffness matrix: cycle through the number of integration points
-	for (typename std::vector<boost::tuple<fem::Point,double> >::const_iterator i = this->getStiffnessQuadratureRule().begin(); i != this->getStiffnessQuadratureRule().end(); i++)
+	for(auto quadrature_point: this->getStiffnessQuadratureRule())
 	{
 
 		// set the shape function and it's partial derivatives for this integration Point
-		const Point &point = i->get<0>();
+		const Point &point = quadrature_point.get<0>();
 
 		auto dNdcsi = this->getdNdcsi( point );
 		auto dNdeta = this->getdNdeta( point );
@@ -113,7 +113,7 @@ BaseElement::getStiffnessMatrix(fem::Model &model)
 		Bt = B.transpose();
 
 		// add this integration Point's contribution
-		const double &weight = i->get<1>();
+		const double &weight = quadrature_point.get<1>();
 		k_elem += Bt*D*B*detJ*weight;
 	}
 

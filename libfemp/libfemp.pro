@@ -31,6 +31,7 @@ HEADERS = Group.h++ \
 	quadrature_rules/Triangle.h++ \
 	quadrature_rules/Hexahedron.h++ \
 	quadrature_rules/Tetrahedron.h++ \
+	quadrature_rules/Prism.h++ \
 	loads/NodalLoad.h++ \
 	loads/DomainLoad.h++ \
 	loads/SurfaceLoad.h++ \
@@ -96,6 +97,7 @@ SOURCES = Group.c++ \
 	quadrature_rules/Triangle.c++ \
 	quadrature_rules/Hexahedron.c++ \
 	quadrature_rules/Tetrahedron.c++ \
+	quadrature_rules/Prism.c++ \
 	loads/NodalLoad.c++ \
 	loads/DomainLoad.c++ \
 	loads/SurfaceLoad.c++\

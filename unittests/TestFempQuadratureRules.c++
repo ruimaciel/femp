@@ -5,6 +5,7 @@
 #include <libfemp/quadrature_rules/Hexahedron.h++>
 #include <libfemp/quadrature_rules/Triangle.h++>
 #include <libfemp/quadrature_rules/Tetrahedron.h++>
+#include <libfemp/quadrature_rules/Prism.h++>
 
 
 void 
@@ -308,6 +309,28 @@ TestFempQuadratureRules::test_tetrahedron_rules_Tetrahedron14()
 	for(auto point: quadrature_rule())
 	{
 		A += point.weight*f( point.x[0], point.x[1], point.x[2]);
+	}
+
+	double delta = 1e-7;
+	QVERIFY( abs(A-A_exact) < delta );
+}
+
+
+void 
+TestFempQuadratureRules::test_prism_rules_PrismCartesianProduct()
+{
+	using namespace fem;
+
+	// constant function 
+	auto f = [](double , double , double)->double {return 1.0;};
+
+	auto quadrature_rule = PrismCartesianProduct( new Triangle1(), new GaussLegendre3() );
+
+	double A = 0;
+	const double A_exact = 1.0;
+	for(auto point: quadrature_rule())
+	{
+		A += point.weight*f( point.x[0], point.x[1], point.x[2] );
 	}
 
 	double delta = 1e-7;

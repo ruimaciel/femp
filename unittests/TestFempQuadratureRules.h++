@@ -31,6 +31,8 @@ private slots:
 	void test_tetrahedron_rules_Tetrahedron4();
 	void test_tetrahedron_rules_Tetrahedron8();
 	void test_tetrahedron_rules_Tetrahedron14();
+
+	void test_prism_rules_PrismCartesianProduct();
 };
 
 

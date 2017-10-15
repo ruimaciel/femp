@@ -27,6 +27,7 @@ HEADERS = Group.h++ \
 	NodeRestrictions.h++ \
 	quadrature_rules/QuadraturePoint.h++ \
 	quadrature_rules/Line.h++ \
+	quadrature_rules/Square.h++ \
 	loads/NodalLoad.h++ \
 	loads/DomainLoad.h++ \
 	loads/SurfaceLoad.h++ \
@@ -88,6 +89,7 @@ SOURCES = Group.c++ \
 	Point2D.c++ \
 	NodeRestrictions.c++ \
 	quadrature_rules/Line.c++ \
+	quadrature_rules/Square.c++ \
 	loads/NodalLoad.c++ \
 	loads/DomainLoad.c++ \
 	loads/SurfaceLoad.c++\

@@ -67,7 +67,7 @@ SurfaceLoad::getForceVector(Model &model) const
 
 	Eigen::Matrix3d J;
 
-	for (typename std::vector<boost::tuple<fem::Point,double> >::iterator i = element->domain_quadrature().begin(); i != element->domain_quadrature().end(); i++)
+	for (typename std::vector<boost::tuple<fem::Point,double> >::iterator i = element->getDomainQuadratureRule().begin(); i != element->getDomainQuadratureRule().end(); i++)
 	{
 		// get shape function and shape function derivatives in this integration Point's coordinate
 		const Point &point = i->get<0>();

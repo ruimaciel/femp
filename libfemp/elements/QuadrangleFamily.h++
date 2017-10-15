@@ -29,7 +29,7 @@ public:
 	Returns a list of
 	**/
 	std::vector<boost::tuple<fem::Point, double> > getStiffnessQuadratureRule()	{ return this->ipwpl[stiffness_degree]; }
-	std::vector<boost::tuple<fem::Point, double> > domain_quadrature()	{ return this->ipwpl[domain_degree]; }
+	std::vector<boost::tuple<fem::Point, double> > getDomainQuadratureRule()	{ return this->ipwpl[domain_degree]; }
 
 protected:
 	void generateQuadratureData();

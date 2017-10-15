@@ -30,25 +30,6 @@ template<typename Scalar>
 class Analysis
 {
 public:
-	// list of supported elements
-	// area elements, used to integrate surface loads
-	Triangle3	tri3;
-	Triangle6	tri6;
-	Quadrangle4 	quad4;
-	Quadrangle8 	quad8;
-	Quadrangle9 	quad9;
-
-	// volume elements
-	Tetrahedron4	tetra4;
-	Tetrahedron10	tetra10;
-	Hexahedron8 	hexa8;
-	Hexahedron20 	hexa20;
-	Hexahedron27 	hexa27;
-	Prism6		prism6;
-	Prism15		prism15;
-	Prism18		prism18;
-
-public:
 	enum Error {	
 		ERR_OK = 0,	// no error
 		ERR_NO_ELEMENTS,

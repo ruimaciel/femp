@@ -8,9 +8,10 @@
 namespace fem
 {
 
-struct TriangleFamily
+class TriangleFamily
 	: public BaseElement
 {
+public:
 	TriangleFamily();
 
 	enum BaseElement::ElementFamily family() const;

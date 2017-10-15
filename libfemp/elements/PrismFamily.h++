@@ -8,9 +8,10 @@
 namespace fem
 {
 
-struct PrismFamily
+class PrismFamily
 	: public BaseElement
 {
+public:
 	PrismFamily();
 
 	enum BaseElement::ElementFamily family() const;

@@ -8,9 +8,10 @@
 namespace fem
 {
 
-struct TetrahedronFamily
+class TetrahedronFamily
 	: public BaseElement
 {
+public:
 	TetrahedronFamily();
 
 	enum BaseElement::ElementFamily family() const;

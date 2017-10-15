@@ -8,9 +8,10 @@
 namespace fem
 {
 
-struct QuadrangleFamily
+class QuadrangleFamily
 	: public BaseElement
 {
+public:
 	QuadrangleFamily();
 
 	enum BaseElement::ElementFamily family() const;

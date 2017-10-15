@@ -82,18 +82,14 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult &re
 	using namespace Eigen;
 	Matrix<double,Dynamic, Dynamic> k_elem;
 
-	BaseElement *element = NULL;	// points to the current element class
-
-	for(std::vector<Element>::iterator element_iterator = model.element_list.begin(); element_iterator != model.element_list.end(); element_iterator++)
+	for(Element &el: model.element_list)
 	{
-		const Element &el = *element_iterator;
-
-		element = getElement(el); //TODO remove after migration to polymorphic elements
+		BaseElement *element = getElement(el); //TODO remove after migration to polymorphic elements
 
 		k_elem = element->getStiffnessMatrix(model);
 
 		// add elementary stiffness matrix to the global stiffness matrix 
-		add_elementary_stiffness_to_global(k_elem, result.lm, *element_iterator, result);
+		add_elementary_stiffness_to_global(k_elem, result.lm, el, result);
 
 		// mark progress
 		progress.markSectionIterationIncrement();

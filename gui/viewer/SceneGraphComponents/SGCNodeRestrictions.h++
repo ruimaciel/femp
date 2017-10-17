@@ -11,7 +11,6 @@
 #include <libfemp/Model.h++>
 #include <libfemp/Node.h++>
 #include <libfemp/NodeRestrictions.h++>
-#include <libfemp/LinearAnalysis.h++>
 
 #include "DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++"
 
@@ -30,14 +29,12 @@ protected:
 
 public:
 	NodeRestrictions(const fem::node_ref_t &node_reference, const fem::node_restriction_ref_t &node_restrictions_reference, fem::NodeRestrictions &node_restrictions, DisplacementsRepresentationPolicy *displacements);
-	//Element(fem::Element &reference_element, ElementRepresentationPolicy *representation, DisplacementsRepresentationPolicy *displacements);
 	~NodeRestrictions();
 
 
 	/*
 	Renders this node
 	*/
-	// void paintGL(ViewportData &data, fem::Project &project, fem::AnalysisResult * result,  float &scale, ViewportColors &colors);
 	void paintGL(ViewportData &data, ViewportColors &colors);
 
 	/*

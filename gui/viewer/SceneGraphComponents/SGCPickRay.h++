@@ -7,7 +7,6 @@
 
 #include <libfemp/Point.h++>
 #include <libfemp/NodeRestrictions.h++>
-#include <libfemp/LinearAnalysis.h++>
 
 #include "../ViewportData.h++"
 #include "../ViewportColors.h++"

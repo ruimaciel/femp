@@ -7,7 +7,6 @@
 
 #include <libfemp/Node.h++>
 #include <libfemp/NodeRestrictions.h++>
-#include <libfemp/LinearAnalysis.h++>
 
 #include "DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++"
 

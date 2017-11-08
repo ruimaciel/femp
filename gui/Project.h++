@@ -21,12 +21,6 @@ namespace fem
 class Project
 	: public sigc::trackable
 {
-protected:
-	Model model;	// the FEM model
-
-public:
-	std::vector<AnalysisResult> result;	// a list with all analysis
-		
 public:
 	void clear();
 	
@@ -44,7 +38,15 @@ public:
 	Implements a Visitor design pattern
 	**/
 	void accept(ProjectVisitor &visitor);
+
+protected:
+	Model model;	// the FEM model
+
+public:
+	std::vector<AnalysisResult> result;	// a list with all analysis
+		
 };
 
-}
+}	// namespace fem
+
 #endif

@@ -23,15 +23,6 @@ class SelectionWidget
 {
 	Q_OBJECT
 
-protected:
-	QTreeWidgetItem *m_element_item;
-	std::map<fem::element_ref_t, QTreeWidgetItem *>	m_element_map;	// list of all element references
-
-	QTreeWidgetItem *m_node_item;
-	std::map<fem::node_ref_t, QTreeWidgetItem *>	m_node_map;	// list of all element references
-
-	std::vector<fem::Group>	m_selection_groups;
-
 public:
 	SelectionWidget(fem::Project &project, SelectionManager &, QWidget *parent = 0);
 
@@ -74,6 +65,14 @@ protected:
 	**/
 	void initializeSelectionGroups(fem::Project &project);
 
+protected:
+	QTreeWidgetItem *m_element_item;
+	std::map<fem::element_ref_t, QTreeWidgetItem *>	m_element_map;	// list of all element references
+
+	QTreeWidgetItem *m_node_item;
+	std::map<fem::node_ref_t, QTreeWidgetItem *>	m_node_map;	// list of all element references
+
+	std::vector<fem::Group>	m_selection_groups;
 
 };
 

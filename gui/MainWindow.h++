@@ -34,30 +34,7 @@ class MainWindow
 	Q_OBJECT
 
 public:
-	MainWindow (QWidget *parent = 0);
-
-protected:
-	Ui::MainWindow 	ui;
-
-	fem::LinearAnalysis<double> analysis;
-
-	CommandLineDockWidget *commandLineDockWidget;
-	SelectionDockWidget *selectionDockWidget;
-
-	QMdiArea	* mdiArea;
-
-	ProgramOptions 	options;	// the global program options
-	bool 	hasUnsavedChanges;	// true if the document has unsaved changes
-
-	Document document;	// the FEM document
-	SelectionManager m_selection_manager;	// object which handles object selection
-
-	ViewportColors colors;	// the elements' viewport colors
-
-	QDir file_dialog_last_directory;
-	QDir results_dump_dialog_last_directory;
-	QSignalMapper	*m_window_mapper;	// used to map menu clicks to window activation
-
+	explicit MainWindow (QWidget *parent = 0);
 
 public Q_SLOTS:
 	/* starts off a brand new FEM project */
@@ -154,6 +131,29 @@ private:
 	void setUserInterfaceAsOpened();	// sets the user interface in it's "opened document" state
 	void setUserInterfaceAsClosed();	// sets the user interface in it's "closed document" state
 	void setUserInterfacePostAnalysis();	// sets the user interface in it's "analysis performed" state
+
+protected:
+	Ui::MainWindow 	ui;
+
+	fem::LinearAnalysis<double> analysis;
+
+	CommandLineDockWidget *commandLineDockWidget;
+	SelectionDockWidget *selectionDockWidget;
+
+	QMdiArea	* mdiArea;
+
+	ProgramOptions 	options;	// the global program options
+	bool 	hasUnsavedChanges;	// true if the document has unsaved changes
+
+	Document document;	// the FEM document
+	SelectionManager m_selection_manager;	// object which handles object selection
+
+	ViewportColors colors;	// the elements' viewport colors
+
+	QDir file_dialog_last_directory;
+	QDir results_dump_dialog_last_directory;
+	QSignalMapper	*m_window_mapper;	// used to map menu clicks to window activation
+
 
 };
 

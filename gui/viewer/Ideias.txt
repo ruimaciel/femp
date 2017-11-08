@@ -1,3 +1,0 @@
-O programa tem de apresentar grandezas recuperadas quer tenha corrido uma análise ou não
-Englobar na mesma classe as subclasses do modelo e das análises realizadas
-guardar um registo da análise

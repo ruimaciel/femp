@@ -11,6 +11,7 @@ class Document
 {
 public:
 	enum Type { TYPE_NONE, TYPE_SOLID3D};
+
 	enum Error {ERR_OK, 
 		ERR_FILE_NOT_FOUND,	// path to project file doesn't exist
 		ERR_FILE_OPEN,		// file.open() failed
@@ -19,14 +20,6 @@ public:
 		ERR_WRITING_FILE,	// error while writing file
 		ERR_UNKNOWN		//
 		};
-
-protected:
-	bool unsaved;	// true if this document suffered changes that are saveable
-	Type document_type;	// specifies the model type
-
-public:
-	QString *file_name;	// path for the project's directory
-	fem::Project project;	// the FEM project
 
 public:
 	Document();
@@ -47,7 +40,6 @@ public:
 
 	void setProjectType(Type type)	{ document_type = type; }
 
-
 	/*!
 	 * Returns a reference to the Project object
 	 */
@@ -59,7 +51,17 @@ public:
 	enum Error save();
 
 	void setUnsaved()	{unsaved = true; }
+
+
+protected:
+	bool unsaved;	// true if this document suffered changes that are saveable
+	Type document_type;	// specifies the model type
+
+public:
+	QString *file_name;	// path for the project's directory
+	fem::Project project;	// the FEM project
+
 };
 
-
 #endif
+

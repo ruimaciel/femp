@@ -80,11 +80,11 @@ signals:
 	**/
 	void setError(std::string);
 
-
 	/**
 	Announces the end of the entire process
 	**/
 	void finish();
+
 };
 
 #endif

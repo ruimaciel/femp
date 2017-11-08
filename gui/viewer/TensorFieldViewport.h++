@@ -24,10 +24,6 @@ class TensorFieldViewport
 {
 	Q_OBJECT
 
-protected:
-	fem::AnalysisResult *m_analysis_result;
-	VPStateTensorFields	m_vp_state_tensor_fields;
-
 public:
 	TensorFieldViewport(fem::Project &project, fem::AnalysisResult &result, fem::ResultsRanges<double> &ranges, QWidget *parent = NULL);
 	~TensorFieldViewport();
@@ -45,6 +41,10 @@ public:
 
 	void showNegativePrincipalStressesVisibility(bool state);
 	void showPositivePrincipalStressesVisibility(bool state);
+
+protected:
+	fem::AnalysisResult *m_analysis_result;
+	VPStateTensorFields	m_vp_state_tensor_fields;
 
 };
 

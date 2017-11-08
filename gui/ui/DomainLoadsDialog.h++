@@ -18,23 +18,26 @@ class DomainLoadsDialog
 {
 	Q_OBJECT
 
-private:
-	size_t load_pattern;
-
 public:
 	DomainLoadsDialog(LoadPatternsModel &model, QWidget *parent = NULL);
 
 	size_t	getLoadPattern();
+
 	fem::Point getForce();
 
 	void loadPatternCreated(size_t, fem::LoadPattern const &);
 
 
 protected Q_SLOTS:
+
 	void handleNewLabelButton();
 
 public:	// sigc++ signals
 	sigc::signal<void, std::string const &>	create_load_pattern;	// sends a signal for fem::Model to create a new load pattern 
+
+private:
+	size_t load_pattern;
+
 };
 
 

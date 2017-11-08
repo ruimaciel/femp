@@ -23,13 +23,14 @@ public:
 		R_BOTH		= 3
 	};
 
+public:
+	void createToolbar(QMainWindow *parent);
+
 protected:
 
 	QComboBox *elementRenderingComboBox;
 	QToolBar *toggleElementRenderingToolBar;	
 
-public:
-	void createToolbar(QMainWindow *parent);
 };
 
 

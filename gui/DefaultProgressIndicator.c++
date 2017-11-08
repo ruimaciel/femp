@@ -39,7 +39,6 @@ DefaultProgressIndicator::markSectionEnd()
 }
 
 
-
 void
 DefaultProgressIndicator::markProgress(size_t progress)
 {

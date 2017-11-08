@@ -17,14 +17,15 @@ Sets node restraints in a specific set of nodes
 class SetNodeRestraintsVisitor
 	: public ProjectVisitor
 {
-protected:
-	fem::NodeRestrictions	m_restrictions;
-	Selection	const &m_selection;
-	
 public:
 	SetNodeRestraintsVisitor(Selection const &selection, fem::NodeRestrictions const &restrictions);
 
 	void visit(fem::Model &model, std::vector<fem::AnalysisResult > &result);
+
+protected:
+	fem::NodeRestrictions	m_restrictions;
+	Selection	const &m_selection;
+	
 };
 
 

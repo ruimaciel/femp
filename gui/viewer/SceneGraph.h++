@@ -22,6 +22,7 @@ Facade pattern for the scenegraph structure
 class SceneGraph
 {
 public:
+
 	enum Groups 	// common groups for all scenegraphs
 	{
 		RG_NODES,	// the element nodes
@@ -31,27 +32,15 @@ public:
 		RG_NODE_RESTRICTIONS
 	};
 
-public:
-	/* 
-	This is the master list of all scene graph objects in this scene graph.
-	It is used to store every object of type SGCSurface (etc...) managed by this scenegraph.
-	*/
-	std::list<SceneGraphComponent *> primitive_components;
-
-	std::map<enum Groups, RenderGroup>	rendering_groups;
-
-	hud::Selection	m_selection;	// HUD object to render selection
 
 public:
 	SceneGraph();
 	~SceneGraph();
 
-
 	/*
 	Clears all the data structures managed by this class
 	*/
 	void clear();
-
 
 	void paint(ViewportData &viewport_data, ViewportColors &colors);
 
@@ -59,11 +48,6 @@ public:
 	Generates all the display lists
 	**/
 	void generateDisplayLists(ViewportData &viewport_data, ViewportColors &colors);
-
-	/**
-	Renders the openGL scene, which consists of the list of display lists and 2D elements
-	**/
-	// void paintGL();
 
 	/*
 	Generic routine to add a primitive component to this scenegraph
@@ -88,6 +72,19 @@ public:
 	void setSelectionStart(fem::Point const &p)	{ m_selection.setStart(p); };
 	void setSelectionEnd(fem::Point const &p)	{ m_selection.setEnd(p); };
 	void setSelectionOff()				{ m_selection.off(); };
+
+
+public:
+	/* 
+	This is the master list of all scene graph objects in this scene graph.
+	It is used to store every object of type SGCSurface (etc...) managed by this scenegraph.
+	*/
+	std::list<SceneGraphComponent *> primitive_components;
+
+	std::map<enum Groups, RenderGroup>	rendering_groups;
+
+	hud::Selection	m_selection;	// HUD object to render selection
+
 };
 
 #endif

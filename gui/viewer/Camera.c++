@@ -43,4 +43,3 @@ Camera::reposition()
 	glTranslated(pos.x(),pos.y(),pos.z());
 }
 
-

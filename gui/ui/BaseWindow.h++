@@ -12,9 +12,6 @@ bit unwielding to rewrite.
 **/
 class BaseWindow
 {
-protected:
-	QString	m_window_label;	// label that describes this window
-	
 public:
 	/**
 	@param label	window label
@@ -26,6 +23,10 @@ public:
 	Returns this window's label
 	**/
 	QString label() const;
+
+protected:
+	QString	m_window_label;	// label that describes this window
+	
 };
 
 #endif

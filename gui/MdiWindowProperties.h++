@@ -13,7 +13,7 @@ public:
 	enum WindowType { MWP_None, MWP_Model, MWP_Displacements } window_type;
 
 public:
-	MdiWindowProperties(enum WindowType type = MWP_None);
+	explicit MdiWindowProperties(enum WindowType type = MWP_None);
 	~MdiWindowProperties();
 };
 

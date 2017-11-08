@@ -416,26 +416,26 @@ void
 MainWindow::createActions()
 {
 	// connect the actions
-	connect(ui.actionNew,	SIGNAL(triggered()), this,	SLOT(newProject()));
-	connect(ui.actionOpen,	SIGNAL(triggered()), this,	SLOT(openProject()));
+	connect(ui.actionNew,		SIGNAL(triggered()), this,	SLOT(newProject()));
+	connect(ui.actionOpen,		SIGNAL(triggered()), this,	SLOT(openProject()));
 	connect(ui.actionReopen,	SIGNAL(triggered()), this,	SLOT(reopenProject()));
-	connect(ui.actionSave,	SIGNAL(triggered()), this,	SLOT(saveProject()));
+	connect(ui.actionSave,		SIGNAL(triggered()), this,	SLOT(saveProject()));
 	connect(ui.actionSaveAs,	SIGNAL(triggered()), this,	SLOT(saveProjectAs()));
-	connect(ui.actionClose,	SIGNAL(triggered()), this,	SLOT(closeProject()));
-	connect(ui.actionQuit,	SIGNAL(triggered()), this,	SLOT(quit()));
+	connect(ui.actionClose,		SIGNAL(triggered()), this,	SLOT(closeProject()));
+	connect(ui.actionQuit,		SIGNAL(triggered()), this,	SLOT(quit()));
 	connect(ui.actionNodeRestraints,	SIGNAL(triggered()), this,	SLOT(setNodeRestraints()) );
-	connect(ui.actionNodeActions,	SIGNAL(triggered()), this,	SLOT(setNodeActions()) );
-	connect(ui.actionDomainLoads,	SIGNAL(triggered()), this,	SLOT(setDomainLoads()) );
-	connect(ui.actionMoveNodes,	SIGNAL(triggered()), this,	SLOT(moveSelectedNodes()) );
+	connect(ui.actionNodeActions,		SIGNAL(triggered()), this,	SLOT(setNodeActions()) );
+	connect(ui.actionDomainLoads,		SIGNAL(triggered()), this,	SLOT(setDomainLoads()) );
+	connect(ui.actionMoveNodes,			SIGNAL(triggered()), this,	SLOT(moveSelectedNodes()) );
 
 	connect(ui.actionRun,	SIGNAL(triggered()), this,	SLOT(runAnalysis()));
 	connect(ui.actionDump_FEM_equation,	SIGNAL(triggered()),	this,	SLOT(dumpFemEquation()));
 	connect(ui.actionAnalysisSummary,	SIGNAL(triggered()),	this,	SLOT(showAnalysisSummary() ));
 
-	connect(ui.actionViewActions,	SIGNAL(triggered()), this,	SLOT(setDisplayOptions()));
-	connect(ui.actionEditMaterials,	SIGNAL(triggered()),	this,	SLOT(editMaterials()));
-	connect(ui.actionDisplayNodes,	SIGNAL(triggered()), this,	SLOT(setElementDisplay()));
-	connect(ui.actionDisplaySurfaces,	SIGNAL(triggered()), this,	SLOT(setElementDisplay()));
+	connect(ui.actionViewActions,		SIGNAL(triggered()), 	this,	SLOT(setDisplayOptions()));
+	connect(ui.actionEditMaterials,		SIGNAL(triggered()),	this,	SLOT(editMaterials()));
+	connect(ui.actionDisplayNodes,		SIGNAL(triggered()), 	this,	SLOT(setElementDisplay()));
+	connect(ui.actionDisplaySurfaces,	SIGNAL(triggered()), 	this,	SLOT(setElementDisplay()));
 
 	connect(ui.actionWindowTile,	SIGNAL(triggered()), this,	SLOT(setTiledWindows()));
 	connect(ui.actionWindowCascade,	SIGNAL(triggered()), this,	SLOT(setCascadeWindows()));
@@ -443,17 +443,17 @@ MainWindow::createActions()
 	connect(ui.actionShowNodalForces,	SIGNAL(triggered()),	this,	SLOT(setNodeForcesDisplay()));
 
 	// MDI window creation 
-	connect(ui.actionNewModelWindow,		SIGNAL(triggered()),	this,	SLOT(createNewModelWindow()));
+	connect(ui.actionNewModelWindow,			SIGNAL(triggered()),	this,	SLOT(createNewModelWindow()));
 	connect(ui.actionNewPostprocessingWindow,	SIGNAL(triggered()),	this,	SLOT(createNewPostprocessingWindow()));
 	connect(ui.actionNewTensorFieldWindow,		SIGNAL(triggered()),	this,	SLOT(createNewTensorFieldWindow()));
 	connect(ui.actionNewAnalysisResultsWindow,	SIGNAL(triggered()),	this,	SLOT(createNewAnalysisResultsWindow()));
 	connect(ui.actionNewFemEquationWindow,		SIGNAL(triggered()),	this,	SLOT(createNewFemEquationWindow()));
 
 	connect(ui.actionViewSelection,	SIGNAL(triggered()),	this,	SLOT(showSelection()));
-	connect(ui.actionViewAll,	SIGNAL(triggered()),	this,	SLOT(showAll()));
+	connect(ui.actionViewAll,		SIGNAL(triggered()),	this,	SLOT(showAll()));
 
 	connect(ui.actionQuadrature_rules,	SIGNAL(triggered()),	this,	SLOT(editQuadratureRules()) );
-	connect(ui.actionSelection,		SIGNAL(triggered()),	this,	SLOT(editSelection()) );
+	connect(ui.actionSelection,			SIGNAL(triggered()),	this,	SLOT(editSelection()) );
 	connect(ui.actionResults_from_selection,		SIGNAL(triggered()),	this,	SLOT(dumpResultsFromSelection()) );
 
 	connect(ui.menuWindowOpened,	SIGNAL(aboutToShow()),	this,	SLOT(updateWindowMenu()) );
@@ -935,21 +935,6 @@ void
 MainWindow::setDisplayOptions()
 {
 	//TODO make this generic
-	/*
-	   DisplayOptionsDialog da(document.getProject().getModel(), this);
-	   if(da.exec() == QDialog::Accepted)
-	   {
-	// set the LoadPattern pointer
-	size_t n = da.getLoadPatternIndex();
-	glWidget->display_options.load_pattern = &document.getProject().getModel().load_pattern_list[n];
-
-	// set the other visualization options
-	glWidget->display_options.nodal_forces = da.renderNodalForces();
-	glWidget->display_options.surface_forces = da.renderSurfaceForces();
-	glWidget->display_options.domain_forces = da.renderDomainForces();
-	glWidget->display_options.nodal_displacements = da.renderNodalDisplacements();
-	}
-	 */
 }
 
 

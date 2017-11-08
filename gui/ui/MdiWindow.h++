@@ -29,23 +29,6 @@ class MdiWindow
 	Q_OBJECT
 
 public:
-	BaseViewport *viewport;
-
-protected:
-	QToolBar *viewportToolBar;	// toolbar to set camera angles
-	QToolBar *visibilityToolBar;	// toolbar to set which rendering group (i.e., nodes, surfaces, etc...) is visible
-
-	QAction	*actionMenuVisibility;	// toolbar menu button that toggles the menu bar visibility
-
-	QAction *actionViewportXY;	// places the camera displaying the XY plane
-	QAction *actionViewportYZ;	// places the camera displaying the XY plane
-	QAction *actionViewportXZ;	// places the camera displaying the XZ plane
-	QAction *actionViewportIso;	// places the camera on an isometric view angle
-
-	QAction *actionVisibleNodes;
-	QAction *actionVisibleRestrictions;
-
-public:
 	MdiWindow (QWidget *parent = 0);
 
 
@@ -94,6 +77,23 @@ public:
 	Handles all libsigc++ connections between this window and an object of type SelectionManager
 	**/
 	virtual void connectToSelectionManager(SelectionManager &);
+
+	BaseViewport *viewport;
+
+protected:
+	QToolBar *viewportToolBar;	// toolbar to set camera angles
+	QToolBar *visibilityToolBar;	// toolbar to set which rendering group (i.e., nodes, surfaces, etc...) is visible
+
+	QAction	*actionMenuVisibility;	// toolbar menu button that toggles the menu bar visibility
+
+	QAction *actionViewportXY;	// places the camera displaying the XY plane
+	QAction *actionViewportYZ;	// places the camera displaying the XY plane
+	QAction *actionViewportXZ;	// places the camera displaying the XZ plane
+	QAction *actionViewportIso;	// places the camera on an isometric view angle
+
+	QAction *actionVisibleNodes;
+	QAction *actionVisibleRestrictions;
+
 };	
 
 #endif

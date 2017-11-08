@@ -16,14 +16,16 @@ class LoadPatternsModel
 {
 	Q_OBJECT
 
-protected:
-	fem::Model const &m_model;
-
 public:
 	LoadPatternsModel(fem::Model const &model, QObject *parent = NULL);
 
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+
 	int rowCount(const QModelIndex &parent) const;
+
+protected:
+	fem::Model const &m_model;
+
 };
 
 #endif

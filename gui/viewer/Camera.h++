@@ -10,11 +10,6 @@
 class Camera 
 {
 public:
-	fem::Point center;
-	fem::Point pos;
-	fem::Point rotation;
-
-public:
 	Camera();
 	~Camera();
 
@@ -27,6 +22,12 @@ public:
 	it calls opengl routines to position the camera relative to the scene
 	**/
 	void reposition();
+
+public:
+	fem::Point center;
+	fem::Point pos;
+	fem::Point rotation;
+
 };
 
 #endif

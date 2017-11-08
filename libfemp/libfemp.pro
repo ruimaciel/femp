@@ -68,7 +68,8 @@ HEADERS = Group.h++ \
 	solvers/UmfpackSolver.h++ \
 	Surface.h++ \
 	solvers/*.h++ \
-	parsers/fem_msh.h++ lex.msh_yy.h \
+	parsers/fem_msh.h++ \
+	lex.msh_yy.h++ \
 	parsers/parser.h++ \
 	parsers/MshParser.h++ \
 	parsers/json.h \
@@ -122,7 +123,8 @@ SOURCES = Group.c++ \
 	SurfaceLoadOperators/SurfaceLoadOperator.c++ \
 	SurfaceLoadOperators/SurfaceNormalLoad.c++ \
 	Surface.c++ \
-	parsers/fem_msh.c++ lex.msh_yy.c++ \
+	parsers/fem_msh.c++ \
+	lex.msh_yy.c++ \
 	parsers/parser.c++ \
 	parsers/MshParser.c++ \
 	parsers/json.c \
@@ -146,16 +148,17 @@ Flex.depends = msh.l
 Flex.commands = flex --header-file=lex.msh_yy.h++ -o lex.msh_yy.c++ ${FLEXINPUT}
 Flex.name = flex
 
+BISONINPUT = msh.y
 Bison.name = Bison ${QMAKE_FILE_IN}
-Bison.input = msh.y
+Bison.input = BISONINPUT
 Bison.output = msh.tab.c msh.tab.h
+Bison.depends = msh.y
 Bison.commands = bison -d --debug msh.y -o ${QMAKE_FILE_PATH}/
-Bison.depends = msh.y lex.msh_yy.h 
 
 BisonCompile.input = msh.tab.c
 BisonCompile.output = msh.tab.o
 BisonCompile.commands = g++ -c msh.tab.c $(INCPATH)
 
-QMAKE_CLEAN += lex.msh_yy.h lex.msh_yy.c++ msh.tab.c msh.tab.h msh.tab.o
+QMAKE_CLEAN += lex.msh_yy.h++ lex.msh_yy.c++ msh.tab.c msh.tab.h msh.tab.o
 
 QMAKE_EXTRA_TARGETS += FemJsonParserRe2c MshParserRe2c Flex Bison BisonCompile 

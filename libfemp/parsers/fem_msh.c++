@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "lex.msh_yy.h"
+#include "lex.msh_yy.h++"
 #include "msh.tab.h"
 
 

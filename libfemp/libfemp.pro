@@ -139,10 +139,12 @@ MshParserRe2c.commands = re2c -o parsers/MshParser.c++ parsers/MshParser.c++.re2
 MshParserRe2c.depends = parsers/MshParser.c++.re2c
 MshParserRe2c.output = parsers/MshParser.c++
 
-Flex.target = lex.msh_yy.h 
-Flex.commands = flex --header-file=lex.msh_yy.h -o lex.msh_yy.c++ msh.l
-Flex.depends = msh.l 
-Flex.output = lex.msh_yy.c++ lex.msh_yy.h
+FLEXINPUT = msh.l
+Flex.input = FLEXINPUT
+Flex.output = lex.msh_yy.c++ lex.msh_yy.h++
+Flex.depends = msh.l
+Flex.commands = flex --header-file=lex.msh_yy.h++ -o lex.msh_yy.c++ ${FLEXINPUT}
+Flex.name = flex
 
 Bison.name = Bison ${QMAKE_FILE_IN}
 Bison.input = msh.y

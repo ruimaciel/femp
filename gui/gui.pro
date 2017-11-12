@@ -14,7 +14,7 @@ DESTDIR = $${BUILD_DIR}
 
 LIBFEMP_SRC = $${PWD}/libfemp
 
-INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${SRCDIR}}
+INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${SRCDIR}
 
 LIBS += -lumfpack -lGLU -L$${BUILD_DIR} -llibla -llibfemp
 

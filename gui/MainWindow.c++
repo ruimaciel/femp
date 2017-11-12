@@ -14,7 +14,6 @@
 #include <string>
 #include <fstream>
 #include <iostream>	// for cout. remove after tests
-#include <string>
 #include <stdlib.h>	// getenv()
 
 #include "ui/LoadPatternsModel.h++"
@@ -146,8 +145,7 @@ MainWindow::openProject()
 	this->m_selection_manager.clearSelection();
 
 	// prepare the file
-	QStringList sl;
-	sl = dialog.selectedFiles();
+	QStringList sl = dialog.selectedFiles();
 
 	QString file_name = sl.at(0);
 
@@ -1308,11 +1306,11 @@ MainWindow::createNewViewportWindow()
 void 
 MainWindow::createNewModelWindow()
 {
-	ModelWindow *window;	// opengl viewport
-	window = new ModelWindow(document.getProject(), colors, this);
+	ModelWindow *window = new ModelWindow(document.getProject(), colors, this);
 
 	// create the model's MDI window
 	QMdiSubWindow	* mdi_window = new QMdiSubWindow(mdiArea);
+
 	mdi_window->setWidget(window);
 	mdi_window->setAttribute(Qt::WA_DeleteOnClose);
 	mdi_window->setWindowTitle(tr("Model"));
@@ -1332,13 +1330,10 @@ MainWindow::createNewPostprocessingWindow()
 	}
 	else
 	{
-		PostprocessingWindow *window;	// opengl viewport
-		window = new PostprocessingWindow(document.getProject(), femp_result.back(), colors, this);
+		PostprocessingWindow *window = new PostprocessingWindow(document.getProject(), femp_result.back(), colors, this);
 
 		// create the model's MDI window
-		QMdiSubWindow	* mdi_window;	// the model's opengl viewport
-
-		mdi_window = new QMdiSubWindow(mdiArea);
+		QMdiSubWindow	* mdi_window = new QMdiSubWindow(mdiArea);
 		mdi_window->setWidget(window);
 		mdi_window->setAttribute(Qt::WA_DeleteOnClose);
 		mdi_window->setWindowTitle(tr("Postprocessing"));
@@ -1358,13 +1353,11 @@ MainWindow::createNewTensorFieldWindow()
 	}
 	else
 	{
-		TensorFieldWindow *window;	// MDI viewport
-		window = new TensorFieldWindow(document.getProject(), document.getProject().result.back(), colors, this);
+		TensorFieldWindow *window = new TensorFieldWindow(document.getProject(), document.getProject().result.back(), colors, this);
 
 		// create the model's MDI window
-		QMdiSubWindow	* mdi_window;
+		QMdiSubWindow	* mdi_window = new QMdiSubWindow(mdiArea);
 
-		mdi_window = new QMdiSubWindow(mdiArea);
 		mdi_window->setWidget(window);
 		mdi_window->setAttribute(Qt::WA_DeleteOnClose);
 		mdi_window->setWindowTitle(tr("Tensor field"));
@@ -1386,8 +1379,7 @@ MainWindow::createNewAnalysisResultsWindow()
 		return;
 	}
 
-	AnalysisResultsWindow *mdi_window;
-	mdi_window = new AnalysisResultsWindow(document.getProject(), mdiArea);
+	AnalysisResultsWindow *mdi_window = new AnalysisResultsWindow(document.getProject(), mdiArea);
 	mdi_window->showMaximized();
 }
 
@@ -1403,8 +1395,7 @@ MainWindow::createNewFemEquationWindow()
 		return;
 	}
 
-	MatrixWindow *mdi_window;
-	mdi_window = new MatrixWindow(document.getProject(), mdiArea);
+	MatrixWindow *mdi_window = new MatrixWindow(document.getProject(), mdiArea);
 	mdi_window->showMaximized();
 }
 
@@ -1414,8 +1405,7 @@ MainWindow::updateWindowMenu()
 {
 	qWarning("MainWindow::updateWindowMenu()");
 
-	QList<QMdiSubWindow *> 	subWindowList;
-	subWindowList = mdiArea->subWindowList();
+	QList<QMdiSubWindow *> 	subWindowList = mdiArea->subWindowList();
 
 	// empties the menu
 	ui.menuWindowOpened->clear();
@@ -1449,8 +1439,7 @@ MainWindow::updateWindowMenu()
 void 
 MainWindow::activateSubWindowByIndex(int index)
 {
-	QList<QMdiSubWindow *> 	subWindowList;
-	subWindowList = mdiArea->subWindowList();
+	QList<QMdiSubWindow *> 	subWindowList = mdiArea->subWindowList();
 	this->mdiArea->setActiveSubWindow(subWindowList[index]);
 }
 

@@ -1,7 +1,5 @@
 #include "AnalysisProgressDialog.h++"
 
-//#include <QtGui/QTextEdit>
-
 
 AnalysisProgressDialog::AnalysisProgressDialog( QWidget *parent)
 	: QDialog(parent)

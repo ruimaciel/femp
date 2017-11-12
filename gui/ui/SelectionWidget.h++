@@ -2,7 +2,7 @@
 #define SELECTION_WIDGET_HPP
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include <map>
 #include "ui_SelectionWidget.h"

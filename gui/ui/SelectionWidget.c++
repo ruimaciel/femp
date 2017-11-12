@@ -165,7 +165,7 @@ SelectionWidget::unionGroupList()
 
 	if(index == -1)
 	{
-		std::cerr <<  "SelectionWidget::unionGroupList(): combo box is empty" << std::cerr;
+		std::cerr <<  "SelectionWidget::unionGroupList(): combo box is empty" << std::endl;
 		return;
 	}
 

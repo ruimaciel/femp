@@ -67,6 +67,7 @@ public Q_SLOTS:
 	Sets DisplayOption's options refering to the element visualization
 	**/
 	void setElementDisplay();
+
 	void setNodeForcesDisplay();
 
 	/**

@@ -8,7 +8,7 @@ namespace fem
 void 
 Project::clear()
 {
-	this->model.clear();
+	this->m_model.clear();
 	this->result.clear();
 }
 
@@ -23,14 +23,14 @@ Project::pushAnalysisResult(fem::AnalysisResult &new_result)
 Model & 
 Project::getModel()
 {
-	return this->model;
+	return this->m_model;
 }
 
 
 void 
 Project::accept(ProjectVisitor &visitor)
 {
-	visitor.visit(model,result);
+	visitor.visit(m_model,result);
 }
 
 

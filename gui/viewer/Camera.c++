@@ -1,34 +1,24 @@
 #include "Camera.h++"
 
 
-Camera::Camera()
-{
-}
-
-
-Camera::~Camera()
-{
-}
-
-
 void 
 Camera::setCenter(double x, double y, double z)
 {
-	center.set(x,y,z);
+	m_center.set(x,y,z);
 }
 
 
 void 
 Camera::setPosition(double x, double y, double z)
 {
-	pos.set(x,y,z);
+	m_pos.set(x,y,z);
 }
 
 
 void 
 Camera::reset()
 {
-	pos = center;
+	m_pos = m_center = fem::Point(0,0,0);
 	rotation.set(0,0,0);
 }
 
@@ -36,10 +26,24 @@ Camera::reset()
 void 
 Camera::reposition()
 {
-	glTranslated(center.x(),center.y(), center.z());
+	glTranslated(m_center.x(), m_center.y(), m_center.z());
 	glRotated(rotation.data[0], 1.0, 0.0, 0.0);
 	glRotated(rotation.data[1], 0.0, 1.0, 0.0);
 	glRotated(rotation.data[2], 0.0, 0.0, 1.0);
-	glTranslated(pos.x(),pos.y(),pos.z());
+	glTranslated(m_pos.x(), m_pos.y(), m_pos.z());
+}
+
+
+fem::Point
+Camera::getCenter() const
+{
+		return m_center;
+}
+
+
+fem::Point
+Camera::getPosition() const
+{
+		return m_pos;
 }
 

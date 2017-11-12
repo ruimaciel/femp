@@ -10,11 +10,10 @@
 class Camera 
 {
 public:
-	Camera();
-	~Camera();
-
 	void setCenter(double x, double y, double z);
+
 	void setPosition(double x, double y, double z);
+
 	void reset();
 
 	/**
@@ -23,10 +22,16 @@ public:
 	**/
 	void reposition();
 
+	fem::Point getCenter() const;
+
+	fem::Point getPosition() const;
+
 public:
-	fem::Point center;
-	fem::Point pos;
 	fem::Point rotation;
+
+private:
+	fem::Point m_center;
+	fem::Point m_pos;
 
 };
 

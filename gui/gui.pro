@@ -19,6 +19,8 @@ INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${SRCDIR}
 LIBS += -lumfpack -lGLU -L$${BUILD_DIR} -llibla -llibfemp
 
 HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
+	options/Options.h++ \
+	options/ViewportColors.h++ \
 	MdiWindowProperties.h++ \
 	Selection.h++ \
 	SelectionManager.h++ \
@@ -134,7 +136,6 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	viewer/SceneGraphComponents/SGCNodeRestrictions.h++ \
 	viewer/SceneGraphComponents/hud/HudObject.h++ \
 	viewer/SceneGraphComponents/hud/HudSelection.h++ \
-	viewer/ViewportColors.h++ \
 	viewer/PostprocessingViewport.h++ \
 	viewer/ModelViewport.h++ \
 	viewer/SceneGraph.h++ \
@@ -154,6 +155,8 @@ SOURCES += main.c++ \
 	MainWindow.c++ \
 	Document.c++ \
 	ProgramOptions.c++ \
+	options/Options.c++ \
+	options/ViewportColors.c++ \
 	MdiWindowProperties.c++ \
 	Project.c++ \
 	ProjectVisitor/OutputElementStatisticsVisitor.c++ \
@@ -267,7 +270,6 @@ SOURCES += main.c++ \
 	viewer/RenderGroup.c++ \
 	viewer/ModelViewport.c++ \
 	viewer/DisplayOptions.c++ \
-	viewer/ViewportColors.c++ \
 	viewer/SceneGraph.c++ \
 	viewer/PostprocessingViewport.c++ \
 	viewer/BaseViewport.c++ \

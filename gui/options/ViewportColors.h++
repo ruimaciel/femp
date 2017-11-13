@@ -1,7 +1,6 @@
-#ifndef VIEWPORT_COLORS_HPP
-#define VIEWPORT_COLORS_HPP
+#ifndef OPTIONS_VIEWPORT_COLORS_HPP
+#define OPTIONS_VIEWPORT_COLORS_HPP
 
-#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <GL/gl.h>
 
 

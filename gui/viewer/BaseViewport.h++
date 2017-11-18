@@ -18,7 +18,7 @@
 #include "BaseViewport.h++"
 #include "SceneGraph.h++"
 #include "Camera.h++"
-#include "ViewportColors.h++"
+#include <gui/options/Options.h++>
 #include "DisplayOptions.h++"
 
 #include "ViewportData.h++"

@@ -6,7 +6,7 @@
 #include <GL/gl.h>
 #include <libfemp/Point.h++>
 
-#include "../../../ViewportColors.h++"
+#include <gui/options/Options.h++>
 
 
 namespace StressFieldRepresentation

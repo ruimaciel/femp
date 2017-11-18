@@ -11,7 +11,7 @@
 #include "SceneGraphComponents/hud/HudSelection.h++"
 
 #include "ViewportData.h++"
-#include "ViewportColors.h++"
+#include <gui/options/Options.h++>
 #include "../Project.h++"
 #include "RenderGroup.h++"
 

@@ -5,7 +5,7 @@
 #include "ElementRepresentationPolicy.h++"
 #include <libfemp/Point.h++>
 #include <libfemp/Element.h++>
-#include "../../ViewportColors.h++"
+#include <gui/options/Options.h++>
 
 
 class OpaqueRepresentationPolicy 

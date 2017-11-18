@@ -7,7 +7,7 @@
 #include "SceneGraphComponent.h++"
 #include "Operations/OperationsVisitor.h++"
 
-#include "../ViewportColors.h++"
+#include <gui/options/Options.h++>
 
 #include <libfemp/Element.h++>
 

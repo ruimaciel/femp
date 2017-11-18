@@ -16,7 +16,7 @@
 #include "ui/SelectionDockWidget.h++"
 
 #include "ProgramOptions.h++"
-#include "viewer/ViewportColors.h++"
+#include <gui/options/Options.h++>
 
 #include "ui/ModelWindow.h++"
 

@@ -14,7 +14,7 @@
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/ElementResults/ResultsRanges.h++>
 
-#include "../viewer/ViewportColors.h++"
+#include <gui/options/Options.h++>
 #include "../viewer/TensorFieldViewport.h++"
 
 #include "Selection.h++"

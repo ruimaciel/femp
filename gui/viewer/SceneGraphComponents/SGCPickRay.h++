@@ -10,7 +10,7 @@
 #include <libfemp/LinearAnalysis.h++>
 
 #include "../ViewportData.h++"
-#include "../ViewportColors.h++"
+#include <gui/options/Options.h++>
 #include "DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++"
 
 

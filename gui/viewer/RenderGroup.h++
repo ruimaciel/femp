@@ -7,7 +7,7 @@
 #include "SceneGraphComponents/SceneGraphComponent.h++"
 
 #include "ViewportData.h++"
-#include "ViewportColors.h++"
+#include <gui/options/Options.h++>
 
 
 /**

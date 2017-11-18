@@ -5,7 +5,7 @@
 
 #include "../DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++"
 #include <libfemp/Element.h++>
-#include "../../ViewportColors.h++"
+#include <gui/options/Options.h++>
 
 
 /**

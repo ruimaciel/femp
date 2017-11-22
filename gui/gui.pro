@@ -21,6 +21,7 @@ LIBS += -lumfpack -lGLU -L$${BUILD_DIR} -llibla -llibfemp
 HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	options/Options.h++ \
 	options/ViewportColors.h++ \
+	options/DisplayOptions.h++ \
 	MdiWindowProperties.h++ \
 	Selection.h++ \
 	SelectionManager.h++ \
@@ -85,7 +86,6 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	viewer/boundaries/SphericalBoundary.h++ \
 	viewer/boundaries/BoundaryStrategy.h++ \
 	viewer/boundaries/CollisionDetection.h++ \
-	viewer/DisplayOptions.h++ \
 	viewer/SceneGraphComponents/Operations/SelectRayIntersectionOperation.h++ \
 	viewer/SceneGraphComponents/Operations/SelectFrustumInclusionOperation.h++ \
 	viewer/SceneGraphComponents/Operations/OperationsVisitor.h++ \
@@ -157,6 +157,7 @@ SOURCES += main.c++ \
 	ProgramOptions.c++ \
 	options/Options.c++ \
 	options/ViewportColors.c++ \
+	options/DisplayOptions.c++ \
 	MdiWindowProperties.c++ \
 	Project.c++ \
 	ProjectVisitor/OutputElementStatisticsVisitor.c++ \
@@ -269,7 +270,6 @@ SOURCES += main.c++ \
 	viewer/TensorFieldViewport.c++ \
 	viewer/RenderGroup.c++ \
 	viewer/ModelViewport.c++ \
-	viewer/DisplayOptions.c++ \
 	viewer/SceneGraph.c++ \
 	viewer/PostprocessingViewport.c++ \
 	viewer/BaseViewport.c++ \

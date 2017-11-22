@@ -2,15 +2,16 @@
 #define OPTIONS_HPP
 
 #include "ViewportColors.h++"
+#include "DisplayOptions.h++"
 
 class Options
 {
 public:
 	static Options & getInstance()
 	{
-			static Options instance;
+		static Options instance;
 
-			return instance;
+		return instance;
 	}
 
 public:
@@ -23,10 +24,16 @@ public:
 	 **/
 	ViewportColors &getViewportColors();
 
+	/**
+	 * returns the display options
+	 **/
+	DisplayOptions &getDisplayOptions();
+
 private:
 	Options() {}
 
 	ViewportColors m_viewportColors;
+	DisplayOptions m_displayOptions;
 
 };
 

@@ -19,9 +19,6 @@
 #include "SceneGraph.h++"
 #include "Camera.h++"
 #include <gui/options/Options.h++>
-#include "DisplayOptions.h++"
-
-#include "ViewportData.h++"
 
 #include "Selection.h++"
 
@@ -157,7 +154,6 @@ protected:
 public:
 	ViewportData viewport_data;
 	ViewportColors colors;	// color definitions
-	DisplayOptions display_options;	// options list to be used by the render routine
 
 	fem::Project *project;
 

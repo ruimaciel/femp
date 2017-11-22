@@ -54,7 +54,6 @@ public Q_SLOTS:
 	void setDomainLoads();
 	void moveSelectedNodes();
 
-	void setDisplayOptions();
 	void editMaterials();
 	void editQuadratureRules();
 
@@ -62,13 +61,6 @@ public Q_SLOTS:
 	Calls the dialog which is used to fine tune the object selection list
 	**/
 	void editSelection();
-
-	/**
-	Sets DisplayOption's options refering to the element visualization
-	**/
-	void setElementDisplay();
-
-	void setNodeForcesDisplay();
 
 	/**
 	runs the analysis on the current model

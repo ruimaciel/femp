@@ -5,7 +5,6 @@
 #include <QMdiSubWindow>
 #include <QTime>
 #include <QTranslator>
-#include <QToolBar>
 #include <QString>
 #include <QTextStream>
 #include <QProgressDialog>
@@ -80,7 +79,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 	// create actions and connect signals to slots
 	this->createActions();
-	this->createToolBars();
 	this->createDockWidgets();
 
 	// set the user interface
@@ -459,14 +457,6 @@ MainWindow::createActions()
 
 
 void 
-MainWindow::createToolBars()
-{
-	// build the actions toolbar
-	//TODO finish this
-}
-
-
-void 
 MainWindow::createDockWidgets()
 {
 	// initialize the Docks
@@ -480,13 +470,6 @@ MainWindow::createDockWidgets()
 	this->addDockWidget(Qt::RightDockWidgetArea, commandLineDockWidget);
 
 	//TODO add selection dock widget
-}
-
-
-void 
-MainWindow::destroyToolBars()
-{
-	//deletes all toolbars
 }
 
 
@@ -930,13 +913,6 @@ MainWindow::moveSelectedNodes()
 
 
 void 
-MainWindow::setDisplayOptions()
-{
-	//TODO make this generic
-}
-
-
-void 
 MainWindow::editMaterials()
 {
 	fem::Model & femp_model = document.getProject().getModel();
@@ -958,18 +934,6 @@ MainWindow::editSelection()
 {
 	SelectionDialog dialog(document.getProject(), m_selection_manager, this);
 	dialog.exec();
-}
-
-
-void 
-MainWindow::setElementDisplay()
-{
-}
-
-
-void 
-MainWindow::setNodeForcesDisplay()
-{
 }
 
 
@@ -1468,9 +1432,6 @@ MainWindow::setUserInterfaceAsOpened()
 
 	this->createNewViewportWindow();
 
-	// set toolbars
-	createToolBars();
-
 	// set the docks
 	this->addDockWidget(static_cast<Qt::DockWidgetArea>(9), commandLineDockWidget);
 
@@ -1513,9 +1474,6 @@ MainWindow::setUserInterfaceAsClosed()
 
 	// close all MDI windows
 	mdiArea->closeAllSubWindows();
-
-	// handle the toolbars
-	destroyToolBars();
 
 	// handle the docks
 	this->removeDockWidget(commandLineDockWidget);

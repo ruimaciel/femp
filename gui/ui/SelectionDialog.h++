@@ -4,7 +4,7 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QtWidgets/QDialog>
 
-#include "SelectionWidget.h++"
+#include <ui/widgets/SelectionWidget.h++>
 
 #include "../Project.h++"
 #include "../SelectionManager.h++"

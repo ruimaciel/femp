@@ -17,7 +17,7 @@
 
 #include "ui/LoadPatternsModel.h++"
 
-#include "ui/NewProjectWizard.h++"
+#include "ui/wizards/NewProjectWizard.h++"
 #include "ui/NodeRestrainsDialog.h++"
 #include "ui/NodeActionsDialog.h++"
 #include "ui/DisplayOptionsDialog.h++"

@@ -28,9 +28,9 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	ui/SelectionDialog.h++ \
 	ui/AnalysisResultsWidget.h++ \
 	ui/AnalysisResultsModel.h++ \
-	ui/NewProjectWizard.h++ \
+	ui/wizards/NewProjectWizard.h++ \
 	ui/QuadratureRulesOptionsDialog.h++ \
-	ui/NewProjectWizardPage3.h++ \
+	ui/wizards/NewProjectWizardPage3.h++ \
 	ui/SelectionWidget.h++ \
 	ui/WindowWithResults.h++ \
 	ui/MatrixWindow.h++ \
@@ -51,13 +51,13 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	ui/NewMaterialDialog.h++ \
 	ui/WindowWithScaling.h++ \
 	ui/NodeRestrainsDialog.h++ \
-	ui/NewProjectWizardPageLast.h++ \
+	ui/wizards/NewProjectWizardPageLast.h++ \
 	ui/NodeActionsDialog.h++ \
 	ui/AnalysisSummaryDialog.h++ \
 	ui/LoadPatternDialog.h++ \
-	ui/NewProjectWizardPage2.h++ \
+	ui/wizards/NewProjectWizardPage2.h++ \
 	ui/TensorFieldWindow.h++ \
-	ui/NewProjectWizardPage1.h++ \
+	ui/wizards/NewProjectWizardPage1.h++ \
 	ui/ModelWindow.h++ \
 	ui/TableFilterDialog.h++ \
 	ui/WindowWith.h++ \
@@ -182,9 +182,9 @@ SOURCES += main.c++ \
 	ui/DomainLoadsDialog.c++ \
 	ui/MoveNodesDialog.c++ \
 	ui/AnalysisProgressDialog.c++ \
-	ui/NewProjectWizardPage2.c++ \
-	ui/NewProjectWizardPage1.c++ \
-	ui/NewProjectWizard.c++ \
+	ui/wizards/NewProjectWizardPage2.c++ \
+	ui/wizards/NewProjectWizardPage1.c++ \
+	ui/wizards/NewProjectWizard.c++ \
 	ui/NewMaterialDialog.c++ \
 	ui/MaterialsEditorDialog.c++ \
 	ui/WindowWithResults.c++ \
@@ -192,7 +192,7 @@ SOURCES += main.c++ \
 	ui/MdiWindow.c++ \
 	ui/NodeRestrainsDialog.c++ \
 	ui/PostprocessingWindow.c++ \
-	ui/NewProjectWizardPage3.c++ \
+	ui/wizards/NewProjectWizardPage3.c++ \
 	ui/WindowWithScaling.c++ \
 	ui/BaseWindow.c++ \
 	ui/CommandLineDockWidget.c++ \
@@ -201,7 +201,7 @@ SOURCES += main.c++ \
 	ui/ModelWindow.c++ \
 	ui/WindowWithPostprocessing.c++ \
 	ui/SelectionWidget.c++ \
-	ui/NewProjectWizardPageLast.c++ \
+	ui/wizards/NewProjectWizardPageLast.c++ \
 	ui/AnalysisDialog.c++ \
 	ui/ScalarRangeWidget.c++ \
 	ui/DialogScale.c++ \
@@ -296,11 +296,11 @@ FORMS += ui/AnalysisDialog.ui \
 	ui/MdiWindow.ui \
 	ui/MoveNodesDialog.ui \
 	ui/NewMaterialDialog.ui \
-	ui/NewProjectWizardPage1.ui \
-	ui/NewProjectWizardPage2.ui \
-	ui/NewProjectWizardPage3.ui \
-	ui/NewProjectWizardPageLast.ui \
-	ui/NewProjectWizard.ui \
+	ui/wizards/NewProjectWizardPage1.ui \
+	ui/wizards/NewProjectWizardPage2.ui \
+	ui/wizards/NewProjectWizardPage3.ui \
+	ui/wizards/NewProjectWizardPageLast.ui \
+	ui/wizards/NewProjectWizard.ui \
 	ui/NodeActionsDialog.ui \
 	ui/NodeRestrainDialog.ui \
 	ui/QuadratureRulesOptionsDialog.ui \

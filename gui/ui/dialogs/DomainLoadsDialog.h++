@@ -8,7 +8,7 @@
 #include <libfemp/Model.h++>
 #include <libfemp/LoadPattern.h++>
 
-#include "LoadPatternsModel.h++"
+#include <ui/LoadPatternsModel.h++>
 
 #include "ui_DomainLoadsDialog.h"
 

@@ -6,8 +6,8 @@
 
 #include <ui/widgets/SelectionWidget.h++>
 
-#include "../Project.h++"
-#include "../SelectionManager.h++"
+#include <Project.h++>
+#include <SelectionManager.h++>
 
 
 /** 

@@ -18,14 +18,31 @@ INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${SRCDIR}
 
 LIBS += -lumfpack -lGLU -L$${BUILD_DIR} -llibla -llibfemp
 
-HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
+HEADERS += MainWindow.h++ \
+	Document.h++ \
+	ProgramOptions.h++ \
 	options/Options.h++ \
 	options/ViewportColors.h++ \
 	options/DisplayOptions.h++ \
 	MdiWindowProperties.h++ \
 	Selection.h++ \
 	SelectionManager.h++ \
-	ui/SelectionDialog.h++ \
+	ui/dialogs/SelectionDialog.h++ \
+	ui/dialogs/QuadratureRulesOptionsDialog.h++ \
+	ui/dialogs/AnalysisDialog.h++ \
+	ui/dialogs/AnalysisProgressDialog.h++ \
+	ui/dialogs/MaterialsEditorDialog.h++ \
+	ui/dialogs/ResultsRangeDialog.h++ \
+	ui/dialogs/DomainLoadsDialog.h++ \
+	ui/dialogs/NewMaterialDialog.h++ \
+	ui/dialogs/NodeRestrainsDialog.h++ \
+	ui/dialogs/NodeActionsDialog.h++ \
+	ui/dialogs/AnalysisSummaryDialog.h++ \
+	ui/dialogs/LoadPatternDialog.h++ \
+	ui/dialogs/TableFilterDialog.h++ \
+	ui/dialogs/DisplayOptionsDialog.h++ \
+	ui/dialogs/MoveNodesDialog.h++ \
+	ui/dialogs/SurfaceSubdivisionDialog.h++ \
 	ui/AnalysisResultsModel.h++ \
 	ui/wizards/NewProjectWizard.h++ \
 	ui/wizards/NewProjectWizardPage1.h++ \
@@ -36,37 +53,22 @@ HEADERS += MainWindow.h++ Document.h++ ProgramOptions.h++ \
 	ui/widgets/MatrixWidget.h++ \
 	ui/widgets/ScalarRangeWidget.h++ \
 	ui/widgets/AnalysisResultsWidget.h++ \
-	ui/QuadratureRulesOptionsDialog.h++ \
 	ui/WindowWithResults.h++ \
 	ui/MatrixWindow.h++ \
-	ui/AnalysisDialog.h++ \
 	ui/LoadPatternsModel.h++ \
 	ui/MatrixModel.h++ \
-	ui/AnalysisProgressDialog.h++ \
 	ui/BaseWindow.h++ \
 	ui/WindowWithPostprocessing.h++ \
-	ui/MaterialsEditorDialog.h++ \
-	ui/ResultsRangeDialog.h++ \
 	ui/WindowWithWireframe.h++ \
 	ui/CommandLineDockWidget.h++ \
-	ui/DomainLoadsDialog.h++ \
 	ui/AnalysisResultsWindow.h++ \
-	ui/NewMaterialDialog.h++ \
 	ui/WindowWithScaling.h++ \
-	ui/NodeRestrainsDialog.h++ \
-	ui/NodeActionsDialog.h++ \
-	ui/AnalysisSummaryDialog.h++ \
-	ui/LoadPatternDialog.h++ \
 	ui/TensorFieldWindow.h++ \
 	ui/ModelWindow.h++ \
-	ui/TableFilterDialog.h++ \
 	ui/WindowWith.h++ \
 	ui/DialogScale.h++ \
 	ui/PostprocessingWindow.h++ \
-	ui/DisplayOptionsDialog.h++ \
 	ui/MdiWindow.h++ \
-	ui/MoveNodesDialog.h++ \
-	ui/SurfaceSubdivisionDialog.h++ \
 	ui/SelectionDockWidget.h++ \
 	Project.h++ \
 	ProjectVisitor/OutputResultsInNodesCSVVisitor.h++ \
@@ -172,43 +174,43 @@ SOURCES += main.c++ \
 	ui/widgets/AnalysisResultsWidget.c++ \
 	Selection.c++ \
 	SelectionManager.c++ \
-	ui/AnalysisSummaryDialog.c++ \
-	ui/SurfaceSubdivisionDialog.c++ \
 	ui/AnalysisResultsWindow.c++ \
 	ui/AnalysisResultsModel.c++ \
 	ui/MatrixWindow.c++ \
-	ui/QuadratureRulesOptionsDialog.c++ \
-	ui/DisplayOptionsDialog.c++ \
-	ui/LoadPatternDialog.c++ \
-	ui/SelectionDialog.c++ \
-	ui/DomainLoadsDialog.c++ \
-	ui/MoveNodesDialog.c++ \
-	ui/AnalysisProgressDialog.c++ \
 	ui/wizards/NewProjectWizardPage2.c++ \
 	ui/wizards/NewProjectWizardPage1.c++ \
 	ui/wizards/NewProjectWizard.c++ \
-	ui/NewMaterialDialog.c++ \
-	ui/MaterialsEditorDialog.c++ \
+	ui/dialogs/AnalysisSummaryDialog.c++ \
+	ui/dialogs/SurfaceSubdivisionDialog.c++ \
+	ui/dialogs/QuadratureRulesOptionsDialog.c++ \
+	ui/dialogs/DisplayOptionsDialog.c++ \
+	ui/dialogs/LoadPatternDialog.c++ \
+	ui/dialogs/SelectionDialog.c++ \
+	ui/dialogs/DomainLoadsDialog.c++ \
+	ui/dialogs/MoveNodesDialog.c++ \
+	ui/dialogs/AnalysisProgressDialog.c++ \
+	ui/dialogs/NewMaterialDialog.c++ \
+	ui/dialogs/MaterialsEditorDialog.c++ \
+	ui/dialogs/NodeRestrainsDialog.c++ \
+	ui/dialogs/NodeActionsDialog.c++ \
+	ui/dialogs/AnalysisDialog.c++ \
+	ui/dialogs/ResultsRangeDialog.c++ \
+	ui/dialogs/TableFilterDialog.c++ \
 	ui/WindowWithResults.c++ \
 	ui/LoadPatternsModel.c++ \
 	ui/MdiWindow.c++ \
-	ui/NodeRestrainsDialog.c++ \
 	ui/PostprocessingWindow.c++ \
 	ui/wizards/NewProjectWizardPage3.c++ \
 	ui/WindowWithScaling.c++ \
 	ui/BaseWindow.c++ \
 	ui/CommandLineDockWidget.c++ \
-	ui/NodeActionsDialog.c++ \
 	ui/WindowWithWireframe.c++ \
 	ui/ModelWindow.c++ \
 	ui/WindowWithPostprocessing.c++ \
 	ui/wizards/NewProjectWizardPageLast.c++ \
-	ui/AnalysisDialog.c++ \
 	ui/DialogScale.c++ \
 	ui/TensorFieldWindow.c++ \
-	ui/ResultsRangeDialog.c++ \
 	ui/MatrixModel.c++ \
-	ui/TableFilterDialog.c++ \
 	viewer/InputStates/ISRightClick.c++ \
 	viewer/InputStates/ISLeftClick.c++ \
 	viewer/InputStates/InputState.c++ \
@@ -281,19 +283,25 @@ SOURCES += main.c++ \
 	viewer/Camera.c++ \
 	DefaultProgressIndicator.c++
 
-FORMS += ui/AnalysisDialog.ui \
-	ui/AnalysisProgressDialog.ui \
-	ui/AnalysisSummaryDialog.ui \
+FORMS += ui/dialogs/AnalysisDialog.ui \
+	ui/dialogs/AnalysisProgressDialog.ui \
+	ui/dialogs/AnalysisSummaryDialog.ui \
+	ui/dialogs/DisplayOptionsDialog.ui \
+	ui/dialogs/DomainLoadsDialog.ui \
+	ui/dialogs/LoadPatternDialog.ui \
+	ui/dialogs/MaterialsEditorDialog.ui \
+	ui/dialogs/MoveNodesDialog.ui \
+	ui/dialogs/NewMaterialDialog.ui \
+	ui/dialogs/NodeActionsDialog.ui \
+	ui/dialogs/NodeRestrainDialog.ui \
+	ui/dialogs/QuadratureRulesOptionsDialog.ui \
+	ui/dialogs/ResultsRangeDialog.ui \
+	ui/dialogs/SurfaceSubdivisionDialog.ui \
+	ui/dialogs/TableFilterDialog.ui \
 	ui/CommandLineDockWidget.ui \
 	ui/DialogScale.ui \
-	ui/DisplayOptionsDialog.ui \
-	ui/DomainLoadsDialog.ui \
-	ui/LoadPatternDialog.ui \
 	ui/MainWindow.ui \
-	ui/MaterialsEditorDialog.ui \
 	ui/MdiWindow.ui \
-	ui/MoveNodesDialog.ui \
-	ui/NewMaterialDialog.ui \
 	ui/wizards/NewProjectWizardPage1.ui \
 	ui/wizards/NewProjectWizardPage2.ui \
 	ui/wizards/NewProjectWizardPage3.ui \
@@ -303,13 +311,7 @@ FORMS += ui/AnalysisDialog.ui \
 	ui/widgets/MatrixWidget.ui \
 	ui/widgets/ScalarRangeWidget.ui \
 	ui/widgets/AnalysisResultsWidget.ui \
-	ui/NodeActionsDialog.ui \
-	ui/NodeRestrainDialog.ui \
-	ui/QuadratureRulesOptionsDialog.ui \
-	ui/ResultsRangeDialog.ui \
-	ui/SelectionDockWidget.ui \
-	ui/SurfaceSubdivisionDialog.ui \
-	ui/TableFilterDialog.ui
+	ui/SelectionDockWidget.ui
 
 UI_DIR += ./ui
 MOC_DIR += ui/moc

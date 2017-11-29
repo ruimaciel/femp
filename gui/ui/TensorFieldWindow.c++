@@ -3,7 +3,7 @@
 #include "../viewer/TensorFieldViewport.h++"
 
 #include <map>
-#include "ResultsRangeDialog.h++"
+#include <ui/dialogs/ResultsRangeDialog.h++>
 #include <libfemp/ElementResults/ElementResults.h++>
 
 

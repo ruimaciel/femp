@@ -53,6 +53,8 @@ HEADERS += MainWindow.h++ \
 	ui/widgets/MatrixWidget.h++ \
 	ui/widgets/ScalarRangeWidget.h++ \
 	ui/widgets/AnalysisResultsWidget.h++ \
+	ui/dock_widgets/CommandLineDockWidget.h++ \
+	ui/dock_widgets/SelectionDockWidget.h++ \
 	ui/WindowWithResults.h++ \
 	ui/MatrixWindow.h++ \
 	ui/LoadPatternsModel.h++ \
@@ -60,7 +62,6 @@ HEADERS += MainWindow.h++ \
 	ui/BaseWindow.h++ \
 	ui/WindowWithPostprocessing.h++ \
 	ui/WindowWithWireframe.h++ \
-	ui/CommandLineDockWidget.h++ \
 	ui/AnalysisResultsWindow.h++ \
 	ui/WindowWithScaling.h++ \
 	ui/TensorFieldWindow.h++ \
@@ -69,7 +70,6 @@ HEADERS += MainWindow.h++ \
 	ui/DialogScale.h++ \
 	ui/PostprocessingWindow.h++ \
 	ui/MdiWindow.h++ \
-	ui/SelectionDockWidget.h++ \
 	Project.h++ \
 	ProjectVisitor/OutputResultsInNodesCSVVisitor.h++ \
 	ProjectVisitor/SetNodeRestraintsVisitor.h++ \
@@ -196,6 +196,7 @@ SOURCES += main.c++ \
 	ui/dialogs/AnalysisDialog.c++ \
 	ui/dialogs/ResultsRangeDialog.c++ \
 	ui/dialogs/TableFilterDialog.c++ \
+	ui/dock_widgets/CommandLineDockWidget.c++ \
 	ui/WindowWithResults.c++ \
 	ui/LoadPatternsModel.c++ \
 	ui/MdiWindow.c++ \
@@ -203,7 +204,6 @@ SOURCES += main.c++ \
 	ui/wizards/NewProjectWizardPage3.c++ \
 	ui/WindowWithScaling.c++ \
 	ui/BaseWindow.c++ \
-	ui/CommandLineDockWidget.c++ \
 	ui/WindowWithWireframe.c++ \
 	ui/ModelWindow.c++ \
 	ui/WindowWithPostprocessing.c++ \
@@ -298,7 +298,8 @@ FORMS += ui/dialogs/AnalysisDialog.ui \
 	ui/dialogs/ResultsRangeDialog.ui \
 	ui/dialogs/SurfaceSubdivisionDialog.ui \
 	ui/dialogs/TableFilterDialog.ui \
-	ui/CommandLineDockWidget.ui \
+	ui/dock_widgets/CommandLineDockWidget.ui \
+	ui/dock_widgets/SelectionDockWidget.ui \
 	ui/DialogScale.ui \
 	ui/MainWindow.ui \
 	ui/MdiWindow.ui \
@@ -310,8 +311,7 @@ FORMS += ui/dialogs/AnalysisDialog.ui \
 	ui/widgets/SelectionWidget.ui \
 	ui/widgets/MatrixWidget.ui \
 	ui/widgets/ScalarRangeWidget.ui \
-	ui/widgets/AnalysisResultsWidget.ui \
-	ui/SelectionDockWidget.ui
+	ui/widgets/AnalysisResultsWidget.ui
 
 UI_DIR += ./ui
 MOC_DIR += ui/moc

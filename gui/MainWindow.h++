@@ -12,8 +12,8 @@
 
 #include "ui/ui_MainWindow.h"
 
-#include "ui/CommandLineDockWidget.h++"
-#include "ui/SelectionDockWidget.h++"
+#include "ui/dock_widgets/CommandLineDockWidget.h++"
+#include "ui/dock_widgets/SelectionDockWidget.h++"
 
 #include "ProgramOptions.h++"
 #include <gui/options/Options.h++>

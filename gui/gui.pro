@@ -5,7 +5,7 @@ TARGET = femp
 
 CONFIG += qt link_pkgconfig
 
-PKGCONFIG += sigc++-2.0
+PKGCONFIG += sigc++-2.0 eigen3
 
 QT += opengl
 
@@ -14,7 +14,7 @@ DESTDIR = $${BUILD_DIR}
 
 LIBFEMP_SRC = $${PWD}/libfemp
 
-INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${SRCDIR}
+INCLUDEPATH += /usr/include/suitesparse $${SRCDIR}
 
 LIBS += -lumfpack -lGLU -L$${BUILD_DIR} -llibla -llibfemp
 

@@ -5,7 +5,6 @@
 #include <QMdiSubWindow>
 #include <QTime>
 #include <QTranslator>
-#include <QToolBar>
 #include <QString>
 #include <QTextStream>
 #include <QProgressDialog>
@@ -14,23 +13,22 @@
 #include <string>
 #include <fstream>
 #include <iostream>	// for cout. remove after tests
-#include <string>
 #include <stdlib.h>	// getenv()
 
 #include "ui/LoadPatternsModel.h++"
 
-#include "ui/NewProjectWizard.h++"
-#include "ui/NodeRestrainsDialog.h++"
-#include "ui/NodeActionsDialog.h++"
-#include "ui/DisplayOptionsDialog.h++"
-#include "ui/DomainLoadsDialog.h++"
-#include "ui/MaterialsEditorDialog.h++"
-#include "ui/QuadratureRulesOptionsDialog.h++"
-#include "ui/SelectionDialog.h++"
-#include "ui/AnalysisProgressDialog.h++"
-#include "ui/AnalysisDialog.h++"
-#include "ui/MoveNodesDialog.h++"
-#include "ui/AnalysisSummaryDialog.h++"
+#include "ui/wizards/NewProjectWizard.h++"
+#include "ui/dialogs/NodeRestrainsDialog.h++"
+#include "ui/dialogs/NodeActionsDialog.h++"
+#include "ui/dialogs/DisplayOptionsDialog.h++"
+#include "ui/dialogs/DomainLoadsDialog.h++"
+#include "ui/dialogs/MaterialsEditorDialog.h++"
+#include "ui/dialogs/QuadratureRulesOptionsDialog.h++"
+#include "ui/dialogs/SelectionDialog.h++"
+#include "ui/dialogs/AnalysisProgressDialog.h++"
+#include "ui/dialogs/AnalysisDialog.h++"
+#include "ui/dialogs/MoveNodesDialog.h++"
+#include "ui/dialogs/AnalysisSummaryDialog.h++"
 
 #include "ui/MdiWindow.h++"
 #include "ui/ModelWindow.h++"
@@ -81,7 +79,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 	// create actions and connect signals to slots
 	this->createActions();
-	this->createToolBars();
 	this->createDockWidgets();
 
 	// set the user interface
@@ -146,8 +143,7 @@ MainWindow::openProject()
 	this->m_selection_manager.clearSelection();
 
 	// prepare the file
-	QStringList sl;
-	sl = dialog.selectedFiles();
+	QStringList sl = dialog.selectedFiles();
 
 	QString file_name = sl.at(0);
 
@@ -416,26 +412,26 @@ void
 MainWindow::createActions()
 {
 	// connect the actions
-	connect(ui.actionNew,	SIGNAL(triggered()), this,	SLOT(newProject()));
-	connect(ui.actionOpen,	SIGNAL(triggered()), this,	SLOT(openProject()));
+	connect(ui.actionNew,		SIGNAL(triggered()), this,	SLOT(newProject()));
+	connect(ui.actionOpen,		SIGNAL(triggered()), this,	SLOT(openProject()));
 	connect(ui.actionReopen,	SIGNAL(triggered()), this,	SLOT(reopenProject()));
-	connect(ui.actionSave,	SIGNAL(triggered()), this,	SLOT(saveProject()));
+	connect(ui.actionSave,		SIGNAL(triggered()), this,	SLOT(saveProject()));
 	connect(ui.actionSaveAs,	SIGNAL(triggered()), this,	SLOT(saveProjectAs()));
-	connect(ui.actionClose,	SIGNAL(triggered()), this,	SLOT(closeProject()));
-	connect(ui.actionQuit,	SIGNAL(triggered()), this,	SLOT(quit()));
+	connect(ui.actionClose,		SIGNAL(triggered()), this,	SLOT(closeProject()));
+	connect(ui.actionQuit,		SIGNAL(triggered()), this,	SLOT(quit()));
 	connect(ui.actionNodeRestraints,	SIGNAL(triggered()), this,	SLOT(setNodeRestraints()) );
-	connect(ui.actionNodeActions,	SIGNAL(triggered()), this,	SLOT(setNodeActions()) );
-	connect(ui.actionDomainLoads,	SIGNAL(triggered()), this,	SLOT(setDomainLoads()) );
-	connect(ui.actionMoveNodes,	SIGNAL(triggered()), this,	SLOT(moveSelectedNodes()) );
+	connect(ui.actionNodeActions,		SIGNAL(triggered()), this,	SLOT(setNodeActions()) );
+	connect(ui.actionDomainLoads,		SIGNAL(triggered()), this,	SLOT(setDomainLoads()) );
+	connect(ui.actionMoveNodes,			SIGNAL(triggered()), this,	SLOT(moveSelectedNodes()) );
 
 	connect(ui.actionRun,	SIGNAL(triggered()), this,	SLOT(runAnalysis()));
 	connect(ui.actionDump_FEM_equation,	SIGNAL(triggered()),	this,	SLOT(dumpFemEquation()));
 	connect(ui.actionAnalysisSummary,	SIGNAL(triggered()),	this,	SLOT(showAnalysisSummary() ));
 
-	connect(ui.actionViewActions,	SIGNAL(triggered()), this,	SLOT(setDisplayOptions()));
-	connect(ui.actionEditMaterials,	SIGNAL(triggered()),	this,	SLOT(editMaterials()));
-	connect(ui.actionDisplayNodes,	SIGNAL(triggered()), this,	SLOT(setElementDisplay()));
-	connect(ui.actionDisplaySurfaces,	SIGNAL(triggered()), this,	SLOT(setElementDisplay()));
+	connect(ui.actionViewActions,		SIGNAL(triggered()), 	this,	SLOT(setDisplayOptions()));
+	connect(ui.actionEditMaterials,		SIGNAL(triggered()),	this,	SLOT(editMaterials()));
+	connect(ui.actionDisplayNodes,		SIGNAL(triggered()), 	this,	SLOT(setElementDisplay()));
+	connect(ui.actionDisplaySurfaces,	SIGNAL(triggered()), 	this,	SLOT(setElementDisplay()));
 
 	connect(ui.actionWindowTile,	SIGNAL(triggered()), this,	SLOT(setTiledWindows()));
 	connect(ui.actionWindowCascade,	SIGNAL(triggered()), this,	SLOT(setCascadeWindows()));
@@ -443,28 +439,20 @@ MainWindow::createActions()
 	connect(ui.actionShowNodalForces,	SIGNAL(triggered()),	this,	SLOT(setNodeForcesDisplay()));
 
 	// MDI window creation 
-	connect(ui.actionNewModelWindow,		SIGNAL(triggered()),	this,	SLOT(createNewModelWindow()));
+	connect(ui.actionNewModelWindow,			SIGNAL(triggered()),	this,	SLOT(createNewModelWindow()));
 	connect(ui.actionNewPostprocessingWindow,	SIGNAL(triggered()),	this,	SLOT(createNewPostprocessingWindow()));
 	connect(ui.actionNewTensorFieldWindow,		SIGNAL(triggered()),	this,	SLOT(createNewTensorFieldWindow()));
 	connect(ui.actionNewAnalysisResultsWindow,	SIGNAL(triggered()),	this,	SLOT(createNewAnalysisResultsWindow()));
 	connect(ui.actionNewFemEquationWindow,		SIGNAL(triggered()),	this,	SLOT(createNewFemEquationWindow()));
 
 	connect(ui.actionViewSelection,	SIGNAL(triggered()),	this,	SLOT(showSelection()));
-	connect(ui.actionViewAll,	SIGNAL(triggered()),	this,	SLOT(showAll()));
+	connect(ui.actionViewAll,		SIGNAL(triggered()),	this,	SLOT(showAll()));
 
 	connect(ui.actionQuadrature_rules,	SIGNAL(triggered()),	this,	SLOT(editQuadratureRules()) );
-	connect(ui.actionSelection,		SIGNAL(triggered()),	this,	SLOT(editSelection()) );
+	connect(ui.actionSelection,			SIGNAL(triggered()),	this,	SLOT(editSelection()) );
 	connect(ui.actionResults_from_selection,		SIGNAL(triggered()),	this,	SLOT(dumpResultsFromSelection()) );
 
 	connect(ui.menuWindowOpened,	SIGNAL(aboutToShow()),	this,	SLOT(updateWindowMenu()) );
-}
-
-
-void 
-MainWindow::createToolBars()
-{
-	// build the actions toolbar
-	//TODO finish this
 }
 
 
@@ -482,13 +470,6 @@ MainWindow::createDockWidgets()
 	this->addDockWidget(Qt::RightDockWidgetArea, commandLineDockWidget);
 
 	//TODO add selection dock widget
-}
-
-
-void 
-MainWindow::destroyToolBars()
-{
-	//deletes all toolbars
 }
 
 
@@ -932,28 +913,6 @@ MainWindow::moveSelectedNodes()
 
 
 void 
-MainWindow::setDisplayOptions()
-{
-	//TODO make this generic
-	/*
-	   DisplayOptionsDialog da(document.getProject().getModel(), this);
-	   if(da.exec() == QDialog::Accepted)
-	   {
-	// set the LoadPattern pointer
-	size_t n = da.getLoadPatternIndex();
-	glWidget->display_options.load_pattern = &document.getProject().getModel().load_pattern_list[n];
-
-	// set the other visualization options
-	glWidget->display_options.nodal_forces = da.renderNodalForces();
-	glWidget->display_options.surface_forces = da.renderSurfaceForces();
-	glWidget->display_options.domain_forces = da.renderDomainForces();
-	glWidget->display_options.nodal_displacements = da.renderNodalDisplacements();
-	}
-	 */
-}
-
-
-void 
 MainWindow::editMaterials()
 {
 	fem::Model & femp_model = document.getProject().getModel();
@@ -975,18 +934,6 @@ MainWindow::editSelection()
 {
 	SelectionDialog dialog(document.getProject(), m_selection_manager, this);
 	dialog.exec();
-}
-
-
-void 
-MainWindow::setElementDisplay()
-{
-}
-
-
-void 
-MainWindow::setNodeForcesDisplay()
-{
 }
 
 
@@ -1323,11 +1270,11 @@ MainWindow::createNewViewportWindow()
 void 
 MainWindow::createNewModelWindow()
 {
-	ModelWindow *window;	// opengl viewport
-	window = new ModelWindow(document.getProject(), colors, this);
+	ModelWindow *window = new ModelWindow(document.getProject(), colors, this);
 
 	// create the model's MDI window
 	QMdiSubWindow	* mdi_window = new QMdiSubWindow(mdiArea);
+
 	mdi_window->setWidget(window);
 	mdi_window->setAttribute(Qt::WA_DeleteOnClose);
 	mdi_window->setWindowTitle(tr("Model"));
@@ -1347,13 +1294,10 @@ MainWindow::createNewPostprocessingWindow()
 	}
 	else
 	{
-		PostprocessingWindow *window;	// opengl viewport
-		window = new PostprocessingWindow(document.getProject(), femp_result.back(), colors, this);
+		PostprocessingWindow *window = new PostprocessingWindow(document.getProject(), femp_result.back(), colors, this);
 
 		// create the model's MDI window
-		QMdiSubWindow	* mdi_window;	// the model's opengl viewport
-
-		mdi_window = new QMdiSubWindow(mdiArea);
+		QMdiSubWindow	* mdi_window = new QMdiSubWindow(mdiArea);
 		mdi_window->setWidget(window);
 		mdi_window->setAttribute(Qt::WA_DeleteOnClose);
 		mdi_window->setWindowTitle(tr("Postprocessing"));
@@ -1373,13 +1317,11 @@ MainWindow::createNewTensorFieldWindow()
 	}
 	else
 	{
-		TensorFieldWindow *window;	// MDI viewport
-		window = new TensorFieldWindow(document.getProject(), document.getProject().result.back(), colors, this);
+		TensorFieldWindow *window = new TensorFieldWindow(document.getProject(), document.getProject().result.back(), colors, this);
 
 		// create the model's MDI window
-		QMdiSubWindow	* mdi_window;
+		QMdiSubWindow	* mdi_window = new QMdiSubWindow(mdiArea);
 
-		mdi_window = new QMdiSubWindow(mdiArea);
 		mdi_window->setWidget(window);
 		mdi_window->setAttribute(Qt::WA_DeleteOnClose);
 		mdi_window->setWindowTitle(tr("Tensor field"));
@@ -1401,8 +1343,7 @@ MainWindow::createNewAnalysisResultsWindow()
 		return;
 	}
 
-	AnalysisResultsWindow *mdi_window;
-	mdi_window = new AnalysisResultsWindow(document.getProject(), mdiArea);
+	AnalysisResultsWindow *mdi_window = new AnalysisResultsWindow(document.getProject(), mdiArea);
 	mdi_window->showMaximized();
 }
 
@@ -1418,8 +1359,7 @@ MainWindow::createNewFemEquationWindow()
 		return;
 	}
 
-	MatrixWindow *mdi_window;
-	mdi_window = new MatrixWindow(document.getProject(), mdiArea);
+	MatrixWindow *mdi_window = new MatrixWindow(document.getProject(), mdiArea);
 	mdi_window->showMaximized();
 }
 
@@ -1429,8 +1369,7 @@ MainWindow::updateWindowMenu()
 {
 	qWarning("MainWindow::updateWindowMenu()");
 
-	QList<QMdiSubWindow *> 	subWindowList;
-	subWindowList = mdiArea->subWindowList();
+	QList<QMdiSubWindow *> 	subWindowList = mdiArea->subWindowList();
 
 	// empties the menu
 	ui.menuWindowOpened->clear();
@@ -1464,8 +1403,7 @@ MainWindow::updateWindowMenu()
 void 
 MainWindow::activateSubWindowByIndex(int index)
 {
-	QList<QMdiSubWindow *> 	subWindowList;
-	subWindowList = mdiArea->subWindowList();
+	QList<QMdiSubWindow *> 	subWindowList = mdiArea->subWindowList();
 	this->mdiArea->setActiveSubWindow(subWindowList[index]);
 }
 
@@ -1493,9 +1431,6 @@ MainWindow::setUserInterfaceAsOpened()
 	ui.actionDisplaySurfaces->setChecked(true);
 
 	this->createNewViewportWindow();
-
-	// set toolbars
-	createToolBars();
 
 	// set the docks
 	this->addDockWidget(static_cast<Qt::DockWidgetArea>(9), commandLineDockWidget);
@@ -1539,9 +1474,6 @@ MainWindow::setUserInterfaceAsClosed()
 
 	// close all MDI windows
 	mdiArea->closeAllSubWindows();
-
-	// handle the toolbars
-	destroyToolBars();
 
 	// handle the docks
 	this->removeDockWidget(commandLineDockWidget);

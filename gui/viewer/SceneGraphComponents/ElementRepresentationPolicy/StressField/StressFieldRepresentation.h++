@@ -7,7 +7,7 @@
 
 #include <libfemp/Point.h++>
 
-#include "../../../ViewportColors.h++"
+#include <gui/options/Options.h++>
 
 #include "StressTensor.h++"
 

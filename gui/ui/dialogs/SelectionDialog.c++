@@ -1,6 +1,7 @@
 #include "SelectionDialog.h++"
 
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QVBoxLayout>
+
 
 SelectionDialog::SelectionDialog (fem::Project &project, SelectionManager &selection_manager, QWidget *parent)
 	: QDialog(parent)

@@ -9,7 +9,7 @@
 #include "WindowWithWireframe.h++"
 
 #include "../Project.h++"
-#include "../viewer/ViewportColors.h++"
+#include <gui/options/Options.h++>
 
 /**
 MDI window designed to represent the model

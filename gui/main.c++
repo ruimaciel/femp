@@ -5,8 +5,6 @@
 #include "ProgramOptions.h++"
 
 #include <string>
-#include <iostream>
-#include <fstream>
 
 
 Q_DECLARE_METATYPE(size_t);

@@ -6,10 +6,8 @@ SUBDIRS = \
 	libla \
 	libfemp \
 	cmdline \
-	gui \
-	unittests
+	gui 
 
 libfemp.depends = libla
 gui.depends = libfemp
 cmdline.depends = libfemp
-tests.depends = libla libfemp

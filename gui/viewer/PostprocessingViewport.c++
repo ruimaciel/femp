@@ -16,12 +16,12 @@ PostprocessingViewport::PostprocessingViewport(fem::Project &project, fem::Analy
 	// set this widget's load pattern pointer
 	if(project.getModel().load_pattern_list.empty())
 	{
-		display_options.load_pattern = NULL;
+		Options::getInstance().getDisplayOptions().load_pattern = NULL;
 	}
 	else
 	{
 		// set the first load pattern
-		display_options.load_pattern = &project.getModel().load_pattern_list.front();
+		Options::getInstance().getDisplayOptions().load_pattern = &project.getModel().load_pattern_list.front();
 	}
 	this->setFocusPolicy(Qt::StrongFocus);
 }

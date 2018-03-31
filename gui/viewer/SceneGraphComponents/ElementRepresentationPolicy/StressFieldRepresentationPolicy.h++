@@ -7,7 +7,7 @@
 #include <libfemp/Model.h++>
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/Element.h++>
-#include "../../ViewportColors.h++"
+#include <gui/options/Options.h++>
 
 #include "StressField/StressFieldRepresentation.h++"
 

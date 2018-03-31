@@ -1,9 +1,10 @@
-#include "NodeActionsDialog.h++"
-
-#include <ui/LoadPatternDialog.h++>
+#include "DomainLoadsDialog.h++"
 
 
-NodeActionsDialog::NodeActionsDialog(LoadPatternsModel &model, QWidget *parent)
+#include "LoadPatternDialog.h++"
+
+
+DomainLoadsDialog::DomainLoadsDialog(LoadPatternsModel &model, QWidget *parent)
 	: QDialog(parent)
 {
 	setupUi(this);
@@ -15,7 +16,7 @@ NodeActionsDialog::NodeActionsDialog(LoadPatternsModel &model, QWidget *parent)
 
 
 size_t
-NodeActionsDialog::getLoadPattern()
+DomainLoadsDialog::getLoadPattern()
 {
 	//TODO must get some sort of sanity check
 	return this->comboBoxLoadPattern->currentIndex();
@@ -23,7 +24,7 @@ NodeActionsDialog::getLoadPattern()
 
 
 fem::Point
-NodeActionsDialog::getForce()
+DomainLoadsDialog::getForce()
 {
 	fem::Point p;
 	p.data[0] = this->doubleSpinBoxFx->value();
@@ -33,26 +34,15 @@ NodeActionsDialog::getForce()
 }
 
 
-fem::Point
-NodeActionsDialog::getDisplacement()
-{
-	fem::Point p;
-	p.data[0] = this->doubleSpinBoxDx->value();
-	p.data[1] = this->doubleSpinBoxDy->value();
-	p.data[2] = this->doubleSpinBoxDz->value();
-	return p;
-}
-
-
 void 
-NodeActionsDialog::loadPatternCreated(size_t, fem::LoadPattern const &)
+DomainLoadsDialog::loadPatternCreated(size_t, fem::LoadPattern const &)
 {
 	this->comboBoxLoadPattern->view()->reset();
 }
 
 
 void 
-NodeActionsDialog::handleNewLabelButton()
+DomainLoadsDialog::handleNewLabelButton()
 {
 	LoadPatternDialog dialog(this);
 	if(dialog.exec() == QDialog::Accepted)

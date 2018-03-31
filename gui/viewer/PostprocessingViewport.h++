@@ -24,11 +24,6 @@ class PostprocessingViewport
 {
 	Q_OBJECT
 
-protected:
-	fem::AnalysisResult *m_analysis_result;
-	VPStateDisplacements 	m_vp_state_displacements;
-	VPStateGradients	m_vp_state_gradients;
-
 public:
 	PostprocessingViewport(fem::Project &project, fem::AnalysisResult &result, fem::ResultsRanges<double> &ranges, QWidget *parent = NULL);
 	~PostprocessingViewport();
@@ -58,6 +53,11 @@ public:
 	void showStress13();
 
 	void showVonMises();
+
+protected:
+	fem::AnalysisResult *m_analysis_result;
+	VPStateDisplacements 	m_vp_state_displacements;
+	VPStateGradients	m_vp_state_gradients;
 
 };
 

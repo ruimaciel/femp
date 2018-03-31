@@ -18,10 +18,7 @@
 #include "BaseViewport.h++"
 #include "SceneGraph.h++"
 #include "Camera.h++"
-#include "ViewportColors.h++"
-#include "DisplayOptions.h++"
-
-#include "ViewportData.h++"
+#include <gui/options/Options.h++>
 
 #include "Selection.h++"
 
@@ -44,27 +41,9 @@ class BaseViewport
 	: public QGLWidget,
 	virtual public sigc::trackable
 {
+
 Q_OBJECT
 
-
-public:
-	InputStates::Start 	m_is_start;
-	InputStates::LeftClick	m_is_left_click;
-	InputStates::LeftDrag	m_is_left_drag;
-	InputStates::RightClick	m_is_right_click;
-	InputStates::RightDrag	m_is_right_drag;
-
-protected:
-	Input *m_input;	// state pattern that handles user input
-
-public:
-	ViewportData viewport_data;
-	ViewportColors colors;	// color definitions
-	DisplayOptions display_options;	// options list to be used by the render routine
-
-	fem::Project *project;
-
-	ViewportState	*state;	// pointer to object used for the State pattern
 
 public:
 	BaseViewport(fem::Project &project, QWidget *parent);
@@ -74,6 +53,7 @@ public:
 	void setColors(ViewportColors &new_colors);
 
 	QSize minimumSizeHint() const;
+
 	QSize sizeHint() const;
 
 	/*
@@ -156,13 +136,29 @@ protected:
 	void wheelEvent(QWheelEvent *event);
 	void keyPressEvent ( QKeyEvent * event );
 
-
-protected:
 	void normalizeAngle(int *angle);
 
 public:
 	// libsigc++ signals
 	sigc::signal<void, Selection>	selection_changed;	// signals that this window originated a change of item selection
+
+	InputStates::Start 	m_is_start;
+	InputStates::LeftClick	m_is_left_click;
+	InputStates::LeftDrag	m_is_left_drag;
+	InputStates::RightClick	m_is_right_click;
+	InputStates::RightDrag	m_is_right_drag;
+
+protected:
+	Input *m_input;	// state pattern that handles user input
+
+public:
+	ViewportData viewport_data;
+	ViewportColors colors;	// color definitions
+
+	fem::Project *project;
+
+	ViewportState	*state;	// pointer to object used for the State pattern
+
 };
 
 

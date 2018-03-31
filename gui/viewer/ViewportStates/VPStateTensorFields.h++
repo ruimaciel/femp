@@ -8,7 +8,7 @@
 #include "ViewportState.h++"
 #include "../BaseViewport.h++"
 #include "../ViewportData.h++"
-#include "../ViewportColors.h++"
+#include <gui/options/Options.h++>
 
 #include "../SceneGraphComponents/ElementRepresentationPolicy/StressFieldRepresentationPolicy.h++"
 #include "../SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.h++"

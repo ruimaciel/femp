@@ -195,9 +195,12 @@ BaseViewport::setState(ViewportState *new_state)
 	this->state->initialize(this);
 	this->state->populateScenegraph(this);
 
+	auto nodes = Options::getInstance().getDisplayOptions().nodes;
+	auto node_restrictions = Options::getInstance().getDisplayOptions().node_restrictions;
+
 	// toggle the visibility states
-	this->state->setRenderGroupVisibility(SceneGraph::RG_NODES, display_options.nodes);
-	this->state->setRenderGroupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, display_options.node_restrictions);
+	this->state->setRenderGroupVisibility(SceneGraph::RG_NODES, nodes);
+	this->state->setRenderGroupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, node_restrictions);
 }
 
 
@@ -212,7 +215,8 @@ void
 BaseViewport::setNodeVisibility(bool const state)
 {
 	this->state->setRenderGroupVisibility(SceneGraph::RG_NODES, state);
-	this->display_options.nodes = state;
+
+	Options::getInstance().getDisplayOptions().nodes = state;
 }
 
 
@@ -220,7 +224,8 @@ void
 BaseViewport::setNodeRestrictionsVisibility(bool const state)
 {
 	this->state->setRenderGroupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, state);
-	this->display_options.node_restrictions = state;
+
+	Options::getInstance().getDisplayOptions().node_restrictions = state;
 }
 
 
@@ -229,7 +234,8 @@ BaseViewport::setSurfaceVisibility(bool const state)
 {
 	this->state->setRenderGroupVisibility(SceneGraph::RG_SURFACES, state);
 	this->state->setRenderGroupVisibility(SceneGraph::RG_WIREFRAME, !state);
-	this->display_options.surfaces = state;
+
+	Options::getInstance().getDisplayOptions().surfaces = state;
 }
 
 
@@ -237,7 +243,7 @@ void
 BaseViewport::setTrianglesVisible(bool const state)
 {
 	//TODO set triangle wireframe visibility
-	this->display_options.triangle_wireframe = state;	// this has no effect, as currently no component uses this value
+	Options::getInstance().getDisplayOptions().triangle_wireframe = state; // this has no effect, as currently no component uses this value
 
 	/* Performs a sanity check */
 	if(state == false)
@@ -254,7 +260,7 @@ void
 BaseViewport::setShading(bool const state)
 {
 	//TODO toggle shading
-	this->display_options.shading = state;
+	Options::getInstance().getDisplayOptions().shading = state;
 }
 
 

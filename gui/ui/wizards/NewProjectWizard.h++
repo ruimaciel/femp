@@ -7,9 +7,9 @@
 #include <QString>
 
 //#include "ui/NewProjectWizardPage1.h++"
-#include "ui/NewProjectWizardPage2.h++"
-#include "ui/NewProjectWizardPage3.h++"
-#include "ui/NewProjectWizardPageLast.h++"
+#include "ui/wizards/NewProjectWizardPage2.h++"
+#include "ui/wizards/NewProjectWizardPage3.h++"
+#include "ui/wizards/NewProjectWizardPageLast.h++"
 
 #include "Document.h++"
 

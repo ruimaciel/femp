@@ -6,7 +6,7 @@
 #include "Operations/OperationsVisitor.h++"
 
 #include "../ViewportData.h++"
-#include "../ViewportColors.h++"
+#include <gui/options/Options.h++>
 
 #include <libfemp/Model.h++>
 #include <libfemp/Node.h++>

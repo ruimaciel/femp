@@ -8,8 +8,8 @@
 #include <QComboBox>
 #include <QMdiSubWindow>
 
+#include <ui/widgets/MatrixWidget.h++>
 #include "BaseWindow.h++"
-#include "MatrixWidget.h++"
 #include "../Project.h++"
 
 

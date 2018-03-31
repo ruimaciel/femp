@@ -3,7 +3,7 @@
 #include <QFileDialog>
 
 #include "Document.h++"	// for the loading test
-#include "ui/NewMaterialDialog.h++"
+#include <ui/dialogs/NewMaterialDialog.h++>
 #include <libfemp/SurfaceLoadOperators/ConstantLoad.h++>
 #include <libfemp/SurfaceLoadOperators/SurfaceNormalLoad.h++>
 

@@ -8,7 +8,7 @@
 #include <libfemp/Point.h++>
 
 #include "../../ViewportData.h++"
-#include "../../ViewportColors.h++"
+#include <gui/options/Options.h++>
 
 
 namespace hud

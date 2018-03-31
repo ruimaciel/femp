@@ -58,4 +58,3 @@ Selection::getNodeReferences() const
 	return m_nodes_selected;
 }
 
-

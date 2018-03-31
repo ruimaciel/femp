@@ -18,21 +18,20 @@ This class is intended to describe a FEM project in it's entirely, which include
 namespace fem
 {
 
+
 class Project
 	: public sigc::trackable
 {
-protected:
-	Model model;	// the FEM model
+public:
 
-public:
-	std::vector<AnalysisResult> result;	// a list with all analysis
-		
-public:
+	/**
+	 * clears the project
+	 **/
 	void clear();
 	
 	/**
-	Adds the result of a new analysis process to the result list
-	**/
+	 * Adds the result of a new analysis process to the result list
+	 **/
 	void pushAnalysisResult(fem::AnalysisResult &new_result);
 
 	/**
@@ -41,10 +40,18 @@ public:
 	Model & getModel();
 
 	/**
-	Implements a Visitor design pattern
-	**/
+	 * Implements a Visitor design pattern
+	 **/
 	void accept(ProjectVisitor &visitor);
+
+protected:
+	Model m_model;	// the FEM model
+
+public:
+	std::vector<AnalysisResult> result;	// a list with all analysis
+		
 };
 
-}
+}	// namespace fem
+
 #endif

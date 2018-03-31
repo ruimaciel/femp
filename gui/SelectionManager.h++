@@ -15,20 +15,19 @@ MVC pattern which manages a list of all objects contained in a given fem::Projec
 class SelectionManager
 	: public sigc::trackable
 {
-protected:
-	Selection m_selection;
-
 public:
-	// libsigc++ signals
-	sigc::signal<void, Selection const &>	selection_changed;
-	sigc::signal<void>			selection_cleared;
 
 	// libsigc++ slots
 	void setSelection(Selection const &);
+
 	void clearSelection();
+
 	void selectElement(const fem::element_ref_t &ref);
+
 	void deselectElement(const fem::element_ref_t &ref);
+
 	void selectNode(const fem::node_ref_t &ref);
+
 	void deselectNode(const fem::node_ref_t &ref);
 
 	/**
@@ -36,6 +35,14 @@ public:
 	@return	an object of type Selection
 	**/
 	Selection const & getSelection() const;
+
+protected:
+	Selection m_selection;
+
+public:
+	// libsigc++ signals
+	sigc::signal<void, Selection const &>	selection_changed;
+	sigc::signal<void>			selection_cleared;
 
 };
 

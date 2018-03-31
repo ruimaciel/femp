@@ -14,7 +14,7 @@
 
 #include "../BaseViewport.h++"
 
-#include "ui/SurfaceSubdivisionDialog.h++"
+#include "ui/dialogs/SurfaceSubdivisionDialog.h++"
 
 #include "../SceneGraph.h++"
 #include "../SceneGraphComponents/SGCNode.h++"

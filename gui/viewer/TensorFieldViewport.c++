@@ -1,6 +1,7 @@
 #include "TensorFieldViewport.h++"
 
 #include "SceneGraph.h++"
+#include <gui/options/Options.h++>
 
 
 TensorFieldViewport::TensorFieldViewport(fem::Project &project, fem::AnalysisResult &result, fem::ResultsRanges<double> &ranges, QWidget *parent)
@@ -18,12 +19,12 @@ TensorFieldViewport::TensorFieldViewport(fem::Project &project, fem::AnalysisRes
 	// set this widget's load pattern pointer
 	if(project.getModel().load_pattern_list.empty())
 	{
-		display_options.load_pattern = NULL;
+		Options::getInstance().getDisplayOptions().load_pattern = NULL;
 	}
 	else
 	{
 		// set the first load pattern
-		display_options.load_pattern = &project.getModel().load_pattern_list.front();
+		Options::getInstance().getDisplayOptions().load_pattern = &project.getModel().load_pattern_list.front();
 	}
 	this->setFocusPolicy(Qt::StrongFocus);
 }

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "TableFilterDialog.h++"
+#include <ui/dialogs/TableFilterDialog.h++>
 
 #include <libfemp/Model.h++>
 #include <libfemp/Node.h++>

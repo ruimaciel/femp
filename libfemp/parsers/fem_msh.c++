@@ -3,16 +3,16 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "lex.msh_yy.h++"
+#include "lex.msh_yy.h"
 #include "msh.tab.h"
 
 
 enum FEM_PARSER_RETURN fem_model_import_msh(FILE *file, fem::Model &model)
 {
-	assert(file != NULL);
-	msh_yyin = file;
+    assert(file != NULL);
+    msh_yyin = file;
 
-	return msh_yyparse(model)? FP_OK: FP_UNKNOWN_ERROR;
+    return msh_yyparse(model)? FP_OK: FP_UNKNOWN_ERROR;
 }
 
 

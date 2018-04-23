@@ -15,132 +15,132 @@ LIBS += -lumfpack -lblas -lamd -lGLU -llibla
 
 
 HEADERS = Group.h++ \
-	Model.h++ \
-	Node.h++ \
-	GlobalDof.h++ \
-	GlobalDofMap.h++ \
-	Element.h++ \
-	Material.h++ \
-	LoadPattern.h++ \
-	NodalDisplacement.h++ \
-	Point.h++ \
-	Point2D.h++ \
-	NodeRestrictions.h++ \
-	quadrature_rules/QuadraturePoint.h++ \
-	quadrature_rules/Line.h++ \
-	quadrature_rules/Quadrangle.h++ \
-	quadrature_rules/Triangle.h++ \
-	quadrature_rules/Hexahedron.h++ \
-	quadrature_rules/Tetrahedron.h++ \
-	quadrature_rules/Prism.h++ \
-	loads/NodalLoad.h++ \
-	loads/DomainLoad.h++ \
-	loads/SurfaceLoad.h++ \
-	ElementGroup.h++ \
-	NodeGroup.h++ \
-	elements/all.h++ \
-	elements/ElementFactory.h++ \
-	elements/BaseElement.h++ \
-	elements/TriangleFamily.h++ \
-	elements/Triangle3.h++ \
-	elements/Triangle6.h++ \
-	elements/QuadrangleFamily.h++ \
-	elements/Quadrangle4.h++ \
-	elements/Quadrangle8.h++ \
-	elements/Quadrangle9.h++ \
-	elements/HexahedronFamily.h++ \
-	elements/Hexahedron8.h++ \
-	elements/Hexahedron20.h++ \
-	elements/Hexahedron27.h++ \
-	elements/TetrahedronFamily.h++ \
-	elements/Tetrahedron4.h++ \
-	elements/Tetrahedron10.h++ \
-	elements/PrismFamily.h++ \
-	elements/Prism6.h++ \
-	elements/Prism18.h++ \
-	SurfaceLoadOperators/ConstantLoad.h++ \
-	SurfaceLoadOperators/SurfaceLoadOperator.h++ \
-	SurfaceLoadOperators/SurfaceNormalLoad.h++ \
-	Analysis.h++ \
-	LinearAnalysis.h++ \
-	AnalysisResult.h++\
-	ElementResults/ElementResultsFactory.h++ \
-	ElementResults/Stresses.h++ \
-	ElementResults/ResultsRanges.h++ \
-	ElementResults/Strains.h++ \
-	ElementResults/ElementResults.h++ \
-	solvers/Solver.h++ \
-	solvers/CholeskySolver.h++ \
-	solvers/CGSolver.h++ \
-	solvers/UmfpackSolver.h++ \
-	Surface.h++ \
-	solvers/*.h++ \
-	parsers/fem_msh.h++ \
-	lex.msh_yy.h++ \
-	parsers/parser.h++ \
-	parsers/MshParser.h++ \
-	parsers/json.h \
-	parsers/FemJsonParser.h++
+        Model.h++ \
+        Node.h++ \
+        GlobalDof.h++ \
+        GlobalDofMap.h++ \
+        Element.h++ \
+        Material.h++ \
+        LoadPattern.h++ \
+        NodalDisplacement.h++ \
+        Point.h++ \
+        Point2D.h++ \
+        NodeRestrictions.h++ \
+        quadrature_rules/QuadraturePoint.h++ \
+        quadrature_rules/Line.h++ \
+        quadrature_rules/Quadrangle.h++ \
+        quadrature_rules/Triangle.h++ \
+        quadrature_rules/Hexahedron.h++ \
+        quadrature_rules/Tetrahedron.h++ \
+        quadrature_rules/Prism.h++ \
+        loads/NodalLoad.h++ \
+        loads/DomainLoad.h++ \
+        loads/SurfaceLoad.h++ \
+        ElementGroup.h++ \
+        NodeGroup.h++ \
+        elements/all.h++ \
+        elements/ElementFactory.h++ \
+        elements/BaseElement.h++ \
+        elements/TriangleFamily.h++ \
+        elements/Triangle3.h++ \
+        elements/Triangle6.h++ \
+        elements/QuadrangleFamily.h++ \
+        elements/Quadrangle4.h++ \
+        elements/Quadrangle8.h++ \
+        elements/Quadrangle9.h++ \
+        elements/HexahedronFamily.h++ \
+        elements/Hexahedron8.h++ \
+        elements/Hexahedron20.h++ \
+        elements/Hexahedron27.h++ \
+        elements/TetrahedronFamily.h++ \
+        elements/Tetrahedron4.h++ \
+        elements/Tetrahedron10.h++ \
+        elements/PrismFamily.h++ \
+        elements/Prism6.h++ \
+        elements/Prism18.h++ \
+        SurfaceLoadOperators/ConstantLoad.h++ \
+        SurfaceLoadOperators/SurfaceLoadOperator.h++ \
+        SurfaceLoadOperators/SurfaceNormalLoad.h++ \
+        Analysis.h++ \
+        LinearAnalysis.h++ \
+        AnalysisResult.h++\
+        ElementResults/ElementResultsFactory.h++ \
+        ElementResults/Stresses.h++ \
+        ElementResults/ResultsRanges.h++ \
+        ElementResults/Strains.h++ \
+        ElementResults/ElementResults.h++ \
+        solvers/Solver.h++ \
+        solvers/CholeskySolver.h++ \
+        solvers/CGSolver.h++ \
+        solvers/UmfpackSolver.h++ \
+        Surface.h++ \
+        solvers/*.h++ \
+        parsers/fem_msh.h++ \
+        lex.msh_yy.h++ \
+        parsers/parser.h++ \
+        parsers/MshParser.h++ \
+        parsers/json.h \
+        parsers/FemJsonParser.h++
 
 SOURCES = Group.c++ \
-	Model.c++ \
-	Node.c++ \
-	GlobalDof.c++ \
-	GlobalDofMap.c++ \
-	Element.c++ \
-	Material.c++ \
-	LoadPattern.c++ \
-	NodalDisplacement.c++ \
-	Point.c++ \
-	Point2D.c++ \
-	NodeRestrictions.c++ \
-	quadrature_rules/Line.c++ \
-	quadrature_rules/Quadrangle.c++ \
-	quadrature_rules/Triangle.c++ \
-	quadrature_rules/Hexahedron.c++ \
-	quadrature_rules/Tetrahedron.c++ \
-	quadrature_rules/Prism.c++ \
-	loads/NodalLoad.c++ \
-	loads/DomainLoad.c++ \
-	loads/SurfaceLoad.c++\
-	ElementGroup.c++ \
-	NodeGroup.c++ \
-	elements/ElementFactory.c++ \
-	elements/BaseElement.c++ \
-	elements/TriangleFamily.c++ \
-	elements/Triangle3.c++ \
-	elements/Triangle6.c++ \
-	elements/Triangle10.c++ \
-	elements/QuadrangleFamily.c++ \
-	elements/Quadrangle4.c++ \
-	elements/Quadrangle8.c++ \
-	elements/Quadrangle9.c++ \
-	elements/HexahedronFamily.c++ \
-	elements/Hexahedron8.c++ \
-	elements/Hexahedron20.c++ \
-	elements/Hexahedron27.c++ \
-	elements/TetrahedronFamily.c++ \
-	elements/Tetrahedron4.c++ \
-	elements/Tetrahedron10.c++ \
-	elements/PrismFamily.c++ \
-	elements/Prism6.c++ \
-	elements/Prism15.c++ \
-	elements/Prism18.c++ \
-	Analysis.c++ \
-	LinearAnalysis.c++ \
-	AnalysisResult.c++\
-	ElementResults/ElementResultsFactory.c++ \
-	ElementResults/ElementResults.c++ \
-	SurfaceLoadOperators/ConstantLoad.c++ \
-	SurfaceLoadOperators/SurfaceLoadOperator.c++ \
-	SurfaceLoadOperators/SurfaceNormalLoad.c++ \
-	Surface.c++ \
-	parsers/fem_msh.c++ \
-	lex.msh_yy.c++ \
-	parsers/parser.c++ \
-	parsers/MshParser.c++ \
-	parsers/json.c \
-	parsers/FemJsonParser.c++
+        Model.c++ \
+        Node.c++ \
+        GlobalDof.c++ \
+        GlobalDofMap.c++ \
+        Element.c++ \
+        Material.c++ \
+        LoadPattern.c++ \
+        NodalDisplacement.c++ \
+        Point.c++ \
+        Point2D.c++ \
+        NodeRestrictions.c++ \
+        quadrature_rules/Line.c++ \
+        quadrature_rules/Quadrangle.c++ \
+        quadrature_rules/Triangle.c++ \
+        quadrature_rules/Hexahedron.c++ \
+        quadrature_rules/Tetrahedron.c++ \
+        quadrature_rules/Prism.c++ \
+        loads/NodalLoad.c++ \
+        loads/DomainLoad.c++ \
+        loads/SurfaceLoad.c++\
+        ElementGroup.c++ \
+        NodeGroup.c++ \
+        elements/ElementFactory.c++ \
+        elements/BaseElement.c++ \
+        elements/TriangleFamily.c++ \
+        elements/Triangle3.c++ \
+        elements/Triangle6.c++ \
+        elements/Triangle10.c++ \
+        elements/QuadrangleFamily.c++ \
+        elements/Quadrangle4.c++ \
+        elements/Quadrangle8.c++ \
+        elements/Quadrangle9.c++ \
+        elements/HexahedronFamily.c++ \
+        elements/Hexahedron8.c++ \
+        elements/Hexahedron20.c++ \
+        elements/Hexahedron27.c++ \
+        elements/TetrahedronFamily.c++ \
+        elements/Tetrahedron4.c++ \
+        elements/Tetrahedron10.c++ \
+        elements/PrismFamily.c++ \
+        elements/Prism6.c++ \
+        elements/Prism15.c++ \
+        elements/Prism18.c++ \
+        Analysis.c++ \
+        LinearAnalysis.c++ \
+        AnalysisResult.c++\
+        ElementResults/ElementResultsFactory.c++ \
+        ElementResults/ElementResults.c++ \
+        SurfaceLoadOperators/ConstantLoad.c++ \
+        SurfaceLoadOperators/SurfaceLoadOperator.c++ \
+        SurfaceLoadOperators/SurfaceNormalLoad.c++ \
+        Surface.c++ \
+        parsers/fem_msh.c++ \
+        lex.msh_yy.c++ \
+        parsers/parser.c++ \
+        parsers/MshParser.c++ \
+        parsers/json.c \
+        parsers/FemJsonParser.c++
 
 
 FemJsonParserRe2c.target = parsers/FemJsonParser.c++
@@ -155,7 +155,7 @@ MshParserRe2c.output = parsers/MshParser.c++
 
 FLEXINPUT = msh.l
 Flex.input = FLEXINPUT
-Flex.output = lex.msh_yy.c++ lex.msh_yy.h++
+Flex.output = lex.msh_yy.c++ lex.msh_yy.h
 Flex.depends = msh.l
 Flex.commands = flex --header-file=lex.msh_yy.h++ -o lex.msh_yy.c++ ${FLEXINPUT}
 Flex.name = flex
@@ -173,4 +173,4 @@ BisonCompile.commands = g++ -c msh.tab.c $(INCPATH)
 
 QMAKE_CLEAN += lex.msh_yy.h++ lex.msh_yy.c++ msh.tab.c msh.tab.h msh.tab.o
 
-QMAKE_EXTRA_TARGETS += FemJsonParserRe2c MshParserRe2c Flex Bison BisonCompile 
+QMAKE_EXTRA_TARGETS += FemJsonParserRe2c MshParserRe2c Flex Bison BisonCompile

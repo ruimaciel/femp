@@ -152,6 +152,7 @@ HEADERS += MainWindow.h++ \
         viewer/ViewportStates/VPStateTensorFields.h++ \
         viewer/BaseViewport.h++ \
         DefaultProgressIndicator.h++ \
+    Settings.h++
 
 SOURCES += main.c++ \
         MainWindow.c++ \
@@ -281,7 +282,8 @@ SOURCES += main.c++ \
         viewer/ViewportStates/VPStateGradients.c++ \
         viewer/ViewportStates/VPStateTensorFields.c++ \
         viewer/Camera.c++ \
-        DefaultProgressIndicator.c++
+        DefaultProgressIndicator.c++ \
+    Settings.c++
 
 FORMS += ui/dialogs/AnalysisDialog.ui \
         ui/dialogs/AnalysisProgressDialog.ui \

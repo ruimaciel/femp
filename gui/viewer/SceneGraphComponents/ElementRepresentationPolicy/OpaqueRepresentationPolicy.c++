@@ -41,7 +41,7 @@ OpaqueRepresentationPolicy::tri3(fem::Point &p1, fem::Point &p2, fem::Point &p3,
 	temp = fem::getNormalVector(p1,p2,p3);
 	
 	glBegin(GL_TRIANGLES);
-	glColor4fv(color.surface);
+	glColor4fv(color.surface.data());
 	glNormal3dv(temp.data);
 	glVertex3dv(p1.data);
 	glVertex3dv(p2.data);
@@ -121,7 +121,7 @@ OpaqueRepresentationPolicy::tri6(fem::Point &p1, fem::Point &p2, fem::Point &p3,
 		y = (double)j/partitions;
 		// and now let's render
 		glBegin(GL_TRIANGLE_STRIP);  
-		glColor4fv(color.surface);
+		glColor4fv(color.surface.data());
 		for (i = 0; i <= (partitions-j); i++)  
 		{ 
 			// get the upper row points and normal vectors
@@ -213,7 +213,7 @@ OpaqueRepresentationPolicy::quad4(fem::Point &p1, fem::Point &p2, fem::Point &p3
 		n_lower_row[i] = fem::cross_product(dndx, dndy);
 	}
 
-	glColor4fv(color.surface);
+	glColor4fv(color.surface.data());
 
 	// the rest of the loop
 	for (int j = 1; j <= partitions; j++)  
@@ -302,7 +302,7 @@ OpaqueRepresentationPolicy::quad8(fem::Point &p1, fem::Point &p2, fem::Point &p3
 	nu = n_upper_row;
 	nl = n_lower_row;
 
-	glColor4fv(color.surface);
+	glColor4fv(color.surface.data());
 
 	// initialize the bottom row
 	y = 0;
@@ -419,7 +419,7 @@ OpaqueRepresentationPolicy::quad9(fem::Point &p1, fem::Point &p2, fem::Point &p3
 		n_lower_row[i] = fem::cross_product(dndx, dndy);
 	}
 
-	glColor4fv(color.surface);
+	glColor4fv(color.surface.data());
 
 	// the rest of the loop
 	for (int j = 1; j <= partitions; j++)  

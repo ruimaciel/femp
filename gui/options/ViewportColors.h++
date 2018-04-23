@@ -1,35 +1,36 @@
 #ifndef OPTIONS_VIEWPORT_COLORS_HPP
 #define OPTIONS_VIEWPORT_COLORS_HPP
 
+#include <array>
 #include <GL/gl.h>
 
 
 /**
 Stores all the color information which is used by the program
 **/
-struct ViewportColors 
+struct ViewportColors
 {
-	ViewportColors ();
+    ViewportColors ();
 
-	// set of color options
-	GLfloat node[4];	// node colors
-	GLfloat restraints[4];	// color for the cinematic restraints
-	GLfloat selected[4];
+    // set of color options
+    std::array<GLfloat,4> node;	// node colors
+    std::array<GLfloat,4> restraints;	// color for the cinematic restraints
+    std::array<GLfloat,4> selected;
 
-	GLfloat wireframe[4];
-	GLfloat surface[4];
-	GLfloat original_surface[4];	// displacement: for surfaces for the model in the original configuration
+    std::array<GLfloat,4> wireframe;
+    std::array<GLfloat,4> surface;
+    std::array<GLfloat,4> original_surface;	// displacement: for surfaces for the model in the original configuration
 
-	GLfloat arrow[4];
-	
-	GLfloat background[4];
+    std::array<GLfloat,4> arrow;
 
-	// field colors
-	GLfloat field_maximum_positive[4];
-	GLfloat field_semi_maximum_positive[4];
-	GLfloat field_neutral[4];
-	GLfloat field_maximum_negative[4];
-	GLfloat field_semi_maximum_negative[4];
+    std::array<GLfloat,4> background;
+
+    // field colors
+    std::array<GLfloat,4> field_maximum_positive;
+    std::array<GLfloat,4> field_semi_maximum_positive;
+    std::array<GLfloat,4> field_neutral;
+    std::array<GLfloat,4> field_maximum_negative;
+    std::array<GLfloat,4> field_semi_maximum_negative;
 };
 
 

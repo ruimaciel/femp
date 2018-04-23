@@ -32,7 +32,7 @@ void NodeRestrictions::paintGL(ViewportData &data, ViewportColors &colors)
 	glScalef(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
 
 	// paint restrictions, if there are any
-	glColor3fv(colors.restraints);
+	glColor3fv(colors.restraints.data());
 	if(m_node_restrictions->dx())
 	{
 		renderNodeRestriction();

@@ -40,9 +40,9 @@ void Node::paintGL(ViewportData &data, ViewportColors &colors)
 	//TODO paint selected node in a different color
 	// paint the nodal sphere
 	if(this->selected)
-		glColor3fv(colors.selected);
+		glColor3fv(colors.selected.data());
 	else
-		glColor3fv(colors.node);
+		glColor3fv(colors.node.data());
 
 	//TODO replace this with a display list
 

@@ -1,6 +1,6 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
-#include <QApplication>
 
+#include "FempApplication.h++"
 #include "MainWindow.h++"
 #include "ProgramOptions.h++"
 
@@ -13,17 +13,11 @@ Q_DECLARE_METATYPE(std::string);
 
 int main(int argc, char *argv[])
 {
+	// register types
 	qRegisterMetaType<size_t>("size_t");
 	qRegisterMetaType<std::string>("std::string");
 
-	// set QSettings data
-	QCoreApplication::setOrganizationName("Rui Maciel");
-	QCoreApplication::setOrganizationDomain("github.com/ruimaciel/");
-	QCoreApplication::setApplicationName("femp");
-
-	QApplication app(argc, argv);
-
-	// register types
+	FempApplication app(argc, argv);
 
 	MainWindow main_window;
 	main_window.show();

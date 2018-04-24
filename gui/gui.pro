@@ -152,7 +152,8 @@ HEADERS += MainWindow.h++ \
         viewer/ViewportStates/VPStateTensorFields.h++ \
         viewer/BaseViewport.h++ \
         DefaultProgressIndicator.h++ \
-    Settings.h++
+    Settings.h++ \
+    FempApplication.h++
 
 SOURCES += main.c++ \
         MainWindow.c++ \
@@ -283,7 +284,8 @@ SOURCES += main.c++ \
         viewer/ViewportStates/VPStateTensorFields.c++ \
         viewer/Camera.c++ \
         DefaultProgressIndicator.c++ \
-    Settings.c++
+    Settings.c++ \
+    FempApplication.c++
 
 FORMS += ui/dialogs/AnalysisDialog.ui \
         ui/dialogs/AnalysisProgressDialog.ui \

@@ -7,43 +7,43 @@ TableFilterDialog::TableFilterDialog(QWidget *parent )
 	setupUi(this);
 
 	// set signals and slots
-	connect (	checkBoxElements,		SIGNAL(clicked(bool)),	this,	SLOT( toggleElementsCheckboxes(bool)) );
-	connect (	checkBoxElementReference,	SIGNAL(clicked(bool)),	this,	SLOT( toggleElementCheckbox(bool)) );
-	connect (	checkBoxElementType,		SIGNAL(clicked(bool)),	this,	SLOT( toggleElementCheckbox(bool)) );
+	connect(	checkBoxElements,				&QCheckBox::clicked,	this,	&TableFilterDialog::toggleElementsCheckboxes);
+	connect(	checkBoxElementReference,		&QCheckBox::clicked,	this,	&TableFilterDialog::toggleElementCheckbox);
+	connect(	checkBoxElementType,			&QCheckBox::clicked,	this,	&TableFilterDialog::toggleElementCheckbox);
 
-	connect (	checkBoxNodeReferences,		SIGNAL(clicked(bool)),	this,	SLOT( toggleNodeReferencesCheckboxes(bool)) );
-	connect (	checkBoxNodeGlobalReference,	SIGNAL(clicked(bool)),	this,	SLOT( toggleNodeReferenceCheckbox(bool)) );
-	connect (	checkBoxNodeLocalReference,	SIGNAL(clicked(bool)),	this,	SLOT( toggleNodeReferenceCheckbox(bool)) );
+	connect(	checkBoxNodeReferences,			&QCheckBox::clicked,	this,	&TableFilterDialog::toggleNodeReferencesCheckboxes);
+	connect(	checkBoxNodeGlobalReference,	&QCheckBox::clicked,	this,	&TableFilterDialog::toggleNodeReferenceCheckbox);
+	connect(	checkBoxNodeLocalReference,		&QCheckBox::clicked,	this,	&TableFilterDialog::toggleNodeReferenceCheckbox);
 
-	connect (	checkBoxNodePositions,		SIGNAL(clicked(bool)),	this,	SLOT( toggleNodePositionsCheckboxes(bool)) );
-	connect (	checkBoxNodePositionX,		SIGNAL(clicked(bool)),	this,	SLOT( toggleNodePositionCheckbox(bool)) );
-	connect (	checkBoxNodePositionY,		SIGNAL(clicked(bool)),	this,	SLOT( toggleNodePositionCheckbox(bool)) );
-	connect (	checkBoxNodePositionZ,		SIGNAL(clicked(bool)),	this,	SLOT( toggleNodePositionCheckbox(bool)) );
+	connect(	checkBoxNodePositions,			&QCheckBox::clicked,	this,	&TableFilterDialog::toggleNodePositionsCheckboxes);
+	connect(	checkBoxNodePositionX,			&QCheckBox::clicked,	this,	&TableFilterDialog::toggleNodePositionCheckbox);
+	connect(	checkBoxNodePositionY,			&QCheckBox::clicked,	this,	&TableFilterDialog::toggleNodePositionCheckbox);
+	connect(	checkBoxNodePositionZ,			&QCheckBox::clicked,	this,	&TableFilterDialog::toggleNodePositionCheckbox);
 
-	connect (	checkBoxNodeDisplacements,	SIGNAL(clicked(bool)),	this,	SLOT( toggleNodeDisplacementsCheckboxes(bool)) );
-	connect (	checkBoxNodeDisplacementsX,	SIGNAL(clicked(bool)),	this,	SLOT( toggleNodeDisplacementsCheckbox(bool)) );
-	connect (	checkBoxNodeDisplacementsY,	SIGNAL(clicked(bool)),	this,	SLOT( toggleNodeDisplacementsCheckbox(bool)) );
-	connect (	checkBoxNodeDisplacementsZ,	SIGNAL(clicked(bool)),	this,	SLOT( toggleNodeDisplacementsCheckbox(bool)) );
+	connect(	checkBoxNodeDisplacements,		&QCheckBox::clicked,	this,	&TableFilterDialog::toggleNodeDisplacementsCheckboxes);
+	connect(	checkBoxNodeDisplacementsX,		&QCheckBox::clicked,	this,	&TableFilterDialog::toggleNodeDisplacementsCheckbox);
+	connect(	checkBoxNodeDisplacementsY,		&QCheckBox::clicked,	this,	&TableFilterDialog::toggleNodeDisplacementsCheckbox);
+	connect(	checkBoxNodeDisplacementsZ,		&QCheckBox::clicked,	this,	&TableFilterDialog::toggleNodeDisplacementsCheckbox);
 
-	connect (	checkBoxStrains,	SIGNAL(clicked(bool)),	this,	SLOT( toggleStrainsCheckboxes(bool)) );
-	connect (	checkBoxE11,		SIGNAL(clicked(bool)),	this,	SLOT( toggleStrainsCheckbox(bool)) );
-	connect (	checkBoxE22,		SIGNAL(clicked(bool)),	this,	SLOT( toggleStrainsCheckbox(bool)) );
-	connect (	checkBoxE33,		SIGNAL(clicked(bool)),	this,	SLOT( toggleStrainsCheckbox(bool)) );
-	connect (	checkBoxE12,		SIGNAL(clicked(bool)),	this,	SLOT( toggleStrainsCheckbox(bool)) );
-	connect (	checkBoxE23,		SIGNAL(clicked(bool)),	this,	SLOT( toggleStrainsCheckbox(bool)) );
-	connect (	checkBoxE13,		SIGNAL(clicked(bool)),	this,	SLOT( toggleStrainsCheckbox(bool)) );
+	connect(	checkBoxStrains,				&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStrainsCheckboxes);
+	connect(	checkBoxE11,					&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStrainsCheckbox);
+	connect(	checkBoxE22,					&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStrainsCheckbox);
+	connect(	checkBoxE33,					&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStrainsCheckbox);
+	connect(	checkBoxE12,					&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStrainsCheckbox);
+	connect(	checkBoxE23,					&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStrainsCheckbox);
+	connect(	checkBoxE13,					&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStrainsCheckbox);
 
-	connect (	checkBoxStresses,	SIGNAL(clicked(bool)),	this,	SLOT( toggleStressesCheckboxes(bool)) );
-	connect (	checkBoxS11,		SIGNAL(clicked(bool)),	this,	SLOT( toggleStressesCheckbox(bool)) );
-	connect (	checkBoxS22,		SIGNAL(clicked(bool)),	this,	SLOT( toggleStressesCheckbox(bool)) );
-	connect (	checkBoxS33,		SIGNAL(clicked(bool)),	this,	SLOT( toggleStressesCheckbox(bool)) );
-	connect (	checkBoxS12,		SIGNAL(clicked(bool)),	this,	SLOT( toggleStressesCheckbox(bool)) );
-	connect (	checkBoxS23,		SIGNAL(clicked(bool)),	this,	SLOT( toggleStressesCheckbox(bool)) );
-	connect (	checkBoxS13,		SIGNAL(clicked(bool)),	this,	SLOT( toggleStressesCheckbox(bool)) );
+	connect(	checkBoxStresses,				&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStressesCheckboxes);
+	connect(	checkBoxS11,					&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStressesCheckbox);
+	connect(	checkBoxS22,					&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStressesCheckbox);
+	connect(	checkBoxS33,					&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStressesCheckbox);
+	connect(	checkBoxS12,					&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStressesCheckbox);
+	connect(	checkBoxS23,					&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStressesCheckbox);
+	connect(	checkBoxS13,					&QCheckBox::clicked,	this,	&TableFilterDialog::toggleStressesCheckbox);
 }
 
 
-void 
+void
 TableFilterDialog::toggleElementsCheckboxes(bool state)
 {
 	this->checkBoxElementReference->setChecked(state);
@@ -51,7 +51,7 @@ TableFilterDialog::toggleElementsCheckboxes(bool state)
 }
 
 
-void 
+void
 TableFilterDialog::toggleElementCheckbox(bool)
 {
 	if (checkBoxElementReference->isChecked() && checkBoxElementType->isChecked())
@@ -69,7 +69,7 @@ TableFilterDialog::toggleElementCheckbox(bool)
 }
 
 
-void 
+void
 TableFilterDialog::toggleNodeReferencesCheckboxes(bool state)
 {
 	this->checkBoxNodeGlobalReference->setChecked(state);
@@ -77,7 +77,7 @@ TableFilterDialog::toggleNodeReferencesCheckboxes(bool state)
 }
 
 
-void 
+void
 TableFilterDialog::toggleNodeReferenceCheckbox(bool)
 {
 	if (checkBoxNodeGlobalReference->isChecked() && checkBoxNodeLocalReference->isChecked())
@@ -95,7 +95,7 @@ TableFilterDialog::toggleNodeReferenceCheckbox(bool)
 }
 
 
-void 
+void
 TableFilterDialog::toggleNodePositionsCheckboxes(bool state)
 {
 	this->checkBoxNodePositionX->setChecked(state);
@@ -104,7 +104,7 @@ TableFilterDialog::toggleNodePositionsCheckboxes(bool state)
 }
 
 
-void 
+void
 TableFilterDialog::toggleNodePositionCheckbox(bool)
 {
 	if (checkBoxNodePositionX->isChecked() && checkBoxNodePositionY->isChecked() && checkBoxNodePositionZ->isChecked())
@@ -122,7 +122,7 @@ TableFilterDialog::toggleNodePositionCheckbox(bool)
 }
 
 
-void 
+void
 TableFilterDialog::toggleNodeDisplacementsCheckboxes(bool state)
 {
 	this->checkBoxNodeDisplacementsX->setChecked(state);
@@ -131,7 +131,7 @@ TableFilterDialog::toggleNodeDisplacementsCheckboxes(bool state)
 }
 
 
-void 
+void
 TableFilterDialog::toggleNodeDisplacementsCheckbox(bool)
 {
 	if (checkBoxNodeDisplacementsX->isChecked() && checkBoxNodeDisplacementsY->isChecked() && checkBoxNodeDisplacementsZ->isChecked())
@@ -149,7 +149,7 @@ TableFilterDialog::toggleNodeDisplacementsCheckbox(bool)
 }
 
 
-void 
+void
 TableFilterDialog::toggleStrainsCheckboxes(bool state)
 {
 	this->checkBoxE11->setChecked(state);
@@ -161,7 +161,7 @@ TableFilterDialog::toggleStrainsCheckboxes(bool state)
 }
 
 
-void 
+void
 TableFilterDialog::toggleStrainsCheckbox(bool)
 {
 	if (checkBoxE11->isChecked() && checkBoxE22->isChecked() && checkBoxE33->isChecked() && checkBoxE12->isChecked() && checkBoxE23->isChecked() && checkBoxE13->isChecked())
@@ -179,7 +179,7 @@ TableFilterDialog::toggleStrainsCheckbox(bool)
 }
 
 
-void 
+void
 TableFilterDialog::toggleStressesCheckboxes(bool state)
 {
 	this->checkBoxS11->setChecked(state);
@@ -191,7 +191,7 @@ TableFilterDialog::toggleStressesCheckboxes(bool state)
 }
 
 
-void 
+void
 TableFilterDialog::toggleStressesCheckbox(bool)
 {
 	if (checkBoxS11->isChecked() && checkBoxS22->isChecked() && checkBoxS33->isChecked() && checkBoxS12->isChecked() && checkBoxS23->isChecked() && checkBoxS13->isChecked())

@@ -26,7 +26,7 @@ MdiWindow::MdiWindow (QWidget *parent)
 }
 
 
-void 
+void
 MdiWindow::createViewportToolbar()
 {
 	// create actions
@@ -44,7 +44,7 @@ MdiWindow::createViewportToolbar()
 }
 
 
-void 
+void
 MdiWindow::createVisibilityToolbar()
 {
 	actionVisibleNodes = new QAction("Nodes",this);
@@ -61,7 +61,7 @@ MdiWindow::createVisibilityToolbar()
 }
 
 
-void 
+void
 MdiWindow::setViewportXY()
 {
 	viewport->setXRotation(0);
@@ -70,7 +70,7 @@ MdiWindow::setViewportXY()
 }
 
 
-void 
+void
 MdiWindow::setViewportYZ()
 {
 	viewport->setXRotation(0);
@@ -79,7 +79,7 @@ MdiWindow::setViewportYZ()
 }
 
 
-void 
+void
 MdiWindow::setViewportXZ()
 {
 	viewport->setXRotation(90);
@@ -88,7 +88,7 @@ MdiWindow::setViewportXZ()
 }
 
 
-void 
+void
 MdiWindow::setViewportIso()
 {
 	viewport->setXRotation(45);
@@ -97,7 +97,7 @@ MdiWindow::setViewportIso()
 }
 
 
-void 
+void
 MdiWindow::setNodeVisibility(const bool state)
 {
 	this->viewport->setNodeVisibility(state);
@@ -105,7 +105,7 @@ MdiWindow::setNodeVisibility(const bool state)
 }
 
 
-void 
+void
 MdiWindow::setNodeRestrictionsVisibility(const bool state)
 {
 	this->viewport->setNodeRestrictionsVisibility(state);
@@ -113,23 +113,23 @@ MdiWindow::setNodeRestrictionsVisibility(const bool state)
 }
 
 
-void 
+void
 MdiWindow::connectSignalsToSlots()
 {
 	//signals and slots
-	connect(actionViewportXY, SIGNAL(triggered()),	this,	SLOT(setViewportXY()));
-	connect(actionViewportXZ, SIGNAL(triggered()),	this,	SLOT(setViewportXZ()));
-	connect(actionViewportYZ, SIGNAL(triggered()),	this,	SLOT(setViewportYZ()));
+	connect(actionViewportXY, &QAction::triggered,	this,	&MdiWindow::setViewportXY);
+	connect(actionViewportXZ, &QAction::triggered,	this,	&MdiWindow::setViewportXZ);
+	connect(actionViewportYZ, &QAction::triggered,	this,	&MdiWindow::setViewportYZ);
 
-	connect(actionVisibleNodes,	SIGNAL(toggled(bool)),	this,	SLOT(setNodeVisibility(bool)));
-	connect(actionVisibleRestrictions,	SIGNAL(toggled(bool)),	this,	SLOT(setNodeRestrictionsVisibility(bool)));
+	connect(actionVisibleNodes,			&QAction::toggled,	this,	&MdiWindow::setNodeVisibility);
+	connect(actionVisibleRestrictions,	&QAction::toggled,	this,	&MdiWindow::setNodeRestrictionsVisibility);
 
 	// libsigc++ signals
 	this->viewport->selection_changed.connect(this->selection_changed.make_slot());
 }
 
 
-void 
+void
 MdiWindow::normalizeAngle(int *angle)
 {
 	while (*angle < 0)
@@ -139,14 +139,14 @@ MdiWindow::normalizeAngle(int *angle)
 }
 
 
-void 
+void
 MdiWindow::setColors(ViewportColors &colors)
 {
 	viewport->setColors(colors);
 }
 
 
-void 
+void
 MdiWindow::setSelection(Selection selection)
 {
 	std::cout << "void MdiWindow::setSelection(Selection)" << std::endl;
@@ -154,14 +154,14 @@ MdiWindow::setSelection(Selection selection)
 }
 
 
-void 
+void
 MdiWindow::clearSelection()
 {
 	std::cout << "void MdiWindow::setSelection(Selection): hasn't been implemented" << std::endl;
 }
 
 
-void 
+void
 MdiWindow::showSelection(const Selection selection)
 {
 	std::cout << "MdiWindow::viewSelection(const Selection selection)" << std::endl;
@@ -169,7 +169,7 @@ MdiWindow::showSelection(const Selection selection)
 }
 
 
-void 
+void
 MdiWindow::showAll()
 {
 	std::cout << "MdiWindow::viewAll()" << std::endl;
@@ -177,14 +177,14 @@ MdiWindow::showAll()
 }
 
 
-void 
+void
 MdiWindow::updateNodeRestriction(size_t const id, fem::NodeRestrictions const &nr)
 {
 	std::cout << "MdiWindow::updateNodeRestriction(size_t const id, fem::NodeRestrictions const &nr)" << std::endl;
 }
 
 
-void 
+void
 MdiWindow::connectToSelectionManager(SelectionManager &selection_manager)
 {
 	// connects signals to slots

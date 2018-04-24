@@ -46,6 +46,12 @@ void Option::setOption(bool value, Level level)
 }
 
 
+void Option::setOption(std::vector<float> value, Level level)
+{
+	setOption(std::vector<double>(value.begin(), value.end()), level);
+}
+
+
 void Option::setOption(std::vector<double> value, Level level)
 {
 	this->option_level = level;
@@ -132,6 +138,14 @@ void ProgramOptions::setOption(const std::string option, std::vector<double> val
 	Option op;
 	op.setOption(value, option_level);
 	options_list[option] = op;
+}
+
+
+void ProgramOptions::setOption(const std::string option, std::vector<float> value)
+{
+	std::vector<double> doubleValue(value.begin(), value.end());
+
+	setOption(option, doubleValue);
 }
 
 
@@ -286,6 +300,21 @@ bool ProgramOptions::getOption(const std::string op, std::vector<double> &val)
 	else
 	{
 		std::cerr << "option " << op << " wasn't set" << std::endl;
+		return false;
+	}
+}
+
+
+bool ProgramOptions::getOption(const std::string op, std::vector<float> &val)
+{
+	std::vector<double> doubleVal;
+	if(getOption(op, doubleVal)==true) {
+		val.clear();
+		std::copy(doubleVal.begin(), doubleVal.end(), std::back_inserter(val));
+		return true;
+	}
+	else
+	{
 		return false;
 	}
 }

@@ -46,6 +46,7 @@ public:
 	void setOption(std::string, Level);
 	void setOption(bool, Level);
 	void setOption(std::vector<double>, Level);
+	void setOption(std::vector<float>, Level);
 
 	bool isNumber()	{ return type == VAL_NUMBER; }
 	bool isString()	{ return type == VAL_STRING; }
@@ -94,6 +95,7 @@ public:
 	void setOption(const std::string, std::string);
 	void setOption(const std::string, bool);
 	void setOption(const std::string, std::vector<double>);
+	void setOption(const std::string, std::vector<float>);
 
 	// checks if a given option was set
 	bool wasSet(const std::string) const;
@@ -105,6 +107,7 @@ public:
 	bool getOption(const std::string, std::string &);
 	bool getOption(const std::string, bool &);
 	bool getOption(const std::string, std::vector<double> &);
+	bool getOption(const std::string, std::vector<float> &);
 
 	// generates an options file 
 	//TODO implement an export mechanism that enables exporting in the full and compacted formats

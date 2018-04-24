@@ -319,7 +319,7 @@ MOC_DIR += ui/moc
 
 ProgramOptionRe2c.target = ProgramOptions.c++
 ProgramOptionRe2c.commands = re2c -o ProgramOptions.c++ ProgramOptions.c++.re2c
-ProgramOptionRe2c.depends = ProgramOptions.c++.re2c
+ProgramOptionRe2c.depends = ProgramOptions.h++ ProgramOptions.c++.re2c
 ProgramOptionRe2c.output = ProgramOptions.c++
 
 QMAKE_EXTRA_TARGETS += ProgramOptionRe2c

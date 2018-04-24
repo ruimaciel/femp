@@ -478,21 +478,21 @@ MainWindow::loadOptions()
 {
 	using namespace std;
 
-	std::vector<double> default_color;
+	std::vector<float> default_color;
 
 	// Set default options
 	options.setDefault();
 	options.setOption("viewport.nodes.radius",10.0f);	// sets the default node radius
-	default_color.reserve(3);
 
-	default_color[0] = 0, default_color[1] = 0.8f, default_color[2] = 0.8f;
+	default_color = {0.0f, 0.8f, 0.8f};
 	options.setOption("viewport.nodes.color",default_color);
 
-	default_color[0] = 0.5f, default_color[1] = 0.5f, default_color[2] = 0;
+	default_color = {0.5f, 0.5f, 0.0f};
 	options.setOption("viewport.wireframe.color",default_color);
 
-	default_color[0] = 1, default_color[1] = 0, default_color[2] = 0;
+	default_color = {1.0f, 0.0f, 0.0f};
 	options.setOption("viewport.arrows.color",default_color);
+
 	options.setOption("viewport.arrows.radius",10.0f);
 	options.setOption("viewport.arrows.length",100.0f);
 
@@ -562,14 +562,12 @@ MainWindow::loadOptions()
 
 	// set color options
 	{
-		std::vector<double> temp;
+		std::vector<float> temp;
 		if(options.getOption("viewport.nodes.color",temp) )
 		{ 
 			if(temp.size() == 3) 
 			{ 
-				colors.node[0] = temp[0]; 
-				colors.node[1] = temp[1]; 
-				colors.node[2] = temp[2]; 
+				colors.node = {temp[0], temp[1], temp[2]};
 			} 
 		} 
 
@@ -577,9 +575,7 @@ MainWindow::loadOptions()
 		{ 
 			if(temp.size() == 3) 
 			{ 
-				colors.background[0] = temp[0]; 
-				colors.background[1] = temp[1]; 
-				colors.background[2] = temp[2]; 
+				colors.background = {temp[0], temp[1], temp[2]};
 			} 
 		} 
 
@@ -587,9 +583,7 @@ MainWindow::loadOptions()
 		{ 
 			if(temp.size() == 3) 
 			{ 
-				colors.wireframe[0] = temp[0]; 
-				colors.wireframe[1] = temp[1]; 
-				colors.wireframe[2] = temp[2]; 
+				colors.wireframe = {temp[0], temp[1], temp[2]};
 			} 
 		} 
 
@@ -597,9 +591,7 @@ MainWindow::loadOptions()
 		{ 
 			if(temp.size() == 3) 
 			{ 
-				colors.field_maximum_positive[0] = temp[0]; 
-				colors.field_maximum_positive[1] = temp[1]; 
-				colors.field_maximum_positive[2] = temp[2]; 
+				colors.field_maximum_positive = {temp[0], temp[1], temp[2]};
 			} 
 		} 
 
@@ -607,9 +599,7 @@ MainWindow::loadOptions()
 		{ 
 			if(temp.size() == 3) 
 			{ 
-				colors.field_maximum_negative[0] = temp[0]; 
-				colors.field_maximum_negative[1] = temp[1]; 
-				colors.field_maximum_negative[2] = temp[2]; 
+				colors.field_maximum_negative = {temp[0], temp[1], temp[2]};
 			} 
 		} 
 
@@ -617,9 +607,7 @@ MainWindow::loadOptions()
 		{ 
 			if(temp.size() == 3) 
 			{ 
-				colors.field_neutral[0] = temp[0]; 
-				colors.field_neutral[1] = temp[1]; 
-				colors.field_neutral[2] = temp[2]; 
+				colors.field_neutral = {temp[0], temp[1], temp[2]};
 			} 
 		} 
 		//TODO add code for the force arrows custom color code

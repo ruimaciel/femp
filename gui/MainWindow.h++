@@ -27,7 +27,7 @@
 
 
 
-class MainWindow 
+class MainWindow
 	: public QMainWindow,
 	public sigc::trackable
 {
@@ -38,7 +38,7 @@ public:
 
 public Q_SLOTS:
 	/* starts off a brand new FEM project */
-	void newProject();	// launches the New Project wizard 
+	void newProject();	// launches the New Project wizard
 	void openProject();
 	void reopenProject();	// if the current model has been saved to a file then this routine reloads the document
 	void saveProject();
@@ -76,7 +76,7 @@ public Q_SLOTS:
 	Displays a summary of the last analysis
 	**/
 	void showAnalysisSummary();
-	
+
 	/**
 	Dumps the results taken from the last analysis from the objects which are currently selected
 	**/
@@ -143,7 +143,6 @@ protected:
 
 	ViewportColors colors;	// the elements' viewport colors
 
-	QDir file_dialog_last_directory;
 	QDir results_dump_dialog_last_directory;
 	QSignalMapper	*m_window_mapper;	// used to map menu clicks to window activation
 

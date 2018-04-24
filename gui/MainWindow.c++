@@ -15,6 +15,8 @@
 #include <iostream>	// for cout. remove after tests
 #include <stdlib.h>	// getenv()
 
+#include "FempApplication.h++"
+
 #include "ui/LoadPatternsModel.h++"
 
 #include "ui/wizards/NewProjectWizard.h++"
@@ -61,7 +63,7 @@
 
 
 
-MainWindow::MainWindow(QWidget *parent) 
+MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
@@ -86,7 +88,7 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 
-void 
+void
 MainWindow::newProject()
 {
 	// tweak the UI
@@ -119,13 +121,15 @@ MainWindow::newProject()
 }
 
 
-void 
+void
 MainWindow::openProject()
 {
-	// get the last dir where a project was opened 
+	// get the last dir where a project was opened
 	QFileDialog dialog(this);
-	dialog.setDirectory(file_dialog_last_directory);
-	
+
+	QDir file_dialog_directory = fempApp->settings().getProjectOpenDirectory();
+	dialog.setDirectory(file_dialog_directory);
+
 	// setup the file dialog
 	dialog.setFileMode(QFileDialog::ExistingFile);
 	dialog.setNameFilter(tr("FEM project (*.fem.json)"));
@@ -135,7 +139,9 @@ MainWindow::openProject()
 		return;
 	}
 
-	file_dialog_last_directory = dialog.directory();
+	file_dialog_directory = dialog.directory();
+	fempApp->settings().setProjectOpenDirectory(file_dialog_directory);
+
 
 	// clear the document
 	this->setUserInterfaceAsClosed();
@@ -147,7 +153,7 @@ MainWindow::openProject()
 
 	QString file_name = sl.at(0);
 
-	std::string my_file_name( sl.at(0).toUtf8() ); 
+	std::string my_file_name( sl.at(0).toUtf8() );
 	std::fstream file;
 
 	file.open(my_file_name, std::fstream::in);
@@ -186,7 +192,7 @@ MainWindow::openProject()
 }
 
 
-void 
+void
 MainWindow::reopenProject()
 {
 	if(document.file_name != NULL)
@@ -197,7 +203,7 @@ MainWindow::reopenProject()
 		femp_model.clear();
 		this->m_selection_manager.clearSelection();
 
-		std::string my_file_name( document.file_name->toUtf8() ); 
+		std::string my_file_name( document.file_name->toUtf8() );
 		std::fstream file;
 
 		file.open(my_file_name, std::fstream::in);
@@ -235,13 +241,14 @@ MainWindow::reopenProject()
 }
 
 
-void 
+void
 MainWindow::saveProject()
 {
 	if(document.file_name == NULL)
 	{
 		QFileDialog dialog(this);
-		dialog.setDirectory(file_dialog_last_directory);
+		QDir file_dialog_directory = fempApp->settings().getProjectOpenDirectory();
+		dialog.setDirectory(file_dialog_directory);
 
 		// setup the file dialog
 		dialog.setFileMode(QFileDialog::AnyFile);
@@ -249,7 +256,7 @@ MainWindow::saveProject()
 		dialog.setDefaultSuffix("fem.json");
 		if(dialog.exec() == QDialog::Rejected)
 		{
-			// user cancelled 
+			// user cancelled
 			return;
 		}
 
@@ -276,7 +283,7 @@ MainWindow::saveProject()
 
 		// set a new file name for this file
 		document.setFileName(file_name);
-		
+
 		this->setWindowTitle("Femp - " + file_name );
 		ui.actionReopen->setEnabled(true);
 	}
@@ -285,12 +292,13 @@ MainWindow::saveProject()
 }
 
 
-void 
+void
 MainWindow::saveProjectAs()
 {
 	QFileDialog dialog(this);
 
-	dialog.setDirectory(file_dialog_last_directory);
+	QDir file_dialog_directory = fempApp->settings().getProjectOpenDirectory();
+	dialog.setDirectory(file_dialog_directory);
 
 	// setup the file dialog
 	dialog.setFileMode(QFileDialog::AnyFile);
@@ -298,7 +306,7 @@ MainWindow::saveProjectAs()
 	dialog.setDefaultSuffix("fem.json");
 	if(dialog.exec() == QDialog::Rejected)
 	{
-		// user cancelled 
+		// user cancelled
 		return;
 	}
 
@@ -332,7 +340,7 @@ MainWindow::saveProjectAs()
 }
 
 
-void 
+void
 MainWindow::closeProject()
 {
 	if(this->hasUnsavedChanges)
@@ -372,7 +380,7 @@ MainWindow::closeProject()
 }
 
 
-void 
+void
 MainWindow::quit()
 {
 	if(this->hasUnsavedChanges)
@@ -408,7 +416,7 @@ MainWindow::quit()
 }
 
 
-void 
+void
 MainWindow::createActions()
 {
 	// connect the actions
@@ -438,7 +446,7 @@ MainWindow::createActions()
 
 	connect(ui.actionShowNodalForces,	SIGNAL(triggered()),	this,	SLOT(setNodeForcesDisplay()));
 
-	// MDI window creation 
+	// MDI window creation
 	connect(ui.actionNewModelWindow,			SIGNAL(triggered()),	this,	SLOT(createNewModelWindow()));
 	connect(ui.actionNewPostprocessingWindow,	SIGNAL(triggered()),	this,	SLOT(createNewPostprocessingWindow()));
 	connect(ui.actionNewTensorFieldWindow,		SIGNAL(triggered()),	this,	SLOT(createNewTensorFieldWindow()));
@@ -456,7 +464,7 @@ MainWindow::createActions()
 }
 
 
-void 
+void
 MainWindow::createDockWidgets()
 {
 	// initialize the Docks
@@ -473,7 +481,7 @@ MainWindow::createDockWidgets()
 }
 
 
-void 
+void
 MainWindow::loadOptions()
 {
 	using namespace std;
@@ -521,26 +529,6 @@ MainWindow::loadOptions()
 		is.close();
 	}
 
-	if(options.wasSet("project.open.default_directory"))
-	{
-		std::string default_path;
-		options.getOption("project.open.default_directory",default_path);
-		if( QFile::exists(QString::fromStdString(default_path)) )
-		{
-			//TODO this doesn't work
-			file_dialog_last_directory.setPath(QString::fromStdString(default_path));
-		}
-		else
-		{
-			file_dialog_last_directory = QDir::home();
-			QString path = file_dialog_last_directory.absolutePath();
-		}
-	}
-	else
-	{
-		file_dialog_last_directory = QDir::home();
-	}
-
 	if(options.wasSet("project.results.dump.default_directory"))
 	{
 		std::string default_path;
@@ -557,63 +545,63 @@ MainWindow::loadOptions()
 	}
 	else
 	{
-		results_dump_dialog_last_directory = file_dialog_last_directory;
+		results_dump_dialog_last_directory = QDir::home();
 	}
 
 	// set color options
 	{
 		std::vector<float> temp;
 		if(options.getOption("viewport.nodes.color",temp) )
-		{ 
-			if(temp.size() == 3) 
-			{ 
+		{
+			if(temp.size() == 3)
+			{
 				colors.node = {temp[0], temp[1], temp[2]};
-			} 
-		} 
+			}
+		}
 
 		if(options.getOption("viewport.background.color",temp) )
-		{ 
-			if(temp.size() == 3) 
-			{ 
+		{
+			if(temp.size() == 3)
+			{
 				colors.background = {temp[0], temp[1], temp[2]};
-			} 
-		} 
+			}
+		}
 
 		if(options.getOption("viewport.wireframe.color",temp) )
-		{ 
-			if(temp.size() == 3) 
-			{ 
+		{
+			if(temp.size() == 3)
+			{
 				colors.wireframe = {temp[0], temp[1], temp[2]};
-			} 
-		} 
+			}
+		}
 
 		if(options.getOption("viewport.fields.color.maximum_positive",temp) )
-		{ 
-			if(temp.size() == 3) 
-			{ 
+		{
+			if(temp.size() == 3)
+			{
 				colors.field_maximum_positive = {temp[0], temp[1], temp[2]};
-			} 
-		} 
+			}
+		}
 
 		if(options.getOption("viewport.fields.color.maximum_negative",temp) )
-		{ 
-			if(temp.size() == 3) 
-			{ 
+		{
+			if(temp.size() == 3)
+			{
 				colors.field_maximum_negative = {temp[0], temp[1], temp[2]};
-			} 
-		} 
+			}
+		}
 
 		if(options.getOption("viewport.fields.color.neutral",temp) )
-		{ 
-			if(temp.size() == 3) 
-			{ 
+		{
+			if(temp.size() == 3)
+			{
 				colors.field_neutral = {temp[0], temp[1], temp[2]};
-			} 
-		} 
+			}
+		}
 		//TODO add code for the force arrows custom color code
 	}
 
-	// set quadrature rules options for the stiffness matrix 
+	// set quadrature rules options for the stiffness matrix
 	{
 		int temp = 0;
 
@@ -796,7 +784,7 @@ MainWindow::loadOptions()
 }
 
 
-void 
+void
 MainWindow::setNodeRestraints()
 {
 	assert(mdiArea != NULL);
@@ -814,7 +802,7 @@ MainWindow::setNodeRestraints()
 }
 
 
-void 
+void
 MainWindow::setNodeActions()
 {
 	fem::Model &femp_model = document.getProject().getModel();
@@ -847,7 +835,7 @@ MainWindow::setNodeActions()
 }
 
 
-void 
+void
 MainWindow::setDomainLoads()
 {
 	fem::Model &femp_model = document.getProject().getModel();
@@ -881,7 +869,7 @@ MainWindow::setDomainLoads()
 }
 
 
-void 
+void
 MainWindow::moveSelectedNodes()
 {
 	assert(mdiArea != NULL);
@@ -900,7 +888,7 @@ MainWindow::moveSelectedNodes()
 }
 
 
-void 
+void
 MainWindow::editMaterials()
 {
 	fem::Model & femp_model = document.getProject().getModel();
@@ -909,7 +897,7 @@ MainWindow::editMaterials()
 }
 
 
-void 
+void
 MainWindow::editQuadratureRules()
 {
 	QuadratureRulesOptionsDialog dialog(analysis, this);
@@ -917,7 +905,7 @@ MainWindow::editQuadratureRules()
 }
 
 
-void 
+void
 MainWindow::editSelection()
 {
 	SelectionDialog dialog(document.getProject(), m_selection_manager, this);
@@ -925,7 +913,7 @@ MainWindow::editSelection()
 }
 
 
-void 
+void
 MainWindow::runAnalysis()
 {
 	using namespace std;
@@ -933,7 +921,7 @@ MainWindow::runAnalysis()
 	fem::Model &femp_model = this->document.getProject().getModel();
 
 	// check if ther is a load pattern
-	if( femp_model.load_pattern_list.empty() ) 
+	if( femp_model.load_pattern_list.empty() )
 	{
 		QMessageBox::critical(this, "No load patterns", "This model doesn't have any load patterns to run");
 		return;
@@ -1006,7 +994,7 @@ MainWindow::runAnalysis()
 }
 
 
-void 
+void
 MainWindow::dumpFemEquation()
 {
 	auto & femp_result = document.getProject().result;
@@ -1028,7 +1016,7 @@ MainWindow::dumpFemEquation()
 		dialog.setDefaultSuffix("oct");
 		if(dialog.exec() == QDialog::Rejected)
 		{
-			// user cancelled 
+			// user cancelled
 			return;
 		}
 
@@ -1105,7 +1093,7 @@ MainWindow::dumpFemEquation()
 }
 
 
-void 
+void
 MainWindow::showAnalysisSummary()
 {
 	// crude hack
@@ -1133,7 +1121,7 @@ MainWindow::dumpResultsFromSelection()
 		dialog.setDefaultSuffix("txt");
 		if(dialog.exec() == QDialog::Rejected)
 		{
-			// user cancelled 
+			// user cancelled
 			return;
 		}
 
@@ -1160,7 +1148,7 @@ MainWindow::dumpResultsFromSelection()
 	}
 
 	// prepare the file for dumping
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) 
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
 		QMessageBox::critical(this, tr("femp"), tr("Failed to open file"));
 		return;
@@ -1180,11 +1168,11 @@ MainWindow::dumpResultsFromSelection()
 }
 
 
-void 
+void
 MainWindow::showSelection()
 {
 	Selection selection = m_selection_manager.getSelection();
-	
+
 	QMdiSubWindow *mdi_window = mdiArea->currentSubWindow();
 	if(mdi_window != NULL)
 	{
@@ -1198,7 +1186,7 @@ MainWindow::showSelection()
 }
 
 
-void 
+void
 MainWindow::showAll()
 {
 	QMdiSubWindow *mdi_window = mdiArea->currentSubWindow();
@@ -1213,49 +1201,49 @@ MainWindow::showAll()
 }
 
 
-void 
+void
 MainWindow::getMessage(QString message)
 {
 	emit setMessage(message);
 }
 
 
-void 
+void
 MainWindow::getWarning(QString message)
 {
 	emit setMessage(message);
 }
 
 
-void 
+void
 MainWindow::getError(QString message)
 {
 	emit setMessage(message);
 }
 
 
-void 
+void
 MainWindow::setTiledWindows()
 {
 	mdiArea->tileSubWindows();
 }
 
 
-void 
+void
 MainWindow::setCascadeWindows()
 {
 	mdiArea->cascadeSubWindows();
 }
 
 
-void 
+void
 MainWindow::createNewViewportWindow()
 {
 	this->createNewModelWindow();
 }
 
 
-void 
+void
 MainWindow::createNewModelWindow()
 {
 	ModelWindow *window = new ModelWindow(document.getProject(), colors, this);
@@ -1271,7 +1259,7 @@ MainWindow::createNewModelWindow()
 }
 
 
-void 
+void
 MainWindow::createNewPostprocessingWindow()
 {
 	auto &femp_result = document.getProject().result;
@@ -1295,7 +1283,7 @@ MainWindow::createNewPostprocessingWindow()
 }
 
 
-void 
+void
 MainWindow::createNewTensorFieldWindow()
 {
 	if(document.getProject().result.empty())
@@ -1319,7 +1307,7 @@ MainWindow::createNewTensorFieldWindow()
 }
 
 
-void 
+void
 MainWindow::createNewAnalysisResultsWindow()
 {
 	std::cerr << __FILE__ << ":" << __LINE__ ;
@@ -1336,7 +1324,7 @@ MainWindow::createNewAnalysisResultsWindow()
 }
 
 
-void 
+void
 MainWindow::createNewFemEquationWindow()
 {
 	std::cerr << __FILE__ << ":" << __LINE__ ;
@@ -1352,7 +1340,7 @@ MainWindow::createNewFemEquationWindow()
 }
 
 
-void 
+void
 MainWindow::updateWindowMenu()
 {
 	qWarning("MainWindow::updateWindowMenu()");
@@ -1370,7 +1358,7 @@ MainWindow::updateWindowMenu()
 		// get current MDI window label
 		BaseWindow *base = dynamic_cast<BaseWindow*>(subWindowList[n]->widget());
 		{
-			//TODO fix problem with menu windows 
+			//TODO fix problem with menu windows
 			std::cerr << "MainWindow::updateWindowMenu(): nullptr result" << std::endl;
 			continue;
 		}
@@ -1388,15 +1376,15 @@ MainWindow::updateWindowMenu()
 }
 
 
-void 
+void
 MainWindow::activateSubWindowByIndex(int index)
 {
 	QList<QMdiSubWindow *> 	subWindowList = mdiArea->subWindowList();
 	this->mdiArea->setActiveSubWindow(subWindowList[index]);
 }
 
-  
-void 
+
+void
 MainWindow::setUserInterfaceAsOpened()
 {
 	// set the menus
@@ -1431,8 +1419,8 @@ MainWindow::setUserInterfaceAsOpened()
 }
 
 
-void 
-MainWindow::setUserInterfaceAsClosed()	
+void
+MainWindow::setUserInterfaceAsClosed()
 {
 	// set the menus
 	ui.menuProject->setDisabled(true);
@@ -1472,7 +1460,7 @@ MainWindow::setUserInterfaceAsClosed()
 }
 
 
-void 
+void
 MainWindow::setUserInterfacePostAnalysis()
 {
 	ui.menuDump->setEnabled(true);

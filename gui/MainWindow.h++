@@ -128,23 +128,23 @@ private:
 protected:
 	Ui::MainWindow 	ui;
 
-	fem::LinearAnalysis<double> analysis;
+	fem::LinearAnalysis<double> m_analysis;
 
-	CommandLineDockWidget *commandLineDockWidget;
-	SelectionDockWidget *selectionDockWidget;
+	CommandLineDockWidget *m_commandLineDockWidget;
+	SelectionDockWidget *m_selectionDockWidget;
 
-	QMdiArea	* mdiArea;
+	QMdiArea	* m_mdiArea;
 
-	ProgramOptions 	options;	// the global program options
-	bool 	hasUnsavedChanges;	// true if the document has unsaved changes
+	ProgramOptions 	m_options;	// the global program options
+	bool 	m_hasUnsavedChanges;	// true if the document has unsaved changes
 
-	Document document;	// the FEM document
-	SelectionManager m_selection_manager;	// object which handles object selection
+	Document m_document;	// the FEM document
+	SelectionManager m_selectionManager;	// object which handles object selection
 
 	ViewportColors colors;	// the elements' viewport colors
 
 	QDir results_dump_dialog_last_directory;
-	QSignalMapper	*m_window_mapper;	// used to map menu clicks to window activation
+	QSignalMapper	*m_windowMapper;	// used to map menu clicks to window activation
 
 
 };

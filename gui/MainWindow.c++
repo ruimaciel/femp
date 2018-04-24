@@ -69,15 +69,15 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.setupUi(this);
 
 	// set the MDI area widget as the window's central widget
-	mdiArea = new QMdiArea;
-	setCentralWidget(mdiArea);	// this main window has a Multiple Document Interface
-	m_window_mapper = new QSignalMapper(this);
+	m_mdiArea = new QMdiArea;
+	setCentralWidget(m_mdiArea);	// this main window has a Multiple Document Interface
+	m_windowMapper = new QSignalMapper(this);
 
 	// Load global options from the options files
 	this->loadOptions();
 
 	// initialize the member attributes
-	this->hasUnsavedChanges = false;
+	this->m_hasUnsavedChanges = false;
 
 	// create actions and connect signals to slots
 	this->createActions();
@@ -95,11 +95,11 @@ MainWindow::newProject()
 	setUserInterfaceAsClosed();
 
 	// free everything
-	document.clear();
+	m_document.clear();
 
 	std::string default_path = getenv("HOME");
 	std::string tmp;
-	if(options.getOption("project.new.default_directory",tmp))
+	if(m_options.getOption("project.new.default_directory",tmp))
 	{
 		default_path += "/" + tmp;
 	}
@@ -107,7 +107,7 @@ MainWindow::newProject()
 	/*
 	The NewProjectWizard dialog will fill up a given document object through the steps
 	*/
-	NewProjectWizard np(document, this);
+	NewProjectWizard np(m_document, this);
 	switch(np.exec())
 	{
 		case QDialog::Accepted:
@@ -115,7 +115,7 @@ MainWindow::newProject()
 			break;
 
 		default:
-			document.clear();
+			m_document.clear();
 			break;
 	}
 }
@@ -145,8 +145,8 @@ MainWindow::openProject()
 
 	// clear the document
 	this->setUserInterfaceAsClosed();
-	this->document.clear();
-	this->m_selection_manager.clearSelection();
+	this->m_document.clear();
+	this->m_selectionManager.clearSelection();
 
 	// prepare the file
 	QStringList sl = dialog.selectedFiles();
@@ -164,14 +164,14 @@ MainWindow::openProject()
 	}
 
 	FemJsonParser parser;
-	fem::Model &model = document.getProject().getModel();
+	fem::Model &model = m_document.getProject().getModel();
 	parser.parse(file, model);
 
 	switch(parser.error.code)
 	{
 		case FemJsonParser::Error::ERR_OK:
 			// setup the user interface
-			document.setProjectType( Document::TYPE_SOLID3D);	// nasty hack due to poor design
+			m_document.setProjectType( Document::TYPE_SOLID3D);	// nasty hack due to poor design
 			this->setUserInterfaceAsOpened();
 			break;
 
@@ -179,14 +179,14 @@ MainWindow::openProject()
 			std::cerr << __FILE__ << ":" << __LINE__ ;
 			std::cerr << "Error: " << parser.error.message << std::endl;
 			QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
-			document.clear();
+			m_document.clear();
 			break;
 	}
 
-	document.setFileName(file_name);
+	m_document.setFileName(file_name);
 
-	OutputElementStatisticsVisitor visit(m_selection_manager.getSelection());
-	document.getProject().accept(visit);
+	OutputElementStatisticsVisitor visit(m_selectionManager.getSelection());
+	m_document.getProject().accept(visit);
 
 	file.close();
 }
@@ -195,22 +195,22 @@ MainWindow::openProject()
 void
 MainWindow::reopenProject()
 {
-	if(document.file_name != NULL)
+	if(m_document.file_name != NULL)
 	{
 		// clear the document
 		setUserInterfaceAsClosed();
-		fem::Model &femp_model = this->document.getProject().getModel();
+		fem::Model &femp_model = this->m_document.getProject().getModel();
 		femp_model.clear();
-		this->m_selection_manager.clearSelection();
+		this->m_selectionManager.clearSelection();
 
-		std::string my_file_name( document.file_name->toUtf8() );
+		std::string my_file_name( m_document.file_name->toUtf8() );
 		std::fstream file;
 
 		file.open(my_file_name, std::fstream::in);
 		if(!file)
 		{
 			QMessageBox::critical(this, tr("Error"), tr("There was an error opening the file"));
-			document.clear();
+			m_document.clear();
 			return;
 		}
 
@@ -227,7 +227,7 @@ MainWindow::reopenProject()
 				std::cerr << __FILE__ << ":" << __LINE__ ;
 				std::cerr << "Error: " << parser.error.message << std::endl;
 				QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
-				document.clear();
+				m_document.clear();
 				break;
 		}
 
@@ -244,7 +244,7 @@ MainWindow::reopenProject()
 void
 MainWindow::saveProject()
 {
-	if(document.file_name == NULL)
+	if(m_document.file_name == NULL)
 	{
 		QFileDialog dialog(this);
 		QDir file_dialog_directory = fempApp->settings().getProjectOpenDirectory();
@@ -282,13 +282,13 @@ MainWindow::saveProject()
 		}
 
 		// set a new file name for this file
-		document.setFileName(file_name);
+		m_document.setFileName(file_name);
 
 		this->setWindowTitle("Femp - " + file_name );
 		ui.actionReopen->setEnabled(true);
 	}
-	document.save();
-	hasUnsavedChanges = false;
+	m_document.save();
+	m_hasUnsavedChanges = false;
 }
 
 
@@ -334,16 +334,16 @@ MainWindow::saveProjectAs()
 	this->setWindowTitle("Femp - " + file_name);
 
 	// tweak the UI
-	document.setFileName(file_name);
-	document.save();
-	hasUnsavedChanges = false;
+	m_document.setFileName(file_name);
+	m_document.save();
+	m_hasUnsavedChanges = false;
 }
 
 
 void
 MainWindow::closeProject()
 {
-	if(this->hasUnsavedChanges)
+	if(this->m_hasUnsavedChanges)
 	{
 		// ask the user if he wants to save the changes
 		QMessageBox msgBox;
@@ -375,15 +375,15 @@ MainWindow::closeProject()
 	setUserInterfaceAsClosed();
 
 	// free everything
-	document.clear();
-	this->m_selection_manager.clearSelection();
+	m_document.clear();
+	this->m_selectionManager.clearSelection();
 }
 
 
 void
 MainWindow::quit()
 {
-	if(this->hasUnsavedChanges)
+	if(this->m_hasUnsavedChanges)
 	{
 		// ask the user if he wants to save the changes
 		QMessageBox msgBox;
@@ -463,15 +463,15 @@ void
 MainWindow::createDockWidgets()
 {
 	// initialize the Docks
-	commandLineDockWidget = new CommandLineDockWidget(this);
+	m_commandLineDockWidget = new CommandLineDockWidget(this);
 
 	// set the MainWindow connections
-	connect(this, &MainWindow::setMessage,	commandLineDockWidget, &CommandLineDockWidget::getMessage);
-	connect(this, &MainWindow::setWarning,	commandLineDockWidget, &CommandLineDockWidget::getWarning);
-	connect(this, &MainWindow::setError, 	commandLineDockWidget, &CommandLineDockWidget::getError);
+	connect(this, &MainWindow::setMessage,	m_commandLineDockWidget, &CommandLineDockWidget::getMessage);
+	connect(this, &MainWindow::setWarning,	m_commandLineDockWidget, &CommandLineDockWidget::getWarning);
+	connect(this, &MainWindow::setError, 	m_commandLineDockWidget, &CommandLineDockWidget::getError);
 
 	// add selection dock widget
-	this->addDockWidget(Qt::RightDockWidgetArea, commandLineDockWidget);
+	this->addDockWidget(Qt::RightDockWidgetArea, m_commandLineDockWidget);
 }
 
 
@@ -483,50 +483,50 @@ MainWindow::loadOptions()
 	std::vector<float> default_color;
 
 	// Set default options
-	options.setDefault();
-	options.setOption("viewport.nodes.radius",10.0f);	// sets the default node radius
+	m_options.setDefault();
+	m_options.setOption("viewport.nodes.radius",10.0f);	// sets the default node radius
 
 	default_color = {0.0f, 0.8f, 0.8f};
-	options.setOption("viewport.nodes.color",default_color);
+	m_options.setOption("viewport.nodes.color",default_color);
 
 	default_color = {0.5f, 0.5f, 0.0f};
-	options.setOption("viewport.wireframe.color",default_color);
+	m_options.setOption("viewport.wireframe.color",default_color);
 
 	default_color = {1.0f, 0.0f, 0.0f};
-	options.setOption("viewport.arrows.color",default_color);
+	m_options.setOption("viewport.arrows.color",default_color);
 
-	options.setOption("viewport.arrows.radius",10.0f);
-	options.setOption("viewport.arrows.length",100.0f);
+	m_options.setOption("viewport.arrows.radius",10.0f);
+	m_options.setOption("viewport.arrows.length",100.0f);
 
 	//TODO Set default options
 
 	// Set system options
-	options.setSystem();
+	m_options.setSystem();
 	std::string path = "/etc/femp/options.opt";
 
 	std::ifstream is;
 	is.open(path.c_str(), std::ifstream::in);
 	if(is.is_open())
 	{
-		options.importFile(is);
+		m_options.importFile(is);
 		is.close();
 	}
 
 	// Set local options
-	options.setLocal();
+	m_options.setLocal();
 	path = getenv("HOME");
 	path += "/.femp/options.opt";
 	is.open(path.c_str(), std::ifstream::in);
 	if(is.is_open())
 	{
-		options.importFile(is);
+		m_options.importFile(is);
 		is.close();
 	}
 
-	if(options.wasSet("project.results.dump.default_directory"))
+	if(m_options.wasSet("project.results.dump.default_directory"))
 	{
 		std::string default_path;
-		options.getOption("project.results.dump.default_directory",default_path);
+		m_options.getOption("project.results.dump.default_directory",default_path);
 		if( QFile::exists(QString::fromStdString(default_path)) )
 		{
 			results_dump_dialog_last_directory.setPath(QString::fromStdString(default_path));
@@ -545,7 +545,7 @@ MainWindow::loadOptions()
 	// set color options
 	{
 		std::vector<float> temp;
-		if(options.getOption("viewport.nodes.color",temp) )
+		if(m_options.getOption("viewport.nodes.color",temp) )
 		{
 			if(temp.size() == 3)
 			{
@@ -553,7 +553,7 @@ MainWindow::loadOptions()
 			}
 		}
 
-		if(options.getOption("viewport.background.color",temp) )
+		if(m_options.getOption("viewport.background.color",temp) )
 		{
 			if(temp.size() == 3)
 			{
@@ -561,7 +561,7 @@ MainWindow::loadOptions()
 			}
 		}
 
-		if(options.getOption("viewport.wireframe.color",temp) )
+		if(m_options.getOption("viewport.wireframe.color",temp) )
 		{
 			if(temp.size() == 3)
 			{
@@ -569,7 +569,7 @@ MainWindow::loadOptions()
 			}
 		}
 
-		if(options.getOption("viewport.fields.color.maximum_positive",temp) )
+		if(m_options.getOption("viewport.fields.color.maximum_positive",temp) )
 		{
 			if(temp.size() == 3)
 			{
@@ -577,7 +577,7 @@ MainWindow::loadOptions()
 			}
 		}
 
-		if(options.getOption("viewport.fields.color.maximum_negative",temp) )
+		if(m_options.getOption("viewport.fields.color.maximum_negative",temp) )
 		{
 			if(temp.size() == 3)
 			{
@@ -585,7 +585,7 @@ MainWindow::loadOptions()
 			}
 		}
 
-		if(options.getOption("viewport.fields.color.neutral",temp) )
+		if(m_options.getOption("viewport.fields.color.neutral",temp) )
 		{
 			if(temp.size() == 3)
 			{
@@ -599,68 +599,68 @@ MainWindow::loadOptions()
 	{
 		int temp = 0;
 
-		if(options.wasSet("analysis.quadrature.stiffness.tetrahedron4") )
+		if(m_options.wasSet("analysis.quadrature.stiffness.tetrahedron4") )
 		{
-			if(options.getOption("analysis.quadrature.stiffness.tetrahedron4",temp) )
+			if(m_options.getOption("analysis.quadrature.stiffness.tetrahedron4",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )
-					this->analysis.tetra4.stiffness_degree = temp;
+					this->m_analysis.tetra4.stiffness_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.stiffness.tetrahedron10") )
+		if(m_options.wasSet("analysis.quadrature.stiffness.tetrahedron10") )
 		{
-			if(options.getOption("analysis.quadrature.stiffness.tetrahedron10",temp) )
+			if(m_options.getOption("analysis.quadrature.stiffness.tetrahedron10",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.tetra10.stiffness_degree = temp;
+					this->m_analysis.tetra10.stiffness_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.stiffness.hexahedron8") )
+		if(m_options.wasSet("analysis.quadrature.stiffness.hexahedron8") )
 		{
-			if(options.getOption("analysis.quadrature.stiffness.hexahedron8",temp) )
+			if(m_options.getOption("analysis.quadrature.stiffness.hexahedron8",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.hexa8.stiffness_degree = temp;
+					this->m_analysis.hexa8.stiffness_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.stiffness.hexahedron20") )
+		if(m_options.wasSet("analysis.quadrature.stiffness.hexahedron20") )
 		{
-			if(options.getOption("analysis.quadrature.stiffness.hexahedron20",temp) )
+			if(m_options.getOption("analysis.quadrature.stiffness.hexahedron20",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.hexa20.stiffness_degree = temp;
+					this->m_analysis.hexa20.stiffness_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.stiffness.hexahedron27") )
+		if(m_options.wasSet("analysis.quadrature.stiffness.hexahedron27") )
 		{
-			if(options.getOption("analysis.quadrature.stiffness.hexahedron27",temp) )
+			if(m_options.getOption("analysis.quadrature.stiffness.hexahedron27",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.hexa27.stiffness_degree = temp;
+					this->m_analysis.hexa27.stiffness_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.stiffness.prism6") )
+		if(m_options.wasSet("analysis.quadrature.stiffness.prism6") )
 		{
-			if(options.getOption("analysis.quadrature.stiffness.prism6",temp) )
+			if(m_options.getOption("analysis.quadrature.stiffness.prism6",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.prism6.stiffness_degree = temp;
+					this->m_analysis.prism6.stiffness_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.stiffness.prism15") )
+		if(m_options.wasSet("analysis.quadrature.stiffness.prism15") )
 		{
-			if(options.getOption("analysis.quadrature.stiffness.prism15",temp) )
+			if(m_options.getOption("analysis.quadrature.stiffness.prism15",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.prism15.stiffness_degree = temp;
+					this->m_analysis.prism15.stiffness_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.stiffness.prism18") )
+		if(m_options.wasSet("analysis.quadrature.stiffness.prism18") )
 		{
-			if(options.getOption("analysis.quadrature.stiffness.prism18",temp) )
+			if(m_options.getOption("analysis.quadrature.stiffness.prism18",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.prism18.stiffness_degree = temp;
+					this->m_analysis.prism18.stiffness_degree = temp;
 			}
 		}
 	}
@@ -669,109 +669,109 @@ MainWindow::loadOptions()
 	{
 		int temp = 0;
 
-		if(options.wasSet("analysis.quadrature.domain.triangle3") )
+		if(m_options.wasSet("analysis.quadrature.domain.triangle3") )
 		{
-			if(options.getOption("analysis.quadrature.domain.triangle3",temp) )
+			if(m_options.getOption("analysis.quadrature.domain.triangle3",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.tri3.domain_degree = temp;
+					this->m_analysis.tri3.domain_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.domain.triangle6") )
+		if(m_options.wasSet("analysis.quadrature.domain.triangle6") )
 		{
-			if(options.getOption("analysis.quadrature.domain.triangle6",temp) )
+			if(m_options.getOption("analysis.quadrature.domain.triangle6",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.tri6.domain_degree = temp;
+					this->m_analysis.tri6.domain_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.domain.quadrangle4") )
+		if(m_options.wasSet("analysis.quadrature.domain.quadrangle4") )
 		{
-			if(options.getOption("analysis.quadrature.domain.quadrangle4",temp) )
+			if(m_options.getOption("analysis.quadrature.domain.quadrangle4",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.quad4.domain_degree = temp;
+					this->m_analysis.quad4.domain_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.domain.quadrangle8") )
+		if(m_options.wasSet("analysis.quadrature.domain.quadrangle8") )
 		{
-			if(options.getOption("analysis.quadrature.domain.quadrangle8",temp) )
+			if(m_options.getOption("analysis.quadrature.domain.quadrangle8",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.quad8.domain_degree = temp;
+					this->m_analysis.quad8.domain_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.domain.quadrangle9") )
+		if(m_options.wasSet("analysis.quadrature.domain.quadrangle9") )
 		{
-			if(options.getOption("analysis.quadrature.domain.quadrangle9",temp) )
+			if(m_options.getOption("analysis.quadrature.domain.quadrangle9",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.quad9.domain_degree = temp;
+					this->m_analysis.quad9.domain_degree = temp;
 			}
 		}
 
-		if(options.wasSet("analysis.quadrature.domain.tetrahedron4") )
+		if(m_options.wasSet("analysis.quadrature.domain.tetrahedron4") )
 		{
-			if(options.getOption("analysis.quadrature.domain.tetrahedron4",temp) )
+			if(m_options.getOption("analysis.quadrature.domain.tetrahedron4",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )
-					this->analysis.tetra4.domain_degree = temp;
+					this->m_analysis.tetra4.domain_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.domain.tetrahedron10") )
+		if(m_options.wasSet("analysis.quadrature.domain.tetrahedron10") )
 		{
-			if(options.getOption("analysis.quadrature.domain.tetrahedron10",temp) )
+			if(m_options.getOption("analysis.quadrature.domain.tetrahedron10",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.tetra10.domain_degree = temp;
+					this->m_analysis.tetra10.domain_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.domain.hexahedron8") )
+		if(m_options.wasSet("analysis.quadrature.domain.hexahedron8") )
 		{
-			if(options.getOption("analysis.quadrature.domain.hexahedron8",temp) )
+			if(m_options.getOption("analysis.quadrature.domain.hexahedron8",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.hexa8.domain_degree = temp;
+					this->m_analysis.hexa8.domain_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.domain.hexahedron20") )
+		if(m_options.wasSet("analysis.quadrature.domain.hexahedron20") )
 		{
-			if(options.getOption("analysis.quadrature.domain.hexahedron20",temp) )
+			if(m_options.getOption("analysis.quadrature.domain.hexahedron20",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.hexa20.domain_degree = temp;
+					this->m_analysis.hexa20.domain_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.domain.hexahedron27") )
+		if(m_options.wasSet("analysis.quadrature.domain.hexahedron27") )
 		{
-			if(options.getOption("analysis.quadrature.domain.hexahedron27",temp) )
+			if(m_options.getOption("analysis.quadrature.domain.hexahedron27",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.hexa27.domain_degree = temp;
+					this->m_analysis.hexa27.domain_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.domain.prism6") )
+		if(m_options.wasSet("analysis.quadrature.domain.prism6") )
 		{
-			if(options.getOption("analysis.quadrature.domain.prism6",temp) )
+			if(m_options.getOption("analysis.quadrature.domain.prism6",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.prism6.domain_degree = temp;
+					this->m_analysis.prism6.domain_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.domain.prism15") )
+		if(m_options.wasSet("analysis.quadrature.domain.prism15") )
 		{
-			if(options.getOption("analysis.quadrature.domain.prism15",temp) )
+			if(m_options.getOption("analysis.quadrature.domain.prism15",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.prism15.domain_degree = temp;
+					this->m_analysis.prism15.domain_degree = temp;
 			}
 		}
-		if(options.wasSet("analysis.quadrature.domain.prism18") )
+		if(m_options.wasSet("analysis.quadrature.domain.prism18") )
 		{
-			if(options.getOption("analysis.quadrature.domain.prism18",temp) )
+			if(m_options.getOption("analysis.quadrature.domain.prism18",temp) )
 			{
 				if( (temp >0) & (temp <= 5) )	// maximum supported integration rule is 5
-					this->analysis.prism18.domain_degree = temp;
+					this->m_analysis.prism18.domain_degree = temp;
 			}
 		}
 	}
@@ -781,17 +781,17 @@ MainWindow::loadOptions()
 void
 MainWindow::setNodeRestraints()
 {
-	assert(mdiArea != NULL);
+	assert(m_mdiArea != NULL);
 
 	NodeRestrainsDialog nd;
 	if(nd.exec() == QDialog::Accepted)
 	{
 		// get list of node restraints from active window
-		Selection selection = m_selection_manager.getSelection();
+		Selection selection = m_selectionManager.getSelection();
 		SetNodeRestraintsVisitor visitor(selection, nd.getRestrictions());
 
 		// set the restraints in the model
-		document.getProject().accept(visitor);
+		m_document.getProject().accept(visitor);
 	}
 }
 
@@ -799,7 +799,7 @@ MainWindow::setNodeRestraints()
 void
 MainWindow::setNodeActions()
 {
-	fem::Model &femp_model = document.getProject().getModel();
+	fem::Model &femp_model = m_document.getProject().getModel();
 	LoadPatternsModel load_patterns_model(femp_model, this);
 
 	NodeActionsDialog na(load_patterns_model, this);
@@ -809,7 +809,7 @@ MainWindow::setNodeActions()
 
 	if(na.exec() == QDialog::Accepted)
 	{
-		Selection const selection = m_selection_manager.getSelection();
+		Selection const selection = m_selectionManager.getSelection();
 
 		fem::Point force = na.getForce();
 		//fem::Point displacement = na.getDisplacement(); // doesn't support node displacements
@@ -832,7 +832,7 @@ MainWindow::setNodeActions()
 void
 MainWindow::setDomainLoads()
 {
-	fem::Model &femp_model = document.getProject().getModel();
+	fem::Model &femp_model = m_document.getProject().getModel();
 
 	LoadPatternsModel model(femp_model, this);
 
@@ -852,13 +852,13 @@ MainWindow::setDomainLoads()
 	// call the dialog box
 	if(dialog.exec() == QDialog::Accepted)
 	{
-		Selection const selection = m_selection_manager.getSelection();
+		Selection const selection = m_selectionManager.getSelection();
 
 		SetDomainLoadsVisitor visitor(selection,  femp_model.load_pattern_list[ dialog.getLoadPattern() ], dialog.getForce() );
 
-		document.getProject().accept(visitor);
+		m_document.getProject().accept(visitor);
 
-		document.setUnsaved();
+		m_document.setUnsaved();
 	}
 }
 
@@ -866,18 +866,18 @@ MainWindow::setDomainLoads()
 void
 MainWindow::moveSelectedNodes()
 {
-	assert(mdiArea != NULL);
+	assert(m_mdiArea != NULL);
 
 	MoveNodesDialog nd(this);
 	if(nd.exec() == QDialog::Accepted)
 	{
 		// get list of node restraints from active window
-		Selection selection = m_selection_manager.getSelection();
+		Selection selection = m_selectionManager.getSelection();
 		MoveNodesVisitor visitor(selection, nd.getTranslation());
 
-		document.getProject().accept(visitor);
+		m_document.getProject().accept(visitor);
 
-		document.setUnsaved();
+		m_document.setUnsaved();
 	}
 }
 
@@ -885,7 +885,7 @@ MainWindow::moveSelectedNodes()
 void
 MainWindow::editMaterials()
 {
-	fem::Model & femp_model = document.getProject().getModel();
+	fem::Model & femp_model = m_document.getProject().getModel();
 	MaterialsEditorDialog dialog(&femp_model, this);
 	dialog.exec();
 }
@@ -894,7 +894,7 @@ MainWindow::editMaterials()
 void
 MainWindow::editQuadratureRules()
 {
-	QuadratureRulesOptionsDialog dialog(analysis, this);
+	QuadratureRulesOptionsDialog dialog(m_analysis, this);
 	dialog.exec();
 }
 
@@ -902,7 +902,7 @@ MainWindow::editQuadratureRules()
 void
 MainWindow::editSelection()
 {
-	SelectionDialog dialog(document.getProject(), m_selection_manager, this);
+	SelectionDialog dialog(m_document.getProject(), m_selectionManager, this);
 	dialog.exec();
 }
 
@@ -912,7 +912,7 @@ MainWindow::runAnalysis()
 {
 	using namespace std;
 
-	fem::Model &femp_model = this->document.getProject().getModel();
+	fem::Model &femp_model = this->m_document.getProject().getModel();
 
 	// check if ther is a load pattern
 	if( femp_model.load_pattern_list.empty() )
@@ -956,9 +956,9 @@ MainWindow::runAnalysis()
 
 	//TODO finish this
 	fem::AnalysisResult analysis_result;
-	analysis.set(femp_model, femp_model.load_pattern_list[analysis_dialog.loadPattern()], analysis_result, progress, solver);
+	m_analysis.set(femp_model, femp_model.load_pattern_list[analysis_dialog.loadPattern()], analysis_result, progress, solver);
 
-	std::thread t(analysis);
+	std::thread t(m_analysis);
 
 	switch(dialog.exec())
 	{
@@ -971,9 +971,9 @@ MainWindow::runAnalysis()
 	}
 	t.join();
 
-	if(analysis.succeeded())
+	if(m_analysis.succeeded())
 	{
-		document.getProject().pushAnalysisResult(analysis_result);
+		m_document.getProject().pushAnalysisResult(analysis_result);
 
 		// set the UI
 		this->setUserInterfacePostAnalysis();
@@ -991,7 +991,7 @@ MainWindow::runAnalysis()
 void
 MainWindow::dumpFemEquation()
 {
-	auto & femp_result = document.getProject().result;
+	auto & femp_result = m_document.getProject().result;
 
 	if( femp_result.empty() )
 	{
@@ -1029,8 +1029,8 @@ MainWindow::dumpFemEquation()
 			msgBox.setDefaultButton(QMessageBox::No);
 			if(msgBox.exec() == QMessageBox::No)
 			{
-				delete document.file_name;
-				document.file_name = NULL;
+				delete m_document.file_name;
+				m_document.file_name = NULL;
 				return;
 			}
 		}
@@ -1091,7 +1091,7 @@ void
 MainWindow::showAnalysisSummary()
 {
 	// crude hack
-	AnalysisSummaryDialog dialog(document.getProject().result.back() , this);
+	AnalysisSummaryDialog dialog(m_document.getProject().result.back() , this);
 	dialog.exec();
 }
 
@@ -1150,13 +1150,13 @@ MainWindow::dumpResultsFromSelection()
 
 	QTextStream     out(&file);
 	//dump the text to a text file
-	fem::AnalysisResult & femp_result = this->document.getProject().result.back();	// nasty hack
+	fem::AnalysisResult & femp_result = this->m_document.getProject().result.back();	// nasty hack
 
-	Selection selection = m_selection_manager.getSelection();
+	Selection selection = m_selectionManager.getSelection();
 
 	OutputResultsInNodesCSVVisitor visitor(selection, &femp_result, out);
 
-	document.getProject().accept(visitor);
+	m_document.getProject().accept(visitor);
 
 	file.close();
 }
@@ -1165,9 +1165,9 @@ MainWindow::dumpResultsFromSelection()
 void
 MainWindow::showSelection()
 {
-	Selection selection = m_selection_manager.getSelection();
+	Selection selection = m_selectionManager.getSelection();
 
-	QMdiSubWindow *mdi_window = mdiArea->currentSubWindow();
+	QMdiSubWindow *mdi_window = m_mdiArea->currentSubWindow();
 	if(mdi_window != NULL)
 	{
 		MdiWindow *window = static_cast<MdiWindow*>(mdi_window->widget() );
@@ -1183,7 +1183,7 @@ MainWindow::showSelection()
 void
 MainWindow::showAll()
 {
-	QMdiSubWindow *mdi_window = mdiArea->currentSubWindow();
+	QMdiSubWindow *mdi_window = m_mdiArea->currentSubWindow();
 	if(mdi_window != NULL)
 	{
 		MdiWindow *window = static_cast<MdiWindow*>(mdi_window->widget() );
@@ -1219,14 +1219,14 @@ MainWindow::getError(QString message)
 void
 MainWindow::setTiledWindows()
 {
-	mdiArea->tileSubWindows();
+	m_mdiArea->tileSubWindows();
 }
 
 
 void
 MainWindow::setCascadeWindows()
 {
-	mdiArea->cascadeSubWindows();
+	m_mdiArea->cascadeSubWindows();
 }
 
 
@@ -1240,23 +1240,23 @@ MainWindow::createNewViewportWindow()
 void
 MainWindow::createNewModelWindow()
 {
-	ModelWindow *window = new ModelWindow(document.getProject(), colors, this);
+	ModelWindow *window = new ModelWindow(m_document.getProject(), colors, this);
 
 	// create the model's MDI window
-	QMdiSubWindow	* mdi_window = new QMdiSubWindow(mdiArea);
+	QMdiSubWindow	* mdi_window = new QMdiSubWindow(m_mdiArea);
 
 	mdi_window->setWidget(window);
 	mdi_window->setAttribute(Qt::WA_DeleteOnClose);
 	mdi_window->setWindowTitle(tr("Model"));
 	mdi_window->showMaximized();
-	window->connectToSelectionManager(this->m_selection_manager);
+	window->connectToSelectionManager(this->m_selectionManager);
 }
 
 
 void
 MainWindow::createNewPostprocessingWindow()
 {
-	auto &femp_result = document.getProject().result;
+	auto &femp_result = m_document.getProject().result;
 	if(femp_result.empty())
 	{
 		std::cerr << __FILE__ << ":" << __LINE__ ;
@@ -1264,15 +1264,15 @@ MainWindow::createNewPostprocessingWindow()
 	}
 	else
 	{
-		PostprocessingWindow *window = new PostprocessingWindow(document.getProject(), femp_result.back(), colors, this);
+		PostprocessingWindow *window = new PostprocessingWindow(m_document.getProject(), femp_result.back(), colors, this);
 
 		// create the model's MDI window
-		QMdiSubWindow	* mdi_window = new QMdiSubWindow(mdiArea);
+		QMdiSubWindow	* mdi_window = new QMdiSubWindow(m_mdiArea);
 		mdi_window->setWidget(window);
 		mdi_window->setAttribute(Qt::WA_DeleteOnClose);
 		mdi_window->setWindowTitle(tr("Postprocessing"));
 		mdi_window->showMaximized();
-		window->connectToSelectionManager(this->m_selection_manager);
+		window->connectToSelectionManager(this->m_selectionManager);
 	}
 }
 
@@ -1280,23 +1280,23 @@ MainWindow::createNewPostprocessingWindow()
 void
 MainWindow::createNewTensorFieldWindow()
 {
-	if(document.getProject().result.empty())
+	if(m_document.getProject().result.empty())
 	{
 		std::cerr << __FILE__ << ":" << __LINE__ ;
 		std::cerr << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available" << std::endl;
 	}
 	else
 	{
-		TensorFieldWindow *window = new TensorFieldWindow(document.getProject(), document.getProject().result.back(), colors, this);
+		TensorFieldWindow *window = new TensorFieldWindow(m_document.getProject(), m_document.getProject().result.back(), colors, this);
 
 		// create the model's MDI window
-		QMdiSubWindow	* mdi_window = new QMdiSubWindow(mdiArea);
+		QMdiSubWindow	* mdi_window = new QMdiSubWindow(m_mdiArea);
 
 		mdi_window->setWidget(window);
 		mdi_window->setAttribute(Qt::WA_DeleteOnClose);
 		mdi_window->setWindowTitle(tr("Tensor field"));
 		mdi_window->showMaximized();
-		window->connectToSelectionManager(this->m_selection_manager);
+		window->connectToSelectionManager(this->m_selectionManager);
 	}
 }
 
@@ -1306,14 +1306,14 @@ MainWindow::createNewAnalysisResultsWindow()
 {
 	std::cerr << __FILE__ << ":" << __LINE__ ;
 	std::cerr << "MainWindow::createNewAnalysisResultsWindow()" << std::endl;
-	if(document.getProject().result.empty())
+	if(m_document.getProject().result.empty())
 	{
 		std::cerr << __FILE__ << ":" << __LINE__ ;
 		std::cerr << "MainWindow::createNewAnalysisResultWindow(): tried to set a results window although there is no result available" << std::endl;
 		return;
 	}
 
-	AnalysisResultsWindow *mdi_window = new AnalysisResultsWindow(document.getProject(), mdiArea);
+	AnalysisResultsWindow *mdi_window = new AnalysisResultsWindow(m_document.getProject(), m_mdiArea);
 	mdi_window->showMaximized();
 }
 
@@ -1323,13 +1323,13 @@ MainWindow::createNewFemEquationWindow()
 {
 	std::cerr << __FILE__ << ":" << __LINE__ ;
 	std::cerr << "MainWindow::createNewFemEquationWindow()" << std::endl;
-	if(document.getProject().result.empty())
+	if(m_document.getProject().result.empty())
 	{
 		std::cerr << "MainWindow::createNewFemEquationWindow(): tried to set a results window although there is no result available" << std::endl;
 		return;
 	}
 
-	MatrixWindow *mdi_window = new MatrixWindow(document.getProject(), mdiArea);
+	MatrixWindow *mdi_window = new MatrixWindow(m_document.getProject(), m_mdiArea);
 	mdi_window->showMaximized();
 }
 
@@ -1339,7 +1339,7 @@ MainWindow::updateWindowMenu()
 {
 	qWarning("MainWindow::updateWindowMenu()");
 
-	QList<QMdiSubWindow *> 	subWindowList = mdiArea->subWindowList();
+	QList<QMdiSubWindow *> 	subWindowList = m_mdiArea->subWindowList();
 
 	// empties the menu
 	ui.menuWindowOpened->clear();
@@ -1363,9 +1363,9 @@ MainWindow::updateWindowMenu()
 		ui.menuWindowOpened->addAction(action);
 
 		// map
-		m_window_mapper->setMapping(action, n);
-		connect(action, SIGNAL(triggered()), m_window_mapper, SLOT(map()));
-		connect(m_window_mapper, SIGNAL(mapped(int)), this, SLOT(activateSubWindowByIndex(int)));
+		m_windowMapper->setMapping(action, n);
+		connect(action, SIGNAL(triggered()), m_windowMapper, SLOT(map()));
+		connect(m_windowMapper, SIGNAL(mapped(int)), this, SLOT(activateSubWindowByIndex(int)));
 	}
 }
 
@@ -1373,8 +1373,8 @@ MainWindow::updateWindowMenu()
 void
 MainWindow::activateSubWindowByIndex(int index)
 {
-	QList<QMdiSubWindow *> 	subWindowList = mdiArea->subWindowList();
-	this->mdiArea->setActiveSubWindow(subWindowList[index]);
+	QList<QMdiSubWindow *> 	subWindowList = m_mdiArea->subWindowList();
+	this->m_mdiArea->setActiveSubWindow(subWindowList[index]);
 }
 
 
@@ -1403,13 +1403,13 @@ MainWindow::setUserInterfaceAsOpened()
 	this->createNewViewportWindow();
 
 	// set the docks
-	this->addDockWidget(static_cast<Qt::DockWidgetArea>(9), commandLineDockWidget);
+	this->addDockWidget(static_cast<Qt::DockWidgetArea>(9), m_commandLineDockWidget);
 
 	// set the window name
-	if(document.file_name == NULL)
+	if(m_document.file_name == NULL)
 		this->setWindowTitle("Femp - [unnamed.fem.json]");
 	else
-		this->setWindowTitle("Femp - " + *document.file_name);
+		this->setWindowTitle("Femp - " + *m_document.file_name);
 }
 
 
@@ -1443,11 +1443,11 @@ MainWindow::setUserInterfaceAsClosed()
 	ui.actionAnalysisSummary->setDisabled(true);
 
 	// close all MDI windows
-	mdiArea->closeAllSubWindows();
+	m_mdiArea->closeAllSubWindows();
 
 	// handle the docks
-	this->removeDockWidget(commandLineDockWidget);
-	commandLineDockWidget->clear();
+	this->removeDockWidget(m_commandLineDockWidget);
+	m_commandLineDockWidget->clear();
 
 	// set the window name
 	this->setWindowTitle("Femp");

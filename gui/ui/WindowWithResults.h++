@@ -17,8 +17,8 @@ class WindowWithResults
 	: public WindowWith
 {
 protected:
-	QToolBar *resultsToolBar;	// toolbar to provide a user to select which result to run
-	QComboBox *resultsComboBox;
+	QToolBar *m_resultsToolBar;	// toolbar to provide a user to select which result to run
+	QComboBox *m_resultsComboBox;
 
 public:
 	void createToolbar(QMainWindow *parent, fem::Project &results);

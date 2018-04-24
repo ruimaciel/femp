@@ -19,13 +19,13 @@ class WindowWithPostprocessing
 protected:
 	enum PostprocessingType {
 		P_DISPLACEMENT,
-		P_STRAIN_11, P_STRAIN_22, P_STRAIN_33, P_STRAIN_12, P_STRAIN_13, P_STRAIN_23, 
+		P_STRAIN_11, P_STRAIN_22, P_STRAIN_33, P_STRAIN_12, P_STRAIN_13, P_STRAIN_23,
 		P_STRESS_11, P_STRESS_22, P_STRESS_33, P_STRESS_12, P_STRESS_13, P_STRESS_23,
 		P_VON_MISES
 	};
 
-	QToolBar *postprocessingToolBar;	// toolbar to provide a user to select which result to run
-	QComboBox *postprocessingComboBox;
+	QToolBar *m_postprocessingToolBar;	// toolbar to provide a user to select which result to run
+	QComboBox *m_postprocessingComboBox;
 
 public:
 	void createToolbar(QMainWindow *parent, fem::Project &results);

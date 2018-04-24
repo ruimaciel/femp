@@ -3,14 +3,14 @@
 
 BaseWindow::BaseWindow(QString const &label)
 {
-	this->m_window_label = label;
+	this->m_windowLabel = label;
 }
 
 
 QString 
 BaseWindow::label() const
 {
-	return m_window_label;
+	return m_windowLabel;
 }
 
 

@@ -54,7 +54,7 @@ TensorFieldWindow::connectSignalsToSlots()
 	MdiWindow::connectSignalsToSlots();
 	WindowWithResults::connectSignalsToSlots(this);
 
-	connect(actionMenuVisibility,	SIGNAL(toggled(bool)),	this,	SLOT(toggleMenuBarVisibility(bool) ) );
+	connect(m_actionMenuVisibility,	SIGNAL(toggled(bool)),	this,	SLOT(toggleMenuBarVisibility(bool) ) );
 	//connect(actionSetTensionRanges,	SIGNAL(triggered()),	this,	SLOT(setResultsRanges()));
 	connect(actionVisibleNegativePrincipalStresses,	SIGNAL(toggled(bool)),	this,	SLOT(setNegativePrincipalStressesVisibility(bool)));
 	connect(actionVisiblePositivePrincipalStresses,	SIGNAL(toggled(bool)),	this,	SLOT(setPositivePrincipalStressesVisibility(bool)));

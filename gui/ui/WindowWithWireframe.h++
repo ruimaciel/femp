@@ -28,8 +28,8 @@ public:
 
 protected:
 
-	QComboBox *elementRenderingComboBox;
-	QToolBar *toggleElementRenderingToolBar;	
+	QComboBox *m_elementRenderingComboBox;
+	QToolBar *m_toggleElementRenderingToolBar;
 
 };
 

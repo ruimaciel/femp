@@ -26,7 +26,7 @@ public:
 	enum Type {VAL_NUMBER = 0, VAL_STRING = 1, VAL_BOOL = 2, VAL_NUMBER_LIST};
 
 private:
-	enum Level option_level;
+	enum Level m_level;
 	enum Type type;
 	union u_value {
 		double number;
@@ -55,8 +55,8 @@ public:
 
 	double getNumber();
 	std::string getString();
-	bool getBool();	
-	std::vector<double> getNumberList();	
+	bool getBool();
+	std::vector<double> getNumberList();
 };
 
 
@@ -109,7 +109,7 @@ public:
 	bool getOption(const std::string, std::vector<double> &);
 	bool getOption(const std::string, std::vector<float> &);
 
-	// generates an options file 
+	// generates an options file
 	//TODO implement an export mechanism that enables exporting in the full and compacted formats
 	friend std::ostream& operator << (std::ostream& os, ProgramOptions &prog);
 
@@ -120,11 +120,11 @@ private:
 	class Parser
 	{
 		enum LEXER_TOKENS { LEX_UNKNOWN_TOKEN = 0,
-			LEX_OPTION_NAME, 
-			LEX_OPTION_SEPARATOR, 
+			LEX_OPTION_NAME,
+			LEX_OPTION_SEPARATOR,
 			LEX_OPTION_ASSIGN,
 			LEX_INDENT,
-			LEX_STRING, 
+			LEX_STRING,
 			LEX_NUMBER,
 			LEX_BOOL,
 			LEX_OPEN_VECTOR,
@@ -146,7 +146,7 @@ private:
 		// helper variables that are used by the lexer
 		char *tok;	// marks the start of the current token
 		char *pos; 	// marks the current position
-		char *marker;	
+		char *marker;
 		char *lim;	// marks the string limit
 		int lex_state;	// lexer state, to avoid grammar ambiguities
 

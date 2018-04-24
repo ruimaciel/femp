@@ -56,9 +56,9 @@ PostprocessingWindow::connectSignalsToSlots()
 	WindowWithScaling::connectSignalsToSlots(this);
 	WindowWithPostprocessing::connectSignalsToSlots(this);
 
-	connect(postprocessingComboBox,	SIGNAL(activated(int)),	this,	SLOT(setPostprocessingState(int)));
-	connect(actionMenuVisibility,	SIGNAL(toggled(bool)),	this,	SLOT(toggleMenuBarVisibility(bool) ) );
-	connect(actionSetTensionRanges,	SIGNAL(triggered()),	this,	SLOT(setResultsRanges()));
+	connect(m_postprocessingComboBox,	SIGNAL(activated(int)),	this,	SLOT(setPostprocessingState(int)));
+	connect(m_actionMenuVisibility,	SIGNAL(toggled(bool)),	this,	SLOT(toggleMenuBarVisibility(bool) ) );
+	connect(m_actionSetTensionRanges,	SIGNAL(triggered()),	this,	SLOT(setResultsRanges()));
 }
 
 
@@ -71,7 +71,7 @@ PostprocessingWindow::createToolBars(fem::Project &project)
 
 	// create
 	toggleMenuBarVisibilityToolBar = addToolBar(tr("Menu bar visibility"));
-	toggleMenuBarVisibilityToolBar->addAction(actionMenuVisibility);
+	toggleMenuBarVisibilityToolBar->addAction(m_actionMenuVisibility);
 }
 
 

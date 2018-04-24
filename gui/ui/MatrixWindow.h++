@@ -21,7 +21,7 @@ class MatrixWindow
 {
 	Q_OBJECT
 protected:
-	MatrixWidget *m_matrix_widget;
+	MatrixWidget *m_matrixWidget;
 	fem::Project const *m_project;
 
 public:

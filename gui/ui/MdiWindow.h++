@@ -21,9 +21,9 @@
 /**
 Base class for all the MDI windows that render the model
 **/
-class MdiWindow 
-	:  public QMainWindow, 
-	protected Ui::MdiWindow, 
+class MdiWindow
+	:  public QMainWindow,
+	protected Ui::MdiWindow,
 	public sigc::trackable
 {
 	Q_OBJECT
@@ -70,7 +70,7 @@ public:
 	virtual void clearSelection();		// clears the selection
 	void showSelection(const Selection);	// sets the viewport so that only the selected items are shown
 	void showAll();				// sets the viewport so that all scenegraph components are shown
-	
+
 	void updateNodeRestriction(size_t const, fem::NodeRestrictions const &);
 
 	/**
@@ -81,19 +81,19 @@ public:
 	BaseViewport *viewport;
 
 protected:
-	QToolBar *viewportToolBar;	// toolbar to set camera angles
-	QToolBar *visibilityToolBar;	// toolbar to set which rendering group (i.e., nodes, surfaces, etc...) is visible
+	QToolBar *m_viewportToolBar;	// toolbar to set camera angles
+	QToolBar *m_visibilityToolBar;	// toolbar to set which rendering group (i.e., nodes, surfaces, etc...) is visible
 
-	QAction	*actionMenuVisibility;	// toolbar menu button that toggles the menu bar visibility
+	QAction	*m_actionMenuVisibility;	// toolbar menu button that toggles the menu bar visibility
 
-	QAction *actionViewportXY;	// places the camera displaying the XY plane
-	QAction *actionViewportYZ;	// places the camera displaying the XY plane
-	QAction *actionViewportXZ;	// places the camera displaying the XZ plane
-	QAction *actionViewportIso;	// places the camera on an isometric view angle
+	QAction *m_actionViewportXY;	// places the camera displaying the XY plane
+	QAction *m_actionViewportYZ;	// places the camera displaying the XY plane
+	QAction *m_actionViewportXZ;	// places the camera displaying the XZ plane
+	QAction *m_actionViewportIso;	// places the camera on an isometric view angle
 
-	QAction *actionVisibleNodes;
-	QAction *actionVisibleRestrictions;
+	QAction *m_actionVisibleNodes;
+	QAction *m_actionVisibleRestrictions;
 
-};	
+};
 
 #endif

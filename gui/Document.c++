@@ -13,16 +13,16 @@
 
 Document::Document()
 {
-	unsaved = false;
+	m_unsaved = false;
 	file_name = NULL;
 
-	document_type = TYPE_SOLID3D;	// nasty hack due to poor design
+	m_documentType = TYPE_SOLID3D;	// nasty hack due to poor design
 }
 
 
 Document::Document(const Document & copied)
 {
-	this->unsaved = copied.unsaved;
+	this->m_unsaved = copied.m_unsaved;
 	if (copied.file_name != NULL) {
 		this->file_name = new QString;
 		*this->file_name = *copied.file_name;
@@ -31,7 +31,7 @@ Document::Document(const Document & copied)
 	{
 		this->file_name = NULL;
 	}
-	this->document_type = copied.document_type;
+	this->m_documentType = copied.m_documentType;
 }
 
 
@@ -45,12 +45,12 @@ Document::~Document()
 void
 Document::clear()
 {
-	unsaved = false;
+	m_unsaved = false;
 	if (file_name != NULL) {
 		delete file_name;
 		file_name = NULL;
 	}
-	document_type = TYPE_NONE;
+	m_documentType = TYPE_NONE;
 	this->project.clear();
 }
 
@@ -117,7 +117,7 @@ Document::save()
 	out << "\t\t\"version\": \"1.0\",\n";
 	out << "\t\t\"type\": ";
 
-	switch (document_type) 
+	switch (m_documentType) 
 	{
 		case TYPE_SOLID3D:
 			out << "\"3D solid\"\n";
@@ -479,7 +479,7 @@ Document::save()
 	file.flush();
 	file.close();
 
-	unsaved = false;
+	m_unsaved = false;
 	return ERR_OK;
 }
 

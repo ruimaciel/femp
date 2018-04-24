@@ -21,7 +21,7 @@ class MatrixModel
 protected:
 	fem::Project *m_project;
 	std::vector<fem::AnalysisResult>::iterator m_result;
-	std::map<int, std::vector<fem::Element>::size_type>	m_line_map;
+	std::map<int, std::vector<fem::Element>::size_type>	m_lineMap;
 
 public:
 	MatrixModel(fem::Project &project, QObject *parent = nullptr);

@@ -26,7 +26,7 @@ Option::~Option()
 
 void Option::setOption(double value, Level level)
 {
-	this->option_level = level;
+	this->m_level = level;
 	this->type = VAL_NUMBER;
 	this->value.number = value;
 }
@@ -34,7 +34,7 @@ void Option::setOption(double value, Level level)
 
 void Option::setOption(std::string value, Level level)
 {
-	this->option_level = level;
+	this->m_level = level;
 	this->type = VAL_STRING;
 	this->text = value;
 }
@@ -42,7 +42,7 @@ void Option::setOption(std::string value, Level level)
 
 void Option::setOption(bool value, Level level)
 {
-	this->option_level = level;
+	this->m_level = level;
 	this->type = VAL_BOOL;
 	this->value.b = value;
 }
@@ -56,7 +56,7 @@ void Option::setOption(std::vector<float> value, Level level)
 
 void Option::setOption(std::vector<double> value, Level level)
 {
-	this->option_level = level;
+	this->m_level = level;
 	this->type = VAL_NUMBER_LIST;
 	this->number_list = value;
 }

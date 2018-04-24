@@ -15,10 +15,10 @@ MdiWindow::MdiWindow (QWidget *parent)
 	this->viewport = NULL;
 
 	// create the menu
-	this->actionMenuVisibility = new QAction(tr("Menu visibility"), this);
-	this->actionMenuVisibility->setCheckable(true);
-	this->actionMenuVisibility->setChecked(false);
-	this->actionMenuVisibility->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_M));
+	this->m_actionMenuVisibility = new QAction(tr("Menu visibility"), this);
+	this->m_actionMenuVisibility->setCheckable(true);
+	this->m_actionMenuVisibility->setChecked(false);
+	this->m_actionMenuVisibility->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_M));
 	this->menuBar()->hide();
 
 	this->createViewportToolbar();
@@ -30,34 +30,34 @@ void
 MdiWindow::createViewportToolbar()
 {
 	// create actions
-	actionViewportXY = new QAction("XY", this);
-	actionViewportYZ = new QAction("YZ", this);
-	actionViewportXZ = new QAction("XZ", this);
-	actionViewportIso = new QAction("iso", this);
+	m_actionViewportXY = new QAction("XY", this);
+	m_actionViewportYZ = new QAction("YZ", this);
+	m_actionViewportXZ = new QAction("XZ", this);
+	m_actionViewportIso = new QAction("iso", this);
 
 	// create and populate the toolbar
-	viewportToolBar = addToolBar(tr("Viewport"));
-	viewportToolBar->addAction(actionViewportXY);
-	viewportToolBar->addAction(actionViewportYZ);
-	viewportToolBar->addAction(actionViewportXZ);
-	viewportToolBar->addAction(actionViewportIso);
+	m_viewportToolBar = addToolBar(tr("Viewport"));
+	m_viewportToolBar->addAction(m_actionViewportXY);
+	m_viewportToolBar->addAction(m_actionViewportYZ);
+	m_viewportToolBar->addAction(m_actionViewportXZ);
+	m_viewportToolBar->addAction(m_actionViewportIso);
 }
 
 
 void
 MdiWindow::createVisibilityToolbar()
 {
-	actionVisibleNodes = new QAction("Nodes",this);
-	actionVisibleNodes->setCheckable(true);
-	actionVisibleNodes->setChecked(true);
+	m_actionVisibleNodes = new QAction("Nodes",this);
+	m_actionVisibleNodes->setCheckable(true);
+	m_actionVisibleNodes->setChecked(true);
 
-	actionVisibleRestrictions = new QAction("Restrictions",this);
-	actionVisibleRestrictions->setCheckable(true);
-	actionVisibleRestrictions->setChecked(true);
+	m_actionVisibleRestrictions = new QAction("Restrictions",this);
+	m_actionVisibleRestrictions->setCheckable(true);
+	m_actionVisibleRestrictions->setChecked(true);
 
-	visibilityToolBar = addToolBar(tr("Visibility"));
-	visibilityToolBar->addAction(actionVisibleNodes);
-	visibilityToolBar->addAction(actionVisibleRestrictions);
+	m_visibilityToolBar = addToolBar(tr("Visibility"));
+	m_visibilityToolBar->addAction(m_actionVisibleNodes);
+	m_visibilityToolBar->addAction(m_actionVisibleRestrictions);
 }
 
 
@@ -117,12 +117,12 @@ void
 MdiWindow::connectSignalsToSlots()
 {
 	//signals and slots
-	connect(actionViewportXY, &QAction::triggered,	this,	&MdiWindow::setViewportXY);
-	connect(actionViewportXZ, &QAction::triggered,	this,	&MdiWindow::setViewportXZ);
-	connect(actionViewportYZ, &QAction::triggered,	this,	&MdiWindow::setViewportYZ);
+	connect(m_actionViewportXY, &QAction::triggered,	this,	&MdiWindow::setViewportXY);
+	connect(m_actionViewportXZ, &QAction::triggered,	this,	&MdiWindow::setViewportXZ);
+	connect(m_actionViewportYZ, &QAction::triggered,	this,	&MdiWindow::setViewportYZ);
 
-	connect(actionVisibleNodes,			&QAction::toggled,	this,	&MdiWindow::setNodeVisibility);
-	connect(actionVisibleRestrictions,	&QAction::toggled,	this,	&MdiWindow::setNodeRestrictionsVisibility);
+	connect(m_actionVisibleNodes,			&QAction::toggled,	this,	&MdiWindow::setNodeVisibility);
+	connect(m_actionVisibleRestrictions,	&QAction::toggled,	this,	&MdiWindow::setNodeRestrictionsVisibility);
 
 	// libsigc++ signals
 	this->viewport->selection_changed.connect(this->selection_changed.make_slot());

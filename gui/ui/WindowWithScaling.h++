@@ -28,15 +28,15 @@ public:
 
 public slots:
 	void setDisplacementsScale(double);
-	
+
 protected:
 	void connectSignalsToSlots(QMainWindow *parent);
 
 
 protected:
-	QToolBar *scalingToolBar;	// toolbar to provide a user to select which result to run
-	QDoubleSpinBox *scalingDoubleSpinBox;
-	QAction *actionSetTensionRanges;	// action to call a dialog which sets the values for the max an min values of any given field
+	QToolBar *m_scalingToolBar;	// toolbar to provide a user to select which result to run
+	QDoubleSpinBox *m_scalingDoubleSpinBox;
+	QAction *m_actionSetTensionRanges;	// action to call a dialog which sets the values for the max an min values of any given field
 
 	QMenu * m_scaling_menu;
 };

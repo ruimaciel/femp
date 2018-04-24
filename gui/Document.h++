@@ -12,7 +12,7 @@ class Document
 public:
 	enum Type { TYPE_NONE, TYPE_SOLID3D};
 
-	enum Error {ERR_OK, 
+	enum Error {ERR_OK,
 		ERR_FILE_NOT_FOUND,	// path to project file doesn't exist
 		ERR_FILE_OPEN,		// file.open() failed
 		ERR_INVALID_FILE,	// path doesn't point to a valid project file
@@ -38,7 +38,7 @@ public:
 	 */
 	QString getFileName() const;
 
-	void setProjectType(Type type)	{ document_type = type; }
+	void setProjectType(Type type)	{ m_documentType = type; }
 
 	/*!
 	 * Returns a reference to the Project object
@@ -50,12 +50,12 @@ public:
 	**/
 	enum Error save();
 
-	void setUnsaved()	{unsaved = true; }
+	void setUnsaved()	{m_unsaved = true; }
 
 
 protected:
-	bool unsaved;	// true if this document suffered changes that are saveable
-	Type document_type;	// specifies the model type
+	bool m_unsaved;	// true if this document suffered changes that are saveable
+	Type m_documentType;	// specifies the model type
 
 public:
 	QString *file_name;	// path for the project's directory

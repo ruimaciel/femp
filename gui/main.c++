@@ -6,6 +6,8 @@
 
 #include <string>
 
+#include <QScopedPointer>
+
 
 Q_DECLARE_METATYPE(size_t);
 Q_DECLARE_METATYPE(std::string);
@@ -19,8 +21,8 @@ int main(int argc, char *argv[])
 
 	FempApplication app(argc, argv);
 
-	MainWindow main_window;
-	main_window.show();
+	QScopedPointer<MainWindow> main_window(new MainWindow);
+	main_window->show();
 
 	return app.exec();
 }

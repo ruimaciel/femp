@@ -126,6 +126,9 @@ private:
 	void setUserInterfacePostAnalysis();	// sets the user interface in it's "analysis performed" state
 
 protected:
+	ViewportColors &getViewportColors();
+
+protected:
 	Ui::MainWindow 	ui;
 
 	fem::LinearAnalysis<double> m_analysis;

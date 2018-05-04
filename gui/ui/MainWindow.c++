@@ -486,17 +486,10 @@ MainWindow::loadOptions()
 	m_options.setDefault();
 	m_options.setOption("viewport.nodes.radius",10.0f);	// sets the default node radius
 
-	default_color = {0.0f, 0.8f, 0.8f};
-	m_options.setOption("viewport.nodes.color",default_color);
-
-	default_color = {0.5f, 0.5f, 0.0f};
-	m_options.setOption("viewport.wireframe.color",default_color);
-
-	default_color = {1.0f, 0.0f, 0.0f};
-	m_options.setOption("viewport.arrows.color",default_color);
-
 	m_options.setOption("viewport.arrows.radius",10.0f);
 	m_options.setOption("viewport.arrows.length",100.0f);
+
+	m_colors = fempApp->settings().getViewportColors();
 
 	//TODO Set default options
 
@@ -542,60 +535,7 @@ MainWindow::loadOptions()
 		m_resultsDumpDialogLastDirectory = QDir::home();
 	}
 
-	// set color options
-	{
-		std::vector<float> temp;
-		if(m_options.getOption("viewport.nodes.color",temp) )
-		{
-			if(temp.size() == 3)
-			{
-				m_colors.node = {temp[0], temp[1], temp[2]};
-			}
-		}
-
-		if(m_options.getOption("viewport.background.color",temp) )
-		{
-			if(temp.size() == 3)
-			{
-				m_colors.background = {temp[0], temp[1], temp[2]};
-			}
-		}
-
-		if(m_options.getOption("viewport.wireframe.color",temp) )
-		{
-			if(temp.size() == 3)
-			{
-				m_colors.wireframe = {temp[0], temp[1], temp[2]};
-			}
-		}
-
-		if(m_options.getOption("viewport.fields.color.maximum_positive",temp) )
-		{
-			if(temp.size() == 3)
-			{
-				m_colors.field_maximum_positive = {temp[0], temp[1], temp[2]};
-			}
-		}
-
-		if(m_options.getOption("viewport.fields.color.maximum_negative",temp) )
-		{
-			if(temp.size() == 3)
-			{
-				m_colors.field_maximum_negative = {temp[0], temp[1], temp[2]};
-			}
-		}
-
-		if(m_options.getOption("viewport.fields.color.neutral",temp) )
-		{
-			if(temp.size() == 3)
-			{
-				m_colors.field_neutral = {temp[0], temp[1], temp[2]};
-			}
-		}
-		//TODO add code for the force arrows custom color code
-	}
-
-	// set quadrature rules options for the stiffness matrix
+		// set quadrature rules options for the stiffness matrix
 	{
 		int temp = 0;
 
@@ -1240,7 +1180,7 @@ MainWindow::createNewViewportWindow()
 void
 MainWindow::createNewModelWindow()
 {
-	ModelWindow *window = new ModelWindow(m_document.getProject(), m_colors, this);
+	ModelWindow *window = new ModelWindow(m_document.getProject(), getViewportColors(), this);
 
 	// create the model's MDI window
 	QMdiSubWindow	* mdi_window = new QMdiSubWindow(m_mdiArea);
@@ -1264,7 +1204,7 @@ MainWindow::createNewPostprocessingWindow()
 	}
 	else
 	{
-		PostprocessingWindow *window = new PostprocessingWindow(m_document.getProject(), femp_result.back(), m_colors, this);
+		PostprocessingWindow *window = new PostprocessingWindow(m_document.getProject(), femp_result.back(), getViewportColors(), this);
 
 		// create the model's MDI window
 		QMdiSubWindow	* mdi_window = new QMdiSubWindow(m_mdiArea);
@@ -1287,7 +1227,7 @@ MainWindow::createNewTensorFieldWindow()
 	}
 	else
 	{
-		TensorFieldWindow *window = new TensorFieldWindow(m_document.getProject(), m_document.getProject().result.back(), m_colors, this);
+		TensorFieldWindow *window = new TensorFieldWindow(m_document.getProject(), m_document.getProject().result.back(), getViewportColors(), this);
 
 		// create the model's MDI window
 		QMdiSubWindow	* mdi_window = new QMdiSubWindow(m_mdiArea);
@@ -1465,6 +1405,11 @@ MainWindow::setUserInterfacePostAnalysis()
 	ui.actionNewAnalysisResultsWindow->setEnabled(true);
 	ui.actionNewFemEquationWindow->setEnabled(true);
 	ui.actionAnalysisSummary->setEnabled(true);
+}
+
+ViewportColors & MainWindow::getViewportColors()
+{
+	return m_colors;
 }
 
 

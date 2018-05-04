@@ -3,6 +3,7 @@
 
 #include <QDir>
 
+#include "options/ViewportColors.h++"
 
 class Settings
 {
@@ -12,6 +13,8 @@ public:
 
 	QDir getProjectOpenDirectory();
 	void setProjectOpenDirectory(QDir dir);
+
+	ViewportColors getViewportColors();
 };
 
 #endif // SETTINGS_H

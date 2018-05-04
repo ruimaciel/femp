@@ -4,7 +4,6 @@
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QWidget>
-#include <QGLWidget>
 
 #include "Project.h++"
 
@@ -17,7 +16,7 @@
 /**
 The viewport class which is designed to render the model and enact changes on it
 **/
-class ModelViewport 
+class ModelViewport
 	: public BaseViewport
 {
 	Q_OBJECT

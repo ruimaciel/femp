@@ -1,7 +1,7 @@
 #include "BaseViewport.h++"
 
 #include <iostream>	// for cerr
-	
+
 #include "SceneGraphComponents/Operations/ToggleRenderOperation.h++"
 #include "SceneGraphComponents/Operations/ToggleSelectionOperation.h++"
 #include "SceneGraphComponents/Operations/SelectRayIntersectionOperation.h++"
@@ -11,7 +11,7 @@
 //TODO add sanity checks to this->state
 
 BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
-	: QGLWidget(parent)
+	: QOpenGLWidget(parent)
 {
 	assert(parent != NULL);
 
@@ -32,28 +32,28 @@ BaseViewport::~BaseViewport()
 }
 
 
-void 
+void
 BaseViewport::setColors(ViewportColors &new_colors)
 {
 	colors = new_colors;
 }
 
 
-QSize 
+QSize
 BaseViewport::minimumSizeHint() const
 {
 	return QSize(50, 50);
 }
 
 
-QSize 
+QSize
 BaseViewport::sizeHint() const
 {
 	return QSize(600, 400);
 }
 
 
-void 
+void
 BaseViewport::initializeGL()
 {
 	// set the state->camera position according to the nodal center
@@ -115,7 +115,7 @@ BaseViewport::initializeGL()
 }
 
 
-void 
+void
 BaseViewport::resizeGL(int width, int height)
 {
 	viewport_data.width = width;
@@ -124,15 +124,15 @@ BaseViewport::resizeGL(int width, int height)
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	
+
 	glOrtho(-(width*2)/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom)), (width*2)/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom)), -height*2/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom)), +height*2/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom)), 0.1, 1000.0);
-	
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
 
 
-void 
+void
 BaseViewport::paintGL()
 {
 	glMatrixMode(GL_MODELVIEW);
@@ -143,52 +143,52 @@ BaseViewport::paintGL()
 }
 
 
-void 
+void
 BaseViewport::mousePressEvent(QMouseEvent *event)
 {
 	m_input->press(this, event);
 
-	updateGL();
+	update();
 }
 
 
-void 
+void
 BaseViewport::mouseReleaseEvent(QMouseEvent *event)
 {
 	m_input->release(this, event);
-	updateGL();
+	update();
 }
 
 
-void 
+void
 BaseViewport::mouseMoveEvent(QMouseEvent *event)
 {
 	//state->mouseMoveEvent(this, event);
 	m_input->move(this, event);
 
-	updateGL();
+	update();
 }
 
 
-void 
+void
 BaseViewport::wheelEvent(QWheelEvent *event)
 {
 	viewport_data.zoom += event->delta()/1000.0f;
 
 	this->resizeGL(this->width(), this->height());
-	this->updateGL();
+	this->update();
 	event->accept();
 }
 
 
-void 
+void
 BaseViewport::keyPressEvent( QKeyEvent *event)
 {
 	state->keyPressEvent(this, event);
 }
 
 
-void 
+void
 BaseViewport::setState(ViewportState *new_state)
 {
 	this->state = new_state;
@@ -204,10 +204,10 @@ BaseViewport::setState(ViewportState *new_state)
 }
 
 
-void 
+void
 BaseViewport::refresh(void)
 {
-	this->updateGL();
+	this->update();
 }
 
 
@@ -229,7 +229,7 @@ BaseViewport::setNodeRestrictionsVisibility(bool const state)
 }
 
 
-void 
+void
 BaseViewport::setSurfaceVisibility(bool const state)
 {
 	this->state->setRenderGroupVisibility(SceneGraph::RG_SURFACES, state);
@@ -239,7 +239,7 @@ BaseViewport::setSurfaceVisibility(bool const state)
 }
 
 
-void 
+void
 BaseViewport::setTrianglesVisible(bool const state)
 {
 	//TODO set triangle wireframe visibility
@@ -256,7 +256,7 @@ BaseViewport::setTrianglesVisible(bool const state)
 }
 
 
-void 
+void
 BaseViewport::setShading(bool const state)
 {
 	//TODO toggle shading
@@ -264,7 +264,7 @@ BaseViewport::setShading(bool const state)
 }
 
 
-void 
+void
 BaseViewport::setViewSelection(Selection selection)
 {
 	//TODO finish this
@@ -273,15 +273,15 @@ BaseViewport::setViewSelection(Selection selection)
 }
 
 
-void 
+void
 BaseViewport::selectObjectsFromRay(fem::Point const &origin, fem::Point const &destination)
 {
 	Selection selection;
-	
+
 	float radius = viewport_data.node_scale/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom));
 
 	//TODO debug purposes only. remove
-	
+
 	//get a selection list of which object has been selected
 	Operation::SelectRayIntersectionOperation operation(selection, origin, destination, radius);
 	this->state->runSceneGraphOperation(operation);
@@ -291,7 +291,7 @@ BaseViewport::selectObjectsFromRay(fem::Point const &origin, fem::Point const &d
 }
 
 
-void 
+void
 BaseViewport::selectObjectsFromFrustum(std::array<fem::Point,4> const &near, std::array<fem::Point,4> const &far)
 {
 	Selection selection;
@@ -306,68 +306,68 @@ BaseViewport::selectObjectsFromFrustum(std::array<fem::Point,4> const &near, std
 }
 
 
-void 
+void
 BaseViewport::setXRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[0] = angle;
 	Q_EMIT xRotationChanged(angle);
-	updateGL();
+	update();
 }
 
 
-void 
+void
 BaseViewport::setYRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[1] = angle;
 	Q_EMIT yRotationChanged(angle);
-	updateGL();
+	update();
 }
 
 
-void 
+void
 BaseViewport::setZRotation(int angle)
 {
 	normalizeAngle(&angle);
 	viewport_data.camera.rotation.data[2] = angle;
 	Q_EMIT zRotationChanged(angle);
-	updateGL();
+	update();
 }
 
 
-void 
+void
 BaseViewport::setPosition(double x, double y, double z)
 {
 	//TODO implement this
 	viewport_data.camera.setPosition(x, y, z);
 
-	updateGL();
+	update();
 }
 
 
-void 
+void
 BaseViewport::setAnalysisResult(fem::AnalysisResult &new_result)
 {
 	this->state->setAnalysisResult(new_result);
 }
 
 
-void 
+void
 BaseViewport::setDisplacementsScale(float scale)
 {
 	this->state->setDisplacementsScale(scale);
 }
 
 
-void 
+void
 BaseViewport::setRenderGroupVisibility(SceneGraph::Groups group, bool state)
 {
 	this->state->setRenderGroupVisibility(group, state);
 }
 
 
-void 
+void
 BaseViewport::normalizeAngle(int *angle)
 {
 	while (*angle < 0)
@@ -377,23 +377,23 @@ BaseViewport::normalizeAngle(int *angle)
 }
 
 
-void 
+void
 BaseViewport::setSelection(Selection selection)
 {
 	Operation::ToggleSelectionOperation op(selection);
 	this->state->runSceneGraphOperation(op);
-	this->updateGL();
+	this->update();
 }
 
 
-void 
+void
 BaseViewport::clearSelection()
 {
 	this->state->clearSelection();
 }
 
 
-void 
+void
 BaseViewport::showSelection(const Selection selection)
 {
 	Operation::ToggleRenderOperation op(selection);
@@ -401,7 +401,7 @@ BaseViewport::showSelection(const Selection selection)
 }
 
 
-void 
+void
 BaseViewport::showAll()
 {
 	// nasty hack to avoid having to develop a new operator

@@ -25,7 +25,7 @@
 
 VPStateGradients::VPStateGradients()
 	: ViewportState()
-{ 
+{
 	this->m_gradient_representation.renderStrains11();
 
 	this->m_factory.setElementRepresentationPolicy(&m_gradient_representation);
@@ -44,7 +44,7 @@ VPStateGradients::initialize(BaseViewport *viewport)
 	// build the displaced_nodes from the analysis
 	assert(viewport != NULL);
 
-	this->setDisplacementsScale(1.0);	//TODO tweak this value 
+	this->setDisplacementsScale(1.0);	//TODO tweak this value
 
 	fem::Model &femp_model = viewport->project->getModel();
 	this->m_gradient_representation.setModel(femp_model);
@@ -73,7 +73,7 @@ VPStateGradients::populateScenegraph(BaseViewport *viewport)
 	for( std::map<fem::node_restriction_ref_t, fem::NodeRestrictions>::iterator i = femp_model.node_restrictions_list.begin(); i != femp_model.node_restrictions_list.end(); i++)
 	{
 		component = new SGC::NodeRestrictions(i->first, i->first, i->second, &this->m_displacements);
-		if(component) 
+		if(component)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, component);
 	}
 
@@ -81,7 +81,7 @@ VPStateGradients::populateScenegraph(BaseViewport *viewport)
 	for( std::vector<fem::Element>::size_type n = 0; n < femp_model.element_list.size(); n++)
 	{
 		component = this->m_factory(n, femp_model.element_list[n]);
-		if(component) 
+		if(component)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
 	}
 
@@ -112,7 +112,7 @@ VPStateGradients::setDisplacementsScale(float new_scale)
 }
 
 
-void 
+void
 VPStateGradients::setSelection(Selection)
 {
 }
@@ -132,7 +132,7 @@ VPStateGradients::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 						this->setDisplacementsScale(ds.scale());
 
 						//update the scene
-						viewport->updateGL();
+						viewport->update();
 						break;
 
 					default:
@@ -152,7 +152,7 @@ VPStateGradients::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 						m_gradient_representation.setSurfaceSubdivisionLevel(ds.scale());
 
 						//update the scene
-						viewport->updateGL();
+						viewport->update();
 						break;
 
 					default:

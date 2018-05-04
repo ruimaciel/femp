@@ -4,7 +4,6 @@
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QWidget>
-#include <QGLWidget>
 
 #include "../Project.h++"
 
@@ -19,7 +18,7 @@
 /**
 QGLWidget subclass designed to represent any postprocessing being done to any given model's FEM solution.
 **/
-class TensorFieldViewport 
+class TensorFieldViewport
 	: public BaseViewport
 {
 	Q_OBJECT
@@ -29,7 +28,7 @@ public:
 	~TensorFieldViewport();
 
 	/**
-	Sets this viewport to represent a given analysis result 
+	Sets this viewport to represent a given analysis result
 	@param	result	an analysis result
 	**/
 	void setAnalysisResult(fem::AnalysisResult &result);

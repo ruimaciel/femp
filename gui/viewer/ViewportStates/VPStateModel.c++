@@ -23,7 +23,7 @@
 
 VPStateModel::VPStateModel()
 	: ViewportState()
-{ 
+{
 	this->m_factory.setElementRepresentationPolicy(m_element_representation_factory.opaque());
 	this->m_factory.setDisplacementsPolicy(&m_no_displacements);
 }
@@ -66,7 +66,7 @@ VPStateModel::populateScenegraph(BaseViewport *viewport)
 	{
 		//TODO rewrite the SGC::NodeRestrictions class
 		component = new SGC::NodeRestrictions(i->first, i->first, i->second, &this->m_no_displacements);
-		if(component) 
+		if(component)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, component);
 	}
 
@@ -74,7 +74,7 @@ VPStateModel::populateScenegraph(BaseViewport *viewport)
 	for( std::vector<fem::Element>::size_type n = 0; n < femp_model.element_list.size(); n++)
 	{
 		component = this->m_factory(n, femp_model.element_list[n]);
-		if(component) 
+		if(component)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
 	}
 
@@ -86,7 +86,7 @@ VPStateModel::populateScenegraph(BaseViewport *viewport)
 }
 
 
-void 
+void
 VPStateModel::setSelection(Selection)
 {
 	std::cout << "VPStateModel::setSelection(Selection)" << std::endl;
@@ -99,8 +99,8 @@ VPStateModel::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 	switch( event->key() )
 	{
 		case Qt::Key_W:
-			m_element_representation_factory.toggleTriangleWireframeRendering();	
-			viewport->updateGL();
+			m_element_representation_factory.toggleTriangleWireframeRendering();
+			viewport->update();
 			break;
 
 		case Qt::Key_D:	// change the displacements scale
@@ -114,7 +114,7 @@ VPStateModel::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 						m_element_representation_factory.setSurfaceSubdivisionLevel(ds.scale());
 
 						//update the scene
-						viewport->updateGL();
+						viewport->update();
 						break;
 
 					default:
@@ -131,7 +131,7 @@ VPStateModel::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 
 
 
-void 
+void
 VPStateModel::setTrianglesVisible(bool const state)
 {
 	m_element_representation_factory.setTriangleWireframeRendering(state);

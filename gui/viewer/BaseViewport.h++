@@ -4,7 +4,7 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <assert.h>
 
-#include <QGLWidget>
+#include <QOpenGLWidget>
 
 #include <array>
 
@@ -38,7 +38,7 @@ class Input;
 QGLidget subclass designed for a Base class for all Qt widgets that provide an opengl viewports to render the model
 */
 class BaseViewport
-	: public QGLWidget,
+	: public QOpenGLWidget,
 	virtual public sigc::trackable
 {
 

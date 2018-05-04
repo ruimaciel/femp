@@ -25,7 +25,7 @@
 
 VPStateDisplacements::VPStateDisplacements()
 	: ViewportState()
-{ 
+{
 	this->m_factory.setElementRepresentationPolicy(m_element_representation_factory.opaque());
 	this->m_factory.setDisplacementsPolicy(&m_displacements);
 }
@@ -42,7 +42,7 @@ VPStateDisplacements::initialize(BaseViewport *viewport)
 	// build the displaced_nodes from the analysis
 	assert(viewport != NULL);
 
-	this->setDisplacementsScale(1.0);	//TODO tweak this value 
+	this->setDisplacementsScale(1.0);	//TODO tweak this value
 	this->m_displacements.setModel(viewport->project->getModel());
 }
 
@@ -53,7 +53,7 @@ VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 	assert(viewport != NULL);
 
 	scenegraph.clear();
-	
+
 	SceneGraphComponent * component;
 	fem::Model &femp_model = viewport->project->getModel();
 
@@ -74,7 +74,7 @@ VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 	for( std::vector<fem::Element>::size_type n = 0; n < femp_model.element_list.size(); n++)
 	{
 		component = this->m_factory(n, femp_model.element_list[n]);
-		if(component) 
+		if(component)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
 	}
 
@@ -97,7 +97,7 @@ VPStateDisplacements::setDisplacementsScale(float new_scale)
 }
 
 
-void 
+void
 VPStateDisplacements::setSelection(Selection)
 {
 }
@@ -117,7 +117,7 @@ VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 						this->setDisplacementsScale(ds.scale());
 
 						//update the scene
-						viewport->updateGL();
+						viewport->update();
 						break;
 
 					default:
@@ -137,7 +137,7 @@ VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 						m_element_representation_factory.setSurfaceSubdivisionLevel(ds.scale());
 
 						//update the scene
-						viewport->updateGL();
+						viewport->update();
 						break;
 
 					default:
@@ -147,8 +147,8 @@ VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 			break;
 
 		case Qt::Key_W:
-			m_element_representation_factory.toggleTriangleWireframeRendering();	
-			viewport->updateGL();
+			m_element_representation_factory.toggleTriangleWireframeRendering();
+			viewport->update();
 			break;
 
 		default:
@@ -158,7 +158,7 @@ VPStateDisplacements::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event 
 }
 
 
-void 
+void
 VPStateDisplacements::setTrianglesVisible(bool const state)
 {
 	m_element_representation_factory.setTriangleWireframeRendering(state);

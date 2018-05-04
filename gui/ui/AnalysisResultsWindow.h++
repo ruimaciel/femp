@@ -23,7 +23,7 @@ class AnalysisResultsWindow
 {
 	Q_OBJECT
 protected:
-	AnalysisResultsWidget *m_analysis_results_widget;
+	AnalysisResultsWidget *m_analysisResultsWidget;
 	fem::Project const *m_project;
 
 public:

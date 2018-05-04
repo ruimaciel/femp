@@ -26,21 +26,21 @@ SurfaceSubdivisionDialog::~SurfaceSubdivisionDialog()
 }
 
 
-unsigned short 
+unsigned short
 SurfaceSubdivisionDialog::scale()
 {
 	return this->spinBox->value();
 }
 
 
-void 
+void
 SurfaceSubdivisionDialog::updateSlider(int value)
 {
 	using namespace std;
 	this->horizontalSlider->setValue(value);
 }
 
-void 
+void
 SurfaceSubdivisionDialog::updateSpinBox(int value)
 {
 	using namespace std;

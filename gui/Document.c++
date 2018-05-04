@@ -51,12 +51,12 @@ Document::clear()
 		file_name = NULL;
 	}
 	m_documentType = TYPE_NONE;
-	this->project.clear();
+	this->m_project.clear();
 }
 
 
 enum Document::Error
-Document::setFileName(QString new_file)
+		Document::setFileName(QString new_file)
 {
 	if (this->file_name == NULL)
 		this->file_name = new QString;
@@ -90,13 +90,13 @@ Document::getFileName() const
 }
 
 
-enum Document::Error 
-Document::save()
+enum Document::Error
+		Document::save()
 {
 	//TODO drop support for Qt's text stream objects in favour of standard containers
 
 	QFile           file;
-	fem::Model &model = this->project.getModel();
+	fem::Model &model = this->m_project.getModel();
 
 	// TODO check version
 
@@ -106,7 +106,7 @@ Document::save()
 
 	file.setFileName(*file_name);
 
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) 
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
 		return ERR_WRITING_FILE;
 	}
@@ -117,21 +117,21 @@ Document::save()
 	out << "\t\t\"version\": \"1.0\",\n";
 	out << "\t\t\"type\": ";
 
-	switch (m_documentType) 
+	switch (m_documentType)
 	{
-		case TYPE_SOLID3D:
-			out << "\"3D solid\"\n";
-			break;
+	case TYPE_SOLID3D:
+		out << "\"3D solid\"\n";
+		break;
 
-		default:
-			out << "\"unknown\"\n";	// this should be seen as an error
-			break;
+	default:
+		out << "\"unknown\"\n";	// this should be seen as an error
+		break;
 	}
 	out << "\t},\n";
 
 	// dump the materials list
 	out << "\t\"materials\": [";
-	for (std::vector < fem::Material >::iterator it = model.material_list.begin(); it != model.material_list.end(); it++) 
+	for (std::vector < fem::Material >::iterator it = model.material_list.begin(); it != model.material_list.end(); it++)
 	{
 		// to print the comman between entries and avoiding printing it
 		// after the last
@@ -146,7 +146,7 @@ Document::save()
 
 	// dump the nodes list
 	out << "\t\"nodes\":[";
-	for (std::map < fem::node_ref_t, fem::Node >::iterator it = model.node_list.begin(); it != model.node_list.end(); it++) 
+	for (std::map < fem::node_ref_t, fem::Node >::iterator it = model.node_list.begin(); it != model.node_list.end(); it++)
 	{
 		if (it != model.node_list.begin())
 			out << ",\n\t";
@@ -168,51 +168,51 @@ Document::save()
 			out << "\n\t\t";
 		out << "{\"type\":";
 		// get the name of the element
-		switch (it->type) 
+		switch (it->type)
 		{
-			case fem::Element::FE_TETRAHEDRON4:
-				out << "\"tetrahedron4\", ";
-				break;
+		case fem::Element::FE_TETRAHEDRON4:
+			out << "\"tetrahedron4\", ";
+			break;
 
-			case fem::Element::FE_TETRAHEDRON10:
-				out << "\"tetrahedron10\", ";
-				break;
+		case fem::Element::FE_TETRAHEDRON10:
+			out << "\"tetrahedron10\", ";
+			break;
 
-			case fem::Element::FE_HEXAHEDRON8:
-				out << "\"hexahedron8\", ";
-				break;
+		case fem::Element::FE_HEXAHEDRON8:
+			out << "\"hexahedron8\", ";
+			break;
 
-			case fem::Element::FE_HEXAHEDRON20: 
-				out << "\"hexahedron20\", "; 
-				break; 
+		case fem::Element::FE_HEXAHEDRON20:
+			out << "\"hexahedron20\", ";
+			break;
 
-			case fem::Element::FE_HEXAHEDRON27:
-				out << "\"hexahedron27\", ";
-				break;
+		case fem::Element::FE_HEXAHEDRON27:
+			out << "\"hexahedron27\", ";
+			break;
 
-			case fem::Element::FE_PRISM6:
-				out << "\"prism6\", ";
-				break;
+		case fem::Element::FE_PRISM6:
+			out << "\"prism6\", ";
+			break;
 
-			case fem::Element::FE_PRISM15:
-				out << "\"prism15\", ";
-				break;
+		case fem::Element::FE_PRISM15:
+			out << "\"prism15\", ";
+			break;
 
-			case fem::Element::FE_PRISM18:
-				out << "\"prism18\", ";
-				break;
+		case fem::Element::FE_PRISM18:
+			out << "\"prism18\", ";
+			break;
 
-			default:
-				// TODO finish this
-				out << "\"default\", ";
-				qWarning("element defaulted");
-				break;
+		default:
+			// TODO finish this
+			out << "\"default\", ";
+			qWarning("element defaulted");
+			break;
 		}
 
 		// output the element's nodes
 		out << "\"nodes\":[";
 		for (std::vector < size_t >::iterator n = it->nodes.begin();
-				n != it->nodes.end(); n++) {
+			 n != it->nodes.end(); n++) {
 			if (n != it->nodes.begin())
 				out << ",";
 			out << *n;
@@ -308,7 +308,7 @@ Document::save()
 		out << ",\n\n";
 		// dump the load restrictions list
 		out << "\t\"node restrictions\": [";
-		for (std::map < fem::node_restriction_ref_t, fem::NodeRestrictions >::iterator it = model.node_restrictions_list.begin(); it != model.node_restrictions_list.end(); it++) 
+		for (std::map < fem::node_restriction_ref_t, fem::NodeRestrictions >::iterator it = model.node_restrictions_list.begin(); it != model.node_restrictions_list.end(); it++)
 		{
 			// TODO test this
 			if (it != model.node_restrictions_list.begin())
@@ -332,7 +332,7 @@ Document::save()
 
 		// dump the load patterns list
 		out << "\t\"load patterns\":[";
-		for (std::vector < fem::LoadPattern >::iterator it = model.load_pattern_list.begin(); it != model.load_pattern_list.end(); it++) 
+		for (std::vector < fem::LoadPattern >::iterator it = model.load_pattern_list.begin(); it != model.load_pattern_list.end(); it++)
 		{
 			if (it != model.load_pattern_list.begin())
 				out << ",";
@@ -375,11 +375,11 @@ Document::save()
 			*/
 
 			// take care of the domain displacements
-			if (!it->domain_loads.empty()) 
+			if (!it->domain_loads.empty())
 			{
 				out << ",\n\t\t\t";
 				out << "\"domain loads\":[";
-				for (std::map < size_t, fem::DomainLoad >::iterator n = it->domain_loads.begin(); n != it->domain_loads.end(); n++) 
+				for (std::map < size_t, fem::DomainLoad >::iterator n = it->domain_loads.begin(); n != it->domain_loads.end(); n++)
 				{
 					if (n != it->domain_loads.begin())
 						out << ",";
@@ -405,29 +405,29 @@ Document::save()
 					out << "\"type\": ";
 					switch(n->type)
 					{
-						case fem::Element::FE_TRIANGLE3:
-							out << "\"triangle3\"";
-							break;
+					case fem::Element::FE_TRIANGLE3:
+						out << "\"triangle3\"";
+						break;
 
-						case fem::Element::FE_TRIANGLE6:
-							out << "\"triangle6\"";
-							break;
+					case fem::Element::FE_TRIANGLE6:
+						out << "\"triangle6\"";
+						break;
 
-						case fem::Element::FE_QUADRANGLE4:
-							out << "\"quadrangle4\"";
-							break;
+					case fem::Element::FE_QUADRANGLE4:
+						out << "\"quadrangle4\"";
+						break;
 
-						case fem::Element::FE_QUADRANGLE8:
-							out << "\"quadrangle8\"";
-							break;
+					case fem::Element::FE_QUADRANGLE8:
+						out << "\"quadrangle8\"";
+						break;
 
-						case fem::Element::FE_QUADRANGLE9:
-							out << "\"quadrangle9\"";
-							break;
+					case fem::Element::FE_QUADRANGLE9:
+						out << "\"quadrangle9\"";
+						break;
 
-						default:
-							out << "\"unknown\"";
-							break;
+					default:
+						out << "\"unknown\"";
+						break;
 					}
 					out << ", ";
 

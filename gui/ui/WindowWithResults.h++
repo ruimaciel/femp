@@ -14,11 +14,11 @@
 Provides a window with the ability to select which AnalysisResults<> object to use
 **/
 class WindowWithResults
-	: public WindowWith
+		: public WindowWith
 {
 protected:
-	QToolBar *m_resultsToolBar;	// toolbar to provide a user to select which result to run
-	QComboBox *m_resultsComboBox;
+	QToolBar *m_toolBarResults;	// toolbar to provide a user to select which result to run
+	QComboBox *m_comboBoxResults;
 
 public:
 	void createToolbar(QMainWindow *parent, fem::Project &results);

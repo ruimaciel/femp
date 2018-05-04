@@ -14,12 +14,12 @@
 
 
 class DomainLoadsDialog
-	: public QDialog, public sigc::trackable, private Ui::DomainLoadsDialog
+		: public QDialog, public sigc::trackable, private Ui::DomainLoadsDialog
 {
 	Q_OBJECT
 
 public:
-	DomainLoadsDialog(LoadPatternsModel &model, QWidget *parent = NULL);
+	DomainLoadsDialog(LoadPatternsModel &model, QWidget *parent = nullptr);
 
 	size_t	getLoadPattern();
 
@@ -33,7 +33,7 @@ protected Q_SLOTS:
 	void handleNewLabelButton();
 
 public:	// sigc++ signals
-	sigc::signal<void, std::string const &>	create_load_pattern;	// sends a signal for fem::Model to create a new load pattern 
+	sigc::signal<void, std::string const &>	create_load_pattern;	// sends a signal for fem::Model to create a new load pattern
 
 private:
 	size_t load_pattern;

@@ -15,20 +15,20 @@ class MaterialsEditorDialog: public QDialog, private  Ui::MaterialsEditorDialog
 
 	Q_OBJECT
 
-	private:
-		fem::Model *model;
+private:
+	fem::Model *model;
 
-	public:
-		MaterialsEditorDialog(fem::Model *model, QWidget *parent = NULL);
-		~MaterialsEditorDialog();
+public:
+	explicit MaterialsEditorDialog(fem::Model *model, QWidget *parent = nullptr);
+	~MaterialsEditorDialog();
 
 
-	public slots:
-		void loadMaterials();
+public slots:
+	void loadMaterials();
 
-	private slots:
-		// resets the UI according to the selection state
-		void resetSelectionUI();
+private slots:
+	// resets the UI according to the selection state
+	void resetSelectionUI();
 };
 
 

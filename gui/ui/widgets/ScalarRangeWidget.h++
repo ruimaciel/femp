@@ -12,7 +12,7 @@
 Widget intended to be used to specify the range of a given parameter
 **/
 class ScalarRangeWidget
-	: public QWidget
+		: public QWidget
 {
 	Q_OBJECT
 

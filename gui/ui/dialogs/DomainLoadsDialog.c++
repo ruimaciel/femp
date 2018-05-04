@@ -34,14 +34,14 @@ DomainLoadsDialog::getForce()
 }
 
 
-void 
+void
 DomainLoadsDialog::loadPatternCreated(size_t, fem::LoadPattern const &)
 {
 	this->comboBoxLoadPattern->view()->reset();
 }
 
 
-void 
+void
 DomainLoadsDialog::handleNewLabelButton()
 {
 	LoadPatternDialog dialog(this);

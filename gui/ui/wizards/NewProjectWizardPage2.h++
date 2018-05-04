@@ -11,11 +11,11 @@ class NewProjectWizardPage2: public QWizardPage, public Ui::NewProjectWizardPage
 {
 	Q_OBJECT
 
-	public:
-		NewProjectWizardPage2();
-		~NewProjectWizardPage2();
+public:
+	NewProjectWizardPage2();
+	~NewProjectWizardPage2();
 
-		bool validatePage();
+	bool validatePage();
 };
 
 

@@ -14,7 +14,7 @@
 
 
 class NodeActionsDialog
-	: public QDialog, public sigc::trackable, private Ui::NodeActionsDialog
+		: public QDialog, public sigc::trackable, private Ui::NodeActionsDialog
 {
 	Q_OBJECT
 
@@ -22,7 +22,7 @@ private:
 	size_t load_pattern;
 
 public:
-	NodeActionsDialog(LoadPatternsModel &model, QWidget *parent = NULL);
+	NodeActionsDialog(LoadPatternsModel &model, QWidget *parent = nullptr);
 
 	size_t	getLoadPattern();
 	fem::Point getForce();
@@ -34,7 +34,7 @@ protected Q_SLOTS:
 	void handleNewLabelButton();
 
 public:	// sigc++ signals
-	sigc::signal<void, std::string const &>	create_load_pattern;	// sends a signal for fem::Model to create a new load pattern 
+	sigc::signal<void, std::string const &>	create_load_pattern;	// sends a signal for fem::Model to create a new load pattern
 };
 
 

@@ -18,7 +18,7 @@ class MoveNodesDialog
 Q_OBJECT
 
 public:
-	MoveNodesDialog(QWidget *parent = NULL);
+	explicit MoveNodesDialog(QWidget *parent = nullptr);
 	~MoveNodesDialog();
 
 	fem::Point getTranslation();

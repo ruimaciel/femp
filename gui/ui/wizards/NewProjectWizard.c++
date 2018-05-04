@@ -17,11 +17,11 @@ NewProjectWizard::NewProjectWizard(Document &doc, QWidget *parent)
 	*/
 
 	//TODO rename ProjectWizardPage2 class
-	page2 = new NewProjectWizardPage2;
-	addPage(page2);
+	m_page2 = new NewProjectWizardPage2;
+	addPage(m_page2);
 
-	page3 = new NewProjectWizardPage3(doc);
-	addPage(page3);
+	m_page3 = new NewProjectWizardPage3(doc);
+	addPage(m_page3);
 
 	//TODO crude hack
 	doc.setProjectType(Document::TYPE_SOLID3D);

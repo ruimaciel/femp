@@ -11,19 +11,19 @@
 Dialog used by GLDisplacementsWidget to input a new displacements scale
 **/
 class SurfaceSubdivisionDialog
-	: public QDialog, private Ui::SurfaceSubdivisionDialog
+		: public QDialog, private Ui::SurfaceSubdivisionDialog
 {
 	Q_OBJECT
 
-	public:
-		SurfaceSubdivisionDialog(unsigned short scale, QWidget *parent = NULL);
-		~SurfaceSubdivisionDialog();
+public:
+	SurfaceSubdivisionDialog(unsigned short scale, QWidget *parent = nullptr);
+	~SurfaceSubdivisionDialog();
 
-		unsigned short scale();
-	
-	protected slots:
-		void updateSpinBox(int );
-		void updateSlider(int);
+	unsigned short scale();
+
+protected slots:
+	void updateSpinBox(int );
+	void updateSlider(int);
 };
 
 #endif

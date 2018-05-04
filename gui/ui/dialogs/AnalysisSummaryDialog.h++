@@ -13,7 +13,7 @@
 Dialog box intended to display a set of values derived from the results of a given analysis
 **/
 class AnalysisSummaryDialog
-	:public QDialog, private Ui::AnalysisSummaryDialog
+		:public QDialog, private Ui::AnalysisSummaryDialog
 {
 public:
 	AnalysisSummaryDialog(fem::AnalysisResult const &results, QWidget *parent = NULL);

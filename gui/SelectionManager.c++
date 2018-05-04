@@ -19,28 +19,28 @@ SelectionManager::clearSelection()
 }
 
 
-void 
+void
 SelectionManager::selectElement(const fem::element_ref_t &ref)
 {
 	m_selection.selectElement(ref);
 }
 
 
-void 
+void
 SelectionManager::deselectElement(const fem::element_ref_t &ref)
 {
 	m_selection.deselectElement(ref);
 }
 
 
-void 
+void
 SelectionManager::selectNode(const fem::node_ref_t &ref)
 {
 	m_selection.selectNode(ref);
 }
 
 
-void 
+void
 SelectionManager::deselectNode(const fem::node_ref_t &ref)
 {
 	m_selection.deselectNode(ref);

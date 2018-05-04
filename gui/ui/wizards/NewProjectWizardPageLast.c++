@@ -18,7 +18,7 @@ NewProjectWizardPageLast::~NewProjectWizardPageLast()
 void NewProjectWizardPageLast::initializePage()
 {
 	QString tmp;
-	// set the path 
+	// set the path
 	tmp = field("location").toString();
 	tmp.append("/");
 	tmp += field("projectName").toString();

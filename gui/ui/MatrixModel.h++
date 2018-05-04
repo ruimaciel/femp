@@ -15,7 +15,7 @@
 Provides a Qt MVC model to use with QTableView widgets to represent the stiffness matrix
 **/
 class MatrixModel
-	: public QAbstractTableModel
+		: public QAbstractTableModel
 {
 	Q_OBJECT
 protected:

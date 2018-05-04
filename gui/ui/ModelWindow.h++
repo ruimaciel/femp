@@ -14,19 +14,19 @@
 /**
 MDI window designed to represent the model
 **/
-class ModelWindow 
-	: public MdiWindow, 
-	public WindowWithWireframe, 
-	public BaseWindow
+class ModelWindow
+		: public MdiWindow,
+		public WindowWithWireframe,
+		public BaseWindow
 {
 	Q_OBJECT
 
 public:
-	ModelWindow (fem::Project &project, ViewportColors &colors, QWidget *parent = 0);
+	ModelWindow (fem::Project &project, ViewportColors &colors, QWidget *parent = nullptr);
 
 protected:
 	void connectSignalsToSlots();
 
-};	
+};
 
 #endif

@@ -9,7 +9,7 @@ NewMaterialDialog::NewMaterialDialog(fem::Model &model, QWidget *parent)
 	: QDialog(parent), m_model(model)
 {
 	setupUi(this);
-	
+
 	lineEditPoisson->setValidator(new QDoubleValidator(-1.5,0.5,5,this));
 	lineEditYoung->setValidator(new QDoubleValidator(0,10e20,8,this));
 

@@ -12,7 +12,7 @@ OutputResultsInNodesCSVVisitor::OutputResultsInNodesCSVVisitor(Selection &select
 {
 	m_result = result;
 	m_out = &os;	//TODO make this more generic
-	
+
 	*m_out << "%";
 	*m_out << "element";
 	*m_out << "\tlocal";
@@ -36,7 +36,7 @@ OutputResultsInNodesCSVVisitor::OutputResultsInNodesCSVVisitor(Selection &select
 }
 
 
-void 
+void
 OutputResultsInNodesCSVVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult> &)
 {
 	assert(m_out != NULL);
@@ -48,8 +48,8 @@ OutputResultsInNodesCSVVisitor::visit(fem::Model &model, std::vector<fem::Analys
 		fem::ElementResults *element_results;
 		element = &model.element_list[e->first];
 
-		
-		for(size_t n = 0; n < element->nodes.size(); n++)	
+
+		for(size_t n = 0; n < element->nodes.size(); n++)
 		{
 			std::set<fem::node_ref_t>::iterator	i;
 			auto selected_nodes = m_selection.getNodeReferences();

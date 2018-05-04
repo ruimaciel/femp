@@ -28,7 +28,7 @@ public:
 
 	void deselectNode(const fem::node_ref_t &ref);
 
-	std::set<fem::node_ref_t> getNodeReferences() const; 
+	std::set<fem::node_ref_t> getNodeReferences() const;
 
 
 protected:

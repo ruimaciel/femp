@@ -10,7 +10,7 @@ LoadPatternsModel::LoadPatternsModel(fem::Model const &model, QObject *parent)
 }
 
 
-QVariant 
+QVariant
 LoadPatternsModel::data(const QModelIndex &index, int role ) const
 {
 	if (!index.isValid())
@@ -20,30 +20,30 @@ LoadPatternsModel::data(const QModelIndex &index, int role ) const
 
 	switch(role)
 	{
-		case Qt::DisplayRole:
+	case Qt::DisplayRole:
+	{
+		unsigned int i = index.row();
+		if( i < m_model.load_pattern_list.size())
 		{
-			unsigned int i = index.row();
-			if( i < m_model.load_pattern_list.size())
-			{
-				fem::LoadPattern const &lp = m_model.load_pattern_list[i];
-				QVariant out = QString::fromStdString(lp.getLabel() );	
-				return out;
-			}
-			else
-			{
-				return QVariant();
-			}
+			fem::LoadPattern const &lp = m_model.load_pattern_list[i];
+			QVariant out = QString::fromStdString(lp.getLabel() );
+			return out;
 		}
+		else
+		{
+			return QVariant();
+		}
+	}
 		break;
 
-		default:
-			return QVariant();
-			break;
+	default:
+		return QVariant();
+		break;
 	}
 }
 
 
-int 
+int
 LoadPatternsModel::rowCount(const QModelIndex &parent) const
 {
 	if (parent.isValid())

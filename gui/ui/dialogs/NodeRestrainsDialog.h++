@@ -8,13 +8,18 @@
 
 
 class NodeRestrainsDialog
-	: public QDialog, private Ui_NodeRestrainDialog
+		: public QDialog, private Ui_NodeRestrainDialog
 {
 public:
-	enum Restraints {NONE=0, RX = 0x01, RY = 0x02, RZ = 0x04};
+	enum Restraints {
+		NONE=0,
+		RX = 0x01,
+		RY = 0x02,
+		RZ = 0x04
+	};
 
 public:
-	NodeRestrainsDialog(QWidget *parent = NULL);
+	explicit NodeRestrainsDialog(QWidget *parent = nullptr);
 	~NodeRestrainsDialog();
 
 	int getRestraints();

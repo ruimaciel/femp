@@ -24,8 +24,8 @@
 /**
 MDI window designed to represent the model
 **/
-class PostprocessingWindow 
-	: public MdiWindow,  public WindowWithResults,  public WindowWithPostprocessing,  public WindowWithScaling, public BaseWindow
+class PostprocessingWindow
+		: public MdiWindow,  public WindowWithResults,  public WindowWithPostprocessing,  public WindowWithScaling, public BaseWindow
 {
 	Q_OBJECT
 
@@ -37,16 +37,16 @@ protected:
 		A_VON_MISES
 	};
 
-	QToolBar *toggleMenuBarVisibilityToolBar;	
-	QComboBox *analysisComboBox;
+	QToolBar *m_toolBarToggleMenuBarVisibility;
+	QComboBox *m_comboBoxAnalysis;
 
 	fem::AnalysisResult *m_result;	// pointer to the current analysis result, which will point to a reference
 
 	//gradient values
-	fem::ResultsRanges<double> m_results_ranges;	// used to set values for representation
+	fem::ResultsRanges<double> m_resultsRanges;	// used to set values for representation
 
 public:
-	PostprocessingWindow (fem::Project &project, fem::AnalysisResult &result, ViewportColors &colors, QWidget *parent = 0);
+	PostprocessingWindow (fem::Project &project, fem::AnalysisResult &result, ViewportColors &colors, QWidget *parent = nullptr);
 
 
 public Q_SLOTS:
@@ -68,7 +68,7 @@ Q_SIGNALS:
 	emits a signal to dump the results from a given set of project objets
 	**/
 	void dumpResultsFromSelection(fem::AnalysisResult *result);
-	
+
 protected:
 	void connectSignalsToSlots();
 
@@ -77,6 +77,6 @@ protected:
 	void setGradientValuesRange(const fem::AnalysisResult &result);
 
 
-};	
+};
 
 #endif

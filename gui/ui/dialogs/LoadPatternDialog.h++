@@ -10,12 +10,12 @@
 USAGE EXPLANATION
 **/
 class LoadPatternDialog
-	: public QDialog, private Ui::LoadPatternDialog
+		: public QDialog, private Ui::LoadPatternDialog
 {
 	Q_OBJECT
 
 public:
-	LoadPatternDialog(QWidget *parent = NULL);
+	LoadPatternDialog(QWidget *parent = nullptr);
 
 
 	std::string getLabel() const;

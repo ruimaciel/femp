@@ -14,13 +14,13 @@ MatrixModel::MatrixModel(fem::Project &project, QObject *parent )
 }
 
 
-QVariant 
+QVariant
 MatrixModel::headerData ( int section, Qt::Orientation orientation, int role ) const
 {
 	if (role != Qt::DisplayRole)
 		return QVariant();
 
-	if (orientation == Qt::Horizontal) 
+	if (orientation == Qt::Horizontal)
 	{
 		return section;
 	}
@@ -31,21 +31,21 @@ MatrixModel::headerData ( int section, Qt::Orientation orientation, int role ) c
 }
 
 
-int 
-MatrixModel::rowCount(const QModelIndex & /*parent*/) const 
+int
+MatrixModel::rowCount(const QModelIndex & /*parent*/) const
 {
 	return m_result->K.rows();
 }
 
 
-int 
+int
 MatrixModel::columnCount(const QModelIndex & /*parent */) const
 {
 	return m_result->K.columns();
 }
 
 
-QVariant 
+QVariant
 MatrixModel::data(const QModelIndex &index, int role ) const
 {
 	if(role == Qt::DisplayRole)

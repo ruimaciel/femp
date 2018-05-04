@@ -12,18 +12,18 @@ class NewProjectWizardPage1: public QWizardPage, public Ui::NewProjectWizardPage
 {
 	Q_OBJECT
 
-	public:
-		NewProjectWizardPage1(QWidget *parent = 0, QString basedir = QString());
-		~NewProjectWizardPage1();
+public:
+	NewProjectWizardPage1(QWidget *parent = 0, QString basedir = QString());
+	~NewProjectWizardPage1();
 
-		bool validatePage();
+	bool validatePage();
 
-	private:
-		QString base_dir;
+private:
+	QString m_baseDir;
 
 
-	private Q_SLOTS:
-		void setNewLocation();	// uses a QFileDialog to get a new project location
+private Q_SLOTS:
+	void setNewLocation();	// uses a QFileDialog to get a new project location
 };
 
 

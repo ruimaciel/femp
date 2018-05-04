@@ -11,19 +11,19 @@
 Dialog used by GLDisplacementsWidget to input a new displacements scale
 **/
 class DialogScale
-	: public QDialog, private Ui::DialogScale
+		: public QDialog, private Ui::DialogScale
 {
 	Q_OBJECT
 
-	public:
-		DialogScale(float scale, QWidget *parent = NULL);
-		~DialogScale();
+public:
+	DialogScale(float scale, QWidget *parent = NULL);
+	~DialogScale();
 
-		double scale();
-	
-	protected slots:
-		void updateSpinBox(int );
-		void updateSlider(double);
+	double scale();
+
+protected slots:
+	void updateSpinBox(int );
+	void updateSlider(double);
 };
 
 #endif

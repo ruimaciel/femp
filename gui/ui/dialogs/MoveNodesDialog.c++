@@ -12,7 +12,7 @@ MoveNodesDialog::~MoveNodesDialog()
 }
 
 
-fem::Point 
+fem::Point
 MoveNodesDialog::getTranslation()
 {
 	fem::Point translation;

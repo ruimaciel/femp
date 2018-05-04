@@ -11,7 +11,7 @@
 Dock widget which is intended to provide the user with a simple way to select individual model objects
 **/
 class SelectionDockWidget
-	: public QDockWidget
+		: public QDockWidget
 {
 };
 

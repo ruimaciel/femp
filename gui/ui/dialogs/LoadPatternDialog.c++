@@ -9,7 +9,7 @@ LoadPatternDialog::LoadPatternDialog(QWidget *parent )
 }
 
 
-std::string 
+std::string
 LoadPatternDialog::getLabel() const
 {
 	std::string text;

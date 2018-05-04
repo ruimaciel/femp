@@ -79,7 +79,7 @@ void QuadratureRulesOptionsDialog::setQuadratureRule()
 
 	analysis->prism6.domain_degree = spinBox_dp6->value();
 	analysis->prism15.domain_degree = spinBox_dp15->value();
-	
+
 	// SURFACE
 	analysis->tri3.domain_degree = spinBox_Su_tri3->value();
 	analysis->tri6.domain_degree = spinBox_Su_tri6->value();

@@ -9,7 +9,7 @@
 
 
 class DefaultProgressIndicator
-	: public QObject, public ProgressIndicatorStrategy
+		: public QObject, public ProgressIndicatorStrategy
 {
 	Q_OBJECT
 

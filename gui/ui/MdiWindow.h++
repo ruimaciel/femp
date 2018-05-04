@@ -22,9 +22,9 @@
 Base class for all the MDI windows that render the model
 **/
 class MdiWindow
-	:  public QMainWindow,
-	protected Ui::MdiWindow,
-	public sigc::trackable
+		:  public QMainWindow,
+		protected Ui::MdiWindow,
+		public sigc::trackable
 {
 	Q_OBJECT
 

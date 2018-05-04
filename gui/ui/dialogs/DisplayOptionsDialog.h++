@@ -10,10 +10,10 @@
 
 
 class DisplayOptionsDialog
-	: public QDialog, public Ui_DisplayOptionsDialog
+		: public QDialog, public Ui_DisplayOptionsDialog
 {
 public:
-	DisplayOptionsDialog(fem::Model &model, QWidget *parent = NULL);
+	DisplayOptionsDialog(fem::Model &model, QWidget *parent = nullptr);
 	~DisplayOptionsDialog();
 
 	// returns the index to the LoadOptions object that will be rendered

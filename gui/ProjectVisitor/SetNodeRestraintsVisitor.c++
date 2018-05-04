@@ -14,7 +14,7 @@ SetNodeRestraintsVisitor::SetNodeRestraintsVisitor(Selection const &selection, f
 }
 
 
-void 
+void
 SetNodeRestraintsVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult> &)
 {
 	if(m_restrictions.free())

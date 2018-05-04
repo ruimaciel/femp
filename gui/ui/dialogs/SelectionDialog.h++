@@ -10,17 +10,17 @@
 #include <SelectionManager.h++>
 
 
-/** 
+/**
 Dialog box which uses the selection widget to select objects from a given fem::Project object
 **/
 class SelectionDialog
-	: public QDialog
+		: public QDialog
 {
 protected:
 	SelectionWidget *m_selection_widget;
 
 public:
-	SelectionDialog(fem::Project &project, SelectionManager &selection_manager, QWidget *parent = NULL);
+	SelectionDialog(fem::Project &project, SelectionManager &selection_manager, QWidget *parent = nullptr);
 };
 
 #endif

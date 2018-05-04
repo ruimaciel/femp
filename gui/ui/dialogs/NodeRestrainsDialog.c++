@@ -13,7 +13,7 @@ NodeRestrainsDialog::~NodeRestrainsDialog()
 }
 
 
-int 
+int
 NodeRestrainsDialog::getRestraints()
 {
 	int r = NONE;
@@ -28,7 +28,7 @@ NodeRestrainsDialog::getRestraints()
 }
 
 
-fem::NodeRestrictions 
+fem::NodeRestrictions
 NodeRestrainsDialog::getRestrictions() const
 {
 	fem::NodeRestrictions restrictions;

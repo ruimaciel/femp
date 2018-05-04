@@ -13,7 +13,7 @@
 MVC pattern which manages a list of all objects contained in a given fem::Project object which have been selected
 **/
 class SelectionManager
-	: public sigc::trackable
+		: public sigc::trackable
 {
 public:
 

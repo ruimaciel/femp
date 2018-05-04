@@ -11,7 +11,7 @@ ResultsRangeDialog::ResultsRangeDialog(QWidget *parent )
 }
 
 
-void 
+void
 ResultsRangeDialog::setValueRanges(const fem::ResultsRanges<double> &ranges)
 {
 	// Strains
@@ -34,7 +34,7 @@ ResultsRangeDialog::setValueRanges(const fem::ResultsRanges<double> &ranges)
 }
 
 
-bool 
+bool
 ResultsRangeDialog::getValueRanges(fem::ResultsRanges<double> &ranges) const
 {
 	// Strains
@@ -60,7 +60,7 @@ ResultsRangeDialog::getValueRanges(fem::ResultsRanges<double> &ranges) const
 }
 
 
-void 
+void
 ResultsRangeDialog::connectSignalsToSlots()
 {
 }

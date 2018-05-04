@@ -16,7 +16,7 @@
 Provides a window with a toolbar which sets a scale
 **/
 class WindowWithScaling
-	: public WindowWith
+		: public WindowWith
 {
 public:
 	void createToolbar(QMainWindow *parent, fem::Project &results);
@@ -34,11 +34,11 @@ protected:
 
 
 protected:
-	QToolBar *m_scalingToolBar;	// toolbar to provide a user to select which result to run
-	QDoubleSpinBox *m_scalingDoubleSpinBox;
+	QToolBar *m_toolBarScaling;	// toolbar to provide a user to select which result to run
+	QDoubleSpinBox *m_doubleSpinBoxScaling;
 	QAction *m_actionSetTensionRanges;	// action to call a dialog which sets the values for the max an min values of any given field
 
-	QMenu * m_scaling_menu;
+	QMenu * m_menuScaling;
 };
 
 

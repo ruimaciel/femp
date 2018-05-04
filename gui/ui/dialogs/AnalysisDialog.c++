@@ -28,49 +28,49 @@ fem::Solver<double> * AnalysisDialog::solver()
 
 	switch(toolBoxSolvers->currentIndex())
 	{
-		case 0:
-			{
-				fem::CholeskySolver<double> * solver = NULL;
-				solver = new fem::CholeskySolver<double>;
+	case 0:
+	{
+		fem::CholeskySolver<double> * solver = NULL;
+		solver = new fem::CholeskySolver<double>;
 
-				return solver;
-			}
-			break;
+		return solver;
+	}
+		break;
 
-		case 1:
-			{
-				fem::CGSolver<double> * solver = NULL;
-				solver = new fem::CGSolver<double>;
+	case 1:
+	{
+		fem::CGSolver<double> * solver = NULL;
+		solver = new fem::CGSolver<double>;
 
-				// set the options
-				solver->delta = pow(10,spinBoxDeltaExponent->value());
-				solver->max_iterations = spinBoxMaxIterations->value();
+		// set the options
+		solver->delta = pow(10,spinBoxDeltaExponent->value());
+		solver->max_iterations = spinBoxMaxIterations->value();
 
-				return solver;
-			}
-			break;
+		return solver;
+	}
+		break;
 
-		case 2:
-			{
-				fem::DenseCholeskySolver<double> * solver = NULL;
-				solver = new fem::DenseCholeskySolver<double>;
+	case 2:
+	{
+		fem::DenseCholeskySolver<double> * solver = NULL;
+		solver = new fem::DenseCholeskySolver<double>;
 
-				return solver;
-			}
-			break;
+		return solver;
+	}
+		break;
 
-		case 3:
-			{
-				fem::UmfpackSolver<double> * solver = NULL;
-				solver = new fem::UmfpackSolver<double>;
+	case 3:
+	{
+		fem::UmfpackSolver<double> * solver = NULL;
+		solver = new fem::UmfpackSolver<double>;
 
-				return solver;
-			}
-			break;
+		return solver;
+	}
+		break;
 
-		default:
-			assert(false);
-			break;
+	default:
+		assert(false);
+		break;
 	}
 
 	// this part will never be reached
@@ -90,7 +90,7 @@ void AnalysisDialog::loadLoadPatternList(fem::Model &model)
 	for(std::vector<fem::LoadPattern>::iterator i =  model.load_pattern_list.begin(); i != model.load_pattern_list.end(); i++)
 	{
 		QString temp = QString(i->getLabel().c_str());
-		
+
 		comboBoxLoadPattern->addItem(temp);
 	}
 }

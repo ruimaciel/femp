@@ -11,7 +11,7 @@ SetDomainLoadsVisitor::SetDomainLoadsVisitor(Selection const &selection, fem::Lo
 }
 
 
-void 
+void
 SetDomainLoadsVisitor::visit(fem::Model &, std::vector<fem::AnalysisResult> &)
 {
 	for(fem::element_ref_t const &eref: m_selection.getElementReferences())

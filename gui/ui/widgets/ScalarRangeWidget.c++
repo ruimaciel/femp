@@ -21,7 +21,7 @@ ScalarRangeWidget::ScalarRangeWidget(const QString label, QWidget *parent)
 }
 
 
-bool 
+bool
 ScalarRangeWidget::getMaximum(double &maximum) const
 {
 	QString temp;
@@ -34,7 +34,7 @@ ScalarRangeWidget::getMaximum(double &maximum) const
 }
 
 
-bool 
+bool
 ScalarRangeWidget::getMinimum(double &minimum) const
 {
 	QString temp;
@@ -47,7 +47,7 @@ ScalarRangeWidget::getMinimum(double &minimum) const
 }
 
 
-void 
+void
 ScalarRangeWidget::connectSignalsToSlots()
 {
 	connect(ui.lineEditMaxValue,	SIGNAL(returnPressed()),	this,	SLOT(change()));
@@ -55,14 +55,14 @@ ScalarRangeWidget::connectSignalsToSlots()
 }
 
 
-void 
+void
 ScalarRangeWidget::setLabel(const QString label)
 {
 	this->ui.labelValue->setText(label);
 }
 
 
-void 
+void
 ScalarRangeWidget::setMaximum(const double new_maximum)
 {
 	if(new_maximum > 0)
@@ -72,7 +72,7 @@ ScalarRangeWidget::setMaximum(const double new_maximum)
 }
 
 
-void 
+void
 ScalarRangeWidget::setMinimum(const double new_minimum)
 {
 	if(new_minimum < 0)

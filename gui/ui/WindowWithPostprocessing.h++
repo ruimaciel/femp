@@ -14,7 +14,7 @@
 Provides a window with the ability to select which AnalysisResults<> object to use
 **/
 class WindowWithPostprocessing
-	: public WindowWith
+		: public WindowWith
 {
 protected:
 	enum PostprocessingType {

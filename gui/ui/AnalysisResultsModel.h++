@@ -22,7 +22,7 @@ protected:
 	fem::Project *m_project;
 	std::vector<fem::AnalysisResult>::iterator m_result;
 	int 	m_rows;
-	std::map<int, std::vector<fem::Element>::size_type>	m_line_map;
+	std::map<int, std::vector<fem::Element>::size_type>	m_lineMap;
 
 public:
 	AnalysisResultsModel(fem::Project &project, QObject *parent = nullptr);

@@ -5,7 +5,7 @@ namespace fem
 {
 
 
-void 
+void
 Project::clear()
 {
 	this->m_model.clear();
@@ -13,21 +13,21 @@ Project::clear()
 }
 
 
-void 
+void
 Project::pushAnalysisResult(fem::AnalysisResult &new_result)
 {
 	this->result.push_back(new_result);
 }
 
 
-Model & 
+Model &
 Project::getModel()
 {
 	return this->m_model;
 }
 
 
-void 
+void
 Project::accept(ProjectVisitor &visitor)
 {
 	visitor.visit(m_model,result);

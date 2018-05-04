@@ -44,14 +44,14 @@ NodeActionsDialog::getDisplacement()
 }
 
 
-void 
+void
 NodeActionsDialog::loadPatternCreated(size_t, fem::LoadPattern const &)
 {
 	this->comboBoxLoadPattern->view()->reset();
 }
 
 
-void 
+void
 NodeActionsDialog::handleNewLabelButton()
 {
 	LoadPatternDialog dialog(this);

@@ -5,8 +5,8 @@
 
 
 ModelWindow::ModelWindow (fem::Project &project, ViewportColors &colors, QWidget *parent)
-	: MdiWindow(parent), 
-	BaseWindow("Model")
+	: MdiWindow(parent),
+	  BaseWindow("Model")
 {
 	viewport = new ModelViewport(project, this);
 	this->setCentralWidget(viewport);
@@ -19,7 +19,7 @@ ModelWindow::ModelWindow (fem::Project &project, ViewportColors &colors, QWidget
 }
 
 
-void 
+void
 ModelWindow::connectSignalsToSlots()
 {
 	// nasty hack to connect libsigc++ signal

@@ -120,20 +120,20 @@ private:
 	class Parser
 	{
 		enum LEXER_TOKENS { LEX_UNKNOWN_TOKEN = 0,
-			LEX_OPTION_NAME,
-			LEX_OPTION_SEPARATOR,
-			LEX_OPTION_ASSIGN,
-			LEX_INDENT,
-			LEX_STRING,
-			LEX_NUMBER,
-			LEX_BOOL,
-			LEX_OPEN_VECTOR,
-			LEX_CLOSE_VECTOR,
-			LEX_VECTOR_SEPARATOR,
-			LEX_EOL,
-			LEX_EOF,
-			LEX_STREAM_ERROR,
-			LEX_ERROR };
+							LEX_OPTION_NAME,
+							LEX_OPTION_SEPARATOR,
+							LEX_OPTION_ASSIGN,
+							LEX_INDENT,
+							LEX_STRING,
+							LEX_NUMBER,
+							LEX_BOOL,
+							LEX_OPEN_VECTOR,
+							LEX_CLOSE_VECTOR,
+							LEX_VECTOR_SEPARATOR,
+							LEX_EOL,
+							LEX_EOF,
+							LEX_STREAM_ERROR,
+							LEX_ERROR };
 
 		// the parser buffer
 		char buffer[1024];
@@ -150,18 +150,18 @@ private:
 		char *lim;	// marks the string limit
 		int lex_state;	// lexer state, to avoid grammar ambiguities
 
-		public:
-			Parser();
-			~Parser();
+	public:
+		Parser();
+		~Parser();
 
-		private:
-			void fill(std::istream &is);
-			enum LEXER_TOKENS lexer(std::istream &is);
+	private:
+		void fill(std::istream &is);
+		enum LEXER_TOKENS lexer(std::istream &is);
 
-		public:
-			int parse(ProgramOptions &op, std::istream &is, std::string prefix = std::string() );
+	public:
+		int parse(ProgramOptions &op, std::istream &is, std::string prefix = std::string() );
 
-			friend class ProgramOptions;
+		friend class ProgramOptions;
 	};
 };
 

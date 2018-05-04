@@ -14,7 +14,7 @@ NewProjectWizardPage3::NewProjectWizardPage3(Document &document)
 	setupUi(this);
 
 	// set the variable
-	successful_import = false;
+	m_successfulImport = false;
 
 	// connect signals
 	connect(toolButtonSelectFile, SIGNAL(clicked()), this, SLOT(getFileFromDialog()));
@@ -33,7 +33,7 @@ NewProjectWizardPage3::~NewProjectWizardPage3()
 
 bool NewProjectWizardPage3::validatePage()
 {
-	return successful_import;
+	return m_successfulImport;
 }
 
 
@@ -91,46 +91,46 @@ void NewProjectWizardPage3::loadMeshFile()
 			labelElementsNumber->setText("");
 			labelError->setText( tr("Failed to open the file"));
 
-			successful_import = false;
+			m_successfulImport = false;
 			return;
 		}
 
 		fem::SurfaceNormalLoad o;
 		o.setLoadMagnitude(-1.0f);
 
-		parser.setSurfaceLoadOperator(o);
+		m_parser.setSurfaceLoadOperator(o);
 		// parse the file
-		switch(parser(file, femp_model) )
+		switch(m_parser(file, femp_model) )
 		{
-			case Parser::Error::ERR_OK:
-				{
-				// update the UI accordingly
-				QString temp;
-				temp.setNum(femp_model.node_list.size());
-				labelNodesNumber->setText(temp);
-				temp.setNum(femp_model.element_list.size());
-				labelElementsNumber->setText(temp);
-				labelError->setText("");
+		case Parser::Error::ERR_OK:
+		{
+			// update the UI accordingly
+			QString temp;
+			temp.setNum(femp_model.node_list.size());
+			labelNodesNumber->setText(temp);
+			temp.setNum(femp_model.element_list.size());
+			labelElementsNumber->setText(temp);
+			labelError->setText("");
 
-				successful_import = true;
-				}
-				break;
+			m_successfulImport = true;
+		}
+			break;
 
-			default:
-				// clear the model except the materials list
-				femp_model.node_list.clear();
-				femp_model.element_list.clear();
-				femp_model.node_restrictions_list.clear();
-				femp_model.load_pattern_list.clear();
-				//TODO clear the list when exiting
+		default:
+			// clear the model except the materials list
+			femp_model.node_list.clear();
+			femp_model.element_list.clear();
+			femp_model.node_restrictions_list.clear();
+			femp_model.load_pattern_list.clear();
+			//TODO clear the list when exiting
 
-				// update the UI
-				labelNodesNumber->setText("");
-				labelElementsNumber->setText("");
-				labelError->setText(QString::fromStdString(parser.error.message));
+			// update the UI
+			labelNodesNumber->setText("");
+			labelElementsNumber->setText("");
+			labelError->setText(QString::fromStdString(m_parser.error.message));
 
-				successful_import = false;
-				break;
+			m_successfulImport = false;
+			break;
 		}
 
 		emit completeChanged();
@@ -141,23 +141,23 @@ void NewProjectWizardPage3::loadMeshFile()
 
 bool NewProjectWizardPage3::isComplete() const
 {
-	return successful_import;
+	return m_successfulImport;
 }
 
 
 void NewProjectWizardPage3::getFileFromDialog(void)
 {
-	 QFileDialog dialog(this);
-	 dialog.setFileMode(QFileDialog::ExistingFile);
-	 dialog.setNameFilter(tr("MSH file (*.msh)"));
-	 if(dialog.exec() == QDialog::Accepted)
-	 {
-	 	// a file was chosen
+	QFileDialog dialog(this);
+	dialog.setFileMode(QFileDialog::ExistingFile);
+	dialog.setNameFilter(tr("MSH file (*.msh)"));
+	if(dialog.exec() == QDialog::Accepted)
+	{
+		// a file was chosen
 		lineEditFilePath->setText(dialog.selectedFiles().first());
-	 }
+	}
 
-	 //TODO load the file
-	 loadMeshFile();
+	//TODO load the file
+	loadMeshFile();
 }
 
 
@@ -166,16 +166,16 @@ void NewProjectWizardPage3::addNewMaterial(void)
 	NewMaterialDialog dialog(m_document.getProject().getModel(), this);
 	switch(dialog.exec())
 	{
-		case QDialog::Accepted:
-			loadMaterialsCombo();
+	case QDialog::Accepted:
+		loadMaterialsCombo();
 
-			// and now turn on the UI
-			lineEditFilePath->setEnabled(true);
-			toolButtonSelectFile->setEnabled(true);
-			break;
+		// and now turn on the UI
+		lineEditFilePath->setEnabled(true);
+		toolButtonSelectFile->setEnabled(true);
+		break;
 
-		case QDialog::Rejected:
-			break;
+	case QDialog::Rejected:
+		break;
 	}
 }
 

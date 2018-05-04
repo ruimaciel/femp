@@ -8,12 +8,12 @@
 
 
 class CommandLineDockWidget
-	: public QDockWidget
+		: public QDockWidget
 {
 	Q_OBJECT
 
 public:
-	CommandLineDockWidget(QWidget *parent = 0);
+	CommandLineDockWidget(QWidget *parent = nullptr);
 
 private:
 	Ui::CommandLineDockWidget ui;

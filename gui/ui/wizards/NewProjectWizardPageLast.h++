@@ -10,11 +10,11 @@ class NewProjectWizardPageLast: public QWizardPage, public Ui_NewProjectWizardPa
 {
 	Q_OBJECT
 
-	public:
-		NewProjectWizardPageLast();
-		~NewProjectWizardPageLast();
+public:
+	NewProjectWizardPageLast();
+	~NewProjectWizardPageLast();
 
-		void initializePage();	// needed to update the fields
+	void initializePage();	// needed to update the fields
 };
 
 

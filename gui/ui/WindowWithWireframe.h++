@@ -14,7 +14,7 @@
 Provides a window with the UI needed to select between rendering wireframe, surfaces or both
 **/
 class WindowWithWireframe
-	: public WindowWith
+		: public WindowWith
 {
 public:
 	enum RenderingType {
@@ -28,8 +28,8 @@ public:
 
 protected:
 
-	QComboBox *m_elementRenderingComboBox;
-	QToolBar *m_toggleElementRenderingToolBar;
+	QComboBox *m_comboBoxElementRendering;
+	QToolBar *m_toolBarToggleElementRendering;
 
 };
 

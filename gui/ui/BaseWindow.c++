@@ -7,7 +7,7 @@ BaseWindow::BaseWindow(QString const &label)
 }
 
 
-QString 
+QString
 BaseWindow::label() const
 {
 	return m_windowLabel;

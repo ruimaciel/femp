@@ -15,7 +15,7 @@ OutputElementStatisticsVisitor::OutputElementStatisticsVisitor(Selection const &
 }
 
 
-void 
+void
 OutputElementStatisticsVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult> &)
 {
 	assert(m_selection != NULL);
@@ -41,45 +41,45 @@ OutputElementStatisticsVisitor::visit(fem::Model &model, std::vector<fem::Analys
 
 		switch(element.family())
 		{
-			case fem::Element::EF_TETRAHEDRON: 
-				{
-					set(0,1);
-					set(0,2);
-					set(0,3);
-					set(1,3);
-					set(2,3);
-				}
-				break;
+		case fem::Element::EF_TETRAHEDRON:
+		{
+			set(0,1);
+			set(0,2);
+			set(0,3);
+			set(1,3);
+			set(2,3);
+		}
+			break;
 
-			case fem::Element::EF_PRISM : 
-				{
-					set(0,1);
-					set(0,2);
-					set(0,3);
-					set(3,4);
-					set(3,5);
-					set(4,1);
-					set(5,2);
-				}
-				break;
+		case fem::Element::EF_PRISM :
+		{
+			set(0,1);
+			set(0,2);
+			set(0,3);
+			set(3,4);
+			set(3,5);
+			set(4,1);
+			set(5,2);
+		}
+			break;
 
-			case fem::Element::EF_HEXAHEDRON:
-				{
-					set(0,1);
-					set(0,2);
-					set(0,3);
-					set(0,4);
-					set(4,5);
-					set(4,6);
-					set(4,7);
-					set(1,5);
-					set(2,6);
-					set(3,7);
-				}
-				break;
+		case fem::Element::EF_HEXAHEDRON:
+		{
+			set(0,1);
+			set(0,2);
+			set(0,3);
+			set(0,4);
+			set(4,5);
+			set(4,6);
+			set(4,7);
+			set(1,5);
+			set(2,6);
+			set(3,7);
+		}
+			break;
 
-			default:
-				break;
+		default:
+			break;
 		}
 	}
 

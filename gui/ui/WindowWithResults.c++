@@ -6,17 +6,17 @@
 
 void WindowWithResults::createToolbar(QMainWindow *parent, fem::Project &project)
 {
-	m_resultsComboBox = new QComboBox(parent);
+	m_comboBoxResults = new QComboBox(parent);
 	QString text;
 
 	for(size_t n = 0; n < project.result.size(); n++)
 	{
 		text.setNum(n);
-		m_resultsComboBox->insertItem(n, text);
+		m_comboBoxResults->insertItem(n, text);
 	}
 
-	m_resultsToolBar = parent->addToolBar(QObject::tr("Results"));
-	m_resultsToolBar->addWidget(m_resultsComboBox);
+	m_toolBarResults = parent->addToolBar(QObject::tr("Results"));
+	m_toolBarResults->addWidget(m_comboBoxResults);
 }
 
 

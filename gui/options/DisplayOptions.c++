@@ -13,7 +13,7 @@ DisplayOptions::~DisplayOptions()
 }
 
 
-void 
+void
 DisplayOptions::setDefaultOptions()
 {
 	nodes = 1;

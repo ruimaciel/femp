@@ -110,13 +110,13 @@ MainWindow::newProject()
 	NewProjectWizard np(m_document, this);
 	switch(np.exec())
 	{
-		case QDialog::Accepted:
-			setUserInterfaceAsOpened();
-			break;
+	case QDialog::Accepted:
+		setUserInterfaceAsOpened();
+		break;
 
-		default:
-			m_document.clear();
-			break;
+	default:
+		m_document.clear();
+		break;
 	}
 }
 
@@ -169,18 +169,18 @@ MainWindow::openProject()
 
 	switch(parser.error.code)
 	{
-		case FemJsonParser::Error::ERR_OK:
-			// setup the user interface
-			m_document.setProjectType( Document::TYPE_SOLID3D);	// nasty hack due to poor design
-			this->setUserInterfaceAsOpened();
-			break;
+	case FemJsonParser::Error::ERR_OK:
+		// setup the user interface
+		m_document.setProjectType( Document::TYPE_SOLID3D);	// nasty hack due to poor design
+		this->setUserInterfaceAsOpened();
+		break;
 
-		default:
-			std::cerr << __FILE__ << ":" << __LINE__ ;
-			std::cerr << "Error: " << parser.error.message << std::endl;
-			QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
-			m_document.clear();
-			break;
+	default:
+		std::cerr << __FILE__ << ":" << __LINE__ ;
+		std::cerr << "Error: " << parser.error.message << std::endl;
+		QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
+		m_document.clear();
+		break;
 	}
 
 	m_document.setFileName(file_name);
@@ -219,16 +219,16 @@ MainWindow::reopenProject()
 
 		switch(parser.error.code)
 		{
-			case FemJsonParser::Error::ERR_OK:
-				setUserInterfaceAsOpened();
-				break;
+		case FemJsonParser::Error::ERR_OK:
+			setUserInterfaceAsOpened();
+			break;
 
-			default:
-				std::cerr << __FILE__ << ":" << __LINE__ ;
-				std::cerr << "Error: " << parser.error.message << std::endl;
-				QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
-				m_document.clear();
-				break;
+		default:
+			std::cerr << __FILE__ << ":" << __LINE__ ;
+			std::cerr << "Error: " << parser.error.message << std::endl;
+			QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
+			m_document.clear();
+			break;
 		}
 
 
@@ -353,21 +353,21 @@ MainWindow::closeProject()
 		msgBox.setDefaultButton(QMessageBox::Save);
 		switch(msgBox.exec())
 		{
-			case QMessageBox::Save:
-				this->saveProject();
-				break;
+		case QMessageBox::Save:
+			this->saveProject();
+			break;
 
-			case QMessageBox::Discard:
-				// move on
-				break;
+		case QMessageBox::Discard:
+			// move on
+			break;
 
-			case QMessageBox::Cancel:
-				return;	// exit and do nothing
-				break;
+		case QMessageBox::Cancel:
+			return;	// exit and do nothing
+			break;
 
-			default:
-				// this part should never be reached
-				break;
+		default:
+			// this part should never be reached
+			break;
 		}
 	}
 
@@ -393,21 +393,21 @@ MainWindow::quit()
 		msgBox.setDefaultButton(QMessageBox::Save);
 		switch(msgBox.exec())
 		{
-			case QMessageBox::Save:
-				this->saveProject();
-				break;
+		case QMessageBox::Save:
+			this->saveProject();
+			break;
 
-			case QMessageBox::Discard:
-				// move on
-				break;
+		case QMessageBox::Discard:
+			// move on
+			break;
 
-			case QMessageBox::Cancel:
-				return;	// exit and do nothing
-				break;
+		case QMessageBox::Cancel:
+			return;	// exit and do nothing
+			break;
 
-			default:
-				// this part should never be reached
-				break;
+		default:
+			// this part should never be reached
+			break;
 		}
 	}
 
@@ -529,17 +529,17 @@ MainWindow::loadOptions()
 		m_options.getOption("project.results.dump.default_directory",default_path);
 		if( QFile::exists(QString::fromStdString(default_path)) )
 		{
-			results_dump_dialog_last_directory.setPath(QString::fromStdString(default_path));
+			m_resultsDumpDialogLastDirectory.setPath(QString::fromStdString(default_path));
 		}
 		else
 		{
-			results_dump_dialog_last_directory = QDir::home();
-			QString path = results_dump_dialog_last_directory.absolutePath();
+			m_resultsDumpDialogLastDirectory = QDir::home();
+			QString path = m_resultsDumpDialogLastDirectory.absolutePath();
 		}
 	}
 	else
 	{
-		results_dump_dialog_last_directory = QDir::home();
+		m_resultsDumpDialogLastDirectory = QDir::home();
 	}
 
 	// set color options
@@ -549,7 +549,7 @@ MainWindow::loadOptions()
 		{
 			if(temp.size() == 3)
 			{
-				colors.node = {temp[0], temp[1], temp[2]};
+				m_colors.node = {temp[0], temp[1], temp[2]};
 			}
 		}
 
@@ -557,7 +557,7 @@ MainWindow::loadOptions()
 		{
 			if(temp.size() == 3)
 			{
-				colors.background = {temp[0], temp[1], temp[2]};
+				m_colors.background = {temp[0], temp[1], temp[2]};
 			}
 		}
 
@@ -565,7 +565,7 @@ MainWindow::loadOptions()
 		{
 			if(temp.size() == 3)
 			{
-				colors.wireframe = {temp[0], temp[1], temp[2]};
+				m_colors.wireframe = {temp[0], temp[1], temp[2]};
 			}
 		}
 
@@ -573,7 +573,7 @@ MainWindow::loadOptions()
 		{
 			if(temp.size() == 3)
 			{
-				colors.field_maximum_positive = {temp[0], temp[1], temp[2]};
+				m_colors.field_maximum_positive = {temp[0], temp[1], temp[2]};
 			}
 		}
 
@@ -581,7 +581,7 @@ MainWindow::loadOptions()
 		{
 			if(temp.size() == 3)
 			{
-				colors.field_maximum_negative = {temp[0], temp[1], temp[2]};
+				m_colors.field_maximum_negative = {temp[0], temp[1], temp[2]};
 			}
 		}
 
@@ -589,7 +589,7 @@ MainWindow::loadOptions()
 		{
 			if(temp.size() == 3)
 			{
-				colors.field_neutral = {temp[0], temp[1], temp[2]};
+				m_colors.field_neutral = {temp[0], temp[1], temp[2]};
 			}
 		}
 		//TODO add code for the force arrows custom color code
@@ -927,18 +927,18 @@ MainWindow::runAnalysis()
 	AnalysisDialog analysis_dialog(femp_model, this);
 	switch(analysis_dialog.exec())
 	{
-		case QDialog::Accepted:
-			solver = analysis_dialog.solver();
-			if( analysis_dialog.loadPattern() == -1)
-			{
-				QMessageBox::critical(this, "No load patterns", "This model doesn't have any load patterns to run");
-				return;
-			}
-			break;
-
-		default:
+	case QDialog::Accepted:
+		solver = analysis_dialog.solver();
+		if( analysis_dialog.loadPattern() == -1)
+		{
+			QMessageBox::critical(this, "No load patterns", "This model doesn't have any load patterns to run");
 			return;
-			break;
+		}
+		break;
+
+	default:
+		return;
+		break;
 	}
 
 
@@ -962,12 +962,12 @@ MainWindow::runAnalysis()
 
 	switch(dialog.exec())
 	{
-		case QDialog::Accepted:
-			//TODO implement a way to abort the analysis thread if the abort button is pressed
-			break;
+	case QDialog::Accepted:
+		//TODO implement a way to abort the analysis thread if the abort button is pressed
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 	t.join();
 
@@ -1105,7 +1105,7 @@ MainWindow::dumpResultsFromSelection()
 	// opens the file
 	{
 		QFileDialog dialog(this);
-		dialog.setDirectory(results_dump_dialog_last_directory);
+		dialog.setDirectory(m_resultsDumpDialogLastDirectory);
 		QStringList sl;
 
 		// setup the file dialog
@@ -1120,7 +1120,7 @@ MainWindow::dumpResultsFromSelection()
 		}
 
 		// get the last directory used to dump results
-		results_dump_dialog_last_directory = dialog.directory();
+		m_resultsDumpDialogLastDirectory = dialog.directory();
 
 		sl = dialog.selectedFiles();
 		file_name = sl.at(0);
@@ -1240,7 +1240,7 @@ MainWindow::createNewViewportWindow()
 void
 MainWindow::createNewModelWindow()
 {
-	ModelWindow *window = new ModelWindow(m_document.getProject(), colors, this);
+	ModelWindow *window = new ModelWindow(m_document.getProject(), m_colors, this);
 
 	// create the model's MDI window
 	QMdiSubWindow	* mdi_window = new QMdiSubWindow(m_mdiArea);
@@ -1264,7 +1264,7 @@ MainWindow::createNewPostprocessingWindow()
 	}
 	else
 	{
-		PostprocessingWindow *window = new PostprocessingWindow(m_document.getProject(), femp_result.back(), colors, this);
+		PostprocessingWindow *window = new PostprocessingWindow(m_document.getProject(), femp_result.back(), m_colors, this);
 
 		// create the model's MDI window
 		QMdiSubWindow	* mdi_window = new QMdiSubWindow(m_mdiArea);
@@ -1287,7 +1287,7 @@ MainWindow::createNewTensorFieldWindow()
 	}
 	else
 	{
-		TensorFieldWindow *window = new TensorFieldWindow(m_document.getProject(), m_document.getProject().result.back(), colors, this);
+		TensorFieldWindow *window = new TensorFieldWindow(m_document.getProject(), m_document.getProject().result.back(), m_colors, this);
 
 		// create the model's MDI window
 		QMdiSubWindow	* mdi_window = new QMdiSubWindow(m_mdiArea);

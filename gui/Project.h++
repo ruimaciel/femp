@@ -20,7 +20,7 @@ namespace fem
 
 
 class Project
-	: public sigc::trackable
+		: public sigc::trackable
 {
 public:
 
@@ -28,7 +28,7 @@ public:
 	 * clears the project
 	 **/
 	void clear();
-	
+
 	/**
 	 * Adds the result of a new analysis process to the result list
 	 **/
@@ -49,7 +49,7 @@ protected:
 
 public:
 	std::vector<AnalysisResult> result;	// a list with all analysis
-		
+
 };
 
 }	// namespace fem

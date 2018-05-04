@@ -14,31 +14,31 @@
 Dialog box designed to input information needed to run the analysis, such as solver
 */
 class AnalysisDialog
-	: public QDialog, private Ui::AnalysisDialog
+		: public QDialog, private Ui::AnalysisDialog
 {
 	Q_OBJECT
 
-	public:
-		AnalysisDialog(fem::Model &model, QWidget *parent = NULL);
+public:
+	AnalysisDialog(fem::Model &model, QWidget *parent = nullptr);
 
 
-		/*
+	/*
 		States which solver has been selected
 		@return	a pointer to a instance of a solver, must be freed afterwards
 		*/
-		fem::Solver<double> * solver();
+	fem::Solver<double> * solver();
 
-		/**
+	/**
 		Returns which load patter the user selected to be analyized
 		@return	counter to the current index
 		**/
-		int loadPattern() const;
+	int loadPattern() const;
 
-	protected:
-		/**
+protected:
+	/**
 		Fills the combo box with the load pattern list from the model
 		**/
-		void loadLoadPatternList(fem::Model &model);
+	void loadLoadPatternList(fem::Model &model);
 };
 
 #endif

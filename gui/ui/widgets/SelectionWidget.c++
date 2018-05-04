@@ -24,7 +24,7 @@ SelectionWidget::SelectionWidget(fem::Project &project, SelectionManager &select
 }
 
 
-void 
+void
 SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selection_manager)
 {
 	m_element_item = new QTreeWidgetItem(this->objectTreeWidget);
@@ -38,7 +38,7 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 	{
 		QTreeWidgetItem *item = new QTreeWidgetItem(m_element_item);
 		item->setText(0, QString::number(n));
-		item->setSelected( s.getElementReferences().find(n) != s.getElementReferences().end()) ; 
+		item->setSelected( s.getElementReferences().find(n) != s.getElementReferences().end()) ;
 		m_element_map[n] = item;
 	}
 
@@ -48,7 +48,7 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 	{
 		QTreeWidgetItem *item = new QTreeWidgetItem(m_node_item);
 		item->setText(0, QString::number(i->first));
-		item->setSelected( s.getNodeReferences().find(i->first) != s.getNodeReferences().end()) ; 
+		item->setSelected( s.getNodeReferences().find(i->first) != s.getNodeReferences().end()) ;
 		m_node_map[i->first] = item;
 	}
 
@@ -68,7 +68,7 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 }
 
 
-void 
+void
 SelectionWidget::setSelection(Selection const &selection)
 {
 	assert(m_element_item != NULL);
@@ -100,7 +100,7 @@ SelectionWidget::setSelection(Selection const &selection)
 }
 
 
-void 
+void
 SelectionWidget::updateSelection()
 {
 	Selection new_selection;
@@ -125,7 +125,7 @@ SelectionWidget::updateSelection()
 }
 
 
-void 
+void
 SelectionWidget::setGroupList()
 {
 	// get current index
@@ -154,7 +154,7 @@ SelectionWidget::setGroupList()
 }
 
 
-void 
+void
 SelectionWidget::unionGroupList()
 {
 	//TODO finish this
@@ -170,7 +170,7 @@ SelectionWidget::unionGroupList()
 	}
 
 	fem::Group &group = m_selection_groups[index];
-	
+
 	for(std::set<fem::element_ref_t>::iterator i =	group.m_element_references.begin(); i != group.m_element_references.end(); i++)
 	{
 		this->m_element_map[*i]->setSelected(true);
@@ -185,7 +185,7 @@ SelectionWidget::unionGroupList()
 }
 
 
-void 
+void
 SelectionWidget::initializeSelectionGroups(fem::Project &project)
 {
 	fem::Group group;

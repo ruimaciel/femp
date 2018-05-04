@@ -15,7 +15,7 @@
 Dialog intended to be used to specify ranges of a given parameter
 **/
 class ResultsRangeDialog
-	: public QDialog
+		: public QDialog
 {
 	Q_OBJECT
 
@@ -23,7 +23,7 @@ protected:
 	Ui::ResultsRangeDialog ui;
 
 public:
-	ResultsRangeDialog(QWidget *parent = NULL);
+	ResultsRangeDialog(QWidget *parent = nullptr);
 
 	void setValueRanges(const fem::ResultsRanges<double> &);
 

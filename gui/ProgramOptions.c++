@@ -62,26 +62,26 @@ void Option::setOption(std::vector<double> value, Level level)
 }
 
 
-double Option::getNumber()	
+double Option::getNumber()
 {
-	 return value.number; 
+	return value.number;
 }
 
 
-std::string Option::getString()	
+std::string Option::getString()
 {
-	 return text; 
+	return text;
 }
 
 
-bool Option::getBool()		
+bool Option::getBool()
 {
-	 return value.b; 
+	return value.b;
 }
 
-std::vector<double> Option::getNumberList()		
+std::vector<double> Option::getNumberList()
 {
-	 return number_list;
+	return number_list;
 }
 
 
@@ -330,33 +330,33 @@ std::ostream& operator << (std::ostream& os, ProgramOptions &prog)
 	{
 		os << (*it).first << " = ";
 		switch( (*it).second.type)
-		{	
-			case Option::VAL_NUMBER:
-				os << (*it).second.value.number << std::endl;
-				break;
+		{
+		case Option::VAL_NUMBER:
+			os << (*it).second.value.number << std::endl;
+			break;
 
-			case Option::VAL_STRING:
-				os << "\"" << (*it).second.text << "\"" << std::endl;
-				break;
+		case Option::VAL_STRING:
+			os << "\"" << (*it).second.text << "\"" << std::endl;
+			break;
 
-			case Option::VAL_BOOL:
-				os << ( (*it).second.value.b ? "true": "false") << std::endl;
-				break;
+		case Option::VAL_BOOL:
+			os << ( (*it).second.value.b ? "true": "false") << std::endl;
+			break;
 
-			case Option::VAL_NUMBER_LIST:	
-				os << "{ ";
-				for(std::vector<double>::iterator ni = (*it).second.number_list.begin(); ni != (*it).second.number_list.end(); ni++)
-				{
-					if(ni != (*it).second.number_list.begin())
-						os << ", ";
-					os << *ni;
-				}
-				os << "}" << std::endl;
-				break;
+		case Option::VAL_NUMBER_LIST:
+			os << "{ ";
+			for(std::vector<double>::iterator ni = (*it).second.number_list.begin(); ni != (*it).second.number_list.end(); ni++)
+			{
+				if(ni != (*it).second.number_list.begin())
+					os << ", ";
+				os << *ni;
+			}
+			os << "}" << std::endl;
+			break;
 
-			default:
-				/* this section is never reached */
-				break;
+		default:
+			/* this section is never reached */
+			break;
 		}
 	}
 	return os;
@@ -368,12 +368,12 @@ int ProgramOptions::importFile(std::istream &is, std::string prefix)
 
 	switch(p->parse(*this, is, prefix))
 	{
-		case 0:
-			break;
+	case 0:
+		break;
 
-		default:
-			/*TODO implement error handling */
-			break;
+	default:
+		/*TODO implement error handling */
+		break;
 	}
 
 	delete p;
@@ -423,496 +423,496 @@ enum ProgramOptions::Parser::LEXER_TOKENS ProgramOptions::Parser::lexer(std::ist
 
 std:
 	tok = pos;
-	#define YYFILL(n) { if(is.eof()){ if(tok == lim) return LEX_EOF; }else fill(is); }
-	#define CP { tmp.clear(); tmp.append(tok,pos-tok); }
-	#define CPo { text.clear(); text.append(tok,pos-tok); }
-	#define CPs { text.clear(); text.append(tok+1,pos-tok-2); }
+#define YYFILL(n) { if(is.eof()){ if(tok == lim) return LEX_EOF; }else fill(is); }
+#define CP { tmp.clear(); tmp.append(tok,pos-tok); }
+#define CPo { text.clear(); text.append(tok,pos-tok); }
+#define CPs { text.clear(); text.append(tok+1,pos-tok-2); }
 
 	switch(lex_state)
 	{
-		case 0:	// starting
-		{
-	
+	case 0:	// starting
+	{
+
 #line 437 "ProgramOptions.c++"
-{
-	char yych;
-	if (lim <= pos) YYFILL(1);
-	yych = *pos;
-	switch (yych) {
-	case '\t':
-	case ' ':	goto yy4;
-	case '\n':	goto yy7;
-	case '.':	goto yy9;
-	case '=':	goto yy11;
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy13;
-	default:	goto yy2;
-	}
+		{
+			char yych;
+			if (lim <= pos) YYFILL(1);
+			yych = *pos;
+			switch (yych) {
+			case '\t':
+			case ' ':	goto yy4;
+			case '\n':	goto yy7;
+			case '.':	goto yy9;
+			case '=':	goto yy11;
+			case 'A':
+			case 'B':
+			case 'C':
+			case 'D':
+			case 'E':
+			case 'F':
+			case 'G':
+			case 'H':
+			case 'I':
+			case 'J':
+			case 'K':
+			case 'L':
+			case 'M':
+			case 'N':
+			case 'O':
+			case 'P':
+			case 'Q':
+			case 'R':
+			case 'S':
+			case 'T':
+			case 'U':
+			case 'V':
+			case 'W':
+			case 'X':
+			case 'Y':
+			case 'Z':
+			case 'a':
+			case 'b':
+			case 'c':
+			case 'd':
+			case 'e':
+			case 'f':
+			case 'g':
+			case 'h':
+			case 'i':
+			case 'j':
+			case 'k':
+			case 'l':
+			case 'm':
+			case 'n':
+			case 'o':
+			case 'p':
+			case 'q':
+			case 'r':
+			case 's':
+			case 't':
+			case 'u':
+			case 'v':
+			case 'w':
+			case 'x':
+			case 'y':
+			case 'z':	goto yy13;
+			default:	goto yy2;
+			}
 yy2:
-	++pos;
+			++pos;
 #line 451 "ProgramOptions.c++.re2c"
-	{ return LEX_UNKNOWN_TOKEN; }
+			{ return LEX_UNKNOWN_TOKEN; }
 #line 506 "ProgramOptions.c++"
 yy4:
-	++pos;
-	if (lim <= pos) YYFILL(1);
-	yych = *pos;
-	switch (yych) {
-	case '\t':
-	case ' ':	goto yy4;
-	default:	goto yy6;
-	}
+			++pos;
+			if (lim <= pos) YYFILL(1);
+			yych = *pos;
+			switch (yych) {
+			case '\t':
+			case ' ':	goto yy4;
+			default:	goto yy6;
+			}
 yy6:
 #line 450 "ProgramOptions.c++.re2c"
-	{ goto std;}
+			{ goto std;}
 #line 519 "ProgramOptions.c++"
 yy7:
-	++pos;
+			++pos;
 #line 449 "ProgramOptions.c++.re2c"
-	{ return LEX_EOL; }
+			{ return LEX_EOL; }
 #line 524 "ProgramOptions.c++"
 yy9:
-	++pos;
+			++pos;
 #line 446 "ProgramOptions.c++.re2c"
-	{ return LEX_OPTION_SEPARATOR; }
+			{ return LEX_OPTION_SEPARATOR; }
 #line 529 "ProgramOptions.c++"
 yy11:
-	++pos;
+			++pos;
 #line 447 "ProgramOptions.c++.re2c"
-	{ lex_state = 1; return LEX_OPTION_ASSIGN; }
+			{ lex_state = 1; return LEX_OPTION_ASSIGN; }
 #line 534 "ProgramOptions.c++"
 yy13:
-	++pos;
-	if (lim <= pos) YYFILL(1);
-	yych = *pos;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy13;
-	default:	goto yy15;
-	}
+			++pos;
+			if (lim <= pos) YYFILL(1);
+			yych = *pos;
+			switch (yych) {
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+			case 'A':
+			case 'B':
+			case 'C':
+			case 'D':
+			case 'E':
+			case 'F':
+			case 'G':
+			case 'H':
+			case 'I':
+			case 'J':
+			case 'K':
+			case 'L':
+			case 'M':
+			case 'N':
+			case 'O':
+			case 'P':
+			case 'Q':
+			case 'R':
+			case 'S':
+			case 'T':
+			case 'U':
+			case 'V':
+			case 'W':
+			case 'X':
+			case 'Y':
+			case 'Z':
+			case '_':
+			case 'a':
+			case 'b':
+			case 'c':
+			case 'd':
+			case 'e':
+			case 'f':
+			case 'g':
+			case 'h':
+			case 'i':
+			case 'j':
+			case 'k':
+			case 'l':
+			case 'm':
+			case 'n':
+			case 'o':
+			case 'p':
+			case 'q':
+			case 'r':
+			case 's':
+			case 't':
+			case 'u':
+			case 'v':
+			case 'w':
+			case 'x':
+			case 'y':
+			case 'z':	goto yy13;
+			default:	goto yy15;
+			}
 yy15:
 #line 448 "ProgramOptions.c++.re2c"
-	{ CPo; return LEX_OPTION_NAME; }
+			{ CPo; return LEX_OPTION_NAME; }
 #line 608 "ProgramOptions.c++"
-}
+		}
 #line 452 "ProgramOptions.c++.re2c"
 
 	}
-	break;
+		break;
 
 	case 1:	// only parses values
 	{
-	
+
 #line 618 "ProgramOptions.c++"
-{
-	char yych;
-	unsigned int yyaccept = 0;
-	if ((lim - pos) < 5) YYFILL(5);
-	yych = *pos;
-	switch (yych) {
-	case '\t':
-	case ' ':	goto yy20;
-	case '\n':	goto yy23;
-	case '"':	goto yy25;
-	case ',':	goto yy26;
-	case '-':	goto yy28;
-	case '0':	goto yy29;
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy31;
-	case 'f':	goto yy33;
-	case 't':	goto yy34;
-	case '{':	goto yy35;
-	case '}':	goto yy37;
-	default:	goto yy18;
-	}
+		{
+			char yych;
+			unsigned int yyaccept = 0;
+			if ((lim - pos) < 5) YYFILL(5);
+			yych = *pos;
+			switch (yych) {
+			case '\t':
+			case ' ':	goto yy20;
+			case '\n':	goto yy23;
+			case '"':	goto yy25;
+			case ',':	goto yy26;
+			case '-':	goto yy28;
+			case '0':	goto yy29;
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':	goto yy31;
+			case 'f':	goto yy33;
+			case 't':	goto yy34;
+			case '{':	goto yy35;
+			case '}':	goto yy37;
+			default:	goto yy18;
+			}
 yy18:
-	++pos;
+			++pos;
 yy19:
 #line 468 "ProgramOptions.c++.re2c"
-	{ return LEX_UNKNOWN_TOKEN; }
+			{ return LEX_UNKNOWN_TOKEN; }
 #line 652 "ProgramOptions.c++"
 yy20:
-	++pos;
-	if (lim <= pos) YYFILL(1);
-	yych = *pos;
-	switch (yych) {
-	case '\t':
-	case ' ':	goto yy20;
-	default:	goto yy22;
-	}
+			++pos;
+			if (lim <= pos) YYFILL(1);
+			yych = *pos;
+			switch (yych) {
+			case '\t':
+			case ' ':	goto yy20;
+			default:	goto yy22;
+			}
 yy22:
 #line 467 "ProgramOptions.c++.re2c"
-	{ goto std;	}
+			{ goto std;	}
 #line 665 "ProgramOptions.c++"
 yy23:
-	++pos;
+			++pos;
 #line 466 "ProgramOptions.c++.re2c"
-	{ lex_state = 0; return LEX_EOL; }
+			{ lex_state = 0; return LEX_EOL; }
 #line 670 "ProgramOptions.c++"
 yy25:
-	yyaccept = 0;
-	yych = *(marker = ++pos);
-	switch (yych) {
-	case '\n':	goto yy19;
-	default:	goto yy40;
-	}
+			yyaccept = 0;
+			yych = *(marker = ++pos);
+			switch (yych) {
+			case '\n':	goto yy19;
+			default:	goto yy40;
+			}
 yy26:
-	++pos;
+			++pos;
 #line 465 "ProgramOptions.c++.re2c"
-	{ return LEX_VECTOR_SEPARATOR; 	}
+			{ return LEX_VECTOR_SEPARATOR; 	}
 #line 682 "ProgramOptions.c++"
 yy28:
-	yych = *++pos;
-	switch (yych) {
-	case '0':	goto yy29;
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy31;
-	default:	goto yy19;
-	}
+			yych = *++pos;
+			switch (yych) {
+			case '0':	goto yy29;
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':	goto yy31;
+			default:	goto yy19;
+			}
 yy29:
-	yyaccept = 1;
-	yych = *(marker = ++pos);
-	switch (yych) {
-	case '.':	goto yy45;
-	default:	goto yy30;
-	}
+			yyaccept = 1;
+			yych = *(marker = ++pos);
+			switch (yych) {
+			case '.':	goto yy45;
+			default:	goto yy30;
+			}
 yy30:
 #line 459 "ProgramOptions.c++.re2c"
-	{ CP; value.number = atof(tmp.c_str()); return LEX_NUMBER; }
+			{ CP; value.number = atof(tmp.c_str()); return LEX_NUMBER; }
 #line 708 "ProgramOptions.c++"
 yy31:
-	yyaccept = 1;
-	marker = ++pos;
-	if ((lim - pos) < 2) YYFILL(2);
-	yych = *pos;
-	switch (yych) {
-	case '.':	goto yy45;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy31;
-	default:	goto yy30;
-	}
+			yyaccept = 1;
+			marker = ++pos;
+			if ((lim - pos) < 2) YYFILL(2);
+			yych = *pos;
+			switch (yych) {
+			case '.':	goto yy45;
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':	goto yy31;
+			default:	goto yy30;
+			}
 yy33:
-	yyaccept = 0;
-	yych = *(marker = ++pos);
-	switch (yych) {
-	case 'a':	goto yy46;
-	default:	goto yy19;
-	}
+			yyaccept = 0;
+			yych = *(marker = ++pos);
+			switch (yych) {
+			case 'a':	goto yy46;
+			default:	goto yy19;
+			}
 yy34:
-	yyaccept = 0;
-	yych = *(marker = ++pos);
-	switch (yych) {
-	case 'r':	goto yy47;
-	default:	goto yy19;
-	}
+			yyaccept = 0;
+			yych = *(marker = ++pos);
+			switch (yych) {
+			case 'r':	goto yy47;
+			default:	goto yy19;
+			}
 yy35:
-	++pos;
+			++pos;
 #line 463 "ProgramOptions.c++.re2c"
-	{ return LEX_OPEN_VECTOR; 	}
+			{ return LEX_OPEN_VECTOR; 	}
 #line 746 "ProgramOptions.c++"
 yy37:
-	++pos;
+			++pos;
 #line 464 "ProgramOptions.c++.re2c"
-	{ return LEX_CLOSE_VECTOR; 	}
+			{ return LEX_CLOSE_VECTOR; 	}
 #line 751 "ProgramOptions.c++"
 yy39:
-	++pos;
-	if (lim <= pos) YYFILL(1);
-	yych = *pos;
+			++pos;
+			if (lim <= pos) YYFILL(1);
+			yych = *pos;
 yy40:
-	switch (yych) {
-	case '\n':	goto yy41;
-	case '"':	goto yy42;
-	default:	goto yy39;
-	}
+			switch (yych) {
+			case '\n':	goto yy41;
+			case '"':	goto yy42;
+			default:	goto yy39;
+			}
 yy41:
-	pos = marker;
-	switch (yyaccept) {
-	case 0: 	goto yy19;
-	case 1: 	goto yy30;
-	default:	goto yy44;
-	}
+			pos = marker;
+			switch (yyaccept) {
+			case 0: 	goto yy19;
+			case 1: 	goto yy30;
+			default:	goto yy44;
+			}
 yy42:
-	yyaccept = 2;
-	marker = ++pos;
-	if (lim <= pos) YYFILL(1);
-	yych = *pos;
-	switch (yych) {
-	case '\n':	goto yy44;
-	case '"':	goto yy42;
-	default:	goto yy39;
-	}
+			yyaccept = 2;
+			marker = ++pos;
+			if (lim <= pos) YYFILL(1);
+			yych = *pos;
+			switch (yych) {
+			case '\n':	goto yy44;
+			case '"':	goto yy42;
+			default:	goto yy39;
+			}
 yy44:
 #line 460 "ProgramOptions.c++.re2c"
-	{ CPs; return LEX_STRING; 	}
+			{ CPs; return LEX_STRING; 	}
 #line 782 "ProgramOptions.c++"
 yy45:
-	yych = *++pos;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy48;
-	default:	goto yy41;
-	}
+			yych = *++pos;
+			switch (yych) {
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':	goto yy48;
+			default:	goto yy41;
+			}
 yy46:
-	yych = *++pos;
-	switch (yych) {
-	case 'l':	goto yy50;
-	default:	goto yy41;
-	}
+			yych = *++pos;
+			switch (yych) {
+			case 'l':	goto yy50;
+			default:	goto yy41;
+			}
 yy47:
-	yych = *++pos;
-	switch (yych) {
-	case 'u':	goto yy51;
-	default:	goto yy41;
-	}
+			yych = *++pos;
+			switch (yych) {
+			case 'u':	goto yy51;
+			default:	goto yy41;
+			}
 yy48:
-	yyaccept = 1;
-	marker = ++pos;
-	if ((lim - pos) < 3) YYFILL(3);
-	yych = *pos;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy48;
-	case 'E':
-	case 'e':	goto yy52;
-	default:	goto yy30;
-	}
+			yyaccept = 1;
+			marker = ++pos;
+			if ((lim - pos) < 3) YYFILL(3);
+			yych = *pos;
+			switch (yych) {
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':	goto yy48;
+			case 'E':
+			case 'e':	goto yy52;
+			default:	goto yy30;
+			}
 yy50:
-	yych = *++pos;
-	switch (yych) {
-	case 's':	goto yy53;
-	default:	goto yy41;
-	}
+			yych = *++pos;
+			switch (yych) {
+			case 's':	goto yy53;
+			default:	goto yy41;
+			}
 yy51:
-	yych = *++pos;
-	switch (yych) {
-	case 'e':	goto yy54;
-	default:	goto yy41;
-	}
+			yych = *++pos;
+			switch (yych) {
+			case 'e':	goto yy54;
+			default:	goto yy41;
+			}
 yy52:
-	yych = *++pos;
-	switch (yych) {
-	case '+':
-	case '-':	goto yy56;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy57;
-	default:	goto yy41;
-	}
+			yych = *++pos;
+			switch (yych) {
+			case '+':
+			case '-':	goto yy56;
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':	goto yy57;
+			default:	goto yy41;
+			}
 yy53:
-	yych = *++pos;
-	switch (yych) {
-	case 'e':	goto yy59;
-	default:	goto yy41;
-	}
+			yych = *++pos;
+			switch (yych) {
+			case 'e':	goto yy59;
+			default:	goto yy41;
+			}
 yy54:
-	++pos;
+			++pos;
 #line 461 "ProgramOptions.c++.re2c"
-	{ value.b = true; return LEX_BOOL; }
+			{ value.b = true; return LEX_BOOL; }
 #line 869 "ProgramOptions.c++"
 yy56:
-	yych = *++pos;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy57;
-	default:	goto yy41;
-	}
+			yych = *++pos;
+			switch (yych) {
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':	goto yy57;
+			default:	goto yy41;
+			}
 yy57:
-	++pos;
-	if (lim <= pos) YYFILL(1);
-	yych = *pos;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy57;
-	default:	goto yy30;
-	}
+			++pos;
+			if (lim <= pos) YYFILL(1);
+			yych = *pos;
+			switch (yych) {
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':	goto yy57;
+			default:	goto yy30;
+			}
 yy59:
-	++pos;
+			++pos;
 #line 462 "ProgramOptions.c++.re2c"
-	{ value.b = false; return LEX_BOOL; }
+			{ value.b = false; return LEX_BOOL; }
 #line 906 "ProgramOptions.c++"
-}
+		}
 #line 469 "ProgramOptions.c++.re2c"
 
 	}
-	break;
+		break;
 	}
-	#undef YYFILL
-	#undef CP
-	#undef CPo
-	#undef CPs
+#undef YYFILL
+#undef CP
+#undef CPo
+#undef CPs
 	return LEX_ERROR;
 }
 
@@ -921,7 +921,7 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, std::str
 {
 	using namespace std;
 
-	#define WARN() {cerr << "ProgramOptions::Parser error at line "<< line << ", state " << state << " defaulted" << std::endl; state = 20;}
+#define WARN() {cerr << "ProgramOptions::Parser error at line "<< line << ", state " << state << " defaulted" << std::endl; state = 20;}
 
 	int state = 0;
 	enum LEXER_TOKENS token = LEX_UNKNOWN_TOKEN;
@@ -930,256 +930,256 @@ int ProgramOptions::Parser::parse(ProgramOptions &op, std::istream &is, std::str
 	vector<double> temp_number_list;
 	vector<string>::iterator it;
 	size_t line = 1;
-	
+
 	do {
 		token = lexer(is);
 		switch(state)
 		{
-			case 0:	// starting point
-				switch(token)
-				{
-					case LEX_EOL:
-						line++;
-						break;
-
-					case LEX_OPTION_NAME:
-						opname.push_back(text);
-						state = 1;	// object pushed
-						break;
-
-					case LEX_EOF:
-						/*TODO implement decent return codes */
-						return 0;
-						break;
-
-					default:
-						WARN();
-						break;
-				}
+		case 0:	// starting point
+			switch(token)
+			{
+			case LEX_EOL:
+				line++;
 				break;
 
-			case 1:	// object pushed
-				switch(token)
-				{
-					case LEX_OPTION_SEPARATOR:
-						state = 2;	// waiting for object name
-						break;
-
-					case LEX_OPTION_ASSIGN:
-						state = 3;	// waiting for option's value
-						break;
-
-					default:
-						WARN();
-						break;
-				}
+			case LEX_OPTION_NAME:
+				opname.push_back(text);
+				state = 1;	// object pushed
 				break;
 
-			case 2:	// waiting for object name
-				switch(token)
-				{
-					case LEX_OPTION_NAME:
-						opname.push_back(text);
-						state = 1;	// object pushed
-						break;
-
-					default:
-						WARN();
-						break;
-				}
-				break;
-
-			case 3:	// waiting for option's value
-				temp_string.clear();
-				if(!prefix.empty())
-				{
-					temp_string = prefix;
-					if(!opname.empty()) 
-						temp_string += ".";
-				}
-				// generate string with full option name
-				it = opname.begin();
-				temp_string += *it;
-				for(it++; it != opname.end(); it++)
-				{
-					temp_string += "." + *it;
-				}
-				switch(token)
-				{
-					case LEX_NUMBER:
-						state = 5;	// wait for EOL before committing float
-						break;
-
-					case LEX_STRING:
-						state = 6;	// wait for EOL before committing string
-						break;
-
-					case LEX_BOOL:
-						state = 7;	// wait for EOL before committing bool
-						break;
-
-					case LEX_OPEN_VECTOR:	// start vector
-						state = 8;
-						break;
-
-					default:
-						WARN();
-						break;
-				}
-				break;
-
-
-			case 5:	// wait for EOL before committing float
-				switch(token)
-				{
-					case LEX_EOL:
-						line++;
-						op.setOption(temp_string, value.number);
-						temp_string.clear();
-						opname.clear();	//TODO implement support the compact format
-						state = 0;
-						break;
-
-					case LEX_EOF:
-						op.setOption(temp_string, value.number);
-						return 0;	//TODO implement support the compact format
-						break;
-
-					default:
-						WARN();
-						break;
-				}
-				break;
-
-			case 6:	// wait for EOL before committing string
-				switch(token)
-				{
-					case LEX_EOL:
-						line++;
-						op.setOption(temp_string, text);
-						temp_string.clear();
-						opname.clear();	//TODO implement support the compact format
-						state = 0;
-						break;
-
-					case LEX_EOF:
-						op.setOption(temp_string, text);
-						return 0;	//TODO implement support the compact format
-					default:
-						WARN();
-						break;
-				}
-				break;
-
-			case 7:	// wait for EOL before committing bool
-				switch(token)
-				{
-					case LEX_EOL:
-						line++;
-						op.setOption(temp_string, value.b);
-						temp_string.clear();
-						opname.clear();	//TODO implement support the compact format
-						state = 0;
-						break;
-
-					case LEX_EOF:
-						op.setOption(temp_string, value.b);
-						return 0;	//TODO implement support the compact format
-					default:
-						WARN();
-						break;
-				}
-				break;
-
-			case 8:	// start vector
-				switch(token)
-				{
-					case LEX_NUMBER:
-						temp_number_list.clear();
-						temp_number_list.push_back(value.number);
-						state = 9;	// continue vector
-						break;
-
-					default:
-						WARN();
-						break;
-				}
-				break;
-
-			case 9:	// continue vector: separator or end
-				switch(token)
-				{
-					case LEX_VECTOR_SEPARATOR:
-						state = 10;	// continue vector: number
-						break;
-
-					case LEX_CLOSE_VECTOR:
-						state = 11;	// wait for EOL before committing 
-						break;
-
-					default:
-						WARN();
-						break;
-				}
-				break;
-
-			case 10:	// continue vector: number
-				switch(token)
-				{
-					case LEX_NUMBER:
-						temp_number_list.push_back(value.number);
-						state = 9;
-						break;
-
-					default:
-						WARN();
-						break;
-				}
-				break;
-
-			case 11:
-				switch(token)
-				{
-					case LEX_EOL:
-						line++;
-						op.setOption(temp_string, temp_number_list);
-						temp_string.clear();
-						opname.clear();	//TODO implement support the compact format
-						state = 0;
-						break;
-
-					case LEX_EOF:
-						op.setOption(temp_string, temp_number_list);
-						return 0;	//TODO implement support the compact format
-						break;
-
-					default:
-						WARN();
-						break;
-				}
-				break;
-
-			case 20:	// wait until EOL
-				switch(token)
-				{
-					case LEX_EOL:
-						line++;
-					case LEX_EOF:
-						state = 0;
-						break;
-
-					default:
-						break;
-				}
+			case LEX_EOF:
+				/*TODO implement decent return codes */
+				return 0;
 				break;
 
 			default:
 				WARN();
 				break;
+			}
+			break;
+
+		case 1:	// object pushed
+			switch(token)
+			{
+			case LEX_OPTION_SEPARATOR:
+				state = 2;	// waiting for object name
+				break;
+
+			case LEX_OPTION_ASSIGN:
+				state = 3;	// waiting for option's value
+				break;
+
+			default:
+				WARN();
+				break;
+			}
+			break;
+
+		case 2:	// waiting for object name
+			switch(token)
+			{
+			case LEX_OPTION_NAME:
+				opname.push_back(text);
+				state = 1;	// object pushed
+				break;
+
+			default:
+				WARN();
+				break;
+			}
+			break;
+
+		case 3:	// waiting for option's value
+			temp_string.clear();
+			if(!prefix.empty())
+			{
+				temp_string = prefix;
+				if(!opname.empty())
+					temp_string += ".";
+			}
+			// generate string with full option name
+			it = opname.begin();
+			temp_string += *it;
+			for(it++; it != opname.end(); it++)
+			{
+				temp_string += "." + *it;
+			}
+			switch(token)
+			{
+			case LEX_NUMBER:
+				state = 5;	// wait for EOL before committing float
+				break;
+
+			case LEX_STRING:
+				state = 6;	// wait for EOL before committing string
+				break;
+
+			case LEX_BOOL:
+				state = 7;	// wait for EOL before committing bool
+				break;
+
+			case LEX_OPEN_VECTOR:	// start vector
+				state = 8;
+				break;
+
+			default:
+				WARN();
+				break;
+			}
+			break;
+
+
+		case 5:	// wait for EOL before committing float
+			switch(token)
+			{
+			case LEX_EOL:
+				line++;
+				op.setOption(temp_string, value.number);
+				temp_string.clear();
+				opname.clear();	//TODO implement support the compact format
+				state = 0;
+				break;
+
+			case LEX_EOF:
+				op.setOption(temp_string, value.number);
+				return 0;	//TODO implement support the compact format
+				break;
+
+			default:
+				WARN();
+				break;
+			}
+			break;
+
+		case 6:	// wait for EOL before committing string
+			switch(token)
+			{
+			case LEX_EOL:
+				line++;
+				op.setOption(temp_string, text);
+				temp_string.clear();
+				opname.clear();	//TODO implement support the compact format
+				state = 0;
+				break;
+
+			case LEX_EOF:
+				op.setOption(temp_string, text);
+				return 0;	//TODO implement support the compact format
+			default:
+				WARN();
+				break;
+			}
+			break;
+
+		case 7:	// wait for EOL before committing bool
+			switch(token)
+			{
+			case LEX_EOL:
+				line++;
+				op.setOption(temp_string, value.b);
+				temp_string.clear();
+				opname.clear();	//TODO implement support the compact format
+				state = 0;
+				break;
+
+			case LEX_EOF:
+				op.setOption(temp_string, value.b);
+				return 0;	//TODO implement support the compact format
+			default:
+				WARN();
+				break;
+			}
+			break;
+
+		case 8:	// start vector
+			switch(token)
+			{
+			case LEX_NUMBER:
+				temp_number_list.clear();
+				temp_number_list.push_back(value.number);
+				state = 9;	// continue vector
+				break;
+
+			default:
+				WARN();
+				break;
+			}
+			break;
+
+		case 9:	// continue vector: separator or end
+			switch(token)
+			{
+			case LEX_VECTOR_SEPARATOR:
+				state = 10;	// continue vector: number
+				break;
+
+			case LEX_CLOSE_VECTOR:
+				state = 11;	// wait for EOL before committing
+				break;
+
+			default:
+				WARN();
+				break;
+			}
+			break;
+
+		case 10:	// continue vector: number
+			switch(token)
+			{
+			case LEX_NUMBER:
+				temp_number_list.push_back(value.number);
+				state = 9;
+				break;
+
+			default:
+				WARN();
+				break;
+			}
+			break;
+
+		case 11:
+			switch(token)
+			{
+			case LEX_EOL:
+				line++;
+				op.setOption(temp_string, temp_number_list);
+				temp_string.clear();
+				opname.clear();	//TODO implement support the compact format
+				state = 0;
+				break;
+
+			case LEX_EOF:
+				op.setOption(temp_string, temp_number_list);
+				return 0;	//TODO implement support the compact format
+				break;
+
+			default:
+				WARN();
+				break;
+			}
+			break;
+
+		case 20:	// wait until EOL
+			switch(token)
+			{
+			case LEX_EOL:
+				line++;
+			case LEX_EOF:
+				state = 0;
+				break;
+
+			default:
+				break;
+			}
+			break;
+
+		default:
+			WARN();
+			break;
 		}
 	} while ((token != LEX_EOF) && (token != LEX_STREAM_ERROR));
 
 	/*TODO set a decent return code */
 	return 0;
-	#undef WARN
+#undef WARN
 }

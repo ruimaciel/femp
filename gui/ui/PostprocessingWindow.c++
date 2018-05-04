@@ -9,14 +9,14 @@
 
 
 PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::AnalysisResult &result, ViewportColors &colors, QWidget *parent)
-	: MdiWindow(parent), 
-	WindowWithResults(),
-	WindowWithPostprocessing(),
-	WindowWithScaling(), 
-	BaseWindow("Gradient")
+	: MdiWindow(parent),
+	  WindowWithResults(),
+	  WindowWithPostprocessing(),
+	  WindowWithScaling(),
+	  BaseWindow("Gradient")
 {
 	this->setGradientValuesRange(result);
-	this->viewport = new PostprocessingViewport(project, result, m_results_ranges,  parent);
+	this->viewport = new PostprocessingViewport(project, result, m_resultsRanges,  parent);
 
 	this->setCentralWidget(viewport);
 
@@ -31,7 +31,7 @@ PostprocessingWindow::PostprocessingWindow (fem::Project &project, fem::Analysis
 }
 
 
-void 
+void
 PostprocessingWindow::setDisplacementsScale(double scale)
 {
 	this->viewport->setDisplacementsScale((float)scale);
@@ -39,7 +39,7 @@ PostprocessingWindow::setDisplacementsScale(double scale)
 }
 
 
-void 
+void
 PostprocessingWindow::setAnalysisResult(fem::AnalysisResult &result)
 {
 	this->m_result = &result;
@@ -48,7 +48,7 @@ PostprocessingWindow::setAnalysisResult(fem::AnalysisResult &result)
 }
 
 
-void 
+void
 PostprocessingWindow::connectSignalsToSlots()
 {
 	// nasty hack to connect libsigc++ signal
@@ -62,7 +62,7 @@ PostprocessingWindow::connectSignalsToSlots()
 }
 
 
-void 
+void
 PostprocessingWindow::createToolBars(fem::Project &project)
 {
 	WindowWithScaling::createToolbar(this, project);
@@ -70,20 +70,20 @@ PostprocessingWindow::createToolBars(fem::Project &project)
 	WindowWithPostprocessing::createToolbar(this, project);
 
 	// create
-	toggleMenuBarVisibilityToolBar = addToolBar(tr("Menu bar visibility"));
-	toggleMenuBarVisibilityToolBar->addAction(m_actionMenuVisibility);
+	m_toolBarToggleMenuBarVisibility = addToolBar(tr("Menu bar visibility"));
+	m_toolBarToggleMenuBarVisibility->addAction(m_actionMenuVisibility);
 }
 
 
-void 
+void
 PostprocessingWindow::setGradientValuesRange(const fem::AnalysisResult &result)
 {
 	//TODO finish this
-	this->m_results_ranges = result.ranges;
+	this->m_resultsRanges = result.ranges;
 }
 
 
-void 
+void
 PostprocessingWindow::toggleMenuBarVisibility(bool visibility)
 {
 	qWarning("void PostprocessingWindow::toggleMenuBarVisibility(bool visibility) ");
@@ -91,25 +91,25 @@ PostprocessingWindow::toggleMenuBarVisibility(bool visibility)
 }
 
 
-void 
+void
 PostprocessingWindow::setResultsRanges()
 {
 	ResultsRangeDialog dialog(this);
-	dialog.setValueRanges(this->m_results_ranges);
+	dialog.setValueRanges(this->m_resultsRanges);
 
 	switch(dialog.exec())
 	{
-		case QDialog::Accepted:
-			dialog.getValueRanges(this->m_results_ranges);
-			break;
+	case QDialog::Accepted:
+		dialog.getValueRanges(this->m_resultsRanges);
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	};
 }
 
 
-void 
+void
 PostprocessingWindow::setPostprocessingState(int state)
 {
 	PostprocessingViewport *current_vp = NULL;
@@ -121,65 +121,65 @@ PostprocessingWindow::setPostprocessingState(int state)
 
 	switch(state)
 	{
-		case A_DISPLACEMENT:
-			current_vp->showDisplacements();
-			break;
+	case A_DISPLACEMENT:
+		current_vp->showDisplacements();
+		break;
 
-		case A_STRAIN_11:
-			current_vp->showStrain11();
-			break;
+	case A_STRAIN_11:
+		current_vp->showStrain11();
+		break;
 
-		case A_STRAIN_22:
-			current_vp->showStrain22();
-			break;
+	case A_STRAIN_22:
+		current_vp->showStrain22();
+		break;
 
-		case A_STRAIN_33:
-			current_vp->showStrain33();
-			break;
+	case A_STRAIN_33:
+		current_vp->showStrain33();
+		break;
 
-		case A_STRAIN_12:
-			current_vp->showStrain12();
-			break;
+	case A_STRAIN_12:
+		current_vp->showStrain12();
+		break;
 
-		case A_STRAIN_23:
-			current_vp->showStrain23();
-			break;
+	case A_STRAIN_23:
+		current_vp->showStrain23();
+		break;
 
-		case A_STRAIN_13:
-			current_vp->showStrain13();
-			break;
+	case A_STRAIN_13:
+		current_vp->showStrain13();
+		break;
 
-		case A_STRESS_11:
-			current_vp->showStress11();
-			break;
+	case A_STRESS_11:
+		current_vp->showStress11();
+		break;
 
-		case A_STRESS_22:
-			current_vp->showStress22();
-			break;
+	case A_STRESS_22:
+		current_vp->showStress22();
+		break;
 
-		case A_STRESS_33:
-			current_vp->showStress33();
-			break;
+	case A_STRESS_33:
+		current_vp->showStress33();
+		break;
 
-		case A_STRESS_12:
-			current_vp->showStress12();
-			break;
+	case A_STRESS_12:
+		current_vp->showStress12();
+		break;
 
-		case A_STRESS_23:
-			current_vp->showStress23();
-			break;
+	case A_STRESS_23:
+		current_vp->showStress23();
+		break;
 
-		case A_STRESS_13:
-			current_vp->showStress13();
-			break;
+	case A_STRESS_13:
+		current_vp->showStress13();
+		break;
 
-		case A_VON_MISES:
-			current_vp->showVonMises();
-			break;
+	case A_VON_MISES:
+		current_vp->showVonMises();
+		break;
 
-		default:
-			qWarning(" PostprocessingWindow::setPostprocessingState(%d), unused state", state);
-			break;
+	default:
+		qWarning(" PostprocessingWindow::setPostprocessingState(%d), unused state", state);
+		break;
 	}
 }
 

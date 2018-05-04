@@ -17,7 +17,7 @@
 Widget used in MDI windows to display the results of a given analysis
 **/
 class AnalysisResultsWidget
-	:public QWidget, private Ui::AnalysisResultsWidget
+		:public QWidget, private Ui::AnalysisResultsWidget
 {
 	Q_OBJECT
 

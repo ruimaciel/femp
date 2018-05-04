@@ -19,7 +19,7 @@
 Widget developed to select model objects
 **/
 class SelectionWidget
-	: public QWidget, Ui::SelectionWidget, public sigc::trackable
+		: public QWidget, Ui::SelectionWidget, public sigc::trackable
 {
 	Q_OBJECT
 
@@ -55,7 +55,7 @@ protected Q_SLOTS:
 protected:
 	/**
 	initializes the widget by filling all the revevant values
-	@param	project 
+	@param	project
 	@param selection_manager
 	**/
 	void initializeWidget(fem::Project &project, SelectionManager &selection_manager);

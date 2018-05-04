@@ -28,8 +28,8 @@
 
 
 class MainWindow
-	: public QMainWindow,
-	public sigc::trackable
+		: public QMainWindow,
+		public sigc::trackable
 {
 	Q_OBJECT
 
@@ -141,9 +141,9 @@ protected:
 	Document m_document;	// the FEM document
 	SelectionManager m_selectionManager;	// object which handles object selection
 
-	ViewportColors colors;	// the elements' viewport colors
+	ViewportColors m_colors;	// the elements' viewport colors
 
-	QDir results_dump_dialog_last_directory;
+	QDir m_resultsDumpDialogLastDirectory;
 	QSignalMapper	*m_windowMapper;	// used to map menu clicks to window activation
 
 

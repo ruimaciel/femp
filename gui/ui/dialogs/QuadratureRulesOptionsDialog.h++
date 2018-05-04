@@ -8,20 +8,20 @@
 
 
 class QuadratureRulesOptionsDialog
-	: public QDialog, private Ui_QuadratureRulesOptionsDialog
+		: public QDialog, private Ui_QuadratureRulesOptionsDialog
 {
 	Q_OBJECT
 
-	protected:
-		fem::Analysis<double> *analysis;
+protected:
+	fem::Analysis<double> *analysis;
 
-	public:
-		QuadratureRulesOptionsDialog(fem::Analysis<double> &analysis, QWidget *parent = NULL);
-		~QuadratureRulesOptionsDialog();
+public:
+	QuadratureRulesOptionsDialog(fem::Analysis<double> &analysis, QWidget *parent = nullptr);
+	~QuadratureRulesOptionsDialog();
 
-	protected slots:
-		void setSpinBoxValues();
-		void setQuadratureRule();
+protected slots:
+	void setSpinBoxValues();
+	void setQuadratureRule();
 };
 
 

@@ -13,7 +13,7 @@ Implements a dialog box which is used to toggle the visibility of each column an
 After running the dialog, the status of each widget is checked to tweak the visibility of each column in the table
 **/
 class TableFilterDialog
-	: public QDialog, private Ui::TableFilterDialog
+		: public QDialog, private Ui::TableFilterDialog
 {
 	Q_OBJECT
 
@@ -21,8 +21,8 @@ public:
 	TableFilterDialog(QWidget *parent = NULL);
 
 #define MEMBER_HELPER(XX) \
-void set##XX##Visible(bool state)	{ this->checkBox##XX->setChecked(state); } \
-bool get##XX##Visible() const		{ return this->checkBox##XX->isChecked(); }
+	void set##XX##Visible(bool state)	{ this->checkBox##XX->setChecked(state); } \
+	bool get##XX##Visible() const		{ return this->checkBox##XX->isChecked(); }
 	MEMBER_HELPER(ElementReference);
 	MEMBER_HELPER(ElementType);
 	MEMBER_HELPER(NodeGlobalReference);

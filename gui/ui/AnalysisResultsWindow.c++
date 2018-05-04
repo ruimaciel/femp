@@ -5,11 +5,11 @@ AnalysisResultsWindow::AnalysisResultsWindow(fem::Project &project, QWidget *par
 	: QMdiSubWindow(parent), BaseWindow("Analysis results")
 {
 	m_project = &project;
-	m_analysis_results_widget = new AnalysisResultsWidget(project, parent);
+	m_analysisResultsWidget = new AnalysisResultsWidget(project, parent);
 
 	this->setAttribute(Qt::WA_DeleteOnClose);
 	this->setWindowTitle(tr("Analysis results"));
-	this->setWidget(m_analysis_results_widget);
+	this->setWidget(m_analysisResultsWidget);
 }
 
 

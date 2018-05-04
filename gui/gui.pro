@@ -20,13 +20,12 @@ LIBS += -lumfpack -lGLU -L$${BUILD_DIR} -llibla -llibfemp
 
 include(viewer/viewer.pri)
 
-HEADERS += MainWindow.h++ \
+HEADERS += \
         Document.h++ \
         ProgramOptions.h++ \
         options/Options.h++ \
         options/ViewportColors.h++ \
         options/DisplayOptions.h++ \
-        MdiWindowProperties.h++ \
         Selection.h++ \
         SelectionManager.h++ \
         ui/dialogs/SelectionDialog.h++ \
@@ -82,16 +81,16 @@ HEADERS += MainWindow.h++ \
         ProjectVisitor/OutputResultsInNodesVisitor.h++ \
         DefaultProgressIndicator.h++ \
     Settings.h++ \
-    FempApplication.h++
+    FempApplication.h++ \
+    ui/MainWindow.h++ \
+    ui/MdiWindowProperties.h++
 
 SOURCES += main.c++ \
-        MainWindow.c++ \
         Document.c++ \
         ProgramOptions.c++ \
         options/Options.c++ \
         options/ViewportColors.c++ \
         options/DisplayOptions.c++ \
-        MdiWindowProperties.c++ \
         Project.c++ \
         ProjectVisitor/OutputElementStatisticsVisitor.c++ \
         ProjectVisitor/MoveNodesVisitor.c++ \
@@ -144,7 +143,9 @@ SOURCES += main.c++ \
         ui/MatrixModel.c++ \
         DefaultProgressIndicator.c++ \
     Settings.c++ \
-    FempApplication.c++
+    FempApplication.c++ \
+    ui/MainWindow.c++ \
+    ui/MdiWindowProperties.c++
 
 FORMS += ui/dialogs/AnalysisDialog.ui \
         ui/dialogs/AnalysisProgressDialog.ui \

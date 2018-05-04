@@ -8,7 +8,7 @@
 
 #include <array>
 
-#include "../MdiWindowProperties.h++"
+#include <gui/ui/MdiWindowProperties.h++>
 
 #include "../Project.h++"
 
@@ -35,9 +35,9 @@ class ViewportState;
 class Input;
 
 /*
-QGLidget subclass designed for a Base class for all Qt widgets that provide an opengl viewports to render the model 
+QGLidget subclass designed for a Base class for all Qt widgets that provide an opengl viewports to render the model
 */
-class BaseViewport 
+class BaseViewport
 	: public QGLWidget,
 	virtual public sigc::trackable
 {

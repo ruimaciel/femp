@@ -1,7 +1,7 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include "FempApplication.h++"
-#include "MainWindow.h++"
+#include "ui/MainWindow.h++"
 #include "ProgramOptions.h++"
 
 #include <string>

@@ -8,11 +8,6 @@
 namespace fem
 {
 
-Element::Element()
-{
-}
-
-
 Element::Element(const Element &copied)
 {
 	this->material = copied.material;
@@ -21,7 +16,7 @@ Element::Element(const Element &copied)
 }
 
 
-void 
+void
 Element::set(Type type, std::vector<size_t> nodes)
 {
 	switch(type)
@@ -100,7 +95,7 @@ Element::set(Type type, std::vector<size_t> nodes)
 }
 
 
-int 
+int
 Element::getNodeAmount() const
 {
 	switch(this->type)
@@ -169,7 +164,7 @@ Element::getNodeAmount() const
 }
 
 
-enum Element::ElementFamily 
+enum Element::ElementFamily
 Element::family() const
 {
 	switch(this->type)
@@ -224,7 +219,7 @@ Element::family() const
 }
 
 
-void 
+void
 Element::clear()
 {
 }

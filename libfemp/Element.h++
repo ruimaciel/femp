@@ -11,10 +11,10 @@ namespace fem
 {
 	// typedef size_t element_ref_t; // new definition bellow
 
-class Element 
+class Element
 {
 public:
-	enum Type 
+	enum Type
 	{
 		FE_INVALID	= 0,	/* test entry */
 		FE_LINE2        = 1,    /* 2-node line */
@@ -50,13 +50,13 @@ public:
 		FE_TETRAHEDRON56        = 31    /* 56-node fifth order tetrahedron */
 	};
 
-	enum ElementFamily 
+	enum ElementFamily
 	{
-		EF_TRIANGLE = 0, 
-		EF_QUADRILATERAL = 1, 
-		EF_TETRAHEDRON = 2, 
-		EF_PRISM = 3, 
-		EF_PYRAMID = 4, 
+		EF_TRIANGLE = 0,
+		EF_QUADRILATERAL = 1,
+		EF_TETRAHEDRON = 2,
+		EF_PRISM = 3,
+		EF_PYRAMID = 4,
 		EF_HEXAHEDRON = 5,
 		EF_INVALID
 	};
@@ -68,8 +68,8 @@ public:
 	Type type;
 
 public:
-	Element();
 	Element(Element const &copied);
+	virtual ~Element() {}
 
 	void set(Type type, std::vector<size_t> nodes);
 
@@ -78,7 +78,7 @@ public:
 	@return	the number of nodes
 	**/
 	int getNodeAmount() const;
-	
+
 	/**
 	returns enum representing family type.
 	**/

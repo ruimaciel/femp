@@ -2,7 +2,12 @@
 
 #include <libfemp/Model.h++>
 #include <libfemp/elements/BaseElement.h++>
-#include <libfemp/elements/all.h++>
+#include <libfemp/loads/Triangle3.h++>
+#include <libfemp/loads/Triangle6.h++>
+#include <libfemp/loads/Triangle10.h++>
+#include <libfemp/loads/Quadrangle4.h++>
+#include <libfemp/loads/Quadrangle8.h++>
+#include <libfemp/loads/Quadrangle9.h++>
 #include <libfemp/FemException.h++>
 
 
@@ -15,14 +20,14 @@ SurfaceLoad::SurfaceLoad()
 }
 
 
-std::vector<node_ref_t> 
+std::vector<node_ref_t>
 SurfaceLoad::getNodeReferences() const
 {
 	return this->nodes;
 }
 
 
-Eigen::VectorXd 
+Eigen::VectorXd
 SurfaceLoad::getForceVector(Model &model) const
 {
 	//TODO remove after migrating to polymorphic surface loads

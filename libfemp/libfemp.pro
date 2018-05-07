@@ -41,13 +41,6 @@ HEADERS = Group.h++ \
         elements/all.h++ \
         elements/ElementFactory.h++ \
         elements/BaseElement.h++ \
-        elements/TriangleFamily.h++ \
-        elements/Triangle3.h++ \
-        elements/Triangle6.h++ \
-        elements/QuadrangleFamily.h++ \
-        elements/Quadrangle4.h++ \
-        elements/Quadrangle8.h++ \
-        elements/Quadrangle9.h++ \
         elements/HexahedronFamily.h++ \
         elements/Hexahedron8.h++ \
         elements/Hexahedron20.h++ \
@@ -81,10 +74,18 @@ HEADERS = Group.h++ \
         parsers/MshParser.h++ \
         parsers/json.h \
         parsers/FemJsonParser.h++ \
-	export/JsonExporter.h++
+	export/JsonExporter.h++ \
+	loads/QuadrangleFamily.h++ \
+	loads/Quadrangle4.h++ \
+	loads/Quadrangle8.h++ \
+	loads/Quadrangle9.h++ \
+	loads/TriangleFamily.h++ \
+	loads/Triangle3.h++ \
+	loads/Triangle6.h++ \
+	loads/Triangle10.h++
 
 SOURCES = Group.c++ \
-        Model.c++ \
+	Model.c++ \
         Node.c++ \
         GlobalDof.c++ \
         GlobalDofMap.c++ \
@@ -108,14 +109,6 @@ SOURCES = Group.c++ \
         NodeGroup.c++ \
         elements/ElementFactory.c++ \
         elements/BaseElement.c++ \
-        elements/TriangleFamily.c++ \
-        elements/Triangle3.c++ \
-        elements/Triangle6.c++ \
-        elements/Triangle10.c++ \
-        elements/QuadrangleFamily.c++ \
-        elements/Quadrangle4.c++ \
-        elements/Quadrangle8.c++ \
-        elements/Quadrangle9.c++ \
         elements/HexahedronFamily.c++ \
         elements/Hexahedron8.c++ \
         elements/Hexahedron20.c++ \
@@ -142,7 +135,15 @@ SOURCES = Group.c++ \
         parsers/MshParser.c++ \
         parsers/json.c \
         parsers/FemJsonParser.c++ \
-	export/JsonExporter.c++
+	export/JsonExporter.c++ \
+	loads/QuadrangleFamily.c++ \
+	loads/Quadrangle4.c++ \
+	loads/Quadrangle8.c++ \
+	loads/Quadrangle9.c++ \
+	loads/TriangleFamily.c++ \
+	loads/Triangle3.c++ \
+	loads/Triangle6.c++ \
+	loads/Triangle10.c++
 
 
 FemJsonParserRe2c.target = parsers/FemJsonParser.c++

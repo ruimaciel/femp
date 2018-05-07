@@ -26,7 +26,7 @@ namespace fem
 /**
  * Represents a finite element model to be used to analyse static equilibrium problems
  **/
-class Model 
+class Model
 {
 private:
 	int default_material;	// used when adding elements
@@ -44,28 +44,26 @@ public:	// rethink this
 
 public:
 	Model();
-	~Model();
 
 	// clears the entire model
 	void clear();
 
 	// sets a node
-	void setNode(size_t ref, double x, double y, double z);
 	void setNode(size_t ref, fem::Point p);
 
-	fem::Node & getNode(size_t ref)	{ return this->node_list[ref]; }
+	fem::Node & getNode(size_t ref);
 
 	void setDefaultMaterial(int material)	{ default_material = material; }
 
 	/**
 	returns the number of elements which form this model
 	**/
-	std::vector<Element>::size_type numberOfElements() const	{ return element_list.size(); }
+	std::vector<Element>::size_type numberOfElements() const;
 
 	/**
 	 * getter function for the element list
 	 **/
-	std::vector<Element> getElementList() {return element_list;}
+	std::vector<Element> getElementList() const;
 
 	/**
 	Adds a new material to the list

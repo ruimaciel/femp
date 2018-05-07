@@ -4,11 +4,11 @@
 
 #include <libfemp/SurfaceLoadOperators/SurfaceLoadOperator.h++>
 #include <libfemp/elements/BaseElement.h++>
-#include <libfemp/elements/Triangle3.h++>
-#include <libfemp/elements/Triangle6.h++>
-#include <libfemp/elements/Quadrangle4.h++>
-#include <libfemp/elements/Quadrangle8.h++>
-#include <libfemp/elements/Quadrangle9.h++>
+#include <libfemp/loads/Triangle3.h++>
+#include <libfemp/loads/Triangle6.h++>
+#include <libfemp/loads/Quadrangle4.h++>
+#include <libfemp/loads/Quadrangle8.h++>
+#include <libfemp/loads/Quadrangle9.h++>
 
 
 namespace fem

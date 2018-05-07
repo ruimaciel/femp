@@ -26,11 +26,13 @@ public:
 
 	// iterators
 	typedef std::vector<size_t>::const_iterator const_iterator;
-	std::vector<size_t>::const_iterator begin();	
+	std::vector<size_t>::const_iterator begin();
 	std::vector<size_t>::const_iterator end();
-	
+
 	// clears the definition;
 	void clear();
+
+	std::string getLabel();
 };
 
 }	// namespace fem

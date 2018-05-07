@@ -80,7 +80,8 @@ HEADERS = Group.h++ \
         parsers/parser.h++ \
         parsers/MshParser.h++ \
         parsers/json.h \
-        parsers/FemJsonParser.h++
+        parsers/FemJsonParser.h++ \
+	export/JsonExporter.h++
 
 SOURCES = Group.c++ \
         Model.c++ \
@@ -140,7 +141,8 @@ SOURCES = Group.c++ \
         parsers/parser.c++ \
         parsers/MshParser.c++ \
         parsers/json.c \
-        parsers/FemJsonParser.c++
+        parsers/FemJsonParser.c++ \
+	export/JsonExporter.c++
 
 
 FemJsonParserRe2c.target = parsers/FemJsonParser.c++

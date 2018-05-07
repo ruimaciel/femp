@@ -40,7 +40,7 @@ SurfaceLoad::getForceVector(Model &model) const
 			break;
 
 		case Element::FE_TRIANGLE6:
-			element = new Triangle3();
+			element = new Triangle6();
 			break;
 
 		case Element::FE_QUADRANGLE4:
@@ -132,4 +132,3 @@ SurfaceLoad::getForceVector(Model &model) const
 
 
 }	// namespace fem
-

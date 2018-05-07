@@ -11,7 +11,7 @@ typedef unsigned int node_restriction_ref_t;
 /**
  * Prescribes a zero displacement on a degree of freedom
  **/
-class NodeRestrictions 
+class NodeRestrictions
 {
 public:
 	enum Type {NR_INVALID, NR_DX, NR_DY, NR_DZ};
@@ -22,15 +22,14 @@ private:
 public:
 	NodeRestrictions ();
 	NodeRestrictions (const NodeRestrictions &);
-	~NodeRestrictions ();
 
 	void setdx()	{d[0] = true;}
 	void setdy()	{d[1] = true;}
 	void setdz()	{d[2] = true;}
-	
-	bool dx()	{return d[0];}
-	bool dy()	{return d[1];}
-	bool dz()	{return d[2];}
+
+	bool dx()	const {return d[0];}
+	bool dy()	const {return d[1];}
+	bool dz()	const {return d[2];}
 
 	/**
 	Returns true if there isn't a restriction set

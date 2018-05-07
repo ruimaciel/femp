@@ -18,65 +18,60 @@ NodeRestrictions::NodeRestrictions(const NodeRestrictions &copied)
 }
 
 
-NodeRestrictions::~NodeRestrictions()
-{
-}
-
-
-bool 
+bool
 NodeRestrictions::free()	const
 {
 	return !(d[0] || d[1] || d[2]);
 }
 
 
-enum NodeRestrictions::Type 
-NodeRestrictions::extractType(char *buffer)
+enum NodeRestrictions::Type
+		NodeRestrictions::extractType(char *buffer)
 {
 	char *p = buffer;
 	switch(*p)
 	{
-		case 'd':
+	case 'd':
+		p++;
+		switch(*p)
+		{
+		case 'x':
 			p++;
-			switch(*p)
-			{
-				case 'x':
-					p++;
-					if(*p == '\0')
-						return NR_DX;
-					else
-						return NR_INVALID;
-					break;
+			if(*p == '\0')
+				return NR_DX;
+			else
+				return NR_INVALID;
+			break;
 
-				case 'y':
-					p++;
-					if(*p == '\0')
-						return NR_DY;
-					else
-						return NR_INVALID;
-					break;
+		case 'y':
+			p++;
+			if(*p == '\0')
+				return NR_DY;
+			else
+				return NR_INVALID;
+			break;
 
-				case 'z':
-					p++;
-					if(*p == '\0')
-						return NR_DZ;
-					else
-						return NR_INVALID;
-					break;
-
-				default:
-					return NR_INVALID;
-			}
+		case 'z':
+			p++;
+			if(*p == '\0')
+				return NR_DZ;
+			else
+				return NR_INVALID;
 			break;
 
 		default:
 			return NR_INVALID;
-			break;
+		}
+		break;
+
+	default:
+		return NR_INVALID;
+		break;
 	}
 }
 
 
-void 
+void
 NodeRestrictions::reset()
 {
 	this->d[0] = false;
@@ -84,4 +79,4 @@ NodeRestrictions::reset()
 	this->d[2] = false;
 }
 
-}
+}	// namespace fem

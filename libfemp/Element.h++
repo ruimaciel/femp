@@ -68,6 +68,8 @@ public:
 	Type type;
 
 public:
+	Element() {}
+
 	Element(Element const &copied);
 	virtual ~Element() {}
 

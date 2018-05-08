@@ -264,13 +264,16 @@ JsonExporter::output(std::ostream & out, const fem::Model &model)
 			{
 				out << ",\n\t\t\t";
 				out << "\"surface loads\":[";
-				for(std::vector<fem::SurfaceLoad>::const_iterator n = it->surface_loads.begin(); n != it->surface_loads.end(); n++)
+				for(std::vector<fem::SurfaceLoad *>::const_iterator surface_load_iter = it->surface_loads.begin(); surface_load_iter != it->surface_loads.end(); surface_load_iter++)
 				{
-					if (n != it->surface_loads.begin())
+					if (surface_load_iter != it->surface_loads.begin())
 						out << ",";
+
+					fem::SurfaceLoad * surface_load = *surface_load_iter;
+
 					out << "\n\t\t\t\t{";
 					out << "\"type\": ";
-					switch(n->type)
+					switch(surface_load->type)
 					{
 					case fem::Element::FE_TRIANGLE3:
 						out << "\"triangle3\"";
@@ -299,18 +302,18 @@ JsonExporter::output(std::ostream & out, const fem::Model &model)
 					out << ", ";
 
 					out << "\"nodes\": [";
-					for(std::vector<size_t>::const_iterator i = n->nodes.begin(); i != n->nodes.end(); i++)
+					for(std::vector<size_t>::const_iterator i = surface_load->nodes.begin(); i != surface_load->nodes.end(); i++)
 					{
-						if (i != n->nodes.begin())
+						if (i != surface_load->nodes.begin())
 							out << ",";
 						out << *i;
 					}
 					out << "], ";
 					out << "\"forces\": [";
 
-					for(std::vector<fem::Point>::const_iterator i = n->surface_forces.begin(); i != n->surface_forces.end(); i++)
+					for(std::vector<fem::Point>::const_iterator i = surface_load->surface_forces.begin(); i != surface_load->surface_forces.end(); i++)
 					{
-						if (i != n->surface_forces.begin())
+						if (i != surface_load->surface_forces.begin())
 							out << ",";
 						out << "[";
 						out << i->x();

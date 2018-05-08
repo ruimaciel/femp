@@ -487,7 +487,9 @@ MshParser::parse(std::istream &file, fem::Model &model)
 						(*surface_load_operator)(surface_load, model);
 
 						index_list.clear();
-						load_pattern.addSurfaceLoad(surface_load);
+
+						fem::SurfaceLoad *load = new fem::SurfaceLoad(surface_load);
+						load_pattern.addSurfaceLoad(load);
 					}
 					break;
 					

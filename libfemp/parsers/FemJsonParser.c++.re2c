@@ -1128,11 +1128,15 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					break;
 
 				case PR_SURFACE_LOAD_SET:
-					temp_surface_load.nodes = reference;
-					temp_surface_load.surface_forces = temp_point;
-					temp_load_pattern.addSurfaceLoad(temp_surface_load);
-					reference.clear();
-					temp_point.clear();
+					{
+						temp_surface_load.nodes = reference;
+						temp_surface_load.surface_forces = temp_point;
+
+						fem::SurfaceLoad *surface_load = new fem::SurfaceLoad(temp_surface_load);
+						temp_load_pattern.addSurfaceLoad(surface_load);
+						reference.clear();
+						temp_point.clear();
+					}
 					break;
 
 				case PR_SURFACE_TRIANGLE3_NODES_1:

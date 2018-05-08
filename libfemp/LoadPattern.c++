@@ -11,7 +11,7 @@ LoadPattern::LoadPattern()
 }
 
 
-void 
+void
 LoadPattern::clear()
 {
 	m_label.clear();
@@ -22,7 +22,7 @@ LoadPattern::clear()
 }
 
 
-bool 
+bool
 LoadPattern::empty() const
 {
 	if(!nodal_loads.empty()) return false;
@@ -33,21 +33,21 @@ LoadPattern::empty() const
 }
 
 
-std::string const & 
+std::string const &
 LoadPattern::getLabel() const
 {
 	return this->m_label;
 }
 
 
-void 
+void
 LoadPattern::setLabel(std::string const &label)
 {
 	this->m_label = label;
 }
 
 
-void 
+void
 LoadPattern::addNodalLoad(size_t node, Point force)
 {
 	//TODO perform sanity checks
@@ -57,7 +57,7 @@ LoadPattern::addNodalLoad(size_t node, Point force)
 }
 
 
-void 
+void
 LoadPattern::addNodalDisplacement(size_t node, Point displacement)
 {
 	//TODO perform sanity checks
@@ -67,7 +67,7 @@ LoadPattern::addNodalDisplacement(size_t node, Point displacement)
 }
 
 
-void 
+void
 LoadPattern::addDomainLoad(size_t element, Point force)
 {
 	//TODO perform sanity checks
@@ -77,10 +77,10 @@ LoadPattern::addDomainLoad(size_t element, Point force)
 }
 
 
-void 
-LoadPattern::addSurfaceLoad(SurfaceLoad &lp)
+void
+LoadPattern::addSurfaceLoad(SurfaceLoad * surfaceload)
 {
-	surface_loads.push_back(lp);
+	surface_loads.push_back(surfaceload);
 }
 
 

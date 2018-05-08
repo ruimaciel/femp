@@ -27,8 +27,7 @@ public:
 	std::vector<fem::Point>	surface_forces;	// forces acting in each node, used to interpolate the surface load
 
 public:
-	SurfaceLoad();
-	virtual ~SurfaceLoad() {};
+	virtual ~SurfaceLoad() {}
 
 	/**
 	 * Returns a vector with the reference IDs of all nodes associated with the element
@@ -41,7 +40,7 @@ public:
 	 * @param model an object of type fem::Model
 	 **/
 	virtual Eigen::VectorXd getForceVector(Model &model) const;
-	
+
 };
 
 }	// namespace fem

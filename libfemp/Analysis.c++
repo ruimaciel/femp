@@ -76,7 +76,7 @@ Analysis<Scalar>::buildEquation(Model &model, const LoadPattern &lp, AnalysisRes
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error 
+enum Analysis<Scalar>::Error
 Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace Eigen;
@@ -88,7 +88,7 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult &re
 
 		k_elem = element->getStiffnessMatrix(model);
 
-		// add elementary stiffness matrix to the global stiffness matrix 
+		// add elementary stiffness matrix to the global stiffness matrix
 		add_elementary_stiffness_to_global(k_elem, result.lm, el, result);
 
 		// mark progress
@@ -103,7 +103,7 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult &re
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error 
+enum Analysis<Scalar>::Error
 Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPattern &lp, AnalysisResult &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace Eigen;
@@ -166,7 +166,7 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			for(int n = 0; n < nnodes; n++)
 			{
 				Point const &f = domain_load->second.getForce();
-				const double cN = N[n]; 
+				const double cN = N[n];
 
 				f_elem(3*n) += cN*f.x()*detJ*W;
 				f_elem(3*n+1) += cN*f.y()*detJ*W;
@@ -206,7 +206,7 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error 
+enum Analysis<Scalar>::Error
 Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPattern &lp, AnalysisResult &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace Eigen;
@@ -214,9 +214,9 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 	Matrix<double, Dynamic,1> f_elem;
 	Matrix3d J, invJ;
 
-	for(std::vector<fem::SurfaceLoad>::const_iterator surface_load = lp.surface_loads.begin(); surface_load != lp.surface_loads.end(); surface_load++)
+	for(fem::SurfaceLoad * surface_load: lp.surface_loads)
 	{
-		
+
 		// generates the element force vector
 		f_elem = surface_load->getForceVector(model);
 		std::vector<node_ref_t> nodes = surface_load->getNodeReferences();
@@ -251,7 +251,7 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error 
+enum Analysis<Scalar>::Error
 Analysis<Scalar>::generateGlobalPointForceVector(Model &, const LoadPattern &lp, AnalysisResult &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace Eigen;
@@ -335,7 +335,7 @@ Analysis<Scalar>::generateDisplacementsMap(Model &model, AnalysisResult &result)
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error 
+enum Analysis<Scalar>::Error
 Analysis<Scalar>::recoverValues(Model &model, AnalysisResult &result)
 {
 	ElementResultsFactory factory(model, result);
@@ -415,7 +415,7 @@ Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Matrix<double,
 	assert((size_t)k_elem.rows() == element.nodes.size()*3);
 	assert((size_t)k_elem.cols() == element.nodes.size()*3);
 
-	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator idof, jdof;	// degrees of freedom for the line and column 
+	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator idof, jdof;	// degrees of freedom for the line and column
 	size_t id[3], jd[3]; // boost::tuple, being a template, doesn't accept non-const parameters.  This is a way to sidestep it
 
 	boost::tuple<size_t,size_t,size_t> dof;

@@ -8,6 +8,7 @@
 #include <libfemp/Element.h++>
 #include <libfemp/Node.h++>
 #include <libfemp/Point.h++>
+#include <libfemp/elements/BaseElement.h++>	// added to help transition to properly polymorphic
 
 
 
@@ -41,6 +42,12 @@ public:
 	 **/
 	virtual Eigen::VectorXd getForceVector(Model &model) const;
 
+	/**
+	 * @brief makeSurfaceLoad helper factory method added to migrate surface loads to a properly polymorphic implementation
+	 * @param element
+	 * @return
+	 */
+	static BaseElement * makeSurfaceLoad(const Element * element);
 };
 
 }	// namespace fem

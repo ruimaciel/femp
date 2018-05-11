@@ -37,6 +37,11 @@ public:
 	std::vector<boost::tuple<fem::Point, double> > getStiffnessQuadratureRule();
 	std::vector<boost::tuple<fem::Point, double> > getDomainQuadratureRule();
 
+public:	//TODO this is a transistion interface: to be implemented in SurfaceLoad
+	virtual std::vector<double> getN(const Point &p) = 0;
+	virtual std::vector<double> getdNdcsi(const Point &p) = 0;
+	virtual std::vector<double> getdNdeta(const Point &p) = 0;
+
 protected:
 	void generateQuadratureData();
 };

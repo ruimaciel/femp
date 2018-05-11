@@ -1,5 +1,7 @@
 #include "SurfaceLoad.h++"
 
+#include <memory>
+
 #include <libfemp/Model.h++>
 #include <libfemp/elements/BaseElement.h++>
 #include <libfemp/loads/Triangle3.h++>
@@ -25,54 +27,26 @@ Eigen::VectorXd
 SurfaceLoad::getForceVector(Model &model) const
 {
 	//TODO remove after migrating to polymorphic surface loads
-	BaseElement *element = nullptr;	// points to the current element class
+	std::unique_ptr<BaseElement> surfaceLoad( SurfaceLoad::makeSurfaceLoad(this) );
 
-	switch(this->type)
-	{
-		case Element::FE_TRIANGLE3:
-			element = new Triangle3();
-			break;
-
-		case Element::FE_TRIANGLE6:
-			element = new Triangle6();
-			break;
-
-		case Element::FE_QUADRANGLE4:
-			element = new Quadrangle4();
-			break;
-
-		case Element::FE_QUADRANGLE8:
-			element = new Quadrangle8();
-			break;
-
-		case Element::FE_QUADRANGLE9:
-			element = new Quadrangle9();
-			break;
-
-		default:
-			throw FemException("invalid surface load type");
-			break;
-	}
-	element->nodes = this->nodes;
-
-
-	int node_amount = this->getNodeAmount();
+	int node_amount = surfaceLoad->getNodeAmount();
+	const int dof_amount = surfaceLoad->getDofAmount();
 
 	Eigen::VectorXd f_elem;
-	f_elem.resize(node_amount*3);
+	f_elem.resize(dof_amount);
 	f_elem.setZero();
 
-	auto nodes = element->nodes;
+	auto nodes = surfaceLoad->nodes;
 
 	Eigen::Matrix3d J;
 
-	for (typename std::vector<boost::tuple<fem::Point,double> >::iterator i = element->getDomainQuadratureRule().begin(); i != element->getDomainQuadratureRule().end(); i++)
+	for (typename std::vector<boost::tuple<fem::Point,double> >::iterator i = surfaceLoad->getDomainQuadratureRule().begin(); i != surfaceLoad->getDomainQuadratureRule().end(); i++)
 	{
 		// get shape function and shape function derivatives in this integration Point's coordinate
 		const Point &point = i->get<0>();
-		std::vector<double> N = element->getN(point);
-		std::vector<double> dNdcsi = element->getdNdcsi(point);
-		std::vector<double> dNdeta = element->getdNdeta(point);
+		std::vector<double> N = surfaceLoad->getN(point);
+		std::vector<double> dNdcsi = surfaceLoad->getdNdcsi(point);
+		std::vector<double> dNdeta = surfaceLoad->getdNdeta(point);
 
 		// calculate the Jacobian
 		J.setZero();
@@ -118,10 +92,44 @@ SurfaceLoad::getForceVector(Model &model) const
 		}
 	}
 
-	//TODO remove after migrating to polymorphic surface loads
-	delete element;
-
 	return f_elem;
+}
+
+
+BaseElement *SurfaceLoad::makeSurfaceLoad(const Element * element)
+{
+	BaseElement *surfaceLoad = nullptr;
+
+	switch(element->type)
+	{
+		case Element::FE_TRIANGLE3:
+			surfaceLoad = new Triangle3();
+			break;
+
+		case Element::FE_TRIANGLE6:
+			surfaceLoad = new Triangle6();
+			break;
+
+		case Element::FE_QUADRANGLE4:
+			surfaceLoad = new Quadrangle4();
+			break;
+
+		case Element::FE_QUADRANGLE8:
+			surfaceLoad = new Quadrangle8();
+			break;
+
+		case Element::FE_QUADRANGLE9:
+			surfaceLoad = new Quadrangle9();
+			break;
+
+		default:
+			throw FemException("invalid surface load type");
+			break;
+	}
+
+	surfaceLoad->nodes = element->nodes;
+
+	return surfaceLoad;
 }
 
 

@@ -44,7 +44,7 @@ Quadrangle4::getN(const Point &p)
 	N[1] = (1+csi)*(1-eta)/4;
 	N[2] = (1+csi)*(1+eta)/4;
 	N[3] = (1-csi)*(1+eta)/4;
-	
+
 	return N;
 }
 
@@ -78,7 +78,7 @@ Quadrangle4::getdNdeta(const Point &p)
 	dNdeta[1] = (-1-csi)/4;
 	dNdeta[2] = (1+csi)/4;
 	dNdeta[3] = (1-csi)/4;
-	
+
 	return dNdeta;
 }
 
@@ -97,8 +97,8 @@ Quadrangle4::getdNdzeta(const Point &)
 }
 
 
-std::vector<fem::Point> &
-Quadrangle4::setCoordinates()
+std::vector<fem::Point>
+Quadrangle4::getLocalCoordinates()
 {
 	this->coordinates[0] = Point(	-0.5,	-0.5,	0	);
 	this->coordinates[1] = Point(	0.5,	-0.5,	0	);

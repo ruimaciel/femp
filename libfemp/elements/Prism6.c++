@@ -47,7 +47,7 @@ Prism6::getN(const Point &p)
 	N[3] = (-eta-csi+1)*(zeta+1)/2;
 	N[4] = csi*(zeta+1)/2;
 	N[5] = eta*(zeta+1)/2;
-	
+
 	return N;
 }
 
@@ -87,7 +87,7 @@ Prism6::getdNdeta(const Point &p)
 	dNdeta[3] = -(zeta+1)/2;
 	dNdeta[4] = 0;
 	dNdeta[5] = (zeta+1)/2;
-	
+
 	return dNdeta;
 }
 
@@ -111,7 +111,8 @@ Prism6::getdNdzeta(const Point &p)
 	return dNdzeta;
 }
 
-std::vector<fem::Point> & Prism6::setCoordinates()
+std::vector<fem::Point>
+Prism6::getLocalCoordinates()
 {
 	this->coordinates[0] = Point(	0,	0,	-1	);
 	this->coordinates[1] = Point(	1,	0,	-1	);

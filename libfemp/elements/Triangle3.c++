@@ -39,7 +39,7 @@ Triangle3::getN(const Point &p)
 	N[0] = 1-csi-eta;
 	N[1] = csi;
 	N[2] = eta;
-	
+
 	return N;
 }
 
@@ -65,7 +65,7 @@ Triangle3::getdNdeta(const Point &)
 	dNdeta[0] = -1;
 	dNdeta[1] = 0;
 	dNdeta[2] = 1;
-	
+
 	return dNdeta;
 }
 
@@ -83,8 +83,8 @@ Triangle3::getdNdzeta(const Point &)
 }
 
 
-std::vector<fem::Point> & 
-Triangle3::setCoordinates()
+std::vector<fem::Point>
+Triangle3::getLocalCoordinates()
 {
 	this->coordinates[0] = Point(	0,	0,	0	);
 	this->coordinates[1] = Point(	1,	0,	0	);

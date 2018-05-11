@@ -42,7 +42,7 @@ Triangle6::getN(const Point &p)
 	N[3] = 4*csi*(1-eta-csi);
 	N[4] = 4*csi*eta;
 	N[5] = 4*(1-eta-csi)*eta;
-	
+
 	return N;
 }
 
@@ -80,7 +80,7 @@ Triangle6::getdNdeta(const Point &p)
 	dNdeta[3] = -4*csi;
 	dNdeta[4] = 4*csi;
 	dNdeta[5] = 4*(1-eta-csi)-4*eta;
-	
+
 	return dNdeta;
 }
 
@@ -101,8 +101,8 @@ Triangle6::getdNdzeta(const Point &)
 }
 
 
-std::vector<fem::Point> &
-Triangle6::setCoordinates()
+std::vector<fem::Point>
+Triangle6::getLocalCoordinates()
 {
 	//TODO finish
 	this->coordinates[0] = Point(	0,	0,	0	);

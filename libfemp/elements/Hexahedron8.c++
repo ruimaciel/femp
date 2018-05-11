@@ -53,7 +53,7 @@ Hexahedron8::getN(const Point &p)
 	N[5] = (csi+1)*(1-eta)*(zeta+1)/8;
 	N[6] = (csi+1)*(eta+1)*(zeta+1)/8;
 	N[7] = (1-csi)*(eta+1)*(zeta+1)/8;
-	
+
 	return N;
 }
 
@@ -97,7 +97,7 @@ Hexahedron8::getdNdeta(const Point &p)
 	dNdeta[ 5] = -(csi+1)*(zeta+1)/8;
 	dNdeta[ 6] = (csi+1)*(zeta+1)/8;
 	dNdeta[ 7] = (1-csi)*(zeta+1)/8;
-	
+
 	return dNdeta;
 }
 
@@ -124,8 +124,8 @@ Hexahedron8::getdNdzeta(const Point &p)
 }
 
 
-std::vector<fem::Point> & 
-Hexahedron8::setCoordinates()
+std::vector<fem::Point>
+Hexahedron8::getLocalCoordinates()
 {
 	this->coordinates[0] = Point(	-1,	-1,	-1	);
 	this->coordinates[1] = Point(	1,	-1,	-1	);

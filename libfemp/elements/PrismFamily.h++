@@ -12,7 +12,7 @@ namespace fem
 {
 
 class PrismFamily
-	: public BaseElement
+		: public BaseElement
 {
 public:
 	int stiffness_degree;	// Quadrature rule degree to integrate stiffness matrices

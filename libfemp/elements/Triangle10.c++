@@ -117,8 +117,8 @@ Triangle10::getdNdzeta(const Point &)
 }
 
 
-std::vector<fem::Point> & 
-Triangle10::setCoordinates()
+std::vector<fem::Point>
+Triangle10::getLocalCoordinates()
 {
 	this->coordinates[0] = Point(	0,	0,	0	);
 	this->coordinates[1] = Point(	1,	0,	0	);

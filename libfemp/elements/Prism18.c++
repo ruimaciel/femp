@@ -59,7 +59,7 @@ Prism18::getN(const Point &p)
 	N[15] =  4*csi*(-1 + csi + eta)*(-1 + zeta*zeta);
 	N[16] =  4*eta*(-1 + csi + eta)*(-1 + zeta*zeta);
 	N[17] =  -4*csi*eta*(-1 + zeta*zeta);
-	
+
 	return N;
 }
 
@@ -124,7 +124,7 @@ Prism18::getdNdeta(const Point &p)
 	dNdeta[15] = 4*csi*(zeta*zeta-1);
 	dNdeta[16] = 4*(eta+csi-1)*(zeta*zeta-1)+4*eta*(zeta*zeta-1);
 	dNdeta[17] =  -4*csi*(zeta*zeta-1);
-	
+
 	return dNdeta;
 }
 
@@ -160,7 +160,8 @@ Prism18::getdNdzeta(const Point &p)
 	return dNdzeta;
 }
 
-std::vector<fem::Point> & Prism18::setCoordinates()
+std::vector<fem::Point>
+Prism18::getLocalCoordinates()
 {
 	this->coordinates[0] = Point(	0,	0,	-1	);
 	this->coordinates[1] = Point(	1,	0,	-1	);

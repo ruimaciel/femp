@@ -70,7 +70,7 @@ Quadrangle9::getdNdcsi(const Point &p)
 	dNdcsi[6] = (1-csi)*eta*(eta+1)/2-(csi+1)*eta*(eta+1)/2;
 	dNdcsi[7] = csi*(1-eta)*(eta+1)/2+(csi-1)*(1-eta)*(eta+1)/2;
 	dNdcsi[8] = (1-csi)*(1-eta)*(eta+1)-(csi+1)*(1-eta)*(eta+1);
-	
+
 	return dNdcsi;
 }
 
@@ -92,7 +92,7 @@ Quadrangle9::getdNdeta(const Point &p)
 	dNdeta[6] = (1-csi)*(csi+1)*(eta+1)/2+(1-csi)*(csi+1)*eta/2;
 	dNdeta[7] = (csi-1)*csi*(1-eta)/2-(csi-1)*csi*(eta+1)/2;
 	dNdeta[8] = (1-csi)*(csi+1)*(1-eta)-(1-csi)*(csi+1)*(eta+1);
-	
+
 	return dNdeta;
 }
 
@@ -115,8 +115,8 @@ Quadrangle9::getdNdzeta(const Point &)
 	return dNdzeta;
 }
 
-std::vector<fem::Point> &
-Quadrangle9::setCoordinates()
+std::vector<fem::Point>
+Quadrangle9::getLocalCoordinates()
 {
 	this->coordinates[0] = Point(	-0.5,	-0.5,	0	);
 	this->coordinates[1] = Point(	0.5,	-0.5,	0	);

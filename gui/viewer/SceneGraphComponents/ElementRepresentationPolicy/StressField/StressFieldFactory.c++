@@ -15,8 +15,8 @@ StressFieldFactory::StressFieldFactory(float &diameter, fem::Model &model, fem::
 }
 
 
-StressFieldRepresentation 
-StressFieldFactory::operator() (fem::Element const &element) 
+StressFieldRepresentation
+StressFieldFactory::operator() (fem::Element const &element)
 {
 	assert(m_model != NULL);
 
@@ -72,7 +72,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 
 		case fem::Element::FE_HEXAHEDRON20:
 			e = &m_hexahedron20;
-			local_points = { 
+			local_points = {
 				{-0.57735,-0.57735,-0.57735},
 				{ 0.57735,-0.57735,-0.57735},
 				{ 0.57735, 0.57735,-0.57735},
@@ -104,8 +104,8 @@ StressFieldFactory::operator() (fem::Element const &element)
 
 		case fem::Element::FE_PRISM6:
 			e = &m_prism6;
-			local_points = { 
-				{1.0/3, 1.0/3, 0} 
+			local_points = {
+				{1.0/3, 1.0/3, 0}
 			};
 
 			// tweak the diameter
@@ -114,7 +114,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 
 		case fem::Element::FE_PRISM15:
 			e = &m_prism15;
-			local_points = { 
+			local_points = {
 				{1.0/3, 1.0/3, -0.57735} ,
 				{1.0/3, 1.0/3,  0.57735}
 			};
@@ -125,7 +125,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 
 		case fem::Element::FE_PRISM18:
 			e = &m_prism18;
-			local_points = { 
+			local_points = {
 				{1.0/3, 1.0/3, -0.57735} ,
 				{1.0/3, 1.0/3,  0.57735}
 			};
@@ -143,8 +143,6 @@ StressFieldFactory::operator() (fem::Element const &element)
 			break;
 	}
 
-	e->setCoordinates();
-
 	// calculate stresses
 	for(auto local: local_points)
 	{
@@ -161,7 +159,8 @@ StressFieldFactory::operator() (fem::Element const &element)
 
 		// set Dg
 		Dg.setZero();
-		for(unsigned int node = 0; node < e->coordinates.size(); node++)
+		auto coordinates = e->getLocalCoordinates();
+		for(unsigned int node = 0; node < coordinates.size(); node++)
 		{
 			// get the node's x coordinate, the coordinate in the global frame of reference
 			global = m_model->getNode(element.nodes[node]);
@@ -185,7 +184,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 		float dNdz = 0;
 
 		// iterate through each node in the element
-		for(unsigned int node = 0; node < e->coordinates.size(); node++)
+		for(unsigned int node = 0; node < coordinates.size(); node++)
 		{
 			fem::Point d; // displacements
 			d = m_result->displacements[ element.nodes[node] ];	// displacements calculated in this node
@@ -194,8 +193,8 @@ StressFieldFactory::operator() (fem::Element const &element)
 			dNdx  = invDg(0,0)*dNdcsi[node] + invDg(0,1)*dNdeta[node] + invDg(0,2)*dNdzeta[node];
 			dNdy  = invDg(1,0)*dNdcsi[node] + invDg(1,1)*dNdeta[node] + invDg(1,2)*dNdzeta[node];
 			dNdz  = invDg(2,0)*dNdcsi[node] + invDg(2,1)*dNdeta[node] + invDg(2,2)*dNdzeta[node];
-			
-			//m_gradient_value[coord] += dNdx*d.x(); 
+
+			//m_gradient_value[coord] += dNdx*d.x();
 			e11 += dNdx*d.x();
 			e22 += dNdy*d.y();
 			e33 += dNdz*d.z();
@@ -256,25 +255,25 @@ StressFieldFactory::operator() (fem::Element const &element)
 }
 
 
-float 
+float
 StressFieldFactory::max() const
 {
 	return m_max;
 }
 
 
-float 
+float
 StressFieldFactory::min() const
 {
 	return m_min;
 }
 
 // Macros
-#define SQR(x)      ((x)*(x))                        // x^2 
+#define SQR(x)      ((x)*(x))                        // x^2
 
 
 // ----------------------------------------------------------------------------
-int 
+int
 StressFieldFactory::dsyevj3(double A[3][3], double Q[3][3], double w[3]) const
 // ----------------------------------------------------------------------------
 // Calculates the eigenvalues and normalized eigenvectors of a symmetric 3x3
@@ -313,7 +312,7 @@ StressFieldFactory::dsyevj3(double A[3][3], double Q[3][3], double w[3]) const
 	for (int i=0; i < n; i++)
 		w[i] = A[i][i];
 
-	// Calculate SQR(tr(A))  
+	// Calculate SQR(tr(A))
 	sd = 0.0;
 	for (int i=0; i < n; i++)
 		sd += fabs(w[i]);
@@ -322,7 +321,7 @@ StressFieldFactory::dsyevj3(double A[3][3], double Q[3][3], double w[3]) const
 	// Main iteration loop
 	for (int nIter=0; nIter < 50; nIter++)
 	{
-		// Test for convergence 
+		// Test for convergence
 		so = 0.0;
 		for (int p=0; p < n; p++)
 			for (int q=p+1; q < n; q++)
@@ -389,7 +388,7 @@ StressFieldFactory::dsyevj3(double A[3][3], double Q[3][3], double w[3]) const
 					}
 
 					// Update eigenvectors
-#ifndef EVALS_ONLY          
+#ifndef EVALS_ONLY
 					for (int r=0; r < n; r++)
 					{
 						t = Q[r][p];

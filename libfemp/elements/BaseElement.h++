@@ -28,7 +28,7 @@ public:
 	using MatrixDataType	= Eigen::Matrix<double, Eigen::Dynamic,  Eigen::Dynamic>;
 
 	//TODO to be removed
-	enum Type 
+	enum Type
 	{
 		FE_INVALID	= 0,	/* test entry */
 		FE_LINE2        = 1,    /* 2-node line */
@@ -68,13 +68,13 @@ public:
 	/**
 	// introduced to facilitate merging BaseElement with Element. remove this
 	**/
-	enum ElementFamily 
+	enum ElementFamily
 	{
-		EF_TRIANGLE = 0, 
-		EF_QUADRILATERAL = 1, 
-		EF_TETRAHEDRON = 2, 
-		EF_PRISM = 3, 
-		EF_PYRAMID = 4, 
+		EF_TRIANGLE = 0,
+		EF_QUADRILATERAL = 1,
+		EF_TETRAHEDRON = 2,
+		EF_PRISM = 3,
+		EF_PYRAMID = 4,
 		EF_HEXAHEDRON = 5,
 		EF_INVALID
 	};
@@ -84,6 +84,7 @@ public:
 public:	// WARNING: deprecated. to be removed.
 	std::map<int, std::vector<boost::tuple<fem::Point, double> > > ipwpl;	// integration points/weights pair list
 
+protected:
 	std::vector<fem::Point>	coordinates;
 
 
@@ -94,8 +95,8 @@ public:	// merging with fem::Element
 
 public:
 
-	virtual ~BaseElement() {};
-	
+	virtual ~BaseElement() {}
+
 	/**
 	 * Returns the total number of degrees of freedom
 	 **/
@@ -106,7 +107,7 @@ public:
 	@return	the number of nodes
 	**/
 	virtual int getNodeAmount() const = 0;
-	
+
 	/**
 	 * return a vector with the value of each basis function evaluated at a point
 	 **/
@@ -147,13 +148,9 @@ public:
 	 **/
 	virtual std::vector<size_t> getNodeReferences() const;
 
+	virtual std::vector<fem::Point> getLocalCoordinates() = 0;
 
-public:	//WARNING: BaseElement member functions are deprecated 
-
-	/**
-	Sets this element's local coordinates for each of its nodes
-	**/
-	virtual std::vector<fem::Point> & setCoordinates() = 0;
+public:	//WARNING: BaseElement member functions are deprecated
 
 	/**
 	Returns a list of quadrature rules

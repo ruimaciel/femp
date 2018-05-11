@@ -13,13 +13,12 @@ namespace fem
 {
 
 class Tetrahedron10
-	: public TetrahedronFamily
+		: public TetrahedronFamily
 {
 public:
 	Tetrahedron10();
-	~Tetrahedron10()	{};
 
-	std::vector<fem::Point> & setCoordinates();
+	std::vector<fem::Point> getLocalCoordinates();
 
 	std::vector<double> getN(const Point & p);
 
@@ -30,11 +29,11 @@ public:
 	std::vector<double> getdNdzeta(const Point &p);
 
 public: // merging with fem::Element
-        /** 
-        return the number of nodes that an element of this particular type has
-        @return the number of nodes
-        **/
-        int getNodeAmount() const	{ return 10; };
+	/**
+		return the number of nodes that an element of this particular type has
+		@return the number of nodes
+		**/
+	int getNodeAmount() const	{ return 10; };
 };
 
 

@@ -133,7 +133,7 @@ Hexahedron20::getdNdeta(const Point &p)
 	dNdeta[17] = (csi-1)*eta*(zeta+1)/2;
 	dNdeta[18] = -(csi+1)*eta*(zeta+1)/2;
 	dNdeta[19] = (1-csi*csi)*(zeta+1)/4;
-	
+
 	return dNdeta;
 }
 
@@ -172,8 +172,8 @@ Hexahedron20::getdNdzeta(const Point &p)
 }
 
 
-std::vector<fem::Point> & 
-Hexahedron20::setCoordinates()
+std::vector<fem::Point>
+Hexahedron20::getLocalCoordinates()
 {
 	this->coordinates[0] = Point(	-1,	-1,	-1	);
 	this->coordinates[1] = Point(	1,	-1,	-1	);

@@ -56,7 +56,7 @@ Prism15::getN(const Point &p)
 	N[12] =  -2*csi*(-1 + csi + eta)*(1 + zeta);
 	N[13] = -2*eta*(-1 + csi + eta)*(1 + zeta);
 	N[14] =  2*csi*eta*(1 + zeta);
-	
+
 	return N;
 }
 
@@ -114,7 +114,7 @@ Prism15::getdNdeta(const Point &p)
 	dNdeta[12] = -2*csi*(zeta+1);
 	dNdeta[13] = -2*(eta+csi-1)*(zeta+1)-2*eta*(zeta+1);
 	dNdeta[14] = 2*csi*(zeta+1);
-	
+
 	return dNdeta;
 }
 
@@ -147,7 +147,8 @@ Prism15::getdNdzeta(const Point &p)
 	return dNdzeta;
 }
 
-std::vector<fem::Point> & Prism15::setCoordinates()
+std::vector<Point>
+Prism15::getLocalCoordinates()
 {
 	this->coordinates[0] = Point(	0,	0,	-1	);
 	this->coordinates[1] = Point(	1,	0,	-1	);

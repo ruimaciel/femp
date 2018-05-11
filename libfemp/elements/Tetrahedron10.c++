@@ -48,7 +48,7 @@ Tetrahedron10::getN(const Point &p)
 	N[7] = 4*(-zeta-eta-csi+1)*zeta;
 	N[8] = 4*eta*zeta;
 	N[9] = 4*csi*zeta;
-	
+
 	return N;
 }
 
@@ -96,7 +96,7 @@ Tetrahedron10::getdNdeta(const Point &p)
 	dNdeta[7] = -4*zeta;
 	dNdeta[8] = 4*zeta;
 	dNdeta[9] = 0;
-	
+
 	return dNdeta;
 }
 
@@ -125,7 +125,8 @@ Tetrahedron10::getdNdzeta(const Point &p)
 }
 
 
-std::vector<fem::Point> & Tetrahedron10::setCoordinates()
+std::vector<fem::Point>
+Tetrahedron10::getLocalCoordinates()
 {
 	this->coordinates[0] = Point(	0,	0,	0	);
 	this->coordinates[1] = Point(	1,	0,	0	);

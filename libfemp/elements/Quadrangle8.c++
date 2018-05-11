@@ -47,7 +47,7 @@ Quadrangle8::getN(const Point &p)
 	N[5] = (csi+1)*(1-eta*eta)/2;
 	N[6] = (1-csi*csi)*(eta+1)/2;
 	N[7] = (1-csi)*(1-eta*eta)/2;
-	
+
 	return N;
 }
 
@@ -89,7 +89,7 @@ Quadrangle8::getdNdeta(const Point &p)
 	dNdeta[5] = -(csi+1)*eta;
 	dNdeta[6] = (1-csi*csi)/2;
 	dNdeta[7] = -(1-csi)*eta;
-	
+
 	return dNdeta;
 }
 
@@ -112,7 +112,8 @@ Quadrangle8::getdNdzeta(const Point &)
 }
 
 
-std::vector<fem::Point> & Quadrangle8::setCoordinates()
+std::vector<fem::Point>
+Quadrangle8::getLocalCoordinates()
 {
 	this->coordinates[0] = Point(	-0.5,	-0.5,	0	);
 	this->coordinates[1] = Point(	0.5,	-0.5,	0	);

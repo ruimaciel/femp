@@ -71,17 +71,15 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 			break;
 	}
 
-	// calculate
-	element->setCoordinates();
-
 	fem::Point dxdcsi, dxdeta, dxdzeta;
-	
+
 	// cycle to calculate a gradient value for each node
-	for(unsigned int coord = 0; coord < element->coordinates.size(); coord++)
+	auto coordinates = element->getLocalCoordinates();
+	for(unsigned int coord = 0; coord < coordinates.size(); coord++)
 	{
-		fem::Point local = element->coordinates[coord];	// Point in element in \xi, the local coordinates
+		fem::Point local = coordinates[coord];	// Point in element in \xi, the local coordinates
 		fem::Point global;	// node coordinate in x, the global coordinates
-		
+
 		auto dNdcsi = element->getdNdcsi(local);
 		auto dNdeta = element->getdNdeta(local);
 		auto dNdzeta = element->getdNdzeta(local);
@@ -90,7 +88,7 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 
 		// set Dg
 		Dg.setZero();
-		for(unsigned int node = 0; node < element->coordinates.size(); node++)
+		for(unsigned int node = 0; node < coordinates.size(); node++)
 		{
 			// get the node's x coordinate, the coordinate in the global frame of reference
 			global = m_model->getNode(reference_element.nodes[node]);
@@ -112,7 +110,7 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 		double dNdx = 0;
 		double dNdy = 0;
 		double dNdz = 0;
-		for(unsigned int node = 0; node < element->coordinates.size(); node++)
+		for(unsigned int node = 0; node < coordinates.size(); node++)
 		{
 			fem::Point d; // displacements
 			d = this->m_analysis_result->displacements[ reference_element.nodes[node] ];	// displacements calculated in this node
@@ -121,8 +119,8 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 			dNdx  = invDg(0,0)*dNdcsi[node] + invDg(0,1)*dNdeta[node] + invDg(0,2)*dNdzeta[node];
 			dNdy  = invDg(1,0)*dNdcsi[node] + invDg(1,1)*dNdeta[node] + invDg(1,2)*dNdzeta[node];
 			dNdz  = invDg(2,0)*dNdcsi[node] + invDg(2,1)*dNdeta[node] + invDg(2,2)*dNdzeta[node];
-			
-			//m_gradient_value[coord] += dNdx*d.x(); 
+
+			//m_gradient_value[coord] += dNdx*d.x();
 			results->strains[coord].e11 += dNdx*d.x();
 			results->strains[coord].e22 += dNdy*d.y();
 			results->strains[coord].e33 += dNdz*d.z();
@@ -143,12 +141,12 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 		results->stresses[coord].s23 = 0.5*results->strains[coord].e23*E/(1+nu);
 		results->stresses[coord].s13 = 0.5*results->strains[coord].e13*E/(1+nu);
 
-		// set the von mises 
+		// set the von mises
 		Stresses<double> s = results->stresses[coord];
-		results->von_mises[coord] = 0.7071067812*sqrt( 
-		(s.s11 - s.s22)*(s.s11 - s.s22)  + 
-		(s.s22 - s.s33)*(s.s22 - s.s33)  + 
-		(s.s33 - s.s22)*(s.s33 - s.s22)  + 
+		results->von_mises[coord] = 0.7071067812*sqrt(
+		(s.s11 - s.s22)*(s.s11 - s.s22)  +
+		(s.s22 - s.s33)*(s.s22 - s.s33)  +
+		(s.s33 - s.s22)*(s.s33 - s.s22)  +
 		6*( s.s12*s.s12 + s.s23*s.s23 + s.s13*s.s13)
 		);
 		// */
@@ -335,11 +333,11 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 // ----------------------------------------------------------------------------
 
 // Macros
-#define SQR(x)      ((x)*(x))                        // x^2 
+#define SQR(x)      ((x)*(x))                        // x^2
 
 
 // ----------------------------------------------------------------------------
-int 
+int
 ElementResultsFactory::dsyevj3(double A[3][3], double Q[3][3], double w[3]) const
 // ----------------------------------------------------------------------------
 // Calculates the eigenvalues and normalized eigenvectors of a symmetric 3x3
@@ -378,7 +376,7 @@ ElementResultsFactory::dsyevj3(double A[3][3], double Q[3][3], double w[3]) cons
 	for (int i=0; i < n; i++)
 		w[i] = A[i][i];
 
-	// Calculate SQR(tr(A))  
+	// Calculate SQR(tr(A))
 	sd = 0.0;
 	for (int i=0; i < n; i++)
 		sd += fabs(w[i]);
@@ -387,7 +385,7 @@ ElementResultsFactory::dsyevj3(double A[3][3], double Q[3][3], double w[3]) cons
 	// Main iteration loop
 	for (int nIter=0; nIter < 50; nIter++)
 	{
-		// Test for convergence 
+		// Test for convergence
 		so = 0.0;
 		for (int p=0; p < n; p++)
 			for (int q=p+1; q < n; q++)
@@ -454,7 +452,7 @@ ElementResultsFactory::dsyevj3(double A[3][3], double Q[3][3], double w[3]) cons
 					}
 
 					// Update eigenvectors
-#ifndef FEMP_EVALS_ONLY          
+#ifndef FEMP_EVALS_ONLY
 					for (int r=0; r < n; r++)
 					{
 						t = Q[r][p];

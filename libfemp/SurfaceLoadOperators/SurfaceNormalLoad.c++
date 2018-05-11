@@ -16,14 +16,14 @@ SurfaceNormalLoad::SurfaceNormalLoad()
 }
 
 
-void 
+void
 SurfaceNormalLoad::setLoadMagnitude(float const &magnitude)
 {
 	this->m_magnitude = magnitude;
 }
 
 
-void 
+void
 SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model)
 {
 	fem::Point f;
@@ -37,7 +37,7 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 			surface_load.surface_forces.resize(3);
 			break;
 
-		case Element::FE_TRIANGLE6: 	
+		case Element::FE_TRIANGLE6:
 			element = &m_tri6;
 			surface_load.surface_forces.resize(6);
 			break;
@@ -68,14 +68,14 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 	for each node that defines the surface, define a normal vector and
 	set the force accordingly
 	**/
-	element->setCoordinates();	// sets the values for the local coordinates that mark each node
 	using namespace std;
+	auto coordinates = element->getLocalCoordinates();
 	for(unsigned int i = 0; i < surface_load.nodes.size(); i++)
 	{
-		cout << "node " << i << " at " << element->coordinates[i] << "\n";
+		cout << "node " << i << " at " << coordinates[i] << "\n";
 
-		auto dNdcsi = element->getdNdcsi(element->coordinates[i]);
-		auto dNdeta = element->getdNdeta(element->coordinates[i]);
+		auto dNdcsi = element->getdNdcsi(coordinates[i]);
+		auto dNdeta = element->getdNdeta(coordinates[i]);
 		dPdcsi.zero();
 		dPdeta.zero();
 

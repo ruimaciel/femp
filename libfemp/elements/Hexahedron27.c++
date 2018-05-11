@@ -72,7 +72,7 @@ Hexahedron27::getN(const Point &p)
 	N[24] = (csi-1)*(csi+1)*eta*(eta+1)*(zeta-1)*(zeta+1)/2;
 	N[25] = (csi-1)*(csi+1)*(eta-1)*(eta+1)*zeta*(zeta+1)/2;
 	N[26] = -(csi-1)*(csi+1)*(eta-1)*(eta+1)*(zeta-1)*(zeta+1);
-	
+
 	return N;
 }
 
@@ -154,7 +154,7 @@ Hexahedron27::getdNdeta(const Point &p)
 	dNdeta[24] =  (csi-1)*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)/2+(csi-1)*(csi+1)*eta*(zeta-1)*(zeta+1)/2;
 	dNdeta[25] =  (csi-1)*(csi+1)*(eta+1)*zeta*(zeta+1)/2+(csi-1)*(csi+1)*(eta-1)*zeta*(zeta+1)/2;
 	dNdeta[26] =  -(csi-1)*(csi+1)*(eta+1)*(zeta-1)*(zeta+1)-(csi-1)*(csi+1)*(eta-1)*(zeta-1)*(zeta+1);
-	
+
 	return dNdeta;
 }
 
@@ -200,8 +200,8 @@ Hexahedron27::getdNdzeta(const Point &p)
 }
 
 
-std::vector<fem::Point> & 
-Hexahedron27::setCoordinates()
+std::vector<fem::Point>
+Hexahedron27::getLocalCoordinates()
 {
 	this->coordinates[0] = Point(	-1,	-1,	-1	);
 	this->coordinates[1] = Point(	1,	-1,	-1	);

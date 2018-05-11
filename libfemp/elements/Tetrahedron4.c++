@@ -42,7 +42,7 @@ Tetrahedron4::getN(const Point &p)
 	N[1] = csi;
 	N[2] = eta;
 	N[3] = zeta;
-	
+
 	return N;
 }
 
@@ -65,12 +65,12 @@ std::vector<double>
 Tetrahedron4::getdNdeta(const Point &)
 {
 	std::vector<double> dNdeta(this->getNodeAmount());
-	
+
 	dNdeta[0] = -1.0;
 	dNdeta[1] = 0;
 	dNdeta[2] = 1;
 	dNdeta[3] = 0;
-	
+
 	return dNdeta;
 }
 
@@ -89,7 +89,8 @@ Tetrahedron4::getdNdzeta(const Point &)
 }
 
 
-std::vector<fem::Point> & Tetrahedron4::setCoordinates()
+std::vector<fem::Point>
+Tetrahedron4::getLocalCoordinates()
 {
 	this->coordinates[0] = Point(	0,	0,	0	);
 	this->coordinates[1] = Point(	1,	0,	0	);

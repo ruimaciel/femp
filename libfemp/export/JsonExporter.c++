@@ -311,7 +311,7 @@ JsonExporter::output(std::ostream & out, const fem::Model &model)
 					out << "], ";
 					out << "\"forces\": [";
 
-					for(std::vector<fem::Point>::const_iterator i = surface_load->surface_forces.begin(); i != surface_load->surface_forces.end(); i++)
+					for(std::vector<fem::Point3D>::const_iterator i = surface_load->surface_forces.begin(); i != surface_load->surface_forces.end(); i++)
 					{
 						if (i != surface_load->surface_forces.begin())
 							out << ",";

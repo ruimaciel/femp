@@ -29,7 +29,7 @@ Node::~Node()
 void Node::paintGL(ViewportData &data, ViewportColors &colors)
 {
 	glPushMatrix();
-	fem::Point u = (*m_displacements)[this->node_label];
+	fem::Point3D u = (*m_displacements)[this->node_label];
 
 	//glTranslated(this->m_node->data[0], this->m_node->data[1], this->m_node->data[2]);
 	glTranslated(u.data[0], u.data[1], u.data[2]);

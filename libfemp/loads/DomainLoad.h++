@@ -2,7 +2,7 @@
 #define FEMP_DOMAIN_LOAD_HPP
 
 #include <vector>
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 
 namespace fem
 {
@@ -10,7 +10,7 @@ namespace fem
 class DomainLoad
 {
 public:
-	Point force;	// force value for the entire element
+	Point3D force;	// force value for the entire element
 
 public:
 	DomainLoad();
@@ -21,7 +21,7 @@ public:
 	/**
 	 * returns the force
 	 **/
-	const Point & getForce() const;
+	const Point3D & getForce() const;
 
 
 	/**

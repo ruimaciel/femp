@@ -10,7 +10,7 @@
 
 #include "../Node.h++"
 #include "../Material.h++"
-#include "../Point.h++"
+#include "../Point3D.h++"
 
 
 namespace fem
@@ -82,10 +82,10 @@ public:
 
 
 public:	// WARNING: deprecated. to be removed.
-	std::map<int, std::vector<boost::tuple<fem::Point, double> > > ipwpl;	// integration points/weights pair list
+	std::map<int, std::vector<boost::tuple<fem::Point3D, double> > > ipwpl;	// integration points/weights pair list
 
 protected:
-	std::vector<fem::Point>	coordinates;
+	std::vector<fem::Point3D>	coordinates;
 
 
 public:	// merging with fem::Element
@@ -111,28 +111,28 @@ public:
 	/**
 	 * return a vector with the value of each basis function evaluated at a point
 	 **/
-	virtual std::vector<double> getN(const Point &p) = 0;
+	virtual std::vector<double> getN(const Point3D &p) = 0;
 
 	/**
 	 * return a vector with the value of the derivative of each basis function wrt csi evaluated at a point
 	 * @param p a point
 	 * @return vector with dN/dcsi values
 	 **/
-	virtual std::vector<double> getdNdcsi(const Point &p) = 0;
+	virtual std::vector<double> getdNdcsi(const Point3D &p) = 0;
 
 	/**
 	 * return a vector with the value of the derivative of each basis function wrt eta evaluated at a point
 	 * @param p a point
 	 * @return vector with dN/deta values
 	 **/
-	virtual std::vector<double> getdNdeta(const Point &p) = 0;
+	virtual std::vector<double> getdNdeta(const Point3D &p) = 0;
 
 	/**
 	 * return a vector with the value of the derivative of each basis function wrt zeta evaluated at a point
 	 * @param p a point
 	 * @return vector with dN/dzeta values
 	 **/
-	virtual std::vector<double> getdNdzeta(const Point &p) = 0;
+	virtual std::vector<double> getdNdzeta(const Point3D &p) = 0;
 
 
 	/**
@@ -148,15 +148,15 @@ public:
 	 **/
 	virtual std::vector<size_t> getNodeReferences() const;
 
-	virtual std::vector<fem::Point> getLocalCoordinates() = 0;
+	virtual std::vector<fem::Point3D> getLocalCoordinates() = 0;
 
 public:	//WARNING: BaseElement member functions are deprecated
 
 	/**
 	Returns a list of quadrature rules
 	**/
-	virtual std::vector<boost::tuple<fem::Point, double> > getStiffnessQuadratureRule() = 0;
-	virtual std::vector<boost::tuple<fem::Point, double> > getDomainQuadratureRule() = 0;
+	virtual std::vector<boost::tuple<fem::Point3D, double> > getStiffnessQuadratureRule() = 0;
+	virtual std::vector<boost::tuple<fem::Point3D, double> > getDomainQuadratureRule() = 0;
 
 public:	//WARNING: fem::Element member functions are deprecated
 	/**

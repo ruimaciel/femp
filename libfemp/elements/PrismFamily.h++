@@ -34,8 +34,8 @@ public:
 	/**
 	Returns a list of
 	**/
-	std::vector<boost::tuple<fem::Point, double> > getStiffnessQuadratureRule();
-	std::vector<boost::tuple<fem::Point, double> > getDomainQuadratureRule();
+	std::vector<boost::tuple<fem::Point3D, double> > getStiffnessQuadratureRule();
+	std::vector<boost::tuple<fem::Point3D, double> > getDomainQuadratureRule();
 
 protected:
 	void generateQuadratureData();

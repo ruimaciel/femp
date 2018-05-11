@@ -48,7 +48,7 @@ LoadPattern::setLabel(std::string const &label)
 
 
 void
-LoadPattern::addNodalLoad(size_t node, Point force)
+LoadPattern::addNodalLoad(size_t node, Point3D force)
 {
 	//TODO perform sanity checks
 	NodalLoad n;
@@ -58,7 +58,7 @@ LoadPattern::addNodalLoad(size_t node, Point force)
 
 
 void
-LoadPattern::addNodalDisplacement(size_t node, Point displacement)
+LoadPattern::addNodalDisplacement(size_t node, Point3D displacement)
 {
 	//TODO perform sanity checks
 	NodalDisplacement n;
@@ -68,7 +68,7 @@ LoadPattern::addNodalDisplacement(size_t node, Point displacement)
 
 
 void
-LoadPattern::addDomainLoad(size_t element, Point force)
+LoadPattern::addDomainLoad(size_t element, Point3D force)
 {
 	//TODO perform sanity checks
 	DomainLoad n;

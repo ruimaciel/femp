@@ -37,7 +37,7 @@ Hexahedron27::Hexahedron27()
 
 
 std::vector<double>
-Hexahedron27::getN(const Point &p)
+Hexahedron27::getN(const Point3D &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -78,7 +78,7 @@ Hexahedron27::getN(const Point &p)
 
 
 std::vector<double>
-Hexahedron27::getdNdcsi(const Point &p)
+Hexahedron27::getdNdcsi(const Point3D &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -119,7 +119,7 @@ Hexahedron27::getdNdcsi(const Point &p)
 
 
 std::vector<double>
-Hexahedron27::getdNdeta(const Point &p)
+Hexahedron27::getdNdeta(const Point3D &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -160,7 +160,7 @@ Hexahedron27::getdNdeta(const Point &p)
 
 
 std::vector<double>
-Hexahedron27::getdNdzeta(const Point &p)
+Hexahedron27::getdNdzeta(const Point3D &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -200,39 +200,39 @@ Hexahedron27::getdNdzeta(const Point &p)
 }
 
 
-std::vector<fem::Point>
+std::vector<fem::Point3D>
 Hexahedron27::getLocalCoordinates()
 {
-	this->coordinates[0] = Point(	-1,	-1,	-1	);
-	this->coordinates[1] = Point(	1,	-1,	-1	);
-	this->coordinates[2] = Point(	1,	1,	-1	);
-	this->coordinates[3] = Point(	-1,	1,	-1	);
+	this->coordinates[0] = Point3D(	-1,	-1,	-1	);
+	this->coordinates[1] = Point3D(	1,	-1,	-1	);
+	this->coordinates[2] = Point3D(	1,	1,	-1	);
+	this->coordinates[3] = Point3D(	-1,	1,	-1	);
 
-	this->coordinates[4] = Point(	-1,	-1,	1	);
-	this->coordinates[5] = Point(	1,	-1,	1	);
-	this->coordinates[6] = Point(	1,	1,	1	);
-	this->coordinates[7] = Point(	-1,	1,	1	);
+	this->coordinates[4] = Point3D(	-1,	-1,	1	);
+	this->coordinates[5] = Point3D(	1,	-1,	1	);
+	this->coordinates[6] = Point3D(	1,	1,	1	);
+	this->coordinates[7] = Point3D(	-1,	1,	1	);
 
-	this->coordinates[8] = Point(	0,	-1,	-1	);
-	this->coordinates[9] = Point(	-1,	0,	-1	);
-	this->coordinates[10] = Point(	-1,	-1,	0	);
-	this->coordinates[11] = Point(	1,	0,	-1	);
-	this->coordinates[12] = Point(	1,	-1,	0	);
-	this->coordinates[13] = Point(	0,	1,	-1	);
-	this->coordinates[14] = Point(	1,	1,	0	);
-	this->coordinates[15] = Point(	-1,	1,	0	);
-	this->coordinates[16] = Point(	0,	-1,	1	);
-	this->coordinates[17] = Point(	-1,	0,	1	);
-	this->coordinates[18] = Point(	1,	0,	1	);
-	this->coordinates[19] = Point(	0,	1,	1	);
+	this->coordinates[8] = Point3D(	0,	-1,	-1	);
+	this->coordinates[9] = Point3D(	-1,	0,	-1	);
+	this->coordinates[10] = Point3D(	-1,	-1,	0	);
+	this->coordinates[11] = Point3D(	1,	0,	-1	);
+	this->coordinates[12] = Point3D(	1,	-1,	0	);
+	this->coordinates[13] = Point3D(	0,	1,	-1	);
+	this->coordinates[14] = Point3D(	1,	1,	0	);
+	this->coordinates[15] = Point3D(	-1,	1,	0	);
+	this->coordinates[16] = Point3D(	0,	-1,	1	);
+	this->coordinates[17] = Point3D(	-1,	0,	1	);
+	this->coordinates[18] = Point3D(	1,	0,	1	);
+	this->coordinates[19] = Point3D(	0,	1,	1	);
 
-	this->coordinates[20] = Point(	0,	0,	1	);
-	this->coordinates[21] = Point(	0,	-1,	0	);
-	this->coordinates[22] = Point(	-1,	0,	0	);
-	this->coordinates[23] = Point(	1,	0,	0	);
-	this->coordinates[24] = Point(	0,	1,	0	);
-	this->coordinates[25] = Point(	0,	0,	1	);
-	this->coordinates[26] = Point(	0,	0,	0	);
+	this->coordinates[20] = Point3D(	0,	0,	1	);
+	this->coordinates[21] = Point3D(	0,	-1,	0	);
+	this->coordinates[22] = Point3D(	-1,	0,	0	);
+	this->coordinates[23] = Point3D(	1,	0,	0	);
+	this->coordinates[24] = Point3D(	0,	1,	0	);
+	this->coordinates[25] = Point3D(	0,	0,	1	);
+	this->coordinates[26] = Point3D(	0,	0,	0	);
 
 	return this->coordinates;
 }

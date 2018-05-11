@@ -5,7 +5,7 @@
 
 #include "HudObject.h++"
 
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 
 #include "../../ViewportData.h++"
 #include <gui/options/Options.h++>
@@ -22,16 +22,16 @@ class Selection
 {
 protected:
 	bool		m_on;
-	fem::Point	m_start;
-	fem::Point	m_end;
+	fem::Point3D	m_start;
+	fem::Point3D	m_end;
 
 public:
 	Selection();
 
 	void paintGL(ViewportData &data, ViewportColors &colors);
 
-	void setStart(fem::Point const &p);
-	void setEnd(fem::Point const &p);
+	void setStart(fem::Point3D const &p);
+	void setEnd(fem::Point3D const &p);
 	void off()	{m_on = false;}
 };
 

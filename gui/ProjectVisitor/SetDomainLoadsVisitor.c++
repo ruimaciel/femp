@@ -5,7 +5,7 @@
 #include <libfemp/AnalysisResult.h++>
 
 
-SetDomainLoadsVisitor::SetDomainLoadsVisitor(Selection const &selection, fem::LoadPattern &load_pattern, fem::Point const &force)
+SetDomainLoadsVisitor::SetDomainLoadsVisitor(Selection const &selection, fem::LoadPattern &load_pattern, fem::Point3D const &force)
 	: m_selection(selection), m_load_pattern(load_pattern), m_force(force)
 {
 }

@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "HexahedronFamily.h++"
-#include "../Point.h++"
+#include "../Point3D.h++"
 
 
 
@@ -18,15 +18,15 @@ class Hexahedron27
 public:
 	Hexahedron27();
 
-	std::vector<fem::Point> getLocalCoordinates();
+	std::vector<fem::Point3D> getLocalCoordinates();
 
-	std::vector<double> getN(const Point & p);
+	std::vector<double> getN(const Point3D & p);
 
-	std::vector<double> getdNdcsi(const Point &p);
+	std::vector<double> getdNdcsi(const Point3D &p);
 
-	std::vector<double> getdNdeta(const Point &p);
+	std::vector<double> getdNdeta(const Point3D &p);
 
-	std::vector<double> getdNdzeta(const Point &p);
+	std::vector<double> getdNdzeta(const Point3D &p);
 
 public: // merging with fem::Element
 	/**

@@ -124,10 +124,10 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 		f_elem.setZero();
 
 		// as the distribution is linear across the domain then degree 1 is enough
-		for (typename std::vector<boost::tuple<fem::Point,double> >::iterator i = element->getDomainQuadratureRule().begin(); i != element->getDomainQuadratureRule().end(); i++)
+		for (typename std::vector<boost::tuple<fem::Point3D,double> >::iterator i = element->getDomainQuadratureRule().begin(); i != element->getDomainQuadratureRule().end(); i++)
 		{
 			// build the Jacobian
-			Point quadrature_point = i->get<0>();
+			Point3D quadrature_point = i->get<0>();
 
 			std::vector<double> N = element->getN( quadrature_point);
 			std::vector<double> dNdcsi = element->getdNdcsi(quadrature_point);
@@ -165,7 +165,7 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			double W = i->get<1>();
 			for(int n = 0; n < nnodes; n++)
 			{
-				Point const &f = domain_load->second.getForce();
+				Point3D const &f = domain_load->second.getForce();
 				const double cN = N[n];
 
 				f_elem(3*n) += cN*f.x()*detJ*W;
@@ -260,7 +260,7 @@ Analysis<Scalar>::generateGlobalPointForceVector(Model &, const LoadPattern &lp,
 	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
 	{
 		size_t n = nodal_load->first;
-		const Point &force = nodal_load->second.getForce();
+		const Point3D &force = nodal_load->second.getForce();
 
 		// set the nodal loads
 		if(result.lm[n].template get<0>() != 0)
@@ -316,7 +316,7 @@ template<typename Scalar>
 void
 Analysis<Scalar>::generateDisplacementsMap(Model &model, AnalysisResult &result)
 {
-	fem::Point d;	// displacements field
+	fem::Point3D d;	// displacements field
 	boost::tuple<size_t,size_t,size_t> references;
 
 	result.displacements.clear();

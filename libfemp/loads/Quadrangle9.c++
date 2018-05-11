@@ -32,7 +32,7 @@ Quadrangle9::Quadrangle9()
 
 
 std::vector<double>
-Quadrangle9::getN(const Point &p)
+Quadrangle9::getN(const Point3D &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -54,7 +54,7 @@ Quadrangle9::getN(const Point &p)
 
 
 std::vector<double>
-Quadrangle9::getdNdcsi(const Point &p)
+Quadrangle9::getdNdcsi(const Point3D &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -76,7 +76,7 @@ Quadrangle9::getdNdcsi(const Point &p)
 
 
 std::vector<double>
-Quadrangle9::getdNdeta(const Point &p)
+Quadrangle9::getdNdeta(const Point3D &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -98,7 +98,7 @@ Quadrangle9::getdNdeta(const Point &p)
 
 
 std::vector<double>
-Quadrangle9::getdNdzeta(const Point &)
+Quadrangle9::getdNdzeta(const Point3D &)
 {
 	std::vector<double> dNdzeta(this->getNodeAmount());
 
@@ -115,18 +115,18 @@ Quadrangle9::getdNdzeta(const Point &)
 	return dNdzeta;
 }
 
-std::vector<fem::Point>
+std::vector<fem::Point3D>
 Quadrangle9::getLocalCoordinates()
 {
-	this->coordinates[0] = Point(	-0.5,	-0.5,	0	);
-	this->coordinates[1] = Point(	0.5,	-0.5,	0	);
-	this->coordinates[2] = Point(	0.5,	0.5,	0	);
-	this->coordinates[3] = Point(	-0.5,	0.5,	0	);
-	this->coordinates[4] = Point(	0,	-0.5,	0	);
-	this->coordinates[5] = Point(	0.5,	0,	0	);
-	this->coordinates[6] = Point(	0,	0.5,	0	);
-	this->coordinates[7] = Point(	-0.5,	0,	0	);
-	this->coordinates[8] = Point(	0,	0,	0	);
+	this->coordinates[0] = Point3D(	-0.5,	-0.5,	0	);
+	this->coordinates[1] = Point3D(	0.5,	-0.5,	0	);
+	this->coordinates[2] = Point3D(	0.5,	0.5,	0	);
+	this->coordinates[3] = Point3D(	-0.5,	0.5,	0	);
+	this->coordinates[4] = Point3D(	0,	-0.5,	0	);
+	this->coordinates[5] = Point3D(	0.5,	0,	0	);
+	this->coordinates[6] = Point3D(	0,	0.5,	0	);
+	this->coordinates[7] = Point3D(	-0.5,	0,	0	);
+	this->coordinates[8] = Point3D(	0,	0,	0	);
 
 	return this->coordinates;
 }

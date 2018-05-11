@@ -1,7 +1,7 @@
 #ifndef FEMP_NODAL_DISPLACEMENT_HPP
 #define FEMP_NODAL_DISPLACEMENT_HPP
 
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 
 namespace fem
 {
@@ -10,7 +10,7 @@ namespace fem
 class NodalDisplacement {
 public:
 	//TODO change this
-	Point displacement;
+	Point3D displacement;
 
 public:
 	NodalDisplacement ();

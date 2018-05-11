@@ -18,7 +18,7 @@ Camera::setPosition(double x, double y, double z)
 void 
 Camera::reset()
 {
-	m_pos = m_center = fem::Point(0,0,0);
+	m_pos = m_center = fem::Point3D(0,0,0);
 	rotation.set(0,0,0);
 }
 
@@ -34,14 +34,14 @@ Camera::reposition()
 }
 
 
-fem::Point
+fem::Point3D
 Camera::getCenter() const
 {
 		return m_center;
 }
 
 
-fem::Point
+fem::Point3D
 Camera::getPosition() const
 {
 		return m_pos;

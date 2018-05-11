@@ -3,7 +3,7 @@
 
 
 #include <libfemp/SurfaceLoadOperators/SurfaceLoadOperator.h++>
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 
 namespace fem
 {
@@ -15,12 +15,12 @@ class ConstantLoad
 	: public SurfaceLoadOperator
 {
 protected:
-	fem::Point m_force;
+	fem::Point3D m_force;
 
 public:
 	ConstantLoad();
 
-	void setLoad(fem::Point const &force);
+	void setLoad(fem::Point3D const &force);
 
 	void operator() (fem::SurfaceLoad &surface_load, fem::Model &model);
 };

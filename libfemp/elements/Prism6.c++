@@ -33,7 +33,7 @@ Prism6::Prism6()
 
 
 std::vector<double>
-Prism6::getN(const Point &p)
+Prism6::getN(const Point3D &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -53,7 +53,7 @@ Prism6::getN(const Point &p)
 
 
 std::vector<double>
-Prism6::getdNdcsi(const Point &p)
+Prism6::getdNdcsi(const Point3D &p)
 {
 	// double csi = p.x();
 	// double eta = p.y();
@@ -73,7 +73,7 @@ Prism6::getdNdcsi(const Point &p)
 
 
 std::vector<double>
-Prism6::getdNdeta(const Point &p)
+Prism6::getdNdeta(const Point3D &p)
 {
 	// double csi = p.x();
 	// double eta = p.y();
@@ -93,7 +93,7 @@ Prism6::getdNdeta(const Point &p)
 
 
 std::vector<double>
-Prism6::getdNdzeta(const Point &p)
+Prism6::getdNdzeta(const Point3D &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -111,15 +111,15 @@ Prism6::getdNdzeta(const Point &p)
 	return dNdzeta;
 }
 
-std::vector<fem::Point>
+std::vector<fem::Point3D>
 Prism6::getLocalCoordinates()
 {
-	this->coordinates[0] = Point(	0,	0,	-1	);
-	this->coordinates[1] = Point(	1,	0,	-1	);
-	this->coordinates[2] = Point(	0,	1,	-1	);
-	this->coordinates[3] = Point(	0,	0,	1	);
-	this->coordinates[4] = Point(	1,	0,	1	);
-	this->coordinates[5] = Point(	0,	1,	1	);
+	this->coordinates[0] = Point3D(	0,	0,	-1	);
+	this->coordinates[1] = Point3D(	1,	0,	-1	);
+	this->coordinates[2] = Point3D(	0,	1,	-1	);
+	this->coordinates[3] = Point3D(	0,	0,	1	);
+	this->coordinates[4] = Point3D(	1,	0,	1	);
+	this->coordinates[5] = Point3D(	0,	1,	1	);
 
 	return this->coordinates;
 }

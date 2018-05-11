@@ -20,7 +20,7 @@ DomainLoad::~DomainLoad()
 }
 
 
-const Point & 
+const Point3D & 
 DomainLoad::getForce() const
 {
 	return this->force;

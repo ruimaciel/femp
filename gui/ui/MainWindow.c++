@@ -751,10 +751,10 @@ MainWindow::setNodeActions()
 	{
 		Selection const selection = m_selectionManager.getSelection();
 
-		fem::Point force = na.getForce();
+		fem::Point3D force = na.getForce();
 		//fem::Point displacement = na.getDisplacement(); // doesn't support node displacements
 
-		if(force != fem::Point(0,0,0))
+		if(force != fem::Point3D(0,0,0))
 		{
 			// shortcut just to reduce code clutter
 			fem::LoadPattern &load_pattern = femp_model.load_pattern_list[ na.getLoadPattern() ];

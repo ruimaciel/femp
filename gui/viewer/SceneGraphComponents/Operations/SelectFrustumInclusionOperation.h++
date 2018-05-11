@@ -10,7 +10,7 @@
 #include "../SGCElement.h++"
 
 #include <Selection.h++>
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 
 
 namespace Operation
@@ -23,10 +23,10 @@ class SelectFrustumInclusionOperation
 	: public OperationsVisitor
 {
 protected:
-	std::array<fem::Point, 4> m_near;		// near plane vertices
-	std::array<fem::Point, 4> m_far;		// far plane vertices
+	std::array<fem::Point3D, 4> m_near;		// near plane vertices
+	std::array<fem::Point3D, 4> m_far;		// far plane vertices
 
-	std::array<fem::Point, 4> m_normal;		// normal vector of each side plane, facing inward
+	std::array<fem::Point3D, 4> m_normal;		// normal vector of each side plane, facing inward
 
 	Selection	&m_selection;
 
@@ -36,7 +36,7 @@ public:
 	@param	selection	a set of model objects
 	@param	state	rendering state
 	**/
-	SelectFrustumInclusionOperation(Selection &selection, std::array<fem::Point,4> const &near, std::array<fem::Point,4> const &far);
+	SelectFrustumInclusionOperation(Selection &selection, std::array<fem::Point3D,4> const &near, std::array<fem::Point3D,4> const &far);
 
 	// Visitor pattern operations
 	void visit(SceneGraphComponent &);
@@ -46,7 +46,7 @@ public:
 	void selectInclusiveElements(fem::Project &project);
 
 protected:
-	void calculateNormalVectors(std::array<fem::Point, 4> const &near, std::array<fem::Point, 4> const &far);
+	void calculateNormalVectors(std::array<fem::Point3D, 4> const &near, std::array<fem::Point3D, 4> const &far);
 };
 
 }

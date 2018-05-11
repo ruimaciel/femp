@@ -84,7 +84,7 @@ GradientFieldPolicy::getColor(float &gradient, ViewportColors &colors)
 
 
 GLfloat * 
-GradientFieldPolicy::tri3 (fem::element_ref_t const &ref,gradient_index_t p1, gradient_index_t p2, gradient_index_t p3,   fem::Point &pos, ViewportColors &colors)
+GradientFieldPolicy::tri3 (fem::element_ref_t const &ref,gradient_index_t p1, gradient_index_t p2, gradient_index_t p3,   fem::Point3D &pos, ViewportColors &colors)
 {
 	float gradient = 0;
 
@@ -97,7 +97,7 @@ GradientFieldPolicy::tri3 (fem::element_ref_t const &ref,gradient_index_t p1, gr
 
 
 GLfloat * 
-GradientFieldPolicy::tri6 (fem::element_ref_t const &ref,gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, fem::Point &pos, ViewportColors &colors)
+GradientFieldPolicy::tri6 (fem::element_ref_t const &ref,gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, fem::Point3D &pos, ViewportColors &colors)
 {
 	float gradient = 0;
 
@@ -117,7 +117,7 @@ GradientFieldPolicy::tri6 (fem::element_ref_t const &ref,gradient_index_t p1, gr
 
 
 GLfloat * 
-GradientFieldPolicy::quad4 (fem::element_ref_t const &ref,gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, fem::Point &pos, ViewportColors &colors)
+GradientFieldPolicy::quad4 (fem::element_ref_t const &ref,gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, fem::Point3D &pos, ViewportColors &colors)
 {
 	float gradient = 0;
 
@@ -138,7 +138,7 @@ GradientFieldPolicy::quad4 (fem::element_ref_t const &ref,gradient_index_t p1, g
 #define X2 pos.y()
 
 GLfloat * 
-GradientFieldPolicy::quad8 (fem::element_ref_t const &ref,gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, gradient_index_t p7, gradient_index_t p8, fem::Point &pos, ViewportColors &colors)
+GradientFieldPolicy::quad8 (fem::element_ref_t const &ref,gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, gradient_index_t p7, gradient_index_t p8, fem::Point3D &pos, ViewportColors &colors)
 {
 	float gradient = 0;
 
@@ -160,7 +160,7 @@ GradientFieldPolicy::quad8 (fem::element_ref_t const &ref,gradient_index_t p1, g
 
 
 GLfloat * 
-GradientFieldPolicy::quad9 (fem::element_ref_t const &ref,gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, gradient_index_t p7, gradient_index_t p8, gradient_index_t p9, fem::Point &pos, ViewportColors &colors)
+GradientFieldPolicy::quad9 (fem::element_ref_t const &ref,gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, gradient_index_t p7, gradient_index_t p8, gradient_index_t p9, fem::Point3D &pos, ViewportColors &colors)
 {
 	float gradient = 0;
 

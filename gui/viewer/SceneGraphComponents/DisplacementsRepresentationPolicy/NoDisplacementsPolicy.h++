@@ -22,7 +22,7 @@ public:
 	/**
 	returns the coordinate of a given point by providing the node's reference
 	**/
-	fem::Point operator[](size_t &node_reference);
+	fem::Point3D operator[](size_t &node_reference);
 
 };
 

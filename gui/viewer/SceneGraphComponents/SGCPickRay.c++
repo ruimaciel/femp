@@ -10,7 +10,7 @@ namespace SGC
 {
 
 
-PickRay::PickRay(fem::Point const &origin,fem::Point const &destination, float const &radius)
+PickRay::PickRay(fem::Point3D const &origin,fem::Point3D const &destination, float const &radius)
 	: SceneGraphComponent()
 {
 	m_origin = origin;

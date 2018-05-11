@@ -9,7 +9,7 @@
 #include "../SGCElement.h++"
 
 #include <Selection.h++>
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 
 
 namespace Operation
@@ -22,8 +22,8 @@ class SelectRayIntersectionOperation
 	: public OperationsVisitor
 {
 protected:
-	fem::Point m_origin;		// ray origin point
-	fem::Point m_destination;	// ray destination point
+	fem::Point3D m_origin;		// ray origin point
+	fem::Point3D m_destination;	// ray destination point
 
 	Selection	*m_selection;	// pointer to selection object, where all the selected objects will be set
 
@@ -36,7 +36,7 @@ public:
 	@param	selection	a set of model objects
 	@param	state	rendering state
 	**/
-	SelectRayIntersectionOperation(Selection &selection, fem::Point const &origin, fem::Point const &destination, float const &radius);
+	SelectRayIntersectionOperation(Selection &selection, fem::Point3D const &origin, fem::Point3D const &destination, float const &radius);
 
 	// Visitor pattern operations
 	void visit(SceneGraphComponent &);

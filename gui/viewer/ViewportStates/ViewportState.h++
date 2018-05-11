@@ -72,14 +72,14 @@ public:
 
 	virtual void showSelection(const Selection);	// only displays the selected objects
 
-	void setSelectionStart(fem::Point const &p);
-	void setSelectionEnd(fem::Point const &p);
+	void setSelectionStart(fem::Point3D const &p);
+	void setSelectionEnd(fem::Point3D const &p);
 	void setSelectionOff();
 
 	/** 
 	For debugging purposes
 	**/
-	void addPickRay(fem::Point const &origin, fem::Point const &destination, float const &radius);
+	void addPickRay(fem::Point3D const &origin, fem::Point3D const &destination, float const &radius);
 
 	/**
 	Sets the relevant policies to render the OpenGL triangles with a wireframe

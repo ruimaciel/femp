@@ -4,7 +4,7 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <GL/gl.h>
 
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 
 
 class Camera 
@@ -22,16 +22,16 @@ public:
 	**/
 	void reposition();
 
-	fem::Point getCenter() const;
+	fem::Point3D getCenter() const;
 
-	fem::Point getPosition() const;
+	fem::Point3D getPosition() const;
 
 public:
-	fem::Point rotation;
+	fem::Point3D rotation;
 
 private:
-	fem::Point m_center;
-	fem::Point m_pos;
+	fem::Point3D m_center;
+	fem::Point3D m_pos;
 
 };
 

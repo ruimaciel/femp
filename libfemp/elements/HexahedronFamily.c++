@@ -22,14 +22,14 @@ HexahedronFamily::family() const
 }
 
 
-std::vector<boost::tuple<fem::Point, double> > 
+std::vector<boost::tuple<fem::Point3D, double> > 
 HexahedronFamily::getStiffnessQuadratureRule()
 { 
 	return this->ipwpl[stiffness_degree];
 }
 
 
-std::vector<boost::tuple<fem::Point, double> > 
+std::vector<boost::tuple<fem::Point3D, double> > 
 HexahedronFamily::getDomainQuadratureRule()
 { 
 	return this->ipwpl[domain_degree];
@@ -52,7 +52,7 @@ HexahedronFamily::generateQuadratureData()
 			{
 				for(int k = 0; k < d; k++)
 				{
-					this->ipwpl[d].push_back(boost::tuple<fem::Point,double>(fem::Point(x[i],x[j],x[k]), w[i]*w[j]*w[k]));
+					this->ipwpl[d].push_back(boost::tuple<fem::Point3D,double>(fem::Point3D(x[i],x[j],x[k]), w[i]*w[j]*w[k]));
 				}
 			}
 		}

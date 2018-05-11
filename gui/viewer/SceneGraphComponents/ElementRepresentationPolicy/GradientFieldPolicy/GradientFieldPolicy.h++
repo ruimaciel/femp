@@ -4,7 +4,7 @@
 #include <vector>
 #include <GL/gl.h>
 
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 #include <libfemp/Element.h++>
 #include <libfemp/Model.h++>
 #include <libfemp/AnalysisResult.h++>
@@ -49,11 +49,11 @@ public:
 	@param pos	point in local coordinate system
 	@param colors	object of type ViewportColors
 	**/
-	GLfloat * tri3 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3,   fem::Point &pos, ViewportColors &colors);
-	GLfloat * tri6 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, fem::Point &pos, ViewportColors &colors);
-	GLfloat * quad4 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, fem::Point &pos, ViewportColors &colors);
-	GLfloat * quad8 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, gradient_index_t p7, gradient_index_t p8, fem::Point &pos, ViewportColors &colors);
-	GLfloat * quad9 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, gradient_index_t p7, gradient_index_t p8, gradient_index_t p9, fem::Point &pos, ViewportColors &colors);
+	GLfloat * tri3 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3,   fem::Point3D &pos, ViewportColors &colors);
+	GLfloat * tri6 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, fem::Point3D &pos, ViewportColors &colors);
+	GLfloat * quad4 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, fem::Point3D &pos, ViewportColors &colors);
+	GLfloat * quad8 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, gradient_index_t p7, gradient_index_t p8, fem::Point3D &pos, ViewportColors &colors);
+	GLfloat * quad9 (fem::element_ref_t const &ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5, gradient_index_t p6, gradient_index_t p7, gradient_index_t p8, gradient_index_t p9, fem::Point3D &pos, ViewportColors &colors);
 
 protected:
 	/** returns the gradient value for each result

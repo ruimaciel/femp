@@ -37,7 +37,7 @@ public:
 
 	fem::node_ref_t const &reference() const	{ return node_label; }
 
-	fem::Point const &pos()	const	{ return *m_node; }
+	fem::Point3D const &pos()	const	{ return *m_node; }
 
 	/*
 	Visitor pattern method

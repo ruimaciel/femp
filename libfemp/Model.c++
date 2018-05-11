@@ -40,7 +40,7 @@ Model::clear()
 
 
 void
-Model::setNode(size_t ref, fem::Point p)
+Model::setNode(size_t ref, fem::Point3D p)
 {
 	Node n;
 	n.x(p.x());

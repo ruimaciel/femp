@@ -43,7 +43,7 @@ LeftClick::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
 	input->changeState(&viewport->m_is_start);
 
 	{
-		fem::Point near, far;
+		fem::Point3D near, far;
 		QPoint pos = event->pos();
 		
 		GLint vport[4];

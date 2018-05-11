@@ -23,7 +23,6 @@ HEADERS = Group.h++ \
         Material.h++ \
         LoadPattern.h++ \
         NodalDisplacement.h++ \
-        Point.h++ \
         Point2D.h++ \
         NodeRestrictions.h++ \
         quadrature_rules/QuadraturePoint.h++ \
@@ -82,7 +81,8 @@ HEADERS = Group.h++ \
 	loads/TriangleFamily.h++ \
 	loads/Triangle3.h++ \
 	loads/Triangle6.h++ \
-	loads/Triangle10.h++
+	loads/Triangle10.h++ \
+    Point3D.h++
 
 SOURCES = Group.c++ \
 	Model.c++ \
@@ -93,7 +93,6 @@ SOURCES = Group.c++ \
         Material.c++ \
         LoadPattern.c++ \
         NodalDisplacement.c++ \
-        Point.c++ \
         Point2D.c++ \
         NodeRestrictions.c++ \
         quadrature_rules/Line.c++ \
@@ -143,7 +142,8 @@ SOURCES = Group.c++ \
 	loads/TriangleFamily.c++ \
 	loads/Triangle3.c++ \
 	loads/Triangle6.c++ \
-	loads/Triangle10.c++
+	loads/Triangle10.c++ \
+    Point3D.c++
 
 
 FemJsonParserRe2c.target = parsers/FemJsonParser.c++

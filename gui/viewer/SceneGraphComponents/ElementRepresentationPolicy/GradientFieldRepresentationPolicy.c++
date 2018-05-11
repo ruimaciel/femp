@@ -29,8 +29,8 @@ GradientFieldRepresentationPolicy::tri3(fem::element_ref_t const &ref,p_index_t 
 
 	//int partitions = 4;	//TODO implement a better code
 
-	fem::Point temp;
-	fem::Point ptemp;
+	fem::Point3D temp;
+	fem::Point3D ptemp;
 	temp = fem::getNormalVector(m_temp_p[p1],m_temp_p[p2],m_temp_p[p3]);
 	
 	glBegin(GL_TRIANGLES);
@@ -74,23 +74,23 @@ GradientFieldRepresentationPolicy::tri6(fem::element_ref_t const &ref,p_index_t 
 
 */
 	// defining temporary structures for points and normal vectors
-	fem::Point p_upper_row[partitions+1];
-	fem::Point *pu;
-	fem::Point p_local_upper_row[partitions+1];
-	fem::Point *plu;
-	fem::Point n_upper_row[partitions+1];
-	fem::Point *nu;
+	fem::Point3D p_upper_row[partitions+1];
+	fem::Point3D *pu;
+	fem::Point3D p_local_upper_row[partitions+1];
+	fem::Point3D *plu;
+	fem::Point3D n_upper_row[partitions+1];
+	fem::Point3D *nu;
 
-	fem::Point p_lower_row[partitions+1];
-	fem::Point *pl;
-	fem::Point p_local_lower_row[partitions+1];
-	fem::Point *pll;
-	fem::Point n_lower_row[partitions+1];
-	fem::Point *nl;
+	fem::Point3D p_lower_row[partitions+1];
+	fem::Point3D *pl;
+	fem::Point3D p_local_lower_row[partitions+1];
+	fem::Point3D *pll;
+	fem::Point3D n_lower_row[partitions+1];
+	fem::Point3D *nl;
 
 	float x, y;
-	fem::Point dndx;
-	fem::Point dndy;
+	fem::Point3D dndx;
+	fem::Point3D dndy;
 
 	// position the pointers
 	pu = p_upper_row;
@@ -108,7 +108,7 @@ GradientFieldRepresentationPolicy::tri6(fem::element_ref_t const &ref,p_index_t 
 	{
 		x = ((double)i)/partitions;
 		p_lower_row[i] = m_temp_p[p3]*y*(2*y-1)+4*m_temp_p[p6]*(-y-x+1)*y+4*m_temp_p[p5]*x*y+m_temp_p[p1]*(2*(-y-x+1)-1)*(-y-x+1)+4*m_temp_p[p4]*x*(-y-x+1)+m_temp_p[p2]*x*(2*x-1);
-		p_local_lower_row[i] = fem::Point(x,y);
+		p_local_lower_row[i] = fem::Point3D(x,y);
 
 		// and now set the normal vector
 		dndx = -4*m_temp_p[p6]*y+4*m_temp_p[p5]*y+4*m_temp_p[p4]*(-y-x+1)-2*m_temp_p[p1]*(-y-x+1)-m_temp_p[p1]*(2*(-y-x+1)-1)+m_temp_p[p2]*(2*x-1)-4*m_temp_p[p4]*x+2*m_temp_p[p2]*x;
@@ -128,7 +128,7 @@ GradientFieldRepresentationPolicy::tri6(fem::element_ref_t const &ref,p_index_t 
 			// get the upper row points and normal vectors
 			x = (double)i/partitions;
 			pu[i] = m_temp_p[p3]*y*(2*y-1)+4*m_temp_p[p6]*(-y-x+1)*y+4*m_temp_p[p5]*x*y+m_temp_p[p1]*(2*(-y-x+1)-1)*(-y-x+1)+4*m_temp_p[p4]*x*(-y-x+1)+m_temp_p[p2]*x*(2*x-1);
-			plu[i] = fem::Point(x,y);
+			plu[i] = fem::Point3D(x,y);
 
 			// and now set the normal vector for the upper row
 			dndx = -4*m_temp_p[p6]*y+4*m_temp_p[p5]*y+4*m_temp_p[p4]*(-y-x+1)-2*m_temp_p[p1]*(-y-x+1)-m_temp_p[p1]*(2*(-y-x+1)-1)+m_temp_p[p2]*(2*x-1)-4*m_temp_p[p4]*x+2*m_temp_p[p2]*x;
@@ -178,23 +178,23 @@ GradientFieldRepresentationPolicy::quad4(fem::element_ref_t const &ref,p_index_t
 	1 ------ 2 --> x
 */
 	// defining temporary structures for points and normal vectors
-	fem::Point p_upper_row[partitions+1];
-	fem::Point *pu;
-	fem::Point p_local_upper_row[partitions+1];
-	fem::Point *plu;
-	fem::Point n_upper_row[partitions+1];
-	fem::Point *nu;
+	fem::Point3D p_upper_row[partitions+1];
+	fem::Point3D *pu;
+	fem::Point3D p_local_upper_row[partitions+1];
+	fem::Point3D *plu;
+	fem::Point3D n_upper_row[partitions+1];
+	fem::Point3D *nu;
 
-	fem::Point p_lower_row[partitions+1];
-	fem::Point *pl;
-	fem::Point p_local_lower_row[partitions+1];
-	fem::Point *pll;
-	fem::Point n_lower_row[partitions+1];
-	fem::Point *nl;
+	fem::Point3D p_lower_row[partitions+1];
+	fem::Point3D *pl;
+	fem::Point3D p_local_lower_row[partitions+1];
+	fem::Point3D *pll;
+	fem::Point3D n_lower_row[partitions+1];
+	fem::Point3D *nl;
 
 	float x, y;
-	fem::Point dndx;
-	fem::Point dndy;
+	fem::Point3D dndx;
+	fem::Point3D dndy;
 
 	// position the pointers
 	pu = p_upper_row;
@@ -212,7 +212,7 @@ GradientFieldRepresentationPolicy::quad4(fem::element_ref_t const &ref,p_index_t
 	{
 		x = ((double)i)/partitions;
 		p_lower_row[i] = m_temp_p[p3]*x*y+m_temp_p[p4]*(1-x)*y+m_temp_p[p2]*x*(1-y)+m_temp_p[p1]*(1-x)*(1-y);
-		p_local_lower_row[i] = fem::Point(x-0.5,y-0.5);
+		p_local_lower_row[i] = fem::Point3D(x-0.5,y-0.5);
 
 		// and now set the normal vector
 		dndx = m_temp_p[p3]*y-m_temp_p[p4]*y+m_temp_p[p2]*(1-y)-m_temp_p[p1]*(1-y);
@@ -231,7 +231,7 @@ GradientFieldRepresentationPolicy::quad4(fem::element_ref_t const &ref,p_index_t
 			// get the upper row points and normal vectors
 			x = (double)i/partitions;
 			pu[i] = m_temp_p[p3]*x*y+m_temp_p[p4]*(1-x)*y+m_temp_p[p2]*x*(1-y)+m_temp_p[p1]*(1-x)*(1-y);
-			plu[i] = fem::Point(x-0.5,y-0.5);
+			plu[i] = fem::Point3D(x-0.5,y-0.5);
 
 			// and now set the normal vector
 			dndx = m_temp_p[p3]*y-m_temp_p[p4]*y+m_temp_p[p2]*(1-y)-m_temp_p[p1]*(1-y);
@@ -280,23 +280,23 @@ GradientFieldRepresentationPolicy::quad8(fem::element_ref_t const &ref,p_index_t
 	1 -- 5 -- 2 --> x
 */
 	// defining temporary structures for points and normal vectors
-	fem::Point p_upper_row[partitions+1];
-	fem::Point *pu;
-	fem::Point p_local_upper_row[partitions+1];
-	fem::Point *plu;
-	fem::Point n_upper_row[partitions+1];
-	fem::Point *nu;
+	fem::Point3D p_upper_row[partitions+1];
+	fem::Point3D *pu;
+	fem::Point3D p_local_upper_row[partitions+1];
+	fem::Point3D *plu;
+	fem::Point3D n_upper_row[partitions+1];
+	fem::Point3D *nu;
 
-	fem::Point p_lower_row[partitions+1];
-	fem::Point *pl;
-	fem::Point p_local_lower_row[partitions+1];
-	fem::Point *pll;
-	fem::Point n_lower_row[partitions+1];
-	fem::Point *nl;
+	fem::Point3D p_lower_row[partitions+1];
+	fem::Point3D *pl;
+	fem::Point3D p_local_lower_row[partitions+1];
+	fem::Point3D *pll;
+	fem::Point3D n_lower_row[partitions+1];
+	fem::Point3D *nl;
 
 	float x, y;
-	fem::Point dndx;
-	fem::Point dndy;
+	fem::Point3D dndx;
+	fem::Point3D dndy;
 
 	// position the pointers
 	pu = p_upper_row;
@@ -314,7 +314,7 @@ GradientFieldRepresentationPolicy::quad8(fem::element_ref_t const &ref,p_index_t
 	{
 		x = ((double)i)/partitions;
 		p_lower_row[i] = 2.0*m_temp_p[p3]*x*y*(y+x-3/2.0) + 2.0*m_temp_p[p4]*(1-x)*y*(y-x-1/2.0) + 4.0*m_temp_p[p6]*x*(1-y)*y + 4.0*m_temp_p[p8]*(1-x)*(1-y)*y + 4.0*m_temp_p[p7]*(1-x)*x*y + 2.0*m_temp_p[p2]*x*(1-y)*(-y+x-1/2.0) + 2.0*m_temp_p[p1]*(1-x)*(1-y)*(-y-x+1/2.0) + 4.0*m_temp_p[p5]*(1-x)*x*(1-y);
-		p_local_lower_row[i] = fem::Point(x-0.5,y-0.5);
+		p_local_lower_row[i] = fem::Point3D(x-0.5,y-0.5);
 
 		// and now set the normal vector
 		dndx = 2*m_temp_p[p3]*y*(y+x-3/2.0)-2*m_temp_p[p4]*y*(y-x-1/2.0)+4*m_temp_p[p6]*(1-y)*y-4*m_temp_p[p8]*(1-y)*y+2*m_temp_p[p3]*x*y-4*m_temp_p[p7]*x*y+4*m_temp_p[p7]*(1-x)*y-2*m_temp_p[p4]*(1-x)*y+2*m_temp_p[p2]*(1-y)*(-y+x-1/2.0)-2*m_temp_p[p1]*(1-y)*(-y-x+1/2.0)+2*m_temp_p[p2]*x*(1-y)-4*m_temp_p[p5]*x*(1-y) +4*m_temp_p[p5]*(1-x)*(1-y)-2*m_temp_p[p1]*(1-x)*(1-y);
@@ -335,7 +335,7 @@ GradientFieldRepresentationPolicy::quad8(fem::element_ref_t const &ref,p_index_t
 			// get the upper row points and normal vectors
 			x = (double)i/partitions;
 			pu[i] = 2*m_temp_p[p3]*x*y*(y+x-3/2.0) + 2*m_temp_p[p4]*(1-x)*y*(y-x-1/2.0) + 4*m_temp_p[p6]*x*(1-y)*y + 4*m_temp_p[p8]*(1-x)*(1-y)*y + 4*m_temp_p[p7]*(1-x)*x*y + 2*m_temp_p[p2]*x*(1-y)*(-y+x-1/2.0) + 2*m_temp_p[p1]*(1-x)*(1-y)*(-y-x+1/2.0) + 4*m_temp_p[p5]*(1-x)*x*(1-y);
-			plu[i] = fem::Point(x-0.5,y-0.5);
+			plu[i] = fem::Point3D(x-0.5,y-0.5);
 
 			// and now set the normal vector for the upper row
 			dndx = 2*m_temp_p[p3]*y*(y+x-3/2.0)-2*m_temp_p[p4]*y*(y-x-1/2.0)+4*m_temp_p[p6]*(1-y)*y-4*m_temp_p[p8]*(1-y)*y+2*m_temp_p[p3]*x*y-4*m_temp_p[p7]*x*y+4*m_temp_p[p7]*(1-x)*y-2*m_temp_p[p4]*(1-x)*y+2*m_temp_p[p2]*(1-y)*(-y+x-1/2.0)-2*m_temp_p[p1]*(1-y)*(-y-x+1/2.0)+2*m_temp_p[p2]*x*(1-y)-4*m_temp_p[p5]*x*(1-y) +4*m_temp_p[p5]*(1-x)*(1-y)-2*m_temp_p[p1]*(1-x)*(1-y);
@@ -382,23 +382,23 @@ GradientFieldRepresentationPolicy::quad9(fem::element_ref_t const &ref,p_index_t
 	1 -- 5 -- 2 --> x
 */
 	// defining temporary structures for points and normal vectors
-	fem::Point p_upper_row[partitions+1];
-	fem::Point *pu;
-	fem::Point p_local_upper_row[partitions+1];
-	fem::Point *plu;
-	fem::Point n_upper_row[partitions+1];
-	fem::Point *nu;
+	fem::Point3D p_upper_row[partitions+1];
+	fem::Point3D *pu;
+	fem::Point3D p_local_upper_row[partitions+1];
+	fem::Point3D *plu;
+	fem::Point3D n_upper_row[partitions+1];
+	fem::Point3D *nu;
 
-	fem::Point p_lower_row[partitions+1];
-	fem::Point *pl;
-	fem::Point p_local_lower_row[partitions+1];
-	fem::Point *pll;
-	fem::Point n_lower_row[partitions+1];
-	fem::Point *nl;
+	fem::Point3D p_lower_row[partitions+1];
+	fem::Point3D *pl;
+	fem::Point3D p_local_lower_row[partitions+1];
+	fem::Point3D *pll;
+	fem::Point3D n_lower_row[partitions+1];
+	fem::Point3D *nl;
 
 	float x, y;
-	fem::Point dndx;
-	fem::Point dndy;
+	fem::Point3D dndx;
+	fem::Point3D dndy;
 
 	// position the pointers
 	pu = p_upper_row;
@@ -416,7 +416,7 @@ GradientFieldRepresentationPolicy::quad9(fem::element_ref_t const &ref,p_index_t
 	{
 		x = ((double)i)/partitions;
 		p_lower_row[i] = 16.0*m_temp_p[p9]*(1-x)*x*(1-y)*y - 8.0*m_temp_p[p6]*(0.5-x)*x*(1-y)*y + 8.0*m_temp_p[p8]*(0.5-x)*(1-x)*(1-y)*y - 8.0*m_temp_p[p7]*(1-x)*x*(0.5-y)*y + 4.0*m_temp_p[p3]*(0.5-x)*x*(0.5-y)*y - 4.0*m_temp_p[p4]*(0.5-x)*(1-x)*(0.5-y)*y + 8.0*m_temp_p[p5]*(1-x)*x*(0.5-y)*(1-y) - 4.0*m_temp_p[p2]*(0.5-x)*x*(0.5-y)*(1-y) + 4.0*m_temp_p[p1]*(0.5-x)*(1-x)*(0.5-y)*(1-y);
-		p_local_lower_row[i] = fem::Point(x-0.5,y-0.5);
+		p_local_lower_row[i] = fem::Point3D(x-0.5,y-0.5);
 
 		// and now set the normal vector
 		dndx = 8.0*m_temp_p[p6]*x*(1-y)*y-16.0*m_temp_p[p9]*x*(1-y)*y+16.0*m_temp_p[p9]*(1-x)*(1-y)*y-8.0*m_temp_p[p8]*(1-x)*(1-y)*y-8.0*m_temp_p[p6]*(0.5-x)*(1-y)*y-8.0*m_temp_p[p8]*(0.5-x)*(1-y)*y-4.0*m_temp_p[p3]*x*(0.5-y)*y+8.0*m_temp_p[p7]*x*(0.5-y)*y-8.0*m_temp_p[p7]*(1-x)*(0.5-y)*y +4.0*m_temp_p[p4]*(1-x)*(0.5-y)*y+4.0*m_temp_p[p3]*(0.5-x)*(0.5-y)*y+4.0*m_temp_p[p4]*(0.5-x)*(0.5-y)*y+4.0*m_temp_p[p2]*x*(0.5-y)*(1-y)-8.0*m_temp_p[p5]*x*(0.5-y)*(1-y)+8.0*m_temp_p[p5]*(1-x)*(0.5-y)*(1-y)-4.0*m_temp_p[p1]*(1-x)*(0.5-y)*(1-y) -4.0*m_temp_p[p2]*(0.5-x)*(0.5-y)*(1-y)-4.0*m_temp_p[p1]*(0.5-x)*(0.5-y)*(1-y);
@@ -436,7 +436,7 @@ GradientFieldRepresentationPolicy::quad9(fem::element_ref_t const &ref,p_index_t
 			// get the upper row points and normal vectors
 			x = (double)i/partitions;
 			pu[i] = 16.0*m_temp_p[p9]*(1-x)*x*(1-y)*y - 8.0*m_temp_p[p6]*(0.5-x)*x*(1-y)*y + 8.0*m_temp_p[p8]*(0.5-x)*(1-x)*(1-y)*y - 8.0*m_temp_p[p7]*(1-x)*x*(0.5-y)*y + 4.0*m_temp_p[p3]*(0.5-x)*x*(0.5-y)*y - 4.0*m_temp_p[p4]*(0.5-x)*(1-x)*(0.5-y)*y + 8.0*m_temp_p[p5]*(1-x)*x*(0.5-y)*(1-y) - 4.0*m_temp_p[p2]*(0.5-x)*x*(0.5-y)*(1-y) + 4.0*m_temp_p[p1]*(0.5-x)*(1-x)*(0.5-y)*(1-y);
-			plu[i] = fem::Point(x-0.5,y-0.5);
+			plu[i] = fem::Point3D(x-0.5,y-0.5);
 
 			// and now set the normal vector for the upper row
 			dndx = 8.0*m_temp_p[p6]*x*(1-y)*y-16.0*m_temp_p[p9]*x*(1-y)*y+16.0*m_temp_p[p9]*(1-x)*(1-y)*y-8.0*m_temp_p[p8]*(1-x)*(1-y)*y-8.0*m_temp_p[p6]*(0.5-x)*(1-y)*y-8.0*m_temp_p[p8]*(0.5-x)*(1-y)*y-4.0*m_temp_p[p3]*x*(0.5-y)*y+8.0*m_temp_p[p7]*x*(0.5-y)*y-8.0*m_temp_p[p7]*(1-x)*(0.5-y)*y +4.0*m_temp_p[p4]*(1-x)*(0.5-y)*y+4.0*m_temp_p[p3]*(0.5-x)*(0.5-y)*y+4.0*m_temp_p[p4]*(0.5-x)*(0.5-y)*y+4.0*m_temp_p[p2]*x*(0.5-y)*(1-y)-8.0*m_temp_p[p5]*x*(0.5-y)*(1-y)+8.0*m_temp_p[p5]*(1-x)*(0.5-y)*(1-y)-4.0*m_temp_p[p1]*(1-x)*(0.5-y)*(1-y) -4.0*m_temp_p[p2]*(0.5-x)*(0.5-y)*(1-y)-4.0*m_temp_p[p1]*(0.5-x)*(0.5-y)*(1-y);

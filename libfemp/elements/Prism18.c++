@@ -33,7 +33,7 @@ Prism18::Prism18()
 
 
 std::vector<double>
-Prism18::getN(const Point &p)
+Prism18::getN(const Point3D &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -65,7 +65,7 @@ Prism18::getN(const Point &p)
 
 
 std::vector<double>
-Prism18::getdNdcsi(const Point &p)
+Prism18::getdNdcsi(const Point3D &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -98,7 +98,7 @@ Prism18::getdNdcsi(const Point &p)
 
 
 std::vector<double>
-Prism18::getdNdeta(const Point &p)
+Prism18::getdNdeta(const Point3D &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -130,7 +130,7 @@ Prism18::getdNdeta(const Point &p)
 
 
 std::vector<double>
-Prism18::getdNdzeta(const Point &p)
+Prism18::getdNdzeta(const Point3D &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -160,29 +160,29 @@ Prism18::getdNdzeta(const Point &p)
 	return dNdzeta;
 }
 
-std::vector<fem::Point>
+std::vector<fem::Point3D>
 Prism18::getLocalCoordinates()
 {
-	this->coordinates[0] = Point(	0,	0,	-1	);
-	this->coordinates[1] = Point(	1,	0,	-1	);
-	this->coordinates[2] = Point(	0,	1,	-1	);
-	this->coordinates[3] = Point(	0,	0,	1	);
-	this->coordinates[4] = Point(	1,	0,	1	);
-	this->coordinates[5] = Point(	0,	1,	1	);
+	this->coordinates[0] = Point3D(	0,	0,	-1	);
+	this->coordinates[1] = Point3D(	1,	0,	-1	);
+	this->coordinates[2] = Point3D(	0,	1,	-1	);
+	this->coordinates[3] = Point3D(	0,	0,	1	);
+	this->coordinates[4] = Point3D(	1,	0,	1	);
+	this->coordinates[5] = Point3D(	0,	1,	1	);
 
-	this->coordinates[6] = Point(	0.5,	0,	-1	);
-	this->coordinates[7] = Point(	0,	0.5,	-1	);
-	this->coordinates[8] = Point(	0,	0,	0	);
-	this->coordinates[9] = Point(	0.5,	0.5,	-1	);
-	this->coordinates[10] = Point(	1,	0,	0	);
-	this->coordinates[11] = Point(	0,	1,	0	);
-	this->coordinates[12] = Point(	0.5,	0,	1	);
-	this->coordinates[13] = Point(	0,	0.5,	1	);
-	this->coordinates[14] = Point(	0.5,	0.5,	1	);
+	this->coordinates[6] = Point3D(	0.5,	0,	-1	);
+	this->coordinates[7] = Point3D(	0,	0.5,	-1	);
+	this->coordinates[8] = Point3D(	0,	0,	0	);
+	this->coordinates[9] = Point3D(	0.5,	0.5,	-1	);
+	this->coordinates[10] = Point3D(	1,	0,	0	);
+	this->coordinates[11] = Point3D(	0,	1,	0	);
+	this->coordinates[12] = Point3D(	0.5,	0,	1	);
+	this->coordinates[13] = Point3D(	0,	0.5,	1	);
+	this->coordinates[14] = Point3D(	0.5,	0.5,	1	);
 
-	this->coordinates[15] = Point(	0.5,	0,	0	);
-	this->coordinates[16] = Point(	0,	0.5,	0	);
-	this->coordinates[17] = Point(	0.5,	0.5,	0	);
+	this->coordinates[15] = Point3D(	0.5,	0,	0	);
+	this->coordinates[16] = Point3D(	0,	0.5,	0	);
+	this->coordinates[17] = Point3D(	0.5,	0.5,	0	);
 
 	return this->coordinates;
 }

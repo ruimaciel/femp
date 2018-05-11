@@ -49,7 +49,7 @@ public:
 	void clear();
 
 	// sets a node
-	void setNode(size_t ref, fem::Point p);
+	void setNode(size_t ref, fem::Point3D p);
 
 	fem::Node & getNode(size_t ref);
 

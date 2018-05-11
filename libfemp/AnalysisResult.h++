@@ -5,7 +5,7 @@
 
 #include <boost/tuple/tuple.hpp>
 
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 #include <libfemp/ElementResults/ElementResults.h++>
 #include <libfemp/ElementResults/ResultsRanges.h++>
 
@@ -34,7 +34,7 @@ struct AnalysisResult
 
 
 	// A map between the reference to a node and the displacements of it's DoF
-	std::map<size_t , fem::Point> displacements;
+	std::map<size_t , fem::Point3D> displacements;
 
 	// map between a element reference and the element's recovered values
 	std::map<element_ref_t, ElementResults *> results;

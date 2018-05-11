@@ -19,7 +19,7 @@ NodalLoad::~NodalLoad ()
 }
 
 
-const Point & 
+const Point3D & 
 NodalLoad::getForce() const
 {
 	return this->force;

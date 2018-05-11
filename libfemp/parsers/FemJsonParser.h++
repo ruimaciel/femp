@@ -43,7 +43,7 @@ protected:
 	std::vector<double>		temp_float;
 	std::vector<unsigned long int>	temp_natural;
 	std::vector<size_t>		reference;
-	std::vector<fem::Point>		temp_point;
+	std::vector<fem::Point3D>		temp_point;
 	bool	temp_bool;
 	std::string	temp_token;
 

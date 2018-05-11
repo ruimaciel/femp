@@ -2,7 +2,7 @@
 
 #include "../../SceneGraphException.h++"
 
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 
 
 Strain22GradientFieldPolicy::Strain22GradientFieldPolicy()

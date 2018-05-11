@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "../Point.h++"
+#include "../Point3D.h++"
 
 
 namespace fem
@@ -26,8 +26,8 @@ SurfaceNormalLoad::setLoadMagnitude(float const &magnitude)
 void
 SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model)
 {
-	fem::Point f;
-	fem::Point dPdcsi, dPdeta;
+	fem::Point3D f;
+	fem::Point3D dPdcsi, dPdeta;
 
 	// set the element
 	switch(surface_load.type)
@@ -81,7 +81,7 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 
 		for(unsigned int n = 0; n < surface_load.nodes.size(); n++)
 		{
-			fem::Point &p = model.node_list[ surface_load.nodes[n]];
+			fem::Point3D &p = model.node_list[ surface_load.nodes[n]];
 			cout << "Point : " << p << "\n";
 			dPdcsi += dNdcsi[n]*p;
 			dPdeta += dNdeta[n]*p;

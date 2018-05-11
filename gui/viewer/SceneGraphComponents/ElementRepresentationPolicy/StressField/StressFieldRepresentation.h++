@@ -5,7 +5,7 @@
 #include <tuple>
 #include <vector>
 
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 
 #include <gui/options/Options.h++>
 
@@ -32,7 +32,7 @@ public:
 	/**
 	Pushes a new tensor to this representation
 	**/
-	void push(fem::Point const &pos, std::array<fem::Point,3> const &directions, std::array<float,3> const &stresses);
+	void push(fem::Point3D const &pos, std::array<fem::Point3D,3> const &directions, std::array<float,3> const &stresses);
 };
 
 }

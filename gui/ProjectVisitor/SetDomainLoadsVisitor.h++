@@ -18,14 +18,14 @@ class SetDomainLoadsVisitor
 	: public ProjectVisitor
 {
 public:
-	SetDomainLoadsVisitor(Selection const &selection, fem::LoadPattern &load_pattern, fem::Point const &force);
+	SetDomainLoadsVisitor(Selection const &selection, fem::LoadPattern &load_pattern, fem::Point3D const &force);
 
 	void visit(fem::Model &model, std::vector<fem::AnalysisResult > &);
 
 protected:
 	Selection	const &m_selection;
 	fem::LoadPattern	&m_load_pattern;
-	fem::Point	const &m_force;
+	fem::Point3D	const &m_force;
 	
 };
 

@@ -52,15 +52,15 @@ public:
 	 **/
 	void setLabel(std::string const &label);
 
-	void addNodalLoad(size_t, Point);
-	void addNodalDisplacement(size_t, Point);
+	void addNodalLoad(size_t, Point3D);
+	void addNodalDisplacement(size_t, Point3D);
 
 	/**
 	sets the domain load for a given element
 	@param element	element that will get a new domain load definition
 	@param force_shape	a list of forces acting on each of the element's nodes
 	**/
-	void addDomainLoad(size_t element, Point force);
+	void addDomainLoad(size_t element, Point3D force);
 
 	void addSurfaceLoad(SurfaceLoad *surfaceload);
 };

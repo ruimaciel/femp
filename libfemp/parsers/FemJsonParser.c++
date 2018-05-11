@@ -89,7 +89,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 
 				case PR_VECTOR3D_SET:
 					{
-						fem::Point p;
+						fem::Point3D p;
 						p.data[2] = temp_float.back();
 						temp_float.pop_back();
 						p.data[1] = temp_float.back();

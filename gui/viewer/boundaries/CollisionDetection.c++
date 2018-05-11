@@ -1,15 +1,15 @@
 #include "CollisionDetection.h++"
 
 
-bool collided(const SphericalBoundary &sphere, const fem::Point &near, const fem::Point &far)
+bool collided(const SphericalBoundary &sphere, const fem::Point3D &near, const fem::Point3D &far)
 {
 	/* taken from
 	http://wiki.cgsociety.org/index.php/Ray_Sphere_Intersection
 	*/
 	using namespace fem;
 
-	fem::Point d = far - near;
-	fem::Point oc = near - sphere.center;
+	fem::Point3D d = far - near;
+	fem::Point3D oc = near - sphere.center;
 
 	float A = dot_product(d,d);
 	float B = 2*dot_product(oc,d);

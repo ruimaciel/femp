@@ -7,7 +7,7 @@
 
 #include <libfemp/Element.h++>
 #include <libfemp/Node.h++>
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 #include <libfemp/elements/BaseElement.h++>	// added to help transition to properly polymorphic
 
 
@@ -25,7 +25,7 @@ class SurfaceLoad
 	: public Element
 {
 public:
-	std::vector<fem::Point>	surface_forces;	// forces acting in each node, used to interpolate the surface load
+	std::vector<fem::Point3D>	surface_forces;	// forces acting in each node, used to interpolate the surface load
 
 public:
 	virtual ~SurfaceLoad() {}

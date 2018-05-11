@@ -4,7 +4,7 @@
 
 #include "ElementRepresentationPolicy.h++"
 
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 #include <libfemp/Element.h++>
 #include <libfemp/Model.h++>
 #include <libfemp/AnalysisResult.h++>
@@ -23,7 +23,7 @@ class GradientFieldRepresentationPolicy
 	: virtual public ElementRepresentationPolicy
 {
 protected:
-	std::vector<fem::Point> m_temp_p;
+	std::vector<fem::Point3D> m_temp_p;
 	//typedef std::vector<fem::Point>::size_type p_index_t;	// syntactically convenient helper identifier
 	typedef unsigned int p_index_t;	// syntactically convenient helper identifier
 

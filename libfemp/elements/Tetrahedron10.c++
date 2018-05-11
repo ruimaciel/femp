@@ -30,7 +30,7 @@ Tetrahedron10::Tetrahedron10()
 
 
 std::vector<double>
-Tetrahedron10::getN(const Point &p)
+Tetrahedron10::getN(const Point3D &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -54,7 +54,7 @@ Tetrahedron10::getN(const Point &p)
 
 
 std::vector<double>
-Tetrahedron10::getdNdcsi(const Point &p)
+Tetrahedron10::getdNdcsi(const Point3D &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -78,7 +78,7 @@ Tetrahedron10::getdNdcsi(const Point &p)
 
 
 std::vector<double>
-Tetrahedron10::getdNdeta(const Point &p)
+Tetrahedron10::getdNdeta(const Point3D &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -102,7 +102,7 @@ Tetrahedron10::getdNdeta(const Point &p)
 
 
 std::vector<double>
-Tetrahedron10::getdNdzeta(const Point &p)
+Tetrahedron10::getdNdzeta(const Point3D &p)
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -125,20 +125,20 @@ Tetrahedron10::getdNdzeta(const Point &p)
 }
 
 
-std::vector<fem::Point>
+std::vector<fem::Point3D>
 Tetrahedron10::getLocalCoordinates()
 {
-	this->coordinates[0] = Point(	0,	0,	0	);
-	this->coordinates[1] = Point(	1,	0,	0	);
-	this->coordinates[2] = Point(	0,	1,	0	);
-	this->coordinates[3] = Point(	0,	0,	1	);
+	this->coordinates[0] = Point3D(	0,	0,	0	);
+	this->coordinates[1] = Point3D(	1,	0,	0	);
+	this->coordinates[2] = Point3D(	0,	1,	0	);
+	this->coordinates[3] = Point3D(	0,	0,	1	);
 
-	this->coordinates[4] = Point(	0.5,	0,	0	);
-	this->coordinates[5] = Point(	0.5,	0.5,	0	);
-	this->coordinates[6] = Point(	0,	0.5,	0	);
-	this->coordinates[7] = Point(	0,	0,	0.5	);
-	this->coordinates[8] = Point(	0,	0.5,	0.5	);
-	this->coordinates[9] = Point(	0.5,	0.5,	0.5	);
+	this->coordinates[4] = Point3D(	0.5,	0,	0	);
+	this->coordinates[5] = Point3D(	0.5,	0.5,	0	);
+	this->coordinates[6] = Point3D(	0,	0.5,	0	);
+	this->coordinates[7] = Point3D(	0,	0,	0.5	);
+	this->coordinates[8] = Point3D(	0,	0.5,	0.5	);
+	this->coordinates[9] = Point3D(	0.5,	0.5,	0.5	);
 
 	return this->coordinates;
 }

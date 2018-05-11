@@ -56,7 +56,7 @@ BaseElement::getStiffnessMatrix(fem::Model &model)
 	{
 
 		// set the shape function and it's partial derivatives for this integration Point
-		const Point &point = quadrature_point.get<0>();
+		const Point3D &point = quadrature_point.get<0>();
 
 		auto dNdcsi = this->getdNdcsi( point );
 		auto dNdeta = this->getdNdeta( point );

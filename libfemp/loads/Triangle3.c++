@@ -29,7 +29,7 @@ Triangle3::Triangle3()
 
 
 std::vector<double>
-Triangle3::getN(const Point &p)
+Triangle3::getN(const Point3D &p)
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -45,7 +45,7 @@ Triangle3::getN(const Point &p)
 
 
 std::vector<double>
-Triangle3::getdNdcsi(const Point &)
+Triangle3::getdNdcsi(const Point3D &)
 {
 	std::vector<double> dNdcsi(this->getNodeAmount());
 
@@ -58,7 +58,7 @@ Triangle3::getdNdcsi(const Point &)
 
 
 std::vector<double>
-Triangle3::getdNdeta(const Point &)
+Triangle3::getdNdeta(const Point3D &)
 {
 	std::vector<double> dNdeta(this->getNodeAmount());
 
@@ -71,7 +71,7 @@ Triangle3::getdNdeta(const Point &)
 
 
 std::vector<double>
-Triangle3::getdNdzeta(const Point &)
+Triangle3::getdNdzeta(const Point3D &)
 {
 	std::vector<double> dNdzeta(this->getNodeAmount());
 
@@ -83,12 +83,12 @@ Triangle3::getdNdzeta(const Point &)
 }
 
 
-std::vector<fem::Point>
+std::vector<fem::Point3D>
 Triangle3::getLocalCoordinates()
 {
-	this->coordinates[0] = Point(	0,	0,	0	);
-	this->coordinates[1] = Point(	1,	0,	0	);
-	this->coordinates[2] = Point(	0,	1,	0	);
+	this->coordinates[0] = Point3D(	0,	0,	0	);
+	this->coordinates[1] = Point3D(	1,	0,	0	);
+	this->coordinates[2] = Point3D(	0,	1,	0	);
 
 	return this->coordinates;
 }

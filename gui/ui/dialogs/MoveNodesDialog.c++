@@ -12,10 +12,10 @@ MoveNodesDialog::~MoveNodesDialog()
 }
 
 
-fem::Point
+fem::Point3D
 MoveNodesDialog::getTranslation()
 {
-	fem::Point translation;
+	fem::Point3D translation;
 
 	translation.x(doubleSpinBoxX->value());
 	translation.y(doubleSpinBoxY->value());

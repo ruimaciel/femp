@@ -23,8 +23,8 @@ StressFieldFactory::operator() (fem::Element const &element)
 	StressFieldRepresentation representation;
 
 	fem::BaseElement *e = nullptr;
-	std::vector<fem::Point>	local_points;	// list of local_points coordinates where the tensors will be evaluated
-	fem::Point dxdcsi, dxdeta, dxdzeta;
+	std::vector<fem::Point3D>	local_points;	// list of local_points coordinates where the tensors will be evaluated
+	fem::Point3D dxdcsi, dxdeta, dxdzeta;
 
 	float e11, e22, e33, e12, e13, e23;
 
@@ -32,11 +32,11 @@ StressFieldFactory::operator() (fem::Element const &element)
 	//auto di = [&m_diameter, &m_model, &element](float const scale, std::initializer_list< std::pair<fem::node_ref_t, fem::node_ref_t> > list)
 	auto di = [&](float const scale, std::initializer_list< std::pair<fem::node_ref_t, fem::node_ref_t> > list)
 	{
-		fem::Point center;
+		fem::Point3D center;
 
 		for(auto a: list)
 		{
-			fem::Point d = m_model->node_list[element.nodes[a.second]]-m_model->node_list[element.nodes[a.first]];
+			fem::Point3D d = m_model->node_list[element.nodes[a.second]]-m_model->node_list[element.nodes[a.first]];
 			if(scale*scale*dot_product(d,d) < (*m_diameter)*(*m_diameter))
 				*m_diameter = scale*d.norm();
 		}
@@ -147,7 +147,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 	for(auto local: local_points)
 	{
 		//TODO calculate stresses
-		fem::Point global;	// node coordinate in x, the global coordinates
+		fem::Point3D global;	// node coordinate in x, the global coordinates
 
 		auto dNdcsi = e->getdNdcsi(local);
 		auto dNdeta = e->getdNdeta(local);
@@ -186,7 +186,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 		// iterate through each node in the element
 		for(unsigned int node = 0; node < coordinates.size(); node++)
 		{
-			fem::Point d; // displacements
+			fem::Point3D d; // displacements
 			d = m_result->displacements[ element.nodes[node] ];	// displacements calculated in this node
 
 			// calculate \epsilon_{11} = dNdx_1*d1
@@ -219,7 +219,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 		dsyevj3(A, eig_vec, eig_val);
 
 		// get position
-		fem::Point pos;
+		fem::Point3D pos;
 		//TODO get global position
 		auto N = e->getN(local);
 		for(std::vector<fem::node_ref_t>::size_type n = 0; n < N.size(); n++)
@@ -228,7 +228,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 		}
 
 
-		std::array<fem::Point, 3> directions;
+		std::array<fem::Point3D, 3> directions;
 		std::array<float, 3> stresses;
 		for(int i = 0; i < 3; i++)
 		{

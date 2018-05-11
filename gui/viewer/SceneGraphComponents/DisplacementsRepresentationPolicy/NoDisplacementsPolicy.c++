@@ -15,7 +15,7 @@ NoDisplacementsPolicy::~NoDisplacementsPolicy ( )
 }
 
 
-fem::Point
+fem::Point3D
 NoDisplacementsPolicy::operator[](size_t &node_reference)
 {
 	assert(this->m_model != NULL);

@@ -22,10 +22,10 @@ NodeActionsDialog::getLoadPattern()
 }
 
 
-fem::Point
+fem::Point3D
 NodeActionsDialog::getForce()
 {
-	fem::Point p;
+	fem::Point3D p;
 	p.data[0] = this->doubleSpinBoxFx->value();
 	p.data[1] = this->doubleSpinBoxFy->value();
 	p.data[2] = this->doubleSpinBoxFz->value();
@@ -33,10 +33,10 @@ NodeActionsDialog::getForce()
 }
 
 
-fem::Point
+fem::Point3D
 NodeActionsDialog::getDisplacement()
 {
-	fem::Point p;
+	fem::Point3D p;
 	p.data[0] = this->doubleSpinBoxDx->value();
 	p.data[1] = this->doubleSpinBoxDy->value();
 	p.data[2] = this->doubleSpinBoxDz->value();

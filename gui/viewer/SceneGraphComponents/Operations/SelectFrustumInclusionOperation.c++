@@ -9,7 +9,7 @@ namespace Operation
 {
 
 
-SelectFrustumInclusionOperation::SelectFrustumInclusionOperation(Selection &selection, std::array<fem::Point,4> const &near, std::array<fem::Point,4> const &far)
+SelectFrustumInclusionOperation::SelectFrustumInclusionOperation(Selection &selection, std::array<fem::Point3D,4> const &near, std::array<fem::Point3D,4> const &far)
 	: m_selection(selection)
 {
 	m_near = near;
@@ -78,12 +78,12 @@ SelectFrustumInclusionOperation::selectInclusiveElements(fem::Project &project)
 
 
 void 
-SelectFrustumInclusionOperation::calculateNormalVectors(std::array<fem::Point, 4> const &near, std::array<fem::Point, 4> const &far)
+SelectFrustumInclusionOperation::calculateNormalVectors(std::array<fem::Point3D, 4> const &near, std::array<fem::Point3D, 4> const &far)
 {
-	auto calc = [](fem::Point const &p0, fem::Point const &p1, fem::Point const &p2) -> fem::Point
+	auto calc = [](fem::Point3D const &p0, fem::Point3D const &p1, fem::Point3D const &p2) -> fem::Point3D
 	{
 		// calculates the normal vector which is perpendicular to the plane defined by (p1-p0),(p2-p0)
-		fem::Point n = cross_product( p1-p0, p2-p0);
+		fem::Point3D n = cross_product( p1-p0, p2-p0);
 		n.normalize();
 		return n;
 	};

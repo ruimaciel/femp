@@ -4,7 +4,7 @@
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QDialog>
 
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 #include <libfemp/Model.h++>
 #include <libfemp/LoadPattern.h++>
 
@@ -25,8 +25,8 @@ public:
 	NodeActionsDialog(LoadPatternsModel &model, QWidget *parent = nullptr);
 
 	size_t	getLoadPattern();
-	fem::Point getForce();
-	fem::Point getDisplacement();
+	fem::Point3D getForce();
+	fem::Point3D getDisplacement();
 
 	void loadPatternCreated(size_t, fem::LoadPattern const &);
 

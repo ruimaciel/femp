@@ -43,8 +43,8 @@ LeftDrag::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
 	viewport->state->setSelectionOff();
 	input->changeState(&viewport->m_is_start);
 	{
-		std::array<fem::Point,4> near;	// near plane vertices
-		std::array<fem::Point, 4> far;	// far plane vertices
+		std::array<fem::Point3D,4> near;	// near plane vertices
+		std::array<fem::Point3D, 4> far;	// far plane vertices
 		QPoint pos = event->pos();
 		
 		GLint vport[4];
@@ -54,13 +54,13 @@ LeftDrag::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
 		glGetIntegerv(GL_VIEWPORT, vport);
 
 		// calculate frustum corner nodes
-		auto add = [&near, &far, &vport, &viewport](fem::Point &pos, int const i)
+		auto add = [&near, &far, &vport, &viewport](fem::Point3D &pos, int const i)
 		{
 			gluUnProject(pos.x(), vport[3]-pos.y(), 0, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &near[i].data[0], &near[i].data[1], &near[i].data[2]);
 			gluUnProject(pos.x(), vport[3]-pos.y(), 1, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &far[i].data[0], &far[i].data[1], &far[i].data[2]);
 		};
 
-		fem::Point p[4];	// 4 corners of the picking viewport
+		fem::Point3D p[4];	// 4 corners of the picking viewport
 		if(viewport->viewport_data.lastPos.x() < pos.x())
 		{
 			p[0].data[0] = p[1].data[0] = viewport->viewport_data.lastPos.x();
@@ -96,7 +96,7 @@ LeftDrag::leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input)
 void 
 LeftDrag::move(BaseViewport *viewport, QMouseEvent *event, Input * /*input*/)
 {
-	fem::Point near;
+	fem::Point3D near;
 	near.x((float)event->x());
 	near.y((float)event->y());
 

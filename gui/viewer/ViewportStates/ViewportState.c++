@@ -56,7 +56,7 @@ ViewportState::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
 	// process left clicks
 	if(event->buttons() & Qt::LeftButton)
 	{
-		fem::Point near, far;
+		fem::Point3D near, far;
 		QPoint pos = event->pos();
 		
 		GLint vport[4];
@@ -125,7 +125,7 @@ ViewportState::showSelection(const Selection)
 
 
 void 
-ViewportState::setSelectionStart(fem::Point const &p)
+ViewportState::setSelectionStart(fem::Point3D const &p)
 { 
 	std::cerr << "ViewportState::setSelectionStart(fem::Point) 	=> (" << p.x() << ", " << p.y() << ", " << p.z() << ")" << std::endl;
 	scenegraph.setSelectionStart(p); 
@@ -133,7 +133,7 @@ ViewportState::setSelectionStart(fem::Point const &p)
 
 
 void 
-ViewportState::setSelectionEnd(fem::Point const &p)
+ViewportState::setSelectionEnd(fem::Point3D const &p)
 { 
 	std::cerr << "ViewportState::setSelectionEnd(fem::Point) 	=> (" << p.x() << ", " << p.y() << ", " << p.z() << ")" << std::endl;
 	scenegraph.setSelectionEnd(p); 
@@ -148,7 +148,7 @@ ViewportState::setSelectionOff()
 
 
 void 
-ViewportState::addPickRay(fem::Point const &origin, fem::Point const &destination, float const &radius)
+ViewportState::addPickRay(fem::Point3D const &origin, fem::Point3D const &destination, float const &radius)
 {
 	std::cerr << "ViewportState::addPickRay(fem::Point const &origin, fem::Point const &destination, float const &radius)" << std::endl;
 	SGC::PickRay *ray = new SGC::PickRay(origin, destination, radius);

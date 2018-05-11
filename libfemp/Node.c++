@@ -10,13 +10,13 @@ Node::Node()
 
 
 Node::Node(const Node &copied)
-	: Point(copied)
+	: Point3D(copied)
 {
 }
 
 
-Node::Node(const Point &copied)
-	: Point(copied)
+Node::Node(const Point3D &copied)
+	: Point3D(copied)
 {
 }
 

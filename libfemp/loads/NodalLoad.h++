@@ -1,7 +1,7 @@
 #ifndef FEMP_NODAL_LOAD_HPP
 #define FEMP_NODAL_LOAD_HPP
 
-#include <libfemp/Point.h++>
+#include <libfemp/Point3D.h++>
 
 namespace fem
 {
@@ -13,7 +13,7 @@ namespace fem
 class NodalLoad 
 {
 public:
-	Point force;	// the force being applied in this node
+	Point3D force;	// the force being applied in this node
 
 public:
 	NodalLoad ();
@@ -28,7 +28,7 @@ public:
 	/**
 	 * returns the force vector
 	 **/
-	const Point & getForce() const;
+	const Point3D & getForce() const;
 
 };
 

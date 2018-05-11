@@ -71,14 +71,14 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 			break;
 	}
 
-	fem::Point dxdcsi, dxdeta, dxdzeta;
+	fem::Point3D dxdcsi, dxdeta, dxdzeta;
 
 	// cycle to calculate a gradient value for each node
 	auto coordinates = element->getLocalCoordinates();
 	for(unsigned int coord = 0; coord < coordinates.size(); coord++)
 	{
-		fem::Point local = coordinates[coord];	// Point in element in \xi, the local coordinates
-		fem::Point global;	// node coordinate in x, the global coordinates
+		fem::Point3D local = coordinates[coord];	// Point in element in \xi, the local coordinates
+		fem::Point3D global;	// node coordinate in x, the global coordinates
 
 		auto dNdcsi = element->getdNdcsi(local);
 		auto dNdeta = element->getdNdeta(local);
@@ -112,7 +112,7 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 		double dNdz = 0;
 		for(unsigned int node = 0; node < coordinates.size(); node++)
 		{
-			fem::Point d; // displacements
+			fem::Point3D d; // displacements
 			d = this->m_analysis_result->displacements[ reference_element.nodes[node] ];	// displacements calculated in this node
 
 			// calculate \epsilon_{11} = dNdx_1*d1

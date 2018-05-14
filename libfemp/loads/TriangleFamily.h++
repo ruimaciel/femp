@@ -26,6 +26,8 @@ public:
 
 	enum BaseElement::ElementFamily family() const;
 
+	virtual int getNodeAmount() const = 0;
+
 	/**
 	 * Returns the total number of degrees of freedom
 	 **/
@@ -38,7 +40,6 @@ public:
 	std::vector<boost::tuple<fem::Point3D, double> > getDomainQuadratureRule();
 
 public:	//TODO this is a transistion interface: to be implemented in SurfaceLoad
-	virtual int getNodeAmount() const = 0;
 	virtual std::vector<double> getN(const Point3D &p) = 0;
 	virtual std::vector<double> getdNdcsi(const Point3D &p) = 0;
 	virtual std::vector<double> getdNdeta(const Point3D &p) = 0;

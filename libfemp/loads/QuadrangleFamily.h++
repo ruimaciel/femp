@@ -26,13 +26,15 @@ public:
 
 	enum BaseElement::ElementFamily family() const;
 
+	virtual int getNodeAmount() const = 0;
+
 	/**
 	 * Returns the total number of degrees of freedom
 	 **/
 	virtual unsigned int getDofAmount() const	{ return 3*this->getNodeAmount(); }
 
 	/**
-	Returns a list of
+	Returns a list of quadrature rules
 	**/
 	std::vector<boost::tuple<fem::Point3D, double> > getStiffnessQuadratureRule();
 	std::vector<boost::tuple<fem::Point3D, double> > getDomainQuadratureRule();

@@ -12,7 +12,7 @@ namespace fem
 {
 
 class Triangle10
-        : public TriangleFamily
+		: public TriangleFamily
 {
 public:
 	Triangle10();
@@ -27,15 +27,14 @@ public:
 
 	std::vector<double> getdNdzeta(const Point3D &p);
 
-public: // merging with fem::Element
 	/**
 	return the number of nodes that an element of this particular type has
 	@return the number of nodes
 	**/
-	int getNodeAmount() const	{ return 10; };
+	virtual int getNodeAmount() const override { return 10; }
 };
 
 
-}	//namespace fem
+}	// namespace fem
 
 #endif

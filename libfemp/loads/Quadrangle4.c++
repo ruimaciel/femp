@@ -15,9 +15,6 @@ Quadrangle4::Quadrangle4()
 	this->stiffness_degree = 1;
 	this->domain_degree = 1;
 
-	this->coordinates.resize(4);
-
-
 	// specify new quadrature rule
 	using namespace quadrature;
 	LineRule * rule_x = new GaussLegendre2();
@@ -100,12 +97,12 @@ Quadrangle4::getdNdzeta(const Point3D &)
 std::vector<fem::Point3D>
 Quadrangle4::getLocalCoordinates()
 {
-	this->coordinates[0] = Point3D(	-0.5,	-0.5,	0	);
-	this->coordinates[1] = Point3D(	0.5,	-0.5,	0	);
-	this->coordinates[2] = Point3D(	0.5,	0.5,	0	);
-	this->coordinates[3] = Point3D(	-0.5,	0.5,	0	);
-
-	return this->coordinates;
+	return {
+		Point3D(	-0.5,	-0.5,	0	),
+		Point3D(	0.5,	-0.5,	0	),
+		Point3D(	0.5,	0.5,	0	),
+		Point3D(	-0.5,	0.5,	0	),
+	};
 }
 
 

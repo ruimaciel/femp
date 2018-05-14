@@ -16,9 +16,6 @@ Triangle10::Triangle10()
 	this->stiffness_degree = 1;
 	this->domain_degree = 1;
 
-	this->coordinates.resize(10);
-
-
 	// specify new quadrature rule
 	using namespace quadrature;
 	m_stiffness_quadrature_rule = std::unique_ptr<quadrature::Triangle6>( new quadrature::Triangle6() );
@@ -120,14 +117,14 @@ Triangle10::getdNdzeta(const Point3D &)
 std::vector<fem::Point3D>
 Triangle10::getLocalCoordinates()
 {
-	this->coordinates[0] = Point3D(	0,	0,	0	);
-	this->coordinates[1] = Point3D(	1,	0,	0	);
-	this->coordinates[2] = Point3D(	0,	1,	0	);
-	this->coordinates[3] = Point3D(	0.5,	0,	0	);
-	this->coordinates[4] = Point3D(	0.5,	0.5,	0	);
-	this->coordinates[5] = Point3D(	0,	0.5,	0	);
-
-	return this->coordinates;
+	return {
+		Point3D(	0.0,	0.0,	0	),
+		Point3D(	1.0,	0.0,	0	),
+		Point3D(	0.0,	1.0,	0	),
+		Point3D(	0.5,	0.0,	0	),
+		Point3D(	0.5,	0.5,	0	),
+		Point3D(	0.0,	0.5,	0	),
+	};
 }
 
 

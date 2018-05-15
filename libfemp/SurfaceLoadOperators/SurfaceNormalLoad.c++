@@ -2,6 +2,13 @@
 
 #include <iostream>
 
+#include <libfemp/elements/BaseElement.h++>
+#include <libfemp/loads/Triangle3.h++>
+#include <libfemp/loads/Triangle6.h++>
+#include <libfemp/loads/Quadrangle4.h++>
+#include <libfemp/loads/Quadrangle8.h++>
+#include <libfemp/loads/Quadrangle9.h++>
+
 #include "../Point3D.h++"
 
 
@@ -12,7 +19,6 @@ namespace fem
 SurfaceNormalLoad::SurfaceNormalLoad()
 {
 	this->m_magnitude = 1.0f;
-	this->element = nullptr;
 }
 
 
@@ -26,8 +32,14 @@ SurfaceNormalLoad::setLoadMagnitude(float const &magnitude)
 void
 SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model)
 {
-	fem::Point3D f;
-	fem::Point3D dPdcsi, dPdeta;
+
+	fem::BaseElement *element = nullptr;	// used to store a pointer to the current object: nasty hack due to the way fem::Element was done
+
+	fem::Triangle3 m_tri3;
+	fem::Triangle6 m_tri6;
+	fem::Quadrangle4 m_quad4;
+	fem::Quadrangle8 m_quad8;
+	fem::Quadrangle9 m_quad9;
 
 	// set the element
 	switch(surface_load.type)
@@ -59,7 +71,6 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 
 		default:	// if this part was reached then something is broken
 			std::cerr << "SurfaceNormalLoad(): invalid surface load type" << std::endl;
-			element = nullptr;
 			return;
 			break;
 	}
@@ -76,6 +87,8 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 
 		auto dNdcsi = element->getdNdcsi(coordinates[i]);
 		auto dNdeta = element->getdNdeta(coordinates[i]);
+
+		fem::Point3D dPdcsi, dPdeta;
 		dPdcsi.zero();
 		dPdeta.zero();
 
@@ -87,7 +100,7 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 			dPdeta += dNdeta[n]*p;
 		}
 
-		f = cross_product(dPdcsi, dPdeta);
+		fem::Point3D f = cross_product(dPdcsi, dPdeta);
 		cout << "cross( " << dPdcsi << "," << dPdeta << ")\n";
 
 		f.normalize();

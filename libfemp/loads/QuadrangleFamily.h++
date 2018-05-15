@@ -40,6 +40,7 @@ public:
 	std::vector<boost::tuple<fem::Point3D, double> > getDomainQuadratureRule();
 
 public:	//TODO this is a transistion interface: to be implemented in SurfaceLoad
+	virtual std::vector<fem::Point3D> getLocalCoordinates() = 0;
 	virtual std::vector<double> getN(const Point3D &p) = 0;
 	virtual std::vector<double> getdNdcsi(const Point3D &p) = 0;
 	virtual std::vector<double> getdNdeta(const Point3D &p) = 0;

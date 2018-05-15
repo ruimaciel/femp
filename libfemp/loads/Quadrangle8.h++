@@ -17,7 +17,7 @@ class Quadrangle8
 public:
 	Quadrangle8();
 
-	std::vector<fem::Point3D> getLocalCoordinates();
+	virtual std::vector<fem::Point3D> getLocalCoordinates() override;
 
 	std::vector<double> getN(const Point3D & p);
 

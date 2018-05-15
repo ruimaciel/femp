@@ -9,7 +9,6 @@ namespace fem
 
 
 QuadrangleFamily::QuadrangleFamily()
-	: BaseElement()
 {
 	generateQuadratureData();
 };

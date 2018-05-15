@@ -137,9 +137,10 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			// generate the jacobian
 			J.setZero();
 
+			auto node_references = element->getNodeReferences();
 			for(int n = 0; n < nnodes; n++)
 			{
-				auto const & node_ref = element->nodes[n];
+				auto const & node_ref = node_references[n];
 				fem::Node const &node = model.getNode(node_ref);
 
 				double const &X = node.x();

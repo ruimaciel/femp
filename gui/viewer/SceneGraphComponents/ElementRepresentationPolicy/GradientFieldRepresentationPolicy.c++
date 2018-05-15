@@ -4,22 +4,22 @@
 #include <GL/gl.h>
 
 // Constructors/Destructors
-//  
+//
 
-GradientFieldRepresentationPolicy::GradientFieldRepresentationPolicy ( ) 
+GradientFieldRepresentationPolicy::GradientFieldRepresentationPolicy ( )
 {
 	m_temp_p.reserve(27);	// to accomodate the maximum number of points
 	m_gradient = NULL;
 }
 
 
-GradientFieldRepresentationPolicy::~GradientFieldRepresentationPolicy ( ) 
-{ 
+GradientFieldRepresentationPolicy::~GradientFieldRepresentationPolicy ( )
+{
 }
 
 
 // Other methods
-//  
+//
 void
 GradientFieldRepresentationPolicy::tri3(fem::element_ref_t const &ref,p_index_t p1, p_index_t p2, p_index_t p3, ViewportColors &colors)
 {
@@ -32,18 +32,18 @@ GradientFieldRepresentationPolicy::tri3(fem::element_ref_t const &ref,p_index_t 
 	fem::Point3D temp;
 	fem::Point3D ptemp;
 	temp = fem::getNormalVector(m_temp_p[p1],m_temp_p[p2],m_temp_p[p3]);
-	
+
 	glBegin(GL_TRIANGLES);
 	glNormal3dv(temp.data);
-	ptemp.set(0,0);  
+	ptemp.set(0,0);
 	glColor3fv( m_gradient->tri3(ref, p1, p2, p3, ptemp, colors) );
 	glVertex3dv(m_temp_p[p1].data);
 
-	ptemp.set(1,0);  
+	ptemp.set(1,0);
 	glColor3fv( m_gradient->tri3(ref, p1, p2, p3, ptemp, colors) );
 	glVertex3dv(m_temp_p[p2].data);
 
-	ptemp.set(0,1);  
+	ptemp.set(0,1);
 	glColor3fv( m_gradient->tri3(ref, p1, p2, p3, ptemp, colors) );
 	glVertex3dv(m_temp_p[p3].data);
 
@@ -61,16 +61,16 @@ GradientFieldRepresentationPolicy::tri6(fem::element_ref_t const &ref,p_index_t 
 	int partitions = 6;	//TODO implement a better code
 
 /*
-     v
-     ^          
-     |           
-     2            
-     |`, 
-     |  `.          
-     5    `4         
-     |      `.        
-     |        `.       
-     0-----3----1 --> u 
+	 v
+	 ^
+	 |
+	 2
+	 |`,
+	 |  `.
+	 5    `4
+	 |      `.
+	 |        `.
+	 0-----3----1 --> u
 
 */
 	// defining temporary structures for points and normal vectors
@@ -113,18 +113,18 @@ GradientFieldRepresentationPolicy::tri6(fem::element_ref_t const &ref,p_index_t 
 		// and now set the normal vector
 		dndx = -4*m_temp_p[p6]*y+4*m_temp_p[p5]*y+4*m_temp_p[p4]*(-y-x+1)-2*m_temp_p[p1]*(-y-x+1)-m_temp_p[p1]*(2*(-y-x+1)-1)+m_temp_p[p2]*(2*x-1)-4*m_temp_p[p4]*x+2*m_temp_p[p2]*x;
 		dndy = m_temp_p[p3]*(2*y-1)-4*m_temp_p[p6]*y+2*m_temp_p[p3]*y+4*m_temp_p[p6]*(-y-x+1)-2*m_temp_p[p1]*(-y-x+1)-m_temp_p[p1]*(2*(-y-x+1)-1)+4*m_temp_p[p5]*x-4*m_temp_p[p4]*x;
-		
+
 		n_lower_row[i] = fem::cross_product(dndx, dndy);
 	}
 
 	// the rest of the loop
-	for (int j = 1, i; j <= partitions; j++)  
-	{ 
+	for (int j = 1, i; j <= partitions; j++)
+	{
 		y = (double)j/partitions;
 		// and now let's render
-		glBegin(GL_TRIANGLE_STRIP);  
-		for (i = 0; i <= (partitions-j); i++)  
-		{ 
+		glBegin(GL_TRIANGLE_STRIP);
+		for (i = 0; i <= (partitions-j); i++)
+		{
 			// get the upper row points and normal vectors
 			x = (double)i/partitions;
 			pu[i] = m_temp_p[p3]*y*(2*y-1)+4*m_temp_p[p6]*(-y-x+1)*y+4*m_temp_p[p5]*x*y+m_temp_p[p1]*(2*(-y-x+1)-1)*(-y-x+1)+4*m_temp_p[p4]*x*(-y-x+1)+m_temp_p[p2]*x*(2*x-1);
@@ -142,11 +142,11 @@ GradientFieldRepresentationPolicy::tri6(fem::element_ref_t const &ref,p_index_t 
 			glNormal3dv(nl[i].data);
 			glColor3fv( m_gradient->tri6(ref, p1, p2, p3, p4, p5, p6, pll[i], colors) );
 			glVertex3dv(pl[i].data);
-		} 
+		}
 		glNormal3dv(nl[i].data);
 		glColor3fv( m_gradient->tri6(ref, p1, p2, p3, p4, p5, p6, pll[i], colors) );
 		glVertex3dv(pl[i].data);
-		glEnd(); 
+		glEnd();
 
 		// swap buffer pointes
 		pl = pu;
@@ -157,7 +157,7 @@ GradientFieldRepresentationPolicy::tri6(fem::element_ref_t const &ref,p_index_t 
 
 		nl = nu;
 		nu = (nu == n_upper_row)?n_lower_row:n_upper_row;
-	} 
+	}
 	glDisable(GL_BLEND);
 }
 
@@ -221,13 +221,13 @@ GradientFieldRepresentationPolicy::quad4(fem::element_ref_t const &ref,p_index_t
 	}
 
 	// the rest of the loop
-	for (int j = 1; j <= partitions; j++)  
-	{ 
+	for (int j = 1; j <= partitions; j++)
+	{
 		y = (double)j/partitions;
 		// and now let's render
-		glBegin(GL_TRIANGLE_STRIP);  
-		for (int i = 0; i <= partitions; i++)  
-		{ 
+		glBegin(GL_TRIANGLE_STRIP);
+		for (int i = 0; i <= partitions; i++)
+		{
 			// get the upper row points and normal vectors
 			x = (double)i/partitions;
 			pu[i] = m_temp_p[p3]*x*y+m_temp_p[p4]*(1-x)*y+m_temp_p[p2]*x*(1-y)+m_temp_p[p1]*(1-x)*(1-y);
@@ -247,7 +247,7 @@ GradientFieldRepresentationPolicy::quad4(fem::element_ref_t const &ref,p_index_t
 			glNormal3dv(nl[i].data);
 			glColor3fv( m_gradient->quad4(ref, p1, p2, p3, p4, pll[i], colors) );
 			glVertex3dv(pl[i].data);
-		} 
+		}
 		// swap buffer pointes
 		pl = pu;
 		pu = (pu == p_upper_row)?p_lower_row:p_upper_row;
@@ -258,8 +258,8 @@ GradientFieldRepresentationPolicy::quad4(fem::element_ref_t const &ref,p_index_t
 		nl = nu;
 		nu = (nu == n_upper_row)?n_lower_row:n_upper_row;
 
-		glEnd(); 
-	} 
+		glEnd();
+	}
 	glDisable(GL_BLEND);
 }
 
@@ -325,13 +325,13 @@ GradientFieldRepresentationPolicy::quad8(fem::element_ref_t const &ref,p_index_t
 	}
 
 	// the rest of the loop
-	for (int j = 1; j <= partitions; j++)  
-	{ 
+	for (int j = 1; j <= partitions; j++)
+	{
 		y = (double)j/partitions;
 		// and now let's render
-		glBegin(GL_TRIANGLE_STRIP);  
-		for (int i = 0; i <= partitions; i++)  
-		{ 
+		glBegin(GL_TRIANGLE_STRIP);
+		for (int i = 0; i <= partitions; i++)
+		{
 			// get the upper row points and normal vectors
 			x = (double)i/partitions;
 			pu[i] = 2*m_temp_p[p3]*x*y*(y+x-3/2.0) + 2*m_temp_p[p4]*(1-x)*y*(y-x-1/2.0) + 4*m_temp_p[p6]*x*(1-y)*y + 4*m_temp_p[p8]*(1-x)*(1-y)*y + 4*m_temp_p[p7]*(1-x)*x*y + 2*m_temp_p[p2]*x*(1-y)*(-y+x-1/2.0) + 2*m_temp_p[p1]*(1-x)*(1-y)*(-y-x+1/2.0) + 4*m_temp_p[p5]*(1-x)*x*(1-y);
@@ -350,7 +350,7 @@ GradientFieldRepresentationPolicy::quad8(fem::element_ref_t const &ref,p_index_t
 			glNormal3dv(nl[i].data);
 			glColor3fv( m_gradient->quad8(ref, p1, p2, p3, p4, p5, p6, p7, p8, pll[i], colors) );
 			glVertex3dv(pl[i].data);
-		} 
+		}
 		// swap buffer pointes
 		pl = pu;
 		pu = (pu == p_upper_row)?p_lower_row:p_upper_row;
@@ -360,8 +360,8 @@ GradientFieldRepresentationPolicy::quad8(fem::element_ref_t const &ref,p_index_t
 
 		nl = nu;
 		nu = (nu == n_upper_row)?n_lower_row:n_upper_row;
-		glEnd(); 
-	} 
+		glEnd();
+	}
 	glDisable(GL_BLEND);
 }
 
@@ -426,13 +426,13 @@ GradientFieldRepresentationPolicy::quad9(fem::element_ref_t const &ref,p_index_t
 	}
 
 	// the rest of the loop
-	for (int j = 1; j <= partitions; j++)  
-	{ 
+	for (int j = 1; j <= partitions; j++)
+	{
 		y = (double)j/partitions;
 		// and now let's render
-		glBegin(GL_TRIANGLE_STRIP);  
-		for (int i = 0; i <= partitions; i++)  
-		{ 
+		glBegin(GL_TRIANGLE_STRIP);
+		for (int i = 0; i <= partitions; i++)
+		{
 			// get the upper row points and normal vectors
 			x = (double)i/partitions;
 			pu[i] = 16.0*m_temp_p[p9]*(1-x)*x*(1-y)*y - 8.0*m_temp_p[p6]*(0.5-x)*x*(1-y)*y + 8.0*m_temp_p[p8]*(0.5-x)*(1-x)*(1-y)*y - 8.0*m_temp_p[p7]*(1-x)*x*(0.5-y)*y + 4.0*m_temp_p[p3]*(0.5-x)*x*(0.5-y)*y - 4.0*m_temp_p[p4]*(0.5-x)*(1-x)*(0.5-y)*y + 8.0*m_temp_p[p5]*(1-x)*x*(0.5-y)*(1-y) - 4.0*m_temp_p[p2]*(0.5-x)*x*(0.5-y)*(1-y) + 4.0*m_temp_p[p1]*(0.5-x)*(1-x)*(0.5-y)*(1-y);
@@ -452,7 +452,7 @@ GradientFieldRepresentationPolicy::quad9(fem::element_ref_t const &ref,p_index_t
 			glNormal3dv(nl[i].data);
 			glColor3fv( m_gradient->quad9(ref, p1, p2, p3, p4, p5, p6, p7, p8, p9, pll[i], colors) );
 			glVertex3dv(pl[i].data);
-		} 
+		}
 		// swap buffer pointes
 		pl = pu;
 		pu = (pu == p_upper_row)?p_lower_row:p_upper_row;
@@ -462,8 +462,8 @@ GradientFieldRepresentationPolicy::quad9(fem::element_ref_t const &ref,p_index_t
 
 		nl = nu;
 		nu = (nu == n_upper_row)?n_lower_row:n_upper_row;
-		glEnd(); 
-	} 
+		glEnd();
+	}
 	glDisable(GL_BLEND);
 }
 
@@ -474,14 +474,15 @@ void
 GradientFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_TETRAHEDRON4);
-	assert(element.nodes.size() == 4);
+	assert(element.getNodeAmount() == 4);
 	assert(m_gradient != NULL);
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(4);
 	for(int i = 0; i < 4; i++)
 	{
-		m_temp_p[i] = (*displacement)[element.nodes[i]];
+		auto node_ref = element.getNode(i);
+		m_temp_p[i] = (*displacement)[node_ref];
 	}
 
 	glDisable(GL_LIGHTING);
@@ -500,7 +501,7 @@ void
 GradientFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_TETRAHEDRON10);
-	assert(element.nodes.size() == 10);
+	assert(element.getNodeAmount() == 10);
 	assert(m_gradient != NULL);
 
 
@@ -508,7 +509,8 @@ GradientFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &element_re
 	m_temp_p.resize(10);
 	for(int i = 0; i < 10; i++)
 	{
-		m_temp_p[i] = (*displacement)[element.nodes[i]];
+		auto node_ref = element.getNode(i);
+		m_temp_p[i] = (*displacement)[node_ref];
 	}
 
 	glDisable(GL_LIGHTING);
@@ -519,7 +521,7 @@ GradientFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &element_re
 	tri6( element_reference, 0, 1, 3, 4, 9, 7, colors);
 	glEnable(GL_LIGHTING);
 }
- 
+
 
 /**
  */
@@ -527,14 +529,15 @@ void
 GradientFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON8);
-	assert(element.nodes.size() == 8);
+	assert(element.getNodeAmount() == 8);
 	assert(m_gradient != NULL);
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(8);
 	for(int i = 0; i < 8; i++)
 	{
-		m_temp_p[i] = (*displacement)[element.nodes[i]];
+		auto node_ref = element.getNode(i);
+		m_temp_p[i] = (*displacement)[node_ref];
 	}
 
 	glDisable(GL_LIGHTING);
@@ -555,14 +558,15 @@ void
 GradientFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON20);
-	assert(element.nodes.size() == 20);
+	assert(element.getNodeAmount() == 20);
 	assert(m_gradient != NULL);
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(20);
 	for(int i = 0; i < 20; i++)
 	{
-		m_temp_p[i] = (*displacement)[element.nodes[i]];
+		auto node_ref = element.getNode(i);
+		m_temp_p[i] = (*displacement)[node_ref];
 	}
 
 	glDisable(GL_LIGHTING);
@@ -582,14 +586,15 @@ void
 GradientFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_HEXAHEDRON27);
-	assert(element.nodes.size() == 27);
+	assert(element.getNodeAmount() == 27);
 	assert(m_gradient != NULL);
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(27);
 	for(int i = 0; i < 27; i++)
 	{
-		m_temp_p[i] = (*displacement)[element.nodes[i]];
+		auto node_ref = element.getNode(i);
+		m_temp_p[i] = (*displacement)[node_ref];
 	}
 
 	glDisable(GL_LIGHTING);
@@ -609,14 +614,15 @@ void
 GradientFieldRepresentationPolicy::prism6 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM6);
-	assert(element.nodes.size() == 6);
+	assert(element.getNodeAmount() == 6);
 	assert(m_gradient != NULL);
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(6);
 	for(int i = 0; i < 6; i++)
 	{
-		m_temp_p[i] = (*displacement)[element.nodes[i]];
+		auto node_ref = element.getNode(i);
+		m_temp_p[i] = (*displacement)[node_ref];
 	}
 
 	glDisable(GL_LIGHTING);
@@ -636,14 +642,15 @@ void
 GradientFieldRepresentationPolicy::prism15 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM15);
-	assert(element.nodes.size() == 15);
+	assert(element.getNodeAmount() == 15);
 	assert(m_gradient != NULL);
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(15);
 	for(int i = 0; i < 15; i++)
 	{
-		m_temp_p[i] = (*displacement)[element.nodes[i]];
+		auto node_ref = element.getNode(i);
+		m_temp_p[i] = (*displacement)[node_ref];
 	}
 
 	glDisable(GL_LIGHTING);
@@ -663,14 +670,15 @@ void
 GradientFieldRepresentationPolicy::prism18 (fem::element_ref_t const &element_reference, fem::Element &element, ViewportColors &colors, DisplacementsRepresentationPolicy *displacement)
 {
 	assert(element.type == fem::Element::FE_PRISM18);
-	assert(element.nodes.size() == 18);
+	assert(element.getNodeAmount() == 18);
 	assert(m_gradient != NULL);
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(18);
 	for(int i = 0; i < 18; i++)
 	{
-		m_temp_p[i] = (*displacement)[element.nodes[i]];
+		auto node_ref = element.getNode(i);
+		m_temp_p[i] = (*displacement)[node_ref];
 	}
 
 	glDisable(GL_LIGHTING);
@@ -684,56 +692,56 @@ GradientFieldRepresentationPolicy::prism18 (fem::element_ref_t const &element_re
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderNeutral()
 {
 	m_gradient = m_gradient_flyweight_factory.neutral();
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderConstant(float value)
 {
 	m_gradient = m_gradient_flyweight_factory.constant(value);
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderStrains11()
 {
 	m_gradient = m_gradient_flyweight_factory.strains11();
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderStrains22()
 {
 	m_gradient = m_gradient_flyweight_factory.strains22();
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderStrains33()
 {
 	m_gradient = m_gradient_flyweight_factory.strains33();
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderStrains12()
 {
 	m_gradient = m_gradient_flyweight_factory.strains12();
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderStrains23()
 {
 	m_gradient = m_gradient_flyweight_factory.strains23();
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderStrains13()
 {
 	m_gradient = m_gradient_flyweight_factory.strains13();
@@ -741,70 +749,70 @@ GradientFieldRepresentationPolicy::renderStrains13()
 
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderStresses11()
 {
 	m_gradient = m_gradient_flyweight_factory.stresses11();
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderStresses22()
 {
 	m_gradient = m_gradient_flyweight_factory.stresses22();
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderStresses33()
 {
 	m_gradient = m_gradient_flyweight_factory.stresses33();
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderStresses12()
 {
 	m_gradient = m_gradient_flyweight_factory.stresses12();
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderStresses23()
 {
 	m_gradient = m_gradient_flyweight_factory.stresses23();
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderStresses13()
 {
 	m_gradient = m_gradient_flyweight_factory.stresses13();
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::renderVonMises()
 {
 	m_gradient = m_gradient_flyweight_factory.vonMises();
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::setModel(fem::Model &model)
 {
 	m_gradient_flyweight_factory.setModel(model);
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult &result)
 {
 	m_gradient_flyweight_factory.setAnalysisResult(result);
 }
 
 
-void 
+void
 GradientFieldRepresentationPolicy::setResultsRanges(fem::ResultsRanges<double> &ranges)
 {
 	m_gradient_flyweight_factory.setResultsRanges(ranges);

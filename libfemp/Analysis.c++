@@ -413,17 +413,17 @@ Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Matrix<double,
 {
 	using namespace std;	//TODO remove cleanup code
 
-	assert((size_t)k_elem.rows() == element.nodes.size()*3);
-	assert((size_t)k_elem.cols() == element.nodes.size()*3);
+	assert((size_t)k_elem.rows() == element.getNodeAmount()*3);
+	assert((size_t)k_elem.cols() == element.getNodeAmount()*3);
 
 	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator idof, jdof;	// degrees of freedom for the line and column
 	size_t id[3], jd[3]; // boost::tuple, being a template, doesn't accept non-const parameters.  This is a way to sidestep it
 
 	boost::tuple<size_t,size_t,size_t> dof;
-	for(size_t i = 0; i < element.nodes.size(); i++)
+	for(size_t i = 0; i < element.getNodeAmount(); i++)
 	{
 		// if all three DoF of this node are prescribed then they aren't added to K_g
-		idof = lm.find(element.nodes[i]);
+		idof = lm.find(element.getNode(i));
 		if(idof  == lm.end()) // no entry in lm means all 3 DoF are prescribed
 			continue;
 
@@ -433,10 +433,10 @@ Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Matrix<double,
 		id[2] = idof->second.get<2>();
 
 		// the node has non-prescribed DoF
-		for(size_t j = 0; j < element.nodes.size(); j++)
+		for(size_t j = 0; j < element.getNodeAmount(); j++)
 		{
 			// if all three DoF of this node are prescribed then they aren't added to K_g
-			jdof = lm.find(element.nodes[j]);
+			jdof = lm.find(element.getNode(j));
 			if(jdof == lm.end()) // no entry in lm means all 3 DoF are prescribed
 				continue;
 

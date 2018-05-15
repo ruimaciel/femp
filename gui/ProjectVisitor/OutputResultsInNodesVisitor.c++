@@ -31,19 +31,19 @@ OutputResultsInNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisR
 		element = &model.element_list[e->first];
 
 
-		for(size_t n = 0; n < element->nodes.size(); n++)
+		for(size_t n = 0; n < element->getNodeAmount(); n++)
 		{
 			std::set<fem::node_ref_t>::iterator	i;
 			auto selected_nodes = m_selection.getNodeReferences();
-			i = selected_nodes.find(element->nodes[n]);
+			i = selected_nodes.find(element->getNode(n));
 			if(i != selected_nodes.end())
 			{
 				// element has a selected node.  Let's output the result
 				*m_out << "element:" << e->first;
-				*m_out << "\tnode[" << n << "]:" << element->nodes[n];
+				*m_out << "\tnode[" << n << "]:" << element->getNode(n);
 				*m_out << "\n";
 
-				*m_out << "[\t" << model.node_list[element->nodes[n]].x() << ",\t" <<  model.node_list[element->nodes[n]].y() << ",\t" <<  model.node_list[element->nodes[n]].z() << "]"  << "\n";
+				*m_out << "[\t" << model.node_list[element->getNode(n)].x() << ",\t" <<  model.node_list[element->getNode(n)].y() << ",\t" <<  model.node_list[element->getNode(n)].z() << "]"  << "\n";
 
 				element_results = m_result->results[e->first];
 

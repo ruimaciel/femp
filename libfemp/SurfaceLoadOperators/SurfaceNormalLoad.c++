@@ -81,7 +81,7 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 	**/
 	using namespace std;
 	auto coordinates = element->getLocalCoordinates();
-	for(unsigned int i = 0; i < surface_load.nodes.size(); i++)
+	for(unsigned int i = 0; i < surface_load.getNodeAmount(); i++)
 	{
 		cout << "node " << i << " at " << coordinates[i] << "\n";
 
@@ -92,9 +92,9 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 		dPdcsi.zero();
 		dPdeta.zero();
 
-		for(unsigned int n = 0; n < surface_load.nodes.size(); n++)
+		for(unsigned int n = 0; n < surface_load.getNodeAmount(); n++)
 		{
-			fem::Point3D &p = model.node_list[ surface_load.nodes[n]];
+			fem::Point3D &p = model.node_list[ surface_load.getNode(n)];
 			cout << "Point : " << p << "\n";
 			dPdcsi += dNdcsi[n]*p;
 			dPdeta += dNdeta[n]*p;

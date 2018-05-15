@@ -78,42 +78,42 @@ Model::pushElement(fem::Element &e)
 	switch(e.type)
 	{
 	case Element::FE_TETRAHEDRON4:
-		if(e.nodes.size() != 4)
+		if(e.getNodeAmount() != 4)
 			throw FemException("wrong node number");
 		break;
 
 	case Element::FE_TETRAHEDRON10:
-		if(e.nodes.size() != 10)
+		if(e.getNodeAmount() != 10)
 			throw FemException("wrong node number");
 		break;
 
 	case Element::FE_HEXAHEDRON8:
-		if(e.nodes.size() != 8)
+		if(e.getNodeAmount() != 8)
 			throw FemException("wrong node number");
 		break;
 
 	case Element::FE_HEXAHEDRON20:
-		if(e.nodes.size() != 20)
+		if(e.getNodeAmount() != 20)
 			throw FemException("wrong node number");
 		break;
 
 	case Element::FE_HEXAHEDRON27:
-		if(e.nodes.size() != 27)
+		if(e.getNodeAmount() != 27)
 			throw FemException("wrong node number");
 		break;
 
 	case Element::FE_PRISM6:
-		if(e.nodes.size() != 6)
+		if(e.getNodeAmount() != 6)
 			throw FemException("wrong node number");
 		break;
 
 	case Element::FE_PRISM15:
-		if(e.nodes.size() != 15)
+		if(e.getNodeAmount() != 15)
 			throw FemException("wrong node number");
 		break;
 
 	case Element::FE_PRISM18:
-		if(e.nodes.size() != 18)
+		if(e.getNodeAmount() != 18)
 			throw FemException("wrong node number");
 		break;
 
@@ -135,388 +135,388 @@ Model::pushElement(fem::Element &e)
 		nodes.resize(3);
 
 		// face 1:
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[2];
-		nodes[2] = e.nodes[1];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(2);
+		nodes[2] = e.getNode(1);
 
 		// face 2:
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[3];
-		nodes[2] = e.nodes[2];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(3);
+		nodes[2] = e.getNode(2);
 
 		// face 3:
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[1];
-		nodes[2] = e.nodes[3];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(1);
+		nodes[2] = e.getNode(3);
 
 		// face 4:
-		nodes[0] = e.nodes[1];
-		nodes[1] = e.nodes[2];
-		nodes[2] = e.nodes[3];
+		nodes[0] = e.getNode(1);
+		nodes[1] = e.getNode(2);
+		nodes[2] = e.getNode(3);
 
 		break;
 
 	case Element::FE_TETRAHEDRON10:
 		nodes.resize(6);
 		// face 1:
-		nodes[0] = e.nodes[1];
-		nodes[1] = e.nodes[0];
-		nodes[2] = e.nodes[2];
-		nodes[3] = e.nodes[4];
-		nodes[4] = e.nodes[6];
-		nodes[5] = e.nodes[5];
+		nodes[0] = e.getNode(1);
+		nodes[1] = e.getNode(0);
+		nodes[2] = e.getNode(2);
+		nodes[3] = e.getNode(4);
+		nodes[4] = e.getNode(6);
+		nodes[5] = e.getNode(5);
 
 		// face 2:
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[3];
-		nodes[2] = e.nodes[2];
-		nodes[3] = e.nodes[7];
-		nodes[4] = e.nodes[8];
-		nodes[5] = e.nodes[6];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(3);
+		nodes[2] = e.getNode(2);
+		nodes[3] = e.getNode(7);
+		nodes[4] = e.getNode(8);
+		nodes[5] = e.getNode(6);
 
 		// face 3:
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[1];
-		nodes[2] = e.nodes[3];
-		nodes[3] = e.nodes[4];
-		nodes[4] = e.nodes[9];
-		nodes[5] = e.nodes[7];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(1);
+		nodes[2] = e.getNode(3);
+		nodes[3] = e.getNode(4);
+		nodes[4] = e.getNode(9);
+		nodes[5] = e.getNode(7);
 
 		// face 4:
-		nodes[0] = e.nodes[1];
-		nodes[1] = e.nodes[2];
-		nodes[2] = e.nodes[3];
-		nodes[3] = e.nodes[5];
-		nodes[4] = e.nodes[8];
-		nodes[5] = e.nodes[9];
+		nodes[0] = e.getNode(1);
+		nodes[1] = e.getNode(2);
+		nodes[2] = e.getNode(3);
+		nodes[3] = e.getNode(5);
+		nodes[4] = e.getNode(8);
+		nodes[5] = e.getNode(9);
 
 		break;
 
 	case Element::FE_HEXAHEDRON8:
 		nodes.resize(4);
 		// face 1:
-		nodes[0] = e.nodes[1];
-		nodes[1] = e.nodes[0];
-		nodes[2] = e.nodes[3];
-		nodes[3] = e.nodes[2];
+		nodes[0] = e.getNode(1);
+		nodes[1] = e.getNode(0);
+		nodes[2] = e.getNode(3);
+		nodes[3] = e.getNode(2);
 
 		// face 2:
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[4];
-		nodes[2] = e.nodes[7];
-		nodes[3] = e.nodes[3];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(4);
+		nodes[2] = e.getNode(7);
+		nodes[3] = e.getNode(3);
 
 
 		// face 3:
-		nodes[0] = e.nodes[4];
-		nodes[1] = e.nodes[5];
-		nodes[2] = e.nodes[6];
-		nodes[3] = e.nodes[7];
+		nodes[0] = e.getNode(4);
+		nodes[1] = e.getNode(5);
+		nodes[2] = e.getNode(6);
+		nodes[3] = e.getNode(7);
 
 
 		// face 4:
-		nodes[0] = e.nodes[5];
-		nodes[1] = e.nodes[1];
-		nodes[2] = e.nodes[2];
-		nodes[3] = e.nodes[6];
+		nodes[0] = e.getNode(5);
+		nodes[1] = e.getNode(1);
+		nodes[2] = e.getNode(2);
+		nodes[3] = e.getNode(6);
 
 
 		// face 5:
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[1];
-		nodes[2] = e.nodes[5];
-		nodes[3] = e.nodes[4];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(1);
+		nodes[2] = e.getNode(5);
+		nodes[3] = e.getNode(4);
 
 
 		// face 6:
-		nodes[0] = e.nodes[2];
-		nodes[1] = e.nodes[3];
-		nodes[2] = e.nodes[7];
-		nodes[3] = e.nodes[6];
+		nodes[0] = e.getNode(2);
+		nodes[1] = e.getNode(3);
+		nodes[2] = e.getNode(7);
+		nodes[3] = e.getNode(6);
 
 		break;
 
 	case Element::FE_HEXAHEDRON20:
 		nodes.resize(8);
 		// face 1:
-		nodes[0] = e.nodes[1];
-		nodes[1] = e.nodes[0];
-		nodes[2] = e.nodes[3];
-		nodes[3] = e.nodes[2];
-		nodes[4] = e.nodes[8];
-		nodes[5] = e.nodes[9];
-		nodes[6] = e.nodes[13];
-		nodes[7] = e.nodes[11];
+		nodes[0] = e.getNode(1);
+		nodes[1] = e.getNode(0);
+		nodes[2] = e.getNode(3);
+		nodes[3] = e.getNode(2);
+		nodes[4] = e.getNode(8);
+		nodes[5] = e.getNode(9);
+		nodes[6] = e.getNode(13);
+		nodes[7] = e.getNode(11);
 
 		// face 2:
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[4];
-		nodes[2] = e.nodes[7];
-		nodes[3] = e.nodes[3];
-		nodes[4] = e.nodes[10];
-		nodes[5] = e.nodes[17];
-		nodes[6] = e.nodes[15];
-		nodes[7] = e.nodes[9];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(4);
+		nodes[2] = e.getNode(7);
+		nodes[3] = e.getNode(3);
+		nodes[4] = e.getNode(10);
+		nodes[5] = e.getNode(17);
+		nodes[6] = e.getNode(15);
+		nodes[7] = e.getNode(9);
 
 
 		// face 3:
-		nodes[0] = e.nodes[4];
-		nodes[1] = e.nodes[5];
-		nodes[2] = e.nodes[6];
-		nodes[3] = e.nodes[7];
-		nodes[4] = e.nodes[16];
-		nodes[5] = e.nodes[18];
-		nodes[6] = e.nodes[19];
-		nodes[7] = e.nodes[17];
+		nodes[0] = e.getNode(4);
+		nodes[1] = e.getNode(5);
+		nodes[2] = e.getNode(6);
+		nodes[3] = e.getNode(7);
+		nodes[4] = e.getNode(16);
+		nodes[5] = e.getNode(18);
+		nodes[6] = e.getNode(19);
+		nodes[7] = e.getNode(17);
 
 
 		// face 4:
-		nodes[0] = e.nodes[5];
-		nodes[1] = e.nodes[1];
-		nodes[2] = e.nodes[2];
-		nodes[3] = e.nodes[6];
-		nodes[4] = e.nodes[12];
-		nodes[5] = e.nodes[11];
-		nodes[6] = e.nodes[14];
-		nodes[7] = e.nodes[18];
+		nodes[0] = e.getNode(5);
+		nodes[1] = e.getNode(1);
+		nodes[2] = e.getNode(2);
+		nodes[3] = e.getNode(6);
+		nodes[4] = e.getNode(12);
+		nodes[5] = e.getNode(11);
+		nodes[6] = e.getNode(14);
+		nodes[7] = e.getNode(18);
 
 
 		// face 5:
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[1];
-		nodes[2] = e.nodes[5];
-		nodes[3] = e.nodes[4];
-		nodes[4] = e.nodes[8];
-		nodes[5] = e.nodes[12];
-		nodes[6] = e.nodes[16];
-		nodes[7] = e.nodes[10];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(1);
+		nodes[2] = e.getNode(5);
+		nodes[3] = e.getNode(4);
+		nodes[4] = e.getNode(8);
+		nodes[5] = e.getNode(12);
+		nodes[6] = e.getNode(16);
+		nodes[7] = e.getNode(10);
 
 
 		// face 6:
-		nodes[0] = e.nodes[2];
-		nodes[1] = e.nodes[3];
-		nodes[2] = e.nodes[7];
-		nodes[3] = e.nodes[6];
-		nodes[4] = e.nodes[13];
-		nodes[5] = e.nodes[15];
-		nodes[6] = e.nodes[19];
-		nodes[7] = e.nodes[14];
+		nodes[0] = e.getNode(2);
+		nodes[1] = e.getNode(3);
+		nodes[2] = e.getNode(7);
+		nodes[3] = e.getNode(6);
+		nodes[4] = e.getNode(13);
+		nodes[5] = e.getNode(15);
+		nodes[6] = e.getNode(19);
+		nodes[7] = e.getNode(14);
 
 		break;
 
 	case Element::FE_HEXAHEDRON27:
 		nodes.resize(9);
 		// face 1:
-		nodes[0] = e.nodes[1];
-		nodes[1] = e.nodes[0];
-		nodes[2] = e.nodes[3];
-		nodes[3] = e.nodes[2];
-		nodes[4] = e.nodes[8];
-		nodes[5] = e.nodes[9];
-		nodes[6] = e.nodes[13];
-		nodes[7] = e.nodes[11];
-		nodes[8] = e.nodes[20];
+		nodes[0] = e.getNode(1);
+		nodes[1] = e.getNode(0);
+		nodes[2] = e.getNode(3);
+		nodes[3] = e.getNode(2);
+		nodes[4] = e.getNode(8);
+		nodes[5] = e.getNode(9);
+		nodes[6] = e.getNode(13);
+		nodes[7] = e.getNode(11);
+		nodes[8] = e.getNode(20);
 
 		// face 2:
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[4];
-		nodes[2] = e.nodes[7];
-		nodes[3] = e.nodes[3];
-		nodes[4] = e.nodes[10];
-		nodes[5] = e.nodes[17];
-		nodes[6] = e.nodes[15];
-		nodes[7] = e.nodes[9];
-		nodes[8] = e.nodes[22];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(4);
+		nodes[2] = e.getNode(7);
+		nodes[3] = e.getNode(3);
+		nodes[4] = e.getNode(10);
+		nodes[5] = e.getNode(17);
+		nodes[6] = e.getNode(15);
+		nodes[7] = e.getNode(9);
+		nodes[8] = e.getNode(22);
 
 
 		// face 3:
-		nodes[0] = e.nodes[4];
-		nodes[1] = e.nodes[5];
-		nodes[2] = e.nodes[6];
-		nodes[3] = e.nodes[7];
-		nodes[4] = e.nodes[16];
-		nodes[5] = e.nodes[18];
-		nodes[6] = e.nodes[19];
-		nodes[7] = e.nodes[17];
-		nodes[8] = e.nodes[25];
+		nodes[0] = e.getNode(4);
+		nodes[1] = e.getNode(5);
+		nodes[2] = e.getNode(6);
+		nodes[3] = e.getNode(7);
+		nodes[4] = e.getNode(16);
+		nodes[5] = e.getNode(18);
+		nodes[6] = e.getNode(19);
+		nodes[7] = e.getNode(17);
+		nodes[8] = e.getNode(25);
 
 
 		// face 4:
-		nodes[0] = e.nodes[5];
-		nodes[1] = e.nodes[1];
-		nodes[2] = e.nodes[2];
-		nodes[3] = e.nodes[6];
-		nodes[4] = e.nodes[12];
-		nodes[5] = e.nodes[11];
-		nodes[6] = e.nodes[14];
-		nodes[7] = e.nodes[18];
-		nodes[8] = e.nodes[23];
+		nodes[0] = e.getNode(5);
+		nodes[1] = e.getNode(1);
+		nodes[2] = e.getNode(2);
+		nodes[3] = e.getNode(6);
+		nodes[4] = e.getNode(12);
+		nodes[5] = e.getNode(11);
+		nodes[6] = e.getNode(14);
+		nodes[7] = e.getNode(18);
+		nodes[8] = e.getNode(23);
 
 
 		// face 5:
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[1];
-		nodes[2] = e.nodes[5];
-		nodes[3] = e.nodes[4];
-		nodes[4] = e.nodes[8];
-		nodes[5] = e.nodes[12];
-		nodes[6] = e.nodes[16];
-		nodes[7] = e.nodes[10];
-		nodes[8] = e.nodes[21];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(1);
+		nodes[2] = e.getNode(5);
+		nodes[3] = e.getNode(4);
+		nodes[4] = e.getNode(8);
+		nodes[5] = e.getNode(12);
+		nodes[6] = e.getNode(16);
+		nodes[7] = e.getNode(10);
+		nodes[8] = e.getNode(21);
 
 
 		// face 6:
-		nodes[0] = e.nodes[2];
-		nodes[1] = e.nodes[3];
-		nodes[2] = e.nodes[7];
-		nodes[3] = e.nodes[6];
-		nodes[4] = e.nodes[13];
-		nodes[5] = e.nodes[15];
-		nodes[6] = e.nodes[19];
-		nodes[7] = e.nodes[14];
-		nodes[8] = e.nodes[24];
+		nodes[0] = e.getNode(2);
+		nodes[1] = e.getNode(3);
+		nodes[2] = e.getNode(7);
+		nodes[3] = e.getNode(6);
+		nodes[4] = e.getNode(13);
+		nodes[5] = e.getNode(15);
+		nodes[6] = e.getNode(19);
+		nodes[7] = e.getNode(14);
+		nodes[8] = e.getNode(24);
 		break;
 
 	case Element::FE_PRISM6:
 		nodes.resize(4);
 		// face 1: quadrangle with the coplanar XX
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[1];
-		nodes[2] = e.nodes[4];
-		nodes[3] = e.nodes[3];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(1);
+		nodes[2] = e.getNode(4);
+		nodes[3] = e.getNode(3);
 
 		// face 2: quadrangle with the coplanar YY
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[3];
-		nodes[2] = e.nodes[5];
-		nodes[3] = e.nodes[2];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(3);
+		nodes[2] = e.getNode(5);
+		nodes[3] = e.getNode(2);
 
 		// face 3: quadrangle with the diagonal
-		nodes[0] = e.nodes[1];
-		nodes[1] = e.nodes[2];
-		nodes[2] = e.nodes[5];
-		nodes[3] = e.nodes[4];
+		nodes[0] = e.getNode(1);
+		nodes[1] = e.getNode(2);
+		nodes[2] = e.getNode(5);
+		nodes[3] = e.getNode(4);
 
 		/*
 			prism faces: 3 quadrangles, 2 triangles
 			*/
 		// face 5: near triangle
 		nodes.resize(3);
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[2];
-		nodes[2] = e.nodes[1];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(2);
+		nodes[2] = e.getNode(1);
 
 		// face 6: far triangle
-		nodes[0] = e.nodes[3];
-		nodes[1] = e.nodes[4];
-		nodes[2] = e.nodes[5];
+		nodes[0] = e.getNode(3);
+		nodes[1] = e.getNode(4);
+		nodes[2] = e.getNode(5);
 		break;
 
 	case Element::FE_PRISM15:
 		nodes.resize(8);
 		// face 1: quadrangle with the coplanar XX
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[1];
-		nodes[2] = e.nodes[4];
-		nodes[3] = e.nodes[3];
-		nodes[4] = e.nodes[6];
-		nodes[5] = e.nodes[10];
-		nodes[6] = e.nodes[12];
-		nodes[7] = e.nodes[8];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(1);
+		nodes[2] = e.getNode(4);
+		nodes[3] = e.getNode(3);
+		nodes[4] = e.getNode(6);
+		nodes[5] = e.getNode(10);
+		nodes[6] = e.getNode(12);
+		nodes[7] = e.getNode(8);
 
 		// face 2: quadrangle with the coplanar YY
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[3];
-		nodes[2] = e.nodes[5];
-		nodes[3] = e.nodes[2];
-		nodes[4] = e.nodes[8];
-		nodes[5] = e.nodes[13];
-		nodes[6] = e.nodes[11];
-		nodes[7] = e.nodes[7];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(3);
+		nodes[2] = e.getNode(5);
+		nodes[3] = e.getNode(2);
+		nodes[4] = e.getNode(8);
+		nodes[5] = e.getNode(13);
+		nodes[6] = e.getNode(11);
+		nodes[7] = e.getNode(7);
 
 		// face 3: quadrangle with the diagonal
-		nodes[0] = e.nodes[1];
-		nodes[1] = e.nodes[2];
-		nodes[2] = e.nodes[5];
-		nodes[3] = e.nodes[4];
-		nodes[4] = e.nodes[9];
-		nodes[5] = e.nodes[11];
-		nodes[6] = e.nodes[14];
-		nodes[7] = e.nodes[10];
+		nodes[0] = e.getNode(1);
+		nodes[1] = e.getNode(2);
+		nodes[2] = e.getNode(5);
+		nodes[3] = e.getNode(4);
+		nodes[4] = e.getNode(9);
+		nodes[5] = e.getNode(11);
+		nodes[6] = e.getNode(14);
+		nodes[7] = e.getNode(10);
 		/*
 			prism faces: 3 quadrangles, 2 triangles
 			*/
 		// face 5: near triangle
 		nodes.resize(6);
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[2];
-		nodes[2] = e.nodes[1];
-		nodes[3] = e.nodes[7];
-		nodes[4] = e.nodes[9];
-		nodes[5] = e.nodes[6];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(2);
+		nodes[2] = e.getNode(1);
+		nodes[3] = e.getNode(7);
+		nodes[4] = e.getNode(9);
+		nodes[5] = e.getNode(6);
 
 		// face 6: far triangle
-		nodes[0] = e.nodes[3];
-		nodes[1] = e.nodes[4];
-		nodes[2] = e.nodes[5];
-		nodes[3] = e.nodes[12];
-		nodes[4] = e.nodes[14];
-		nodes[5] = e.nodes[13];
+		nodes[0] = e.getNode(3);
+		nodes[1] = e.getNode(4);
+		nodes[2] = e.getNode(5);
+		nodes[3] = e.getNode(12);
+		nodes[4] = e.getNode(14);
+		nodes[5] = e.getNode(13);
 		break;
 
 	case Element::FE_PRISM18:
 		nodes.resize(9);
 		// face 1: quadrangle with the coplanar XX
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[1];
-		nodes[2] = e.nodes[4];
-		nodes[3] = e.nodes[3];
-		nodes[4] = e.nodes[6];
-		nodes[5] = e.nodes[10];
-		nodes[6] = e.nodes[12];
-		nodes[7] = e.nodes[8];
-		nodes[8] = e.nodes[15];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(1);
+		nodes[2] = e.getNode(4);
+		nodes[3] = e.getNode(3);
+		nodes[4] = e.getNode(6);
+		nodes[5] = e.getNode(10);
+		nodes[6] = e.getNode(12);
+		nodes[7] = e.getNode(8);
+		nodes[8] = e.getNode(15);
 
 		// face 2: quadrangle with the coplanar YY
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[3];
-		nodes[2] = e.nodes[5];
-		nodes[3] = e.nodes[2];
-		nodes[4] = e.nodes[8];
-		nodes[5] = e.nodes[13];
-		nodes[6] = e.nodes[11];
-		nodes[7] = e.nodes[7];
-		nodes[8] = e.nodes[16];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(3);
+		nodes[2] = e.getNode(5);
+		nodes[3] = e.getNode(2);
+		nodes[4] = e.getNode(8);
+		nodes[5] = e.getNode(13);
+		nodes[6] = e.getNode(11);
+		nodes[7] = e.getNode(7);
+		nodes[8] = e.getNode(16);
 
 		// face 3: quadrangle with the diagonal
-		nodes[0] = e.nodes[1];
-		nodes[1] = e.nodes[2];
-		nodes[2] = e.nodes[5];
-		nodes[3] = e.nodes[4];
-		nodes[4] = e.nodes[9];
-		nodes[5] = e.nodes[11];
-		nodes[6] = e.nodes[14];
-		nodes[7] = e.nodes[10];
-		nodes[8] = e.nodes[17];
+		nodes[0] = e.getNode(1);
+		nodes[1] = e.getNode(2);
+		nodes[2] = e.getNode(5);
+		nodes[3] = e.getNode(4);
+		nodes[4] = e.getNode(9);
+		nodes[5] = e.getNode(11);
+		nodes[6] = e.getNode(14);
+		nodes[7] = e.getNode(10);
+		nodes[8] = e.getNode(17);
 		/*
 			prism faces: 3 quadrangles, 2 triangles
 			*/
 		// face 5: near triangle
 		nodes.resize(6);
-		nodes[0] = e.nodes[0];
-		nodes[1] = e.nodes[2];
-		nodes[2] = e.nodes[1];
-		nodes[3] = e.nodes[7];
-		nodes[4] = e.nodes[9];
-		nodes[5] = e.nodes[6];
+		nodes[0] = e.getNode(0);
+		nodes[1] = e.getNode(2);
+		nodes[2] = e.getNode(1);
+		nodes[3] = e.getNode(7);
+		nodes[4] = e.getNode(9);
+		nodes[5] = e.getNode(6);
 
 		// face 6: far triangle
-		nodes[0] = e.nodes[3];
-		nodes[1] = e.nodes[4];
-		nodes[2] = e.nodes[5];
-		nodes[3] = e.nodes[12];
-		nodes[4] = e.nodes[14];
-		nodes[5] = e.nodes[13];
+		nodes[0] = e.getNode(3);
+		nodes[1] = e.getNode(4);
+		nodes[2] = e.getNode(5);
+		nodes[3] = e.getNode(12);
+		nodes[4] = e.getNode(14);
+		nodes[5] = e.getNode(13);
 		break;
 
 	default:

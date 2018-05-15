@@ -32,11 +32,9 @@ StressFieldFactory::operator() (fem::Element const &element)
 	//auto di = [&m_diameter, &m_model, &element](float const scale, std::initializer_list< std::pair<fem::node_ref_t, fem::node_ref_t> > list)
 	auto di = [&](float const scale, std::initializer_list< std::pair<fem::node_ref_t, fem::node_ref_t> > list)
 	{
-		fem::Point3D center;
-
 		for(auto a: list)
 		{
-			fem::Point3D d = m_model->node_list[element.nodes[a.second]]-m_model->node_list[element.nodes[a.first]];
+			fem::Point3D d = m_model->node_list[element.getNode(a.second)]-m_model->node_list[element.getNode(a.first)];
 			if(scale*scale*dot_product(d,d) < (*m_diameter)*(*m_diameter))
 				*m_diameter = scale*d.norm();
 		}
@@ -163,7 +161,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 		for(unsigned int node = 0; node < coordinates.size(); node++)
 		{
 			// get the node's x coordinate, the coordinate in the global frame of reference
-			global = m_model->getNode(element.nodes[node]);
+			global = m_model->getNode(element.getNode(node));
 
 			dxdcsi += dNdcsi[node]*global;
 			dxdeta += dNdeta[node]*global;
@@ -187,7 +185,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 		for(unsigned int node = 0; node < coordinates.size(); node++)
 		{
 			fem::Point3D d; // displacements
-			d = m_result->displacements[ element.nodes[node] ];	// displacements calculated in this node
+			d = m_result->displacements[ element.getNode(node) ];	// displacements calculated in this node
 
 			// calculate \epsilon_{11} = dNdx_1*d1
 			dNdx  = invDg(0,0)*dNdcsi[node] + invDg(0,1)*dNdeta[node] + invDg(0,2)*dNdzeta[node];
@@ -224,7 +222,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 		auto N = e->getN(local);
 		for(std::vector<fem::node_ref_t>::size_type n = 0; n < N.size(); n++)
 		{
-			pos += N[n]*m_model->node_list[ element.nodes[n]];
+			pos += N[n]*m_model->node_list[ element.getNode(n)];
 		}
 
 

@@ -91,7 +91,7 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 		for(unsigned int node = 0; node < coordinates.size(); node++)
 		{
 			// get the node's x coordinate, the coordinate in the global frame of reference
-			global = m_model->getNode(reference_element.nodes[node]);
+			global = m_model->getNode(reference_element.getNode(node));
 
 			dxdcsi += dNdcsi[node]*global;
 			dxdeta += dNdeta[node]*global;
@@ -113,7 +113,7 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 		for(unsigned int node = 0; node < coordinates.size(); node++)
 		{
 			fem::Point3D d; // displacements
-			d = this->m_analysis_result->displacements[ reference_element.nodes[node] ];	// displacements calculated in this node
+			d = this->m_analysis_result->displacements[ reference_element.getNode(node) ];	// displacements calculated in this node
 
 			// calculate \epsilon_{11} = dNdx_1*d1
 			dNdx  = invDg(0,0)*dNdcsi[node] + invDg(0,1)*dNdeta[node] + invDg(0,2)*dNdzeta[node];

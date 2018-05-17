@@ -14,16 +14,16 @@ PrismCartesianProduct::PrismCartesianProduct(TriangleRule *rule_xy, LineRule *ru
 }
 
 
-std::vector<PrismRule::Point> 
+std::vector<PrismRule::QuadraturePoint>
 PrismCartesianProduct::operator() () const
 {
-	std::vector<PrismRule::Point> cube_rule;
+	std::vector<QuadraturePoint> cube_rule;
 
 	for(TriangleRule::Point &pxy: (*m_rule_xy)() )
 	{
 		for(LineRule::Point &pz: (*m_rule_z)() )
 		{
-			cube_rule.push_back( Point{pxy.weight*pz.weight, {pxy.x[0], pxy.x[1], pz.x[0]}} );
+			cube_rule.push_back( QuadraturePoint{pxy.weight*pz.weight, {pxy.x[0], pxy.x[1], pz.x[0]}} );
 		}
 	}
 

@@ -15,19 +15,19 @@ HexahedronCartesianProduct::HexahedronCartesianProduct(LineRule *rule_x, LineRul
 }
 
 
-std::vector<HexahedronRule::Point> 
+std::vector<HexahedronRule::QuadraturePoint>
 HexahedronCartesianProduct::operator() () const
 {
-	std::vector<HexahedronRule::Point> cube_rule;
+	std::vector<QuadraturePoint> cube_rule;
 
 	for(LineRule::Point &px: (*m_rule_x)() )
 	{
 		for(LineRule::Point &py: (*m_rule_y)() )
 		{
-			
+
 			for(LineRule::Point &pz: (*m_rule_z)() )
 			{
-				   cube_rule.push_back( Point{px.weight*py.weight*pz.weight, {px.x[0], py.x[0], pz.x[0]}} );
+				   cube_rule.push_back( QuadraturePoint{px.weight*py.weight*pz.weight, {px.x[0], py.x[0], pz.x[0]}} );
 			}
 		}
 	}

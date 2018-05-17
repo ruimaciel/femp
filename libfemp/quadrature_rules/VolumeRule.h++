@@ -2,7 +2,7 @@
 #define VOLUMERULE_H
 
 #include <vector>
-#include "QuadraturePoint.h++"
+#include "../Point3D.h++"
 
 namespace fem
 {
@@ -16,7 +16,10 @@ namespace quadrature
 class VolumeRule
 {
 public:
-	typedef QuadraturePoint<3> Point;	// helper alias
+	struct QuadraturePoint {
+		double weight;
+		Point3D x;
+	};
 
 public:
 	virtual ~VolumeRule() {}
@@ -24,7 +27,7 @@ public:
 	/**
 	 * functor that returns the quadrature rule
 	 **/
-	virtual std::vector<Point> operator() () const = 0;
+	virtual std::vector<QuadraturePoint> operator() () const = 0;
 };
 
 

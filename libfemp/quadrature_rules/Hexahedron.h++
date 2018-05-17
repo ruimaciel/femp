@@ -4,7 +4,6 @@
 
 #include <memory>
 #include <vector>
-#include "QuadraturePoint.h++"
 #include "VolumeRule.h++"
 
 #include "Line.h++"
@@ -21,15 +20,12 @@ namespace quadrature
 class HexahedronRule : public VolumeRule
 {
 public:
-	typedef QuadraturePoint<3> Point;	// helper alias
-
-public:
 	virtual ~HexahedronRule() {}
 
 	/**
 	 * functor that returns the quadrature rule
 	 **/
-	virtual std::vector<Point> operator() () const = 0;
+	virtual std::vector<QuadraturePoint> operator() () const = 0;
 };
 
 
@@ -47,7 +43,7 @@ private:
 public:
 	HexahedronCartesianProduct(LineRule *rule_x, LineRule *rule_y, LineRule *rule_z);
 
-	virtual std::vector<Point> operator() () const override;
+	virtual std::vector<QuadraturePoint> operator() () const override;
 };
 
 

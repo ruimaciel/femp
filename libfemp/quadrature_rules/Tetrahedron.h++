@@ -4,7 +4,6 @@
 
 #include <memory>
 #include <vector>
-#include "QuadraturePoint.h++"
 #include "VolumeRule.h++"
 
 #include "Line.h++"
@@ -21,15 +20,12 @@ namespace quadrature
 class TetrahedronRule : public VolumeRule
 {
 public:
-	typedef QuadraturePoint<3> Point;	// helper alias
-
-public:
 	virtual ~TetrahedronRule() {}
 
 	/**
 	 * functor that returns the quadrature rule
 	 **/
-	virtual std::vector<Point> operator() () const = 0;
+	virtual std::vector<QuadraturePoint> operator() () const = 0;
 };
 
 
@@ -41,7 +37,7 @@ class Tetrahedron1
 	: public TetrahedronRule
 {
 public:
-	virtual std::vector<Point> operator() () const override;
+	virtual std::vector<QuadraturePoint> operator() () const override;
 };
 
 
@@ -52,7 +48,7 @@ class Tetrahedron4
 	: public TetrahedronRule
 {
 public:
-	virtual std::vector<Point> operator() () const override;
+	virtual std::vector<QuadraturePoint> operator() () const override;
 };
 
 
@@ -63,7 +59,7 @@ class Tetrahedron8
 	: public TetrahedronRule
 {
 public:
-	virtual std::vector<Point> operator() () const override;
+	virtual std::vector<QuadraturePoint> operator() () const override;
 };
 
 
@@ -74,7 +70,7 @@ class Tetrahedron14
 	: public TetrahedronRule
 {
 public:
-	virtual std::vector<Point> operator() () const override;
+	virtual std::vector<QuadraturePoint> operator() () const override;
 };
 
 

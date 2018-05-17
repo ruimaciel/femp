@@ -4,7 +4,6 @@
 
 #include <memory>
 #include <vector>
-#include "QuadraturePoint.h++"
 #include "VolumeRule.h++"
 
 #include "Line.h++"
@@ -19,18 +18,15 @@ namespace quadrature
 /**
  * Interface used by all quadrature rules over the square
  **/
-class PrismRule : VolumeRule
+class PrismRule : public VolumeRule
 {
-public:
-	typedef QuadraturePoint<3> Point;	// helper alias
-
 public:
 	virtual ~PrismRule() {}
 
 	/**
 	 * functor that returns the quadrature rule
 	 **/
-	virtual std::vector<Point> operator() () const = 0;
+	virtual std::vector<QuadraturePoint> operator() () const = 0;
 };
 
 
@@ -49,7 +45,7 @@ private:
 public:
 	PrismCartesianProduct(TriangleRule *rule_xy, LineRule *rule_z);
 
-	virtual std::vector<Point> operator() () const override;
+	virtual std::vector<QuadraturePoint> operator() () const override;
 };
 
 

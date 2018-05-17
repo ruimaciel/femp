@@ -8,16 +8,16 @@ namespace quadrature
 {
 
 
-std::vector<TetrahedronRule::Point>
+std::vector<TetrahedronRule::QuadraturePoint>
 Tetrahedron1::operator() () const
 {
 	return {
-		Point{1.0/6, {1.0/4, 1.0/4, 1.0/4} }
+		QuadraturePoint{1.0/6, {1.0/4, 1.0/4, 1.0/4} }
 	};
 }
 
 
-std::vector<TetrahedronRule::Point>
+std::vector<TetrahedronRule::QuadraturePoint>
 Tetrahedron4::operator() () const
 {
 	const double g1 = 0.58541019662496845446;
@@ -25,15 +25,15 @@ Tetrahedron4::operator() () const
 	const double w = 1.0/(6*4);
 
 	return {
-		Point{ w, {g1, g2, g2}},
-		Point{ w, {g2, g1, g2}},
-		Point{ w, {g2, g2, g1}},
-		Point{ w, {g2, g2, g2}}
+		QuadraturePoint{ w, {g1, g2, g2}},
+		QuadraturePoint{ w, {g2, g1, g2}},
+		QuadraturePoint{ w, {g2, g2, g1}},
+		QuadraturePoint{ w, {g2, g2, g2}}
 	};
 }
 
 
-std::vector<TetrahedronRule::Point>
+std::vector<TetrahedronRule::QuadraturePoint>
 Tetrahedron8::operator() () const
 {
 	const double g1 =(55-3*sqrt(17)+sqrt(1022-134*sqrt(17)))/196;
@@ -44,20 +44,20 @@ Tetrahedron8::operator() () const
 
 
 	return {
-		Point{ w1, {1-3*g1, g1, g1}},
-		Point{ w1, {g1, 1-3*g1, g1}},
-		Point{ w1, {g1, g1, 1-3*g1}},
-		Point{ w1, {g1, g1, g1}},
-		Point{ w2, {1-3*g2, g2, g2}},
-		Point{ w2, {g2, 1-3*g2, g2}},
-		Point{ w2, {g2, g2, 1-3*g2}},
-		Point{ w2, {g2, g2, g2}}
+		QuadraturePoint{ w1, {1-3*g1, g1, g1}},
+		QuadraturePoint{ w1, {g1, 1-3*g1, g1}},
+		QuadraturePoint{ w1, {g1, g1, 1-3*g1}},
+		QuadraturePoint{ w1, {g1, g1, g1}},
+		QuadraturePoint{ w2, {1-3*g2, g2, g2}},
+		QuadraturePoint{ w2, {g2, 1-3*g2, g2}},
+		QuadraturePoint{ w2, {g2, g2, 1-3*g2}},
+		QuadraturePoint{ w2, {g2, g2, g2}}
 	};
 
 }
 
 
-std::vector<TetrahedronRule::Point>
+std::vector<TetrahedronRule::QuadraturePoint>
 Tetrahedron14::operator() () const
 {
 	const double g0 = 0.09273525031089122640232391373703060;
@@ -70,22 +70,22 @@ Tetrahedron14::operator() () const
 
 	// 1 to 4
 	return {
-		Point{ w0/6.0, {1-3*g0, g0, g0}},
-		Point{ w0/6.0, {g0, 1-3*g0, g0}},
-		Point{ w0/6.0, {g0, g0, 1-3*g0}},
-		Point{ w0/6.0, {g0, g0, g0}},
-			//Point{5 to 8
-		Point{ w1/6.0, {1-3*g1, g1, g1}},
-		Point{ w1/6.0, {g1, 1-3*g1, g1}},
-		Point{ w1/6.0, {g1, g1, 1-3*g1}},
-		Point{ w1/6.0, {g1, g1, g1}},
-			//Point{9 to 14
-		Point{ w2, {1.0/2-g2, 1.0/2-g2, g2}},
-		Point{ w2, {1.0/2-g2, g2, 1.0/2-g2}},
-		Point{ w2, {1.0/2-g2, g2, g2}},
-		Point{ w2, {g2, 1.0/2-g2, 1.0/2-g2}},
-		Point{ w2, {g2, 1.0/2-g2, g2}},
-		Point{ w2, {g2, g2, 1.0/2-g2}},
+		QuadraturePoint{ w0/6.0, {1-3*g0, g0, g0}},
+		QuadraturePoint{ w0/6.0, {g0, 1-3*g0, g0}},
+		QuadraturePoint{ w0/6.0, {g0, g0, 1-3*g0}},
+		QuadraturePoint{ w0/6.0, {g0, g0, g0}},
+			//QuadraturePoint{5 to 8
+		QuadraturePoint{ w1/6.0, {1-3*g1, g1, g1}},
+		QuadraturePoint{ w1/6.0, {g1, 1-3*g1, g1}},
+		QuadraturePoint{ w1/6.0, {g1, g1, 1-3*g1}},
+		QuadraturePoint{ w1/6.0, {g1, g1, g1}},
+			//QuadraturePoint{9 to 14
+		QuadraturePoint{ w2, {1.0/2-g2, 1.0/2-g2, g2}},
+		QuadraturePoint{ w2, {1.0/2-g2, g2, 1.0/2-g2}},
+		QuadraturePoint{ w2, {1.0/2-g2, g2, g2}},
+		QuadraturePoint{ w2, {g2, 1.0/2-g2, 1.0/2-g2}},
+		QuadraturePoint{ w2, {g2, 1.0/2-g2, g2}},
+		QuadraturePoint{ w2, {g2, g2, 1.0/2-g2}},
 	};
 }
 

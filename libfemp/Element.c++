@@ -218,6 +218,12 @@ Element::family() const
 	}
 }
 
+node_ref_t
+Element::getNode(node_ref_t ref) const
+{
+	return this->nodes[ref];
+}
+
 
 void
 Element::clear()

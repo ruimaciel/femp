@@ -86,7 +86,7 @@ public:
 	**/
 	enum ElementFamily family() const;
 
-	node_ref_t getNode(node_ref_t ref) const { return this->nodes[ref]; }
+	node_ref_t getNode(node_ref_t ref) const;
 
 	// clears the element
 	void clear();

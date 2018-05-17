@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include "QuadraturePoint.h++"
+#include "VolumeRule.h++"
 
 #include "Line.h++"
 
@@ -17,7 +18,7 @@ namespace quadrature
 /**
  * Interface used by all quadrature rules over the square
  **/
-class TetrahedronRule
+class TetrahedronRule : public VolumeRule
 {
 public:
 	typedef QuadraturePoint<3> Point;	// helper alias
@@ -30,6 +31,7 @@ public:
 	 **/
 	virtual std::vector<Point> operator() () const = 0;
 };
+
 
 
 /**

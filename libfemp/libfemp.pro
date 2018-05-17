@@ -82,7 +82,8 @@ HEADERS = Group.h++ \
 	loads/Triangle3.h++ \
 	loads/Triangle6.h++ \
 	loads/Triangle10.h++ \
-    Point3D.h++
+    Point3D.h++ \
+    quadrature_rules/VolumeRule.h++
 
 SOURCES = Group.c++ \
 	Model.c++ \

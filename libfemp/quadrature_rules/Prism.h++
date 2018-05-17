@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include "QuadraturePoint.h++"
+#include "VolumeRule.h++"
 
 #include "Line.h++"
 #include "Triangle.h++"
@@ -18,7 +19,7 @@ namespace quadrature
 /**
  * Interface used by all quadrature rules over the square
  **/
-class PrismRule
+class PrismRule : VolumeRule
 {
 public:
 	typedef QuadraturePoint<3> Point;	// helper alias

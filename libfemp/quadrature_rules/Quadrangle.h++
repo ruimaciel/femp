@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <vector>
+#include "SurfaceRule.h++"
 #include "QuadraturePoint.h++"
 
 #include "Line.h++"
@@ -17,7 +18,7 @@ namespace quadrature
 /**
  * Interface used by all quadrature rules over the square
  **/
-class QuadrangleRule
+class QuadrangleRule : public SurfaceRule
 {
 public:
 	typedef QuadraturePoint<2> Point;	// helper alias

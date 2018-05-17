@@ -23,8 +23,8 @@ public:
 	typedef QuadraturePoint<3> Point;	// helper alias
 
 public:
-	virtual ~HexahedronRule() {};
-	
+	virtual ~HexahedronRule() {}
+
 	/**
 	 * functor that returns the quadrature rule
 	 **/
@@ -34,7 +34,7 @@ public:
 
 
 /**
- * Assembles a cubature rule on a square with a cartesian product of two 
+ * Assembles a cubature rule on a square with a cartesian product of two
  * quadrature rules
  **/
 class HexahedronCartesianProduct

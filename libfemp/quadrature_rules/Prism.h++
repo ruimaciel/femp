@@ -24,8 +24,8 @@ public:
 	typedef QuadraturePoint<3> Point;	// helper alias
 
 public:
-	virtual ~PrismRule() {};
-	
+	virtual ~PrismRule() {}
+
 	/**
 	 * functor that returns the quadrature rule
 	 **/
@@ -35,14 +35,14 @@ public:
 
 
 /**
- * Assembles a cubature rule on a square with a cartesian product of two 
+ * Assembles a cubature rule on a square with a cartesian product of two
  * quadrature rules
  **/
 class PrismCartesianProduct
 	: public PrismRule
 {
 private:
-	std::unique_ptr<TriangleRule> m_rule_xy; 
+	std::unique_ptr<TriangleRule> m_rule_xy;
 	std::unique_ptr<LineRule>	m_rule_z;
 
 public:

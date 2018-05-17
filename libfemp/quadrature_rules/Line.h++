@@ -21,8 +21,8 @@ public:
 	typedef QuadraturePoint<1> Point;	// helper alias
 
 public:
-	virtual ~LineRule() {};
-	
+	virtual ~LineRule() {}
+
 	/**
 	 * functor that returns the quadrature rule
 	 **/

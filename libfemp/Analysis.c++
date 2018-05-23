@@ -19,7 +19,7 @@ Analysis<Scalar>::buildEquation(Model &model, const LoadPattern &lp, AnalysisRes
 		return ERR_NO_ELEMENTS;
 
 		// generate the location matrix
-	make_location_matrix(model, result);
+	makeLocationMatrix(model, result);
 
 		// generate stiffness matrix by cycling through all elements in the model
 	progress.markSectionStart("stiffness matrix");
@@ -89,7 +89,7 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult &re
 		k_elem = element->getStiffnessMatrix(model);
 
 		// add elementary stiffness matrix to the global stiffness matrix
-		add_elementary_stiffness_to_global(k_elem, result.lm, el, result);
+		addElementaryStiffnessToGlobal(k_elem, result.lm, el, result);
 
 		// mark progress
 		progress.markSectionIterationIncrement();
@@ -281,7 +281,7 @@ Analysis<Scalar>::generateGlobalPointForceVector(Model &, const LoadPattern &lp,
 
 template<typename Scalar>
 std::map<size_t, Node>
-Analysis<Scalar>::displacements_map(AnalysisResult &result)
+Analysis<Scalar>::displacementsMap(AnalysisResult &result)
 {
 	using namespace std;
 
@@ -364,7 +364,7 @@ Analysis<Scalar>::calculateStrainEnergy(Model &, AnalysisResult &result)
 
 template<typename Scalar>
 void
-Analysis<Scalar>::make_location_matrix(Model &model, AnalysisResult &result)
+Analysis<Scalar>::makeLocationMatrix(Model &model, AnalysisResult &result)
 {
 	size_t dof = 1;	// degree of freedom count, the 0 value is interpreted as a prescribed movement
 
@@ -409,18 +409,18 @@ Analysis<Scalar>::make_location_matrix(Model &model, AnalysisResult &result)
 
 template<typename Scalar>
 inline void
-Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Matrix<double,Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult &result)
+Analysis<Scalar>::addElementaryStiffnessToGlobal(const Eigen::Matrix<double,Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult &result)
 {
 	using namespace std;	//TODO remove cleanup code
 
-	assert((size_t)k_elem.rows() == element.getNodeAmount()*3);
-	assert((size_t)k_elem.cols() == element.getNodeAmount()*3);
+	const int element_node_amount = element.getNodeAmount();
+
+	assert(k_elem.rows() == element_node_amount*3);
+	assert(k_elem.cols() == element_node_amount*3);
 
 	std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator idof, jdof;	// degrees of freedom for the line and column
-	size_t id[3], jd[3]; // boost::tuple, being a template, doesn't accept non-const parameters.  This is a way to sidestep it
 
-	boost::tuple<size_t,size_t,size_t> dof;
-	for(size_t i = 0; i < element.getNodeAmount(); i++)
+	for(int i = 0; i < element_node_amount; i++)
 	{
 		// if all three DoF of this node are prescribed then they aren't added to K_g
 		idof = lm.find(element.getNode(i));
@@ -428,12 +428,13 @@ Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Matrix<double,
 			continue;
 
 		// get the global DoF
+		size_t id[3]; // boost::tuple, being a template, doesn't accept non-const parameters.  This is a way to sidestep it
 		id[0] = idof->second.get<0>();
 		id[1] = idof->second.get<1>();
 		id[2] = idof->second.get<2>();
 
 		// the node has non-prescribed DoF
-		for(size_t j = 0; j < element.getNodeAmount(); j++)
+		for(int j = 0; j < element_node_amount; j++)
 		{
 			// if all three DoF of this node are prescribed then they aren't added to K_g
 			jdof = lm.find(element.getNode(j));
@@ -441,6 +442,7 @@ Analysis<Scalar>::add_elementary_stiffness_to_global(const Eigen::Matrix<double,
 				continue;
 
 			// get the global DoF
+			size_t jd[3]; // boost::tuple, being a template, doesn't accept non-const parameters.  This is a way to sidestep it
 			jd[0] = jdof->second.get<0>();
 			jd[1] = jdof->second.get<1>();
 			jd[2] = jdof->second.get<2>();

@@ -55,9 +55,9 @@ public:	//TODO: these are placeholder member variables to help transition to new
 	QuadratureRulesOptions prism6;
 	QuadratureRulesOptions prism15;
 	QuadratureRulesOptions prism18;
-	
+
 public:
-	enum Error {	
+	enum Error {
 		ERR_OK = 0,	// no error
 		ERR_NO_ELEMENTS,
 		ERR_UNSUPPORTED_ELEMENT,
@@ -94,7 +94,7 @@ public:
 	 * generates the global stiffness matrix
 	 * @param model the model
 	 * @param result where the result
-	 * @param progress 
+	 * @param progress
 	 **/
 	enum Error generateGlobalStiffnessMatrix(Model &model, AnalysisResult &result, ProgressIndicatorStrategy &progress);
 
@@ -132,11 +132,11 @@ public:
 	/**
 	Returns a map of all nodes which had any relative displacement
 	**/
-	std::map<size_t, Node> displacements_map(AnalysisResult &result);
+	std::map<size_t, Node> displacementsMap(AnalysisResult &result);
 
 
 	/**
-	Generates AnalysisResult::displacements, a map between a reference to a fem::Node object and a vector with it's displacements 
+	Generates AnalysisResult::displacements, a map between a reference to a fem::Node object and a vector with it's displacements
 	**/
 	void generateDisplacementsMap(Model &model, AnalysisResult &result);
 
@@ -160,7 +160,7 @@ protected:
 	@param model	the reference of a fem::Model object
 	@param result	a fem::AnalysisResult object, where the information will be stored
 	**/
-	void make_location_matrix(Model &model, AnalysisResult &result);
+	void makeLocationMatrix(Model &model, AnalysisResult &result);
 
 
 	/**
@@ -171,7 +171,7 @@ protected:
 	@param f	FemEquation
 	@param element	reference to the element
 	**/
-	void add_elementary_stiffness_to_global(const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult &result);
+	void addElementaryStiffnessToGlobal(const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> &k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t> > &lm,  Element &element, AnalysisResult &result);
 
 };
 

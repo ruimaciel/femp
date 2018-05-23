@@ -8,14 +8,6 @@
 namespace fem
 {
 
-Element::Element(const Element &copied)
-{
-	this->material = copied.material;
-	this->nodes = copied.nodes;
-	this->type = copied.type;
-}
-
-
 void
 Element::set(Type type, std::vector<size_t> nodes)
 {

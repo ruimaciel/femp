@@ -68,9 +68,7 @@ public:
 	Type type;
 
 public:
-	Element() {}
 
-	Element(Element const &copied);
 	virtual ~Element() {}
 
 	void set(Type type, std::vector<size_t> nodes);
@@ -90,6 +88,7 @@ public:
 
 	// clears the element
 	void clear();
+
 };
 
 

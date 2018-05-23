@@ -210,6 +210,13 @@ Element::family() const
 	}
 }
 
+std::vector<size_t>
+Element::getNodeReferences() const
+{
+	return this->nodes;
+
+}
+
 node_ref_t
 Element::getNode(node_ref_t ref) const
 {

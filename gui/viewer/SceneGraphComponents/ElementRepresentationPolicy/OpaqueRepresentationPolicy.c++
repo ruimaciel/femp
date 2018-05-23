@@ -471,9 +471,10 @@ OpaqueRepresentationPolicy::tetra4 (fem::element_ref_t const &, fem::Element &el
 
 	// generate a temporary list of all nodes
 	m_temp_p.resize(4);
+	auto element_nodes = element.getNodeReferences();
 	for(int i = 0; i < 4; i++)
 	{
-		auto node_ref = element.nodes[i];
+		auto node_ref = element_nodes[i];
 		m_temp_p[i] = (*displacement)[node_ref];
 	}
 

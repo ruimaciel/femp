@@ -302,9 +302,11 @@ JsonExporter::output(std::ostream & out, const fem::Model &model)
 					out << ", ";
 
 					out << "\"nodes\": [";
-					for(std::vector<size_t>::const_iterator i = surface_load->nodes.begin(); i != surface_load->nodes.end(); i++)
+
+					auto surface_load_nodes = surface_load->getNodeReferences();
+					for(std::vector<size_t>::const_iterator i = surface_load_nodes.begin(); i != surface_load_nodes.end(); i++)
 					{
-						if (i != surface_load->nodes.begin())
+						if (i != surface_load_nodes.begin())
 							out << ",";
 						out << *i;
 					}

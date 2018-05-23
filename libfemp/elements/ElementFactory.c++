@@ -13,7 +13,7 @@ fem::BaseElement * getElement(fem::Element const &old_element)
 	using namespace fem;
 	BaseElement * new_element = nullptr;
 
-	std::vector<node_ref_t> const & nodes = old_element.nodes;
+	std::vector<node_ref_t> const & nodes = old_element.getNodeReferences();
 
 	// sets the current element routines
 	switch(old_element.type)

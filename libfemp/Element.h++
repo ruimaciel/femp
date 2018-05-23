@@ -84,6 +84,11 @@ public:
 	**/
 	enum ElementFamily family() const;
 
+	/**
+	 * Returns a vector with the reference IDs of all nodes associated with the element
+	 **/
+	virtual std::vector<size_t> getNodeReferences() const;
+
 	node_ref_t getNode(node_ref_t ref) const;
 
 	// clears the element

@@ -40,10 +40,10 @@ SurfaceLoad::getForceVector(Model &model) const
 
 	Eigen::Matrix3d J;
 
-	for (typename std::vector<boost::tuple<fem::Point3D,double> >::iterator i = surfaceLoad->getDomainQuadratureRule().begin(); i != surfaceLoad->getDomainQuadratureRule().end(); i++)
+	for(auto quadrature_point: surfaceLoad->getDomainQuadratureRule() )
 	{
 		// get shape function and shape function derivatives in this integration Point's coordinate
-		const Point3D &point = i->get<0>();
+		const Point3D &point = quadrature_point.get<0>();
 		std::vector<double> N = surfaceLoad->getN(point);
 		std::vector<double> dNdcsi = surfaceLoad->getdNdcsi(point);
 		std::vector<double> dNdeta = surfaceLoad->getdNdeta(point);
@@ -81,7 +81,7 @@ SurfaceLoad::getForceVector(Model &model) const
 			q += N[j]*this->surface_forces[j];
 		}
 
-		const double &W = i->template get<1>();
+		const double &W = quadrature_point.template get<1>();
 		for(int n = 0; n < node_amount; n++)
 		{
 			const double cN = N[n];

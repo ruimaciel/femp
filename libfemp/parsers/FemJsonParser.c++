@@ -1089,7 +1089,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					ss.push(TT_VALUE_SEPARATOR);
 					ss.push(TT_LABEL_TRIANGLE3);
 
-					temp_surface_load.type = fem::Element::FE_TRIANGLE3;
+					element.type = fem::Element::FE_TRIANGLE3;
 					break;
 
 
@@ -1099,7 +1099,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					ss.push(NT_SURFACE_TRIANGLE6_NODES);
 					ss.push(TT_VALUE_SEPARATOR);
 					ss.push(TT_LABEL_TRIANGLE6);
-					temp_surface_load.type = fem::Element::FE_TRIANGLE6;
+					element.type = fem::Element::FE_TRIANGLE6;
 					break;
 
 				case PR_SURFACE_LOAD_TYPE_3:
@@ -1108,7 +1108,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					ss.push(NT_SURFACE_QUADRANGLE4_NODES);
 					ss.push(TT_VALUE_SEPARATOR);
 					ss.push(TT_LABEL_QUADRANGLE4);
-					temp_surface_load.type = fem::Element::FE_QUADRANGLE4;
+					element.type = fem::Element::FE_QUADRANGLE4;
 					break;
 
 				case PR_SURFACE_LOAD_TYPE_4:
@@ -1117,7 +1117,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					ss.push(NT_SURFACE_QUADRANGLE8_NODES);
 					ss.push(TT_VALUE_SEPARATOR);
 					ss.push(TT_LABEL_QUADRANGLE8);
-					temp_surface_load.type = fem::Element::FE_QUADRANGLE8;
+					element.type = fem::Element::FE_QUADRANGLE8;
 					break;
 
 				case PR_SURFACE_LOAD_TYPE_5:
@@ -1126,15 +1126,16 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 					ss.push(NT_SURFACE_QUADRANGLE9_NODES);
 					ss.push(TT_VALUE_SEPARATOR);
 					ss.push(TT_LABEL_QUADRANGLE9);
-					temp_surface_load.type = fem::Element::FE_QUADRANGLE9;
+					element.type = fem::Element::FE_QUADRANGLE9;
 					break;
 
 				case PR_SURFACE_LOAD_SET:
 					{
-						temp_surface_load.nodes = reference;
-						temp_surface_load.surface_forces = temp_point;
+						element.nodes = reference;
 
-						fem::SurfaceLoad *surface_load = new fem::SurfaceLoad(temp_surface_load);
+						fem::SurfaceLoad * surface_load = fem::SurfaceLoad::makeSurfaceLoad(&element);
+						surface_load->surface_forces = temp_point;
+
 						temp_load_pattern.addSurfaceLoad(surface_load);
 						reference.clear();
 						temp_point.clear();

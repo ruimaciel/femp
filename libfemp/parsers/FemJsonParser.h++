@@ -52,7 +52,6 @@ protected:
 	fem::Element	temp_element;
 	fem::NodeRestrictions	temp_node_restrictions;
 	fem::LoadPattern	temp_load_pattern;
-	fem::SurfaceLoad	temp_surface_load;
 
 	std::string	label;
 

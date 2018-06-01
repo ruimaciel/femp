@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <libfemp/Model.h++>
+#include <libfemp/Point2D.h++>
 #include <libfemp/elements/BaseElement.h++>
 #include <libfemp/loads/Triangle3.h++>
 #include <libfemp/loads/Triangle6.h++>
@@ -38,9 +39,6 @@ unsigned int SurfaceLoad::getDofAmount() const
 Eigen::VectorXd
 SurfaceLoad::getForceVector(Model &model) const
 {
-	//TODO remove after migrating to polymorphic surface loads
-	std::unique_ptr<BaseElement> surfaceLoad( SurfaceLoad::makeSurfaceLoad(this) );
-
 	const int node_amount = getNodeAmount();
 	const int dof_amount = getDofAmount();
 
@@ -52,13 +50,13 @@ SurfaceLoad::getForceVector(Model &model) const
 
 	Eigen::Matrix3d J;
 
-	for(auto quadrature_point: surfaceLoad->getDomainQuadratureRule() )
+	for(auto quadrature_point: getDomainQuadratureRule() )
 	{
 		// get shape function and shape function derivatives in this integration Point's coordinate
-		const Point3D &point = quadrature_point.get<0>();
-		std::vector<double> N = surfaceLoad->getN(point);
-		std::vector<double> dNdcsi = surfaceLoad->getdNdcsi(point);
-		std::vector<double> dNdeta = surfaceLoad->getdNdeta(point);
+		const Point2D &point = quadrature_point.x;
+		std::vector<double> N = getN(point);
+		std::vector<double> dNdcsi = getdNdcsi(point);
+		std::vector<double> dNdeta = getdNdeta(point);
 
 		// calculate the Jacobian
 		J.setZero();
@@ -93,7 +91,7 @@ SurfaceLoad::getForceVector(Model &model) const
 			q += N[j]*this->surface_forces[j];
 		}
 
-		const double &W = quadrature_point.template get<1>();
+		const double &W = quadrature_point.weight;
 		for(int n = 0; n < node_amount; n++)
 		{
 			const double cN = N[n];
@@ -108,9 +106,9 @@ SurfaceLoad::getForceVector(Model &model) const
 }
 
 
-BaseElement *SurfaceLoad::makeSurfaceLoad(const Element * element)
+SurfaceLoad *SurfaceLoad::makeSurfaceLoad(const Element * element)
 {
-	BaseElement *surfaceLoad = nullptr;
+	SurfaceLoad *surfaceLoad = nullptr;
 
 	switch(element->type)
 	{

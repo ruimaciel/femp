@@ -32,8 +32,7 @@ SurfaceNormalLoad::setLoadMagnitude(float const &magnitude)
 void
 SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model)
 {
-
-	fem::BaseElement *element = nullptr;	// used to store a pointer to the current object: nasty hack due to the way fem::Element was done
+	fem::SurfaceLoad * load = nullptr;	// used to store a pointer to the current object: nasty hack due to the way fem::Element was done
 
 	fem::Triangle3 m_tri3;
 	fem::Triangle6 m_tri6;
@@ -45,27 +44,27 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 	switch(surface_load.type)
 	{
 		case Element::FE_TRIANGLE3:
-			element = &m_tri3;
+			load = &m_tri3;
 			surface_load.surface_forces.resize(3);
 			break;
 
 		case Element::FE_TRIANGLE6:
-			element = &m_tri6;
+			load = &m_tri6;
 			surface_load.surface_forces.resize(6);
 			break;
 
 		case Element::FE_QUADRANGLE4:
-			element = &m_quad4;
+			load = &m_quad4;
 			surface_load.surface_forces.resize(4);
 			break;
 
 		case Element::FE_QUADRANGLE8:
-			element = &m_quad8;
+			load = &m_quad8;
 			surface_load.surface_forces.resize(8);
 			break;
 
 		case Element::FE_QUADRANGLE9:
-			element = &m_quad9;
+			load = &m_quad9;
 			surface_load.surface_forces.resize(9);
 			break;
 
@@ -80,13 +79,13 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 	set the force accordingly
 	**/
 	using namespace std;
-	auto coordinates = element->getLocalCoordinates();
+	auto coordinates = load->getLocalCoordinates();
 	for(unsigned int i = 0; i < surface_load.getNodeAmount(); i++)
 	{
 		cout << "node " << i << " at " << coordinates[i] << "\n";
 
-		auto dNdcsi = element->getdNdcsi(coordinates[i]);
-		auto dNdeta = element->getdNdeta(coordinates[i]);
+		auto dNdcsi = load->getdNdcsi(coordinates[i]);
+		auto dNdeta = load->getdNdeta(coordinates[i]);
 
 		fem::Point3D dPdcsi, dPdeta;
 		dPdcsi.zero();

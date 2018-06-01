@@ -14,7 +14,7 @@ protected:
 	fem::SurfaceLoadOperator *surface_load_operator;
 
 protected:
-	enum TerminalToken 
+	enum TerminalToken
 	{
 		TT_ERROR,
 		TT_OPEN_MESH_FORMAT,
@@ -83,7 +83,7 @@ protected:
 		TT_LAST
 	};
 
-	enum NonTerminalToken 
+	enum NonTerminalToken
 	{
 		NT_FIRST = TT_LAST,	// to avoid overlapping enum definitions
 		NT_START,		// start symbol
@@ -111,7 +111,7 @@ protected:
 		NT_E_ELEMENT_TYPE_SET_FORCE,
 		NT_E_TAGS,
 
-		NT_E_TAGS_1_SET, 
+		NT_E_TAGS_1_SET,
 		NT_E_TAGS_2_SET,
 		NT_E_TAGS_3_SET,
 
@@ -126,16 +126,16 @@ protected:
 		NT_COORDINATE,	// requires 3 floats, sets a Point with them
 	};
 
-	/** 
+	/**
 	enum that provides a descriptive label to every parser rule
 	**/
-	enum ParserRule 
+	enum ParserRule
 	{
 		PR_INVALID = 0,		// default value for the map, which means that this is an error
 		PR_START,
 		PR_DOCUMENT,
 		PR_HEADER,
-		PR_MF_VERSION_NUMBER_2_1,	
+		PR_MF_VERSION_NUMBER_2_1,
 		PR_MF_VERSION_NUMBER_2_2,
 		PR_MF_VERSION_NUMBER_ERROR,
 		PR_MF_FILE_TYPE_ASCII,
@@ -182,12 +182,12 @@ protected:
 		PR_ELEMENT_FOLLOW_3,
 		PR_ELEMENT_FOLLOW_4,
 
-		PR_E_TAGS_0, 
-		PR_E_TAGS_1, 
+		PR_E_TAGS_0,
+		PR_E_TAGS_1,
 		PR_E_TAGS_2,
 		PR_E_TAGS_3,
 
-		PR_E_TAGS_1_SET, 
+		PR_E_TAGS_1_SET,
 		PR_E_TAGS_2_SET,
 		PR_E_TAGS_3_SET,
 
@@ -203,7 +203,6 @@ protected:
 
 	fem::Node		node;
 	fem::Element		element;
-	fem::SurfaceLoad	surface_load;
 	fem::LoadPattern	load_pattern;
 
 public:

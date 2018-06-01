@@ -480,15 +480,15 @@ MshParser::parse(std::istream &file, fem::Model &model)
 					index_list.pop_front();	// get rid of element type: nasty hack
 					if(surface_load_operator)
 					{
-						surface_load.nodes.assign(index_list.begin(), index_list.end());
-						surface_load.surface_forces.resize(surface_load.nodes.size());
-
-						//TODO finish this
-						(*surface_load_operator)(surface_load, model);
+						element.nodes.assign(index_list.begin(), index_list.end());
 
 						index_list.clear();
 
-						fem::SurfaceLoad *load = new fem::SurfaceLoad(surface_load);
+						fem::SurfaceLoad * load = fem::SurfaceLoad::makeSurfaceLoad(&element);
+
+						//TODO finish this
+						(*surface_load_operator)(*load, model);
+
 						load_pattern.addSurfaceLoad(load);
 					}
 					break;

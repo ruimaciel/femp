@@ -12,25 +12,17 @@ namespace fem
 
 Quadrangle8::Quadrangle8()
 {
-	this->stiffness_degree = 2;
-	this->domain_degree = 2;
-
 	// specify new quadrature rule
 	using namespace quadrature;
 	LineRule * rule_x = new GaussLegendre3();
 	LineRule * rule_y = new GaussLegendre3();
-
-	m_stiffness_quadrature_rule = std::unique_ptr<QuadrangleCartesianProduct>( new QuadrangleCartesianProduct(rule_x, rule_y));
-
-	rule_x = new GaussLegendre3();
-	rule_y = new GaussLegendre3();
 	m_domain_quadrature_rule = std::unique_ptr<QuadrangleCartesianProduct>( new QuadrangleCartesianProduct(rule_x, rule_y));
 
 }
 
 
 std::vector<double>
-Quadrangle8::getN(const Point3D &p)
+Quadrangle8::getN(const Point3D &p) const
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -51,7 +43,7 @@ Quadrangle8::getN(const Point3D &p)
 
 
 std::vector<double>
-Quadrangle8::getdNdcsi(const Point3D &p)
+Quadrangle8::getdNdcsi(const Point3D &p) const
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -72,7 +64,7 @@ Quadrangle8::getdNdcsi(const Point3D &p)
 
 
 std::vector<double>
-Quadrangle8::getdNdeta(const Point3D &p)
+Quadrangle8::getdNdeta(const Point3D &p) const
 {
 	double csi = p.x();
 	double eta = p.y();
@@ -92,26 +84,8 @@ Quadrangle8::getdNdeta(const Point3D &p)
 }
 
 
-std::vector<double>
-Quadrangle8::getdNdzeta(const Point3D &)
-{
-	std::vector<double> dNdzeta(this->getNodeAmount());
-
-	dNdzeta[0] = 0;
-	dNdzeta[1] = 0;
-	dNdzeta[2] = 0;
-	dNdzeta[3] = 0;
-	dNdzeta[4] = 0;
-	dNdzeta[5] = 0;
-	dNdzeta[6] = 0;
-	dNdzeta[7] = 0;
-
-	return dNdzeta;
-}
-
-
 std::vector<fem::Point3D>
-Quadrangle8::getLocalCoordinates()
+Quadrangle8::getLocalCoordinates() const
 {
 	return {
 		 Point3D(	-0.5,	-0.5,	0	),

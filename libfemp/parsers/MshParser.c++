@@ -366,7 +366,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 					break;
 
 				case PR_E_ELEMENT_TRIANGLE3:
-					surface_load.type = fem::Element::FE_TRIANGLE3;
+					element.type = fem::Element::FE_TRIANGLE3;
 					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
 					for(int i = 0; i < 3; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
@@ -374,7 +374,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 					break;
 
 				case PR_E_ELEMENT_TRIANGLE6:
-					surface_load.type = fem::Element::FE_TRIANGLE6;
+					element.type = fem::Element::FE_TRIANGLE6;
 					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
 					for(int i = 0; i < 6; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
@@ -382,7 +382,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 					break;
 
 				case PR_E_ELEMENT_QUADRANGLE4:
-					surface_load.type = fem::Element::FE_QUADRANGLE4;
+					element.type = fem::Element::FE_QUADRANGLE4;
 					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
 					for(int i = 0; i < 4; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
@@ -390,7 +390,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 					break;
 
 				case PR_E_ELEMENT_QUADRANGLE8:
-					surface_load.type = fem::Element::FE_QUADRANGLE8;
+					element.type = fem::Element::FE_QUADRANGLE8;
 					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
 					for(int i = 0; i < 8; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
@@ -399,7 +399,7 @@ MshParser::parse(std::istream &file, fem::Model &model)
 
 				case PR_E_ELEMENT_QUADRANGLE9:
 					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
-					surface_load.type = fem::Element::FE_QUADRANGLE9;
+					element.type = fem::Element::FE_QUADRANGLE9;
 					for(int i = 0; i < 9; i++) ss.push(TT_INDEX);
 					ss.push(NT_E_TAGS);
 					ss.push(TT_ELEMENT_QUADRANGLE9);
@@ -482,15 +482,15 @@ MshParser::parse(std::istream &file, fem::Model &model)
 					index_list.pop_front();	// get rid of element type: nasty hack
 					if(surface_load_operator)
 					{
-						surface_load.nodes.assign(index_list.begin(), index_list.end());
-						surface_load.surface_forces.resize(surface_load.nodes.size());
-
-						//TODO finish this
-						(*surface_load_operator)(surface_load, model);
+						element.nodes.assign(index_list.begin(), index_list.end());
 
 						index_list.clear();
 
-						fem::SurfaceLoad *load = new fem::SurfaceLoad(surface_load);
+						fem::SurfaceLoad * load = fem::SurfaceLoad::makeSurfaceLoad(&element);
+
+						//TODO finish this
+						(*surface_load_operator)(*load, model);
+
 						load_pattern.addSurfaceLoad(load);
 					}
 					break;

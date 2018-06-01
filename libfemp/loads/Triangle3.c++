@@ -13,20 +13,15 @@ namespace fem
 
 Triangle3::Triangle3()
 {
-	this->stiffness_degree = 1;
-	this->domain_degree = 1;
-
 	// specify new quadrature rule
 	using namespace quadrature;
-	m_stiffness_quadrature_rule = std::unique_ptr<quadrature::Triangle3>( new quadrature::Triangle3() );
-
 	m_domain_quadrature_rule = std::unique_ptr<quadrature::Triangle3>( new quadrature::Triangle3() );
 
 }
 
 
 std::vector<double>
-Triangle3::getN(const Point3D &p)
+Triangle3::getN(const Point3D &p) const
 {
 	const double csi = p.x();
 	const double eta = p.y();
@@ -42,7 +37,7 @@ Triangle3::getN(const Point3D &p)
 
 
 std::vector<double>
-Triangle3::getdNdcsi(const Point3D &)
+Triangle3::getdNdcsi(const Point3D &) const
 {
 	std::vector<double> dNdcsi(this->getNodeAmount());
 
@@ -55,7 +50,7 @@ Triangle3::getdNdcsi(const Point3D &)
 
 
 std::vector<double>
-Triangle3::getdNdeta(const Point3D &)
+Triangle3::getdNdeta(const Point3D &) const
 {
 	std::vector<double> dNdeta(this->getNodeAmount());
 
@@ -67,21 +62,8 @@ Triangle3::getdNdeta(const Point3D &)
 }
 
 
-std::vector<double>
-Triangle3::getdNdzeta(const Point3D &)
-{
-	std::vector<double> dNdzeta(this->getNodeAmount());
-
-	dNdzeta[0] = 0;
-	dNdzeta[1] = 0;
-	dNdzeta[2] = 0;
-
-	return dNdzeta;
-}
-
-
 std::vector<fem::Point3D>
-Triangle3::getLocalCoordinates()
+Triangle3::getLocalCoordinates() const
 {
 	return {
 		Point3D(	0,	0,	0	),

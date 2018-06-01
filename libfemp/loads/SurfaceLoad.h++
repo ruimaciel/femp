@@ -9,6 +9,7 @@
 #include <libfemp/Node.h++>
 #include <libfemp/Point3D.h++>
 #include <libfemp/elements/BaseElement.h++>	// added to help transition to properly polymorphic
+#include <libfemp/quadrature_rules/SurfaceRule.h++>
 
 
 
@@ -50,7 +51,15 @@ public:
 	 * @param element
 	 * @return
 	 */
-	static BaseElement * makeSurfaceLoad(const Element * element);
+	static SurfaceLoad * makeSurfaceLoad(const Element * element);
+
+public:
+	// TODO convert to pure virtual interface after migrating to polymorphic loads
+	virtual std::vector<fem::Point3D> getLocalCoordinates() const = 0;
+	virtual std::vector<double> getN(const Point3D &p) const = 0;
+	virtual std::vector<double> getdNdcsi(const Point3D &p) const = 0;
+	virtual std::vector<double> getdNdeta(const Point3D &p) const = 0;
+	virtual std::vector<quadrature::SurfaceRule::Point> getDomainQuadratureRule() const = 0;
 };
 
 }	// namespace fem

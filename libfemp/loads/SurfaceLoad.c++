@@ -22,6 +22,18 @@ SurfaceLoad::getNodeReferences() const
 	return this->nodes;
 }
 
+int
+SurfaceLoad::getNodeAmount() const
+{
+	//TODO replace with concrete class member variables after migration to polymorphic surface loads
+	return getNodeReferences().size();
+}
+
+unsigned int SurfaceLoad::getDofAmount() const
+{
+	//TODO replace with concrete class member variables after migration to polymorphic surface loads
+	return getNodeAmount()*3;
+}
 
 Eigen::VectorXd
 SurfaceLoad::getForceVector(Model &model) const
@@ -29,14 +41,14 @@ SurfaceLoad::getForceVector(Model &model) const
 	//TODO remove after migrating to polymorphic surface loads
 	std::unique_ptr<BaseElement> surfaceLoad( SurfaceLoad::makeSurfaceLoad(this) );
 
-	int node_amount = surfaceLoad->getNodeAmount();
-	const int dof_amount = surfaceLoad->getDofAmount();
+	const int node_amount = getNodeAmount();
+	const int dof_amount = getDofAmount();
 
 	Eigen::VectorXd f_elem;
 	f_elem.resize(dof_amount);
 	f_elem.setZero();
 
-	auto nodes = surfaceLoad->nodes;
+	auto node_references = getNodeReferences();
 
 	Eigen::Matrix3d J;
 
@@ -53,7 +65,7 @@ SurfaceLoad::getForceVector(Model &model) const
 
 		for(int n = 0; n < node_amount; n++)
 		{
-			auto const & node_ref = nodes[n];
+			auto const & node_ref = node_references[n];
 			fem::Node const &node = model.getNode(node_ref);
 			double const &X = node.x();
 			double const &Y = node.y();

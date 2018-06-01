@@ -35,6 +35,9 @@ public:
 	 **/
 	virtual std::vector<node_ref_t> getNodeReferences() const;
 
+	virtual int getNodeAmount() const;
+
+	virtual unsigned int getDofAmount() const;
 
 	/**
 	 * Returns the force vector

@@ -124,15 +124,15 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 		f_elem.setZero();
 
 		// as the distribution is linear across the domain then degree 1 is enough
-		for (typename std::vector<boost::tuple<fem::Point3D,double> >::iterator i = element->getDomainQuadratureRule().begin(); i != element->getDomainQuadratureRule().end(); i++)
+		for(auto quadrature_point: element->getDomainQuadratureRule())
 		{
 			// build the Jacobian
-			Point3D quadrature_point = i->get<0>();
+			Point3D point = quadrature_point.get<0>();
 
-			std::vector<double> N = element->getN( quadrature_point);
-			std::vector<double> dNdcsi = element->getdNdcsi(quadrature_point);
-			std::vector<double> dNdeta = element->getdNdeta( quadrature_point);
-			std::vector<double> dNdzeta = element->getdNdzeta( quadrature_point);
+			std::vector<double> N = element->getN(point);
+			std::vector<double> dNdcsi = element->getdNdcsi(point);
+			std::vector<double> dNdeta = element->getdNdeta(point);
+			std::vector<double> dNdzeta = element->getdNdzeta(point);
 
 			// generate the jacobian
 			J.setZero();
@@ -163,7 +163,7 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			}
 
 			// and now the f_elem
-			double W = i->get<1>();
+			const double W = quadrature_point.get<1>();
 			for(int n = 0; n < nnodes; n++)
 			{
 				Point3D const &f = domain_load->second.getForce();

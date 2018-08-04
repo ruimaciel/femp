@@ -11,7 +11,7 @@ DESTDIR = $${BUILD_DIR}
 
 INCLUDEPATH += /usr/include/eigen3
 
-LIBS += -lumfpack -lblas -lamd -lGLU -llibla
+LIBS += -llibla
 
 
 HEADERS = Group.h++ \

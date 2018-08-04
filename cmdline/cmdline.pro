@@ -11,7 +11,7 @@ DESTDIR = $${BUILD_DIR}
 
 INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${SRCDIR}
 
-LIBS += -lumfpack -lblas -lamd -lGLU -L$${BUILD_DIR} -llibla -llibfemp
+LIBS += -L$${BUILD_DIR} -llibla -llibfemp
 
 HEADERS += ProgramOptions.h
 

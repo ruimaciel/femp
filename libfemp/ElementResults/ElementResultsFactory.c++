@@ -15,8 +15,8 @@ ElementResultsFactory::ElementResultsFactory(fem::Model &model, AnalysisResult &
 ElementResults *
 ElementResultsFactory::operator() (const fem::Element &reference_element)
 {
-	assert(this->m_model != NULL);
-	assert(this->m_analysis_result != NULL);
+	assert(this->m_model != nullptr);
+	assert(this->m_analysis_result != nullptr);
 
 	ElementResults *results;
 	results = new ElementResults;

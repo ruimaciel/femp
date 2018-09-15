@@ -2,17 +2,19 @@
 
 #include <assert.h>
 
+#include "ElementRepresentationPolicy/ElementRepresentationPolicy.h++"
+#include "DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++"
 
 namespace SGC	// namespace for all scene graph components
 {
 
 
 Element::Element(fem::element_ref_t const &ref, fem::Element &reference_element, ElementRepresentationPolicy *representation, DisplacementsRepresentationPolicy *displacements)
-	: SceneGraphComponent()
+  : SceneGraphComponent()
 {
-	this->setReferenceElement(ref, reference_element);
-	this->setElementRepresentationPolicy(representation);
-	this->setDisplacementsPolicy(displacements);
+  this->setReferenceElement(ref, reference_element);
+  this->setElementRepresentationPolicy(representation);
+  this->setDisplacementsPolicy(displacements);
 }
 
 
@@ -21,36 +23,36 @@ Element::~Element()
 }
 
 
-void 
+void
 Element::setElementRepresentationPolicy(ElementRepresentationPolicy *representation)
 {
-	assert(representation != NULL);
-	this->m_representation = representation;
+  assert(representation != NULL);
+  this->m_representation = representation;
 }
 
 
-void 
+void
 Element::setDisplacementsPolicy(DisplacementsRepresentationPolicy *displacements)
 {
-	assert(displacements != NULL);
-	this->m_displacements = displacements;
+  assert(displacements != NULL);
+  this->m_displacements = displacements;
 }
 
 
-void 
+void
 Element::accept(Operation::OperationsVisitor &visitor)
 {
-	visitor.visit(*this);
+  visitor.visit(*this);
 }
 
 
-void 
+void
 Element::setReferenceElement(fem::element_ref_t const &ref,fem::Element &referenced_element)
 {
-	this->m_element_reference = ref;
-	this->m_element = &referenced_element;
+  this->m_element_reference = ref;
+  this->m_element = &referenced_element;
 
-	//TODO adjust boundary to this surface
+  //TODO adjust boundary to this surface
 }
 
 

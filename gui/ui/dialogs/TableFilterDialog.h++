@@ -18,7 +18,7 @@ class TableFilterDialog
 	Q_OBJECT
 
 public:
-	TableFilterDialog(QWidget *parent = NULL);
+	TableFilterDialog(QWidget *parent = nullptr);
 
 #define MEMBER_HELPER(XX) \
 	void set##XX##Visible(bool state)	{ this->checkBox##XX->setChecked(state); } \

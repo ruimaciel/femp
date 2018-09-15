@@ -16,7 +16,7 @@ class AnalysisSummaryDialog
 		:public QDialog, private Ui::AnalysisSummaryDialog
 {
 public:
-	AnalysisSummaryDialog(fem::AnalysisResult const &results, QWidget *parent = NULL);
+	AnalysisSummaryDialog(fem::AnalysisResult const &results, QWidget *parent = nullptr);
 };
 
 #endif

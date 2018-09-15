@@ -5,19 +5,20 @@
 
 #include <assert.h>
 
+#include "DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++"
 
 namespace SGC
 {
 
 
 Node::Node(size_t reference_node_label, fem::Node &node, DisplacementsRepresentationPolicy *displacements)
-	: SceneGraphComponent()
+  : SceneGraphComponent()
 {
-	assert(displacements != NULL);
+  assert(displacements != NULL);
 
-	this->node_label = reference_node_label;
-	this->m_node = &node;
-	this->m_displacements = displacements;
+  this->node_label = reference_node_label;
+  this->m_node = &node;
+  this->m_displacements = displacements;
 }
 
 
@@ -28,36 +29,36 @@ Node::~Node()
 
 void Node::paintGL(ViewportData &data, ViewportColors &colors)
 {
-	glPushMatrix();
-	fem::Point3D u = (*m_displacements)[this->node_label];
+  glPushMatrix();
+  fem::Point3D u = (*m_displacements)[this->node_label];
 
-	//glTranslated(this->m_node->data[0], this->m_node->data[1], this->m_node->data[2]);
-	glTranslated(u.data[0], u.data[1], u.data[2]);
-	
-	//glScalef(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
-	float radius = data.node_radius*(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
+  //glTranslated(this->m_node->data[0], this->m_node->data[1], this->m_node->data[2]);
+  glTranslated(u.data[0], u.data[1], u.data[2]);
 
-	//TODO paint selected node in a different color
-	// paint the nodal sphere
-	if(this->selected)
-		glColor3fv(colors.selected.data());
-	else
-		glColor3fv(colors.node.data());
+  //glScalef(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)), data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
+  float radius = data.node_radius*(data.node_scale/(data.aspect_ratio*pow(2,data.zoom)));
 
-	//TODO replace this with a display list
+  //TODO paint selected node in a different color
+  // paint the nodal sphere
+  if(this->selected)
+    glColor3fv(colors.selected.data());
+  else
+    glColor3fv(colors.node.data());
 
-	GLUquadric *p;
-	p = gluNewQuadric();
-	gluSphere(p,radius,8,8);
+  //TODO replace this with a display list
 
-	// end 
-	glPopMatrix();
+  GLUquadric *p;
+  p = gluNewQuadric();
+  gluSphere(p,radius,8,8);
+
+  // end
+  glPopMatrix();
 }
 
 
 void Node::accept(Operation::OperationsVisitor &visitor)
 {
-	visitor.visit(*this);
+  visitor.visit(*this);
 }
 
 

@@ -18,7 +18,7 @@ OutputElementStatisticsVisitor::OutputElementStatisticsVisitor(Selection const &
 void
 OutputElementStatisticsVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult> &)
 {
-	assert(m_selection != NULL);
+	assert(m_selection != nullptr);
 
 	float de = 0;	// maximum/external diameter
 	float di = std::numeric_limits<float>::max();	// minimum/internal diameter

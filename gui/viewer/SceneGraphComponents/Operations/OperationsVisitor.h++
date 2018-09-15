@@ -7,7 +7,7 @@ class SceneGraphComponent;
 namespace SGC
 {
 class Node;
-class Element; 
+class Element;
 }
 
 namespace Operation
@@ -19,9 +19,11 @@ Base class for a Visitor pattern which is used to operate on selected scene obje
 class OperationsVisitor
 {
 public:
-	virtual void visit(SceneGraphComponent &element) = 0;
-	virtual void visit(SGC::Node &element) = 0;
-	virtual void visit(SGC::Element &element) = 0;
+  virtual ~OperationsVisitor();
+
+  virtual void visit(SceneGraphComponent &element) = 0;
+  virtual void visit(SGC::Node &element) = 0;
+  virtual void visit(SGC::Element &element) = 0;
 };
 
 

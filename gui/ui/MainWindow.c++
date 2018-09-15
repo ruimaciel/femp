@@ -195,7 +195,7 @@ MainWindow::openProject()
 void
 MainWindow::reopenProject()
 {
-	if(m_document.file_name != NULL)
+	if(m_document.file_name != nullptr)
 	{
 		// clear the document
 		setUserInterfaceAsClosed();
@@ -244,7 +244,7 @@ MainWindow::reopenProject()
 void
 MainWindow::saveProject()
 {
-	if(m_document.file_name == NULL)
+	if(m_document.file_name == nullptr)
 	{
 		QFileDialog dialog(this);
 		QDir file_dialog_directory = fempApp->settings().getProjectOpenDirectory();
@@ -721,7 +721,7 @@ MainWindow::loadOptions()
 void
 MainWindow::setNodeRestraints()
 {
-	assert(m_mdiArea != NULL);
+	assert(m_mdiArea != nullptr);
 
 	NodeRestrainsDialog nd;
 	if(nd.exec() == QDialog::Accepted)
@@ -806,7 +806,7 @@ MainWindow::setDomainLoads()
 void
 MainWindow::moveSelectedNodes()
 {
-	assert(m_mdiArea != NULL);
+	assert(m_mdiArea != nullptr);
 
 	MoveNodesDialog nd(this);
 	if(nd.exec() == QDialog::Accepted)
@@ -861,7 +861,7 @@ MainWindow::runAnalysis()
 		return;
 	}
 
-	fem::Solver<double> * solver = NULL;
+	fem::Solver<double> * solver = nullptr;
 
 	// run the AnalysisDialog to get the solver
 	AnalysisDialog analysis_dialog(femp_model, this);
@@ -970,7 +970,7 @@ MainWindow::dumpFemEquation()
 			if(msgBox.exec() == QMessageBox::No)
 			{
 				delete m_document.file_name;
-				m_document.file_name = NULL;
+				m_document.file_name = nullptr;
 				return;
 			}
 		}
@@ -1108,10 +1108,10 @@ MainWindow::showSelection()
 	Selection selection = m_selectionManager.getSelection();
 
 	QMdiSubWindow *mdi_window = m_mdiArea->currentSubWindow();
-	if(mdi_window != NULL)
+	if(mdi_window != nullptr)
 	{
 		MdiWindow *window = static_cast<MdiWindow*>(mdi_window->widget() );
-		if(window != NULL)
+		if(window != nullptr)
 		{
 			window->showSelection(selection);
 		}
@@ -1124,10 +1124,10 @@ void
 MainWindow::showAll()
 {
 	QMdiSubWindow *mdi_window = m_mdiArea->currentSubWindow();
-	if(mdi_window != NULL)
+	if(mdi_window != nullptr)
 	{
 		MdiWindow *window = static_cast<MdiWindow*>(mdi_window->widget() );
-		if(window != NULL)
+		if(window != nullptr)
 		{
 			window->showAll();
 		}
@@ -1346,7 +1346,7 @@ MainWindow::setUserInterfaceAsOpened()
 	this->addDockWidget(static_cast<Qt::DockWidgetArea>(9), m_commandLineDockWidget);
 
 	// set the window name
-	if(m_document.file_name == NULL)
+	if(m_document.file_name == nullptr)
 		this->setWindowTitle("Femp - [unnamed.fem.json]");
 	else
 		this->setWindowTitle("Femp - " + *m_document.file_name);

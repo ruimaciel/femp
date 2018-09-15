@@ -112,9 +112,9 @@ PostprocessingWindow::setResultsRanges()
 void
 PostprocessingWindow::setPostprocessingState(int state)
 {
-	PostprocessingViewport *current_vp = NULL;
+	PostprocessingViewport *current_vp = nullptr;
 	current_vp = static_cast<PostprocessingViewport*>(this->viewport);
-	if(current_vp == NULL)
+	if(current_vp == nullptr)
 	{
 		return;
 	}

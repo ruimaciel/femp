@@ -12,7 +12,7 @@ MdiWindow::MdiWindow (QWidget *parent)
 {
 	setupUi(this);
 
-	this->viewport = NULL;
+	this->viewport = nullptr;
 
 	// create the menu
 	this->m_actionMenuVisibility = new QAction(tr("Menu visibility"), this);

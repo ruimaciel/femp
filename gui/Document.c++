@@ -15,7 +15,7 @@
 Document::Document()
 {
 	m_unsaved = false;
-	file_name = NULL;
+	file_name = nullptr;
 
 	m_documentType = TYPE_SOLID3D;	// nasty hack due to poor design
 }
@@ -24,13 +24,13 @@ Document::Document()
 Document::Document(const Document & copied)
 {
 	this->m_unsaved = copied.m_unsaved;
-	if (copied.file_name != NULL) {
+	if (copied.file_name != nullptr) {
 		this->file_name = new QString;
 		*this->file_name = *copied.file_name;
 	}
 	else
 	{
-		this->file_name = NULL;
+		this->file_name = nullptr;
 	}
 	this->m_documentType = copied.m_documentType;
 }
@@ -38,7 +38,7 @@ Document::Document(const Document & copied)
 
 Document::~Document()
 {
-	if (file_name != NULL)
+	if (file_name != nullptr)
 		delete file_name;
 }
 
@@ -47,9 +47,9 @@ void
 Document::clear()
 {
 	m_unsaved = false;
-	if (file_name != NULL) {
+	if (file_name != nullptr) {
 		delete file_name;
-		file_name = NULL;
+		file_name = nullptr;
 	}
 	m_documentType = TYPE_NONE;
 	this->m_project.clear();
@@ -59,7 +59,7 @@ Document::clear()
 enum Document::Error
 		Document::setFileName(QString new_file)
 {
-	if (this->file_name == NULL)
+	if (this->file_name == nullptr)
 		this->file_name = new QString;
 	*this->file_name = new_file;
 
@@ -74,7 +74,7 @@ enum Document::Error
 QString
 Document::getFileName() const
 {
-	if(this->file_name == NULL)
+	if(this->file_name == nullptr)
 	{
 		return QString();
 	}
@@ -91,7 +91,7 @@ enum Document::Error
 	// TODO check version
 
 	// check if if the given file_name exists
-	if (file_name == NULL) {
+	if (file_name == nullptr) {
 		return ERR_FILE_NOT_FOUND;
 	}
 

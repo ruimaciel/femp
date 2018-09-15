@@ -3,7 +3,6 @@
 
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
-#include <QWidget>
 
 #include "Project.h++"
 
@@ -17,19 +16,19 @@
 The viewport class which is designed to render the model and enact changes on it
 **/
 class ModelViewport
-	: public BaseViewport
+  : public BaseViewport
 {
-	Q_OBJECT
+  Q_OBJECT
 
 public:
-	ModelViewport(fem::Project &project, QWidget *parent = NULL);
-	~ModelViewport();
+  ModelViewport(fem::Project &project, QWidget * parent = nullptr);
+  ~ModelViewport();
 
-	// set the viewport state
-	void showModel();
+  // set the viewport state
+  void showModel();
 
 protected:
-	VPStateModel 	m_vp_state_model;
+  VPStateModel 	m_vp_state_model;
 
 };
 

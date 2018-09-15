@@ -18,8 +18,8 @@ OutputResultsInNodesVisitor::OutputResultsInNodesVisitor(Selection &selection, f
 void
 OutputResultsInNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult> &)
 {
-	assert(m_out != NULL);
-	assert(m_result != NULL);
+	assert(m_out != nullptr);
+	assert(m_result != nullptr);
 
 	*m_out << "test\n";
 

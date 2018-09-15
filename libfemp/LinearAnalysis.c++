@@ -13,11 +13,11 @@ template<typename Scalar>
 LinearAnalysis<Scalar>::LinearAnalysis()
 	: Analysis<Scalar>()
 {
-	m_model = NULL;
-	m_load_pattern = NULL;
-	m_result = NULL;
-	m_progress = NULL;
-	m_solver = NULL;
+	m_model = nullptr;
+	m_load_pattern = nullptr;
+	m_result = nullptr;
+	m_progress = nullptr;
+	m_solver = nullptr;
 	m_error = Analysis<Scalar>::ERR_OK;
 }
 
@@ -32,7 +32,7 @@ template<typename Scalar>
 void 
 LinearAnalysis<Scalar>::set(Model &model, LoadPattern &lp, AnalysisResult &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver)
 {
-	assert(solver != NULL);
+	assert(solver != nullptr);
 
 	this->m_model = &model;
 	this->m_load_pattern = &lp;

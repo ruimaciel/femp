@@ -3,7 +3,7 @@
 
 DisplayOptions::DisplayOptions()
 {
-	load_pattern = NULL;
+	load_pattern = nullptr;
 	setDefaultOptions();
 }
 

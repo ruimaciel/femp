@@ -12,8 +12,8 @@ SelectionWidget::SelectionWidget(fem::Project &project, SelectionManager &select
 {
 	this->setupUi(this);
 
-	m_element_item = NULL;
-	m_node_item = NULL;
+	m_element_item = nullptr;
+	m_node_item = nullptr;
 
 	initializeSelectionGroups(project);
 	initializeWidget(project, selection_manager);
@@ -71,8 +71,8 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 void
 SelectionWidget::setSelection(Selection const &selection)
 {
-	assert(m_element_item != NULL);
-	assert(m_node_item != NULL);
+	assert(m_element_item != nullptr);
+	assert(m_node_item != nullptr);
 
 	// clear all selections
 	for( std::map<fem::element_ref_t, QTreeWidgetItem *>::iterator i = m_element_map.begin(); i != m_element_map.end(); i++)

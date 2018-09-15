@@ -20,8 +20,8 @@ umfpack(Matrix<double, SparseCCS> &A, Vector<double> &x, Vector<double> &b, Prog
 	x.resize(A.rows());
 
 
-	void *Numeric = NULL;
-	void *Symbolic = NULL;
+	void *Numeric = nullptr;
+	void *Symbolic = nullptr;
 
 	double *null = (double *) NULL ;
 

@@ -440,7 +440,7 @@ yy15:
 yy17:
 	++p;
 #line 373 "../../source/ProgramOptions.c++.re2c"
-	{ argn++; if(argn < argc) { p = q = token =  &argv[argn][0]; return S_EOA;} else { p = token = q = NULL; return S_EOL; } }
+	{ argn++; if(argn < argc) { p = q = token =  &argv[argn][0]; return S_EOA;} else { p = token = q = nullptr; return S_EOL; } }
 #line 445 "../../source/ProgramOptions.c++"
 yy19:
 	++p;
@@ -1530,7 +1530,7 @@ yy238:
 yy240:
 	++p;
 #line 422 "../../source/ProgramOptions.c++.re2c"
-	{ if(argn < argc-1) {argn++; p = q = token =  &argv[argn][0]; return S_EOA;} else { p = token = q = NULL; return S_EOL; } }
+	{ if(argn < argc-1) {argn++; p = q = token =  &argv[argn][0]; return S_EOA;} else { p = token = q = nullptr; return S_EOL; } }
 #line 1535 "../../source/ProgramOptions.c++"
 yy242:
 	++p;

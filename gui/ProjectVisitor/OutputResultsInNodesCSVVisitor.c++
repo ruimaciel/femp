@@ -39,8 +39,8 @@ OutputResultsInNodesCSVVisitor::OutputResultsInNodesCSVVisitor(Selection &select
 void
 OutputResultsInNodesCSVVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult> &)
 {
-	assert(m_out != NULL);
-	assert(m_result != NULL);
+	assert(m_out != nullptr);
+	assert(m_result != nullptr);
 
 	for( std::map<fem::element_ref_t, fem::ElementResults *>::iterator e = m_result->results.begin(); e != m_result->results.end(); e++)
 	{

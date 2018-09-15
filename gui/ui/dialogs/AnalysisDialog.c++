@@ -30,7 +30,7 @@ fem::Solver<double> * AnalysisDialog::solver()
 	{
 	case 0:
 	{
-		fem::CholeskySolver<double> * solver = NULL;
+		fem::CholeskySolver<double> * solver = nullptr;
 		solver = new fem::CholeskySolver<double>;
 
 		return solver;
@@ -39,7 +39,7 @@ fem::Solver<double> * AnalysisDialog::solver()
 
 	case 1:
 	{
-		fem::CGSolver<double> * solver = NULL;
+		fem::CGSolver<double> * solver = nullptr;
 		solver = new fem::CGSolver<double>;
 
 		// set the options
@@ -52,7 +52,7 @@ fem::Solver<double> * AnalysisDialog::solver()
 
 	case 2:
 	{
-		fem::DenseCholeskySolver<double> * solver = NULL;
+		fem::DenseCholeskySolver<double> * solver = nullptr;
 		solver = new fem::DenseCholeskySolver<double>;
 
 		return solver;
@@ -61,7 +61,7 @@ fem::Solver<double> * AnalysisDialog::solver()
 
 	case 3:
 	{
-		fem::UmfpackSolver<double> * solver = NULL;
+		fem::UmfpackSolver<double> * solver = nullptr;
 		solver = new fem::UmfpackSolver<double>;
 
 		return solver;

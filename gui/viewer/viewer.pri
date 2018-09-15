@@ -146,3 +146,5 @@ SOURCES += \
         $${PWD}/PostprocessingViewport.c++ \
         $${PWD}/BaseViewport.c++ \
         $${PWD}/Camera.c++ \
+    $$PWD/SceneGraphComponents/Operations/OperationsVisitor.c++ \
+    $$PWD/SceneGraphComponents/hud/HudObject.c++

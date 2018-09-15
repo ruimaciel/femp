@@ -7,7 +7,7 @@ CONFIG += qt link_pkgconfig
 
 PKGCONFIG += sigc++-2.0 eigen3
 
-QT += widgets
+QT += widgets opengl
 
 OBJECTS_DIR += $${BUILD_DIR}/gui
 DESTDIR = $${BUILD_DIR}

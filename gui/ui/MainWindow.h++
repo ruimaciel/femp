@@ -146,7 +146,6 @@ protected:
 
 	ViewportColors m_colors;	// the elements' viewport colors
 
-	QDir m_resultsDumpDialogLastDirectory;
 	QSignalMapper	*m_windowMapper;	// used to map menu clicks to window activation
 
 

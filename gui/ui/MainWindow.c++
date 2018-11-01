@@ -99,13 +99,6 @@ MainWindow::newProject()
 	// free everything
 	m_document.clear();
 
-	std::string default_path = getenv("HOME");
-	std::string tmp;
-	if(m_options.getOption("project.new.default_directory",tmp))
-	{
-		default_path += "/" + tmp;
-	}
-
 	/*
 	The NewProjectWizard dialog will fill up a given document object through the steps
 	*/
@@ -486,10 +479,6 @@ MainWindow::loadOptions()
 
 	// Set default options
 	m_options.setDefault();
-	m_options.setOption("viewport.nodes.radius",10.0f);	// sets the default node radius
-
-	m_options.setOption("viewport.arrows.radius",10.0f);
-	m_options.setOption("viewport.arrows.length",100.0f);
 
 	m_colors = Settings::getInstance().getViewportColors();
 
@@ -516,25 +505,6 @@ MainWindow::loadOptions()
 	{
 		m_options.importFile(is);
 		is.close();
-	}
-
-	if(m_options.wasSet("project.results.dump.default_directory"))
-	{
-		std::string default_path;
-		m_options.getOption("project.results.dump.default_directory",default_path);
-		if( QFile::exists(QString::fromStdString(default_path)) )
-		{
-			m_resultsDumpDialogLastDirectory.setPath(QString::fromStdString(default_path));
-		}
-		else
-		{
-			m_resultsDumpDialogLastDirectory = QDir::home();
-			QString path = m_resultsDumpDialogLastDirectory.absolutePath();
-		}
-	}
-	else
-	{
-		m_resultsDumpDialogLastDirectory = QDir::home();
 	}
 
 		// set quadrature rules options for the stiffness matrix
@@ -1047,7 +1017,7 @@ MainWindow::dumpResultsFromSelection()
 	// opens the file
 	{
 		QFileDialog dialog(this);
-		dialog.setDirectory(m_resultsDumpDialogLastDirectory);
+		dialog.setDirectory(Settings::getInstance().getDumpResultsDirectory());
 		QStringList sl;
 
 		// setup the file dialog
@@ -1062,7 +1032,7 @@ MainWindow::dumpResultsFromSelection()
 		}
 
 		// get the last directory used to dump results
-		m_resultsDumpDialogLastDirectory = dialog.directory();
+		Settings::getInstance().setDumpResultsDirectory(dialog.directory());
 
 		sl = dialog.selectedFiles();
 		file_name = sl.at(0);

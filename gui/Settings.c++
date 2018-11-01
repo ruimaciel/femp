@@ -3,6 +3,7 @@
 #include <QSettings>
 #include <QDir>
 #include <QColor>
+#include <QString>
 
 
 Settings::Settings()
@@ -43,6 +44,43 @@ void Settings::setProjectOpenDirectory(QDir dir)
 	QSettings settings;
 
 	QString key = "project.open.default_directory";
+
+	if(dir.exists()) {
+		settings.setValue(key, dir.absolutePath());
+	}
+}
+
+QDir Settings::getDumpResultsDirectory()
+{
+	QSettings settings;
+
+	const QString key = "project.results.dump.default_directory";
+
+	QDir default_path = QDir::home();
+
+	if(settings.contains(key)) {
+		QVariant variant = settings.value(key);
+		if(variant.isValid() && variant.canConvert<QString>())
+		{
+			QString path = variant.toString();
+			if( QFile::exists(path) ) {
+				default_path = QDir(path);
+			}
+			else {
+				settings.setValue(key, QVariant(default_path.absolutePath()));
+			}
+		}
+	}
+
+	return default_path;
+
+}
+
+void Settings::setDumpResultsDirectory(QDir dir)
+{
+	QSettings settings;
+
+	const QString key = "project.results.dump.default_directory";
 
 	if(dir.exists()) {
 		settings.setValue(key, dir.absolutePath());

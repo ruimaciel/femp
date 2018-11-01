@@ -25,6 +25,9 @@ public:
 	QDir getProjectOpenDirectory();
 	void setProjectOpenDirectory(QDir dir);
 
+	QDir getDumpResultsDirectory();
+	void setDumpResultsDirectory(QDir dir);
+
 	ViewportColors getViewportColors();
 };
 

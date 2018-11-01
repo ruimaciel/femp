@@ -10,8 +10,3 @@ FempApplication::FempApplication(int & argc, char ** argv)
 	QCoreApplication::setApplicationName("femp");
 
 }
-
-Settings &FempApplication::settings()
-{
-	return m_settings;
-}

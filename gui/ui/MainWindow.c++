@@ -60,6 +60,8 @@
 #include "ProjectVisitor/MoveNodesVisitor.h++"
 #include "ProjectVisitor/OutputElementStatisticsVisitor.h++"
 
+#include "Settings.h++"
+
 
 
 
@@ -127,7 +129,7 @@ MainWindow::openProject()
 	// get the last dir where a project was opened
 	QFileDialog dialog(this);
 
-	QDir file_dialog_directory = fempApp->settings().getProjectOpenDirectory();
+	QDir file_dialog_directory = Settings::getInstance().getProjectOpenDirectory();
 	dialog.setDirectory(file_dialog_directory);
 
 	// setup the file dialog
@@ -140,7 +142,7 @@ MainWindow::openProject()
 	}
 
 	file_dialog_directory = dialog.directory();
-	fempApp->settings().setProjectOpenDirectory(file_dialog_directory);
+	Settings::getInstance().setProjectOpenDirectory(file_dialog_directory);
 
 
 	// clear the document
@@ -247,7 +249,7 @@ MainWindow::saveProject()
 	if(m_document.file_name == nullptr)
 	{
 		QFileDialog dialog(this);
-		QDir file_dialog_directory = fempApp->settings().getProjectOpenDirectory();
+		QDir file_dialog_directory = Settings::getInstance().getProjectOpenDirectory();
 		dialog.setDirectory(file_dialog_directory);
 
 		// setup the file dialog
@@ -297,7 +299,7 @@ MainWindow::saveProjectAs()
 {
 	QFileDialog dialog(this);
 
-	QDir file_dialog_directory = fempApp->settings().getProjectOpenDirectory();
+	QDir file_dialog_directory = Settings::getInstance().getProjectOpenDirectory();
 	dialog.setDirectory(file_dialog_directory);
 
 	// setup the file dialog
@@ -489,7 +491,7 @@ MainWindow::loadOptions()
 	m_options.setOption("viewport.arrows.radius",10.0f);
 	m_options.setOption("viewport.arrows.length",100.0f);
 
-	m_colors = fempApp->settings().getViewportColors();
+	m_colors = Settings::getInstance().getViewportColors();
 
 	//TODO Set default options
 

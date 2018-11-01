@@ -60,7 +60,7 @@
 #include "ProjectVisitor/MoveNodesVisitor.h++"
 #include "ProjectVisitor/OutputElementStatisticsVisitor.h++"
 
-#include "Settings.h++"
+#include "FempSettings.h++"
 
 
 
@@ -122,7 +122,7 @@ MainWindow::openProject()
 	// get the last dir where a project was opened
 	QFileDialog dialog(this);
 
-	QDir file_dialog_directory = Settings::getInstance().getProjectOpenDirectory();
+	QDir file_dialog_directory = FempSettings::getInstance().getProjectOpenDirectory();
 	dialog.setDirectory(file_dialog_directory);
 
 	// setup the file dialog
@@ -135,7 +135,7 @@ MainWindow::openProject()
 	}
 
 	file_dialog_directory = dialog.directory();
-	Settings::getInstance().setProjectOpenDirectory(file_dialog_directory);
+	FempSettings::getInstance().setProjectOpenDirectory(file_dialog_directory);
 
 
 	// clear the document
@@ -242,7 +242,7 @@ MainWindow::saveProject()
 	if(m_document.file_name == nullptr)
 	{
 		QFileDialog dialog(this);
-		QDir file_dialog_directory = Settings::getInstance().getProjectOpenDirectory();
+		QDir file_dialog_directory = FempSettings::getInstance().getProjectOpenDirectory();
 		dialog.setDirectory(file_dialog_directory);
 
 		// setup the file dialog
@@ -292,7 +292,7 @@ MainWindow::saveProjectAs()
 {
 	QFileDialog dialog(this);
 
-	QDir file_dialog_directory = Settings::getInstance().getProjectOpenDirectory();
+	QDir file_dialog_directory = FempSettings::getInstance().getProjectOpenDirectory();
 	dialog.setDirectory(file_dialog_directory);
 
 	// setup the file dialog
@@ -480,7 +480,7 @@ MainWindow::loadOptions()
 	// Set default options
 	m_options.setDefault();
 
-	m_colors = Settings::getInstance().getViewportColors();
+	m_colors = FempSettings::getInstance().getViewportColors();
 
 	//TODO Set default options
 
@@ -1017,7 +1017,7 @@ MainWindow::dumpResultsFromSelection()
 	// opens the file
 	{
 		QFileDialog dialog(this);
-		dialog.setDirectory(Settings::getInstance().getDumpResultsDirectory());
+		dialog.setDirectory(FempSettings::getInstance().getDumpResultsDirectory());
 		QStringList sl;
 
 		// setup the file dialog
@@ -1032,7 +1032,7 @@ MainWindow::dumpResultsFromSelection()
 		}
 
 		// get the last directory used to dump results
-		Settings::getInstance().setDumpResultsDirectory(dialog.directory());
+		FempSettings::getInstance().setDumpResultsDirectory(dialog.directory());
 
 		sl = dialog.selectedFiles();
 		file_name = sl.at(0);

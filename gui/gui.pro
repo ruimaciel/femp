@@ -80,10 +80,10 @@ HEADERS += \
         ProjectVisitor/SetDomainLoadsVisitor.h++ \
         ProjectVisitor/OutputResultsInNodesVisitor.h++ \
         DefaultProgressIndicator.h++ \
-    Settings.h++ \
     FempApplication.h++ \
     ui/MainWindow.h++ \
-    ui/MdiWindowProperties.h++
+    ui/MdiWindowProperties.h++ \
+    FempSettings.h++
 
 SOURCES += main.c++ \
         Document.c++ \
@@ -142,10 +142,10 @@ SOURCES += main.c++ \
         ui/TensorFieldWindow.c++ \
         ui/MatrixModel.c++ \
         DefaultProgressIndicator.c++ \
-    Settings.c++ \
     FempApplication.c++ \
     ui/MainWindow.c++ \
-    ui/MdiWindowProperties.c++
+    ui/MdiWindowProperties.c++ \
+    FempSettings.c++
 
 FORMS += ui/dialogs/AnalysisDialog.ui \
         ui/dialogs/AnalysisProgressDialog.ui \

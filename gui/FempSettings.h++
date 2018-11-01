@@ -1,24 +1,24 @@
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#ifndef FEMP_SETTINGS_H
+#define FEMP_SETTINGS_H
 
 #include <QDir>
 
 #include "options/ViewportColors.h++"
 
-class Settings
+class FempSettings
 {
 public:
 
 private:
-	Settings();
-	Settings(const Settings &) = delete;
-	void operator=(const Settings &) = delete;
-	~Settings();
+	FempSettings();
+	FempSettings(const FempSettings &) = delete;
+	void operator=(const FempSettings &) = delete;
+	~FempSettings();
 
 public:
-	static Settings & getInstance()
+	static FempSettings & getInstance()
 	{
-		static Settings settings;
+		static FempSettings settings;
 		return settings;
 	}
 
@@ -31,4 +31,4 @@ public:
 	ViewportColors getViewportColors();
 };
 
-#endif // SETTINGS_H
+#endif // FEMP_SETTINGS_H

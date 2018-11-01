@@ -3,7 +3,7 @@
 
 #include <QApplication>
 
-#include "Settings.h++"
+#include "FempSettings.h++"
 
 class FempApplication : public QApplication
 {

@@ -1,4 +1,4 @@
-#include "Settings.h++"
+#include "FempSettings.h++"
 
 #include <QSettings>
 #include <QDir>
@@ -6,18 +6,18 @@
 #include <QString>
 
 
-Settings::Settings()
+FempSettings::FempSettings()
 {
 
 }
 
-Settings::~Settings()
+FempSettings::~FempSettings()
 {
 	QSettings settings;
 	settings.sync();
 }
 
-QDir Settings::getProjectOpenDirectory()
+QDir FempSettings::getProjectOpenDirectory()
 {
 	QSettings settings;
 
@@ -39,7 +39,7 @@ QDir Settings::getProjectOpenDirectory()
 	return QDir::home();
 }
 
-void Settings::setProjectOpenDirectory(QDir dir)
+void FempSettings::setProjectOpenDirectory(QDir dir)
 {
 	QSettings settings;
 
@@ -50,7 +50,7 @@ void Settings::setProjectOpenDirectory(QDir dir)
 	}
 }
 
-QDir Settings::getDumpResultsDirectory()
+QDir FempSettings::getDumpResultsDirectory()
 {
 	QSettings settings;
 
@@ -76,7 +76,7 @@ QDir Settings::getDumpResultsDirectory()
 
 }
 
-void Settings::setDumpResultsDirectory(QDir dir)
+void FempSettings::setDumpResultsDirectory(QDir dir)
 {
 	QSettings settings;
 
@@ -87,7 +87,7 @@ void Settings::setDumpResultsDirectory(QDir dir)
 	}
 }
 
-ViewportColors Settings::getViewportColors()
+ViewportColors FempSettings::getViewportColors()
 {
 	QSettings settings;
 	settings.beginGroup("viewport");

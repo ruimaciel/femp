@@ -750,17 +750,6 @@ MainWindow::setDomainLoads()
 
 	DomainLoadsDialog dialog(model, this);
 
-	// Connect the sigc++ signals
-	dialog.create_load_pattern.connect( sigc::mem_fun(femp_model, &fem::Model::createEmptyLoadPattern));
-
-	/*
-	From:
-	https://developer.gnome.org/libsigc++-tutorial/stable/ch04.html#id455954
-	myaliendetector.signal_detected.connect( sigc::hide<std::string>( sigc::ptr_fun(warn_people) ) );
-	*/
-	//document.getProject().getModel().load_pattern_created.connect(sigc::hide<size_t const, fem::LoadPattern const &>(dialog.loadPatternCreated() ) );
-
-
 	// call the dialog box
 	if(dialog.exec() == QDialog::Accepted)
 	{

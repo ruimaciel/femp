@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>387</width>
-    <height>189</height>
+    <height>230</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -49,13 +49,6 @@
      </item>
      <item>
       <widget class="QComboBox" name="comboBoxLoadPattern"/>
-     </item>
-     <item>
-      <widget class="QToolButton" name="toolButtonNewLoadPattern">
-       <property name="text">
-        <string>+</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>

@@ -716,9 +716,6 @@ MainWindow::setNodeActions()
 
 	NodeActionsDialog na(load_patterns_model, this);
 
-	// Connect the sigc++ signals
-	na.create_load_pattern.connect( sigc::mem_fun(femp_model, &fem::Model::createEmptyLoadPattern));
-
 	if(na.exec() == QDialog::Accepted)
 	{
 		Selection const selection = m_selectionManager.getSelection();

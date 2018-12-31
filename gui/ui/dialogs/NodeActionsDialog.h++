@@ -29,12 +29,6 @@ public:
 	fem::Point3D getDisplacement();
 
 	void loadPatternCreated(size_t, fem::LoadPattern const &);
-
-protected Q_SLOTS:
-	void handleNewLabelButton();
-
-public:	// sigc++ signals
-	sigc::signal<void, std::string const &>	create_load_pattern;	// sends a signal for fem::Model to create a new load pattern
 };
 
 

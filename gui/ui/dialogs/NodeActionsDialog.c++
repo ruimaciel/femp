@@ -9,8 +9,6 @@ NodeActionsDialog::NodeActionsDialog(LoadPatternsModel &model, QWidget *parent)
 	setupUi(this);
 
 	this->comboBoxLoadPattern->setModel(&model);
-
-	connect(toolButtonNewLoadPattern,	SIGNAL(clicked()), 	this,	SLOT(handleNewLabelButton()));
 }
 
 
@@ -49,19 +47,3 @@ NodeActionsDialog::loadPatternCreated(size_t, fem::LoadPattern const &)
 {
 	this->comboBoxLoadPattern->view()->reset();
 }
-
-
-void
-NodeActionsDialog::handleNewLabelButton()
-{
-	LoadPatternDialog dialog(this);
-	if(dialog.exec() == QDialog::Accepted)
-	{
-		std::string text;
-		text = dialog.getLabel();
-
-		// emit signal
-		create_load_pattern(text);
-	}
-}
-

@@ -136,6 +136,7 @@ SOURCES += main.c++ \
         ui/BaseWindow.c++ \
         ui/WindowWithWireframe.c++ \
         ui/ModelWindow.c++ \
+        ui/WindowWith.c++ \
         ui/WindowWithPostprocessing.c++ \
         ui/wizards/NewProjectWizardPageLast.c++ \
         ui/DialogScale.c++ \

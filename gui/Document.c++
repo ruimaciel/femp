@@ -57,7 +57,7 @@ Document::clear()
 
 
 enum Document::Error
-		Document::setFileName(QString new_file)
+Document::setFileName(QString new_file)
 {
 	if (this->file_name == nullptr)
 		this->file_name = new QString;
@@ -74,19 +74,26 @@ enum Document::Error
 QString
 Document::getFileName() const
 {
-	if(this->file_name == nullptr)
-	{
-		return QString();
-	}
-	else
-	{
-		return *this->file_name;
-	}
+	return this->file_name == nullptr ? QString() : *this->file_name;
+}
+
+
+void
+Document::setProjectType(Document::Type type)
+{
+	m_documentType = type;
+}
+
+
+fem::Project &
+Document::getProject()
+{
+	return this->m_project;
 }
 
 
 enum Document::Error
-		Document::save()
+Document::save()
 {
 	// TODO check version
 
@@ -111,4 +118,10 @@ enum Document::Error
 	return ERR_OK;
 }
 
+
+void
+Document::setUnsaved()
+{
+	m_unsaved = true;
+}
 

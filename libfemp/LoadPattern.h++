@@ -45,7 +45,7 @@ public:
 	/**
 	 * returns the label
 	 **/
-	std::string const & getLabel() const;
+	std::string getLabel() const;
 
 	/**
 	 * sets the label

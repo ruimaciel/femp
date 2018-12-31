@@ -1,5 +1,5 @@
-#ifndef DIALOG_SCALE_HPP
-#define DIALOG_SCALE_HPP
+#ifndef FEMP_DIALOGSCALE_HPP
+#define FEMP_DIALOGSCALE_HPP
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QDialog>
@@ -11,7 +11,7 @@
 Dialog used by GLDisplacementsWidget to input a new displacements scale
 **/
 class DialogScale
-    : public QDialog, private Ui::DialogScale
+	: public QDialog, private Ui::DialogScale
 {
   Q_OBJECT
 

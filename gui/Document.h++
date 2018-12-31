@@ -1,5 +1,5 @@
-#ifndef DOCUMENT_HPP
-#define DOCUMENT_HPP
+#ifndef FEMP_DOCUMENT_HPP
+#define FEMP_DOCUMENT_HPP
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QDir>	// for the project path
@@ -38,19 +38,19 @@ public:
 	 */
 	QString getFileName() const;
 
-	void setProjectType(Type type)	{ m_documentType = type; }
+	void setProjectType(Type type);
 
 	/*!
 	 * Returns a reference to the Project object
 	 */
-	fem::Project &getProject() 	{ return this->m_project; }
+	fem::Project &getProject();
 
 	/**
 	Saves the project in it's path
 	**/
 	enum Error save();
 
-	void setUnsaved()	{m_unsaved = true; }
+	void setUnsaved();
 
 
 protected:

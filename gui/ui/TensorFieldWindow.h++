@@ -1,5 +1,5 @@
-#ifndef TENSOR_FIELD__WINDOW_HPP
-#define TENSOR_FIELD__WINDOW_HPP
+#ifndef FEMP_TENSOR_FIELD__WINDOW_HPP
+#define FEMP_TENSOR_FIELD__WINDOW_HPP
 
 #include "BaseWindow.h++"
 #include "MdiWindow.h++"
@@ -70,7 +70,7 @@ Q_SIGNALS:
 	void dumpResultsFromSelection(fem::AnalysisResult *result);
 
 protected:
-	void connectSignalsToSlots();
+	void connectSignalsToSlots() override;
 
 	void createToolBars(fem::Project &);
 

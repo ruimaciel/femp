@@ -1,5 +1,5 @@
-#ifndef SELECTION_MANAGER_HPP
-#define SELECTION_MANAGER_HPP
+#ifndef FEMP_SELECTION_MANAGER_HPP
+#define FEMP_SELECTION_MANAGER_HPP
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 

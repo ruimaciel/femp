@@ -1,5 +1,5 @@
-#ifndef MODEL_WINDOW_HPP
-#define MODEL_WINDOW_HPP
+#ifndef FEMP_MODEL_WINDOW_HPP
+#define FEMP_MODEL_WINDOW_HPP
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 
@@ -25,7 +25,7 @@ public:
 	ModelWindow (fem::Project &project, ViewportColors &colors, QWidget *parent = nullptr);
 
 protected:
-	void connectSignalsToSlots();
+	void connectSignalsToSlots() override;
 
 };
 

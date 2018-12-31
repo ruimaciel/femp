@@ -1,14 +1,13 @@
-#ifndef WINDOW_WITH_RESULTS_HPP
-#define WINDOW_WITH_RESULTS_HPP
+#ifndef FEMP_WINDOWWITHRESULTS_HPP
+#define FEMP_WINDOWWITHRESULTS_HPP
 
 #include "MdiWindow.h++"
 
-#include <QMainWindow>
-#include <QComboBox>
-#include <QToolBar>
-
 #include "WindowWith.h++"
 
+class QMainWindow;
+class QToolBar;
+class QComboBox;
 
 /**
 Provides a window with the ability to select which AnalysisResults<> object to use

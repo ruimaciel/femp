@@ -1,5 +1,5 @@
-#ifndef BASE_WINDOW_HPP
-#define BASE_WINDOW_HPP
+#ifndef FEMP_BASE_WINDOW_HPP
+#define FEMP_BASE_WINDOW_HPP
 
 #include <QString>
 

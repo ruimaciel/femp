@@ -24,7 +24,7 @@ class SelectionWidget
 	Q_OBJECT
 
 public:
-	SelectionWidget(fem::Project &project, SelectionManager &, QWidget *parent = 0);
+	SelectionWidget(fem::Project &project, SelectionManager &, QWidget *parent = nullptr);
 
 	/*
 	void selectElement(fem::element_ref_t, bool state = true);

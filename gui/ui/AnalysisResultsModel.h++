@@ -1,5 +1,5 @@
-#ifndef ANALYSIS_RESULTS_MODEL_H
-#define ANALYSIS_RESULTS_MODEL_H
+#ifndef FEMP_ANALYSIS_RESULTS_MODEL_H
+#define FEMP_ANALYSIS_RESULTS_MODEL_H
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 

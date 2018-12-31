@@ -33,7 +33,6 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 	Selection s = selection_manager.getSelection();
 	//TODO test memory allocation
 
-	//for( std::vector<fem::Element>::iterator i = project.model.element_list.begin(); i != project.model.element_list.end(); i++)
 	for( std::vector<fem::Element>::size_type n = 0;  n < project.getModel().element_list.size(); n++)
 	{
 		QTreeWidgetItem *item = new QTreeWidgetItem(m_element_item);
@@ -56,7 +55,6 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 	this->objectTreeWidget->insertTopLevelItem(1, m_node_item);
 
 	// initialize groups combo box with the list of defined groups
-	//for(auto i =	m_selection_groups.begin(); i != m_selection_groups.end(); i++)
 	for(size_t i = 0; i < m_selection_groups.size(); i++)
 	{
 		this->groupsComboBox->insertItem(i, QString(m_selection_groups[i].label.c_str()) );
@@ -188,12 +186,11 @@ SelectionWidget::unionGroupList()
 void
 SelectionWidget::initializeSelectionGroups(fem::Project &project)
 {
-	fem::Group group;
 	fem::Model & femp_model = project.getModel();
 
 	for( auto i = femp_model.m_node_groups.begin(); i != femp_model.m_node_groups.end(); i++)
 	{
-		group.clear();
+		fem::Group group;
 		group.label = i->label;
 		for(auto n = i->begin(); n != i->end(); n++)
 		{
@@ -203,10 +200,9 @@ SelectionWidget::initializeSelectionGroups(fem::Project &project)
 		m_selection_groups.push_back(group);
 	}
 
-
 	for( auto i = femp_model.m_element_groups.begin(); i != femp_model.m_element_groups.end(); i++)
 	{
-		group.clear();
+		fem::Group group;
 		group.label = i->label;
 		for(auto n = i->begin(); n != i->end(); n++)
 		{

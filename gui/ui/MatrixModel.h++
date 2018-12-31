@@ -1,5 +1,5 @@
-#ifndef MATRIX_MODEL_H
-#define MATRIX_MODEL_H
+#ifndef FEMP_MATRIX_MODEL_H
+#define FEMP_MATRIX_MODEL_H
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 

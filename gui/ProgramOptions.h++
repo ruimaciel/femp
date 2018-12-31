@@ -1,5 +1,5 @@
-#ifndef OPTIONS_HPP
-#define OPTIONS_HPP
+#ifndef FEMP_OPTIONS_HPP
+#define FEMP_OPTIONS_HPP
 
 /* this component aims to follow the Filesystem Hierarchy Standard */
 

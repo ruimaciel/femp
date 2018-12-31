@@ -1,11 +1,11 @@
-#ifndef WINDOW_WITH_POSTPROCESSING_HPP
-#define WINDOW_WITH_POSTPROCESSING_HPP
+#ifndef FEMP_WINDOW_WITH_POSTPROCESSING_HPP
+#define FEMP_WINDOW_WITH_POSTPROCESSING_HPP
 
 #include "MdiWindow.h++"
 
-#include <QMainWindow>
-#include <QComboBox>
-#include <QToolBar>
+class QMainWindow;
+class QToolBar;
+class QComboBox;
 
 #include "WindowWith.h++"
 

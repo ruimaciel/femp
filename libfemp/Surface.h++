@@ -29,11 +29,11 @@ public:
 	};
 
 	std::vector<ReferencedElement> elements;	// stores 1 or 2 elements
-	
+
 
 public:
 	/**
-	Sets this surface's properties 
+	Sets this surface's properties
 	@param type	the type of surface
 	@param nodes	the nodes which define this surface
 	@return 	true if the number of nodes is compatible with the surface type, false otherwise
@@ -46,10 +46,10 @@ public:
 	/**
 	@return		true if it's an internal surface, false if it's an external surface
 	**/
-	bool internal()	{ if(elements.size() > 1) return true; else return false; }
-	bool external()	{ return !internal(); }
+	bool internal();
+	bool external();
 
-	Element::Type getType()	{ return type;	}
+	Element::Type getType();
 
 	/**
 	@return	true if the number of nodes is compatible with the surface type

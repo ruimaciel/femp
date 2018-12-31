@@ -1,5 +1,5 @@
-#ifndef POSTPROCESSING__WINDOW_HPP
-#define POSTPROCESSING__WINDOW_HPP
+#ifndef FEMP_POSTPROCESSING__WINDOW_HPP
+#define FEMP_POSTPROCESSING__WINDOW_HPP
 
 #include "BaseWindow.h++"
 #include "MdiWindow.h++"
@@ -25,7 +25,11 @@
 MDI window designed to represent the model
 **/
 class PostprocessingWindow
-		: public MdiWindow,  public WindowWithResults,  public WindowWithPostprocessing,  public WindowWithScaling, public BaseWindow
+		: public MdiWindow
+		, public WindowWithResults
+		, public WindowWithPostprocessing
+		, public WindowWithScaling
+		, public BaseWindow
 {
 	Q_OBJECT
 
@@ -70,7 +74,7 @@ Q_SIGNALS:
 	void dumpResultsFromSelection(fem::AnalysisResult *result);
 
 protected:
-	void connectSignalsToSlots();
+	void connectSignalsToSlots() override;
 
 	void createToolBars(fem::Project &);
 

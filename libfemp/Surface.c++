@@ -7,7 +7,7 @@ namespace fem
 {
 
 
-bool 
+bool
 Surface::set(Element::Type &type, std::vector<size_t> &nodes)
 {
 	if(!compatible(type,nodes))
@@ -20,7 +20,7 @@ Surface::set(Element::Type &type, std::vector<size_t> &nodes)
 }
 
 
-void 
+void
 Surface::pushElementReference(const size_t reference, const Element::Type &element_type, const unsigned char surface)
 {
 	ReferencedElement re;
@@ -52,21 +52,21 @@ Surface::pushElementReference(const size_t reference, const Element::Type &eleme
 					re.element_local_reference[2] = 6;
 					re.element_local_reference[3] = 7;
 					break;
-				case 3: 
+				case 3:
 					// face 4:
 					re.element_local_reference[0] = 5;
 					re.element_local_reference[1] = 1;
 					re.element_local_reference[2] = 2;
 					re.element_local_reference[3] = 6;
 					break;
-				case 4: 
+				case 4:
 					// face 5:
 					re.element_local_reference[0] = 0;
 					re.element_local_reference[1] = 1;
 					re.element_local_reference[2] = 5;
 					re.element_local_reference[3] = 4;
 					break;
-				case 5: 
+				case 5:
 					// face 6:
 					re.element_local_reference[0] = 2;
 					re.element_local_reference[1] = 3;
@@ -113,7 +113,7 @@ Surface::pushElementReference(const size_t reference, const Element::Type &eleme
 					re.element_local_reference[6] = 19;
 					re.element_local_reference[7] = 17;
 					break;
-				case 3: 
+				case 3:
 					// face 4:
 					re.element_local_reference[0] = 5;
 					re.element_local_reference[1] = 1;
@@ -124,7 +124,7 @@ Surface::pushElementReference(const size_t reference, const Element::Type &eleme
 					re.element_local_reference[6] = 14;
 					re.element_local_reference[7] = 18;
 					break;
-				case 4: 
+				case 4:
 					// face 5:
 					re.element_local_reference[0] = 0;
 					re.element_local_reference[1] = 1;
@@ -135,7 +135,7 @@ Surface::pushElementReference(const size_t reference, const Element::Type &eleme
 					re.element_local_reference[6] = 16;
 					re.element_local_reference[7] = 10;
 					break;
-				case 5: 
+				case 5:
 					// face 6:
 					re.element_local_reference[0] = 2;
 					re.element_local_reference[1] = 3;
@@ -188,7 +188,7 @@ Surface::pushElementReference(const size_t reference, const Element::Type &eleme
 					re.element_local_reference[7] = 17;
 					re.element_local_reference[8] = 25;
 					break;
-				case 3: 
+				case 3:
 					// face 4:
 					re.element_local_reference[0] = 5;
 					re.element_local_reference[1] = 1;
@@ -200,7 +200,7 @@ Surface::pushElementReference(const size_t reference, const Element::Type &eleme
 					re.element_local_reference[7] = 18;
 					re.element_local_reference[8] = 23;
 					break;
-				case 4: 
+				case 4:
 					// face 5:
 					re.element_local_reference[0] = 0;
 					re.element_local_reference[1] = 1;
@@ -212,7 +212,7 @@ Surface::pushElementReference(const size_t reference, const Element::Type &eleme
 					re.element_local_reference[7] = 10;
 					re.element_local_reference[8] = 21;
 					break;
-				case 5: 
+				case 5:
 					// face 6:
 					re.element_local_reference[0] = 2;
 					re.element_local_reference[1] = 3;
@@ -337,7 +337,7 @@ Surface::pushElementReference(const size_t reference, const Element::Type &eleme
 
 				case 3:
 					/*
-					   prism faces: 3 quadrangles, 2 triangles 
+					   prism faces: 3 quadrangles, 2 triangles
 					 */
 					// face 5: near triangle
 					re.element_local_reference.resize(6);
@@ -397,7 +397,7 @@ Surface::pushElementReference(const size_t reference, const Element::Type &eleme
 
 				case 3:
 					/*
-					   prism faces: 3 quadrangles, 2 triangles 
+					   prism faces: 3 quadrangles, 2 triangles
 					 */
 					// face 5: near triangle
 					re.element_local_reference.resize(6);
@@ -466,7 +466,7 @@ Surface::pushElementReference(const size_t reference, const Element::Type &eleme
 
 				case 3:
 					/*
-					   prism faces: 3 quadrangles, 2 triangles 
+					   prism faces: 3 quadrangles, 2 triangles
 					 */
 					// face 5: near triangle
 					re.element_local_reference.resize(6);
@@ -499,7 +499,28 @@ Surface::pushElementReference(const size_t reference, const Element::Type &eleme
 }
 
 
-bool 
+bool
+Surface::internal()
+{
+	return elements.size() > 1? true: false;
+}
+
+
+bool
+Surface::external()
+{
+	return !internal();
+}
+
+
+Element::Type
+Surface::getType()
+{
+	return type;
+}
+
+
+bool
 Surface::compatible(const Element::Type &type, std::vector<size_t> &nodes)
 {
 	switch(type)
@@ -554,7 +575,7 @@ Surface::compatible(const Element::Type &type, std::vector<size_t> &nodes)
 }
 
 
-bool 
+bool
 Surface::operator==(const Surface &other) const
 {
 	using namespace std;

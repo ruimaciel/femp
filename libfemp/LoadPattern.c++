@@ -33,8 +33,7 @@ LoadPattern::empty() const
 }
 
 
-std::string const &
-LoadPattern::getLabel() const
+std::string LoadPattern::getLabel() const
 {
 	return this->m_label;
 }

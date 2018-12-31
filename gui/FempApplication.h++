@@ -1,5 +1,5 @@
-#ifndef FEMPAPPLICATION_H
-#define FEMPAPPLICATION_H
+#ifndef FEMP_FEMPAPPLICATION_H
+#define FEMP_FEMPAPPLICATION_H
 
 #include <QApplication>
 

@@ -1,5 +1,5 @@
-#ifndef MDI_WINDOW_PROPERTIES_HPP
-#define MDI_WINDOW_PROPERTIES_HPP
+#ifndef FEMP_MDI_WINDOW_PROPERTIES_HPP
+#define FEMP_MDI_WINDOW_PROPERTIES_HPP
 
 
 /*
@@ -14,7 +14,6 @@ public:
 
 public:
 	explicit MdiWindowProperties(enum WindowType type = MWP_None);
-	~MdiWindowProperties();
 };
 
 #endif

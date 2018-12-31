@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_HPP
-#define MAINWINDOW_HPP
+#ifndef FEMP_MAINWINDOW_HPP
+#define FEMP_MAINWINDOW_HPP
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QMainWindow>

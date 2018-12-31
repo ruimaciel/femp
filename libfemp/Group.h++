@@ -12,7 +12,7 @@ namespace fem
 {
 
 /**
-Class intended to represent a group 
+Class intended to represent a group
 **/
 class Group
 {
@@ -29,12 +29,6 @@ public:
 	void pushElement(element_ref_t);
 	void pushNode(node_ref_t);
 
-	// iterators
-	std::set<size_t>::const_iterator beginElement();	
-	std::set<size_t>::const_iterator endElement();
-	std::set<size_t>::const_iterator beginNode();	
-	std::set<size_t>::const_iterator endNode();
-	
 	// clears the definition;
 	void clear();
 };

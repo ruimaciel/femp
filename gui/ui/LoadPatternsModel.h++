@@ -1,5 +1,5 @@
-#ifndef LOADPATTERNSMODEL_HPP
-#define LOADPATTERNSMODEL_HPP
+#ifndef FEMP_LOADPATTERNSMODEL_HPP
+#define FEMP_LOADPATTERNSMODEL_HPP
 
 #include <sigc++/sigc++.h>      // to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QAbstractListModel>
@@ -12,7 +12,7 @@ Q_DECLARE_METATYPE(std::string);	// needed to make QVariant to work with std::st
 Model class to be used in a model-view-controller pattern with Qt's widgets.
 **/
 class LoadPatternsModel
-    :  public QAbstractListModel
+	:  public QAbstractListModel
 {
   Q_OBJECT
 

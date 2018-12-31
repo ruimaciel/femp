@@ -6,9 +6,3 @@ MdiWindowProperties::MdiWindowProperties(enum WindowType type )
 	window_type = type;
 }
 
-
-MdiWindowProperties::~MdiWindowProperties()
-{
-}
-
-

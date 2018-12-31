@@ -1,5 +1,5 @@
-#ifndef SELECTION_HPP
-#define SELECTION_HPP
+#ifndef FEMP_SELECTION_HPP
+#define FEMP_SELECTION_HPP
 
 #include <set>
 

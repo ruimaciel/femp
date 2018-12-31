@@ -18,8 +18,25 @@ NodalLoad::~NodalLoad ()
 {
 }
 
+double
+NodalLoad::x() const
+{
+	return force.x();
+}
 
-const Point3D & 
+double
+NodalLoad::y() const
+{
+	return force.y();
+}
+
+double
+NodalLoad::z() const
+{
+	return force.z();
+}
+
+const Point3D &
 NodalLoad::getForce() const
 {
 	return this->force;

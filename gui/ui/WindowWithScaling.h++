@@ -1,5 +1,5 @@
-#ifndef WINDOW_WITH_SCALING_HPP
-#define WINDOW_WITH_SCALING_HPP
+#ifndef FEMP_WINDOW_WITH_SCALING_HPP
+#define FEMP_WINDOW_WITH_SCALING_HPP
 
 #include "MdiWindow.h++"
 

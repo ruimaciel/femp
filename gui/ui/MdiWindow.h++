@@ -1,5 +1,5 @@
-#ifndef MDI_WINDOW_HPP
-#define MDI_WINDOW_HPP
+#ifndef FEMP_MDI_WINDOW_HPP
+#define FEMP_MDI_WINDOW_HPP
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QMainWindow>
@@ -29,7 +29,7 @@ class MdiWindow
 	Q_OBJECT
 
 public:
-	MdiWindow (QWidget *parent = 0);
+	MdiWindow (QWidget *parent = nullptr);
 
 
 	/**

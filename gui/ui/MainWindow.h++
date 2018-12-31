@@ -128,6 +128,8 @@ private:
 protected:
 	ViewportColors &getViewportColors();
 
+	void saveDocument(Document & doc, std::string filename);
+
 protected:
 	Ui::MainWindow 	ui;
 
@@ -147,7 +149,6 @@ protected:
 	ViewportColors m_colors;	// the elements' viewport colors
 
 	QSignalMapper	*m_windowMapper;	// used to map menu clicks to window activation
-
 
 };
 

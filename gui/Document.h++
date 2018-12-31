@@ -45,12 +45,7 @@ public:
 	 */
 	fem::Project &getProject();
 
-	/**
-	Saves the project in it's path
-	**/
-	enum Error save();
-
-	void setUnsaved();
+	void setUnsaved(bool saved = false);
 
 
 protected:

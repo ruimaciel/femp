@@ -52,6 +52,7 @@
 #include <libfemp/parsers/MshParser.h++>
 #include <libfemp/parsers/json.h>
 #include <libfemp/parsers/fem_msh.h++>
+#include <libfemp/export/JsonExporter.h++>
 
 #include "ProjectVisitor/OutputResultsInNodesVisitor.h++"
 #include "ProjectVisitor/OutputResultsInNodesCSVVisitor.h++"
@@ -282,8 +283,8 @@ MainWindow::saveProject()
 		this->setWindowTitle("Femp - " + file_name );
 		ui.actionReopen->setEnabled(true);
 	}
-	m_document.save();
-	m_hasUnsavedChanges = false;
+
+	saveDocument(m_document, (*m_document.file_name).toStdString());
 }
 
 
@@ -330,8 +331,7 @@ MainWindow::saveProjectAs()
 
 	// tweak the UI
 	m_document.setFileName(file_name);
-	m_document.save();
-	m_hasUnsavedChanges = false;
+	saveDocument(m_document, file_name.toStdString());
 }
 
 
@@ -1384,4 +1384,23 @@ ViewportColors & MainWindow::getViewportColors()
 	return m_colors;
 }
 
+
+void
+MainWindow::saveDocument(Document &doc, std::string file_name)
+{
+	// check if if the given file_name exists
+	std::ofstream out;
+	out.open(file_name, std::ios::out | std::ios::trunc);
+
+	JsonExporter exporter;
+	exporter.output(out, doc.getProject().getModel());
+
+	// cleanup and exit
+	// TODO see KDE/ext4 row on proper unix file_name writing
+	out.flush();
+	out.close();
+
+	doc.setUnsaved(false);
+	m_hasUnsavedChanges = false;
+}
 

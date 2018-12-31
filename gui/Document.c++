@@ -92,36 +92,9 @@ Document::getProject()
 }
 
 
-enum Document::Error
-Document::save()
-{
-	// TODO check version
-
-	// check if if the given file_name exists
-	if (file_name == nullptr) {
-		return ERR_FILE_NOT_FOUND;
-	}
-
-	std::ofstream out;
-	out.open(file_name->toStdString(), std::ios::out | std::ios::trunc);
-
-	JsonExporter exporter;
-	fem::Model &model = this->m_project.getModel();
-	exporter.output(out, model);
-
-	// cleanup and exit
-	// TODO see KDE/ext4 row on proper unix file_name writing
-	out.flush();
-	out.close();
-
-	m_unsaved = false;
-	return ERR_OK;
-}
-
-
 void
-Document::setUnsaved()
+Document::setUnsaved(bool unsaved)
 {
-	m_unsaved = true;
+	m_unsaved = unsaved;
 }
 

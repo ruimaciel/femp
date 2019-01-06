@@ -22,7 +22,6 @@ BaseElement::getStiffnessMatrix(fem::Model &model)
 
 	Matrix<double,Dynamic,Dynamic> k_elem;
 	Matrix<double,Dynamic,Dynamic> B, Bt;
-	Matrix3d J, invJ;
 
 	// get the number of expected nodes
 	const unsigned int nnodes = this->getNodeAmount();
@@ -63,6 +62,7 @@ BaseElement::getStiffnessMatrix(fem::Model &model)
 		auto dNdzeta = this->getdNdzeta( point );
 
 		// generate the jacobian
+		Matrix3d J;
 		J.setZero();
 		for(unsigned int n = 0; n < nnodes; n++)
 		{
@@ -79,16 +79,7 @@ BaseElement::getStiffnessMatrix(fem::Model &model)
 
 		const double detJ = J.determinant();
 
-		//TODO throw exception if determinant is negative
-		/*
-		if(detJ <= 0)
-		{
-			std::cerr << __FILE__ << ":" << __LINE__ ;
-			std::cerr << " BaseElement::getStiffnessMatrix(): stumbled on a negative determinant" << std::endl;
-		}
-		*/
-
-		invJ = J.inverse();
+		Matrix3d invJ = J.inverse();
 
 		// Set up the B matrix
 		for(unsigned int n = 0; n < nnodes; n++)
@@ -106,8 +97,6 @@ BaseElement::getStiffnessMatrix(fem::Model &model)
 			B(3,3*n)	= dNdy;	B(3,3*n+1) = dNdx;
 			B(4,3*n)	= dNdz;	B(4,3*n+2) = dNdx;
 			B(5,3*n+1)	= dNdz;	B(5,3*n+2) = dNdy;
-
-			//TODO consider also setting Bt, avoid trans(b)
 		}
 
 		Bt = B.transpose();

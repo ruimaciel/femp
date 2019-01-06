@@ -107,12 +107,11 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 	using namespace Eigen;
 
 	Matrix<Scalar,Dynamic,1> f_elem;
-	Matrix3d J, invJ;
 
-	for(std::map<size_t,fem::DomainLoad>::const_iterator domain_load = lp.domain_loads.begin(); domain_load != lp.domain_loads.end(); domain_load++)
+	for(auto domain_load_pair: lp.domain_loads)
 	{
 		//TODO rewrite to rely on the element_reference classes
-		fem::Element &el = model.element_list[domain_load->first];
+		fem::Element &el = model.element_list[domain_load_pair.first];
 
 		// set the routines for the current element
 		std::unique_ptr<BaseElement> element(getElement(el));
@@ -133,13 +132,13 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			std::vector<double> dNdzeta = element->getdNdzeta(point);
 
 			// generate the jacobian
+			Matrix3d J;
 			J.setZero();
 
 			auto node_references = element->getNodeReferences();
-			for(int n = 0; n < nnodes; n++)
+			for(size_t n = 0; n < (size_t)nnodes; n++)
 			{
-				auto const & node_ref = node_references[n];
-				fem::Node const &node = model.getNode(node_ref);
+				fem::Node const &node = model.getNode(node_references[n]);
 
 				double const &X = node.x();
 				double const &Y = node.y();
@@ -154,7 +153,7 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			if(detJ <= 0)
 			{
 				std::cerr << __FILE__ << ":" << __LINE__ ;
-				std::cerr << "stumbled on a negative determinant on element_reference " <<  domain_load->first << std::endl;
+				std::cerr << "stumbled on a negative determinant on element_reference " <<  domain_load_pair.first << std::endl;
 
 				// quit
 				return ERR_NEGATIVE_DETERMINANT;
@@ -162,9 +161,9 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 
 			// and now the f_elem
 			const double W = quadrature_point.get<1>();
-			for(int n = 0; n < nnodes; n++)
+			for(Eigen::Index n = 0; n < (Eigen::Index)nnodes; n++)
 			{
-				Point3D const &f = domain_load->second.getForce();
+				Point3D const &f = domain_load_pair.second.getForce();
 				const double cN = N[n];
 
 				f_elem(3*n) += cN*f.x()*detJ*W;
@@ -174,10 +173,10 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 		}
 
 		//add the domain load's f_elem contribution to result.f
-		for(size_t i = 0; i < model.element_list[domain_load->first].nodes.size(); i++)
+		for(size_t i = 0; i < model.element_list[domain_load_pair.first].nodes.size(); i++)
 		{
 			std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
-			dof = result.lm.find(model.getElementByIndex(domain_load->first).nodes[i]);
+			dof = result.lm.find(model.getElementByIndex(domain_load_pair.first).nodes[i]);
 			if(dof == result.lm.end())
 				continue;	// no degrees of freedom on this node
 			else
@@ -209,7 +208,6 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 	using namespace Eigen;
 
 	Matrix<double, Dynamic,1> f_elem;
-	Matrix3d J, invJ;
 
 	for(fem::SurfaceLoad * surface_load: lp.surface_loads)
 	{
@@ -252,7 +250,6 @@ enum Analysis<Scalar>::Error
 Analysis<Scalar>::generateGlobalPointForceVector(Model &, const LoadPattern &lp, AnalysisResult &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace Eigen;
-	Matrix<Scalar,Dynamic,1> f_elem;
 
 	for(std::map<size_t,fem::NodalLoad>::const_iterator nodal_load = lp.nodal_loads.begin(); nodal_load != lp.nodal_loads.end(); nodal_load++)
 	{
@@ -283,11 +280,10 @@ Analysis<Scalar>::displacementsMap(AnalysisResult &result)
 
 	map<size_t, Node> df;	// displacements field
 	size_t n = 0;
-	Node node;
 
 	for(map<size_t, boost::tuple<size_t,size_t,size_t> >::const_iterator i = result.lm.begin(); i != result.lm.end(); i++)
 	{
-		node.zero();
+		Node node;
 
 		// don't add a map if no DoF exists
 		if(  (i->second.get<0>() == 0) && (i->second.get<1>() == 0) && (i->second.get<2>() == 0))
@@ -313,8 +309,6 @@ template<typename Scalar>
 void
 Analysis<Scalar>::generateDisplacementsMap(Model &model, AnalysisResult &result)
 {
-	fem::Point3D d;	// displacements field
-	boost::tuple<size_t,size_t,size_t> references;
 
 	result.displacements.clear();
 
@@ -323,8 +317,9 @@ Analysis<Scalar>::generateDisplacementsMap(Model &model, AnalysisResult &result)
 		size_t node_id = 0;
 		std::tie(node_id, std::ignore) = node_pair;
 
-		references = result.lm[node_id];
+		boost::tuple<size_t,size_t,size_t> references = result.lm[node_id];
 
+		fem::Point3D d;	// displacements field
 		d.data[0] = (references.get<0>() == 0)? 0 : result.d(references.get<0>()-1);
 		d.data[1] = (references.get<1>() == 0)? 0 : result.d(references.get<1>()-1);
 		d.data[2] = (references.get<2>() == 0)? 0 : result.d(references.get<2>()-1);
@@ -339,11 +334,10 @@ enum Analysis<Scalar>::Error
 Analysis<Scalar>::recoverValues(Model &model, AnalysisResult &result)
 {
 	ElementResultsFactory factory(model, result);
-	ElementResults *element_results;
 
 	for(element_ref_t n = 0; n < model.numberOfElements(); n++)
 	{
-		element_results = factory(model.getElementByIndex(n));
+		ElementResults * element_results = factory(model.getElementByIndex(n));
 		// TODO test memory allocation
 		result.results[n] = element_results;
 	}

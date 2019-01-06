@@ -67,7 +67,7 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 
 		default:
 			throw FemException("unknown element type request");
-			return NULL;
+			return nullptr;
 			break;
 	}
 
@@ -293,7 +293,7 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 
 		default:
 			throw FemException("unknown element type request");
-			return NULL;
+			return nullptr;
 			break;
 	}
 

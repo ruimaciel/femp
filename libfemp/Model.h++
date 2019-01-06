@@ -70,7 +70,6 @@ public:
 	Material 	getMaterialByIndex(size_t index) const;
 
 	void pushElement(fem::Element &);
-	void pushElement(fem::Element::Type type, std::vector<size_t> &nodes);
 
 	/** Specifies new node restrictions affecting a node
 	@param node	a reference for a node contained in node_list
@@ -91,12 +90,6 @@ public:
 	void pushLoadPattern(fem::LoadPattern &lp);
 
 	std::vector<LoadPattern> getLoadPatternList() const;
-
-	/**
-	Creates an empty load pattern
-	**/
-	void createEmptyLoadPattern(std::string const &label);
-
 
 	std::vector<NodeGroup> getNodeGroups() const;
 

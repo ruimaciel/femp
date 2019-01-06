@@ -555,16 +555,6 @@ Model::pushElement(fem::Element &e)
 
 
 void
-Model::pushElement(fem::Element::Type type, std::vector<size_t> &nodes)
-{
-	fem::Element e;
-	e.set(type,nodes);
-
-	this->pushElement(e);
-}
-
-
-void
 Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions nr)
 {
 	// check if node is set
@@ -610,16 +600,6 @@ std::vector<LoadPattern>
 Model::getLoadPatternList() const
 {
 	return load_pattern_list;
-}
-
-
-void
-Model::createEmptyLoadPattern(std::string const &label)
-{
-	LoadPattern lp;
-	lp.setLabel(label);
-
-	pushLoadPattern(lp);
 }
 
 

@@ -20,7 +20,7 @@ Model::Model()
 	material.E = 200e9;
 	material.nu = 0.3;
 
-	this->material_list.push_back(material);
+	this->m_material_list.push_back(material);
 
 }
 
@@ -28,9 +28,9 @@ Model::Model()
 void
 Model::clear()
 {
-	node_list.clear();
+	m_node_list.clear();
 	element_list.clear();
-	material_list.clear();
+	m_material_list.clear();
 	node_restrictions_list.clear();
 	load_pattern_list.clear();
 
@@ -46,13 +46,21 @@ Model::setNode(size_t ref, fem::Point3D p)
 	n.x(p.x());
 	n.y(p.y());
 	n.z(p.z());
-	this->node_list[ref] = n;
+	this->m_node_list[ref] = n;
 }
 
 Node &Model::getNode(size_t ref)
 {
-	return this->node_list[ref];
+	return this->m_node_list[ref];
 }
+
+
+std::map<node_ref_t,Node>
+Model::getNodeMap() const
+{
+	return m_node_list;
+}
+
 
 std::vector<Element>::size_type Model::numberOfElements() const
 {
@@ -64,10 +72,30 @@ std::vector<Element> Model::getElementList() const
 	return element_list;
 }
 
+Element
+Model::getElementByIndex(size_t index) const
+{
+	return element_list[index];
+}
+
 void
 Model::pushMaterial(fem::Material &material)
 {
-	material_list.push_back(material);
+	m_material_list.push_back(material);
+}
+
+
+std::vector<Material>
+Model::getMaterialList() const
+{
+	return m_material_list;
+}
+
+
+Material
+Model::getMaterialByIndex(size_t index) const
+{
+	return m_material_list[index];
 }
 
 
@@ -540,7 +568,7 @@ void
 Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions nr)
 {
 	// check if node is set
-	if(node_list.find(pos) == node_list.end())
+	if(m_node_list.find(pos) == m_node_list.end())
 		throw FemException("invalid node reference");
 
 	//TODO perform aditional error checking
@@ -557,12 +585,31 @@ Model::popNodeRestrictions(node_ref_t const &node)
 }
 
 
+std::map<node_restriction_ref_t,NodeRestrictions>
+Model::getNodeRestrictions() const
+{
+	return node_restrictions_list;
+}
+
+NodeRestrictions Model::getNodeRestrictionsByIndex(const size_t index) const
+{
+	return node_restrictions_list.at(index);
+}
+
+
 void
 Model::pushLoadPattern(fem::LoadPattern &lp)
 {
 	//TODO perform error checks
 
 	load_pattern_list.push_back(lp);
+}
+
+
+std::vector<LoadPattern>
+Model::getLoadPatternList() const
+{
+	return load_pattern_list;
 }
 
 
@@ -576,10 +623,23 @@ Model::createEmptyLoadPattern(std::string const &label)
 }
 
 
+std::vector<NodeGroup>
+Model::getNodeGroups() const
+{
+	return m_node_groups;
+}
+
+
 void
 Model::pushNodeGroup(fem::NodeGroup &new_node_group)
 {
 	this->m_node_groups.push_back(new_node_group);
+}
+
+std::vector<ElementGroup>
+Model::getElementGroups() const
+{
+	return this->m_element_groups;
 }
 
 

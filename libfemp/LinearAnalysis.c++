@@ -29,7 +29,7 @@ LinearAnalysis<Scalar>::~LinearAnalysis()
 
 
 template<typename Scalar>
-void 
+void
 LinearAnalysis<Scalar>::set(Model &model, LoadPattern &lp, AnalysisResult &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver)
 {
 	assert(solver != nullptr);
@@ -43,7 +43,7 @@ LinearAnalysis<Scalar>::set(Model &model, LoadPattern &lp, AnalysisResult &resul
 
 
 template<typename Scalar>
-bool 
+bool
 LinearAnalysis<Scalar>::succeeded() const
 {
 	return (m_error == Analysis<Scalar>::ERR_OK);
@@ -51,7 +51,7 @@ LinearAnalysis<Scalar>::succeeded() const
 
 
 template<typename Scalar>
-typename Analysis<Scalar>::Error const 
+typename Analysis<Scalar>::Error const
 LinearAnalysis<Scalar>::error() const
 {
 	return m_error;
@@ -59,7 +59,7 @@ LinearAnalysis<Scalar>::error() const
 
 
 template<typename Scalar>
-enum Analysis<Scalar>::Error 
+enum Analysis<Scalar>::Error
 LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult *result, ProgressIndicatorStrategy &progress)
 {
 	using namespace std;
@@ -88,7 +88,7 @@ LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult *resul
 	progress.markSectionEnd();
 
 	progress.markSectionStart("solving FEM equation");
-	progress.markSectionLimit(model.element_list.size());
+	progress.markSectionLimit(model.numberOfElements());
 	this->m_solver->solve(*result, &progress);
 	progress.markSectionEnd();
 
@@ -114,7 +114,7 @@ LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult *resul
 
 
 template<typename Scalar>
-void 
+void
 LinearAnalysis<Scalar>::operator() ()
 {
 	m_error = this->run(*m_model, *m_load_pattern, m_result, *m_progress);

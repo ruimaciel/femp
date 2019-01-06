@@ -33,7 +33,7 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 	Selection s = selection_manager.getSelection();
 	//TODO test memory allocation
 
-	for( std::vector<fem::Element>::size_type n = 0;  n < project.getModel().element_list.size(); n++)
+	for( std::vector<fem::Element>::size_type n = 0;  n < project.getModel().numberOfElements(); n++)
 	{
 		QTreeWidgetItem *item = new QTreeWidgetItem(m_element_item);
 		item->setText(0, QString::number(n));
@@ -43,12 +43,14 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 
 	m_node_item = new QTreeWidgetItem(this->objectTreeWidget);
 	m_node_item->setText(0, tr("Nodes") );
-	for(std::map<fem::node_ref_t, fem::Node>::iterator i = project.getModel().node_list.begin(); i != project.getModel().node_list.end();  i++)
+	for(auto node_pair: project.getModel().getNodeMap())
 	{
+		size_t node_id;
+		std::tie(node_id, std::ignore) = node_pair;
 		QTreeWidgetItem *item = new QTreeWidgetItem(m_node_item);
-		item->setText(0, QString::number(i->first));
-		item->setSelected( s.getNodeReferences().find(i->first) != s.getNodeReferences().end()) ;
-		m_node_map[i->first] = item;
+		item->setText(0, QString::number(node_id));
+		item->setSelected( s.getNodeReferences().find(node_id) != s.getNodeReferences().end()) ;
+		m_node_map[node_id] = item;
 	}
 
 	this->objectTreeWidget->insertTopLevelItem(0, m_element_item);
@@ -57,7 +59,7 @@ SelectionWidget::initializeWidget(fem::Project &project, SelectionManager &selec
 	// initialize groups combo box with the list of defined groups
 	for(size_t i = 0; i < m_selection_groups.size(); i++)
 	{
-		this->groupsComboBox->insertItem(i, QString(m_selection_groups[i].label.c_str()) );
+		this->groupsComboBox->insertItem(i, QString(m_selection_groups[i].getLabel().c_str()) );
 	}
 
 	// connects signals to slots
@@ -138,12 +140,12 @@ SelectionWidget::setGroupList()
 	// set selection group
 	Selection new_selection;
 
-	for(auto node_ref: m_selection_groups[index].m_node_references)
+	for(auto node_ref: m_selection_groups[index].getNodeReferences())
 	{
 		new_selection.selectNode(node_ref);
 	}
 
-	for(auto element_ref: m_selection_groups[index].m_element_references)
+	for(auto element_ref: m_selection_groups[index].getElementReferences())
 	{
 		new_selection.selectElement(element_ref);
 	}
@@ -169,13 +171,14 @@ SelectionWidget::unionGroupList()
 
 	fem::Group &group = m_selection_groups[index];
 
-	for(std::set<fem::element_ref_t>::iterator i =	group.m_element_references.begin(); i != group.m_element_references.end(); i++)
+	for(const auto element_ref: group.getElementReferences())
 	{
-		this->m_element_map[*i]->setSelected(true);
+		this->m_element_map[element_ref]->setSelected(true);
 	}
-	for(std::set<fem::node_ref_t>::iterator i =	group.m_node_references.begin(); i != group.m_node_references.end(); i++)
+
+	for(const auto node_ref: group.getNodeReferences())
 	{
-		this->m_node_map[*i]->setSelected(true);
+		this->m_node_map[node_ref]->setSelected(true);
 	}
 
 	// set selection group
@@ -188,11 +191,13 @@ SelectionWidget::initializeSelectionGroups(fem::Project &project)
 {
 	fem::Model & femp_model = project.getModel();
 
-	for( auto i = femp_model.m_node_groups.begin(); i != femp_model.m_node_groups.end(); i++)
+	for( auto node_group: femp_model.getNodeGroups())
 	{
 		fem::Group group;
-		group.label = i->label;
-		for(auto n = i->begin(); n != i->end(); n++)
+		group.setLabel(node_group.getLabel());
+
+		//TODO migrate to STL algorithms
+		for(auto n = node_group.begin(); n != node_group.end(); n++)
 		{
 			group.pushNode(*n);
 		}
@@ -200,11 +205,13 @@ SelectionWidget::initializeSelectionGroups(fem::Project &project)
 		m_selection_groups.push_back(group);
 	}
 
-	for( auto i = femp_model.m_element_groups.begin(); i != femp_model.m_element_groups.end(); i++)
+	for( auto element_group: femp_model.getNodeGroups())
 	{
 		fem::Group group;
-		group.label = i->label;
-		for(auto n = i->begin(); n != i->end(); n++)
+		group.setLabel(element_group.getLabel());
+
+		//TODO migrate to STL algorithms
+		for(auto n = element_group.begin(); n != element_group.end(); n++)
 		{
 			group.pushElement(*n);
 		}

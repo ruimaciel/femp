@@ -59,15 +59,16 @@ BaseViewport::initializeGL()
 	// set the state->camera position according to the nodal center
 	double pos[3] = {0};
 	fem::Model &femp_model = project->getModel();
-	for(std::map<size_t, fem::Node>::iterator it = femp_model.node_list.begin(); it != femp_model.node_list.end(); it++)
+	auto node_list = femp_model.getNodeMap();
+	for(auto node: node_list)
 	{
-		pos[0] -= it->second.x();
-		pos[1] -= it->second.y();
-		pos[2] -= it->second.z();
+		pos[0] -= node.second.x();
+		pos[1] -= node.second.y();
+		pos[2] -= node.second.z();
 
 		viewport_data.camera.reset();
 		viewport_data.camera.setCenter(0,0,-500);
-		viewport_data.camera.setPosition(pos[0]/femp_model.node_list.size(),pos[1]/femp_model.node_list.size(),pos[2]/femp_model.node_list.size());
+		viewport_data.camera.setPosition(pos[0]/node_list.size(),pos[1]/node_list.size(),pos[2]/node_list.size());
 	}
 
 	// handle opengl

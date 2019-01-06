@@ -5,9 +5,9 @@
 #include <limits>	// for infinite
 
 // Constructors/Destructors
-//  
+//
 
-StressFieldRepresentationPolicy::StressFieldRepresentationPolicy ( ) 
+StressFieldRepresentationPolicy::StressFieldRepresentationPolicy ( )
 {
 	m_model = nullptr;
 	m_result = nullptr;
@@ -18,9 +18,9 @@ StressFieldRepresentationPolicy::StressFieldRepresentationPolicy ( )
 }
 
 
-//  
+//
 // Methods
-//  
+//
 
 void
 StressFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy *)
@@ -42,7 +42,7 @@ StressFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &ref, fem::El
 
 	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
- 
+
 
 /**
  */
@@ -58,7 +58,7 @@ StressFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &ref, fem::Elem
 void
 StressFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
 {
-	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);	
+	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
@@ -98,14 +98,14 @@ StressFieldRepresentationPolicy::prism18 (fem::element_ref_t const &ref, fem::El
 }
 
 
-void 
+void
 StressFieldRepresentationPolicy::setModel(fem::Model &model)
 {
 	m_model = &model;
 }
 
 
-void 
+void
 StressFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult &result)
 {
 	m_result = &result;
@@ -115,7 +115,7 @@ StressFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult &result)
 }
 
 
-void 
+void
 StressFieldRepresentationPolicy::showNegativePrincipalStressesVisibility(bool state)
 {
 	m_negative_principal_stress_visible = state;
@@ -129,14 +129,14 @@ StressFieldRepresentationPolicy::showPositivePrincipalStressesVisibility(bool st
 }
 
 
-void 
+void
 StressFieldRepresentationPolicy::generateData()
 {
 	assert(m_model != NULL);
 
 	StressFieldRepresentation::StressFieldFactory factory(m_diameter, *this->m_model, *this->m_result);
 
-	for( std::vector<fem::Element>::size_type n = 0; n < m_model->element_list.size(); n++)
+	for( std::vector<fem::Element>::size_type n = 0; n < m_model->numberOfElements(); n++)
 	{
 		m_representation[n] = factory(m_model->element_list[n]);
 	}

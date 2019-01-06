@@ -813,7 +813,7 @@ MainWindow::runAnalysis()
 	fem::Model &femp_model = this->m_document.getProject().getModel();
 
 	// check if ther is a load pattern
-	if( femp_model.load_pattern_list.empty() )
+	if( femp_model.getLoadPatternList().empty() )
 	{
 		QMessageBox::critical(this, "No load patterns", "This model doesn't have any load patterns to run");
 		return;

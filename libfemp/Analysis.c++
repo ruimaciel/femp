@@ -15,7 +15,7 @@ Analysis<Scalar>::buildEquation(Model &model, const LoadPattern &lp, AnalysisRes
 	using namespace std;
 
 	// perform sanity checks on the model
-	if(model.element_list.empty() )
+	if(model.getElementList().empty() )
 		return ERR_NO_ELEMENTS;
 
 		// generate the location matrix
@@ -23,7 +23,7 @@ Analysis<Scalar>::buildEquation(Model &model, const LoadPattern &lp, AnalysisRes
 
 		// generate stiffness matrix by cycling through all elements in the model
 	progress.markSectionStart("stiffness matrix");
-	progress.markSectionLimit(model.element_list.size());
+	progress.markSectionLimit(model.numberOfElements());
 
 	Error error;
 
@@ -82,9 +82,9 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult &re
 	using namespace Eigen;
 	Matrix<double,Dynamic, Dynamic> k_elem;
 
-	for(Element &el: model.element_list)
+	for(Element el: model.getElementList())
 	{
-		BaseElement *element = getElement(el); //TODO remove after migration to polymorphic elements
+		std::unique_ptr<BaseElement> element(getElement(el)); //TODO remove after migration to polymorphic elements
 
 		k_elem = element->getStiffnessMatrix(model);
 
@@ -93,8 +93,6 @@ Analysis<Scalar>::generateGlobalStiffnessMatrix(Model &model, AnalysisResult &re
 
 		// mark progress
 		progress.markSectionIterationIncrement();
-
-		delete element;	//TODO remove after migration to polymorphic elements
 	}
 
 	// fem equation is set.
@@ -117,7 +115,7 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 		fem::Element &el = model.element_list[domain_load->first];
 
 		// set the routines for the current element
-		BaseElement *element = getElement(el);
+		std::unique_ptr<BaseElement> element(getElement(el));
 
 		const int nnodes = element->getNodeAmount();
 		f_elem.resize(nnodes*3);
@@ -179,7 +177,7 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 		for(size_t i = 0; i < model.element_list[domain_load->first].nodes.size(); i++)
 		{
 			std::map<size_t, boost::tuple<size_t, size_t, size_t> >::iterator dof;	// for the force vector scatter operation
-			dof = result.lm.find(model.element_list[domain_load->first].nodes[i]);
+			dof = result.lm.find(model.getElementByIndex(domain_load->first).nodes[i]);
 			if(dof == result.lm.end())
 				continue;	// no degrees of freedom on this node
 			else
@@ -196,8 +194,6 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			}
 		}
 		progress.markSectionIterationIncrement();
-
-		delete element;	//TODO remove after migration to polymorphic elements
 	}
 
 	// fem equation is set.
@@ -322,15 +318,18 @@ Analysis<Scalar>::generateDisplacementsMap(Model &model, AnalysisResult &result)
 
 	result.displacements.clear();
 
-	for( std::map<size_t, Node>::iterator i = model.node_list.begin(); i != model.node_list.end(); i++)
+	for(auto node_pair: model.getNodeMap())
 	{
-		references = result.lm[i->first];
+		size_t node_id = 0;
+		std::tie(node_id, std::ignore) = node_pair;
+
+		references = result.lm[node_id];
 
 		d.data[0] = (references.get<0>() == 0)? 0 : result.d(references.get<0>()-1);
 		d.data[1] = (references.get<1>() == 0)? 0 : result.d(references.get<1>()-1);
 		d.data[2] = (references.get<2>() == 0)? 0 : result.d(references.get<2>()-1);
 
-		result.displacements[i->first] = d;
+		result.displacements[node_id] = d;
 	}
 }
 
@@ -342,9 +341,9 @@ Analysis<Scalar>::recoverValues(Model &model, AnalysisResult &result)
 	ElementResultsFactory factory(model, result);
 	ElementResults *element_results;
 
-	for(element_ref_t n = 0; n < model.element_list.size(); n++)
+	for(element_ref_t n = 0; n < model.numberOfElements(); n++)
 	{
-		element_results = factory(model.element_list[n]);
+		element_results = factory(model.getElementByIndex(n));
 		// TODO test memory allocation
 		result.results[n] = element_results;
 	}
@@ -369,32 +368,35 @@ Analysis<Scalar>::makeLocationMatrix(Model &model, AnalysisResult &result)
 	size_t dof = 1;	// degree of freedom count, the 0 value is interpreted as a prescribed movement
 
 	// iterate through the node list
-	for(std::map<size_t, fem::Node>::iterator i = model.node_list.begin(); i != model.node_list.end(); i++)
+	for(auto node_pair: model.getNodeMap())
 	{
-		if(model.node_restrictions_list.find(i->first) == model.node_restrictions_list.end())
+		size_t node_id = 0;
+		std::tie(node_id,std::ignore) = node_pair;
+		if(model.node_restrictions_list.find(node_id) == model.node_restrictions_list.end())
 		{
 			// there are no node restrictions set for this node
-			result.lm[i->first].template get<0>() = dof++;
-			result.lm[i->first].template get<1>() = dof++;
-			result.lm[i->first].template get<2>() = dof++;
+			result.lm[node_id].template get<0>() = dof++;
+			result.lm[node_id].template get<1>() = dof++;
+			result.lm[node_id].template get<2>() = dof++;
 		}
 		else
 		{
 				// there are some node restrictions set for this node
-			if(model.node_restrictions_list[i->first].dx() == false)
-				result.lm[i->first].template get<0>() = dof++;
+			NodeRestrictions node_restriction = model.getNodeRestrictionsByIndex(node_id);
+			if(node_restriction.dx() == false)
+				result.lm[node_id].template get<0>() = dof++;
 			else
-				result.lm[i->first].template get<0>() = 0;
+				result.lm[node_id].template get<0>() = 0;
 
-			if(model.node_restrictions_list[i->first].dy() == false)
-				result.lm[i->first].template get<1>() = dof++;
+			if(node_restriction.dy() == false)
+				result.lm[node_id].template get<1>() = dof++;
 			else
-				result.lm[i->first].template get<1>() = 0;
+				result.lm[node_id].template get<1>() = 0;
 
-			if(model.node_restrictions_list[i->first].dz() == false)
-				result.lm[i->first].template get<2>() = dof++;
+			if(node_restriction.dz() == false)
+				result.lm[node_id].template get<2>() = dof++;
 			else
-				result.lm[i->first].template get<2>() = 0;
+				result.lm[node_id].template get<2>() = 0;
 		}
 	}
 

@@ -24,16 +24,15 @@ ElementGroup::end()
 	return this->m_element_reference_list.end();
 }
 
-void
-ElementGroup::clear()
-{
-	this->label.clear();
-	this->m_element_reference_list.clear();
-}
-
 std::string ElementGroup::getLabel()
 {
-	return label;
+	return m_label;
+}
+
+void
+ElementGroup::setLabel(std::string label)
+{
+	this->m_label = label;
 }
 
 

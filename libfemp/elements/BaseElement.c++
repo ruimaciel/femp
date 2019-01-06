@@ -7,14 +7,14 @@
 namespace fem
 {
 
-std::vector<size_t> 
+std::vector<size_t>
 BaseElement::getNodeReferences() const
 {
 	return this->nodes;
 }
 
 
-Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> 
+Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>
 BaseElement::getStiffnessMatrix(fem::Model &model)
 {
 	using namespace Eigen;
@@ -48,7 +48,7 @@ BaseElement::getStiffnessMatrix(fem::Model &model)
 	B.setZero();
 
 	//TODO fix how the material properties are passed
-	const fem::Material &material = model.material_list[this->material];
+	const fem::Material material = model.getMaterialByIndex(this->material);
 	Matrix<double,6,6> D = material.generateD().cast<double>();
 
 	// build the stiffness matrix: cycle through the number of integration points
@@ -131,14 +131,14 @@ Given n, this
 routine returns arrays x[1..n] and w[1..n] of length n, containing the abscissas
 and weights of the Gauss-Legendre n-Point quadrature formula.
 *******************************************************************************/
-void 
+void
 BaseElement::gauleg (double x[], double w[], int n)
 {
 	int m,j,i;
 	double z1,z,pp,p3,p2,p1;
 	m=(n+1)/2; /* The roots are symmetric, so we only find half of them. */
 
-	for (i=1;i<=m;i++) 
+	for (i=1;i<=m;i++)
 	{ /* Loop over the desired roots. */
 		z=cos(3.141592654*(i-0.25)/(n+0.5));
 		/* Starting with the above approximation to the ith root, we enter */

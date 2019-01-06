@@ -13,8 +13,8 @@ Surface::set(Element::Type &type, std::vector<size_t> &nodes)
 	if(!compatible(type,nodes))
 		return false;
 
-	this->type = type;
-	this->nodes = nodes;
+	this->m_type = type;
+	this->m_node_references = nodes;
 
 	return true;
 }
@@ -495,14 +495,14 @@ Surface::pushElementReference(const size_t reference, const Element::Type &eleme
 			assert(false);
 			break;
 	}
-	this->elements.push_back(re);
+	this->m_elements.push_back(re);
 }
 
 
 bool
 Surface::internal()
 {
-	return elements.size() > 1? true: false;
+	return m_elements.size() > 1? true: false;
 }
 
 
@@ -516,7 +516,7 @@ Surface::external()
 Element::Type
 Surface::getType()
 {
-	return type;
+	return m_type;
 }
 
 
@@ -580,20 +580,20 @@ Surface::operator==(const Surface &other) const
 {
 	using namespace std;
 
-	if(this->type != other.type)
+	if(this->m_type != other.m_type)
 		return false;
 
 	// test if both surfaces contain the same nodes
 	vector<size_t>::const_iterator i, j;
-	for(i = this->nodes.begin(); i != this->nodes.end(); i++)
+	for(i = this->m_node_references.begin(); i != this->m_node_references.end(); i++)
 	{
-		for(j = other.nodes.begin(); j != other.nodes.end(); j++)
+		for(j = other.m_node_references.begin(); j != other.m_node_references.end(); j++)
 		{
 			if(*j == *i)
 				break;
 		}
 
-		if(j == other.nodes.end())
+		if(j == other.m_node_references.end())
 			return false;
 	}
 

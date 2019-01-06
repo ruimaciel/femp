@@ -58,16 +58,16 @@ VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 	fem::Model &femp_model = viewport->project->getModel();
 
 	// add the nodes to the scenegraph
-	for(std::map<size_t, fem::Node>::iterator i = femp_model.node_list.begin(); i != femp_model.node_list.end(); i++)
+	for(auto node: femp_model.getNodeMap())
 	{
-		component =  new SGC::Node(i->first, i->second, &this->m_displacements);
+		component =  new SGC::Node(node.first, node.second, &this->m_displacements);
 		if(component)
 			this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
 	}
 
-	for( std::map<fem::node_restriction_ref_t, fem::NodeRestrictions>::iterator i = femp_model.node_restrictions_list.begin(); i != femp_model.node_restrictions_list.end(); i++)
+	for(auto node_restrictions_pair: femp_model.getNodeRestrictions())
 	{
-		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, new SGC::NodeRestrictions(i->first, i->first, i->second, &this->m_displacements) );
+		this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, new SGC::NodeRestrictions(node_restrictions_pair.first, node_restrictions_pair.first, node_restrictions_pair.second, &this->m_displacements) );
 	}
 
 	// add the elements to the scenegraph

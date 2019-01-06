@@ -204,21 +204,21 @@ AnalysisResultsModel::data(const QModelIndex &index, int role ) const
 		case 4:	// node coordinate: x
 		{
 			fem::node_ref_t nref = m_project->getModel().element_list[eref].nodes[local_ref];
-			return QVariant(m_project->getModel().node_list[nref].x());
+			return QVariant(m_project->getModel().getNode(nref).x());
 		}
 			break;
 
 		case 5:	// node coordinate: y
 		{
 			fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
-			return QVariant(femp_model.node_list[nref].y());
+			return QVariant(femp_model.getNode(nref).y());
 		}
 			break;
 
 		case 6:	// node coordinate: z
 		{
 			fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
-			return QVariant(femp_model.node_list[nref].z());
+			return QVariant(femp_model.getNode(nref).z());
 		}
 			break;
 

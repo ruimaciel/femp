@@ -7,7 +7,7 @@ PostprocessingViewport::PostprocessingViewport(fem::Project &project, fem::Analy
 	: BaseViewport(project, parent)
 {
 	this->project = &project;
-	this->m_analysis_result = NULL;
+	this->m_analysis_result = nullptr;
 	this->setAnalysisResult(result);
 	this->setResultsRanges(ranges);
 
@@ -16,7 +16,7 @@ PostprocessingViewport::PostprocessingViewport(fem::Project &project, fem::Analy
 	// set this widget's load pattern pointer
 	if(project.getModel().load_pattern_list.empty())
 	{
-		Options::getInstance().getDisplayOptions().load_pattern = NULL;
+		Options::getInstance().getDisplayOptions().load_pattern = nullptr;
 	}
 	else
 	{
@@ -48,14 +48,14 @@ PostprocessingViewport::setResultsRanges(fem::ResultsRanges<double> &ranges)
 }
 
 
-void 
+void
 PostprocessingViewport::showDisplacements()
 {
 	this->setState(&this->m_vp_state_displacements);
 }
 
 
-void 
+void
 PostprocessingViewport::showStrain11()
 {
 	this->m_vp_state_gradients.renderStrains11();
@@ -63,7 +63,7 @@ PostprocessingViewport::showStrain11()
 }
 
 
-void 
+void
 PostprocessingViewport::showStrain22()
 {
 	this->m_vp_state_gradients.renderStrains22();
@@ -71,7 +71,7 @@ PostprocessingViewport::showStrain22()
 }
 
 
-void 
+void
 PostprocessingViewport::showStrain33()
 {
 	this->m_vp_state_gradients.renderStrains33();
@@ -79,7 +79,7 @@ PostprocessingViewport::showStrain33()
 }
 
 
-void 
+void
 PostprocessingViewport::showStrain12()
 {
 	this->m_vp_state_gradients.renderStrains12();
@@ -87,7 +87,7 @@ PostprocessingViewport::showStrain12()
 }
 
 
-void 
+void
 PostprocessingViewport::showStrain23()
 {
 	this->m_vp_state_gradients.renderStrains23();
@@ -95,7 +95,7 @@ PostprocessingViewport::showStrain23()
 }
 
 
-void 
+void
 PostprocessingViewport::showStrain13()
 {
 	this->m_vp_state_gradients.renderStrains13();
@@ -103,7 +103,7 @@ PostprocessingViewport::showStrain13()
 }
 
 
-void 
+void
 PostprocessingViewport::showStress11()
 {
 	this->m_vp_state_gradients.renderStresses11();
@@ -112,7 +112,7 @@ PostprocessingViewport::showStress11()
 
 
 
-void 
+void
 PostprocessingViewport::showStress22()
 {
 	this->m_vp_state_gradients.renderStresses22();
@@ -120,7 +120,7 @@ PostprocessingViewport::showStress22()
 }
 
 
-void 
+void
 PostprocessingViewport::showStress33()
 {
 	this->m_vp_state_gradients.renderStresses33();
@@ -128,7 +128,7 @@ PostprocessingViewport::showStress33()
 }
 
 
-void 
+void
 PostprocessingViewport::showStress12()
 {
 	this->m_vp_state_gradients.renderStresses12();
@@ -136,7 +136,7 @@ PostprocessingViewport::showStress12()
 }
 
 
-void 
+void
 PostprocessingViewport::showStress23()
 {
 	this->m_vp_state_gradients.renderStresses23();
@@ -144,7 +144,7 @@ PostprocessingViewport::showStress23()
 }
 
 
-void 
+void
 PostprocessingViewport::showStress13()
 {
 	this->m_vp_state_gradients.renderStresses13();
@@ -152,7 +152,7 @@ PostprocessingViewport::showStress13()
 }
 
 
-void 
+void
 PostprocessingViewport::showVonMises()
 {
 	this->m_vp_state_gradients.renderVonMises();

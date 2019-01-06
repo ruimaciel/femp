@@ -26,7 +26,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 	std::vector<fem::Point3D>	local_points;	// list of local_points coordinates where the tensors will be evaluated
 	fem::Point3D dxdcsi, dxdeta, dxdzeta;
 
-	float e11, e22, e33, e12, e13, e23;
+	double e11, e22, e33, e12, e13, e23;
 
 	// helper
 	//auto di = [&m_diameter, &m_model, &element](float const scale, std::initializer_list< std::pair<fem::node_ref_t, fem::node_ref_t> > list)
@@ -34,7 +34,8 @@ StressFieldFactory::operator() (fem::Element const &element)
 	{
 		for(auto a: list)
 		{
-			fem::Point3D d = m_model->node_list[element.getNode(a.second)]-m_model->node_list[element.getNode(a.first)];
+			auto node_list = m_model->getNodeMap();
+			fem::Point3D d = node_list[element.getNode(a.second)] - node_list[element.getNode(a.first)];
 			if(scale*scale*dot_product(d,d) < (*m_diameter)*(*m_diameter))
 				*m_diameter = scale*d.norm();
 		}
@@ -177,9 +178,9 @@ StressFieldFactory::operator() (fem::Element const &element)
 		//m_gradient_value[coord] = 0;
 
 		// set strains
-		float dNdx = 0;
-		float dNdy = 0;
-		float dNdz = 0;
+		double dNdx = 0;
+		double dNdy = 0;
+		double dNdz = 0;
 
 		// iterate through each node in the element
 		for(unsigned int node = 0; node < coordinates.size(); node++)
@@ -201,9 +202,9 @@ StressFieldFactory::operator() (fem::Element const &element)
 			e23 += dNdy*d.z() + dNdz*d.y();
 		}
 
-		float E, nu;
-		E = this->m_model->material_list[element.material].E;
-		nu = this->m_model->material_list[element.material].nu;
+		auto material = m_model->getMaterialByIndex(element.material);
+		const double E = material.E;
+		const double nu = material.nu;
 
 		// now, set up the stress vector
 		A[0][0] = ( (1-nu)*e11 + nu*e22 + nu*e33 )*E/((1+nu)*(1-2*nu)) ;
@@ -222,7 +223,7 @@ StressFieldFactory::operator() (fem::Element const &element)
 		auto N = e->getN(local);
 		for(std::vector<fem::node_ref_t>::size_type n = 0; n < N.size(); n++)
 		{
-			pos += N[n]*m_model->node_list[ element.getNode(n)];
+			pos += N[n]*m_model->getNode( element.getNode(n));
 		}
 
 

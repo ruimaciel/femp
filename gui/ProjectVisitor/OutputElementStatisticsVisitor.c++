@@ -24,7 +24,7 @@ OutputElementStatisticsVisitor::visit(fem::Model &model, std::vector<fem::Analys
 	float di = std::numeric_limits<float>::max();	// minimum/internal diameter
 
 
-	for(auto element: model.element_list)
+	for(auto element: model.getElementList())
 	{
 		auto dim = [&](fem::node_ref_t i, fem::node_ref_t j) -> float
 		{

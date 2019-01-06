@@ -15,11 +15,7 @@ Class intended to represent a group of nodes
 **/
 class NodeGroup
 {
-protected:
-	std::vector<size_t>	m_node_reference_list;
-
 public:
-	std::string	label;
 
 	/**
 	adds a new node to the list
@@ -28,11 +24,19 @@ public:
 
 	// iterators
 	typedef std::vector<size_t>::const_iterator const_iterator;
-	std::vector<size_t>::const_iterator begin();	
+	std::vector<size_t>::const_iterator begin();
 	std::vector<size_t>::const_iterator end();
-	
+
 	// clears the definition;
 	void clear();
+
+	std::string getLabel() const;
+	void setLabel(std::string m_label);
+
+protected:
+	std::vector<size_t>	m_node_reference_list;
+	std::string	m_label;
+
 };
 
 }

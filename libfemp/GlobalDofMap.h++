@@ -30,11 +30,6 @@ public:
 	GlobalDofMap();
 
 	/**
-	 * Clears the mapping
-	 **/
-	void clear();
-
-	/**
 	 * adds a GlobalDof to the index
 	 **/
 	void pushGlobalDof(GlobalDof const &gdof);

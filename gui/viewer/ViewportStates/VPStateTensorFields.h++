@@ -18,7 +18,7 @@
 class BaseViewport;
 
 /*
-A pattern for the State pattern which is used to render the tension fields 
+A pattern for the State pattern which is used to render the tension fields
 */
 class VPStateTensorFields
 	:public ViewportState

@@ -12,14 +12,7 @@ GlobalDofMap::GlobalDofMap()
 }
 
 
-void 
-GlobalDofMap::clear()
-{
-	this->m_global_dof_map.clear();
-}
-
-
-void 
+void
 GlobalDofMap::pushGlobalDof(GlobalDof const &new_gdof)
 {
 	struct MappingData new_data;
@@ -32,7 +25,7 @@ GlobalDofMap::pushGlobalDof(GlobalDof const &new_gdof)
 }
 
 
-size_t 
+size_t
 GlobalDofMap::getIndex(GlobalDof const &gdof) const
 {
 	std::map<GlobalDof, MappingData>::const_iterator it;

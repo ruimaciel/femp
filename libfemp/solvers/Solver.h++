@@ -16,14 +16,14 @@ template<typename Scalar>
 class Solver
 {
 public:
-	enum Error {	
+	enum Error {
 		ERR_OK = 0,	// no error
 		ERR_SINGULAR_MATRIX,
 		ERR_NEGATIVE_DETERMINANT,
 		ERR_UNKNOWN
 	};
 
-	virtual ~Solver() {};
+	virtual ~Solver() {}
 
 	/*
 	If necessary, initializes any data structure specific for this solver

@@ -63,7 +63,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 			nonterminal_token = ss.top();
 			ss.pop();
 			//std::cout << "table[\t" << names(nonterminal_token) << "\t]\t[\t" << names(terminal_token) << "\t]" << std::endl;
-			switch( table[(enum NonTerminalTokens)nonterminal_token][terminal_token] )	
+			switch( table[(enum NonTerminalTokens)nonterminal_token][terminal_token] )
 			{
 				case PR_LABEL:
 					ss.push(NT_LABEL_SET);
@@ -576,49 +576,49 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 
 				case PR_ELEMENT_HEXAHEDRON20_SET:
 					element.clear();
-					element.type = fem::Element::FE_HEXAHEDRON20; 
+					element.type = fem::Element::FE_HEXAHEDRON20;
 					element.nodes = reference;
 					reference.clear();
 					break;
 
 				case PR_ELEMENT_HEXAHEDRON27_SET:
 					element.clear();
-					element.type = fem::Element::FE_HEXAHEDRON27; 
+					element.type = fem::Element::FE_HEXAHEDRON27;
 					element.nodes = reference;
 					reference.clear();
 					break;
 
 				case PR_ELEMENT_TETRAHEDRON4_SET:
 					element.clear();
-					element.type = fem::Element::FE_TETRAHEDRON4; 
+					element.type = fem::Element::FE_TETRAHEDRON4;
 					element.nodes = reference;
 					reference.clear();
 					break;
 
 				case PR_ELEMENT_TETRAHEDRON10_SET:
 					element.clear();
-					element.type = fem::Element::FE_TETRAHEDRON10; 
+					element.type = fem::Element::FE_TETRAHEDRON10;
 					element.nodes = reference;
 					reference.clear();
 					break;
 
 				case PR_ELEMENT_PRISM6_SET:
 					element.clear();
-					element.type = fem::Element::FE_PRISM6; 
+					element.type = fem::Element::FE_PRISM6;
 					element.nodes = reference;
 					reference.clear();
 					break;
 
 				case PR_ELEMENT_PRISM15_SET:
 					element.clear();
-					element.type = fem::Element::FE_PRISM15; 
+					element.type = fem::Element::FE_PRISM15;
 					element.nodes = reference;
 					reference.clear();
 					break;
 
 				case PR_ELEMENT_PRISM18_SET:
 					element.clear();
-					element.type = fem::Element::FE_PRISM18; 
+					element.type = fem::Element::FE_PRISM18;
 					element.nodes = reference;
 					reference.clear();
 					break;
@@ -742,10 +742,10 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 				case PR_NODE_GROUP_SET:
 					{
 						fem::NodeGroup n;
-						n.label = label;
+						n.setLabel(label);
 						for(std::vector<size_t>::const_iterator i = reference.begin(); i != reference.end(); i++)
 						{
-							if(*i < model.node_list.size())
+							if(*i < model.getNodeMap().size())
 								n.pushNode(*i);
 							else
 							{
@@ -799,7 +799,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 				case PR_ELEMENT_GROUP_SET:
 					{
 						fem::ElementGroup e;
-						e.label = label;
+						e.setLabel(label);
 						for(std::vector<size_t>::const_iterator i = reference.begin(); i != reference.end(); i++)
 						{
 							e.pushElement(*i);
@@ -1279,7 +1279,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 
 				case PR_SURFACE_LOADS_LIST_FOLLOW_2:
 					break;
-							
+
 				case PR_SURFACE_LOADS_LIST_FOLLOW_FOLLOW_1:
 					ss.push(NT_DOMAIN_LOADS_LIST_FOLLOW);
 					ss.push(NT_DOMAIN_LOADS_LIST);
@@ -1391,7 +1391,7 @@ enum FemJsonParser::Error::Type  FemJsonParser::parse(std::istream &file, fem::M
 }
 
 
-enum FemJsonParser::TerminalTokens 
+enum FemJsonParser::TerminalTokens
 FemJsonParser::lexer(std::istream &file)
 {
 	#define YYFILL fill(file);
@@ -3247,7 +3247,7 @@ void FemJsonParser::setParserTable()
 
 	table	[NT_START]		[TT_OBJECT_OPEN]	=	PR_START_1;
 	table	[NT_START]		[TT_EOF]		=	PR_START_2;
-	
+
 	table	[NT_DOCUMENT]		[TT_OBJECT_OPEN]		=	PR_DOCUMENT_1;
 
 	table	[NT_HEADER]		[TT_LABEL_FEM]		=	PR_HEADER_1;
@@ -3472,7 +3472,7 @@ void FemJsonParser::setParserTable()
 	table	[NT_LOAD_PATTERN_FOLLOW]	[TT_VALUE_SEPARATOR]		=	PR_LOAD_PATTERN_FOLLOW_1;
 	table	[NT_LOAD_PATTERN_FOLLOW]	[TT_ARRAY_CLOSE]		=	PR_LOAD_PATTERN_FOLLOW_2;
 	table	[NT_LOAD_PATTERNS_LIST_FOLLOW]	[TT_OBJECT_CLOSE]		=	PR_LOAD_PATTERNS_LIST_FOLLOW_1;
-} 
+}
 
 
 enum FemJsonParser::TerminalTokens FemJsonParser::lexerReturnProcedures(TerminalTokens tt)

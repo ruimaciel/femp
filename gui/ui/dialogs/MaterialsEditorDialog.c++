@@ -28,9 +28,10 @@ MaterialsEditorDialog::~MaterialsEditorDialog()
 
 void MaterialsEditorDialog::loadMaterials()
 {
-	for(size_t i = 0; i < model->material_list.size(); i++)
+	auto material_list = model->getMaterialList();
+	for(size_t i = 0; i < material_list.size(); i++)
 	{
-		this->listWidgetMaterials->insertItem(i, QString::fromStdString(model->material_list[i].label));
+		this->listWidgetMaterials->insertItem(int(i), QString::fromStdString(material_list[i].label));
 	}
 }
 

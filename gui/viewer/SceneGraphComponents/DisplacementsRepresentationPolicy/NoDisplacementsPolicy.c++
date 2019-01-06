@@ -4,21 +4,21 @@
 
 
 // Constructors/Destructors
-//  
+//
 
-NoDisplacementsPolicy::NoDisplacementsPolicy ( ) 
+NoDisplacementsPolicy::NoDisplacementsPolicy ( )
 {
 }
 
-NoDisplacementsPolicy::~NoDisplacementsPolicy ( ) 
-{ 
+NoDisplacementsPolicy::~NoDisplacementsPolicy ( )
+{
 }
 
 
 fem::Point3D
 NoDisplacementsPolicy::operator[](size_t &node_reference)
 {
-	assert(this->m_model != NULL);
+	assert(this->m_model != nullptr);
 
-	return this->m_model->node_list[node_reference];
+	return this->m_model->getNode(node_reference);
 }

@@ -13,12 +13,7 @@ Class intended to represent a group of elements
 **/
 class ElementGroup
 {
-protected:
-	std::vector<size_t>	m_element_reference_list;
-
 public:
-	std::string	label;
-
 	/**
 	adds a new element to the list
 	**/
@@ -29,10 +24,12 @@ public:
 	std::vector<size_t>::const_iterator begin();
 	std::vector<size_t>::const_iterator end();
 
-	// clears the definition;
-	void clear();
-
 	std::string getLabel();
+	void setLabel(std::string m_label);
+
+protected:
+	std::vector<size_t>	m_element_reference_list;
+	std::string	m_label;
 };
 
 }	// namespace fem

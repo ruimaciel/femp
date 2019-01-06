@@ -4,12 +4,13 @@
 
 #include <libfemp/LoadPattern.h++>
 
-/** 
+/**
 Helper class belonging to glwidget (a has-a relationship) that states what model properties should be rendered
 **/
 
-struct DisplayOptions 
+struct DisplayOptions
 {
+	//FIXIT don't include load pattern as a display option
 	fem::LoadPattern	*load_pattern;	//	pointer to the load pattern to be displayed
 
 	// boolean

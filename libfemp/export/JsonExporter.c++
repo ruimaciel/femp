@@ -15,25 +15,28 @@ JsonExporter::output(std::ostream & out, const fem::Model &model)
 
 	// dump the materials list
 	out << "\t\"materials\": [";
-	for (std::vector<fem::Material>::const_iterator it = model.material_list.begin(); it != model.material_list.end(); it++)
+	auto material_list = model.getMaterialList();
+
+	for (std::vector<fem::Material>::const_iterator material = material_list.begin(); material != material_list.end(); material++)
 	{
 		// to print the comman between entries and avoiding printing it
 		// after the last
-		if (it != model.material_list.begin())
+		if (material != material_list.begin())
 		{
 			out << ",";
 		}
 		out << "\n\t";
 
-		out << "\t{\"type\":" << "\"linear elastic\", \"label\": \"" << it->label << "\", \"E\":" << it->E << ",\"nu\":" << it-> nu << ", \"fy\": " << it->fy << "}";
+		out << "\t{\"type\":" << "\"linear elastic\", \"label\": \"" << material->label << "\", \"E\":" << material->E << ",\"nu\":" << material-> nu << ", \"fy\": " << material->fy << "}";
 	}
 	out << "\n\t],\n";
 
 	// dump the nodes list
 	out << "\t\"nodes\":[";
-	for (std::map < fem::node_ref_t, fem::Node >::const_iterator it = model.node_list.begin(); it != model.node_list.end(); it++)
+	auto node_list = model.getNodeMap();
+	for (std::map < fem::node_ref_t, fem::Node >::const_iterator it = node_list.begin(); it != node_list.end(); it++)
 	{
-		if (it != model.node_list.begin()){
+		if (it != node_list.begin()){
 			out << ",";
 		}
 		out << "\n\t";
@@ -44,15 +47,16 @@ JsonExporter::output(std::ostream & out, const fem::Model &model)
 	// dump the elements list
 	out << "\t\"elements\":[";
 	fem::material_ref_t material = 0;
-	for (std::vector < fem::Element >::const_iterator it = model.element_list.begin(); it != model.element_list.end(); it++)
+	auto element_list = model.getElementList();
+	for (std::vector < fem::Element >::const_iterator element = element_list.begin(); element != element_list.end(); element++)
 	{
-		if (it != model.element_list.begin()){
+		if (element != model.element_list.begin()){
 			out << ",";
 		}
 		out << "\n\t\t";
 		out << "{\"type\":";
 		// get the name of the element
-		switch (it->type)
+		switch (element->type)
 		{
 		case fem::Element::FE_TETRAHEDRON4:
 			out << "\"tetrahedron4\", ";
@@ -95,42 +99,45 @@ JsonExporter::output(std::ostream & out, const fem::Model &model)
 
 		// output the element's nodes
 		out << "\"nodes\":[";
-		for (std::vector < size_t >::const_iterator n = it->nodes.begin();
-			 n != it->nodes.end(); n++) {
-			if (n != it->nodes.begin())
+		for (std::vector < size_t >::const_iterator n = element->nodes.begin();
+			 n != element->nodes.end(); n++) {
+			if (n != element->nodes.begin())
 				out << ",";
 			out << *n;
 		}
 
 		out << "]";
 		// output the element's material
-		if ((it->material != material)
-				|| (it == model.element_list.begin())) {
-			material = it->material;
+		if ((element->material != material)
+				|| (element == model.element_list.begin())) {
+			material = element->material;
 			out << ", \"material\": " << material;
 		}
 		out << "}";
 	}
 	out << "\n\t]";
 
-	if(model.m_node_groups.size() > 0 && model.m_node_groups.size() > 0 )
+	//TODO refactor this part
+	auto node_groups = model.getNodeGroups();
+	auto element_groups = model.getElementGroups();
+	if(node_groups.size() > 0 )
 	{
 		out << ",\n";
 		out << "\n\t";
 		out << "\"groups\": {";
-		if(model.m_node_groups.size() > 0)
+		auto node_groups = model.getNodeGroups();
+		if(node_groups.size() > 0)
 		{
 			// output node groups
 			out << "\n\t\t";
 			out << "\"nodes\": [";
 			out << "\n\t\t\t";
 
-//			for(std::vector<fem::NodeGroup>::const_iterator node_group = model.m_node_groups.begin(); node_group != model.m_node_groups.end(); ++node_group)
-			for(auto node_group: model.m_node_groups)
+			for(auto node_group: node_groups)
 			{
 				out << "{";
 				out << "\n\t\t\t\t";
-				out << "\"label\": \"" << node_group.label << "\",";
+				out << "\"label\": \"" << node_group.getLabel() << "\",";
 				out << "\n\t\t\t\t";
 				out << "\"nodes\": [";
 				fem::NodeGroup::const_iterator i = node_group.begin();
@@ -149,19 +156,18 @@ JsonExporter::output(std::ostream & out, const fem::Model &model)
 			// iterate each group
 			out << "\n\t\t";
 			out << "]";
-			if(model.m_element_groups.size() > 0)
+			if(element_groups.size() > 0)
 				out << ",";
 		}
 
-		if(model.m_element_groups.size() > 0)
+		if(element_groups.size() > 0)
 		{
 			// output element groups
 			out << "\n\t\t";
 			out << "\"elements\": [";
 			out << "\n\t\t\t";
 
-//			for(std::vector<fem::ElementGroup>::const_iterator element_group = model.m_element_groups.begin(); element_group != model.m_element_groups.end(); ++element_group)
-			for(auto element_group: model.m_element_groups)
+			for(auto element_group: element_groups)
 			{
 				out << "{";
 				out << "\n\t\t\t\t";
@@ -195,10 +201,11 @@ JsonExporter::output(std::ostream & out, const fem::Model &model)
 		out << ",\n\n";
 		// dump the load restrictions list
 		out << "\t\"node restrictions\": [";
-		for (std::map < fem::node_restriction_ref_t, fem::NodeRestrictions >::const_iterator it = model.node_restrictions_list.begin(); it != model.node_restrictions_list.end(); it++)
+		auto node_restrictions_list = model.getNodeRestrictions();
+		for (std::map < fem::node_restriction_ref_t, fem::NodeRestrictions >::const_iterator it = node_restrictions_list.begin(); it != node_restrictions_list.end(); it++)
 		{
 			// TODO test this
-			if (it != model.node_restrictions_list.begin())
+			if (it != node_restrictions_list.begin())
 				out << ",";
 			out << "\n\t\t";
 			out << "{ \"node\":" << it->first;

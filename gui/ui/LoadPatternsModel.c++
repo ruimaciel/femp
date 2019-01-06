@@ -23,10 +23,11 @@ LoadPatternsModel::data(const QModelIndex &index, int role ) const
 	case Qt::DisplayRole:
 	{
 		unsigned int i = index.row();
-		if( i < m_model.load_pattern_list.size())
+
+		auto load_pattern_list = m_model.getLoadPatternList();
+		if( i < load_pattern_list.size())
 		{
-			fem::LoadPattern const &lp = m_model.load_pattern_list[i];
-			QVariant out = QString::fromStdString(lp.getLabel() );
+			QVariant out = QString::fromStdString(load_pattern_list[i].getLabel() );
 			return out;
 		}
 		else
@@ -49,6 +50,6 @@ LoadPatternsModel::rowCount(const QModelIndex &parent) const
 	if (parent.isValid())
 		return 0;
 	else
-		return m_model.load_pattern_list.size();
+		return m_model.getLoadPatternList().size();
 }
 

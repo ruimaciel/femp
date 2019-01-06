@@ -93,7 +93,7 @@ SurfaceNormalLoad::operator() (fem::SurfaceLoad &surface_load, fem::Model &model
 
 		for(unsigned int n = 0; n < surface_load.getNodeAmount(); n++)
 		{
-			fem::Point3D &p = model.node_list[ surface_load.getNode(n)];
+			const fem::Point3D p = model.getNode(surface_load.getNode(n));
 			cout << "Point : " << p << "\n";
 			dPdcsi += dNdcsi[n]*p;
 			dPdeta += dNdeta[n]*p;

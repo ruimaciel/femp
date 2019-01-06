@@ -130,9 +130,9 @@ ElementResultsFactory::operator() (const fem::Element &reference_element)
 		}
 
 		// set the stresses
-		double E, nu;
-		E = this->m_model->material_list[reference_element.material].E;
-		nu = this->m_model->material_list[reference_element.material].nu;
+		Material material = m_model->getMaterialByIndex(reference_element.material);
+		const double E = material.E;
+		const double nu = material.nu;
 
 		results->stresses[coord].s11 = ( (1-nu)*results->strains[coord].e11 + nu*results->strains[coord].e22 + nu*results->strains[coord].e33 )*E/((1+nu)*(1-2*nu)) ;
 		results->stresses[coord].s22 = ( nu*results->strains[coord].e11 + (1-nu)*results->strains[coord].e22 + nu*results->strains[coord].e33 )*E/((1+nu)*(1-2*nu)) ;

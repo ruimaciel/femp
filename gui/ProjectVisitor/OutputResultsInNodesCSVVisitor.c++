@@ -44,30 +44,32 @@ OutputResultsInNodesCSVVisitor::visit(fem::Model &model, std::vector<fem::Analys
 
 	for( std::map<fem::element_ref_t, fem::ElementResults *>::iterator e = m_result->results.begin(); e != m_result->results.end(); e++)
 	{
-		fem::Element *element;
 		fem::ElementResults *element_results;
-		element = &model.element_list[e->first];
+		fem::Element element = model.getElementByIndex(e->first);
 
 
-		for(size_t n = 0; n < element->getNodeAmount(); n++)
+		for(size_t n = 0; n < element.getNodeAmount(); n++)
 		{
-			std::set<fem::node_ref_t>::iterator	i;
+			std::set<fem::node_ref_t>::iterator	iter;
 			auto selected_nodes = m_selection.getNodeReferences();
-			i = selected_nodes.find(element->getNode(n));
-			if(i != selected_nodes.end())
+			iter = selected_nodes.find(element.getNode(n));
+			if(iter != selected_nodes.end())
 			{
 				// element has a selected node.  Let's output the result
 				*m_out << e->first << "\t";
 
-				*m_out << n << "\t";
-				*m_out << element->getNode(n) << "\t";
-				*m_out << model.node_list[element->getNode(n)].x() << "\t";
-				*m_out << model.node_list[element->getNode(n)].y() << "\t";
-				*m_out << model.node_list[element->getNode(n)].z() << "\t";
+				auto node_ref = element.getNode(n);
+				fem::Node node = model.getNode(node_ref);
 
-				*m_out << m_result->displacements[element->getNode(n)].x() << "\t";
-				*m_out << m_result->displacements[element->getNode(n)].y() << "\t";
-				*m_out << m_result->displacements[element->getNode(n)].z() << "\t";
+				*m_out << n << "\t";
+				*m_out << element.getNode(n) << "\t";
+				*m_out << node.x() << "\t";
+				*m_out << node.y() << "\t";
+				*m_out << node.z() << "\t";
+
+				*m_out << m_result->displacements[node_ref].x() << "\t";
+				*m_out << m_result->displacements[node_ref].y() << "\t";
+				*m_out << m_result->displacements[node_ref].z() << "\t";
 
 				element_results = m_result->results[e->first];
 

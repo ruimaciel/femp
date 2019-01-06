@@ -6,9 +6,9 @@ DisplayOptionsDialog::DisplayOptionsDialog(fem::Model &model, QWidget *parent)
 	setupUi(this);
 
 	// fill the combo box with the available load pattern
-	for(std::vector<fem::LoadPattern>::iterator i = model.load_pattern_list.begin(); i != model.load_pattern_list.end(); i++)
+	for(auto load_pattern: model.getLoadPatternList() )
 	{
-		QString label = QString::fromStdString(i->getLabel());
+		QString label = QString::fromStdString(load_pattern.getLabel());
 		this->comboBoxLoadPattern->addItem(label);
 	}
 

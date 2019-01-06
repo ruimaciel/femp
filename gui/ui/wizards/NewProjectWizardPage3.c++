@@ -40,9 +40,10 @@ bool NewProjectWizardPage3::validatePage()
 void NewProjectWizardPage3::loadMaterialsCombo()
 {
 	fem::Model &femp_model = this->m_document.getProject().getModel();
-	for(std::vector<fem::Material>::iterator i = femp_model.material_list.begin(); i != femp_model.material_list.end(); i++)
+
+	for(auto material: femp_model.getMaterialList())
 	{
-		comboBoxMaterialsList->addItem(QString::fromStdString(i->label));
+		comboBoxMaterialsList->addItem(QString::fromStdString(material.label));
 	}
 	if(comboBoxMaterialsList->count() > 0)
 	{
@@ -81,10 +82,9 @@ void NewProjectWizardPage3::loadMeshFile()
 		if(!file.good())
 		{
 			// clear the model except the materials list
-			femp_model.node_list.clear();
-			femp_model.element_list.clear();
-			femp_model.node_restrictions_list.clear();
-			femp_model.load_pattern_list.clear();
+			auto material_list = femp_model.getMaterialList();
+			femp_model.clear();
+			std::for_each(material_list.begin(), material_list.end(), [&femp_model](fem::Material &material){ femp_model.pushMaterial(material); });
 
 			// update the UI
 			labelNodesNumber->setText("");
@@ -106,9 +106,9 @@ void NewProjectWizardPage3::loadMeshFile()
 		{
 			// update the UI accordingly
 			QString temp;
-			temp.setNum(femp_model.node_list.size());
+			temp.setNum(femp_model.getNodeMap().size());
 			labelNodesNumber->setText(temp);
-			temp.setNum(femp_model.element_list.size());
+			temp.setNum(femp_model.numberOfElements());
 			labelElementsNumber->setText(temp);
 			labelError->setText("");
 
@@ -118,10 +118,9 @@ void NewProjectWizardPage3::loadMeshFile()
 
 		default:
 			// clear the model except the materials list
-			femp_model.node_list.clear();
-			femp_model.element_list.clear();
-			femp_model.node_restrictions_list.clear();
-			femp_model.load_pattern_list.clear();
+			auto material_list = femp_model.getMaterialList();
+			femp_model.clear();
+			std::for_each(material_list.begin(), material_list.end(), [&femp_model](fem::Material &material){ femp_model.pushMaterial(material); });
 			//TODO clear the list when exiting
 
 			// update the UI

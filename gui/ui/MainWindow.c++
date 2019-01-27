@@ -854,9 +854,14 @@ MainWindow::runAnalysis()
 
 	//TODO finish this
 	fem::AnalysisResult analysis_result;
-	m_analysis.set(femp_model, femp_model.load_pattern_list[analysis_dialog.loadPattern()], analysis_result, progress, solver);
+	fem::LoadPattern lp = femp_model.load_pattern_list[analysis_dialog.loadPattern()];
+	m_analysis.set(femp_model, lp, analysis_result, progress, solver);
 
-	std::thread t(m_analysis);
+	auto analysis = [&]() {
+		m_analysis.run(femp_model, lp, analysis_result, progress);
+	};
+
+	std::thread t(analysis);
 
 	switch(dialog.exec())
 	{

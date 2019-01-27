@@ -113,14 +113,6 @@ LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult &resul
 }
 
 
-template<typename Scalar>
-void
-LinearAnalysis<Scalar>::operator() ()
-{
-	m_error = this->run(*m_model, *m_load_pattern, *m_result, *m_progress);
-}
-
-
 // explicit template instantiation
 template class LinearAnalysis<float>;
 template class LinearAnalysis<double>;

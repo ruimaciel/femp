@@ -24,16 +24,10 @@ public:
 
 	void set(Model &model, LoadPattern &lp, AnalysisResult &result, ProgressIndicatorStrategy &progress, Solver<Scalar> *solver);
 
-	/**
-	Operator intended to run the analysis through a thread
-	**/
-	void operator() ();
-
 	bool succeeded() const;
 
 	typename Analysis<Scalar>::Error const error() const;
 
-protected:
 	enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp, AnalysisResult & result, ProgressIndicatorStrategy &progress) override;
 
 protected:

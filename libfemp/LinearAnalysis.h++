@@ -34,7 +34,7 @@ public:
 	typename Analysis<Scalar>::Error const error() const;
 
 protected:
-	enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp, AnalysisResult *result, ProgressIndicatorStrategy &progress);
+	enum Analysis<Scalar>::Error run(Model &model, LoadPattern &lp, AnalysisResult & result, ProgressIndicatorStrategy &progress) override;
 
 protected:
 	Model *m_model;

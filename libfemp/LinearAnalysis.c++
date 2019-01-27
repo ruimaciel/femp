@@ -60,53 +60,53 @@ LinearAnalysis<Scalar>::error() const
 
 template<typename Scalar>
 enum Analysis<Scalar>::Error
-LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult *result, ProgressIndicatorStrategy &progress)
+LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult &result, ProgressIndicatorStrategy &progress)
 {
 	using namespace std;
 	using namespace Eigen;
 
 	progress.markSectionStart("build FEM equation");
 	// clear existing data structures
-	result->clear();
+	result.clear();
 
 	typename Analysis<Scalar>::Error error = Analysis<Scalar>::ERR_OK;
 
-	if( ( error = this->buildEquation(model, lp, *result, progress)) != Analysis<Scalar>::ERR_OK )
+	if( ( error = this->buildEquation(model, lp, result, progress)) != Analysis<Scalar>::ERR_OK )
 	{
 		// some error happened when building the FEM equation
 		return error;
 	}
 
-	result->d.resize(result->f.size());	// is this reallly necessary?
+	result.d.resize(result.f.size());	// is this reallly necessary?
 	progress.markSectionEnd();
 
 	// temporary matrices
 	lalib::Matrix<Scalar, lalib::SparseCRS> my_k;
 
 	progress.markSectionStart("initializing equation solver");
-	this->m_solver->initialize(*result, &progress);
+	this->m_solver->initialize(result, &progress);
 	progress.markSectionEnd();
 
 	progress.markSectionStart("solving FEM equation");
 	progress.markSectionLimit(model.numberOfElements());
-	this->m_solver->solve(*result, &progress);
+	this->m_solver->solve(result, &progress);
 	progress.markSectionEnd();
 
 	progress.markSectionStart("generating displacements list");
-	this->generateDisplacementsMap(model, *result);
+	this->generateDisplacementsMap(model, result);
 	progress.markSectionEnd();
 
 	progress.markSectionStart("recovering values");
-	this->recoverValues(model, *result);
+	this->recoverValues(model, result);
 	progress.markSectionEnd();
 
 	progress.markSectionStart("calculating strain energy");
-	this->calculateStrainEnergy(model, *result);
-	cout << "strain energy: " << result->energy << endl;
+	this->calculateStrainEnergy(model, result);
+	cout << "strain energy: " << result.energy << endl;
 	progress.markSectionEnd();
 
 	// announce the end
-	this->m_solver->cleanup(*result, &progress);
+	this->m_solver->cleanup(result, &progress);
 	progress.markFinish();
 
 	return Analysis<Scalar>::ERR_OK;
@@ -117,7 +117,7 @@ template<typename Scalar>
 void
 LinearAnalysis<Scalar>::operator() ()
 {
-	m_error = this->run(*m_model, *m_load_pattern, m_result, *m_progress);
+	m_error = this->run(*m_model, *m_load_pattern, *m_result, *m_progress);
 }
 
 

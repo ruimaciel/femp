@@ -87,7 +87,7 @@ public:
 	@param result	a pointer to a AnalysisResult object, where the run results will be stored
 	@return an error
 	**/
-	virtual enum Error run(Model &model, LoadPattern &lp, AnalysisResult *result, ProgressIndicatorStrategy &progress) = 0;
+	virtual enum Error run(Model &model, LoadPattern &lp, AnalysisResult &result, ProgressIndicatorStrategy &progress) = 0;
 
 
 	/**

@@ -145,7 +145,8 @@ SOURCES = Group.c++ \
 	loads/Triangle3.c++ \
 	loads/Triangle6.c++ \
 	loads/Triangle10.c++ \
-    Point3D.c++
+    Point3D.c++ \
+    quadrature_rules/SurfaceRule.c++
 
 
 FemJsonParserRe2c.target = parsers/FemJsonParser.c++

@@ -20,7 +20,7 @@ namespace quadrature
 class TetrahedronRule : public VolumeRule
 {
 public:
-	virtual ~TetrahedronRule() {}
+	virtual ~TetrahedronRule();
 
 	/**
 	 * functor that returns the quadrature rule

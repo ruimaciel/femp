@@ -89,6 +89,8 @@ Tetrahedron14::operator() () const
 	};
 }
 
+TetrahedronRule::~TetrahedronRule() {}
+
 
 }	// namespace quadrature
 }	// namespace fem

@@ -20,7 +20,7 @@ public:
 	typedef QuadraturePoint<2> Point;	// helper alias
 
 public:
-	virtual ~SurfaceRule() {}
+	virtual ~SurfaceRule();
 
 	/**
 	 * functor that returns the quadrature rule

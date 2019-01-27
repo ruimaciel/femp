@@ -14,7 +14,7 @@ QuadrangleCartesianProduct::QuadrangleCartesianProduct(LineRule *rule1, LineRule
 }
 
 
-std::vector<QuadrangleRule::Point> 
+std::vector<QuadrangleRule::Point>
 QuadrangleCartesianProduct::operator() () const
 {
 	std::vector<QuadrangleRule::Point> square_rule;
@@ -29,6 +29,8 @@ QuadrangleCartesianProduct::operator() () const
 
 	return square_rule;
 }
+
+QuadrangleRule::~QuadrangleRule() {}
 
 
 }	// namespace quadrature

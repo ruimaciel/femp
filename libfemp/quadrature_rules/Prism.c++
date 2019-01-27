@@ -30,6 +30,8 @@ PrismCartesianProduct::operator() () const
 	return cube_rule;
 }
 
+PrismRule::~PrismRule() {}
+
 
 }	// namespace quadrature
 }	// namespace fem

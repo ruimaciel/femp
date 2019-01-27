@@ -21,7 +21,7 @@ namespace quadrature
 class PrismRule : public VolumeRule
 {
 public:
-	virtual ~PrismRule() {}
+	virtual ~PrismRule();
 
 	/**
 	 * functor that returns the quadrature rule

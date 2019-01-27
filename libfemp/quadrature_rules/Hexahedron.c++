@@ -35,6 +35,8 @@ HexahedronCartesianProduct::operator() () const
 	return cube_rule;
 }
 
+HexahedronRule::~HexahedronRule() {}
+
 
 }	// namespace quadrature
 }	// namespace fem

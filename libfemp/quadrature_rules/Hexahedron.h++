@@ -20,7 +20,7 @@ namespace quadrature
 class HexahedronRule : public VolumeRule
 {
 public:
-	virtual ~HexahedronRule() {}
+	virtual ~HexahedronRule();
 
 	/**
 	 * functor that returns the quadrature rule

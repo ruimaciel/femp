@@ -18,7 +18,7 @@ GaussLegendre1::operator() () const
 std::vector<LineRule::Point>
 GaussLegendre2::operator() () const
 {
-	return { 
+	return {
 		Point{1,{-sqrt(1.0/3.0)}},
 		Point{1,{ sqrt(1.0/3.0)}}
 	};
@@ -28,7 +28,7 @@ GaussLegendre2::operator() () const
 std::vector<LineRule::Point>
 GaussLegendre3::operator() () const
 {
-	return { 
+	return {
 		Point{5.0/9, {-sqrt(3.0/5.0)}},
 		Point{8.0/9, {0.0} },
 		Point{5.0/9, { sqrt(3.0/5.0)}}
@@ -39,12 +39,14 @@ GaussLegendre3::operator() () const
 std::vector<LineRule::Point>
 Simpson::operator() () const
 {
-	return { 
+	return {
 		Point{ 1.0/3, {-1.0} },
 		Point{ 4.0/3, { 0.0} },
 		Point{ 1.0/3, { 1.0} }
 	};
 };
+
+LineRule::~LineRule() {}
 
 
 }	// namespace quadrature

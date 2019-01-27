@@ -69,7 +69,7 @@ public:
 
 public:
 
-	virtual ~Element() {}
+	virtual ~Element();
 
 	void set(Type type, std::vector<size_t> nodes);
 

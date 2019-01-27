@@ -8,6 +8,8 @@
 namespace fem
 {
 
+Element::~Element() {}
+
 void
 Element::set(Type type, std::vector<size_t> nodes)
 {

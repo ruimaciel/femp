@@ -77,19 +77,21 @@ LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult &resul
 		return error;
 	}
 
-	result.equation.d.resize(result.equation.f.size());	// is this reallly necessary?
+	Equation &equation = result.equation;
+	equation.d.resize(equation.f.size());	// is this reallly necessary?
+
 	progress.markSectionEnd();
 
 	// temporary matrices
 	lalib::Matrix<Scalar, lalib::SparseCRS> my_k;
 
 	progress.markSectionStart("initializing equation solver");
-	this->m_solver->initialize(result, &progress);
+	this->m_solver->initialize(equation, &progress);
 	progress.markSectionEnd();
 
 	progress.markSectionStart("solving FEM equation");
 	progress.markSectionLimit(model.numberOfElements());
-	this->m_solver->solve(result, &progress);
+	this->m_solver->solve(equation, &progress);
 	progress.markSectionEnd();
 
 	progress.markSectionStart("generating displacements list");
@@ -106,7 +108,7 @@ LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult &resul
 	progress.markSectionEnd();
 
 	// announce the end
-	this->m_solver->cleanup(result, &progress);
+	this->m_solver->cleanup(equation, &progress);
 	progress.markFinish();
 
 	return Analysis<Scalar>::ERR_OK;

@@ -23,9 +23,9 @@ public:
 
 	CGSolver();
 
-	enum Solver<Scalar>::Error initialize(AnalysisResult &result, ProgressIndicatorStrategy *progress);
-	enum Solver<Scalar>::Error solve(AnalysisResult &result, ProgressIndicatorStrategy *progress);
-	enum Solver<Scalar>::Error cleanup(AnalysisResult &result, ProgressIndicatorStrategy *progress);
+	enum Solver<Scalar>::Error initialize(Equation & equation, ProgressIndicatorStrategy *progress);
+	enum Solver<Scalar>::Error solve(Equation & equation, ProgressIndicatorStrategy *progress);
+	enum Solver<Scalar>::Error cleanup(Equation &equation, ProgressIndicatorStrategy *progress);
 };
 
 
@@ -38,18 +38,18 @@ CGSolver<Scalar>::CGSolver()
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error CGSolver<Scalar>::initialize(AnalysisResult &result, ProgressIndicatorStrategy *)
+enum Solver<Scalar>::Error CGSolver<Scalar>::initialize(Equation &equation, ProgressIndicatorStrategy *)
 {
-	assign(my_k, result.equation.K);
+	assign(my_k, equation.K);
 
 	return Solver<Scalar>::ERR_OK;
 }
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error CGSolver<Scalar>::solve(AnalysisResult &result, ProgressIndicatorStrategy *progress)
+enum Solver<Scalar>::Error CGSolver<Scalar>::solve(Equation &equation, ProgressIndicatorStrategy *progress)
 {
-	if(lalib::cg(my_k,result.equation.d,result.equation.f, delta, max_iterations, progress) != lalib::OK)
+	if(lalib::cg(my_k,equation.d,equation.f, delta, max_iterations, progress) != lalib::OK)
 	{
 		return Solver<Scalar>::ERR_SINGULAR_MATRIX;
 	}
@@ -59,7 +59,7 @@ enum Solver<Scalar>::Error CGSolver<Scalar>::solve(AnalysisResult &result, Progr
 
 
 template<typename Scalar>
-enum Solver<Scalar>::Error CGSolver<Scalar>::cleanup(AnalysisResult &, ProgressIndicatorStrategy *)
+enum Solver<Scalar>::Error CGSolver<Scalar>::cleanup(Equation &, ProgressIndicatorStrategy *)
 {
 	return Solver<Scalar>::ERR_OK;
 }

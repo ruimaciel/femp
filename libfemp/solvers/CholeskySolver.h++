@@ -17,7 +17,7 @@ namespace fem
 
 template<typename Scalar>
 class CholeskySolver
-	: public Solver<Scalar> 
+	: public Solver<Scalar>
 {
 	protected:
 		lalib::Matrix<Scalar, lalib::SparseCRS> L;
@@ -33,7 +33,7 @@ class CholeskySolver
 template<typename Scalar>
 enum Solver<Scalar>::Error CholeskySolver<Scalar>::initialize(AnalysisResult &result, ProgressIndicatorStrategy *)
 {
-	assign(L, result.K);
+	assign(L, result.equation.K);
 	return Solver<Scalar>::ERR_OK;
 }
 
@@ -43,7 +43,7 @@ enum Solver<Scalar>::Error CholeskySolver<Scalar>::solve(AnalysisResult &result,
 {
 	//using namespace std;
 	//cout << "K\n" << result.K << "\n\nL:\n" << L << endl;
-	lalib::cholesky(result.K, result.d, result.f, L);
+	lalib::cholesky(result.equation.K, result.equation.d, result.equation.f, L);
 
 	return Solver<Scalar>::ERR_OK;
 }

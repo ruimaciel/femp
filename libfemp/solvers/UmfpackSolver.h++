@@ -16,7 +16,7 @@ namespace fem
 
 template<typename Scalar>
 class UmfpackSolver
-	: public Solver<Scalar> 
+	: public Solver<Scalar>
 {
 protected:
 	lalib::Matrix<Scalar, lalib::SparseCCS> A;
@@ -32,7 +32,7 @@ public:
 template<typename Scalar>
 enum Solver<Scalar>::Error UmfpackSolver<Scalar>::initialize(AnalysisResult &result, ProgressIndicatorStrategy *)
 {
-	assign(A, result.K);
+	assign(A, result.equation.K);
 	return Solver<Scalar>::ERR_OK;
 }
 
@@ -40,7 +40,7 @@ enum Solver<Scalar>::Error UmfpackSolver<Scalar>::initialize(AnalysisResult &res
 template<typename Scalar>
 enum Solver<Scalar>::Error UmfpackSolver<Scalar>::solve(AnalysisResult &result, ProgressIndicatorStrategy *progress)
 {
-	lalib::umfpack(A, result.d, result.f, progress);
+	lalib::umfpack(A, result.equation.d, result.equation.f, progress);
 
 	return Solver<Scalar>::ERR_OK;
 }

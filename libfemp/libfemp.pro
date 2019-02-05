@@ -84,7 +84,8 @@ HEADERS = Group.h++ \
 	loads/Triangle10.h++ \
     Point3D.h++ \
     quadrature_rules/VolumeRule.h++ \
-    quadrature_rules/SurfaceRule.h++
+    quadrature_rules/SurfaceRule.h++ \
+    Equation.h++
 
 SOURCES = Group.c++ \
 	Model.c++ \
@@ -146,7 +147,8 @@ SOURCES = Group.c++ \
 	loads/Triangle6.c++ \
 	loads/Triangle10.c++ \
     Point3D.c++ \
-    quadrature_rules/SurfaceRule.c++
+    quadrature_rules/SurfaceRule.c++ \
+    Equation.c++
 
 
 FemJsonParserRe2c.target = parsers/FemJsonParser.c++

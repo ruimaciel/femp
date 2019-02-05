@@ -183,13 +183,13 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model &model, const LoadPatter
 			{
 				size_t n = dof->second.get<0>();
 				if(n != 0)
-					result.f(n-1) += f_elem(3*i);
+					result.equation.f(n-1) += f_elem(3*i);
 				n = dof->second.get<1>();
 				if(n != 0)
-					result.f(n-1) += f_elem(3*i+1);
+					result.equation.f(n-1) += f_elem(3*i+1);
 				n = dof->second.get<2>();
 				if(n != 0)
-					result.f(n-1) += f_elem(3*i+2);
+					result.equation.f(n-1) += f_elem(3*i+2);
 			}
 		}
 		progress.markSectionIterationIncrement();
@@ -228,13 +228,13 @@ Analysis<Scalar>::generateGlobalSurfaceForceVector(Model &model, const LoadPatte
 			{
 				size_t n = dof->second.get<0>();
 				if(n != 0)
-					result.f(n-1) += (Scalar)f_elem(3*i);
+					result.equation.f(n-1) += (Scalar)f_elem(3*i);
 				n = dof->second.get<1>();
 				if(n != 0)
-					result.f(n-1) += (Scalar)f_elem(3*i+1);
+					result.equation.f(n-1) += (Scalar)f_elem(3*i+1);
 				n = dof->second.get<2>();
 				if(n != 0)
-					result.f(n-1) += (Scalar)f_elem(3*i+2);
+					result.equation.f(n-1) += (Scalar)f_elem(3*i+2);
 			}
 		}
 		progress.markSectionIterationIncrement();
@@ -258,11 +258,11 @@ Analysis<Scalar>::generateGlobalPointForceVector(Model &, const LoadPattern &lp,
 
 		// set the nodal loads
 		if(result.lm[n].template get<0>() != 0)
-			result.f(result.lm[n].template get<0>()-1) += force.x();
+			result.equation.f(result.lm[n].template get<0>()-1) += force.x();
 		if(result.lm[n].template get<1>() != 0)
-			result.f(result.lm[n].template get<1>()-1) += force.y();
+			result.equation.f(result.lm[n].template get<1>()-1) += force.y();
 		if(result.lm[n].template get<2>() != 0)
-			result.f(result.lm[n].template get<2>()-1) += force.z();
+			result.equation.f(result.lm[n].template get<2>()-1) += force.z();
 
 		progress.markSectionIterationIncrement();
 	}
@@ -291,11 +291,11 @@ Analysis<Scalar>::displacementsMap(AnalysisResult &result)
 
 		// assign the displacements
 		if(i->second.get<0>() != 0)
-			node.data[0] = result.d(n++);
+			node.data[0] = result.equation.d(n++);
 		if(i->second.get<1>() != 0)
-			node.data[1] = result.d(n++);
+			node.data[1] = result.equation.d(n++);
 		if(i->second.get<2>() != 0)
-			node.data[2] = result.d(n++);
+			node.data[2] = result.equation.d(n++);
 
 		// add the displacement field to the map
 		df[i->first] = node;
@@ -320,9 +320,9 @@ Analysis<Scalar>::generateDisplacementsMap(Model &model, AnalysisResult &result)
 		boost::tuple<size_t,size_t,size_t> references = result.lm[node_id];
 
 		fem::Point3D d;	// displacements field
-		d.data[0] = (references.get<0>() == 0)? 0 : result.d(references.get<0>()-1);
-		d.data[1] = (references.get<1>() == 0)? 0 : result.d(references.get<1>()-1);
-		d.data[2] = (references.get<2>() == 0)? 0 : result.d(references.get<2>()-1);
+		d.data[0] = (references.get<0>() == 0)? 0 : result.equation.d(references.get<0>()-1);
+		d.data[1] = (references.get<1>() == 0)? 0 : result.equation.d(references.get<1>()-1);
+		d.data[2] = (references.get<2>() == 0)? 0 : result.equation.d(references.get<2>()-1);
 
 		result.displacements[node_id] = d;
 	}
@@ -350,7 +350,8 @@ template<typename Scalar>
 enum Analysis<Scalar>::Error
 Analysis<Scalar>::calculateStrainEnergy(Model &, AnalysisResult &result)
 {
-	result.energy = 0.5*ppmvm(result.d, result.K, result.d);
+	Equation equation = result.equation;
+	result.energy = 0.5*ppmvm(equation.d, equation.K, equation.d);
 	return ERR_OK;
 }
 
@@ -397,9 +398,9 @@ Analysis<Scalar>::makeLocationMatrix(Model &model, AnalysisResult &result)
 	dof--;	// avoid the off by one error in resizing K_g and f_g
 
 		// resize the FEM equation
-	result.K.resize(dof,dof);
-	result.f.resize(dof);
-	result.d.resize(dof);
+	result.equation.K.resize(dof,dof);
+	result.equation.f.resize(dof);
+	result.equation.d.resize(dof);
 }
 
 
@@ -452,7 +453,7 @@ Analysis<Scalar>::addElementaryStiffnessToGlobal(const Eigen::Matrix<double,Eige
 				{
 					if( (id[u] != 0) && (jd[v] != 0) )
 					{
-						result.K(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
+						result.equation.K(id[u]-1,jd[v]-1) += k_elem(3*i+u, 3*j+v);
 					}
 				}
 			}

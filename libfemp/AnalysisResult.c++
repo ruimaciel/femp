@@ -16,9 +16,7 @@ AnalysisResult::AnalysisResult()
 
 AnalysisResult::AnalysisResult(const AnalysisResult &copied)
 {
-	this->K = copied.K;
-	this->f = copied.f;
-	this->d = copied.d;
+	this->equation = copied.equation;
 
 	this->lm = copied.lm;
 
@@ -38,9 +36,7 @@ AnalysisResult::AnalysisResult(const AnalysisResult &copied)
 void
 AnalysisResult::clear()
 {
-	K.clear();
-	f.clear();
-	d.clear();
+	equation = Equation();
 
 	lm.clear();
 	displacements.clear();

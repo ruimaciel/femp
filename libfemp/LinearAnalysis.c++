@@ -77,7 +77,7 @@ LinearAnalysis<Scalar>::run(Model &model, LoadPattern &lp, AnalysisResult &resul
 		return error;
 	}
 
-	result.d.resize(result.f.size());	// is this reallly necessary?
+	result.equation.d.resize(result.equation.f.size());	// is this reallly necessary?
 	progress.markSectionEnd();
 
 	// temporary matrices

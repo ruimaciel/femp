@@ -948,14 +948,14 @@ MainWindow::dumpFemEquation()
 		out << "# Created by lalib\n";
 		out << "# name: K\n";
 		out << "# type: matrix\n";
-		out << "# rows: " << femp_result.back().K.rows() << "\n";
-		out << "# columns: " << femp_result.back().K.columns() << "\n";
+		out << "# rows: " << femp_result.back().equation.K.rows() << "\n";
+		out << "# columns: " << femp_result.back().equation.K.columns() << "\n";
 
-		for(size_t j = 0; j < femp_result.back().K.columns(); j++)
+		for(size_t j = 0; j < femp_result.back().equation.K.columns(); j++)
 		{
-			for(size_t i = 0; i < femp_result.back().K.rows(); i++)
+			for(size_t i = 0; i < femp_result.back().equation.K.rows(); i++)
 			{
-				out << " " << femp_result.back().K.value(i,j);
+				out << " " << femp_result.back().equation.K.value(i,j);
 			}
 			out << "\n";
 		}
@@ -964,11 +964,11 @@ MainWindow::dumpFemEquation()
 		out << "# Created by lalib\n";
 		out << "# name: f\n";
 		out << "# type: matrix\n";
-		out << "# rows: " << femp_result.back().f.size() << "\n";
+		out << "# rows: " << femp_result.back().equation.f.size() << "\n";
 		out << "# columns: 1\n";
-		for(size_t i = 0; i < femp_result.back().f.size(); i++)
+		for(size_t i = 0; i < femp_result.back().equation.f.size(); i++)
 		{
-			out << " " << femp_result.back().f.value(i) << "\n";
+			out << " " << femp_result.back().equation.f.value(i) << "\n";
 		}
 		out << endl;
 
@@ -977,11 +977,11 @@ MainWindow::dumpFemEquation()
 		out << "# Created by lalib\n";
 		out << "# name: d\n";
 		out << "# type: matrix\n";
-		out << "# rows: " << femp_result.back().d.size() << "\n";
+		out << "# rows: " << femp_result.back().equation.d.size() << "\n";
 		out << "# columns: 1\n";
-		for(size_t i = 0; i < femp_result.back().d.size(); i++)
+		for(size_t i = 0; i < femp_result.back().equation.d.size(); i++)
 		{
-			out << " " << femp_result.back().d.value(i) << "\n";
+			out << " " << femp_result.back().equation.d.value(i) << "\n";
 		}
 		out << endl;
 		//out.close();

@@ -34,14 +34,14 @@ MatrixModel::headerData ( int section, Qt::Orientation orientation, int role ) c
 int
 MatrixModel::rowCount(const QModelIndex & /*parent*/) const
 {
-	return m_result->K.rows();
+	return m_result->equation.K.rows();
 }
 
 
 int
 MatrixModel::columnCount(const QModelIndex & /*parent */) const
 {
-	return m_result->K.columns();
+	return m_result->equation.K.columns();
 }
 
 
@@ -50,7 +50,7 @@ MatrixModel::data(const QModelIndex &index, int role ) const
 {
 	if(role == Qt::DisplayRole)
 	{
-		return m_result->K.value(index.row(), index.column());
+		return m_result->equation.K.value(index.row(), index.column());
 	}
 
 	return QVariant();

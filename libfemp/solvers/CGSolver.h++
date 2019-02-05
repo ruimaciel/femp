@@ -12,7 +12,7 @@ namespace fem
 
 template<typename Scalar>
 class CGSolver
-	: public Solver<Scalar> 
+	: public Solver<Scalar>
 {
 protected:
 	lalib::Matrix<Scalar, lalib::SparseCRS> my_k;
@@ -40,7 +40,7 @@ CGSolver<Scalar>::CGSolver()
 template<typename Scalar>
 enum Solver<Scalar>::Error CGSolver<Scalar>::initialize(AnalysisResult &result, ProgressIndicatorStrategy *)
 {
-	assign(my_k, result.K);
+	assign(my_k, result.equation.K);
 
 	return Solver<Scalar>::ERR_OK;
 }
@@ -49,7 +49,7 @@ enum Solver<Scalar>::Error CGSolver<Scalar>::initialize(AnalysisResult &result, 
 template<typename Scalar>
 enum Solver<Scalar>::Error CGSolver<Scalar>::solve(AnalysisResult &result, ProgressIndicatorStrategy *progress)
 {
-	if(lalib::cg(my_k,result.d,result.f, delta, max_iterations, progress) != lalib::OK)
+	if(lalib::cg(my_k,result.equation.d,result.equation.f, delta, max_iterations, progress) != lalib::OK)
 	{
 		return Solver<Scalar>::ERR_SINGULAR_MATRIX;
 	}

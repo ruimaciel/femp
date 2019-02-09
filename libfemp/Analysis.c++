@@ -398,9 +398,7 @@ Analysis<Scalar>::makeLocationMatrix(Model &model, AnalysisResult &result)
 	dof--;	// avoid the off by one error in resizing K_g and f_g
 
 		// resize the FEM equation
-	result.equation.K.resize(dof,dof);
-	result.equation.f.resize(dof);
-	result.equation.d.resize(dof);
+	result.equation.setProblemSize(dof);
 }
 
 

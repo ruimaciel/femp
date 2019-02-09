@@ -964,9 +964,9 @@ MainWindow::dumpFemEquation()
 		out << "# Created by lalib\n";
 		out << "# name: f\n";
 		out << "# type: matrix\n";
-		out << "# rows: " << femp_result.back().equation.f.size() << "\n";
+		out << "# rows: " << femp_result.back().equation.size() << "\n";
 		out << "# columns: 1\n";
-		for(size_t i = 0; i < femp_result.back().equation.f.size(); i++)
+		for(size_t i = 0; i < femp_result.back().equation.size(); i++)
 		{
 			out << " " << femp_result.back().equation.f.value(i) << "\n";
 		}

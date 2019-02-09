@@ -15,6 +15,10 @@ public:
 	lalib::Matrix<double, lalib::SparseDOK> K;
 	lalib::Vector<double> f;
 	lalib::Vector<double> d;
+
+public:
+	size_t size() const;
+	void setProblemSize(size_t size);
 };
 
 }	// namespace femp

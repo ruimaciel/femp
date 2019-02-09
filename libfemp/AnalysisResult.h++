@@ -28,9 +28,6 @@ struct AnalysisResult
 
 	// The FEM equation bit
 	Equation equation;
-	lalib::Matrix<double, lalib::SparseDOK> K;
-	lalib::Vector<double> f;
-	lalib::Vector<double> d;
 
 	std::map<size_t, boost::tuple<size_t,size_t,size_t> > lm;
 

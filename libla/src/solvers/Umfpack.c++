@@ -1,8 +1,7 @@
-#include "Umfpack.h++"
-
 #include <umfpack.h>
 
-#include "SolverReturnCodes.h++"
+#include <la/solvers/Umfpack.h++>
+#include <la/solvers/SolverReturnCodes.h++>
 
 
 namespace lalib
@@ -33,7 +32,7 @@ umfpack(Matrix<double, SparseCCS> &A, Vector<double> &x, Vector<double> &b, Prog
 
 	(void) umfpack_dl_symbolic (row, column, &Ap[0], &Ai[0], &A.data.values[0], &Symbolic, null, null) ;
 	(void)umfpack_dl_numeric (&Ap[0], &Ai[0], &A.data.values[0], Symbolic, &Numeric, null, null);
-	
+
 	umfpack_dl_free_symbolic (&Symbolic) ;
 
 	(void) umfpack_dl_solve (UMFPACK_A, &Ap[0], &Ai[0], &A.data.values[0], &x.data[0], &b.data[0], Numeric, null, null) ;

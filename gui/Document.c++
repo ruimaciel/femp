@@ -7,7 +7,6 @@
 
 #include <libfemp/Model.h++>
 #include <libfemp/parsers/fem_msh.h++>
-#include <libfemp/parsers/json.h>
 #include <libfemp/parsers/MshParser.h++>
 #include <libfemp/export/JsonExporter.h++>
 

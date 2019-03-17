@@ -5,7 +5,7 @@
 
 #include <QObject>
 
-#include <libla/ProgressIndicatorStrategy.h++>
+#include <la/ProgressIndicatorStrategy.h++>
 
 
 class DefaultProgressIndicator

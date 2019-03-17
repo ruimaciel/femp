@@ -1,6 +1,7 @@
 #include "NodeActionsDialog.h++"
 
 #include "LoadPatternDialog.h++"
+#include <QAbstractItemView>
 
 
 NodeActionsDialog::NodeActionsDialog(LoadPatternsModel &model, QWidget *parent)

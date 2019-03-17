@@ -1,6 +1,7 @@
 #include "NewMaterialDialog.h++"
 
 #include <vector>
+#include <QDoubleValidator>
 
 #include <libfemp/Material.h++>
 

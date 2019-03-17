@@ -1,4 +1,6 @@
+extern "C" {
 #include <umfpack.h>
+}
 
 #include <la/solvers/Umfpack.h++>
 #include <la/solvers/SolverReturnCodes.h++>

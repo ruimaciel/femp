@@ -9,14 +9,18 @@ OBJECTS_DIR += $${BUILD_DIR}/cmdline
 DESTDIR = $${BUILD_DIR}
 
 
-INCLUDEPATH += /usr/include/eigen3 /usr/include/suitesparse $${SRCDIR}
+INCLUDEPATH += \
+    /usr/include/eigen3 \
+    /usr/include/suitesparse \
+    ../libla/include \
+    ../libfemp/include
 
 LIBS += -L$${BUILD_DIR} -llibla -llibfemp
 
 HEADERS += ProgramOptions.h
 
 SOURCES += main.c++ \
-	ProgramOptions.c++
+    ProgramOptions.c++
 
 
 ProgramOptionRe2c.target = ProgramOptions.c++

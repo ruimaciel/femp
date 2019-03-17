@@ -8,3 +8,4 @@ project(femp
 add_subdirectory(libla)
 add_subdirectory(libfemp)
 add_subdirectory(gui)
+add_subdirectory(cmdline)

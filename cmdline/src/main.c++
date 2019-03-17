@@ -2,8 +2,6 @@
 #include <cstdio>
 #include <limits>
 
-#include "parsers/json.h"
-
 #include <libfemp/Model.h++>
 #include <libfemp/LinearAnalysis.h++>
 #include <libfemp/FemException.h++>

@@ -17,10 +17,12 @@ INCLUDEPATH += \
 
 LIBS += -L$${BUILD_DIR} -llibla -llibfemp
 
-HEADERS += ProgramOptions.h
+HEADERS += \
+    src/ProgramOptions.h
 
-SOURCES += main.c++ \
-    ProgramOptions.c++
+SOURCES += \
+    src/main.c++ \
+    src/ProgramOptions.c++
 
 
 ProgramOptionRe2c.target = ProgramOptions.c++

@@ -32,7 +32,6 @@ set(gui_HEADERS
     src/Selection.h++
     src/SelectionManager.h++
     src/Document.h++
-    src/ProgramOptions.h++
     src/FempApplication.h++
     src/FempSettings.h++
     src/viewer/InputStates/ISStart.h++
@@ -169,7 +168,6 @@ set(gui_SOURCES
     src/ProjectVisitor/SetDomainLoadsVisitor.c++
     src/DefaultProgressIndicator.c++
     src/Document.c++
-    src/ProgramOptions.c++
     src/FempSettings.c++
     src/FempApplication.c++
     src/SelectionManager.c++

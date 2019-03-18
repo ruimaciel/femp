@@ -2,7 +2,6 @@
 
 #include "FempApplication.h++"
 #include "ui/MainWindow.h++"
-#include "ProgramOptions.h++"
 
 #include <string>
 

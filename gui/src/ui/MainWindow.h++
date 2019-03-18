@@ -15,7 +15,6 @@
 #include "ui/dock_widgets/CommandLineDockWidget.h++"
 #include "ui/dock_widgets/SelectionDockWidget.h++"
 
-#include "ProgramOptions.h++"
 #include <options/Options.h++>
 
 #include "ui/ModelWindow.h++"
@@ -118,7 +117,6 @@ private:
 	void createToolBars();
 	void createDockWidgets();
 	void destroyToolBars();
-	void loadOptions();	// loads global options from the options files
 
 	// sets the user interface state
 	void setUserInterfaceAsOpened();	// sets the user interface in it's "opened document" state
@@ -140,7 +138,6 @@ protected:
 
 	QMdiArea	* m_mdiArea;
 
-	ProgramOptions 	m_options;	// the global program options
 	bool 	m_hasUnsavedChanges;	// true if the document has unsaved changes
 
 	Document m_document;	// the FEM document

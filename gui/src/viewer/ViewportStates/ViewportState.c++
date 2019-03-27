@@ -36,7 +36,7 @@ ViewportState::setDisplacementsScale(float new_scale)
 void
 ViewportState::setRenderGroupVisibility(SceneGraph::Groups group, bool state)
 {
-  this->scenegraph.rendering_groups[group].render = state;
+  this->scenegraph.rendering_groups[group].setVisible(state);
 }
 
 
@@ -58,16 +58,16 @@ ViewportState::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
   // process left clicks
   if(event->buttons() & Qt::LeftButton)
   {
-    fem::Point3D near, far;
-    QPoint pos = event->pos();
+	fem::Point3D near, far;
+	QPoint pos = event->pos();
 
-    GLint vport[4];
+	GLint vport[4];
 
-    glGetDoublev(GL_MODELVIEW_MATRIX, viewport->viewport_data.modelview);
-    glGetDoublev(GL_PROJECTION_MATRIX, viewport->viewport_data.projection);
-    glGetIntegerv(GL_VIEWPORT, vport);
-    gluUnProject(pos.x(), vport[3]-pos.y(), 0, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &near.data[0], &near.data[1], &near.data[2]);
-    gluUnProject(pos.x(), vport[3]-pos.y(), 1, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &far.data[0], &far.data[1], &far.data[2]);
+	glGetDoublev(GL_MODELVIEW_MATRIX, viewport->viewport_data.modelview);
+	glGetDoublev(GL_PROJECTION_MATRIX, viewport->viewport_data.projection);
+	glGetIntegerv(GL_VIEWPORT, vport);
+	gluUnProject(pos.x(), vport[3]-pos.y(), 0, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &near.data[0], &near.data[1], &near.data[2]);
+	gluUnProject(pos.x(), vport[3]-pos.y(), 1, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &far.data[0], &far.data[1], &far.data[2]);
   }
 }
 
@@ -82,11 +82,11 @@ ViewportState::mouseMoveEvent(BaseViewport *viewport, QMouseEvent *event)
 
   if (event->buttons() & Qt::LeftButton)
   {
-    //TODO set action for left click button
+	//TODO set action for left click button
   } else if (event->buttons() & Qt::RightButton)
   {
-    viewport->viewport_data.camera.rotation.data[0] += dy/pow(2,viewport->viewport_data.zoom);
-    viewport->viewport_data.camera.rotation.data[1] += dx/pow(2,viewport->viewport_data.zoom);
+	viewport->viewport_data.camera.rotation.data[0] += dy/pow(2,viewport->viewport_data.zoom);
+	viewport->viewport_data.camera.rotation.data[1] += dx/pow(2,viewport->viewport_data.zoom);
   }
 
   viewport->viewport_data.lastPos = event->pos();

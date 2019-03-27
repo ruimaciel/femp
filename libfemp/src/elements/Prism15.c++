@@ -147,6 +147,13 @@ Prism15::getdNdzeta(const Point3D &p)
 	return dNdzeta;
 }
 
+
+int Prism15::getNodeAmount() const
+{
+	return 15;
+}
+
+
 std::vector<Point3D>
 Prism15::getLocalCoordinates()
 {

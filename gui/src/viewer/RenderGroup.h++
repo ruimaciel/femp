@@ -15,11 +15,6 @@ Definition of a render group: an independent scene graph branch
 **/
 struct RenderGroup
 {
-
-	bool render;	// should this group be rendered?
-	bool selectable;	// are the elements in this group selectable?
-	GLuint display_list;
-
 	std::list<SceneGraphComponent *> primitive_components;	// list of primitive components included in this group
 
 	SceneGraphComponent scenegraph;
@@ -31,12 +26,13 @@ struct RenderGroup
 	*/
 	void generateSceneGraph();
 
-	void paintGL();
+	void paintGL(ViewportData &data, ViewportColors &colors);
 
-	/**
-	  Generates the render group which stores all the opengl instructions for this render group
-	  **/
-	void generateDisplayList( ViewportData &data, ViewportColors &colors);
+	void setVisible(bool visible = true);
+	bool isVisible() const;
+
+private:
+	bool m_render;	// should this group be rendered?
 };
 
 #endif

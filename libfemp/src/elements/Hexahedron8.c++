@@ -124,6 +124,12 @@ Hexahedron8::getdNdzeta(const Point3D &p)
 }
 
 
+int Hexahedron8::getNodeAmount() const
+{
+	return 8;
+}
+
+
 std::vector<fem::Point3D>
 Hexahedron8::getLocalCoordinates()
 {

@@ -22,6 +22,12 @@ TetrahedronFamily::family() const
 }
 
 
+unsigned int TetrahedronFamily::getDofAmount() const
+{
+	return 3*this->getNodeAmount();
+}
+
+
 std::vector<boost::tuple<fem::Point3D, double> >
 TetrahedronFamily::getStiffnessQuadratureRule()
 {

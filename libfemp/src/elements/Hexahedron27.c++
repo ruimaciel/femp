@@ -200,6 +200,12 @@ Hexahedron27::getdNdzeta(const Point3D &p)
 }
 
 
+int Hexahedron27::getNodeAmount() const
+{
+	return 27;
+}
+
+
 std::vector<fem::Point3D>
 Hexahedron27::getLocalCoordinates()
 {

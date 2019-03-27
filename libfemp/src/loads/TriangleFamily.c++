@@ -20,6 +20,12 @@ TriangleFamily::family() const
 }
 
 
+unsigned int TriangleFamily::getDofAmount() const
+{
+	return 3*this->getNodeAmount();
+}
+
+
 std::vector<quadrature::SurfaceRule::Point>
 TriangleFamily::getDomainQuadratureRule() const
 {

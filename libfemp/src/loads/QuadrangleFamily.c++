@@ -19,6 +19,12 @@ QuadrangleFamily::family() const
 	return BaseElement::EF_QUADRILATERAL;
 }
 
+unsigned int
+QuadrangleFamily::getDofAmount() const
+{
+	return 3*this->getNodeAmount();
+}
+
 
 std::vector<quadrature::SurfaceRule::Point> QuadrangleFamily::getDomainQuadratureRule() const
 {

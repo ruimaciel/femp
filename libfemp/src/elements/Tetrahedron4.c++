@@ -89,6 +89,12 @@ Tetrahedron4::getdNdzeta(const Point3D &)
 }
 
 
+int Tetrahedron4::getNodeAmount() const
+{
+	return 4;
+}
+
+
 std::vector<fem::Point3D>
 Tetrahedron4::getLocalCoordinates()
 {

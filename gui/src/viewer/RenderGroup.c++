@@ -3,14 +3,13 @@
 
 RenderGroup::RenderGroup()
 {
-	this->render = true;
-	this->selectable = true;
+	this->m_render = true;
 
 	//display_list = glGenLists(1);
 }
 
 
-void 
+void
 RenderGroup::generateSceneGraph()
 {
 	//TODO implement a better scenegraph structure
@@ -22,24 +21,20 @@ RenderGroup::generateSceneGraph()
 }
 
 
-void 
-RenderGroup::generateDisplayList( ViewportData & /*data*/, ViewportColors & /*colors*/)
+void RenderGroup::setVisible(bool visible)
 {
-	//TODO generate display list
-	/*
-	glNewList(display_list, GL_COMPILE_AND_EXECUTE);
-	this->scenegraph.paintGL(data, colors);
-	glEndList();
-	*/
+	this->m_render = visible;
+}
+
+bool RenderGroup::isVisible() const
+{
+	return this->m_render;
 }
 
 
-void 
-RenderGroup::paintGL()
+void RenderGroup::paintGL(ViewportData & data, ViewportColors & colors)
 {
-	/*
-	glCallList(display_list);
-	glFlush();
-	*/
+	this->scenegraph.paintGL(data, colors);
+
 }
 

@@ -46,11 +46,6 @@ public:
 
   void paint(ViewportData &viewport_data, ViewportColors &colors);
 
-  /**
-  Generates all the display lists
-  **/
-  void generateDisplayLists(ViewportData &viewport_data, ViewportColors &colors);
-
   /*
   Generic routine to add a primitive component to this scenegraph
   The template was provided for syntax convenience only; this class only accepts specific types derived from SceneGraphComponent
@@ -77,13 +72,14 @@ public:
 
 
 public:
+  std::map<enum Groups, RenderGroup>	rendering_groups;
+
+private:
   /*
   This is the master list of all scene graph objects in this scene graph.
   It is used to store every object of type SGCSurface (etc...) managed by this scenegraph.
   */
   std::list<SceneGraphComponent *> primitive_components;
-
-  std::map<enum Groups, RenderGroup>	rendering_groups;
 
   hud::Selection	m_selection;	// HUD object to render selection
 

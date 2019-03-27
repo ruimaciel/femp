@@ -13,7 +13,7 @@ class NewProjectWizardPage1: public QWizardPage, public Ui::NewProjectWizardPage
 	Q_OBJECT
 
 public:
-	NewProjectWizardPage1(QWidget *parent = 0, QString basedir = QString());
+	NewProjectWizardPage1(QWidget *parent = nullptr, QString basedir = QString());
 	~NewProjectWizardPage1();
 
 	bool validatePage();

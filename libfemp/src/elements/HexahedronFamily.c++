@@ -22,6 +22,12 @@ HexahedronFamily::family() const
 }
 
 
+unsigned int HexahedronFamily::getDofAmount() const
+{
+	return 3*this->getNodeAmount();
+}
+
+
 std::vector<boost::tuple<fem::Point3D, double> >
 HexahedronFamily::getStiffnessQuadratureRule()
 {

@@ -18,7 +18,7 @@ class NewProjectWizard: public QWizard
 	Q_OBJECT
 
 public:
-	NewProjectWizard(Document &doc, QWidget *parent = 0);
+	NewProjectWizard(Document &doc, QWidget *parent = nullptr);
 	~NewProjectWizard();
 
 private:

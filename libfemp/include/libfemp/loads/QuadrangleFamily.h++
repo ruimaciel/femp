@@ -28,7 +28,7 @@ public:
 	/**
 	 * Returns the total number of degrees of freedom
 	 **/
-	virtual unsigned int getDofAmount() const	{ return 3*this->getNodeAmount(); }
+	virtual unsigned int getDofAmount() const;
 
 	/**
 	Returns a list of quadrature rules

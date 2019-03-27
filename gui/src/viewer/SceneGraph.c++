@@ -26,7 +26,7 @@ SceneGraph::clear()
   // frees the primitives included in the list
   for(std::list<SceneGraphComponent *>::iterator j = primitive_components.begin(); j != primitive_components.end(); j++)
   {
-    delete(*j);
+	delete(*j);
   }
   primitive_components.clear();
 
@@ -41,27 +41,14 @@ SceneGraph::paint(ViewportData &viewport_data, ViewportColors &colors)
 
   for(map<enum Groups, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
   {
-    if(i->second.render)
-    {
-      i->second.scenegraph.paintGL(viewport_data, colors);
-    }
+	if(i->second.isVisible())
+	{
+	  i->second.paintGL(viewport_data, colors);
+	}
   }
 
   // render HUD objects
   m_selection.paintGL(viewport_data, colors);
-}
-
-
-void
-SceneGraph::generateDisplayLists(ViewportData &viewport_data, ViewportColors &colors)
-{
-  for(std::map<enum Groups, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
-  {
-    if(i->second.render)
-    {
-      i->second.generateDisplayList(viewport_data, colors);
-    }
-  }
 }
 
 
@@ -80,7 +67,7 @@ SceneGraph::generateSceneGraph()
 {
   for(std::map<enum Groups, RenderGroup>::iterator i = this->rendering_groups.begin(); i!= this->rendering_groups.end(); i++)
   {
-    i->second.generateSceneGraph();
+	i->second.generateSceneGraph();
   }
 }
 
@@ -90,7 +77,7 @@ SceneGraph::runOperation(Operation::OperationsVisitor &visitor)
 {
   for(std::list<SceneGraphComponent *>::iterator i = this->primitive_components.begin(); i != this->primitive_components.end(); i++)
   {
-    (*i)->accept(visitor);
+	(*i)->accept(visitor);
   }
 }
 

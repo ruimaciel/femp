@@ -158,6 +158,11 @@ target_link_libraries(libfemp
     Eigen3::Eigen
     )
 
+set_target_properties(libfemp PROPERTIES
+    CXX_STANDARD 11
+    CXX_EXTENSIONS OFF
+    )
+
 target_include_directories(libfemp
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src

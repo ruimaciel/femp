@@ -2,87 +2,88 @@
 
 #include <iostream>
 
+#include <QMouseEvent>
+
 #include "../BaseViewport.h++"
 
 
-void 
+InputState::~InputState()
+{
+
+}
+
+void
 InputState::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	std::cerr << "InputState::press(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
-	switch(event->buttons() )
-	{ 
-		case Qt::LeftButton:
-			this->leftClick(viewport, event, input);
-			break;
+    std::cerr << "InputState::press(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
+    switch(event->buttons() )
+    {
+        case Qt::LeftButton:
+            this->leftClick(viewport, event, input);
+            break;
 
-		case Qt::RightButton:
-			this->rightClick(viewport, event, input);
-			break;
+        case Qt::RightButton:
+            this->rightClick(viewport, event, input);
+            break;
 
-		/*
-		case (Qt::LeftButton | Qt::RightButton):
-			std::cerr << "both" << std::endl;
-			break;
-		*/
-
-		default:
-			std::cerr << "other" << std::endl;
-			break;
-	}
+        default:
+            std::cerr << "other" << std::endl;
+            break;
+    }
 }
 
 
-void 
+void
 InputState::release(BaseViewport * /*viewport*/, QMouseEvent * /*event*/, Input * /*input*/)
 {
-	std::cerr << "InputState::release(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
+    std::cerr << "InputState::release(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
 }
 
 
-void 
+void
 InputState::leftClick(BaseViewport * /*viewport*/, QMouseEvent * /*event*/, Input * /*input*/)
 {
-	// remove after debug
-	std::cerr << "InputState::leftClick(Input *input) defaulted" << std::endl;
+    // remove after debug
+    std::cerr << "InputState::leftClick(Input *input) defaulted" << std::endl;
 }
 
 
-void 
+void
 InputState::leftRelease(BaseViewport * /*viewport*/, QMouseEvent * /*event*/, Input * /*input*/)
 {
-	// remove after debug
-	std::cerr << "InputState::leftRelease(Input *input) defaulted" << std::endl;
+    // remove after debug
+    std::cerr << "InputState::leftRelease(Input *input) defaulted" << std::endl;
 }
 
 
-void 
+void
 InputState::rightClick(BaseViewport * /*viewport*/, QMouseEvent * /*event*/, Input * /*input*/)
 {
-	// remove after debug
-	std::cerr << "InputState::rightClick(Input *input) defaulted" << std::endl;
+    // remove after debug
+    std::cerr << "InputState::rightClick(Input *input) defaulted" << std::endl;
 }
 
 
-void 
+void
 InputState::rightRelease(BaseViewport * /*viewport*/, QMouseEvent * /*event*/, Input * /*input*/)
 {
-	// remove after debug
-	std::cerr << "InputState::rightRelease(Input *input) defaulted" << std::endl;
+    // remove after debug
+    std::cerr << "InputState::rightRelease(Input *input) defaulted" << std::endl;
 }
 
 
-void 
+void
 InputState::move(BaseViewport * /*viewport*/, QMouseEvent * /*event*/, Input * /*input*/)
 {
-	// remove after debug
-	std::cerr << "InputState::move(Input *input) defaulted" << std::endl;
+    // remove after debug
+    std::cerr << "InputState::move(Input *input) defaulted" << std::endl;
 }
 
 
 
-void 
+void
 InputState::changeState(Input &input, InputState *new_state)
 {
-	input.changeState(new_state);
+    input.changeState(new_state);
 }
 

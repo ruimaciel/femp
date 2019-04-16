@@ -1,5 +1,5 @@
-#ifndef INPUT_STATE_RIGHT_CLICK_HPP 
-#define INPUT_STATE_RIGHT_CLICK_HPP 
+#ifndef INPUT_STATE_RIGHT_CLICK_HPP
+#define INPUT_STATE_RIGHT_CLICK_HPP
 
 #include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 
@@ -13,18 +13,15 @@ namespace InputStates
 Represents the initial state for the user input state machine
 **/
 class RightClick
-	: public InputState
+    : public InputState
 {
 public:
-	void press(BaseViewport *viewport, QMouseEvent *event, Input *input);
-	void release(BaseViewport *viewport, QMouseEvent *event, Input *input);
+    void press(BaseViewport *viewport, QMouseEvent *event, Input *input) override;
+    void release(BaseViewport *viewport, QMouseEvent *event, Input *input) override;
 
-	//void leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input);
-	//void leftRelease(BaseViewport *viewport, QMouseEvent *event, Input *input);
-	//void rightClick(BaseViewport *viewport, QMouseEvent *event, Input *input);
-	void rightRelease(BaseViewport *viewport, QMouseEvent *event, Input *input);
+    void rightRelease(BaseViewport *viewport, QMouseEvent *event, Input *input) override;
 
-	void move(BaseViewport *viewport, QMouseEvent *event, Input *input);
+    void move(BaseViewport *viewport, QMouseEvent *event, Input *input) override;
 };
 
 

@@ -324,24 +324,30 @@ set(gui_FORMS
     src/ui/MainWindow.ui
     )
 
-add_executable( gui
+qt5_wrap_ui(gui_FORM_SOURCES ${gui_FORMS} )
+
+add_executable(${PROJECT_NAME}
     ${gui_HEADERS}
     ${gui_SOURCES}
     ${gui_FORMS}
+    ${gui_FORM_SOURCES}
     )
 
-target_include_directories(gui
+target_include_directories(${PROJECT_NAME}
     PUBLIC ${sigc++-2.0_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
 
-set_target_properties(gui PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_STANDARD 11
     CXX_EXTENSIONS OFF
     AUTOMOC ON
-    AUTOUIC ON
 )
 
-target_link_libraries(gui
+target_include_directories(${PROJECT_NAME}
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+target_link_libraries(${PROJECT_NAME}
     Qt5::Widgets
     Qt5::OpenGL
     OpenGL::GL

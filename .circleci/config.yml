@@ -50,7 +50,7 @@ workflows:
   version: 2
   unscheduled:
     jobs:
-      - install:
+      - install
       - build:
           requires:
             - install

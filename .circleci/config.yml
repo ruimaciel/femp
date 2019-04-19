@@ -16,13 +16,14 @@ jobs:
       - run:
           name: Prepare build directory
           command: |
-            mkdir $CIRCLE_WORKING_DIRECTORY/build
-            cd $CIRCLE_WORKING_DIRECTORY/build
+            cd $CIRCLE_WORKING_DIRECTORY
+            mkdir build
+            cd build
             cmake ..
       - run:
           name: Build
           command: |
-            cd build
+            cd $CIRCLE_WORKING_DIRECTORY/build
             make -j2
       - save_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
@@ -43,7 +44,8 @@ jobs:
       - run:
           name: test  libfemp
           command: |
-            cd $CIRCLE_WORKING_DIRECTORY/build/libfemp
+            cd $CIRCLE_WORKING_DIRECTORY/build
+            cd libfemp
             ctest
 
 workflows:

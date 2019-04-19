@@ -58,8 +58,8 @@ foreach(libfemp_test_SOURCE_FILE ${libfemp_test_SOURCES})
         libgmock
         )
 
-#    add_test(NAME ${libfemp_test_NAME}
-#        COMMAND ${libfemp_test_NAME}
-#        )
+    add_test(NAME ${libfemp_test_NAME}
+        COMMAND ${libfemp_test_NAME}
+        )
 
 endforeach(libfemp_test_SOURCE_FILE)

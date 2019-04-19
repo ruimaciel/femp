@@ -16,31 +16,30 @@ DenseVector: a storage policy class intended to implement the interfaces specifi
 template<typename scalar>
 class DenseVector
 {
-	public:
-		size_t	t_size;		// number of size
+    public:
+        size_t	t_size;		// number of size
 
-		std::vector< scalar >	data;	
-		
-	public:
-		DenseVector(const size_t size = 0 = 0);
-		~DenseVector()	{};
+        std::vector< scalar >	data;
 
-		size_t size() const		{ return t_size; };
+    public:
+        DenseVector(const size_t size = 0 );
 
-		/**
-		Sets all values to zero
-		**/
-		void clear();
+        size_t size() const		{ return t_size; }
 
-		/*
-		Returns the value in [index]
-		*/
-		scalar value(const size_t index) const;
+        /**
+        Sets all values to zero
+        **/
+        void clear();
 
-		scalar & operator() (const size_t index);
+        /*
+        Returns the value in [index]
+        */
+        scalar value(const size_t index) const;
+
+        scalar & operator() (const size_t index);
 
 
-		void resize(const size_t size);
+        void resize(const size_t size);
 };
 
 
@@ -48,45 +47,45 @@ class DenseVector
 template<typename scalar>
 DenseVector<scalar>::DenseVector(const size_t size)
 {
-	resize(size);
+    resize(size);
 }
 
 
 template<typename scalar>
 void DenseVector<scalar>::clear()
 {
-	for(typename std::vector<scalar>::iterator i = data.begin(); i != data.end(); i++)
-	{
-		*i = 0;
-	}
+    for(typename std::vector<scalar>::iterator i = data.begin(); i != data.end(); i++)
+    {
+        *i = 0;
+    }
 }
 
 
 template<typename scalar>
 scalar DenseVector<scalar>::value(const size_t index) const
 {
-	assert(index < t_size);
+    assert(index < t_size);
 
-	return this->data[index];
+    return this->data[index];
 }
 
 
 template<typename scalar>
 scalar & DenseVector<scalar>::operator() (const size_t index)
 {
-	assert(index < t_size);
+    assert(index < t_size);
 
-	return this->data[index];
+    return this->data[index];
 }
 
 
 template<typename scalar>
 void DenseVector<scalar>::resize(const size_t size)
 {
-	using namespace std;
+    using namespace std;
 
-	data.resize(size);
-	t_size = size;
+    data.resize(size);
+    t_size = size;
 }
 
 

@@ -1,39 +1,48 @@
 #ifndef OPTIONS_HPP
 #define OPTIONS_HPP
 
+#include <QDir>
+
 #include "ViewportColors.h++"
 #include "DisplayOptions.h++"
 
 class Options
 {
 public:
-	static Options & getInstance()
-	{
-		static Options instance;
+    static Options & getInstance()
+    {
+        static Options instance;
 
-		return instance;
-	}
+        return instance;
+    }
 
 public:
-	Options(Options const &) = delete;
-	void operator= (Options const &) = delete;
+    Options(Options const &) = delete;
+    void operator= (Options const &) = delete;
 
 
-	/**
-	 * returns the viewport colors
-	 **/
-	ViewportColors &getViewportColors();
+    /**
+     * returns the viewport colors
+     **/
+    ViewportColors &getViewportColors();
 
-	/**
-	 * returns the display options
-	 **/
-	DisplayOptions &getDisplayOptions();
+    /**
+     * returns the display options
+     **/
+    DisplayOptions &getDisplayOptions();
+
+    QDir getProjectOpenDirectory();
+    void setProjectOpenDirectory(QDir dir);
+
+    QDir getDumpResultsDirectory();
+    void setDumpResultsDirectory(QDir dir);
+
 
 private:
-	Options() {}
+    Options() {}
 
-	ViewportColors m_viewportColors;
-	DisplayOptions m_displayOptions;
+    ViewportColors m_viewportColors;
+    DisplayOptions m_displayOptions;
 
 };
 

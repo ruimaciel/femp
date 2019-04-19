@@ -60,8 +60,6 @@
 #include "ProjectVisitor/MoveNodesVisitor.h++"
 #include "ProjectVisitor/OutputElementStatisticsVisitor.h++"
 
-#include "FempSettings.h++"
-
 
 
 
@@ -119,7 +117,7 @@ MainWindow::openProject()
     // get the last dir where a project was opened
     QFileDialog dialog(this);
 
-    QDir file_dialog_directory = FempSettings::getInstance().getProjectOpenDirectory();
+    QDir file_dialog_directory = Options::getInstance().getProjectOpenDirectory();
     dialog.setDirectory(file_dialog_directory);
 
     // setup the file dialog
@@ -132,7 +130,7 @@ MainWindow::openProject()
     }
 
     file_dialog_directory = dialog.directory();
-    FempSettings::getInstance().setProjectOpenDirectory(file_dialog_directory);
+    Options::getInstance().setProjectOpenDirectory(file_dialog_directory);
 
 
     // clear the document
@@ -238,7 +236,7 @@ MainWindow::saveProject()
     if(m_document.isFileNameNotSet())
     {
         QFileDialog dialog(this);
-        QDir file_dialog_directory = FempSettings::getInstance().getProjectOpenDirectory();
+        QDir file_dialog_directory = Options::getInstance().getProjectOpenDirectory();
         dialog.setDirectory(file_dialog_directory);
 
         // setup the file dialog
@@ -288,7 +286,7 @@ MainWindow::saveProjectAs()
 {
     QFileDialog dialog(this);
 
-    QDir file_dialog_directory = FempSettings::getInstance().getProjectOpenDirectory();
+    QDir file_dialog_directory = Options::getInstance().getProjectOpenDirectory();
     dialog.setDirectory(file_dialog_directory);
 
     // setup the file dialog
@@ -782,7 +780,7 @@ MainWindow::dumpResultsFromSelection()
     // opens the file
     {
         QFileDialog dialog(this);
-        dialog.setDirectory(FempSettings::getInstance().getDumpResultsDirectory());
+        dialog.setDirectory(Options::getInstance().getDumpResultsDirectory());
         QStringList sl;
 
         // setup the file dialog
@@ -797,7 +795,7 @@ MainWindow::dumpResultsFromSelection()
         }
 
         // get the last directory used to dump results
-        FempSettings::getInstance().setDumpResultsDirectory(dialog.directory());
+        Options::getInstance().setDumpResultsDirectory(dialog.directory());
 
         sl = dialog.selectedFiles();
         file_name = sl.at(0);

@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  install:
+  build:
     docker:
       - image: ubuntu:bionic
 
@@ -13,10 +13,6 @@ jobs:
             apt-get update
             apt-get install -y cmake git
             apt-get install -y libsigc++-2.0-dev qtbase5-dev libqt5opengl5-dev libsuitesparse-dev libboost1.62-dev libeigen3-dev flex bison re2c
-
-  build:
-    docker:
-      - image: ubuntu:bionic
     steps:
       - run:
           name: Prepare build directory
@@ -41,6 +37,11 @@ jobs:
       - restore_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - run:
+          name: Install packages
+          command: |
+            apt-get update
+            apt-get install -y cmake
+      - run:
           name: test  libfemp
           command: |
             cd build/libfemp
@@ -50,10 +51,7 @@ workflows:
   version: 2
   unscheduled:
     jobs:
-      - install
-      - build:
-          requires:
-            - install
+      - build
       - test:
           requires:
             - build

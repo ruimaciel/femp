@@ -1,8 +1,7 @@
-libqt4-dev
-libqt4-designer
-libqt4-opengl-dev
-libboost1.42-dev
-libeigen2-dev
+qtbase5-dev
+libqt5opengl5-dev
+libboost1.62-dev
+libeigen3-dev
 libsuitesparse-dev
 libsuitesparse-metis-dev
 re2c

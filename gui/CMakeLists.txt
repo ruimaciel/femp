@@ -9,10 +9,6 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-# Instruct CMake to run moc automatically when needed
-set(CMAKE_AUTOMOC ON)
-# Create code from a list of Qt designer ui files
-set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5 COMPONENTS Core Widgets OpenGL REQUIRED)
 find_package(OpenGL REQUIRED)
@@ -326,17 +322,30 @@ set(gui_FORMS
     src/ui/MainWindow.ui
     )
 
-add_executable( gui
+qt5_wrap_ui(gui_FORM_SOURCES ${gui_FORMS} )
+
+add_executable(${PROJECT_NAME}
     ${gui_HEADERS}
     ${gui_SOURCES}
     ${gui_FORMS}
+    ${gui_FORM_SOURCES}
     )
 
-target_include_directories(gui
+target_include_directories(${PROJECT_NAME}
     PUBLIC ${sigc++-2.0_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
 
-target_link_libraries(gui
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    CXX_STANDARD 11
+    CXX_EXTENSIONS OFF
+    AUTOMOC ON
+)
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+target_link_libraries(${PROJECT_NAME}
     Qt5::Widgets
     Qt5::OpenGL
     OpenGL::GL

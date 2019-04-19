@@ -2,49 +2,45 @@
 
 #include <iostream>
 
+#include <QMouseEvent>
+
 #include "Input.h++"
 #include "../BaseViewport.h++"
 
 namespace InputStates
 {
 
-void 
+void
 RightClick::press(BaseViewport * /*viewport*/, QMouseEvent *event, Input * /*input*/)
 {
-	switch(event->buttons() )
-	{ 
-		/*
-		case (Qt::LeftButton | Qt::RightButton):
-			std::cerr << "both" << std::endl;
-			break;
-		*/
-
-		default:
-			std::cerr << "other" << std::endl;
-			break;
-	}
+    switch(event->buttons() )
+    {
+        default:
+            std::cerr << "other" << std::endl;
+            break;
+    }
 }
 
 
-void 
+void
 RightClick::release(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-	//TODO check if left button was released
-	this->rightRelease(viewport, event, input);
+    //TODO check if left button was released
+    this->rightRelease(viewport, event, input);
 }
 
 
-void 
+void
 RightClick::rightRelease(BaseViewport *viewport, QMouseEvent * /*event*/, Input *input)
 {
-	input->changeState(&viewport->m_is_start);
+    input->changeState(&viewport->m_is_start);
 }
 
 
-void 
+void
 RightClick::move(BaseViewport *viewport, QMouseEvent * /*event*/, Input *input)
 {
-	input->changeState(&viewport->m_is_right_drag);
+    input->changeState(&viewport->m_is_right_drag);
 }
 
 

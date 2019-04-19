@@ -27,3 +27,8 @@ target_link_libraries(cmdline
 target_include_directories(cmdline
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
+
+set_target_properties(cmdline PROPERTIES
+    CXX_STANDARD 11
+    CXX_EXTENSIONS OFF
+)

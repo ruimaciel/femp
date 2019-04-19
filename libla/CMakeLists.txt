@@ -55,3 +55,8 @@ target_link_libraries(libla
 target_include_directories(libla
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
     )
+
+set_target_properties(libla PROPERTIES
+    CXX_STANDARD 11
+    CXX_EXTENSIONS OFF
+    )

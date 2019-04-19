@@ -24,3 +24,19 @@ jobs:
           command: |
             cd build
             make
+      - save_cache:
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - build
+
+  tests:
+    docker:
+      - image: ubuntu:bionic
+    steps:
+      - restore_cache:
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: test  libfemp
+          command: |
+            cd build/libfemp
+            ctest

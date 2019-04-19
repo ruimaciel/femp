@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  install:
     docker:
       - image: ubuntu:bionic
 
@@ -11,8 +11,13 @@ jobs:
           name: Install packages
           command: |
             apt-get update
-            apt-get install -y cmake
+            apt-get install -y cmake git
             apt-get install -y libsigc++-2.0-dev qtbase5-dev libqt5opengl5-dev libsuitesparse-dev libboost1.62-dev libeigen3-dev flex bison re2c
+
+  build:
+    docker:
+      - image: ubuntu:bionic
+    steps:
       - run:
           name: Prepare build directory
           command: |
@@ -29,7 +34,7 @@ jobs:
           paths:
             - build
 
-  tests:
+  test:
     docker:
       - image: ubuntu:bionic
     steps:
@@ -40,3 +45,15 @@ jobs:
           command: |
             cd build/libfemp
             ctest
+
+workflows:
+  version: 2
+  unscheduled:
+    jobs:
+      - install:
+      - build:
+          requires:
+            - install
+      - test:
+          requires:
+            - build

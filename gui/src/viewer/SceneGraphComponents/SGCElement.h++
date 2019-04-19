@@ -48,7 +48,7 @@ public:
   /**
   returns this element's reference
   **/
-  fem::element_ref_t reference() const	{ return m_element_reference; }
+  fem::element_ref_t reference() const;
 
 
   void setElementRepresentationPolicy(ElementRepresentationPolicy *representation);

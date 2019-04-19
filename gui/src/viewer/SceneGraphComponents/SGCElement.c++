@@ -23,6 +23,13 @@ Element::~Element()
 }
 
 
+fem::element_ref_t
+Element::reference() const
+{
+    return m_element_reference;
+}
+
+
 void
 Element::setElementRepresentationPolicy(ElementRepresentationPolicy *representation)
 {

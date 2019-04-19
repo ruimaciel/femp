@@ -35,9 +35,9 @@ public:
   */
   void paintGL(ViewportData &data, ViewportColors &colors);
 
-  fem::node_ref_t const &reference() const	{ return node_label; }
+  fem::node_ref_t const &reference() const;
 
-  fem::Point3D const &pos()	const	{ return *m_node; }
+  fem::Point3D const &pos()	const;
 
   /*
   Visitor pattern method

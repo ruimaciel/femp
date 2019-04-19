@@ -5,66 +5,68 @@ namespace fem
 {
 
 
-void 
-ElementResults::resize(const unsigned int size)
+void
+ElementResults::resize(unsigned int size)
 {
-	stresses.resize(size);
-	strains.resize(size);
-	von_mises.resize(size);
+    stresses.resize(size);
+    strains.resize(size);
+    von_mises.resize(size);
 }
 
 
 std::ostream &
 operator<< (std::ostream &os, ElementResults const &element_results)
 {
-	os << "\t strain:\n";
-	for(typename std::vector<Strains<double> >::const_iterator i = element_results.strains.begin(); i != element_results.strains.end(); i++)	// strains calculated in each of the element's nodes
-	{
-		os << "\t\te_11: " << i->e11;
-		os << "\te_22: " << i->e22;
-		os << "\te_33: " << i->e33;
-		os << "\te_12: " << i->e12;
-		os << "\te_23: " << i->e23;
-		os << "\te_13: " << i->e13;
-		os << "\n";
-	}
-	os << "\t stress:\n";
-	for(typename std::vector<Stresses<double> >::const_iterator i = element_results.stresses.begin(); i != element_results.stresses.end(); i++)	// stresses calculated in each of the element's nodes
-	{
-		os << "\t\ts_11: " << i->s11;
-		os << "\ts_22: " << i->s22;
-		os << "\ts_33: " << i->s33;
-		os << "\ts_12: " << i->s12;
-		os << "\ts_23: " << i->s23;
-		os << "\ts_13: " << i->s13;
-		os << "\n";
-	}
-	os << "\t von mises:\n";
-	for(typename std::vector<double>::const_iterator i = element_results.von_mises.begin(); i != element_results.von_mises.end(); i++)	// stresses calculated in each of the element's nodes
-	{
-		os << "\t\tv: " << *i;
-		os << "\n";
-	}
+    os << "\t strain:\n";
 
-	// code useful for debugging: remove later
-	os << "\t eigen stuff\n";
-	for(int i = 0; i < 3; i++)
-	{
-		os << "\t\teve" << i << " = [";
-		os << element_results.eig_vec[0][i] << ", " << element_results.eig_vec[1][i] << ", " << element_results.eig_vec[2][i] << "]', ";
-		os << "eva" << i << " = ";
-		os << element_results.eig_val[i] << "\n";
-	}
+    for(const Strains<double> i: element_results.strains)
+    {
+        os << "\t\te_11: " << i.e11;
+        os << "\te_22: " << i.e22;
+        os << "\te_33: " << i.e33;
+        os << "\te_12: " << i.e12;
+        os << "\te_23: " << i.e23;
+        os << "\te_13: " << i.e13;
+        os << "\n";
+    }
+    os << "\t stress:\n";
 
-	os << "T = [" ;
-	os << element_results.stresses[4].s11 << " " <<  element_results.stresses[4].s12 << " " << element_results.stresses[4].s13 << ";\n";
-	os << element_results.stresses[4].s12 << " " <<  element_results.stresses[4].s22 << " " << element_results.stresses[4].s23 << ";\n";
-	os << element_results.stresses[4].s13 << " " <<  element_results.stresses[4].s23 << " " << element_results.stresses[4].s33 << "]\n";
+    for(const Stresses<double> i: element_results.stresses)
+    {
+        os << "\t\ts_11: " << i.s11;
+        os << "\ts_22: " << i.s22;
+        os << "\ts_33: " << i.s33;
+        os << "\ts_12: " << i.s12;
+        os << "\ts_23: " << i.s23;
+        os << "\ts_13: " << i.s13;
+        os << "\n";
+    }
+    os << "\t von mises:\n";
 
-	os << std::endl;
-	return os;
+    for(double i: element_results.von_mises)
+    {
+        os << "\t\tv: " << i;
+        os << "\n";
+    }
+
+    // code useful for debugging: remove later
+    os << "\t eigen stuff\n";
+    for(int i = 0; i < 3; i++)
+    {
+        os << "\t\teve" << i << " = [";
+        os << element_results.eig_vec[0][i] << ", " << element_results.eig_vec[1][i] << ", " << element_results.eig_vec[2][i] << "]', ";
+        os << "eva" << i << " = ";
+        os << element_results.eig_val[i] << "\n";
+    }
+
+    os << "T = [" ;
+    os << element_results.stresses[4].s11 << " " <<  element_results.stresses[4].s12 << " " << element_results.stresses[4].s13 << ";\n";
+    os << element_results.stresses[4].s12 << " " <<  element_results.stresses[4].s22 << " " << element_results.stresses[4].s23 << ";\n";
+    os << element_results.stresses[4].s13 << " " <<  element_results.stresses[4].s23 << " " << element_results.stresses[4].s33 << "]\n";
+
+    os << std::endl;
+    return os;
 }
 
 
 }	// fem
-

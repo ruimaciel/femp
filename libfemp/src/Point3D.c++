@@ -13,7 +13,7 @@ Point3D::Point3D()
 }
 
 
-Point3D::Point3D(const double a, const double b, const double c)
+Point3D::Point3D(double a, double b, double c)
 {
     this->data[0] = a;
     this->data[1] = b;
@@ -39,7 +39,7 @@ Point3D::~Point3D()
     Sets the vector according to the given values
 */
 void
-Point3D::set(const double a, const double b, const double c)
+Point3D::set(double a, double b, double c)
 {
     this->data[0] = a;
     this->data[1] = b;
@@ -51,7 +51,7 @@ Point3D::set(const double a, const double b, const double c)
     Converts the given cylindrical coordinates to regular coordinates
 */
 void
-Point3D::set_cylindrical(const double radius, const double alfa, const double height)
+Point3D::set_cylindrical(double radius, double alfa, double height)
 {
     // alfa is the angle the vector makes with the OX axis
     // angle in degrees
@@ -116,14 +116,14 @@ double Point3D::y() const	{return data[1];}
 
 double Point3D::z() const	{return data[2];}
 
-void Point3D::x(const double val) {data[0] = val;}
+void Point3D::x(double val) {data[0] = val;}
 
-void Point3D::y(const double val) {data[1] = val;}
+void Point3D::y(double val) {data[1] = val;}
 
-void Point3D::z(const double val) {data[2] = val;}
+void Point3D::z(double val) {data[2] = val;}
 
 
-Point3D
+Point3D &
 Point3D::operator = (const Point3D &other)
 {
     if(&other != this)
@@ -181,7 +181,7 @@ Point3D::operator -= (const Point3D &other)
 
 
 Point3D
-Point3D::operator *= (const double scalar)
+Point3D::operator *= (double scalar)
 {
     this->data[0] *= scalar;
     this->data[1] *= scalar;
@@ -193,19 +193,6 @@ Point3D::operator *= (const double scalar)
 
 bool
 Point3D::operator == (const Point3D &other)
-{
-    if(&other != this)
-    {
-        if (other.data[0] != this->data [0]) return false;
-        if (other.data[1] != this->data [1]) return false;
-        if (other.data[2] != this->data [2]) return false;
-    }
-    return true;
-}
-
-
-bool
-Point3D::operator != (const Point3D &other)
 {
     if(&other != this)
     {
@@ -241,7 +228,7 @@ Point3D operator -(const Point3D &lhs, const Point3D &rhs)
 }
 
 
-Point3D operator *(const double &s, const Point3D &v)
+Point3D operator *(double s, const Point3D &v)
 {
     Point3D temp;
     temp.data[0] = s * v.data[0];
@@ -251,7 +238,7 @@ Point3D operator *(const double &s, const Point3D &v)
 }
 
 
-Point3D operator *(const Point3D &v, const double &s)
+Point3D operator *(const Point3D &v, double s)
 {
     Point3D temp;
     temp.data[0] = s * v.data[0];

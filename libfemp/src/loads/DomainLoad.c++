@@ -11,7 +11,7 @@ DomainLoad::DomainLoad()
 
 DomainLoad::DomainLoad(const DomainLoad &copied)
 {
-	this->force = copied.force;
+    this->force = copied.force;
 }
 
 
@@ -23,15 +23,15 @@ DomainLoad::~DomainLoad()
 const Point3D &
 DomainLoad::getForce() const
 {
-	return this->force;
+    return this->force;
 }
 
 
-DomainLoad
+DomainLoad &
 DomainLoad::operator=(DomainLoad const &copied)
 {
-	this->force = copied.force;
-	return *this;
+    this->force = copied.force;
+    return *this;
 }
 
 

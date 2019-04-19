@@ -489,24 +489,20 @@ MainWindow::setNodeActions()
 
     NodeActionsDialog na(load_patterns_model, this);
 
-    if(na.exec() == QDialog::Accepted)
+    if(na.exec() != QDialog::Accepted)
     {
-        Selection const selection = m_selectionManager.getSelection();
+        return;
+    }
 
-        fem::Point3D force = na.getForce();
-        //fem::Point displacement = na.getDisplacement(); // doesn't support node displacements
+    Selection const selection = m_selectionManager.getSelection();
 
-        if(force != fem::Point3D(0,0,0))
-        {
-            // shortcut just to reduce code clutter
-            fem::LoadPattern &load_pattern = femp_model.load_pattern_list[ na.getLoadPattern() ];
+    // shortcut just to reduce code clutter
+    fem::LoadPattern &load_pattern = femp_model.load_pattern_list[ na.getLoadPattern() ];
 
-            // assign nodal loads
-            for(fem::node_ref_t const &node: selection.getNodeReferences())
-            {
-                load_pattern.addNodalLoad(node, force);
-            }
-        }
+    // assign nodal loads
+    for(fem::node_ref_t const &node: selection.getNodeReferences())
+    {
+        load_pattern.addNodalLoad(node, na.getForce());
     }
 }
 
@@ -521,16 +517,18 @@ MainWindow::setDomainLoads()
     DomainLoadsDialog dialog(model, this);
 
     // call the dialog box
-    if(dialog.exec() == QDialog::Accepted)
+    if(dialog.exec() != QDialog::Accepted)
     {
-        Selection const selection = m_selectionManager.getSelection();
-
-        SetDomainLoadsVisitor visitor(selection,  femp_model.load_pattern_list[ dialog.getLoadPattern() ], dialog.getForce() );
-
-        m_document.getProject().accept(visitor);
-
-        m_document.setUnsaved();
+        return;
     }
+
+    Selection const selection = m_selectionManager.getSelection();
+
+    SetDomainLoadsVisitor visitor(selection,  femp_model.load_pattern_list[ dialog.getLoadPattern() ], dialog.getForce() );
+
+    m_document.getProject().accept(visitor);
+
+    m_document.setUnsaved();
 }
 
 
@@ -540,16 +538,18 @@ MainWindow::moveSelectedNodes()
     assert(m_mdiArea != nullptr);
 
     MoveNodesDialog nd(this);
-    if(nd.exec() == QDialog::Accepted)
+    if(nd.exec() != QDialog::Accepted)
     {
-        // get list of node restraints from active window
-        Selection selection = m_selectionManager.getSelection();
-        MoveNodesVisitor visitor(selection, nd.getTranslation());
-
-        m_document.getProject().accept(visitor);
-
-        m_document.setUnsaved();
+        return;
     }
+
+    // get list of node restraints from active window
+    Selection selection = m_selectionManager.getSelection();
+    MoveNodesVisitor visitor(selection, nd.getTranslation());
+
+    m_document.getProject().accept(visitor);
+
+    m_document.setUnsaved();
 }
 
 

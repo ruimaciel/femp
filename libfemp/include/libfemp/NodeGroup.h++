@@ -17,25 +17,26 @@ class NodeGroup
 {
 public:
 
-	/**
-	adds a new node to the list
-	**/
-	void pushNode(size_t);
+    /**
+    adds a new node to the list
+    **/
+    void pushNode(size_t);
 
-	// iterators
-	typedef std::vector<size_t>::const_iterator const_iterator;
-	std::vector<size_t>::const_iterator begin();
-	std::vector<size_t>::const_iterator end();
+    // iterators
+    using const_iterator =  std::vector<size_t>::const_iterator;
 
-	// clears the definition;
-	void clear();
+    std::vector<size_t>::const_iterator begin();
+    std::vector<size_t>::const_iterator end();
 
-	std::string getLabel() const;
-	void setLabel(std::string m_label);
+    // clears the definition;
+    void clear();
+
+    std::string getLabel() const;
+    void setLabel(std::string m_label);
 
 protected:
-	std::vector<size_t>	m_node_reference_list;
-	std::string	m_label;
+    std::vector<size_t>	m_node_reference_list;
+    std::string	m_label;
 
 };
 

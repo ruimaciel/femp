@@ -16,22 +16,22 @@ Class representing a linear elastic material
 class Material
 {
 public:
-	std::string label;	// a label describing this material
+    std::string label;	// a label describing this material
 
-	double E, nu;	// linear elastic material
+    double E, nu;	// linear elastic material
 
-	double fy;	// elastic limit
+    double fy;	// elastic limit
 
 public:
-	/**
-	Generates a constitutive matrix
-	@return	a matrix type
-	**/
-	Eigen::Matrix<double,6,6> generateD() const;
+    /**
+    Generates a constitutive matrix
+    @return	a matrix type
+    **/
+    Eigen::Matrix<double,6,6> generateD() const;
 };
 
 
-typedef std::vector<Material>::size_type material_ref_t;
+using material_ref_t = std::vector<Material>::size_type;
 
 
 }	// namespace fem

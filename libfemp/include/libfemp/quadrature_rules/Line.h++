@@ -18,15 +18,15 @@ namespace quadrature
 class LineRule
 {
 public:
-	typedef QuadraturePoint<1> Point;	// helper alias
+    using Point = QuadraturePoint<1>;	// helper alias
 
 public:
-	virtual ~LineRule();
+    virtual ~LineRule();
 
-	/**
-	 * functor that returns the quadrature rule
-	 **/
-	virtual std::vector<Point> operator() () const = 0;
+    /**
+     * functor that returns the quadrature rule
+     **/
+    virtual std::vector<Point> operator() () const = 0;
 };
 
 
@@ -34,10 +34,10 @@ public:
  * One point Gauss-Legendre
  **/
 class GaussLegendre1
-	: public LineRule
+    : public LineRule
 {
 public:
-	virtual std::vector<Point> operator() () const override;
+    virtual std::vector<Point> operator() () const override;
 };
 
 
@@ -45,10 +45,10 @@ public:
  * two-point Gauss-Legendre
  **/
 class GaussLegendre2
-	: public LineRule
+    : public LineRule
 {
 public:
-	virtual std::vector<Point> operator() () const override;
+    virtual std::vector<Point> operator() () const override;
 };
 
 
@@ -56,10 +56,10 @@ public:
  * three-point Gauss-Legendre
  **/
 class GaussLegendre3
-	: public LineRule
+    : public LineRule
 {
 public:
-	virtual std::vector<Point> operator() () const override;
+    virtual std::vector<Point> operator() () const override;
 };
 
 
@@ -67,10 +67,10 @@ public:
  * three-point Simpson's rule
  **/
 class Simpson
-	: public LineRule
+    : public LineRule
 {
 public:
-	virtual std::vector<Point> operator() () const override;
+    virtual std::vector<Point> operator() () const override;
 };
 
 

@@ -15,15 +15,15 @@ public:
 
     // constructors
     Point3D();
-    Point3D(const double a, const double b, const double c = 0);
+    Point3D(double a, double b, double c = 0);
     Point3D(const Point3D &copied);
 
     // class destructor
     virtual ~Point3D();
 
 
-    void set(const double a, const double b, const double c = 0);
-    void set_cylindrical(const double radius, const double alfa, const double height = 0);
+    void set(double a, double b, double c = 0);
+    void set_cylindrical(double radius, double alfa, double height = 0);
 
     double norm() const;  // returns the vector's "lenght"
     void normalize(); // converts the vector to it's director vector (norm() == 1)
@@ -37,17 +37,17 @@ public:
     double z() const;
 
     // sets individual vector values
-    void x(const double val);
-    void y(const double val);
-    void z(const double val);
+    void x(double val);
+    void y(double val);
+    void z(double val);
 
-    Point3D operator = (const Point3D &other);
+    Point3D & operator = (const Point3D &other);
     Point3D operator + (const Point3D &other);
     Point3D operator - (const Point3D &other);
 
     Point3D operator += (const Point3D &other);
     Point3D operator -= (const Point3D &other);
-    Point3D operator *= (const double scalar);
+    Point3D operator *= (double scalar);
 
     bool operator == (const Point3D &other);
     bool operator != (const Point3D &other);
@@ -55,8 +55,8 @@ public:
 
     friend Point3D operator +(const Point3D &lhs, const Point3D &rhs);
     friend Point3D operator -(const Point3D &lhs, const Point3D &rhs);
-    friend Point3D operator *(const double &s, const Point3D &v);
-    friend Point3D operator *(const Point3D &v, const double &s);
+    friend Point3D operator *(double s, const Point3D &v);
+    friend Point3D operator *(const Point3D &v, double s);
 
     friend Point3D cross_product(const Point3D &LHV, const Point3D &RHV);      //assuming vector is 3D
     friend double dot_product(const Point3D &LHV, const Point3D &RHV);

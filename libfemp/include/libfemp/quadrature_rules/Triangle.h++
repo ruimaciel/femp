@@ -21,15 +21,15 @@ namespace quadrature
 class TriangleRule : public SurfaceRule
 {
 public:
-	typedef QuadraturePoint<2> Point;	// helper alias
+    using Point = QuadraturePoint<2>;	// helper alias
 
 public:
-	virtual ~TriangleRule();
+    virtual ~TriangleRule();
 
-	/**
-	 * functor that returns the quadrature rule
-	 **/
-	virtual std::vector<Point> operator() () const = 0;
+    /**
+     * functor that returns the quadrature rule
+     **/
+    virtual std::vector<Point> operator() () const = 0;
 };
 
 
@@ -37,10 +37,10 @@ public:
  * 1-point quadrature rule over the unit triangle
  **/
 class Triangle1
-	: public TriangleRule
+    : public TriangleRule
 {
 public:
-	virtual std::vector<Point> operator() () const override;
+    virtual std::vector<Point> operator() () const override;
 };
 
 
@@ -48,10 +48,10 @@ public:
  * 3-point quadrature rule over the unit triangle
  **/
 class Triangle3
-	: public TriangleRule
+    : public TriangleRule
 {
 public:
-	virtual std::vector<Point> operator() () const override;
+    virtual std::vector<Point> operator() () const override;
 };
 
 
@@ -59,10 +59,10 @@ public:
  * 6-point quadrature rule over the unit triangle
  **/
 class Triangle6
-	: public TriangleRule
+    : public TriangleRule
 {
 public:
-	virtual std::vector<Point> operator() () const override;
+    virtual std::vector<Point> operator() () const override;
 };
 
 
@@ -70,10 +70,10 @@ public:
  * 7-point quadrature rule over the unit triangle
  **/
 class Triangle7
-	: public TriangleRule
+    : public TriangleRule
 {
 public:
-	virtual std::vector<Point> operator() () const override;
+    virtual std::vector<Point> operator() () const override;
 };
 
 

@@ -17,15 +17,15 @@ namespace quadrature
 class SurfaceRule
 {
 public:
-	typedef QuadraturePoint<2> Point;	// helper alias
+    using Point = QuadraturePoint<2>;	// helper alias
 
 public:
-	virtual ~SurfaceRule();
+    virtual ~SurfaceRule();
 
-	/**
-	 * functor that returns the quadrature rule
-	 **/
-	virtual std::vector<Point> operator() () const = 0;
+    /**
+     * functor that returns the quadrature rule
+     **/
+    virtual std::vector<Point> operator() () const = 0;
 };
 
 

@@ -21,15 +21,15 @@ namespace quadrature
 class QuadrangleRule : public SurfaceRule
 {
 public:
-	typedef QuadraturePoint<2> Point;	// helper alias
+    using Point = QuadraturePoint<2>;	// helper alias
 
 public:
-	virtual ~QuadrangleRule();
+    virtual ~QuadrangleRule();
 
-	/**
-	 * functor that returns the quadrature rule
-	 **/
-	virtual std::vector<Point> operator() () const = 0;
+    /**
+     * functor that returns the quadrature rule
+     **/
+    virtual std::vector<Point> operator() () const = 0;
 };
 
 
@@ -39,15 +39,15 @@ public:
  * two quadrature rules
  **/
 class QuadrangleCartesianProduct
-	: public QuadrangleRule
+    : public QuadrangleRule
 {
 private:
-	std::unique_ptr<LineRule> m_rule1, m_rule2;
+    std::unique_ptr<LineRule> m_rule1, m_rule2;
 
 public:
-	QuadrangleCartesianProduct(LineRule *rule1, LineRule *rule2);
+    QuadrangleCartesianProduct(LineRule *rule1, LineRule *rule2);
 
-	virtual std::vector<Point> operator() () const override;
+    virtual std::vector<Point> operator() () const override;
 };
 
 

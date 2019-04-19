@@ -18,18 +18,18 @@ Stores the results for each element
 **/
 struct ElementResults
 {
-	std::vector<Strains<double> >	strains;	// strains calculated in each of the element's nodes
-	std::vector<Stresses<double> >	stresses;	// stresses calculated in each of the element's nodes
+    std::vector<Strains<double> >	strains;	// strains calculated in each of the element's nodes
+    std::vector<Stresses<double> >	stresses;	// stresses calculated in each of the element's nodes
 
-	std::vector<double>	von_mises;
+    std::vector<double>	von_mises;
 
-	double eig_vec[3][3];	// stress tensor eigen vectors 
-	double eig_val[3];		// stress tensor eigen values 
+    double eig_vec[3][3];	// stress tensor eigen vectors
+    double eig_val[3];		// stress tensor eigen values
 
-	/**
-	resizes all lists
-	**/
-	void resize(const unsigned int );
+    /**
+    resizes all lists
+    **/
+    void resize(unsigned int );
 };
 
 

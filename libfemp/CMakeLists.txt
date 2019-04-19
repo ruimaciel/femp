@@ -167,3 +167,9 @@ target_include_directories(libfemp
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
+
+option(libfemp_RUN_TESTS ON "Run libfemp's tests")
+if(libfemp_RUN_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()

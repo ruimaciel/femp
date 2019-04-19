@@ -12,7 +12,8 @@ Visitor class that is used to implement a Visitor design pattern for the Project
 class ProjectVisitor
 {
 public:
-	virtual void visit(fem::Model &model, std::vector<fem::AnalysisResult> &result) = 0;
+    virtual ~ProjectVisitor();
+    virtual void visit(fem::Model &model, std::vector<fem::AnalysisResult> &result) = 0;
 };
 
 #endif

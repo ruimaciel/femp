@@ -155,6 +155,7 @@ set(gui_HEADERS
 
 set(gui_SOURCES
     src/Selection.c++
+    src/ProjectVisitor/ProjectVisitor.c++
     src/ProjectVisitor/OutputElementStatisticsVisitor.c++
     src/ProjectVisitor/MoveNodesVisitor.c++
     src/ProjectVisitor/OutputResultsInNodesVisitor.c++

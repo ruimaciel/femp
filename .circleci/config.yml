@@ -11,23 +11,23 @@ jobs:
           name: Install packages
           command: |
             apt-get update
-            apt-get install -y cmake git
+            apt-get install -y cmake git gcc-7
             apt-get install -y libsigc++-2.0-dev qtbase5-dev libqt5opengl5-dev libsuitesparse-dev libboost1.62-dev libeigen3-dev flex bison re2c
       - run:
           name: Prepare build directory
           command: |
-            mkdir build
-            cd build
+            mkdir $CIRCLE_WORKING_DIRECTORY/build
+            cd $CIRCLE_WORKING_DIRECTORY/build
             cmake ..
       - run:
           name: Build
           command: |
             cd build
-            make
+            make -j2
       - save_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - build
+            - $CIRCLE_WORKING_DIRECTORY/build
 
   test:
     docker:
@@ -43,7 +43,7 @@ jobs:
       - run:
           name: test  libfemp
           command: |
-            cd build/libfemp
+            cd $CIRCLE_WORKING_DIRECTORY/build/libfemp
             ctest
 
 workflows:

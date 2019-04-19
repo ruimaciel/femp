@@ -322,13 +322,10 @@ set(gui_FORMS
     src/ui/MainWindow.ui
     )
 
-qt5_wrap_ui(gui_FORM_SOURCES ${gui_FORMS} )
-
 add_executable(${PROJECT_NAME}
     ${gui_HEADERS}
     ${gui_SOURCES}
     ${gui_FORMS}
-    ${gui_FORM_SOURCES}
     )
 
 target_include_directories(${PROJECT_NAME}
@@ -339,6 +336,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_STANDARD 11
     CXX_EXTENSIONS OFF
     AUTOMOC ON
+    AUTOUIC ON
 )
 
 target_include_directories(${PROJECT_NAME}

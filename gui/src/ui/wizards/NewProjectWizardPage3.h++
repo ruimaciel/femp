@@ -15,31 +15,30 @@
 New Project Wizard section on how to load a mesh from a file
 **/
 class NewProjectWizardPage3
-		: public QWizardPage, public Ui::NewProjectWizardPage3
+        : public QWizardPage, public Ui::NewProjectWizardPage3
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	bool m_successfulImport;
-	MshParser m_parser;
+    bool m_successfulImport;
+    MshParser m_parser;
 
-	Document &m_document;	// must point to a valid instance or it crashes
+    Document &m_document;	// must point to a valid instance or it crashes
 
 public:
-	NewProjectWizardPage3(Document &document);
-	~NewProjectWizardPage3();
+    NewProjectWizardPage3(Document &document);
 
-	bool validatePage();
-	bool isComplete() const;
+    bool validatePage();
+    bool isComplete() const;
 
 private:
-	bool validMeshFile();
-	void loadMaterialsCombo();
+    bool validMeshFile();
+    void loadMaterialsCombo();
 
 private slots:
-	void loadMeshFile();
-	void getFileFromDialog(void);
-	void addNewMaterial(void);
+    void loadMeshFile();
+    void getFileFromDialog(void);
+    void addNewMaterial(void);
 };
 
 

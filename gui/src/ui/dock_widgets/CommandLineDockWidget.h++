@@ -8,36 +8,36 @@
 
 
 class CommandLineDockWidget
-		: public QDockWidget
+        : public QDockWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	CommandLineDockWidget(QWidget *parent = nullptr);
+    CommandLineDockWidget(QWidget *parent = nullptr);
 
 private:
-	Ui::CommandLineDockWidget ui;
+    Ui::CommandLineDockWidget ui;
 
 public Q_SLOTS:
-	void standard_output(const QString &);
-	void standard_error(const QString &);
+    void standard_output(const QString &);
+    void standard_error(const QString &);
 
-	/**
-	  Receives log messages
-	 **/
-	void getMessage(QString);
-	void getWarning(QString);
-	void getError(QString);
+    /**
+      Receives log messages
+     **/
+    void getMessage(QString);
+    void getWarning(QString);
+    void getError(QString);
 
-	/**
-	  Clears the log displayed in the widget window
-	 **/
-	void clear();
+    /**
+      Clears the log displayed in the widget window
+     **/
+    void clear();
 
-	void commandEntered(void);	/* preparation work before emiting executeCommand() */
+    void commandEntered(void);
 
 Q_SIGNALS:
-	void executeCommand(QString command);
+    void executeCommand(QString command);
 };
 
 #endif

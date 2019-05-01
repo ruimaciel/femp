@@ -10,19 +10,18 @@
 
 
 class DisplayOptionsDialog
-		: public QDialog, public Ui_DisplayOptionsDialog
+        : public QDialog, public Ui_DisplayOptionsDialog
 {
 public:
-	DisplayOptionsDialog(fem::Model &model, QWidget *parent = nullptr);
-	~DisplayOptionsDialog();
+    DisplayOptionsDialog(fem::Model &model, QWidget *parent = nullptr);
 
-	// returns the index to the LoadOptions object that will be rendered
-	size_t getLoadPatternIndex();
+    // returns the index to the LoadOptions object that will be rendered
+    size_t getLoadPatternIndex();
 
-	bool renderNodalForces();
-	bool renderSurfaceForces();
-	bool renderDomainForces();
-	bool renderNodalDisplacements();
+    bool renderNodalForces();
+    bool renderSurfaceForces();
+    bool renderDomainForces();
+    bool renderNodalDisplacements();
 };
 
 #endif

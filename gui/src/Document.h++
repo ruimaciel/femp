@@ -15,7 +15,6 @@ public:
 public:
     Document();
     Document(const Document &copied);
-    ~Document();
 
     void clear();	// clears/frees everything
 

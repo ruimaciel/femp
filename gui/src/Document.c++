@@ -11,8 +11,6 @@
 Document::Document()
 {
     m_unsaved = false;
-    m_filename = nullptr;
-
     m_documentType = TYPE_SOLID3D;	// nasty hack due to poor design
 }
 
@@ -20,14 +18,8 @@ Document::Document()
 Document::Document(const Document & copied)
 {
     this->m_unsaved = copied.m_unsaved;
-
     this->m_filename = copied.m_filename;
     this->m_documentType = copied.m_documentType;
-}
-
-
-Document::~Document()
-{
 }
 
 
@@ -45,10 +37,6 @@ void
 Document::setFileName(QString new_file)
 {
     this->m_filename = new_file;
-
-    // check if file exists
-    QFile           file;
-    file.setFileName(m_filename);
 }
 
 

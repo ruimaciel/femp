@@ -15,23 +15,22 @@
 
 class NewProjectWizard: public QWizard
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	NewProjectWizard(Document &doc, QWidget *parent = nullptr);
-	~NewProjectWizard();
+    NewProjectWizard(Document &doc, QWidget *parent = nullptr);
 
 private:
-	// NewProjectWizardPage1 *page1;
-	NewProjectWizardPage2 *m_page2;	// Select project type
-	NewProjectWizardPage3 *m_page3;	// Import mesh
-	NewProjectWizardPageLast *m_pageLast;
+    // NewProjectWizardPage1 *page1;
+    NewProjectWizardPage2 *m_page2;	// Select project type
+    NewProjectWizardPage3 *m_page3;	// Import mesh
+    NewProjectWizardPageLast *m_pageLast;
 
 Q_SIGNALS:
-	void newProject(Document::Type type);
+    void newProject(Document::Type type);
 
 public Q_SLOTS:
-	void accept();
+    void accept();
 };
 
 #endif

@@ -15,22 +15,19 @@
 Dialog intended to be used to specify ranges of a given parameter
 **/
 class ResultsRangeDialog
-		: public QDialog
+        : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	Ui::ResultsRangeDialog ui;
+    Ui::ResultsRangeDialog ui;
 
 public:
-	ResultsRangeDialog(QWidget *parent = nullptr);
+    ResultsRangeDialog(QWidget *parent = nullptr);
 
-	void setValueRanges(const fem::ResultsRanges<double> &);
+    void setValueRanges(const fem::ResultsRanges<double> &);
 
-	bool getValueRanges(fem::ResultsRanges<double> &) const;
-
-protected:
-	void connectSignalsToSlots();
+    bool getValueRanges(fem::ResultsRanges<double> &) const;
 };
 
 

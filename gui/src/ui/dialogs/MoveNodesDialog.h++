@@ -13,15 +13,14 @@
 Dialog used by GLDisplacementsWidget to input a new displacements scale
 **/
 class MoveNodesDialog
-	: public QDialog, private Ui::MoveNodesDialog
+    : public QDialog, private Ui::MoveNodesDialog
 {
 Q_OBJECT
 
 public:
-	explicit MoveNodesDialog(QWidget *parent = nullptr);
-	~MoveNodesDialog();
+    explicit MoveNodesDialog(QWidget *parent = nullptr);
 
-	fem::Point3D getTranslation();
+    fem::Point3D getTranslation();
 };
 
 #endif

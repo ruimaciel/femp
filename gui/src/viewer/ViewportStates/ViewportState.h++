@@ -19,7 +19,7 @@ The base state pattern that is used to implement the ViewportState's model rende
 class ViewportState
 {
 protected:
-  SceneGraph scenegraph;	// TODO push the scenegraph to the BaseViewport, as it is independent of the state
+  SceneGraph scenegraph;
   float scale;
 
 public:

@@ -1,6 +1,6 @@
 #include "ISLeftDrag.h++"
 
-#include <iostream>
+#include <QDebug>
 
 #include <QMouseEvent>
 
@@ -19,7 +19,7 @@ LeftDrag::press(BaseViewport * /*viewport*/, QMouseEvent *event, Input * /*input
     switch(event->buttons() )
     {
         default:
-            std::cerr << "other" << std::endl;
+            qCritical() << "other";
             break;
     }
 }
@@ -28,7 +28,6 @@ LeftDrag::press(BaseViewport * /*viewport*/, QMouseEvent *event, Input * /*input
 void
 LeftDrag::release(BaseViewport *viewport, QMouseEvent *event, Input *input)
 {
-    //TODO check if left button was released
     this->leftRelease(viewport, event, input);
 }
 

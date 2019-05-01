@@ -2,8 +2,6 @@
 
 #include <assert.h>
 
-#include <iostream>	// for cerr
-
 
 ElementRepresentationFlyweightFactory::ElementRepresentationFlyweightFactory ( )
 {

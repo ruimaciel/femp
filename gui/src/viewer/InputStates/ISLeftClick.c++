@@ -1,6 +1,6 @@
 #include "ISLeftClick.h++"
 
-#include <iostream>
+#include <QDebug>
 
 #include <QMouseEvent>
 
@@ -19,7 +19,7 @@ LeftClick::press(BaseViewport * /*viewport*/, QMouseEvent *event, Input * /*inpu
     switch(event->buttons() )
     {
         default:
-            std::cerr << "other" << std::endl;
+            qCritical() << "other";
             break;
     }
 }

@@ -3,10 +3,11 @@
 #include <map>
 #include <list>
 #include <algorithm>
-#include <iostream>
 
 #include <GL/gl.h>
 #include <GL/glu.h>	// for gluQuadric()
+
+#include <QDebug>
 
 #include <libfemp/Model.h++>
 #include <libfemp/NodeRestrictions.h++>
@@ -89,13 +90,15 @@ VPStateModel::populateScenegraph(BaseViewport *viewport)
 void
 VPStateModel::setSelection(Selection)
 {
-    std::cout << "VPStateModel::setSelection(Selection)" << std::endl;
+    qInfo() << "VPStateModel::setSelection(Selection)";
 }
 
 
 void
 VPStateModel::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 {
+    qInfo() << "VPStateModel::keyPressEvent(BaseViewport*, QKeyEvent*)";
+
     switch( event->key() )
     {
         case Qt::Key_W:

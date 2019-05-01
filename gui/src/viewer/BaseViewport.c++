@@ -1,14 +1,12 @@
 #include "BaseViewport.h++"
 
-#include <iostream>	// for cerr
+#include <QDebug>
 
 #include "SceneGraphComponents/Operations/ToggleRenderOperation.h++"
 #include "SceneGraphComponents/Operations/ToggleSelectionOperation.h++"
 #include "SceneGraphComponents/Operations/SelectRayIntersectionOperation.h++"
 #include "SceneGraphComponents/Operations/SelectFrustumInclusionOperation.h++"
 
-
-//TODO add sanity checks to this->state
 
 BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
     : QOpenGLWidget(parent)
@@ -249,7 +247,7 @@ BaseViewport::setTrianglesVisible(bool const state)
     /* Performs a sanity check */
     if(state == false)
     {
-        std::cerr << "BaseViewport::setTrianglesVisible(bool const state): this->state is nullptr" << std::endl;
+        qCritical() << "BaseViewport::setTrianglesVisible(bool const state): this->state is nullptr";
         return;
     }
 

@@ -1,7 +1,6 @@
 #ifndef SET_NODE_RESTRAINT_VISITOR_HPP
 #define SET_NODE_RESTRAINT_VISITOR_HPP
 
-#include <iostream>
 #include <array>
 
 #include "ProjectVisitor.h++"
@@ -15,17 +14,17 @@
 Sets node restraints in a specific set of nodes
 **/
 class SetNodeRestraintsVisitor
-	: public ProjectVisitor
+    : public ProjectVisitor
 {
 public:
-	SetNodeRestraintsVisitor(Selection const &selection, fem::NodeRestrictions const &restrictions);
+    SetNodeRestraintsVisitor(Selection const &selection, fem::NodeRestrictions const &restrictions);
 
-	void visit(fem::Model &model, std::vector<fem::AnalysisResult > &result);
+    void visit(fem::Model &model, std::vector<fem::AnalysisResult > &result);
 
 protected:
-	fem::NodeRestrictions	m_restrictions;
-	Selection	const &m_selection;
-	
+    fem::NodeRestrictions	m_restrictions;
+    Selection	const &m_selection;
+
 };
 
 

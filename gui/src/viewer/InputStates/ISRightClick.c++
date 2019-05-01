@@ -1,6 +1,6 @@
 #include "ISRightClick.h++"
 
-#include <iostream>
+#include <QDebug>
 
 #include <QMouseEvent>
 
@@ -16,7 +16,7 @@ RightClick::press(BaseViewport * /*viewport*/, QMouseEvent *event, Input * /*inp
     switch(event->buttons() )
     {
         default:
-            std::cerr << "other" << std::endl;
+            qCritical() << "other";
             break;
     }
 }

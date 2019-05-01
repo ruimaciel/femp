@@ -1,7 +1,6 @@
 #include "AnalysisDialog.h++"
 
 #include <cmath>	// for pow()
-#include <iostream>	//TODO debug: remove
 
 #include <QString>
 

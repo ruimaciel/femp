@@ -37,10 +37,6 @@ public:
     **/
     void setProjectResults(fem::AnalysisResult const &result);
 
-private:
-    // adds load pattern names to the combo box
-    void fillComboBox(fem::Model const &);
-
 private Q_SLOTS:
     // Calls the TableFilterDialog and sets the table according to the user input
     void setFilterOptions();

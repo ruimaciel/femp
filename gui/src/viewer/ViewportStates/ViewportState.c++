@@ -3,6 +3,8 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
+#include <QDebug>
+
 #include "../BaseViewport.h++"
 
 #include "../SceneGraphComponents/SGCPickRay.h++"	// debugging purposes only
@@ -122,14 +124,14 @@ ViewportState::clearSelection()
 void
 ViewportState::showSelection(const Selection)
 {
-  std::cout << "ViewportState::showSelection(const Selection selection)" << std::endl;
+    qInfo() << "ViewportState::showSelection(const Selection selection)";
 }
 
 
 void
 ViewportState::setSelectionStart(fem::Point3D const &p)
 {
-  std::cerr << "ViewportState::setSelectionStart(fem::Point) 	=> (" << p.x() << ", " << p.y() << ", " << p.z() << ")" << std::endl;
+    qInfo() << "ViewportState::setSelectionStart(fem::Point) 	=> (" << p.x() << ", " << p.y() << ", " << p.z() << ")";
   scenegraph.setSelectionStart(p);
 };
 
@@ -137,7 +139,7 @@ ViewportState::setSelectionStart(fem::Point3D const &p)
 void
 ViewportState::setSelectionEnd(fem::Point3D const &p)
 {
-  std::cerr << "ViewportState::setSelectionEnd(fem::Point) 	=> (" << p.x() << ", " << p.y() << ", " << p.z() << ")" << std::endl;
+    qInfo() << "ViewportState::setSelectionEnd(fem::Point) 	=> (" << p.x() << ", " << p.y() << ", " << p.z() << ")";
   scenegraph.setSelectionEnd(p);
 };
 
@@ -152,7 +154,7 @@ ViewportState::setSelectionOff()
 void
 ViewportState::addPickRay(fem::Point3D const &origin, fem::Point3D const &destination, float const &radius)
 {
-  std::cerr << "ViewportState::addPickRay(fem::Point const &origin, fem::Point const &destination, float const &radius)" << std::endl;
+    qInfo() << "ViewportState::addPickRay(fem::Point const &origin, fem::Point const &destination, float const &radius)";
   SGC::PickRay *ray = new SGC::PickRay(origin, destination, radius);
   scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, ray);
   scenegraph.generateSceneGraph();

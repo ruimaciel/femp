@@ -3,7 +3,6 @@
 #include <map>
 #include <list>
 #include <algorithm>
-#include <iostream>
 
 #include <assert.h>
 
@@ -41,8 +40,6 @@ VPStateTensorFields::initialize(BaseViewport *mv)
 {
     // build the displaced_nodes from the analysis
     assert(mv != nullptr);
-
-    //this->setDisplacementsScale(1.0);	//TODO tweak this value
 
     this->m_stress_field_representation.setModel(mv->project->getModel());
     this->m_displacements.setModel(mv->project->getModel());
@@ -97,30 +94,12 @@ VPStateTensorFields::setAnalysisResult(fem::AnalysisResult &new_result)
 void
 VPStateTensorFields::setResultsRanges(fem::ResultsRanges<double> &)
 {
-    std::cerr << "VPStateTensorFields::setResultsRanges(fem::ResultsRanges<double> &): to be implemented" << std::endl;
 }
 
 
-/*
 void
-VPStateTensorFields::setDisplacementsScale(float new_scale)
+VPStateTensorFields::keyPressEvent ( BaseViewport * , QKeyEvent * )
 {
-    this->m_displacements.setDisplacementsScale(new_scale);
-}
-*/
-
-
-void
-VPStateTensorFields::keyPressEvent ( BaseViewport * /*viewport*/, QKeyEvent * event )
-{
-    switch( event->key() )
-    {
-        case Qt::Key_S:
-            break;
-
-        default:
-            break;
-    }
 }
 
 

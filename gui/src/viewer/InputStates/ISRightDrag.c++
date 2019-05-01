@@ -1,6 +1,6 @@
 #include "ISRightDrag.h++"
 
-#include <iostream>
+#include <QDebug>
 
 #include <QMouseEvent>
 
@@ -16,7 +16,7 @@ RightDrag::press(BaseViewport * /*viewport*/, QMouseEvent *event, Input * /*inpu
     switch(event->buttons() )
     {
         default:
-            std::cerr << "other" << std::endl;
+            qDebug() << "other";
             break;
     }
 }

@@ -3,7 +3,6 @@
 #include <map>
 #include <list>
 #include <algorithm>
-#include <iostream>
 
 #include <assert.h>
 
@@ -44,7 +43,7 @@ VPStateGradients::initialize(BaseViewport *viewport)
     // build the displaced_nodes from the analysis
     assert(viewport != nullptr);
 
-    this->setDisplacementsScale(1.0);	//TODO tweak this value
+    this->setDisplacementsScale(1.0);
 
     fem::Model &femp_model = viewport->project->getModel();
     this->m_gradient_representation.setModel(femp_model);
@@ -176,7 +175,6 @@ VPStateGradients::renderStrains11()
 void
 VPStateGradients::renderStrains22()
 {
-    //TODO test only. change this
     this->m_gradient_representation.renderStrains22();
 }
 
@@ -184,7 +182,6 @@ VPStateGradients::renderStrains22()
 void
 VPStateGradients::renderStrains33()
 {
-    //TODO test only. change this
     this->m_gradient_representation.renderStrains33();
 }
 
@@ -192,7 +189,6 @@ VPStateGradients::renderStrains33()
 void
 VPStateGradients::renderStrains12()
 {
-    //TODO test only. change this
     this->m_gradient_representation.renderStrains12();
 }
 
@@ -200,7 +196,6 @@ VPStateGradients::renderStrains12()
 void
 VPStateGradients::renderStrains23()
 {
-    //TODO test only. change this
     this->m_gradient_representation.renderStrains23();
 }
 
@@ -208,7 +203,6 @@ VPStateGradients::renderStrains23()
 void
 VPStateGradients::renderStrains13()
 {
-    //TODO test only. change this
     this->m_gradient_representation.renderStrains13();
 }
 
@@ -223,7 +217,6 @@ VPStateGradients::renderStresses11()
 void
 VPStateGradients::renderStresses22()
 {
-    //TODO test only. change this
     this->m_gradient_representation.renderStresses22();
 }
 
@@ -231,7 +224,6 @@ VPStateGradients::renderStresses22()
 void
 VPStateGradients::renderStresses33()
 {
-    //TODO test only. change this
     this->m_gradient_representation.renderStresses33();
 }
 
@@ -239,7 +231,6 @@ VPStateGradients::renderStresses33()
 void
 VPStateGradients::renderStresses12()
 {
-    //TODO test only. change this
     this->m_gradient_representation.renderStresses12();
 }
 
@@ -247,7 +238,6 @@ VPStateGradients::renderStresses12()
 void
 VPStateGradients::renderStresses23()
 {
-    //TODO test only. change this
     this->m_gradient_representation.renderStresses23();
 }
 
@@ -255,7 +245,6 @@ VPStateGradients::renderStresses23()
 void
 VPStateGradients::renderStresses13()
 {
-    //TODO test only. change this
     this->m_gradient_representation.renderStresses13();
 }
 
@@ -263,7 +252,6 @@ VPStateGradients::renderStresses13()
 void
 VPStateGradients::renderVonMises()
 {
-    //TODO test only. change this
     this->m_gradient_representation.renderVonMises();
 }
 

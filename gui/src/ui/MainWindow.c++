@@ -12,8 +12,9 @@
 #include <thread>
 #include <string>
 #include <fstream>
-#include <iostream>	// for cout. remove after tests
 #include <stdlib.h>	// getenv()
+
+#include <QDebug>
 
 #include "FempApplication.h++"
 
@@ -166,8 +167,9 @@ MainWindow::openProject()
         break;
 
     default:
-        std::cerr << __FILE__ << ":" << __LINE__ ;
-        std::cerr << "Error: " << parser.error.message << std::endl;
+        qCritical() << __FILE__ << ":" << __LINE__ ;
+        qCritical() << QString("Error: %1").arg( QString::fromStdString(parser.error.message));
+
         QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
         m_document.clear();
         break;
@@ -218,8 +220,9 @@ MainWindow::reopenProject()
         break;
 
     default:
-        std::cerr << __FILE__ << ":" << __LINE__ ;
-        std::cerr << "Error: " << parser.error.message << std::endl;
+        qCritical() << __FILE__ << ":" << __LINE__ ;
+        qCritical() << QString("Error: %1").arg( QString::fromStdString(parser.error.message));
+
         QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
         m_document.clear();
         break;
@@ -934,8 +937,8 @@ MainWindow::createNewPostprocessingWindow()
     auto &femp_result = m_document.getProject().result;
     if(femp_result.empty())
     {
-        std::cerr << __FILE__ << ":" << __LINE__ ;
-        std::cerr << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available" << std::endl;
+        qCritical() << __FILE__ << ":" << __LINE__ ;
+        qCritical() << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available";
     }
     else
     {
@@ -957,8 +960,8 @@ MainWindow::createNewTensorFieldWindow()
 {
     if(m_document.getProject().result.empty())
     {
-        std::cerr << __FILE__ << ":" << __LINE__ ;
-        std::cerr << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available" << std::endl;
+        qCritical() << __FILE__ << ":" << __LINE__ ;
+        qCritical() << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available";
     }
     else
     {
@@ -979,12 +982,12 @@ MainWindow::createNewTensorFieldWindow()
 void
 MainWindow::createNewAnalysisResultsWindow()
 {
-    std::cerr << __FILE__ << ":" << __LINE__ ;
-    std::cerr << "MainWindow::createNewAnalysisResultsWindow()" << std::endl;
+    qCritical() << __FILE__ << ":" << __LINE__ ;
+    qCritical() << "MainWindow::createNewAnalysisResultsWindow()";
     if(m_document.getProject().result.empty())
     {
-        std::cerr << __FILE__ << ":" << __LINE__ ;
-        std::cerr << "MainWindow::createNewAnalysisResultWindow(): tried to set a results window although there is no result available" << std::endl;
+        qCritical() << __FILE__ << ":" << __LINE__ ;
+        qCritical() << "MainWindow::createNewAnalysisResultWindow(): tried to set a results window although there is no result available";
         return;
     }
 
@@ -996,11 +999,11 @@ MainWindow::createNewAnalysisResultsWindow()
 void
 MainWindow::createNewFemEquationWindow()
 {
-    std::cerr << __FILE__ << ":" << __LINE__ ;
-    std::cerr << "MainWindow::createNewFemEquationWindow()" << std::endl;
+    qCritical() << __FILE__ << ":" << __LINE__ ;
+    qCritical() << "MainWindow::createNewFemEquationWindow()";
     if(m_document.getProject().result.empty())
     {
-        std::cerr << "MainWindow::createNewFemEquationWindow(): tried to set a results window although there is no result available" << std::endl;
+        qCritical() << "MainWindow::createNewFemEquationWindow(): tried to set a results window although there is no result available";
         return;
     }
 
@@ -1028,7 +1031,7 @@ MainWindow::updateWindowMenu()
         BaseWindow *base = dynamic_cast<BaseWindow*>(subWindowList[n]->widget());
         {
             //TODO fix problem with menu windows
-            std::cerr << "MainWindow::updateWindowMenu(): nullptr result" << std::endl;
+            qCritical() << "MainWindow::updateWindowMenu(): nullptr result";
             continue;
         }
 

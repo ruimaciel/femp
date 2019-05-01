@@ -3,7 +3,6 @@
 #include <map>
 #include <list>
 #include <algorithm>
-#include <iostream>
 
 #include <assert.h>
 

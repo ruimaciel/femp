@@ -1,9 +1,5 @@
 #include "GradientFieldPolicy.h++"
 
-#include <assert.h>
-#include <iostream>
-
-
 // Constructors/Destructors
 GradientFieldPolicy::GradientFieldPolicy()
 {
@@ -44,10 +40,6 @@ GradientFieldPolicy::setResultsRanges(fem::ResultsRanges<double> &ranges)
 GLfloat *
 GradientFieldPolicy::getColor(float &gradient, ViewportColors &colors)
 {
-    assert(m_model != nullptr);
-    assert(m_analysis_result != nullptr);
-    assert(m_results_ranges != nullptr);
-
     if(gradient > this->maxVal(*m_results_ranges))
     {
         this->m_temp_color[0] = colors.field_maximum_positive[0];

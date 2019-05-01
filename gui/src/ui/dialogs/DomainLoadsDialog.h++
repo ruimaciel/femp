@@ -8,27 +8,27 @@
 #include <libfemp/Model.h++>
 #include <libfemp/LoadPattern.h++>
 
-#include <ui/LoadPatternsModel.h++>
+#include <ui/models/LoadPatternsModel.h++>
 
 #include "ui_DomainLoadsDialog.h"
 
 
 class DomainLoadsDialog
-		: public QDialog
-		, private Ui::DomainLoadsDialog
+        : public QDialog
+        , private Ui::DomainLoadsDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	DomainLoadsDialog(LoadPatternsModel &model, QWidget *parent = nullptr);
+    DomainLoadsDialog(LoadPatternsModel &model, QWidget *parent = nullptr);
 
-	size_t	getLoadPattern();
+    size_t	getLoadPattern();
 
-	fem::Point3D getForce();
+    fem::Point3D getForce();
 
 private:
-	size_t load_pattern;
-	std::vector<std::string> m_newLoadPatterns;
+    size_t load_pattern;
+    std::vector<std::string> m_newLoadPatterns;
 
 };
 

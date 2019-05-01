@@ -103,7 +103,9 @@ set(gui_HEADERS
     src/viewer/ViewportStates/VPStateTensorFields.h++
     src/viewer/BaseViewport.h++
     src/ui/MainWindow.h++
-    src/ui/AnalysisResultsModel.h++
+    src/ui/models/AnalysisResultsModel.h++
+    src/ui/models/LoadPatternsModel.h++
+    src/ui/models/MatrixModel.h++
     src/ui/WindowWithResults.h++
     src/ui/wizards/NewProjectWizard.h++
     src/ui/wizards/NewProjectWizardPage3.h++
@@ -113,8 +115,6 @@ set(gui_HEADERS
     src/ui/MatrixWindow.h++
     src/ui/dock_widgets/CommandLineDockWidget.h++
     src/ui/dock_widgets/SelectionDockWidget.h++
-    src/ui/LoadPatternsModel.h++
-    src/ui/MatrixModel.h++
     src/ui/BaseWindow.h++
     src/ui/WindowWithPostprocessing.h++
     src/ui/WindowWithWireframe.h++
@@ -241,7 +241,9 @@ set(gui_SOURCES
     src/viewer/ViewportStates/VPStateTensorFields.c++
     src/viewer/Camera.c++
     src/ui/AnalysisResultsWindow.c++
-    src/ui/AnalysisResultsModel.c++
+    src/ui/models/AnalysisResultsModel.c++
+    src/ui/models/LoadPatternsModel.c++
+    src/ui/models/MatrixModel.c++
     src/ui/MatrixWindow.c++
     src/ui/wizards/NewProjectWizardPage2.c++
     src/ui/wizards/NewProjectWizardPage1.c++
@@ -251,7 +253,6 @@ set(gui_SOURCES
     src/ui/dock_widgets/CommandLineDockWidget.c++
     src/ui/MdiWindowProperties.c++
     src/ui/WindowWithResults.c++
-    src/ui/LoadPatternsModel.c++
     src/ui/MdiWindow.c++
     src/ui/PostprocessingWindow.c++
     src/ui/dialogs/AnalysisSummaryDialog.c++
@@ -283,7 +284,6 @@ set(gui_SOURCES
     src/ui/widgets/ScalarRangeWidget.c++
     src/ui/TensorFieldWindow.c++
     src/ui/WindowWith.c++
-    src/ui/MatrixModel.c++
     src/options/DisplayOptions.c++
     src/options/ViewportColors.c++
     src/options/Options.c++

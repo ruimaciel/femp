@@ -17,7 +17,7 @@
 
 #include "FempApplication.h++"
 
-#include "ui/LoadPatternsModel.h++"
+#include "ui/models/LoadPatternsModel.h++"
 
 #include "ui/wizards/NewProjectWizard.h++"
 #include "ui/dialogs/NodeRestrainsDialog.h++"

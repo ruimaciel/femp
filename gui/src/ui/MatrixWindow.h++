@@ -17,15 +17,15 @@
 MDI window designed to represent the stiffness matrix of an analysis
 **/
 class MatrixWindow
-		:  public QMdiSubWindow, public sigc::trackable, public BaseWindow
+        :  public QMdiSubWindow, public BaseWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 protected:
-	MatrixWidget *m_matrixWidget;
-	fem::Project const *m_project;
+    MatrixWidget *m_matrixWidget;
+    fem::Project const *m_project;
 
 public:
-	MatrixWindow(fem::Project &project, QWidget *parent = nullptr);
+    MatrixWindow(fem::Project &project, QWidget *parent = nullptr);
 
 protected:
 };

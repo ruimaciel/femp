@@ -19,15 +19,15 @@
 MDI window designed to represent a model's results
 **/
 class AnalysisResultsWindow
-	:  public QMdiSubWindow, public sigc::trackable, public BaseWindow
+    :  public QMdiSubWindow, public BaseWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 protected:
-	AnalysisResultsWidget *m_analysisResultsWidget;
-	fem::Project const *m_project;
+    AnalysisResultsWidget *m_analysisResultsWidget;
+    fem::Project const *m_project;
 
 public:
-	AnalysisResultsWindow(fem::Project &project, QWidget *parent = nullptr);
+    AnalysisResultsWindow(fem::Project &project, QWidget *parent = nullptr);
 
 protected:
 };

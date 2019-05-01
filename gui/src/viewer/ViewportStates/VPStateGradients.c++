@@ -144,12 +144,10 @@ VPStateGradients::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
 
         case Qt::Key_D:	// change the displacements scale
             {
-                //DialogScale ds(1.0f, viewport);
                 SurfaceSubdivisionDialog ds(2);
                 switch(ds.exec())
                 {
                     case QDialog::Accepted:
-                        //this->setDisplacementsScale(ds.scale());
                         m_gradient_representation.setSurfaceSubdivisionLevel(ds.scale());
 
                         //update the scene

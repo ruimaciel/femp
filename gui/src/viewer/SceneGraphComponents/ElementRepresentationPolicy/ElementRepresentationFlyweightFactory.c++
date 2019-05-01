@@ -5,54 +5,53 @@
 #include <iostream>	// for cerr
 
 
-ElementRepresentationFlyweightFactory::ElementRepresentationFlyweightFactory ( ) 
+ElementRepresentationFlyweightFactory::ElementRepresentationFlyweightFactory ( )
 {
-	setSurfaceSubdivisionLevel(2);	// 6 elements per side by default
+    setSurfaceSubdivisionLevel(2);	// 6 elements per side by default
 }
 
 
-void 
+void
 ElementRepresentationFlyweightFactory::setDisplacementsRepresentationPolicy(DisplacementsRepresentationPolicy *displacements)
 {
-	assert(displacements != NULL);
+    assert(displacements != nullptr);
 
-	m_opaque_policy.setDisplacementPolicy(displacements);
-	m_gradient_policy.setDisplacementPolicy(displacements);
-	//m_tensor_policy.setDisplacementPolicy(displacements);
+    m_opaque_policy.setDisplacementPolicy(displacements);
+    m_gradient_policy.setDisplacementPolicy(displacements);
 }
 
-ElementRepresentationPolicy * 
+ElementRepresentationPolicy *
 ElementRepresentationFlyweightFactory::opaque()
 {
-	return &m_opaque_policy;
+    return &m_opaque_policy;
 }
 
 
-ElementRepresentationPolicy * 
+ElementRepresentationPolicy *
 ElementRepresentationFlyweightFactory::gradient()
 {
-	return &m_gradient_policy;
+    return &m_gradient_policy;
 }
 
 
-void 
+void
 ElementRepresentationFlyweightFactory::setTriangleWireframeRendering(bool const state)
 {
-	m_opaque_policy.setTriangleWireframeRendering(state);
+    m_opaque_policy.setTriangleWireframeRendering(state);
 }
 
 
 void
 ElementRepresentationFlyweightFactory::toggleTriangleWireframeRendering()
 {
-	m_opaque_policy.toggleTriangleWireframeRendering();
+    m_opaque_policy.toggleTriangleWireframeRendering();
 }
 
 
-void 
+void
 ElementRepresentationFlyweightFactory::setSurfaceSubdivisionLevel(unsigned short level)
 {
-	m_opaque_policy.setSurfaceSubdivisionLevel(level);
-	m_gradient_policy.setSurfaceSubdivisionLevel(level);
+    m_opaque_policy.setSurfaceSubdivisionLevel(level);
+    m_gradient_policy.setSurfaceSubdivisionLevel(level);
 }
 

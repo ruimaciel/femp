@@ -40,7 +40,7 @@ void
 VPStateTensorFields::initialize(BaseViewport *mv)
 {
     // build the displaced_nodes from the analysis
-    assert(mv != NULL);
+    assert(mv != nullptr);
 
     //this->setDisplacementsScale(1.0);	//TODO tweak this value
 
@@ -52,7 +52,7 @@ VPStateTensorFields::initialize(BaseViewport *mv)
 void
 VPStateTensorFields::populateScenegraph(BaseViewport *viewport)
 {
-    assert(viewport != NULL);
+    assert(viewport != nullptr);
 
     scenegraph.clear();
 

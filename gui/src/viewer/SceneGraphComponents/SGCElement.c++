@@ -33,7 +33,7 @@ Element::reference() const
 void
 Element::setElementRepresentationPolicy(ElementRepresentationPolicy *representation)
 {
-  assert(representation != NULL);
+  assert(representation != nullptr);
   this->m_representation = representation;
 }
 
@@ -41,7 +41,7 @@ Element::setElementRepresentationPolicy(ElementRepresentationPolicy *representat
 void
 Element::setDisplacementsPolicy(DisplacementsRepresentationPolicy *displacements)
 {
-  assert(displacements != NULL);
+  assert(displacements != nullptr);
   this->m_displacements = displacements;
 }
 

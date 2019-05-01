@@ -40,7 +40,7 @@ void
 VPStateDisplacements::initialize(BaseViewport *viewport)
 {
     // build the displaced_nodes from the analysis
-    assert(viewport != NULL);
+    assert(viewport != nullptr);
 
     this->setDisplacementsScale(1.0);	//TODO tweak this value
     this->m_displacements.setModel(viewport->project->getModel());
@@ -50,7 +50,7 @@ VPStateDisplacements::initialize(BaseViewport *viewport)
 void
 VPStateDisplacements::populateScenegraph(BaseViewport *viewport)
 {
-    assert(viewport != NULL);
+    assert(viewport != nullptr);
 
     scenegraph.clear();
 

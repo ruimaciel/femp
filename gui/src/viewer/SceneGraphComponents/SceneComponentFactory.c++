@@ -23,8 +23,8 @@ namespace SGC	// namespace for all scene graph components
 Element *
 SceneComponentFactory::operator() (fem::element_ref_t const &ref, fem::Element &element)
 {
-  assert(this->m_representation != NULL);
-  assert(this->m_displacement != NULL);
+  assert(this->m_representation != nullptr);
+  assert(this->m_displacement != nullptr);
 
   Element *scene_graph_element;
   switch(element.type)
@@ -79,7 +79,7 @@ SceneComponentFactory::~SceneComponentFactory()
 void
 SceneComponentFactory::setElementRepresentationPolicy(ElementRepresentationPolicy *representation)
 {
-  assert(representation != NULL);
+  assert(representation != nullptr);
   this->m_representation = representation;
 }
 
@@ -87,7 +87,7 @@ SceneComponentFactory::setElementRepresentationPolicy(ElementRepresentationPolic
 void
 SceneComponentFactory::setDisplacementsPolicy(DisplacementsRepresentationPolicy *displacements)
 {
-  assert(displacements != NULL);
+  assert(displacements != nullptr);
   this->m_displacement = displacements;
 }
 

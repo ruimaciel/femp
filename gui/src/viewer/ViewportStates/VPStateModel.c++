@@ -38,7 +38,7 @@ void
 VPStateModel::initialize(BaseViewport *viewport)
 {
 
-    assert(viewport != NULL);
+    assert(viewport != nullptr);
 
     this->m_no_displacements.setModel(viewport->project->getModel());
 }
@@ -47,7 +47,7 @@ VPStateModel::initialize(BaseViewport *viewport)
 void
 VPStateModel::populateScenegraph(BaseViewport *viewport)
 {
-    assert(viewport != NULL);
+    assert(viewport != nullptr);
 
     scenegraph.clear();
 

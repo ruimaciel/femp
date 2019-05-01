@@ -14,7 +14,7 @@ namespace SGC
 Node::Node(size_t reference_node_label, fem::Node &node, DisplacementsRepresentationPolicy *displacements)
   : SceneGraphComponent()
 {
-  assert(displacements != NULL);
+  assert(displacements != nullptr);
 
   this->node_label = reference_node_label;
   this->m_node = &node;

@@ -9,12 +9,12 @@
 
 StressFieldRepresentationPolicy::StressFieldRepresentationPolicy ( )
 {
-	m_model = nullptr;
-	m_result = nullptr;
-	m_negative_principal_stress_visible = true;
-	m_positive_principal_stress_visible = true;
+    m_model = nullptr;
+    m_result = nullptr;
+    m_negative_principal_stress_visible = true;
+    m_positive_principal_stress_visible = true;
 
-	m_diameter = std::numeric_limits<float>::infinity();	// initial value
+    m_diameter = std::numeric_limits<float>::infinity();	// initial value
 }
 
 
@@ -25,10 +25,10 @@ StressFieldRepresentationPolicy::StressFieldRepresentationPolicy ( )
 void
 StressFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy *)
 {
-	assert(m_model != nullptr);
-	assert(m_result != nullptr);
+    assert(m_model != nullptr);
+    assert(m_result != nullptr);
 
-	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
+    m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
@@ -37,10 +37,10 @@ StressFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &ref, fem::Ele
 void
 StressFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
 {
-	assert(m_model != nullptr);
-	assert(m_result != nullptr);
+    assert(m_model != nullptr);
+    assert(m_result != nullptr);
 
-	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
+    m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
@@ -49,7 +49,7 @@ StressFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &ref, fem::El
 void
 StressFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
 {
-	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
+    m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
@@ -58,7 +58,7 @@ StressFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &ref, fem::Elem
 void
 StressFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
 {
-	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
+    m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
@@ -67,7 +67,7 @@ StressFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &ref, fem::Ele
 void
 StressFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
 {
-	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
+    m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
@@ -76,7 +76,7 @@ StressFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &ref, fem::Ele
 void
 StressFieldRepresentationPolicy::prism6 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
 {
-	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
+    m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
@@ -85,7 +85,7 @@ StressFieldRepresentationPolicy::prism6 (fem::element_ref_t const &ref, fem::Ele
 void
 StressFieldRepresentationPolicy::prism15 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
 {
-	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
+    m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
@@ -94,55 +94,55 @@ StressFieldRepresentationPolicy::prism15 (fem::element_ref_t const &ref, fem::El
 void
 StressFieldRepresentationPolicy::prism18 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
 {
-	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
+    m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
 
 void
 StressFieldRepresentationPolicy::setModel(fem::Model &model)
 {
-	m_model = &model;
+    m_model = &model;
 }
 
 
 void
 StressFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult &result)
 {
-	m_result = &result;
+    m_result = &result;
 
-	// updates all values needed to represent the stress field
-	generateData();
+    // updates all values needed to represent the stress field
+    generateData();
 }
 
 
 void
 StressFieldRepresentationPolicy::showNegativePrincipalStressesVisibility(bool state)
 {
-	m_negative_principal_stress_visible = state;
+    m_negative_principal_stress_visible = state;
 }
 
 
 void
 StressFieldRepresentationPolicy::showPositivePrincipalStressesVisibility(bool state)
 {
-	m_positive_principal_stress_visible = state;
+    m_positive_principal_stress_visible = state;
 }
 
 
 void
 StressFieldRepresentationPolicy::generateData()
 {
-	assert(m_model != NULL);
+    assert(m_model != nullptr);
 
-	StressFieldRepresentation::StressFieldFactory factory(m_diameter, *this->m_model, *this->m_result);
+    StressFieldRepresentation::StressFieldFactory factory(m_diameter, *this->m_model, *this->m_result);
 
-	for( std::vector<fem::Element>::size_type n = 0; n < m_model->numberOfElements(); n++)
-	{
-		m_representation[n] = factory(m_model->element_list[n]);
-	}
+    for( std::vector<fem::Element>::size_type n = 0; n < m_model->numberOfElements(); n++)
+    {
+        m_representation[n] = factory(m_model->element_list[n]);
+    }
 
-	// updates the maxium positive and negative stresses
-	m_max = factory.max();
-	m_min = factory.min();
+    // updates the maxium positive and negative stresses
+    m_max = factory.max();
+    m_min = factory.min();
 }
 

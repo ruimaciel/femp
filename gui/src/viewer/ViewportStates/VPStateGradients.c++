@@ -42,7 +42,7 @@ void
 VPStateGradients::initialize(BaseViewport *viewport)
 {
     // build the displaced_nodes from the analysis
-    assert(viewport != NULL);
+    assert(viewport != nullptr);
 
     this->setDisplacementsScale(1.0);	//TODO tweak this value
 
@@ -55,7 +55,7 @@ VPStateGradients::initialize(BaseViewport *viewport)
 void
 VPStateGradients::populateScenegraph(BaseViewport *viewport)
 {
-    assert(viewport != NULL);
+    assert(viewport != nullptr);
 
     scenegraph.clear();
 

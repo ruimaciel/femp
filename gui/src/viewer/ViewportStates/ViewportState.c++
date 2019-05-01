@@ -43,7 +43,7 @@ ViewportState::setRenderGroupVisibility(SceneGraph::Groups group, bool state)
 void
 ViewportState::paintGL(BaseViewport *viewport)
 {
-  assert(viewport != NULL);
+  assert(viewport != nullptr);
 
   viewport->viewport_data.camera.reposition();
 
@@ -58,16 +58,16 @@ ViewportState::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
   // process left clicks
   if(event->buttons() & Qt::LeftButton)
   {
-	fem::Point3D near, far;
-	QPoint pos = event->pos();
+    fem::Point3D near, far;
+    QPoint pos = event->pos();
 
-	GLint vport[4];
+    GLint vport[4];
 
-	glGetDoublev(GL_MODELVIEW_MATRIX, viewport->viewport_data.modelview);
-	glGetDoublev(GL_PROJECTION_MATRIX, viewport->viewport_data.projection);
-	glGetIntegerv(GL_VIEWPORT, vport);
-	gluUnProject(pos.x(), vport[3]-pos.y(), 0, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &near.data[0], &near.data[1], &near.data[2]);
-	gluUnProject(pos.x(), vport[3]-pos.y(), 1, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &far.data[0], &far.data[1], &far.data[2]);
+    glGetDoublev(GL_MODELVIEW_MATRIX, viewport->viewport_data.modelview);
+    glGetDoublev(GL_PROJECTION_MATRIX, viewport->viewport_data.projection);
+    glGetIntegerv(GL_VIEWPORT, vport);
+    gluUnProject(pos.x(), vport[3]-pos.y(), 0, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &near.data[0], &near.data[1], &near.data[2]);
+    gluUnProject(pos.x(), vport[3]-pos.y(), 1, viewport->viewport_data.modelview, viewport->viewport_data.projection, vport, &far.data[0], &far.data[1], &far.data[2]);
   }
 }
 
@@ -75,18 +75,18 @@ ViewportState::mousePressEvent(BaseViewport *viewport, QMouseEvent *event)
 void
 ViewportState::mouseMoveEvent(BaseViewport *viewport, QMouseEvent *event)
 {
-  assert(viewport != NULL);
+  assert(viewport != nullptr);
 
   int dx = event->x() - viewport->viewport_data.lastPos.x();
   int dy = event->y() - viewport->viewport_data.lastPos.y();
 
   if (event->buttons() & Qt::LeftButton)
   {
-	//TODO set action for left click button
+    //TODO set action for left click button
   } else if (event->buttons() & Qt::RightButton)
   {
-	viewport->viewport_data.camera.rotation.data[0] += dy/pow(2,viewport->viewport_data.zoom);
-	viewport->viewport_data.camera.rotation.data[1] += dx/pow(2,viewport->viewport_data.zoom);
+    viewport->viewport_data.camera.rotation.data[0] += dy/pow(2,viewport->viewport_data.zoom);
+    viewport->viewport_data.camera.rotation.data[1] += dx/pow(2,viewport->viewport_data.zoom);
   }
 
   viewport->viewport_data.lastPos = event->pos();

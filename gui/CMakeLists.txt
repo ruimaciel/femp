@@ -134,13 +134,13 @@ set(gui_HEADERS
     src/ui/dialogs/DisplayOptionsDialog.h++
     src/ui/dialogs/MoveNodesDialog.h++
     src/ui/dialogs/SurfaceSubdivisionDialog.h++
+    src/ui/dialogs/DialogScale.h++
     src/ui/AnalysisResultsWindow.h++
     src/ui/WindowWithScaling.h++
     src/ui/TensorFieldWindow.h++
     src/ui/MdiWindowProperties.h++
     src/ui/ModelWindow.h++
     src/ui/WindowWith.h++
-    src/ui/DialogScale.h++
     src/ui/PostprocessingWindow.h++
     src/ui/widgets/AnalysisResultsWidget.h++
     src/ui/widgets/SelectionWidget.h++
@@ -270,6 +270,7 @@ set(gui_SOURCES
     src/ui/dialogs/AnalysisDialog.c++
     src/ui/dialogs/ResultsRangeDialog.c++
     src/ui/dialogs/TableFilterDialog.c++
+    src/ui/dialogs/DialogScale.c++
     src/ui/WindowWithScaling.c++
     src/ui/BaseWindow.c++
     src/ui/MainWindow.c++
@@ -280,7 +281,6 @@ set(gui_SOURCES
     src/ui/widgets/AnalysisResultsWidget.c++
     src/ui/widgets/SelectionWidget.c++
     src/ui/widgets/ScalarRangeWidget.c++
-    src/ui/DialogScale.c++
     src/ui/TensorFieldWindow.c++
     src/ui/WindowWith.c++
     src/ui/MatrixModel.c++
@@ -313,7 +313,7 @@ set(gui_FORMS
     src/ui/dialogs/QuadratureRulesOptionsDialog.ui
     src/ui/dialogs/DomainLoadsDialog.ui
     src/ui/dialogs/NewMaterialDialog.ui
-    src/ui/DialogScale.ui
+    src/ui/dialogs/DialogScale.ui
     src/ui/widgets/ScalarRangeWidget.ui
     src/ui/widgets/AnalysisResultsWidget.ui
     src/ui/widgets/MatrixWidget.ui

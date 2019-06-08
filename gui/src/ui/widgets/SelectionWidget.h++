@@ -19,60 +19,48 @@
 Widget developed to select model objects
 **/
 class SelectionWidget
-		: public QWidget, Ui::SelectionWidget, public sigc::trackable
+        : public QWidget, Ui::SelectionWidget, public sigc::trackable
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	SelectionWidget(fem::Project &project, SelectionManager &, QWidget *parent = nullptr);
+    SelectionWidget(fem::Project &project, SelectionManager &, QWidget *parent = nullptr);
 
-	/*
-	void selectElement(fem::element_ref_t, bool state = true);
-	void selectNode(fem::node_ref_t, bool state = true);
-	*/
+    /*
+    void selectElement(fem::element_ref_t, bool state = true);
+    void selectNode(fem::node_ref_t, bool state = true);
+    */
 
-	// libsigc++ signals
-	sigc::signal<void, Selection>	selection_changed;
-	sigc::signal<void>		selection_cleared;
+    // libsigc++ signals
+    sigc::signal<void, Selection>	selection_changed;
+    sigc::signal<void>		selection_cleared;
 
-	// libsigc++ slots
-	void setSelection(Selection const&);
-	void clearSelection();
+    // libsigc++ slots
+    void setSelection(Selection const&);
+    void clearSelection();
 
-
-protected Q_SLOTS:
-	/**
-	Updates the selection according to clicks in the tree view
-	**/
-	void updateSelection();
-
-	/**
-	Changes the current selection to a specific group selection
-	**/
-	void setGroupList();
-	void unionGroupList();
 
 protected:
-	/**
-	initializes the widget by filling all the revevant values
-	@param	project
-	@param selection_manager
-	**/
-	void initializeWidget(fem::Project &project, SelectionManager &selection_manager);
+    /**
+    initializes the widget by filling all the revevant values
+    @param	project
+    @param selection_manager
+    **/
+    void initializeWidget(fem::Project &project, SelectionManager &selection_manager);
 
-	/**
-	Initializes the fem::Group list according to the group definitions stored in a given fem::Project object
-	**/
-	void initializeSelectionGroups(fem::Project &project);
+    /**
+    Initializes the fem::Group list according to the group definitions stored in a given fem::Project object
+    **/
+    void initializeSelectionGroups(fem::Project &project);
 
 protected:
-	QTreeWidgetItem *m_element_item;
-	std::map<fem::element_ref_t, QTreeWidgetItem *>	m_element_map;	// list of all element references
+    QTreeWidgetItem *m_element_item;
+    std::map<fem::element_ref_t, QTreeWidgetItem *>	m_element_map;	// list of all element references
 
-	QTreeWidgetItem *m_node_item;
-	std::map<fem::node_ref_t, QTreeWidgetItem *>	m_node_map;	// list of all element references
+    QTreeWidgetItem *m_node_item;
+    std::map<fem::node_ref_t, QTreeWidgetItem *>	m_node_map;	// list of all element references
 
-	std::vector<fem::Group>	m_selection_groups;
+    std::vector<fem::Group>	m_selection_groups;
 
 };
 

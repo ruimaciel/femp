@@ -129,7 +129,7 @@ VPStateGradients::keyPressEvent ( BaseViewport *viewport, QKeyEvent * event )
                 switch(ds.exec())
                 {
                     case QDialog::Accepted:
-                        this->setDisplacementsScale(ds.scale());
+                        this->setDisplacementsScale(ds.getScale());
 
                         //update the scene
                         viewport->update();

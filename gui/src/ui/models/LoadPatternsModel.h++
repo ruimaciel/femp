@@ -12,16 +12,16 @@ Q_DECLARE_METATYPE(std::string);	// needed to make QVariant to work with std::st
 Model class to be used in a model-view-controller pattern with Qt's widgets.
 **/
 class LoadPatternsModel
-	:  public QAbstractListModel
+    :  public QAbstractListModel
 {
   Q_OBJECT
 
 public:
   LoadPatternsModel(fem::Model const &model, QObject *parent = nullptr);
 
-  QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+  QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-  int rowCount(const QModelIndex &parent) const;
+  int rowCount(const QModelIndex &parent) const override;
 
 protected:
   fem::Model const &m_model;

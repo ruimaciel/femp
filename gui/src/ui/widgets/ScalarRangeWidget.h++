@@ -20,7 +20,7 @@ private:
 	Ui::ScalarRangeWidget ui;
 
 public:
-	ScalarRangeWidget(const QString label, QWidget *parent = nullptr);
+	ScalarRangeWidget(const QString & label, QWidget *parent = nullptr);
 
 	bool getMaximum(double &) const;
 	bool getMinimum(double &) const;

@@ -15,19 +15,15 @@ void ToggleRenderOperation::visit(SceneGraphComponent&)
 void ToggleRenderOperation::visit(SGC::Node& node)
 {
     auto selected_nodes = m_selection.getNodeReferences();
-    if (selected_nodes.find(node.reference()) != selected_nodes.end())
-        node.render = m_render_state;
-    else
-        node.render = !m_render_state;
+
+    node.render = selected_nodes.find(node.reference()) != selected_nodes.end();
 }
 
 void ToggleRenderOperation::visit(SGC::Element& element)
 {
     auto selected_elements = m_selection.getElementReferences();
-    if (selected_elements.find(element.reference()) != selected_elements.end())
-        element.render = m_render_state;
-    else
-        element.render = !m_render_state;
+
+    element.render = selected_elements.find(element.reference()) != selected_elements.end();
 }
 
 }

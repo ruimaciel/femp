@@ -29,7 +29,7 @@ class MainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
 
-public Q_SLOTS:
+public slots:
     /* starts off a brand new FEM project */
     void newProject(); // launches the New Project wizard
     void openProject();
@@ -101,7 +101,7 @@ public Q_SLOTS:
 
     void activateSubWindowByIndex(int);
 
-Q_SIGNALS:
+signals:
     void setMessage(QString);
     void setWarning(QString);
     void setError(QString);

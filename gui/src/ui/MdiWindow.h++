@@ -53,15 +53,16 @@ public slots:
     void setNodeVisibility(const bool);
     void setNodeRestrictionsVisibility(const bool);
 
+    void setSelection(Selection); // sets the selection
+    void clearSelection(); // clears the selection
+
 protected:
     virtual void connectSignalsToSlots();
 
     void normalizeAngle(int* angle);
 
 public:
-    // libsigc++ slots
-    virtual void setSelection(Selection); // sets the selection
-    virtual void clearSelection(); // clears the selection
+    // old libsigc++ slots
     void showSelection(const Selection); // sets the viewport so that only the selected items are shown
     void showAll(); // sets the viewport so that all scenegraph components are shown
 

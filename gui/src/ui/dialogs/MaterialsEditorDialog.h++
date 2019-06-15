@@ -1,8 +1,8 @@
 #ifndef MATERIALS_EDITOR_DIALOG_HPP
 #define MATERIALS_EDITOR_DIALOG_HPP
 
-#include <QDialog>
 #include "ui_MaterialsEditorDialog.h"
+#include <QDialog>
 
 #include <libfemp/Model.h++>
 

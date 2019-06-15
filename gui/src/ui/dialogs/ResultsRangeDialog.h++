@@ -1,10 +1,10 @@
 #ifndef SCALAR_RANGE_DIALOG_HPP
 #define SCALAR_RANGE_DIALOG_HPP
 
+#include "ui_ResultsRangeDialog.h"
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QString>
-#include "ui_ResultsRangeDialog.h"
 
 #include <libfemp/ElementResults/ResultsRanges.h++>
 

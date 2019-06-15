@@ -16,10 +16,6 @@ Element::Element(fem::element_ref_t const& ref, fem::Element& reference_element,
     this->setDisplacementsPolicy(displacements);
 }
 
-Element::~Element()
-{
-}
-
 fem::element_ref_t
 Element::reference() const
 {
@@ -47,8 +43,6 @@ void Element::setReferenceElement(fem::element_ref_t const& ref, fem::Element& r
 {
     this->m_element_reference = ref;
     this->m_element = &referenced_element;
-
-    //TODO adjust boundary to this surface
 }
 
 } // namespace SGC

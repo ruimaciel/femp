@@ -9,10 +9,6 @@
 
 #include "../SceneGraphComponents/SGCPickRay.h++" // debugging purposes only
 
-ViewportState::ViewportState()
-{
-}
-
 ViewportState::~ViewportState()
 {
     this->scenegraph.clear();
@@ -121,7 +117,7 @@ void ViewportState::addPickRay(fem::Point3D const& origin, fem::Point3D const& d
 {
     qInfo() << "ViewportState::addPickRay(fem::Point const &origin, fem::Point const &destination, float const &radius)";
     SGC::PickRay* ray = new SGC::PickRay(origin, destination, radius);
-    scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, ray);
+    scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, std::shared_ptr<SceneGraphComponent>(ray));
     scenegraph.generateSceneGraph();
 }
 

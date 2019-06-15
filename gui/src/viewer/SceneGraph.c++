@@ -20,10 +20,7 @@ void SceneGraph::clear()
     //TODO finish this
 
     // frees the primitives included in the list
-    for (std::list<SceneGraphComponent*>::iterator j = primitive_components.begin(); j != primitive_components.end(); j++) {
-        delete (*j);
-    }
-    primitive_components.clear();
+    m_primitive_components.clear();
 
     this->rendering_groups.clear();
 }
@@ -42,11 +39,9 @@ void SceneGraph::paint(ViewportData& viewport_data, ViewportColors& colors)
     m_selection.paintGL(viewport_data, colors);
 }
 
-void SceneGraph::addPrimitiveComponent(enum Groups group, SceneGraphComponent* new_component)
+void SceneGraph::addPrimitiveComponent(enum Groups group, std::shared_ptr<SceneGraphComponent> new_component)
 {
-    assert(new_component != nullptr);
-
-    this->primitive_components.push_back(new_component);
+    this->m_primitive_components.push_back(new_component);
     this->rendering_groups[group].primitive_components.push_back(new_component);
 }
 
@@ -59,8 +54,8 @@ void SceneGraph::generateSceneGraph()
 
 void SceneGraph::runOperation(Operation::OperationsVisitor& visitor)
 {
-    for (std::list<SceneGraphComponent*>::iterator i = this->primitive_components.begin(); i != this->primitive_components.end(); i++) {
-        (*i)->accept(visitor);
+    for (auto i : this->m_primitive_components) {
+        i->accept(visitor);
     }
 }
 

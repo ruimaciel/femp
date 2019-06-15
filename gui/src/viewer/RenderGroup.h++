@@ -3,6 +3,7 @@
 
 #include <GL/gl.h>
 #include <list>
+#include <memory>
 
 #include "SceneGraphComponents/SceneGraphComponent.h++"
 
@@ -13,15 +14,15 @@
 Definition of a render group: an independent scene graph branch
 **/
 struct RenderGroup {
-    std::list<SceneGraphComponent*> primitive_components; // list of primitive components included in this group
+    std::list<std::shared_ptr<SceneGraphComponent>> primitive_components; // list of primitive components included in this group
 
     SceneGraphComponent scenegraph;
 
     RenderGroup();
 
     /*
-	   Generate a new scenegraph tree from the current list of primitive components
-	*/
+           Generate a new scenegraph tree from the current list of primitive components
+        */
     void generateSceneGraph();
 
     void paintGL(ViewportData& data, ViewportColors& colors);

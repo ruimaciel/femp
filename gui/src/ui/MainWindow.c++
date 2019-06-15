@@ -814,8 +814,8 @@ void MainWindow::createNewModelWindow()
     mdi_window->setWindowTitle(tr("Model"));
     mdi_window->showMaximized();
 
-    connect(window, &ModelWindow::selectionChanged, &m_selectionManager,  &SelectionManager::setSelection);
-    connect(window, &ModelWindow::selectionCleared, &m_selectionManager,  &SelectionManager::clearSelection);
+    connect(window, &ModelWindow::selectionChanged, &m_selectionManager, &SelectionManager::setSelection);
+    connect(window, &ModelWindow::selectionCleared, &m_selectionManager, &SelectionManager::clearSelection);
 
     connect(&m_selectionManager, &SelectionManager::selectionChanged, window, &ModelWindow::setSelection);
     connect(&m_selectionManager, &SelectionManager::selectionCleared, window, &ModelWindow::clearSelection);

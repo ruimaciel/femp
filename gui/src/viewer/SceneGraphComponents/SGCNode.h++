@@ -18,7 +18,7 @@ class Node
     : public SceneGraphComponent {
 protected:
     fem::node_ref_t node_label;
-    fem::Node* m_node;
+    fem::Node m_node;
     DisplacementsRepresentationPolicy* m_displacements;
 
 public:

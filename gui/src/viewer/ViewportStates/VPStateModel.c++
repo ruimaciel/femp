@@ -46,26 +46,25 @@ void VPStateModel::populateScenegraph(BaseViewport* viewport)
 
     scenegraph.clear();
 
-    SceneGraphComponent* component;
-
     // add the nodes to the scenegraph
     fem::Model& femp_model = viewport->project->getModel();
-    for (auto node : femp_model.getNodeMap()) {
-        component = new SGC::Node(node.first, node.second, &this->m_no_displacements);
+    auto map = femp_model.getNodeMap();
+    for (auto node : map) {
+        auto component = std::shared_ptr<SceneGraphComponent>(new SGC::Node(node.first, node.second, &this->m_no_displacements));
         if (component)
             this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
     }
 
     for (auto node_restrictions_pair : femp_model.getNodeRestrictions()) {
         //TODO rewrite the SGC::NodeRestrictions class
-        component = new SGC::NodeRestrictions(node_restrictions_pair.first, node_restrictions_pair.first, node_restrictions_pair.second, &this->m_no_displacements);
+        auto component = std::shared_ptr<SceneGraphComponent>(new SGC::NodeRestrictions(node_restrictions_pair.first, node_restrictions_pair.first, node_restrictions_pair.second, &this->m_no_displacements));
         if (component)
             this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, component);
     }
 
     // add the elements to the scene graph
     for (std::vector<fem::Element>::size_type n = 0; n < femp_model.element_list.size(); n++) {
-        component = this->m_factory(n, femp_model.element_list[n]);
+        auto component = std::shared_ptr<SceneGraphComponent>(this->m_factory(n, femp_model.element_list[n]));
         if (component)
             this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
     }

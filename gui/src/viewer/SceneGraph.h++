@@ -5,6 +5,7 @@
 #include <map>
 
 #include <GL/gl.h>
+#include <memory>
 
 class SceneGraphComponent;
 
@@ -46,7 +47,7 @@ public:
   @param group	destination RenderGroup
   @param *newcomponent	new scenegraph component
   */
-    void addPrimitiveComponent(enum Groups group, SceneGraphComponent* new_component);
+    void addPrimitiveComponent(enum Groups group, std::shared_ptr<SceneGraphComponent> new_component);
 
     /*
   Generate a new scenegraph tree from the current list of primitive components
@@ -71,7 +72,7 @@ private:
   This is the master list of all scene graph objects in this scene graph.
   It is used to store every object of type SGCSurface (etc...) managed by this scenegraph.
   */
-    std::list<SceneGraphComponent*> primitive_components;
+    std::list<std::shared_ptr<SceneGraphComponent>> m_primitive_components;
 
     hud::Selection m_selection; // HUD object to render selection
 };

@@ -33,7 +33,6 @@ public:
   @param	reference_nodes	a map which links this element's nodes to their displaced value
   */
     Element(fem::element_ref_t const& ref, fem::Element& reference_element, ElementRepresentationPolicy* representation, DisplacementsRepresentationPolicy* displacements);
-    ~Element();
 
     /*
   Renders this element according to the element type and the detail factor

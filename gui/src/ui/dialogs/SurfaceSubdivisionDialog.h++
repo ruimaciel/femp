@@ -1,8 +1,8 @@
 #ifndef SURFACE_SUBDIVISION_DIALOG_HPP
 #define SURFACE_SUBDIVISION_DIALOG_HPP
 
-#include <QDialog>
 #include "ui_SurfaceSubdivisionDialog.h"
+#include <QDialog>
 
 /**
 Dialog used by GLDisplacementsWidget to input a new displacements scale

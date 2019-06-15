@@ -85,7 +85,6 @@ void SelectionWidget::setSelection(Selection const& selection)
 
 void SelectionWidget::clearSelection()
 {
-
 }
 
 void SelectionWidget::initializeSelectionGroups(fem::Project& project)

@@ -234,8 +234,6 @@ void BaseViewport::selectObjectsFromRay(fem::Point3D const& origin, fem::Point3D
 
     float radius = viewport_data.node_scale / (viewport_data.aspect_ratio * pow(2, viewport_data.zoom));
 
-    //TODO debug purposes only. remove
-
     //get a selection list of which object has been selected
     Operation::SelectRayIntersectionOperation operation(selection, origin, destination, radius);
     this->state->runSceneGraphOperation(operation);
@@ -284,7 +282,6 @@ void BaseViewport::setZRotation(int angle)
 
 void BaseViewport::setPosition(double x, double y, double z)
 {
-    //TODO implement this
     viewport_data.camera.setPosition(x, y, z);
 
     update();

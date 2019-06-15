@@ -20,7 +20,6 @@ protected:
     float scale;
 
 public:
-    ViewportState();
     virtual ~ViewportState();
 
     /*

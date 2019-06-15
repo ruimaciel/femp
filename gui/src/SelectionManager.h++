@@ -11,8 +11,7 @@
 /**
 MVC pattern which manages a list of all objects contained in a given fem::Project object which have been selected
 **/
-class SelectionManager: public QObject
-{
+class SelectionManager : public QObject {
     Q_OBJECT
 
 public:

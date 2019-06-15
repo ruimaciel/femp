@@ -2,7 +2,6 @@
 
 SelectionManager::~SelectionManager()
 {
-
 }
 
 void SelectionManager::setSelection(Selection const& selection)

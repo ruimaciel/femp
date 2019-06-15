@@ -17,7 +17,7 @@ Widget developed to select model objects
 **/
 class SelectionWidget
     : public QWidget,
-      Ui::SelectionWidget{
+      Ui::SelectionWidget {
     Q_OBJECT
 
 public:
@@ -29,7 +29,7 @@ public:
     */
 
 signals:
-    void selectionChanged(const Selection &);
+    void selectionChanged(const Selection&);
     void selectionCleared();
 
 public slots:

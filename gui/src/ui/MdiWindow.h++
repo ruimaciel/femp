@@ -1,11 +1,11 @@
 #ifndef FEMP_MDI_WINDOW_HPP
 #define FEMP_MDI_WINDOW_HPP
 
+#include "viewer/BaseViewport.h++"
 #include <QAction>
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QToolBar>
-#include "viewer/BaseViewport.h++"
 
 #include "../viewer/ViewportData.h++"
 #include <options/Options.h++>

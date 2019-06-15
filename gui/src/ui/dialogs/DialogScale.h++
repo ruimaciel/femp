@@ -2,7 +2,6 @@
 #define FEMP_DIALOGSCALE_HPP
 
 #include <QDialog>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include "ui_DialogScale.h"
 

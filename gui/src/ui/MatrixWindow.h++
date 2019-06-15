@@ -1,8 +1,6 @@
 #ifndef FEMP_MATRIX_WINDOW_H
 #define FEMP_MATRIX_WINDOW_H
 
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include <QComboBox>
 #include <QMdiSubWindow>
 #include <QToolBar>

@@ -2,7 +2,6 @@
 #define SELECTION_WIDGET_HPP
 
 #include <QtWidgets/QWidget>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include "ui_SelectionWidget.h"
 #include <map>
@@ -18,8 +17,7 @@ Widget developed to select model objects
 **/
 class SelectionWidget
     : public QWidget,
-      Ui::SelectionWidget,
-      public sigc::trackable {
+      Ui::SelectionWidget{
     Q_OBJECT
 
 public:
@@ -30,11 +28,11 @@ public:
     void selectNode(fem::node_ref_t, bool state = true);
     */
 
-    // libsigc++ signals
-    sigc::signal<void, Selection> selection_changed;
-    sigc::signal<void> selection_cleared;
+signals:
+    void selectionChanged(const Selection &);
+    void selectionCleared();
 
-    // libsigc++ slots
+public slots:
     void setSelection(Selection const&);
     void clearSelection();
 

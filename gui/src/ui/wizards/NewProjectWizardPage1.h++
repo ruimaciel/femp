@@ -2,7 +2,6 @@
 #define NEWPROJECTWIZARDPAGE1_HPP
 
 #include "ui/ui_NewProjectWizardPage1.h"
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include <QString>
 #include <QWizardPage>

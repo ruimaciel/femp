@@ -2,8 +2,6 @@
 #define MATERIALS_EDITOR_DIALOG_HPP
 
 #include <QDialog>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include "ui_MaterialsEditorDialog.h"
 
 #include <libfemp/Model.h++>

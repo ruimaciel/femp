@@ -813,7 +813,6 @@ void MainWindow::createNewModelWindow()
     mdi_window->setAttribute(Qt::WA_DeleteOnClose);
     mdi_window->setWindowTitle(tr("Model"));
     mdi_window->showMaximized();
-    window->connectToSelectionManager(this->m_selectionManager);
 }
 
 void MainWindow::createNewPostprocessingWindow()
@@ -831,7 +830,6 @@ void MainWindow::createNewPostprocessingWindow()
         mdi_window->setAttribute(Qt::WA_DeleteOnClose);
         mdi_window->setWindowTitle(tr("Postprocessing"));
         mdi_window->showMaximized();
-        window->connectToSelectionManager(this->m_selectionManager);
     }
 }
 
@@ -850,7 +848,6 @@ void MainWindow::createNewTensorFieldWindow()
         mdi_window->setAttribute(Qt::WA_DeleteOnClose);
         mdi_window->setWindowTitle(tr("Tensor field"));
         mdi_window->showMaximized();
-        window->connectToSelectionManager(this->m_selectionManager);
     }
 }
 

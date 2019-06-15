@@ -4,7 +4,6 @@
 #include <QString>
 #include <QWidget>
 #include <QWizard>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
 //#include "ui/NewProjectWizardPage1.h++"
 #include "ui/wizards/NewProjectWizardPage2.h++"

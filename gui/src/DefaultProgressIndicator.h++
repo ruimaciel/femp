@@ -1,8 +1,6 @@
 #ifndef FEMP_DEFAULT_PROGRESS_INDICATOR_HPP
 #define FEMP_DEFAULT_PROGRESS_INDICATOR_HPP
 
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include <QObject>
 
 #include <la/ProgressIndicatorStrategy.h++>
@@ -16,30 +14,30 @@ public:
     DefaultProgressIndicator();
 
     /**
-	Marks the begining of a new progress section
-	@param	section name
-	**/
+        Marks the begining of a new progress section
+        @param	section name
+        **/
     virtual void markSectionStart(std::string);
 
     /**
-	Sets the iterations range that the current section must go through
-	**/
+        Sets the iterations range that the current section must go through
+        **/
     virtual void markSectionLimit(size_t);
 
     /**
-	Increments the current iterator
-	**/
+        Increments the current iterator
+        **/
     virtual void markSectionIterationIncrement();
 
     /**
-	Marks the end of the current progress section
-	**/
+        Marks the end of the current progress section
+        **/
     virtual void markSectionEnd();
 
     /**
-	Sets the current progress
-	@param	progress
-	**/
+        Sets the current progress
+        @param	progress
+        **/
     virtual void markProgress(size_t);
 
     virtual void message(std::string);
@@ -47,8 +45,8 @@ public:
     virtual void error(std::string);
 
     /**
-	Announces the end of the entire process
-	**/
+        Announces the end of the entire process
+        **/
     virtual void markFinish();
 
 signals:
@@ -57,29 +55,29 @@ signals:
     void setSectionLimit(size_t);
 
     /**
-	Marks the end of the current progress section
-	**/
+        Marks the end of the current progress section
+        **/
     void endSection();
 
     /**
-	Sets the current progress
-	@param	progress
-	**/
+        Sets the current progress
+        @param	progress
+        **/
     void setProgress(size_t);
 
     /**
-	Sends an informative message
-	**/
+        Sends an informative message
+        **/
     void setMessage(std::string);
 
     /**
-	Sends an error message
-	**/
+        Sends an error message
+        **/
     void setError(std::string);
 
     /**
-	Announces the end of the entire process
-	**/
+        Announces the end of the entire process
+        **/
     void finish();
 };
 

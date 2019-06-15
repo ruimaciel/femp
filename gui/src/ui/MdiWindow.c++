@@ -105,8 +105,7 @@ void MdiWindow::connectSignalsToSlots()
     connect(m_actionVisibleNodes, &QAction::toggled, this, &MdiWindow::setNodeVisibility);
     connect(m_actionVisibleRestrictions, &QAction::toggled, this, &MdiWindow::setNodeRestrictionsVisibility);
 
-    // libsigc++ signals
-    this->viewport->selection_changed.connect(this->selection_changed.make_slot());
+    connect(viewport, &BaseViewport::selectionChanged, this, &MdiWindow::selectionChanged);
 }
 
 void MdiWindow::normalizeAngle(int* angle)
@@ -149,12 +148,4 @@ void MdiWindow::showAll()
 void MdiWindow::updateNodeRestriction(size_t const id, fem::NodeRestrictions const& nr)
 {
     qInfo() << "MdiWindow::updateNodeRestriction(size_t const id, fem::NodeRestrictions const &nr)";
-}
-
-void MdiWindow::connectToSelectionManager(SelectionManager& selection_manager)
-{
-    qInfo() << "void MdiWindow::connectToSelectionManager(SelectionManager &selection_manager)";
-
-    selection_manager.selection_changed.connect(sigc::mem_fun(this, &MdiWindow::setSelection));
-    this->selection_changed.connect(sigc::mem_fun(selection_manager, &SelectionManager::setSelection));
 }

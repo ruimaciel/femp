@@ -2,8 +2,6 @@
 #define NODE_ACTIONS_DIALOG_HPP
 
 #include <QDialog>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include <libfemp/LoadPattern.h++>
 #include <libfemp/Model.h++>
 #include <libfemp/Point3D.h++>
@@ -14,7 +12,6 @@
 
 class NodeActionsDialog
     : public QDialog,
-      public sigc::trackable,
       private Ui::NodeActionsDialog {
     Q_OBJECT
 

@@ -1,17 +1,22 @@
 #include "SelectionManager.h++"
 
+SelectionManager::~SelectionManager()
+{
+
+}
+
 void SelectionManager::setSelection(Selection const& selection)
 {
     m_selection = selection;
 
-    this->selection_changed.emit(selection);
+    emit selectionChanged(selection);
 }
 
 void SelectionManager::clearSelection()
 {
     this->m_selection.clear();
 
-    this->selection_cleared.emit();
+    emit selectionCleared();
 }
 
 void SelectionManager::selectElement(const fem::element_ref_t& ref)

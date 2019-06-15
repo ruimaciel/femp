@@ -1,8 +1,6 @@
 #ifndef HUD_OBJECT_HPP
 #define HUD_OBJECT_HPP
 
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include "../../ViewportData.h++"
 #include <options/ViewportColors.h++>
 

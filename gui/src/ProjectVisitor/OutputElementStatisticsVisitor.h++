@@ -1,8 +1,6 @@
 #ifndef OUTPUT_ELEMENT_STATISTICS_VISITOR_HPP
 #define OUTPUT_ELEMENT_STATISTICS_VISITOR_HPP
 
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include <QTextStream>
 
 #include "ProjectVisitor.h++"

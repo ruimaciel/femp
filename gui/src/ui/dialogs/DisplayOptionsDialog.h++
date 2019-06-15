@@ -2,8 +2,6 @@
 #define DISPLAY_OPTIONS_DIALOG_HPP
 
 #include <QDialog>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include <libfemp/Model.h++>
 
 #include "ui/ui_DisplayOptionsDialog.h"

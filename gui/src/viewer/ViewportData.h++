@@ -3,7 +3,6 @@
 
 #include <QPoint>
 #include <list>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include "Camera.h++"
 #include <GL/gl.h> // for GLDouble definition

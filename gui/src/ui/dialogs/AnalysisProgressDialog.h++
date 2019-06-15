@@ -3,8 +3,6 @@
 
 #include <QTime>
 #include <QtWidgets/QDialog>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include <string>
 
 #include "ui_AnalysisProgressDialog.h"

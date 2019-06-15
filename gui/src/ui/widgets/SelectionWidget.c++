@@ -19,6 +19,7 @@ SelectionWidget::SelectionWidget(fem::Project& project, SelectionManager& select
     connect(this->selectPushButton, SIGNAL(clicked()), this, SLOT(updateSelection()));
     connect(this->toolButtonSet, SIGNAL(clicked()), this, SLOT(setGroupList()));
     connect(this->toolButtonAdd, SIGNAL(clicked()), this, SLOT(unionGroupList()));
+    connect(this, &SelectionWidget::selectionChanged, this, &SelectionWidget::setSelection);
 }
 
 void SelectionWidget::initializeWidget(fem::Project& project, SelectionManager& selection_manager)
@@ -54,10 +55,6 @@ void SelectionWidget::initializeWidget(fem::Project& project, SelectionManager& 
     for (size_t i = 0; i < m_selection_groups.size(); i++) {
         this->groupsComboBox->insertItem(i, QString(m_selection_groups[i].getLabel().c_str()));
     }
-
-    // connects signals to slots
-    selection_manager.selection_changed.connect(sigc::mem_fun(this, &SelectionWidget::setSelection));
-    this->selection_changed.connect(sigc::mem_fun(selection_manager, &SelectionManager::setSelection));
 }
 
 void SelectionWidget::setSelection(Selection const& selection)
@@ -84,6 +81,11 @@ void SelectionWidget::setSelection(Selection const& selection)
     for (std::set<fem::node_ref_t>::iterator i = selected_nodes.begin(); i != selected_nodes.end(); i++) {
         m_node_map[*i]->setSelected(true);
     }
+}
+
+void SelectionWidget::clearSelection()
+{
+
 }
 
 void SelectionWidget::initializeSelectionGroups(fem::Project& project)

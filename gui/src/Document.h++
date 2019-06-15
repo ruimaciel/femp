@@ -1,8 +1,7 @@
 #ifndef FEMP_DOCUMENT_HPP
 #define FEMP_DOCUMENT_HPP
 
-#include <QDir> // for the project path
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
+#include <QString>
 
 #include "Project.h++"
 

@@ -2,7 +2,6 @@
 #define MATRIX_WIDGET_H
 
 #include <QWidget>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include <Project.h++>
 #include <libfemp/AnalysisResult.h++>

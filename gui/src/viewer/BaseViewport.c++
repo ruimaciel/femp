@@ -241,7 +241,7 @@ void BaseViewport::selectObjectsFromRay(fem::Point3D const& origin, fem::Point3D
     this->state->runSceneGraphOperation(operation);
 
     // sends request to select a set of nodes
-    selection_changed(selection);
+    emit selectionChanged(selection);
 }
 
 void
@@ -255,7 +255,7 @@ void
     operation.selectInclusiveElements(*project);
 
     // sends request to select a set of nodes
-    selection_changed(selection);
+    emit selectionChanged(selection);
 }
 
 void BaseViewport::setXRotation(int angle)

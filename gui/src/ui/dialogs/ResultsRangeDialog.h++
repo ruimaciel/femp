@@ -4,8 +4,6 @@
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QString>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include "ui_ResultsRangeDialog.h"
 
 #include <libfemp/ElementResults/ResultsRanges.h++>

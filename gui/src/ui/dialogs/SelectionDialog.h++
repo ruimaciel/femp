@@ -2,8 +2,6 @@
 #define SELECTION_DIALOG_HPP
 
 #include <QtWidgets/QDialog>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include <ui/widgets/SelectionWidget.h++>
 
 #include <Project.h++>

@@ -5,8 +5,6 @@
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QToolBar>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include "viewer/BaseViewport.h++"
 
 #include "../viewer/ViewportData.h++"
@@ -22,23 +20,26 @@ Base class for all the MDI windows that render the model
 **/
 class MdiWindow
     : public QMainWindow,
-      protected Ui::MdiWindow,
-      public sigc::trackable {
+      protected Ui::MdiWindow {
     Q_OBJECT
 
 public:
     MdiWindow(QWidget* parent = nullptr);
 
     /**
-	Sets the toolbar which provides buttons to set camera angles
-	**/
+        Sets the toolbar which provides buttons to set camera angles
+        **/
     void createViewportToolbar();
     void createVisibilityToolbar();
 
     /**
-	Sets the colors which are used by the viewports
-	**/
+        Sets the colors which are used by the viewports
+        **/
     void setColors(ViewportColors& colors);
+
+signals:
+    void selectionChanged(Selection);
+    void selectionCleared();
 
 public slots:
     void setViewportXY();
@@ -47,8 +48,8 @@ public slots:
     void setViewportIso();
 
     /**
-	Sets the visibility of the nodes
-	**/
+        Sets the visibility of the nodes
+        **/
     void setNodeVisibility(const bool);
     void setNodeRestrictionsVisibility(const bool);
 
@@ -58,10 +59,6 @@ protected:
     void normalizeAngle(int* angle);
 
 public:
-    // libsigc++ signals
-    sigc::signal<void, Selection> selection_changed; // signals that this window originated a change of item selection
-    sigc::signal<void> selection_cleared; // signals that this window cleared the selection
-
     // libsigc++ slots
     virtual void setSelection(Selection); // sets the selection
     virtual void clearSelection(); // clears the selection
@@ -69,11 +66,6 @@ public:
     void showAll(); // sets the viewport so that all scenegraph components are shown
 
     void updateNodeRestriction(size_t const, fem::NodeRestrictions const&);
-
-    /**
-	Handles all libsigc++ connections between this window and an object of type SelectionManager
-	**/
-    virtual void connectToSelectionManager(SelectionManager&);
 
     BaseViewport* viewport;
 

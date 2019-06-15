@@ -2,7 +2,6 @@
 #define BASE_VIEWPORT_HPP
 
 #include <assert.h>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include <QOpenGLWidget>
 
@@ -37,8 +36,8 @@ class Input;
 QGLidget subclass designed for a Base class for all Qt widgets that provide an opengl viewports to render the model
 */
 class BaseViewport
-    : public QOpenGLWidget,
-      virtual public sigc::trackable {
+    : public QOpenGLWidget
+{
 
     Q_OBJECT
 
@@ -55,9 +54,9 @@ public:
     /*
   Generic method to implement a state pattern to render variants of the same model (i.e., XX tension, YY tension...)
   This method:
-	- allocates memory for a new state object
-	- initializes the object
-	- generates the scenegraph
+        - allocates memory for a new state object
+        - initializes the object
+        - generates the scenegraph
   */
     void setState(ViewportState* new_state);
 
@@ -107,6 +106,7 @@ public Q_SLOTS:
     void selectObjectsFromFrustum(std::array<fem::Point3D, 4> const& near, std::array<fem::Point3D, 4> const& far);
 
 Q_SIGNALS:
+    void selectionChanged(Selection);
     void xRotationChanged(int angle);
     void yRotationChanged(int angle);
     void zRotationChanged(int angle);
@@ -134,9 +134,6 @@ protected:
     void normalizeAngle(int* angle);
 
 public:
-    // libsigc++ signals
-    sigc::signal<void, Selection> selection_changed; // signals that this window originated a change of item selection
-
     InputStates::Start m_is_start;
     InputStates::LeftClick m_is_left_click;
     InputStates::LeftDrag m_is_left_drag;

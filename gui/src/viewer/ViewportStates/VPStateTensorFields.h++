@@ -2,7 +2,6 @@
 #define VIEWPORT_STATE_TENSOR_FIELDS_HPP
 
 #include <QMouseEvent>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include "../BaseViewport.h++"
 #include "../ViewportData.h++"
@@ -33,8 +32,8 @@ public:
     void populateScenegraph(BaseViewport* mv);
 
     /**
-	  Configures the viewport to render the scene according to new_result
-	 **/
+          Configures the viewport to render the scene according to new_result
+         **/
     void setAnalysisResult(fem::AnalysisResult& new_result);
     void setResultsRanges(fem::ResultsRanges<double>& ranges);
 

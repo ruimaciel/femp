@@ -3,7 +3,6 @@
 
 #include <QAbstractListModel>
 #include <libfemp/Model.h++>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
 Q_DECLARE_METATYPE(std::string); // needed to make QVariant to work with std::string
 

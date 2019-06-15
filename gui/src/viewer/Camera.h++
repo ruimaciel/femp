@@ -1,8 +1,6 @@
 #ifndef CAMERA_HH
 #define CAMERA_HH
 
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include <libfemp/Point3D.h++>
 
 class Camera {

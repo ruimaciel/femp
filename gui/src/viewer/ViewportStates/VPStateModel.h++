@@ -2,7 +2,6 @@
 #define VIEWPORT_STATE_MODEL_HPP
 
 #include <QMouseEvent>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include "../BaseViewport.h++"
 #include "../ViewportData.h++"
@@ -33,16 +32,16 @@ public:
     void populateScenegraph(BaseViewport* viewport);
 
     /**
-	Tweaks the way the viewport is rendered according to the current selection
-	**/
+        Tweaks the way the viewport is rendered according to the current selection
+        **/
     void setSelection(Selection);
 
     void keyPressEvent(BaseViewport* viewport, QKeyEvent* event);
 
     /**
-	Sets the relevant policies to render the OpenGL triangles with a wireframe
-	This isn't implemented in ViewportStates which won't render Opaque objects
-	**/
+        Sets the relevant policies to render the OpenGL triangles with a wireframe
+        This isn't implemented in ViewportStates which won't render Opaque objects
+        **/
     void setTrianglesVisible(bool const state);
 };
 

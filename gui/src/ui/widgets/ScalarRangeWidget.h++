@@ -3,7 +3,6 @@
 
 #include <QString>
 #include <QWidget>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include "ui_ScalarRangeWidget.h"
 
@@ -33,16 +32,16 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     /**
-	Emits valuesChanged()
-	**/
+        Emits valuesChanged()
+        **/
     void change();
 
 Q_SIGNALS:
     /*
-	Signals that the values have changed
-	@param	max
-	@param 	min
-	*/
+        Signals that the values have changed
+        @param	max
+        @param 	min
+        */
     void valuesChanged(double, double);
 };
 

@@ -2,8 +2,6 @@
 #define QUADRATURE_OPTIONS_DIALOG_HPP
 
 #include "ui_QuadratureRulesOptionsDialog.h"
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include <libfemp/Analysis.h++>
 
 class QuadratureRulesOptionsDialog

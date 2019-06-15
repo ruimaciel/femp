@@ -5,8 +5,6 @@
 #include <QDir>
 #include <QMainWindow>
 #include <QSignalMapper>
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/LinearAnalysis.h++>
 

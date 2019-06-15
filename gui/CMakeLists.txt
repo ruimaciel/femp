@@ -13,9 +13,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(Qt5 COMPONENTS Core Widgets OpenGL REQUIRED)
 find_package(OpenGL REQUIRED)
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(sigc++-2.0 REQUIRED sigc++-2.0)
-
 set(gui_HEADERS
     src/DefaultProgressIndicator.h++
     src/ProjectVisitor/OutputResultsInNodesCSVVisitor.h++
@@ -328,7 +325,7 @@ add_executable(${PROJECT_NAME}
     )
 
 target_include_directories(${PROJECT_NAME}
-    PUBLIC ${sigc++-2.0_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/src
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -349,6 +346,5 @@ target_link_libraries(${PROJECT_NAME}
     OpenGL::GLU
     libla
     libfemp
-    ${sigc++-2.0_LIBRARIES}
     pthread
     )

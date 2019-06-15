@@ -1,8 +1,6 @@
 #ifndef FEMP_MODEL_WINDOW_HPP
 #define FEMP_MODEL_WINDOW_HPP
 
-#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
-
 #include "BaseWindow.h++"
 #include "MdiWindow.h++"
 #include "WindowWithWireframe.h++"

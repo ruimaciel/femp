@@ -2,32 +2,28 @@
 
 #include <libfemp/ElementResults/ElementResults.h++>
 
-
-AnalysisResultsModel::AnalysisResultsModel(fem::Project &project, QObject *parent )
+AnalysisResultsModel::AnalysisResultsModel(fem::Project& project, QObject* parent)
     : QAbstractTableModel(parent)
 {
     this->m_project = &project;
-    this->m_result  = project.result.begin();
+    this->m_result = project.result.begin();
 
     m_rows = 0;
 
-    fem::Model & femp_model = project.getModel();
-    for(std::vector<fem::Element>::iterator e = femp_model.element_list.begin(); e != femp_model.element_list.end(); e++)
-    {
+    fem::Model& femp_model = project.getModel();
+    for (std::vector<fem::Element>::iterator e = femp_model.element_list.begin(); e != femp_model.element_list.end(); e++) {
         m_lineMap[m_rows] = std::distance(femp_model.element_list.begin(), e);
         m_rows += e->nodes.size();
     }
 }
 
-
 QVariant
-AnalysisResultsModel::headerData ( int section, Qt::Orientation orientation, int role ) const
+AnalysisResultsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role != Qt::DisplayRole)
         return QVariant();
 
-    if (orientation == Qt::Horizontal)
-    {
+    if (orientation == Qt::Horizontal) {
         switch (section) {
         case 0:
             return tr("Element reference");
@@ -86,60 +82,49 @@ AnalysisResultsModel::headerData ( int section, Qt::Orientation orientation, int
         default:
             return QVariant();
         }
-    }
-    else if (orientation == Qt::Vertical)
+    } else if (orientation == Qt::Vertical)
         return section;
 
     return QVariant();
 }
 
-
-int
-AnalysisResultsModel::rowCount(const QModelIndex &) const
+int AnalysisResultsModel::rowCount(const QModelIndex&) const
 {
     return m_rows;
 }
 
-
-int
-AnalysisResultsModel::columnCount(const QModelIndex &) const
+int AnalysisResultsModel::columnCount(const QModelIndex&) const
 {
     return (4 + 3 + 3 + 6 + 6 + 1);
 }
 
-
 QVariant
-AnalysisResultsModel::data(const QModelIndex &index, int role ) const
+AnalysisResultsModel::data(const QModelIndex& index, int role) const
 {
-    if(role != Qt::DisplayRole)
-    {
+    if (role != Qt::DisplayRole) {
         return QVariant();
-    }
-    else
-    {
-        fem::Model & femp_model = m_project->getModel();
+    } else {
+        fem::Model& femp_model = m_project->getModel();
         std::map<int, std::vector<fem::Element>::size_type>::const_reverse_iterator i;
 
-        for(i = m_lineMap.rbegin(); i->first > index.row(); i++);
-        if(i == m_lineMap.rend())
+        for (i = m_lineMap.rbegin(); i->first > index.row(); i++)
+            ;
+        if (i == m_lineMap.rend())
             return QString("out of bounds");
 
         fem::element_ref_t eref = i->second;
-        int local_ref =  index.row() - i->first;
+        int local_ref = index.row() - i->first;
 
         // get element
-        switch(index.column())
-        {
-        case 0:	// element reference
+        switch (index.column()) {
+        case 0: // element reference
         {
             return QVariant((unsigned int)eref);
-        }
-            break;
+        } break;
 
-        case 1:	// element type
+        case 1: // element type
         {
-            switch(femp_model.element_list[eref].type)
-            {
+            switch (femp_model.element_list[eref].type) {
             case fem::Element::FE_TETRAHEDRON4:
                 return QString("Tetra4");
                 break;
@@ -168,153 +153,131 @@ AnalysisResultsModel::data(const QModelIndex &index, int role ) const
                 return QString("Unknown");
                 break;
             }
-        }
-            break;
+        } break;
 
         case 2: // node local reference
         {
             return QVariant(local_ref);
-        }
-            break;
+        } break;
 
-        case 3:	// node global reference
+        case 3: // node global reference
         {
             return QVariant((int)m_project->getModel().element_list[eref].nodes[local_ref]);
-        }
-            break;
+        } break;
 
-        case 4:	// node coordinate: x
+        case 4: // node coordinate: x
         {
             fem::node_ref_t nref = m_project->getModel().element_list[eref].nodes[local_ref];
             return QVariant(m_project->getModel().getNode(nref).x());
-        }
-            break;
+        } break;
 
-        case 5:	// node coordinate: y
+        case 5: // node coordinate: y
         {
             fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
             return QVariant(femp_model.getNode(nref).y());
-        }
-            break;
+        } break;
 
-        case 6:	// node coordinate: z
+        case 6: // node coordinate: z
         {
             fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
             return QVariant(femp_model.getNode(nref).z());
-        }
-            break;
+        } break;
 
-        case 7:	// node displacement: x
+        case 7: // node displacement: x
         {
             fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
             return QVariant(m_result->displacements[nref].x());
-        }
-            break;
+        } break;
 
-        case 8:	// node displacement: y
+        case 8: // node displacement: y
         {
             fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
             return QVariant(m_result->displacements[nref].y());
-        }
-            break;
+        } break;
 
-        case 9:	// node displacement: z
+        case 9: // node displacement: z
         {
             fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
             return QVariant(m_result->displacements[nref].z());
-        }
-            break;
+        } break;
 
-        case 10:	// strains e11
+        case 10: // strains e11
         {
-            fem::ElementResults *result = m_result->results[eref];
+            fem::ElementResults* result = m_result->results[eref];
             return QVariant(result->strains[local_ref].e11);
-        }
-            break;
+        } break;
 
-        case 11:	// strains e22
+        case 11: // strains e22
         {
-            fem::ElementResults *result = m_result->results[eref];
+            fem::ElementResults* result = m_result->results[eref];
             return QVariant(result->strains[local_ref].e22);
-        }
-            break;
+        } break;
 
-        case 12:	// strains e33
+        case 12: // strains e33
         {
-            fem::ElementResults *result = m_result->results[eref];
+            fem::ElementResults* result = m_result->results[eref];
             return QVariant(result->strains[local_ref].e33);
-        }
-            break;
+        } break;
 
-        case 13:	// strains e12
+        case 13: // strains e12
         {
-            fem::ElementResults *result = m_result->results[eref];
+            fem::ElementResults* result = m_result->results[eref];
             return QVariant(result->strains[local_ref].e12);
-        }
-            break;
+        } break;
 
-        case 14:	// strains e13
+        case 14: // strains e13
         {
-            fem::ElementResults *result = m_result->results[eref];
+            fem::ElementResults* result = m_result->results[eref];
             return QVariant(result->strains[local_ref].e13);
-        }
-            break;
+        } break;
 
-        case 15:	// strains e23
+        case 15: // strains e23
         {
-            fem::ElementResults *result = m_result->results[eref];
+            fem::ElementResults* result = m_result->results[eref];
             return QVariant(result->strains[local_ref].e23);
-        }
-            break;
+        } break;
 
-        case 16:	// stresses s11
+        case 16: // stresses s11
         {
-            fem::ElementResults *result = m_result->results[eref];
+            fem::ElementResults* result = m_result->results[eref];
             return QVariant(result->stresses[local_ref].s11);
-        }
-            break;
+        } break;
 
-        case 17:	// stresses s22
+        case 17: // stresses s22
         {
-            fem::ElementResults *result = m_result->results[eref];
+            fem::ElementResults* result = m_result->results[eref];
             return QVariant(result->stresses[local_ref].s22);
-        }
-            break;
+        } break;
 
-        case 18:	// stresses s33
+        case 18: // stresses s33
         {
-            fem::ElementResults *result = m_result->results[eref];
+            fem::ElementResults* result = m_result->results[eref];
             return QVariant(result->stresses[local_ref].s33);
-        }
-            break;
+        } break;
 
-        case 19:	// stresses s12
+        case 19: // stresses s12
         {
-            fem::ElementResults *result = m_result->results[eref];
+            fem::ElementResults* result = m_result->results[eref];
             return QVariant(result->stresses[local_ref].s12);
-        }
-            break;
+        } break;
 
-        case 20:	// stresses s13
+        case 20: // stresses s13
         {
-            fem::ElementResults *result = m_result->results[eref];
+            fem::ElementResults* result = m_result->results[eref];
             return QVariant(result->stresses[local_ref].s13);
-        }
-            break;
+        } break;
 
-        case 21:	// stresses s23
+        case 21: // stresses s23
         {
-            fem::ElementResults *result = m_result->results[eref];
+            fem::ElementResults* result = m_result->results[eref];
             return QVariant(result->stresses[local_ref].s23);
-        }
-            break;
+        } break;
 
-        case 22:	// von mises
+        case 22: // von mises
         {
-            fem::ElementResults *result = m_result->results[eref];
+            fem::ElementResults* result = m_result->results[eref];
             return QVariant(result->von_mises[local_ref]);
-        }
-            break;
+        } break;
 
         default:
             return QVariant();
@@ -322,4 +285,3 @@ AnalysisResultsModel::data(const QModelIndex &index, int role ) const
         }
     }
 }
-

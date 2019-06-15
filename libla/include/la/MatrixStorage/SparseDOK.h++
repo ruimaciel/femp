@@ -1,122 +1,108 @@
 #ifndef LALIB_MATRIX_STORAGE_POLICY_SPARSE_DOK_HPP
 #define LALIB_MATRIX_STORAGE_POLICY_SPARSE_DOK_HPP
 
-
 #include <assert.h>
+#include <iostream> // debug only
 #include <map>
-#include <iostream>	// debug only
 
-
-namespace lalib
-{
+namespace lalib {
 
 /**
 SparseDOK: a storage policy class for the Matrix host class.
 This class implements the interface for the sparse Dictionary of Keys (DOK) matrix format
 **/
-template<typename scalar>
-class SparseDOK
-{
-	public:
-		struct Data
-		{
-			size_t	t_rows;		// number of rows
-			size_t	t_columns;	// number of columns
+template <typename scalar>
+class SparseDOK {
+public:
+    struct Data {
+        size_t t_rows; // number of rows
+        size_t t_columns; // number of columns
 
-			std::map< size_t, scalar> 	data;
-		} data;
+        std::map<size_t, scalar> data;
+    } data;
 
-	public:
-		SparseDOK(const size_t rows = 1, const size_t columns = 1);
-		~SparseDOK()	{};
+public:
+    SparseDOK(const size_t rows = 1, const size_t columns = 1);
+    ~SparseDOK() {};
 
-		/**
+    /**
 		Sets all values to zero
 		**/
-		void clear();
+    void clear();
 
-		size_t rows()		{ return data.t_rows; };
-		size_t columns()	{ return data.t_columns; };
+    size_t rows() { return data.t_rows; };
+    size_t columns() { return data.t_columns; };
 
-		/*
+    /*
 		Returns the value in [row,column] 
 		*/
-		scalar value(const size_t row, const size_t column);
+    scalar value(const size_t row, const size_t column);
 
-		scalar & operator() (const size_t row, const size_t column);
+    scalar& operator()(const size_t row, const size_t column);
 
+    void resize(const size_t row, const size_t column);
 
-		void resize(const size_t row, const size_t column);
-
-		/**
+    /**
 		* Returns the number of non-zero coefficients
 		**/
-		size_t nnz();
+    size_t nnz();
 };
 
-
-
-template<typename scalar>
+template <typename scalar>
 SparseDOK<scalar>::SparseDOK(const size_t rows, const size_t columns)
 {
-	resize(rows, columns);
+    resize(rows, columns);
 }
 
-
-template<typename scalar>
+template <typename scalar>
 void SparseDOK<scalar>::clear()
 {
-	using namespace std;
-	data.data.clear();
+    using namespace std;
+    data.data.clear();
 }
 
-
-template<typename scalar>
+template <typename scalar>
 scalar SparseDOK<scalar>::value(const size_t row, const size_t column)
 {
-	using namespace std;
+    using namespace std;
 
-	assert(row < data.t_rows);
-	assert(column < data.t_columns);
+    assert(row < data.t_rows);
+    assert(column < data.t_columns);
 
-	typename map<size_t, scalar>::iterator	i;
+    typename map<size_t, scalar>::iterator i;
 
-	i = data.data.find(row*data.t_columns + column);
-	if(i == data.data.end())
-		return 0;
+    i = data.data.find(row * data.t_columns + column);
+    if (i == data.data.end())
+        return 0;
 
-	return i->second;
+    return i->second;
 }
 
-
-template<typename scalar>
-scalar & SparseDOK<scalar>::operator() (const size_t row, const size_t column)
+template <typename scalar>
+scalar& SparseDOK<scalar>::operator()(const size_t row, const size_t column)
 {
-	assert(row < data.t_rows);
-	assert(column < data.t_columns);
+    assert(row < data.t_rows);
+    assert(column < data.t_columns);
 
-	return this->data.data[row*data.t_columns + column];
+    return this->data.data[row * data.t_columns + column];
 }
 
-
-template<typename scalar>
+template <typename scalar>
 void SparseDOK<scalar>::resize(const size_t rows, const size_t columns)
 {
-	using namespace std;
+    using namespace std;
 
-	data.data.clear();
+    data.data.clear();
 
-	data.t_rows = rows;
-	data.t_columns = columns;
+    data.t_rows = rows;
+    data.t_columns = columns;
 }
 
-
-template<typename scalar>
+template <typename scalar>
 size_t SparseDOK<scalar>::nnz()
 {
-	return this->data.data.size();
+    return this->data.data.size();
 }
 
-
-}	// namespace lalib
+} // namespace lalib
 #endif

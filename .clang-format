@@ -1,0 +1,6 @@
+﻿---
+BasedOnStyle: WebKit
+Language: Cpp
+Standard: Cpp11
+
+...

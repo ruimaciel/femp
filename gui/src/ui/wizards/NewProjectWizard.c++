@@ -3,8 +3,7 @@
 #include <QDir>
 #include <QMessageBox>
 
-
-NewProjectWizard::NewProjectWizard(Document &doc, QWidget *parent)
+NewProjectWizard::NewProjectWizard(Document& doc, QWidget* parent)
     : QWizard(parent)
 {
     // clear the model, start with a clean slate
@@ -27,7 +26,6 @@ NewProjectWizard::NewProjectWizard(Document &doc, QWidget *parent)
     doc.setProjectType(Document::TYPE_SOLID3D);
 }
 
-
 void NewProjectWizard::accept()
 {
     //TODO emit type depending on the result
@@ -35,4 +33,3 @@ void NewProjectWizard::accept()
 
     QDialog::accept();
 }
-

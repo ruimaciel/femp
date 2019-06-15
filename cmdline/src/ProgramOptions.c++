@@ -2,2334 +2,3082 @@
 #line 1 "../../source/ProgramOptions.c++.re2c"
 #include "ProgramOptions.h++"
 
-#include <cstdlib>	// for strtol()
+#include <cstdlib> // for strtol()
 
 #include <iostream>
 #include <limits>
 #include <map>
 #include <stack>
 
-
 ProgramOptions::ProgramOptions()
 {
-	//TODO set default options
-	digits10 = std::numeric_limits<double>::digits10;
-	output_fem = false;	// don't output the FEM equation along with the displacements
+    //TODO set default options
+    digits10 = std::numeric_limits<double>::digits10;
+    output_fem = false; // don't output the FEM equation along with the displacements
 
-	solver = OPT_S_GAUSS;	// the default solver
+    solver = OPT_S_GAUSS; // the default solver
 }
-
 
 ProgramOptions::~ProgramOptions()
 {
 }
 
-
-enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char **argv)
+enum ProgramOptions::Option ProgramOptions::setCommandLineOptions(int argc, char** argv)
 {
-	using namespace std;
+    using namespace std;
 
-	//TODO implement support for command line options
-	std::cout.precision(digits10);	// set the default precision
+    //TODO implement support for command line options
+    std::cout.precision(digits10); // set the default precision
 
-	// if no commands were passed then use default options and parse from stdin
-	if(argc < 2)
-	{
-		return OPT_RUN;
-	}
+    // if no commands were passed then use default options and parse from stdin
+    if (argc < 2) {
+        return OPT_RUN;
+    }
 
-	// set the lexer variables
-	init_lexer_vars(argv);
-	Option opt = OPT_PARSER_ERROR;
+    // set the lexer variables
+    init_lexer_vars(argv);
+    Option opt = OPT_PARSER_ERROR;
 
-	// set the parser's objects
-	stack<enum Symbol> ss;	// parser's symbol stack
+    // set the parser's objects
+    stack<enum Symbol> ss; // parser's symbol stack
 
-	ss.push(S_EOL);
-	ss.push(SN_START);
+    ss.push(S_EOL);
+    ss.push(SN_START);
 
-	// set the lexer
-	symbol = lexer(argc, argv);
+    // set the lexer
+    symbol = lexer(argc, argv);
 
-	// build parser table
-	map< enum Symbol, map<enum Symbol, int> > table;	// LL parser table, maps < non-terminal, terminal> pair to action
+    // build parser table
+    map<enum Symbol, map<enum Symbol, int>> table; // LL parser table, maps < non-terminal, terminal> pair to action
 
-	// set the state's parser tables
-	table[SN_START][S_HELP]		= 1;	
-	table[SN_START][S_VERSION]	= 2;	
-	table[SN_START][S_IPS] 		= 3;
-	table[SN_START][S_OUTPUT_FEM_EQUATION]	= 3;
-	table[SN_START][S_SOLVER]	= 3;
+    // set the state's parser tables
+    table[SN_START][S_HELP] = 1;
+    table[SN_START][S_VERSION] = 2;
+    table[SN_START][S_IPS] = 3;
+    table[SN_START][S_OUTPUT_FEM_EQUATION] = 3;
+    table[SN_START][S_SOLVER] = 3;
 
-	table[SN_SET_OPTION][S_IPS]	= 5;
-	table[SN_SET_OPTION][S_OUTPUT_FEM_EQUATION]	= 6;
-	table[SN_SET_OPTION][S_SOLVER]	= 7;
+    table[SN_SET_OPTION][S_IPS] = 5;
+    table[SN_SET_OPTION][S_OUTPUT_FEM_EQUATION] = 6;
+    table[SN_SET_OPTION][S_SOLVER] = 7;
 
-	table[SN_SET_OPTION_FOLLOW][S_IPS]	= 37;	
-	table[SN_SET_OPTION_FOLLOW][S_OUTPUT_FEM_EQUATION]	= 37;	
-	table[SN_SET_OPTION_FOLLOW][S_SOLVER]	= 37;	
-	table[SN_SET_OPTION_FOLLOW][S_EOL]	= 100;
+    table[SN_SET_OPTION_FOLLOW][S_IPS] = 37;
+    table[SN_SET_OPTION_FOLLOW][S_OUTPUT_FEM_EQUATION] = 37;
+    table[SN_SET_OPTION_FOLLOW][S_SOLVER] = 37;
+    table[SN_SET_OPTION_FOLLOW][S_EOL] = 100;
 
-	table[SN_SET_IPS_FOLLOW][S_IPS_STIFFNESS]	= 38;
-	table[SN_SET_IPS_FOLLOW][S_IPS_DOMAIN]		= 39;
+    table[SN_SET_IPS_FOLLOW][S_IPS_STIFFNESS] = 38;
+    table[SN_SET_IPS_FOLLOW][S_IPS_DOMAIN] = 39;
 
-	table[SN_IPS_FIRST_ASSIGN][S_FE_ELEMENT]	=40;
+    table[SN_IPS_FIRST_ASSIGN][S_FE_ELEMENT] = 40;
 
-	table[SG_IPS_STIFFNESS_ASSIGN][S_EOA]	= 50;
-	table[SG_IPS_STIFFNESS_ASSIGN][S_EOL]	= 50;
+    table[SG_IPS_STIFFNESS_ASSIGN][S_EOA] = 50;
+    table[SG_IPS_STIFFNESS_ASSIGN][S_EOL] = 50;
 
-	table[SG_IPS_DOMAIN_ASSIGN][S_EOA]	= 52;
-	table[SG_IPS_DOMAIN_ASSIGN][S_EOL]	= 52;
+    table[SG_IPS_DOMAIN_ASSIGN][S_EOA] = 52;
+    table[SG_IPS_DOMAIN_ASSIGN][S_EOL] = 52;
 
-	table[SN_IPS_FOLLOW_S_ASSIGN][S_FE_ELEMENT]	= 51;
-	table[SN_IPS_FOLLOW_S_ASSIGN][S_EOL]	= 100;	
-	table[SN_IPS_FOLLOW_S_ASSIGN][S_IPS]	= 5;
-	table[SN_IPS_FOLLOW_S_ASSIGN][S_OUTPUT_FEM_EQUATION]	= 6;
-	table[SN_IPS_FOLLOW_S_ASSIGN][S_SOLVER]	= 7;
+    table[SN_IPS_FOLLOW_S_ASSIGN][S_FE_ELEMENT] = 51;
+    table[SN_IPS_FOLLOW_S_ASSIGN][S_EOL] = 100;
+    table[SN_IPS_FOLLOW_S_ASSIGN][S_IPS] = 5;
+    table[SN_IPS_FOLLOW_S_ASSIGN][S_OUTPUT_FEM_EQUATION] = 6;
+    table[SN_IPS_FOLLOW_S_ASSIGN][S_SOLVER] = 7;
 
-	table[SN_IPS_FOLLOW_D_ASSIGN][S_FE_ELEMENT] = 53;
-	table[SN_IPS_FOLLOW_D_ASSIGN][S_EOL]	= 100;	
-	table[SN_IPS_FOLLOW_D_ASSIGN][S_IPS]	= 5;
-	table[SN_IPS_FOLLOW_D_ASSIGN][S_OUTPUT_FEM_EQUATION]	= 6;
-	table[SN_IPS_FOLLOW_D_ASSIGN][S_SOLVER]	= 7;
+    table[SN_IPS_FOLLOW_D_ASSIGN][S_FE_ELEMENT] = 53;
+    table[SN_IPS_FOLLOW_D_ASSIGN][S_EOL] = 100;
+    table[SN_IPS_FOLLOW_D_ASSIGN][S_IPS] = 5;
+    table[SN_IPS_FOLLOW_D_ASSIGN][S_OUTPUT_FEM_EQUATION] = 6;
+    table[SN_IPS_FOLLOW_D_ASSIGN][S_SOLVER] = 7;
 
-	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOA] = 60;
-	table[SG_OUTPUT_EQUATION_ASSIGN][S_EOL] = 60;
+    table[SG_OUTPUT_EQUATION_ASSIGN][S_EOA] = 60;
+    table[SG_OUTPUT_EQUATION_ASSIGN][S_EOL] = 60;
 
-	table[SN_SET_SOLVER_FOLLOW][S_CHOLESKY] = 70;
-	table[SN_SET_SOLVER_FOLLOW][S_CG] = 71;
-	table[SN_SET_SOLVER_FOLLOW][S_GAUSS] = 72;
+    table[SN_SET_SOLVER_FOLLOW][S_CHOLESKY] = 70;
+    table[SN_SET_SOLVER_FOLLOW][S_CG] = 71;
+    table[SN_SET_SOLVER_FOLLOW][S_GAUSS] = 72;
 
-	table[SG_SET_CHOLESKY][S_EOA] = 75;
-	table[SG_SET_CHOLESKY][S_EOL] = 75;
-	table[SG_SET_CG][S_EOA] = 76;
-	table[SG_SET_CG][S_EOL] = 76;
-	table[SG_SET_GAUSS][S_EOA] = 77;
-	table[SG_SET_GAUSS][S_EOL] = 77;
+    table[SG_SET_CHOLESKY][S_EOA] = 75;
+    table[SG_SET_CHOLESKY][S_EOL] = 75;
+    table[SG_SET_CG][S_EOA] = 76;
+    table[SG_SET_CG][S_EOL] = 76;
+    table[SG_SET_GAUSS][S_EOA] = 77;
+    table[SG_SET_GAUSS][S_EOL] = 77;
 
-	table[SN_END_FIELD][S_EOA] = 99;
-	table[SN_END_FIELD][S_EOL] = 100;
+    table[SN_END_FIELD][S_EOA] = 99;
+    table[SN_END_FIELD][S_EOL] = 100;
 
+    while (ss.size() > 0) {
+        if (ss.top() == symbol) {
+            // cout << "Matched: " << ss.top() << endl;
+            ss.pop(); // ss.top() == symbol
+            symbol = lexer(argc, argv);
+        } else {
+            // cout << "Action [" << ss.top() << "][" << symbol << "] == " << table[ss.top()][symbol] << endl;
+            switch (table[ss.top()][symbol]) {
+            case 1: // <Options>	::= "--help"
+                ss.pop();
+                ss.push(S_HELP);
 
+                opt = OPT_HELP;
+                break;
 
-	while(ss.size() > 0)
-	{
-		if(ss.top() == symbol)
-		{
-			// cout << "Matched: " << ss.top() << endl;
-			ss.pop();	// ss.top() == symbol
-			symbol = lexer(argc,argv);
-		}
-		else
-		{
-			// cout << "Action [" << ss.top() << "][" << symbol << "] == " << table[ss.top()][symbol] << endl;
-			switch(table[ss.top()][symbol])
-			{
-				case 1:	// <Options>	::= "--help"
-					ss.pop();
-					ss.push(S_HELP);
+            case 2: // <Options>	::= "--version"
+                ss.pop();
+                ss.push(S_VERSION);
 
-					opt = OPT_HELP;
-					break;
+                opt = OPT_VERSION;
+                break;
 
-				case 2: // <Options>	::= "--version"
-					ss.pop();
-					ss.push(S_VERSION);
+            case 3: // <Options>	::= <set option> <set option follow>
+                ss.pop();
+                ss.push(SN_SET_OPTION_FOLLOW); // <set option follow>
+                ss.push(SN_SET_OPTION); // <set option>
 
-					opt = OPT_VERSION;
-					break;
+                opt = OPT_RUN;
+                break;
 
-				case 3:	// <Options>	::= <set option> <set option follow>
-					ss.pop();
-					ss.push(SN_SET_OPTION_FOLLOW);	// <set option follow>
-					ss.push(SN_SET_OPTION);	// <set option>
+            case 5: // <set option>	::= "--ips" ":" <set IPs follow>
+                ss.pop();
 
-					opt = OPT_RUN;
-					break;
+                ss.push(SN_SET_IPS_FOLLOW); // <set IPs follow>
+                ss.push(S_SUBARG_SEPARATOR); // ":"
+                ss.push(S_IPS); // "--ips"
+                break;
 
-				case 5:	// <set option>	::= "--ips" ":" <set IPs follow>
-					ss.pop();
+            case 6: // <set option follow>	::= "--output-equation"	<G output equation assign>
+                ss.pop();
+                ss.push(SN_END_FIELD);
+                ss.push(SG_OUTPUT_EQUATION_ASSIGN);
+                ss.push(S_OUTPUT_FEM_EQUATION);
+                break;
 
-					ss.push(SN_SET_IPS_FOLLOW);	// <set IPs follow>
-					ss.push(S_SUBARG_SEPARATOR);	// ":"
-					ss.push(S_IPS);			// "--ips"
-					break;
+            case 7: // <set option> ::= "--solver" ":" <set solver follow>
+                ss.pop();
+                ss.push(SN_SET_SOLVER_FOLLOW);
+                ss.push(S_SUBARG_SEPARATOR);
+                ss.push(S_SOLVER);
+                break;
 
-				case 6: // <set option follow>	::= "--output-equation"	<G output equation assign>
-					ss.pop();
-					ss.push(SN_END_FIELD);
-					ss.push(SG_OUTPUT_EQUATION_ASSIGN);
-					ss.push(S_OUTPUT_FEM_EQUATION);
-					break;
+            case 37: // <set option follow>	::= <set option> <set option follow>
+                ss.pop();
+                ss.push(SN_SET_OPTION_FOLLOW);
+                ss.push(SN_SET_OPTION);
+                break;
 
-				case 7:	// <set option> ::= "--solver" ":" <set solver follow>
-					ss.pop();
-					ss.push(SN_SET_SOLVER_FOLLOW);
-					ss.push(S_SUBARG_SEPARATOR);
-					ss.push(S_SOLVER);
-					break;
+            case 38: // <set IPs follow>	::= "stiffness" <EOA> <IPs first assignment> <IPs follow assignment>
+                ss.pop();
 
-				case 37:	// <set option follow>	::= <set option> <set option follow> 
-					ss.pop();
-					ss.push(SN_SET_OPTION_FOLLOW);
-					ss.push(SN_SET_OPTION);
-					break;
+                ss.push(SN_IPS_FOLLOW_S_ASSIGN);
+                ss.push(SN_END_FIELD);
+                ss.push(SG_IPS_STIFFNESS_ASSIGN);
+                ss.push(SN_IPS_FIRST_ASSIGN);
+                ss.push(S_EOA);
+                ss.push(S_IPS_STIFFNESS);
+                break;
 
-				case 38:	// <set IPs follow>	::= "stiffness" <EOA> <IPs first assignment> <IPs follow assignment>
-					ss.pop();
+            case 39: // <set IPs follow>	::= "domain" <EOA> <IPs first assignment> <G IPs domain assign>
+                ss.pop();
 
-					ss.push(SN_IPS_FOLLOW_S_ASSIGN);
-					ss.push(SN_END_FIELD);
-					ss.push(SG_IPS_STIFFNESS_ASSIGN);
-					ss.push(SN_IPS_FIRST_ASSIGN);	
-					ss.push(S_EOA);		
-					ss.push(S_IPS_STIFFNESS);
-					break;
+                ss.push(SN_IPS_FOLLOW_D_ASSIGN);
+                ss.push(SN_END_FIELD);
+                ss.push(SG_IPS_DOMAIN_ASSIGN);
+                ss.push(SN_IPS_FIRST_ASSIGN);
+                ss.push(S_EOA);
+                ss.push(S_IPS_DOMAIN);
+                break;
 
-				case 39:	// <set IPs follow>	::= "domain" <EOA> <IPs first assignment> <G IPs domain assign>
-					ss.pop();
+            case 40: // <IPs first assignment> ::= <element type> ":" <integer>
+                ss.pop();
 
-					ss.push(SN_IPS_FOLLOW_D_ASSIGN);
-					ss.push(SN_END_FIELD);
-					ss.push(SG_IPS_DOMAIN_ASSIGN);
-					ss.push(SN_IPS_FIRST_ASSIGN);	
-					ss.push(S_EOA);		
-					ss.push(S_IPS_DOMAIN);
-					break;
+                ss.push(S_INTEGER);
+                ss.push(S_SUBARG_SEPARATOR);
+                ss.push(S_FE_ELEMENT);
+                break;
 
-				case 40: // <IPs first assignment> ::= <element type> ":" <integer> 
-					ss.pop();
+            case 50: //<G IPs stiffness assign> ::=
+                ss.pop();
 
-					ss.push(S_INTEGER);	
-					ss.push(S_SUBARG_SEPARATOR);
-					ss.push(S_FE_ELEMENT);
-					break;
+                //TODO assign
+                // assign a new IP degree to the element
+                // analysis.setDegree(element_type, integer);
+                break;
 
-				case 50: //<G IPs stiffness assign> ::=
-					ss.pop();
+            case 51: // <IPs follow stiffness assignment>	::= <IPs first assignment> <G IPs stiffness assign> <end field>
+                ss.pop();
+                ss.push(SN_END_FIELD);
+                ss.push(SG_IPS_STIFFNESS_ASSIGN);
+                ss.push(SN_IPS_FIRST_ASSIGN);
+                break;
 
-					//TODO assign
-					// assign a new IP degree to the element
-					// analysis.setDegree(element_type, integer);
-					break;
+            case 52: //<G IPs domain assign> ::=
+                ss.pop();
 
-				case 51: // <IPs follow stiffness assignment>	::= <IPs first assignment> <G IPs stiffness assign> <end field>
-					ss.pop();
-					ss.push(SN_END_FIELD);
-					ss.push(SG_IPS_STIFFNESS_ASSIGN);
-					ss.push(SN_IPS_FIRST_ASSIGN);
-					break;
+                // assign a new IP degree to the element
+                // analysis.setDDegree(element_type, integer);
+                break;
 
-				case 52: //<G IPs domain assign> ::= 
-					ss.pop();
+            case 53: // <IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>
+                ss.pop();
+                ss.push(SN_END_FIELD);
+                ss.push(SG_IPS_DOMAIN_ASSIGN);
+                ss.push(SN_IPS_FIRST_ASSIGN);
+                break;
 
-					// assign a new IP degree to the element
-					// analysis.setDDegree(element_type, integer);
-					break;
+            case 60: // <G output equation assign>	::=
+                ss.pop();
 
-				case 53: // <IPs follow domain assignment>	::= <IPs first assignment> <G IPs domain assign> <end field>
-					ss.pop();
-					ss.push(SN_END_FIELD);
-					ss.push(SG_IPS_DOMAIN_ASSIGN);
-					ss.push(SN_IPS_FIRST_ASSIGN);
-					break;
+                // set
+                output_fem = true;
+                break;
 
-				case 60: // <G output equation assign>	::= 
-					ss.pop();
+            case 70: // <set solver follow>	::= "cholesky" <G set cholesky solver> <end field>
+                ss.pop();
 
-					// set 
-					output_fem = true;
-					break;
+                ss.push(SN_END_FIELD);
+                ss.push(SG_SET_CHOLESKY);
+                ss.push(S_CHOLESKY);
+                break;
 
-				case 70: // <set solver follow>	::= "cholesky" <G set cholesky solver> <end field>
-					ss.pop();
+            case 71: // <set solver follow>	::= "cg" <G set cg solver> <end field>
+                ss.pop();
 
-					ss.push(SN_END_FIELD);
-					ss.push(SG_SET_CHOLESKY);
-					ss.push(S_CHOLESKY);
-					break;
+                ss.push(SN_END_FIELD);
+                ss.push(SG_SET_CG);
+                ss.push(S_CG);
+                break;
 
-				case 71: // <set solver follow>	::= "cg" <G set cg solver> <end field>
-					ss.pop();
+            case 72: // <set solver follow>	::= "gauss" <G set gauss solver> <end field>
+                ss.pop();
 
-					ss.push(SN_END_FIELD);
-					ss.push(SG_SET_CG);
-					ss.push(S_CG);
-					break;
+                ss.push(SN_END_FIELD);
+                ss.push(SG_SET_GAUSS);
+                ss.push(S_GAUSS);
+                break;
 
-				case 72: // <set solver follow>	::= "gauss" <G set gauss solver> <end field>
-					ss.pop();
+            case 75: // <G set cholesky solver>	::=
+                ss.pop();
 
-					ss.push(SN_END_FIELD);
-					ss.push(SG_SET_GAUSS);
-					ss.push(S_GAUSS);
-					break;
+                solver = OPT_S_CHOLESKY;
+                break;
 
-				case 75: // <G set cholesky solver>	::=
-					ss.pop();
+            case 76: // <G set cg solver>	::=
+                ss.pop();
 
-					solver = OPT_S_CHOLESKY;
-					break;
+                solver = OPT_S_CG;
+                break;
 
-				case 76: // <G set cg solver>	::=
-					ss.pop();
+            case 77: // <G set gauss solver>	::=
+                ss.pop();
 
-					solver = OPT_S_CG;
-					break;
+                solver = OPT_S_GAUSS;
+                break;
 
-				case 77: // <G set gauss solver>	::=
-					ss.pop();
+            case 99: // <end field>
+                ss.pop();
+                ss.push(S_EOA);
+                break;
 
-					solver = OPT_S_GAUSS;
-					break;
+            case 100: // <epsilon>
+                ss.pop();
+                break;
 
-				case 99:	// <end field>
-					ss.pop();
-					ss.push(S_EOA);
-					break;
+            default:
+                // error parsing the command line
+                return OPT_PARSER_ERROR;
+                break;
+            }
+        }
+    }
 
-				case 100:	// <epsilon>
-					ss.pop();
-					break;
-
-				default:
-					// error parsing the command line
-					return OPT_PARSER_ERROR;
-					break;
-			}
-		}
-	}
-
-	// exit 
-	return opt;
+    // exit
+    return opt;
 }
 
-
-enum ProgramOptions::Symbol ProgramOptions::lexer(int argc, char **argv, int state)
+enum ProgramOptions::Symbol ProgramOptions::lexer(int argc, char** argv, int state)
 {
-	using namespace std;
+    using namespace std;
 
-	// reposition the token start marker
-	token = p;
+    // reposition the token start marker
+    token = p;
 
-	// once S_EOL is catched, its allways S_EOL
-	if(symbol == S_EOL) 
-		return S_EOL;
-	
-	switch(state)
-	{
-		case 0:	// default state
-		{
+    // once S_EOL is catched, its allways S_EOL
+    if (symbol == S_EOL)
+        return S_EOL;
+
+    switch (state) {
+    case 0: // default state
+    {
 
 #line 325 "../../source/ProgramOptions.c++"
-{
-	char yych;
+        {
+            char yych;
 
-	yych = (char)*p;
-	switch (yych) {
-	case 0x00:	goto yy17;
-	case '-':	goto yy2;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy19;
-	case ':':	goto yy15;
-	case 'c':	goto yy13;
-	case 'd':	goto yy5;
-	case 'e':	goto yy12;
-	case 'g':	goto yy14;
-	case 'h':	goto yy9;
-	case 'i':	goto yy11;
-	case 'l':	goto yy6;
-	case 'p':	goto yy10;
-	case 'q':	goto yy8;
-	case 's':	goto yy4;
-	case 't':	goto yy7;
-	default:	goto yy21;
-	}
-yy2:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case '-':	goto yy184;
-	default:	goto yy3;
-	}
-yy3:
+            yych = (char)*p;
+            switch (yych) {
+            case 0x00:
+                goto yy17;
+            case '-':
+                goto yy2;
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                goto yy19;
+            case ':':
+                goto yy15;
+            case 'c':
+                goto yy13;
+            case 'd':
+                goto yy5;
+            case 'e':
+                goto yy12;
+            case 'g':
+                goto yy14;
+            case 'h':
+                goto yy9;
+            case 'i':
+                goto yy11;
+            case 'l':
+                goto yy6;
+            case 'p':
+                goto yy10;
+            case 'q':
+                goto yy8;
+            case 's':
+                goto yy4;
+            case 't':
+                goto yy7;
+            default:
+                goto yy21;
+            }
+        yy2:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case '-':
+                goto yy184;
+            default:
+                goto yy3;
+            }
+        yy3 :
 #line 376 "../../source/ProgramOptions.c++.re2c"
-	{ return S_UNKNOWN;	}
+        {
+            return S_UNKNOWN;
+        }
 #line 366 "../../source/ProgramOptions.c++"
-yy4:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 't':	goto yy175;
-	default:	goto yy3;
-	}
-yy5:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'o':	goto yy169;
-	default:	goto yy3;
-	}
-yy6:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'i':	goto yy162;
-	default:	goto yy3;
-	}
-yy7:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'e':	goto yy119;
-	case 'r':	goto yy120;
-	default:	goto yy3;
-	}
-yy8:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'u':	goto yy104;
-	default:	goto yy3;
-	}
-yy9:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'e':	goto yy88;
-	default:	goto yy3;
-	}
-yy10:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'r':	goto yy65;
-	case 'y':	goto yy64;
-	default:	goto yy3;
-	}
-yy11:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 't':	goto yy49;
-	default:	goto yy3;
-	}
-yy12:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'd':	goto yy40;
-	default:	goto yy3;
-	}
-yy13:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'g':	goto yy30;
-	case 'h':	goto yy32;
-	default:	goto yy3;
-	}
-yy14:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'a':	goto yy24;
-	default:	goto yy3;
-	}
-yy15:
-	++p;
+        yy4:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 't':
+                goto yy175;
+            default:
+                goto yy3;
+            }
+        yy5:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'o':
+                goto yy169;
+            default:
+                goto yy3;
+            }
+        yy6:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'i':
+                goto yy162;
+            default:
+                goto yy3;
+            }
+        yy7:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'e':
+                goto yy119;
+            case 'r':
+                goto yy120;
+            default:
+                goto yy3;
+            }
+        yy8:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'u':
+                goto yy104;
+            default:
+                goto yy3;
+            }
+        yy9:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'e':
+                goto yy88;
+            default:
+                goto yy3;
+            }
+        yy10:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'r':
+                goto yy65;
+            case 'y':
+                goto yy64;
+            default:
+                goto yy3;
+            }
+        yy11:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 't':
+                goto yy49;
+            default:
+                goto yy3;
+            }
+        yy12:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'd':
+                goto yy40;
+            default:
+                goto yy3;
+            }
+        yy13:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'g':
+                goto yy30;
+            case 'h':
+                goto yy32;
+            default:
+                goto yy3;
+            }
+        yy14:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'a':
+                goto yy24;
+            default:
+                goto yy3;
+            }
+        yy15:
+            ++p;
 #line 372 "../../source/ProgramOptions.c++.re2c"
-	{ return S_SUBARG_SEPARATOR; }
+            {
+                return S_SUBARG_SEPARATOR;
+            }
 #line 440 "../../source/ProgramOptions.c++"
-yy17:
-	++p;
+        yy17:
+            ++p;
 #line 373 "../../source/ProgramOptions.c++.re2c"
-	{ argn++; if(argn < argc) { p = q = token =  &argv[argn][0]; return S_EOA;} else { p = token = q = nullptr; return S_EOL; } }
+            {
+                argn++;
+                if (argn < argc) {
+                    p = q = token = &argv[argn][0];
+                    return S_EOA;
+                } else {
+                    p = token = q = nullptr;
+                    return S_EOL;
+                }
+            }
 #line 445 "../../source/ProgramOptions.c++"
-yy19:
-	++p;
-	yych = (char)*p;
-	goto yy23;
-yy20:
+        yy19:
+            ++p;
+            yych = (char)*p;
+            goto yy23;
+        yy20 :
 #line 374 "../../source/ProgramOptions.c++.re2c"
-	{ integer = strtol(token,&p,NULL); return S_INTEGER;	}
+        {
+            integer = strtol(token, &p, NULL);
+            return S_INTEGER;
+        }
 #line 453 "../../source/ProgramOptions.c++"
-yy21:
-	yych = (char)*++p;
-	goto yy3;
-yy22:
-	++p;
-	yych = (char)*p;
-yy23:
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy22;
-	default:	goto yy20;
-	}
-yy24:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'u':	goto yy26;
-	default:	goto yy25;
-	}
-yy25:
-	p = q;
-	goto yy3;
-yy26:
-	yych = (char)*++p;
-	switch (yych) {
-	case 's':	goto yy27;
-	default:	goto yy25;
-	}
-yy27:
-	yych = (char)*++p;
-	switch (yych) {
-	case 's':	goto yy28;
-	default:	goto yy25;
-	}
-yy28:
-	++p;
+        yy21:
+            yych = (char)*++p;
+            goto yy3;
+        yy22:
+            ++p;
+            yych = (char)*p;
+        yy23:
+            switch (yych) {
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                goto yy22;
+            default:
+                goto yy20;
+            }
+        yy24:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'u':
+                goto yy26;
+            default:
+                goto yy25;
+            }
+        yy25:
+            p = q;
+            goto yy3;
+        yy26:
+            yych = (char)*++p;
+            switch (yych) {
+            case 's':
+                goto yy27;
+            default:
+                goto yy25;
+            }
+        yy27:
+            yych = (char)*++p;
+            switch (yych) {
+            case 's':
+                goto yy28;
+            default:
+                goto yy25;
+            }
+        yy28:
+            ++p;
 #line 370 "../../source/ProgramOptions.c++.re2c"
-	{ return S_GAUSS; }
+            {
+                return S_GAUSS;
+            }
 #line 499 "../../source/ProgramOptions.c++"
-yy30:
-	++p;
+        yy30:
+            ++p;
 #line 369 "../../source/ProgramOptions.c++.re2c"
-	{ return S_CG; }
+            {
+                return S_CG;
+            }
 #line 504 "../../source/ProgramOptions.c++"
-yy32:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'o':	goto yy33;
-	default:	goto yy25;
-	}
-yy33:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'l':	goto yy34;
-	default:	goto yy25;
-	}
-yy34:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy35;
-	default:	goto yy25;
-	}
-yy35:
-	yych = (char)*++p;
-	switch (yych) {
-	case 's':	goto yy36;
-	default:	goto yy25;
-	}
-yy36:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'k':	goto yy37;
-	default:	goto yy25;
-	}
-yy37:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'y':	goto yy38;
-	default:	goto yy25;
-	}
-yy38:
-	++p;
+        yy32:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'o':
+                goto yy33;
+            default:
+                goto yy25;
+            }
+        yy33:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'l':
+                goto yy34;
+            default:
+                goto yy25;
+            }
+        yy34:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy35;
+            default:
+                goto yy25;
+            }
+        yy35:
+            yych = (char)*++p;
+            switch (yych) {
+            case 's':
+                goto yy36;
+            default:
+                goto yy25;
+            }
+        yy36:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'k':
+                goto yy37;
+            default:
+                goto yy25;
+            }
+        yy37:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'y':
+                goto yy38;
+            default:
+                goto yy25;
+            }
+        yy38:
+            ++p;
 #line 368 "../../source/ProgramOptions.c++.re2c"
-	{ return S_CHOLESKY; }
+            {
+                return S_CHOLESKY;
+            }
 #line 545 "../../source/ProgramOptions.c++"
-yy40:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'g':	goto yy41;
-	default:	goto yy25;
-	}
-yy41:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy42;
-	default:	goto yy25;
-	}
-yy42:
-	yych = (char)*++p;
-	switch (yych) {
-	case '4':	goto yy43;
-	case '5':	goto yy45;
-	case '6':	goto yy47;
-	default:	goto yy25;
-	}
-yy43:
-	++p;
+        yy40:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'g':
+                goto yy41;
+            default:
+                goto yy25;
+            }
+        yy41:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy42;
+            default:
+                goto yy25;
+            }
+        yy42:
+            yych = (char)*++p;
+            switch (yych) {
+            case '4':
+                goto yy43;
+            case '5':
+                goto yy45;
+            case '6':
+                goto yy47;
+            default:
+                goto yy25;
+            }
+        yy43:
+            ++p;
 #line 361 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_EDGE4;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_EDGE4;
+                return S_FE_ELEMENT;
+            }
 #line 570 "../../source/ProgramOptions.c++"
-yy45:
-	++p;
+        yy45:
+            ++p;
 #line 362 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_EDGE5;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_EDGE5;
+                return S_FE_ELEMENT;
+            }
 #line 575 "../../source/ProgramOptions.c++"
-yy47:
-	++p;
+        yy47:
+            ++p;
 #line 363 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_EDGE6;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_EDGE6;
+                return S_FE_ELEMENT;
+            }
 #line 580 "../../source/ProgramOptions.c++"
-yy49:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy50;
-	default:	goto yy25;
-	}
-yy50:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy51;
-	default:	goto yy25;
-	}
-yy51:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy52;
-	default:	goto yy25;
-	}
-yy52:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy53;
-	default:	goto yy25;
-	}
-yy53:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'g':	goto yy54;
-	default:	goto yy25;
-	}
-yy54:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'l':	goto yy55;
-	default:	goto yy25;
-	}
-yy55:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy56;
-	default:	goto yy25;
-	}
-yy56:
-	yych = (char)*++p;
-	switch (yych) {
-	case '1':	goto yy57;
-	case '9':	goto yy58;
-	default:	goto yy25;
-	}
-yy57:
-	yych = (char)*++p;
-	switch (yych) {
-	case '2':	goto yy60;
-	case '5':	goto yy62;
-	default:	goto yy25;
-	}
-yy58:
-	++p;
+        yy49:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy50;
+            default:
+                goto yy25;
+            }
+        yy50:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy51;
+            default:
+                goto yy25;
+            }
+        yy51:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy52;
+            default:
+                goto yy25;
+            }
+        yy52:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy53;
+            default:
+                goto yy25;
+            }
+        yy53:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'g':
+                goto yy54;
+            default:
+                goto yy25;
+            }
+        yy54:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'l':
+                goto yy55;
+            default:
+                goto yy25;
+            }
+        yy55:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy56;
+            default:
+                goto yy25;
+            }
+        yy56:
+            yych = (char)*++p;
+            switch (yych) {
+            case '1':
+                goto yy57;
+            case '9':
+                goto yy58;
+            default:
+                goto yy25;
+            }
+        yy57:
+            yych = (char)*++p;
+            switch (yych) {
+            case '2':
+                goto yy60;
+            case '5':
+                goto yy62;
+            default:
+                goto yy25;
+            }
+        yy58:
+            ++p;
 #line 355 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_ITRIANGLE9;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_ITRIANGLE9;
+                return S_FE_ELEMENT;
+            }
 #line 641 "../../source/ProgramOptions.c++"
-yy60:
-	++p;
+        yy60:
+            ++p;
 #line 357 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_ITRIANGLE12;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_ITRIANGLE12;
+                return S_FE_ELEMENT;
+            }
 #line 646 "../../source/ProgramOptions.c++"
-yy62:
-	++p;
+        yy62:
+            ++p;
 #line 359 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_ITRIANGLE15;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_ITRIANGLE15;
+                return S_FE_ELEMENT;
+            }
 #line 651 "../../source/ProgramOptions.c++"
-yy64:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy76;
-	default:	goto yy25;
-	}
-yy65:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy66;
-	default:	goto yy25;
-	}
-yy66:
-	yych = (char)*++p;
-	switch (yych) {
-	case 's':	goto yy67;
-	default:	goto yy25;
-	}
-yy67:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'm':	goto yy68;
-	default:	goto yy25;
-	}
-yy68:
-	yych = (char)*++p;
-	switch (yych) {
-	case '1':	goto yy69;
-	case '6':	goto yy70;
-	default:	goto yy25;
-	}
-yy69:
-	yych = (char)*++p;
-	switch (yych) {
-	case '5':	goto yy74;
-	case '8':	goto yy72;
-	default:	goto yy25;
-	}
-yy70:
-	++p;
+        yy64:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy76;
+            default:
+                goto yy25;
+            }
+        yy65:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy66;
+            default:
+                goto yy25;
+            }
+        yy66:
+            yych = (char)*++p;
+            switch (yych) {
+            case 's':
+                goto yy67;
+            default:
+                goto yy25;
+            }
+        yy67:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'm':
+                goto yy68;
+            default:
+                goto yy25;
+            }
+        yy68:
+            yych = (char)*++p;
+            switch (yych) {
+            case '1':
+                goto yy69;
+            case '6':
+                goto yy70;
+            default:
+                goto yy25;
+            }
+        yy69:
+            yych = (char)*++p;
+            switch (yych) {
+            case '5':
+                goto yy74;
+            case '8':
+                goto yy72;
+            default:
+                goto yy25;
+            }
+        yy70:
+            ++p;
 #line 342 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_PRISM6;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_PRISM6;
+                return S_FE_ELEMENT;
+            }
 #line 694 "../../source/ProgramOptions.c++"
-yy72:
-	++p;
+        yy72:
+            ++p;
 #line 349 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_PRISM18;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_PRISM18;
+                return S_FE_ELEMENT;
+            }
 #line 699 "../../source/ProgramOptions.c++"
-yy74:
-	++p;
+        yy74:
+            ++p;
 #line 353 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_PRISM15;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_PRISM15;
+                return S_FE_ELEMENT;
+            }
 #line 704 "../../source/ProgramOptions.c++"
-yy76:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy77;
-	default:	goto yy25;
-	}
-yy77:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'm':	goto yy78;
-	default:	goto yy25;
-	}
-yy78:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy79;
-	default:	goto yy25;
-	}
-yy79:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'd':	goto yy80;
-	default:	goto yy25;
-	}
-yy80:
-	yych = (char)*++p;
-	switch (yych) {
-	case '1':	goto yy81;
-	case '5':	goto yy82;
-	default:	goto yy25;
-	}
-yy81:
-	yych = (char)*++p;
-	switch (yych) {
-	case '3':	goto yy86;
-	case '4':	goto yy84;
-	default:	goto yy25;
-	}
-yy82:
-	++p;
+        yy76:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy77;
+            default:
+                goto yy25;
+            }
+        yy77:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'm':
+                goto yy78;
+            default:
+                goto yy25;
+            }
+        yy78:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy79;
+            default:
+                goto yy25;
+            }
+        yy79:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'd':
+                goto yy80;
+            default:
+                goto yy25;
+            }
+        yy80:
+            yych = (char)*++p;
+            switch (yych) {
+            case '1':
+                goto yy81;
+            case '5':
+                goto yy82;
+            default:
+                goto yy25;
+            }
+        yy81:
+            yych = (char)*++p;
+            switch (yych) {
+            case '3':
+                goto yy86;
+            case '4':
+                goto yy84;
+            default:
+                goto yy25;
+            }
+        yy82:
+            ++p;
 #line 343 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_PYRAMID5;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_PYRAMID5;
+                return S_FE_ELEMENT;
+            }
 #line 747 "../../source/ProgramOptions.c++"
-yy84:
-	++p;
+        yy84:
+            ++p;
 #line 350 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_PYRAMID14;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_PYRAMID14;
+                return S_FE_ELEMENT;
+            }
 #line 752 "../../source/ProgramOptions.c++"
-yy86:
-	++p;
+        yy86:
+            ++p;
 #line 354 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_PYRAMID13;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_PYRAMID13;
+                return S_FE_ELEMENT;
+            }
 #line 757 "../../source/ProgramOptions.c++"
-yy88:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'x':	goto yy89;
-	default:	goto yy25;
-	}
-yy89:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy90;
-	default:	goto yy25;
-	}
-yy90:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'h':	goto yy91;
-	default:	goto yy25;
-	}
-yy91:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy92;
-	default:	goto yy25;
-	}
-yy92:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'd':	goto yy93;
-	default:	goto yy25;
-	}
-yy93:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy94;
-	default:	goto yy25;
-	}
-yy94:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'o':	goto yy95;
-	default:	goto yy25;
-	}
-yy95:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy96;
-	default:	goto yy25;
-	}
-yy96:
-	yych = (char)*++p;
-	switch (yych) {
-	case '2':	goto yy99;
-	case '8':	goto yy97;
-	default:	goto yy25;
-	}
-yy97:
-	++p;
+        yy88:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'x':
+                goto yy89;
+            default:
+                goto yy25;
+            }
+        yy89:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy90;
+            default:
+                goto yy25;
+            }
+        yy90:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'h':
+                goto yy91;
+            default:
+                goto yy25;
+            }
+        yy91:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy92;
+            default:
+                goto yy25;
+            }
+        yy92:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'd':
+                goto yy93;
+            default:
+                goto yy25;
+            }
+        yy93:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy94;
+            default:
+                goto yy25;
+            }
+        yy94:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'o':
+                goto yy95;
+            default:
+                goto yy25;
+            }
+        yy95:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy96;
+            default:
+                goto yy25;
+            }
+        yy96:
+            yych = (char)*++p;
+            switch (yych) {
+            case '2':
+                goto yy99;
+            case '8':
+                goto yy97;
+            default:
+                goto yy25;
+            }
+        yy97:
+            ++p;
 #line 341 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_HEXAHEDRON8;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_HEXAHEDRON8;
+                return S_FE_ELEMENT;
+            }
 #line 817 "../../source/ProgramOptions.c++"
-yy99:
-	yych = (char)*++p;
-	switch (yych) {
-	case '0':	goto yy100;
-	case '7':	goto yy102;
-	default:	goto yy25;
-	}
-yy100:
-	++p;
+        yy99:
+            yych = (char)*++p;
+            switch (yych) {
+            case '0':
+                goto yy100;
+            case '7':
+                goto yy102;
+            default:
+                goto yy25;
+            }
+        yy100:
+            ++p;
 #line 352 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_HEXAHEDRON20;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_HEXAHEDRON20;
+                return S_FE_ELEMENT;
+            }
 #line 829 "../../source/ProgramOptions.c++"
-yy102:
-	++p;
+        yy102:
+            ++p;
 #line 348 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_HEXAHEDRON27;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_HEXAHEDRON27;
+                return S_FE_ELEMENT;
+            }
 #line 834 "../../source/ProgramOptions.c++"
-yy104:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy105;
-	default:	goto yy25;
-	}
-yy105:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'd':	goto yy106;
-	default:	goto yy25;
-	}
-yy106:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy107;
-	default:	goto yy25;
-	}
-yy107:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy108;
-	default:	goto yy25;
-	}
-yy108:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy109;
-	default:	goto yy25;
-	}
-yy109:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'g':	goto yy110;
-	default:	goto yy25;
-	}
-yy110:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'l':	goto yy111;
-	default:	goto yy25;
-	}
-yy111:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy112;
-	default:	goto yy25;
-	}
-yy112:
-	yych = (char)*++p;
-	switch (yych) {
-	case '4':	goto yy113;
-	case '8':	goto yy117;
-	case '9':	goto yy115;
-	default:	goto yy25;
-	}
-yy113:
-	++p;
+        yy104:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy105;
+            default:
+                goto yy25;
+            }
+        yy105:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'd':
+                goto yy106;
+            default:
+                goto yy25;
+            }
+        yy106:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy107;
+            default:
+                goto yy25;
+            }
+        yy107:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy108;
+            default:
+                goto yy25;
+            }
+        yy108:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy109;
+            default:
+                goto yy25;
+            }
+        yy109:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'g':
+                goto yy110;
+            default:
+                goto yy25;
+            }
+        yy110:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'l':
+                goto yy111;
+            default:
+                goto yy25;
+            }
+        yy111:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy112;
+            default:
+                goto yy25;
+            }
+        yy112:
+            yych = (char)*++p;
+            switch (yych) {
+            case '4':
+                goto yy113;
+            case '8':
+                goto yy117;
+            case '9':
+                goto yy115;
+            default:
+                goto yy25;
+            }
+        yy113:
+            ++p;
 #line 339 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_QUADRANGLE4;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_QUADRANGLE4;
+                return S_FE_ELEMENT;
+            }
 #line 895 "../../source/ProgramOptions.c++"
-yy115:
-	++p;
+        yy115:
+            ++p;
 #line 346 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_QUADRANGLE9;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_QUADRANGLE9;
+                return S_FE_ELEMENT;
+            }
 #line 900 "../../source/ProgramOptions.c++"
-yy117:
-	++p;
+        yy117:
+            ++p;
 #line 351 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_QUADRANGLE8;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_QUADRANGLE8;
+                return S_FE_ELEMENT;
+            }
 #line 905 "../../source/ProgramOptions.c++"
-yy119:
-	yych = (char)*++p;
-	switch (yych) {
-	case 't':	goto yy139;
-	default:	goto yy25;
-	}
-yy120:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy121;
-	default:	goto yy25;
-	}
-yy121:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy122;
-	default:	goto yy25;
-	}
-yy122:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy123;
-	default:	goto yy25;
-	}
-yy123:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'g':	goto yy124;
-	default:	goto yy25;
-	}
-yy124:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'l':	goto yy125;
-	default:	goto yy25;
-	}
-yy125:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy126;
-	default:	goto yy25;
-	}
-yy126:
-	yych = (char)*++p;
-	switch (yych) {
-	case '1':	goto yy131;
-	case '2':	goto yy132;
-	case '3':	goto yy127;
-	case '6':	goto yy129;
-	default:	goto yy25;
-	}
-yy127:
-	++p;
+        yy119:
+            yych = (char)*++p;
+            switch (yych) {
+            case 't':
+                goto yy139;
+            default:
+                goto yy25;
+            }
+        yy120:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy121;
+            default:
+                goto yy25;
+            }
+        yy121:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy122;
+            default:
+                goto yy25;
+            }
+        yy122:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy123;
+            default:
+                goto yy25;
+            }
+        yy123:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'g':
+                goto yy124;
+            default:
+                goto yy25;
+            }
+        yy124:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'l':
+                goto yy125;
+            default:
+                goto yy25;
+            }
+        yy125:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy126;
+            default:
+                goto yy25;
+            }
+        yy126:
+            yych = (char)*++p;
+            switch (yych) {
+            case '1':
+                goto yy131;
+            case '2':
+                goto yy132;
+            case '3':
+                goto yy127;
+            case '6':
+                goto yy129;
+            default:
+                goto yy25;
+            }
+        yy127:
+            ++p;
 #line 338 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_TRIANGLE3;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_TRIANGLE3;
+                return S_FE_ELEMENT;
+            }
 #line 961 "../../source/ProgramOptions.c++"
-yy129:
-	++p;
+        yy129:
+            ++p;
 #line 345 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_TRIANGLE6;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_TRIANGLE6;
+                return S_FE_ELEMENT;
+            }
 #line 966 "../../source/ProgramOptions.c++"
-yy131:
-	yych = (char)*++p;
-	switch (yych) {
-	case '0':	goto yy137;
-	case '5':	goto yy135;
-	default:	goto yy25;
-	}
-yy132:
-	yych = (char)*++p;
-	switch (yych) {
-	case '1':	goto yy133;
-	default:	goto yy25;
-	}
-yy133:
-	++p;
+        yy131:
+            yych = (char)*++p;
+            switch (yych) {
+            case '0':
+                goto yy137;
+            case '5':
+                goto yy135;
+            default:
+                goto yy25;
+            }
+        yy132:
+            yych = (char)*++p;
+            switch (yych) {
+            case '1':
+                goto yy133;
+            default:
+                goto yy25;
+            }
+        yy133:
+            ++p;
 #line 360 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_TRIANGLE21;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_TRIANGLE21;
+                return S_FE_ELEMENT;
+            }
 #line 984 "../../source/ProgramOptions.c++"
-yy135:
-	++p;
+        yy135:
+            ++p;
 #line 358 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_TRIANGLE15;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_TRIANGLE15;
+                return S_FE_ELEMENT;
+            }
 #line 989 "../../source/ProgramOptions.c++"
-yy137:
-	++p;
+        yy137:
+            ++p;
 #line 356 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_TRIANGLE10;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_TRIANGLE10;
+                return S_FE_ELEMENT;
+            }
 #line 994 "../../source/ProgramOptions.c++"
-yy139:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy140;
-	default:	goto yy25;
-	}
-yy140:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy141;
-	default:	goto yy25;
-	}
-yy141:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'h':	goto yy142;
-	default:	goto yy25;
-	}
-yy142:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy143;
-	default:	goto yy25;
-	}
-yy143:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'd':	goto yy144;
-	default:	goto yy25;
-	}
-yy144:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy145;
-	default:	goto yy25;
-	}
-yy145:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'o':	goto yy146;
-	default:	goto yy25;
-	}
-yy146:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy147;
-	default:	goto yy25;
-	}
-yy147:
-	yych = (char)*++p;
-	switch (yych) {
-	case '1':	goto yy151;
-	case '2':	goto yy150;
-	case '3':	goto yy149;
-	case '4':	goto yy152;
-	case '5':	goto yy148;
-	default:	goto yy25;
-	}
-yy148:
-	yych = (char)*++p;
-	switch (yych) {
-	case '6':	goto yy160;
-	default:	goto yy25;
-	}
-yy149:
-	yych = (char)*++p;
-	switch (yych) {
-	case '5':	goto yy158;
-	default:	goto yy25;
-	}
-yy150:
-	yych = (char)*++p;
-	switch (yych) {
-	case '0':	goto yy156;
-	default:	goto yy25;
-	}
-yy151:
-	yych = (char)*++p;
-	switch (yych) {
-	case '0':	goto yy154;
-	default:	goto yy25;
-	}
-yy152:
-	++p;
+        yy139:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy140;
+            default:
+                goto yy25;
+            }
+        yy140:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy141;
+            default:
+                goto yy25;
+            }
+        yy141:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'h':
+                goto yy142;
+            default:
+                goto yy25;
+            }
+        yy142:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy143;
+            default:
+                goto yy25;
+            }
+        yy143:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'd':
+                goto yy144;
+            default:
+                goto yy25;
+            }
+        yy144:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy145;
+            default:
+                goto yy25;
+            }
+        yy145:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'o':
+                goto yy146;
+            default:
+                goto yy25;
+            }
+        yy146:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy147;
+            default:
+                goto yy25;
+            }
+        yy147:
+            yych = (char)*++p;
+            switch (yych) {
+            case '1':
+                goto yy151;
+            case '2':
+                goto yy150;
+            case '3':
+                goto yy149;
+            case '4':
+                goto yy152;
+            case '5':
+                goto yy148;
+            default:
+                goto yy25;
+            }
+        yy148:
+            yych = (char)*++p;
+            switch (yych) {
+            case '6':
+                goto yy160;
+            default:
+                goto yy25;
+            }
+        yy149:
+            yych = (char)*++p;
+            switch (yych) {
+            case '5':
+                goto yy158;
+            default:
+                goto yy25;
+            }
+        yy150:
+            yych = (char)*++p;
+            switch (yych) {
+            case '0':
+                goto yy156;
+            default:
+                goto yy25;
+            }
+        yy151:
+            yych = (char)*++p;
+            switch (yych) {
+            case '0':
+                goto yy154;
+            default:
+                goto yy25;
+            }
+        yy152:
+            ++p;
 #line 340 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_TETRAHEDRON4;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_TETRAHEDRON4;
+                return S_FE_ELEMENT;
+            }
 #line 1081 "../../source/ProgramOptions.c++"
-yy154:
-	++p;
+        yy154:
+            ++p;
 #line 347 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_TETRAHEDRON10;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_TETRAHEDRON10;
+                return S_FE_ELEMENT;
+            }
 #line 1086 "../../source/ProgramOptions.c++"
-yy156:
-	++p;
+        yy156:
+            ++p;
 #line 364 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_TETRAHEDRON20;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_TETRAHEDRON20;
+                return S_FE_ELEMENT;
+            }
 #line 1091 "../../source/ProgramOptions.c++"
-yy158:
-	++p;
+        yy158:
+            ++p;
 #line 365 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_TETRAHEDRON35;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_TETRAHEDRON35;
+                return S_FE_ELEMENT;
+            }
 #line 1096 "../../source/ProgramOptions.c++"
-yy160:
-	++p;
+        yy160:
+            ++p;
 #line 366 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_TETRAHEDRON56;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_TETRAHEDRON56;
+                return S_FE_ELEMENT;
+            }
 #line 1101 "../../source/ProgramOptions.c++"
-yy162:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy163;
-	default:	goto yy25;
-	}
-yy163:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy164;
-	default:	goto yy25;
-	}
-yy164:
-	yych = (char)*++p;
-	switch (yych) {
-	case '2':	goto yy165;
-	case '3':	goto yy167;
-	default:	goto yy25;
-	}
-yy165:
-	++p;
+        yy162:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy163;
+            default:
+                goto yy25;
+            }
+        yy163:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy164;
+            default:
+                goto yy25;
+            }
+        yy164:
+            yych = (char)*++p;
+            switch (yych) {
+            case '2':
+                goto yy165;
+            case '3':
+                goto yy167;
+            default:
+                goto yy25;
+            }
+        yy165:
+            ++p;
 #line 337 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_LINE2;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_LINE2;
+                return S_FE_ELEMENT;
+            }
 #line 1125 "../../source/ProgramOptions.c++"
-yy167:
-	++p;
+        yy167:
+            ++p;
 #line 344 "../../source/ProgramOptions.c++.re2c"
-	{ element_type = fem::Element::FE_LINE3;	return S_FE_ELEMENT;}
+            {
+                element_type = fem::Element::FE_LINE3;
+                return S_FE_ELEMENT;
+            }
 #line 1130 "../../source/ProgramOptions.c++"
-yy169:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'm':	goto yy170;
-	default:	goto yy25;
-	}
-yy170:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy171;
-	default:	goto yy25;
-	}
-yy171:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy172;
-	default:	goto yy25;
-	}
-yy172:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy173;
-	default:	goto yy25;
-	}
-yy173:
-	++p;
+        yy169:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'm':
+                goto yy170;
+            default:
+                goto yy25;
+            }
+        yy170:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy171;
+            default:
+                goto yy25;
+            }
+        yy171:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy172;
+            default:
+                goto yy25;
+            }
+        yy172:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy173;
+            default:
+                goto yy25;
+            }
+        yy173:
+            ++p;
 #line 333 "../../source/ProgramOptions.c++.re2c"
-	{ return S_IPS_DOMAIN;	}
+            {
+                return S_IPS_DOMAIN;
+            }
 #line 1159 "../../source/ProgramOptions.c++"
-yy175:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy176;
-	default:	goto yy25;
-	}
-yy176:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'f':	goto yy177;
-	default:	goto yy25;
-	}
-yy177:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'f':	goto yy178;
-	default:	goto yy25;
-	}
-yy178:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy179;
-	default:	goto yy25;
-	}
-yy179:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy180;
-	default:	goto yy25;
-	}
-yy180:
-	yych = (char)*++p;
-	switch (yych) {
-	case 's':	goto yy181;
-	default:	goto yy25;
-	}
-yy181:
-	yych = (char)*++p;
-	switch (yych) {
-	case 's':	goto yy182;
-	default:	goto yy25;
-	}
-yy182:
-	++p;
+        yy175:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy176;
+            default:
+                goto yy25;
+            }
+        yy176:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'f':
+                goto yy177;
+            default:
+                goto yy25;
+            }
+        yy177:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'f':
+                goto yy178;
+            default:
+                goto yy25;
+            }
+        yy178:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy179;
+            default:
+                goto yy25;
+            }
+        yy179:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy180;
+            default:
+                goto yy25;
+            }
+        yy180:
+            yych = (char)*++p;
+            switch (yych) {
+            case 's':
+                goto yy181;
+            default:
+                goto yy25;
+            }
+        yy181:
+            yych = (char)*++p;
+            switch (yych) {
+            case 's':
+                goto yy182;
+            default:
+                goto yy25;
+            }
+        yy182:
+            ++p;
 #line 332 "../../source/ProgramOptions.c++.re2c"
-	{ return S_IPS_STIFFNESS;	}
+            {
+                return S_IPS_STIFFNESS;
+            }
 #line 1206 "../../source/ProgramOptions.c++"
-yy184:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'h':	goto yy185;
-	case 'i':	goto yy187;
-	case 'o':	goto yy188;
-	case 's':	goto yy189;
-	case 'v':	goto yy186;
-	default:	goto yy25;
-	}
-yy185:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy221;
-	default:	goto yy25;
-	}
-yy186:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy214;
-	default:	goto yy25;
-	}
-yy187:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'p':	goto yy211;
-	default:	goto yy25;
-	}
-yy188:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'u':	goto yy196;
-	default:	goto yy25;
-	}
-yy189:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'o':	goto yy190;
-	default:	goto yy25;
-	}
-yy190:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'l':	goto yy191;
-	default:	goto yy25;
-	}
-yy191:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'v':	goto yy192;
-	default:	goto yy25;
-	}
-yy192:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy193;
-	default:	goto yy25;
-	}
-yy193:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy194;
-	default:	goto yy25;
-	}
-yy194:
-	++p;
+        yy184:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'h':
+                goto yy185;
+            case 'i':
+                goto yy187;
+            case 'o':
+                goto yy188;
+            case 's':
+                goto yy189;
+            case 'v':
+                goto yy186;
+            default:
+                goto yy25;
+            }
+        yy185:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy221;
+            default:
+                goto yy25;
+            }
+        yy186:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy214;
+            default:
+                goto yy25;
+            }
+        yy187:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'p':
+                goto yy211;
+            default:
+                goto yy25;
+            }
+        yy188:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'u':
+                goto yy196;
+            default:
+                goto yy25;
+            }
+        yy189:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'o':
+                goto yy190;
+            default:
+                goto yy25;
+            }
+        yy190:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'l':
+                goto yy191;
+            default:
+                goto yy25;
+            }
+        yy191:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'v':
+                goto yy192;
+            default:
+                goto yy25;
+            }
+        yy192:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy193;
+            default:
+                goto yy25;
+            }
+        yy193:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy194;
+            default:
+                goto yy25;
+            }
+        yy194:
+            ++p;
 #line 335 "../../source/ProgramOptions.c++.re2c"
-	{ return S_SOLVER; }
+            {
+                return S_SOLVER;
+            }
 #line 1275 "../../source/ProgramOptions.c++"
-yy196:
-	yych = (char)*++p;
-	switch (yych) {
-	case 't':	goto yy197;
-	default:	goto yy25;
-	}
-yy197:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'p':	goto yy198;
-	default:	goto yy25;
-	}
-yy198:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'u':	goto yy199;
-	default:	goto yy25;
-	}
-yy199:
-	yych = (char)*++p;
-	switch (yych) {
-	case 't':	goto yy200;
-	default:	goto yy25;
-	}
-yy200:
-	yych = (char)*++p;
-	switch (yych) {
-	case '-':	goto yy201;
-	default:	goto yy25;
-	}
-yy201:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy202;
-	default:	goto yy25;
-	}
-yy202:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'q':	goto yy203;
-	default:	goto yy25;
-	}
-yy203:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'u':	goto yy204;
-	default:	goto yy25;
-	}
-yy204:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy205;
-	default:	goto yy25;
-	}
-yy205:
-	yych = (char)*++p;
-	switch (yych) {
-	case 't':	goto yy206;
-	default:	goto yy25;
-	}
-yy206:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy207;
-	default:	goto yy25;
-	}
-yy207:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'o':	goto yy208;
-	default:	goto yy25;
-	}
-yy208:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy209;
-	default:	goto yy25;
-	}
-yy209:
-	++p;
+        yy196:
+            yych = (char)*++p;
+            switch (yych) {
+            case 't':
+                goto yy197;
+            default:
+                goto yy25;
+            }
+        yy197:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'p':
+                goto yy198;
+            default:
+                goto yy25;
+            }
+        yy198:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'u':
+                goto yy199;
+            default:
+                goto yy25;
+            }
+        yy199:
+            yych = (char)*++p;
+            switch (yych) {
+            case 't':
+                goto yy200;
+            default:
+                goto yy25;
+            }
+        yy200:
+            yych = (char)*++p;
+            switch (yych) {
+            case '-':
+                goto yy201;
+            default:
+                goto yy25;
+            }
+        yy201:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy202;
+            default:
+                goto yy25;
+            }
+        yy202:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'q':
+                goto yy203;
+            default:
+                goto yy25;
+            }
+        yy203:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'u':
+                goto yy204;
+            default:
+                goto yy25;
+            }
+        yy204:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy205;
+            default:
+                goto yy25;
+            }
+        yy205:
+            yych = (char)*++p;
+            switch (yych) {
+            case 't':
+                goto yy206;
+            default:
+                goto yy25;
+            }
+        yy206:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy207;
+            default:
+                goto yy25;
+            }
+        yy207:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'o':
+                goto yy208;
+            default:
+                goto yy25;
+            }
+        yy208:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy209;
+            default:
+                goto yy25;
+            }
+        yy209:
+            ++p;
 #line 334 "../../source/ProgramOptions.c++.re2c"
-	{ return S_OUTPUT_FEM_EQUATION; }
+            {
+                return S_OUTPUT_FEM_EQUATION;
+            }
 #line 1358 "../../source/ProgramOptions.c++"
-yy211:
-	yych = (char)*++p;
-	switch (yych) {
-	case 's':	goto yy212;
-	default:	goto yy25;
-	}
-yy212:
-	++p;
+        yy211:
+            yych = (char)*++p;
+            switch (yych) {
+            case 's':
+                goto yy212;
+            default:
+                goto yy25;
+            }
+        yy212:
+            ++p;
 #line 331 "../../source/ProgramOptions.c++.re2c"
-	{ return S_IPS;	}
+            {
+                return S_IPS;
+            }
 #line 1369 "../../source/ProgramOptions.c++"
-yy214:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy215;
-	default:	goto yy25;
-	}
-yy215:
-	yych = (char)*++p;
-	switch (yych) {
-	case 's':	goto yy216;
-	default:	goto yy25;
-	}
-yy216:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy217;
-	default:	goto yy25;
-	}
-yy217:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'o':	goto yy218;
-	default:	goto yy25;
-	}
-yy218:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy219;
-	default:	goto yy25;
-	}
-yy219:
-	++p;
+        yy214:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy215;
+            default:
+                goto yy25;
+            }
+        yy215:
+            yych = (char)*++p;
+            switch (yych) {
+            case 's':
+                goto yy216;
+            default:
+                goto yy25;
+            }
+        yy216:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy217;
+            default:
+                goto yy25;
+            }
+        yy217:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'o':
+                goto yy218;
+            default:
+                goto yy25;
+            }
+        yy218:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy219;
+            default:
+                goto yy25;
+            }
+        yy219:
+            ++p;
 #line 330 "../../source/ProgramOptions.c++.re2c"
-	{ return S_VERSION;	}
+            {
+                return S_VERSION;
+            }
 #line 1404 "../../source/ProgramOptions.c++"
-yy221:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'l':	goto yy222;
-	default:	goto yy25;
-	}
-yy222:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'p':	goto yy223;
-	default:	goto yy25;
-	}
-yy223:
-	++p;
+        yy221:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'l':
+                goto yy222;
+            default:
+                goto yy25;
+            }
+        yy222:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'p':
+                goto yy223;
+            default:
+                goto yy25;
+            }
+        yy223:
+            ++p;
 #line 329 "../../source/ProgramOptions.c++.re2c"
-	{ return S_HELP;	}
+            {
+                return S_HELP;
+            }
 #line 1421 "../../source/ProgramOptions.c++"
-}
+        }
 #line 377 "../../source/ProgramOptions.c++.re2c"
 
-		}
-		break;
+    } break;
 
-		case 1:
-		{
-	
+    case 1: {
+
 #line 1431 "../../source/ProgramOptions.c++"
-{
-	char yych;
-	yych = (char)*p;
-	switch (yych) {
-	case 0x00:	goto yy240;
-	case '-':	goto yy227;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy242;
-	case ':':	goto yy238;
-	case 'd':	goto yy230;
-	case 'e':	goto yy237;
-	case 'h':	goto yy234;
-	case 'i':	goto yy236;
-	case 'l':	goto yy231;
-	case 'p':	goto yy235;
-	case 'q':	goto yy233;
-	case 's':	goto yy229;
-	case 't':	goto yy232;
-	default:	goto yy244;
-	}
-yy227:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case '-':	goto yy392;
-	default:	goto yy228;
-	}
-yy228:
+        {
+            char yych;
+            yych = (char)*p;
+            switch (yych) {
+            case 0x00:
+                goto yy240;
+            case '-':
+                goto yy227;
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                goto yy242;
+            case ':':
+                goto yy238;
+            case 'd':
+                goto yy230;
+            case 'e':
+                goto yy237;
+            case 'h':
+                goto yy234;
+            case 'i':
+                goto yy236;
+            case 'l':
+                goto yy231;
+            case 'p':
+                goto yy235;
+            case 'q':
+                goto yy233;
+            case 's':
+                goto yy229;
+            case 't':
+                goto yy232;
+            default:
+                goto yy244;
+            }
+        yy227:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case '-':
+                goto yy392;
+            default:
+                goto yy228;
+            }
+        yy228 :
 #line 425 "../../source/ProgramOptions.c++.re2c"
-	{ return S_UNKNOWN;	}
+        {
+            return S_UNKNOWN;
+        }
 #line 1469 "../../source/ProgramOptions.c++"
-yy229:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 't':	goto yy383;
-	default:	goto yy228;
-	}
-yy230:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'o':	goto yy377;
-	default:	goto yy228;
-	}
-yy231:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'i':	goto yy370;
-	default:	goto yy228;
-	}
-yy232:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'e':	goto yy327;
-	case 'r':	goto yy328;
-	default:	goto yy228;
-	}
-yy233:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'u':	goto yy312;
-	default:	goto yy228;
-	}
-yy234:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'e':	goto yy296;
-	default:	goto yy228;
-	}
-yy235:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'r':	goto yy273;
-	case 'y':	goto yy272;
-	default:	goto yy228;
-	}
-yy236:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 't':	goto yy257;
-	default:	goto yy228;
-	}
-yy237:
-	yych = (char)*(q = ++p);
-	switch (yych) {
-	case 'd':	goto yy247;
-	default:	goto yy228;
-	}
-yy238:
-	++p;
+        yy229:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 't':
+                goto yy383;
+            default:
+                goto yy228;
+            }
+        yy230:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'o':
+                goto yy377;
+            default:
+                goto yy228;
+            }
+        yy231:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'i':
+                goto yy370;
+            default:
+                goto yy228;
+            }
+        yy232:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'e':
+                goto yy327;
+            case 'r':
+                goto yy328;
+            default:
+                goto yy228;
+            }
+        yy233:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'u':
+                goto yy312;
+            default:
+                goto yy228;
+            }
+        yy234:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'e':
+                goto yy296;
+            default:
+                goto yy228;
+            }
+        yy235:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'r':
+                goto yy273;
+            case 'y':
+                goto yy272;
+            default:
+                goto yy228;
+            }
+        yy236:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 't':
+                goto yy257;
+            default:
+                goto yy228;
+            }
+        yy237:
+            yych = (char)*(q = ++p);
+            switch (yych) {
+            case 'd':
+                goto yy247;
+            default:
+                goto yy228;
+            }
+        yy238:
+            ++p;
 #line 421 "../../source/ProgramOptions.c++.re2c"
-	{ return S_SUBARG_SEPARATOR; }
+            {
+                return S_SUBARG_SEPARATOR;
+            }
 #line 1530 "../../source/ProgramOptions.c++"
-yy240:
-	++p;
+        yy240:
+            ++p;
 #line 422 "../../source/ProgramOptions.c++.re2c"
-	{ if(argn < argc-1) {argn++; p = q = token =  &argv[argn][0]; return S_EOA;} else { p = token = q = nullptr; return S_EOL; } }
+            {
+                if (argn < argc - 1) {
+                    argn++;
+                    p = q = token = &argv[argn][0];
+                    return S_EOA;
+                } else {
+                    p = token = q = nullptr;
+                    return S_EOL;
+                }
+            }
 #line 1535 "../../source/ProgramOptions.c++"
-yy242:
-	++p;
-	yych = (char)*p;
-	goto yy246;
-yy243:
+        yy242:
+            ++p;
+            yych = (char)*p;
+            goto yy246;
+        yy243 :
 #line 423 "../../source/ProgramOptions.c++.re2c"
-	{ return S_INTEGER;	}
+        {
+            return S_INTEGER;
+        }
 #line 1543 "../../source/ProgramOptions.c++"
-yy244:
-	yych = (char)*++p;
-	goto yy228;
-yy245:
-	++p;
-	yych = (char)*p;
-yy246:
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy245;
-	default:	goto yy243;
-	}
-yy247:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'g':	goto yy249;
-	default:	goto yy248;
-	}
-yy248:
-	p = q;
-	goto yy228;
-yy249:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy250;
-	default:	goto yy248;
-	}
-yy250:
-	yych = (char)*++p;
-	switch (yych) {
-	case '4':	goto yy251;
-	case '5':	goto yy253;
-	case '6':	goto yy255;
-	default:	goto yy248;
-	}
-yy251:
-	++p;
+        yy244:
+            yych = (char)*++p;
+            goto yy228;
+        yy245:
+            ++p;
+            yych = (char)*p;
+        yy246:
+            switch (yych) {
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                goto yy245;
+            default:
+                goto yy243;
+            }
+        yy247:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'g':
+                goto yy249;
+            default:
+                goto yy248;
+            }
+        yy248:
+            p = q;
+            goto yy228;
+        yy249:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy250;
+            default:
+                goto yy248;
+            }
+        yy250:
+            yych = (char)*++p;
+            switch (yych) {
+            case '4':
+                goto yy251;
+            case '5':
+                goto yy253;
+            case '6':
+                goto yy255;
+            default:
+                goto yy248;
+            }
+        yy251:
+            ++p;
 #line 414 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_EDGE4;}
+            {
+                return S_FE_EDGE4;
+            }
 #line 1591 "../../source/ProgramOptions.c++"
-yy253:
-	++p;
+        yy253:
+            ++p;
 #line 415 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_EDGE5;}
+            {
+                return S_FE_EDGE5;
+            }
 #line 1596 "../../source/ProgramOptions.c++"
-yy255:
-	++p;
+        yy255:
+            ++p;
 #line 416 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_EDGE6;}
+            {
+                return S_FE_EDGE6;
+            }
 #line 1601 "../../source/ProgramOptions.c++"
-yy257:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy258;
-	default:	goto yy248;
-	}
-yy258:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy259;
-	default:	goto yy248;
-	}
-yy259:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy260;
-	default:	goto yy248;
-	}
-yy260:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy261;
-	default:	goto yy248;
-	}
-yy261:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'g':	goto yy262;
-	default:	goto yy248;
-	}
-yy262:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'l':	goto yy263;
-	default:	goto yy248;
-	}
-yy263:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy264;
-	default:	goto yy248;
-	}
-yy264:
-	yych = (char)*++p;
-	switch (yych) {
-	case '1':	goto yy265;
-	case '9':	goto yy266;
-	default:	goto yy248;
-	}
-yy265:
-	yych = (char)*++p;
-	switch (yych) {
-	case '2':	goto yy268;
-	case '5':	goto yy270;
-	default:	goto yy248;
-	}
-yy266:
-	++p;
+        yy257:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy258;
+            default:
+                goto yy248;
+            }
+        yy258:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy259;
+            default:
+                goto yy248;
+            }
+        yy259:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy260;
+            default:
+                goto yy248;
+            }
+        yy260:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy261;
+            default:
+                goto yy248;
+            }
+        yy261:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'g':
+                goto yy262;
+            default:
+                goto yy248;
+            }
+        yy262:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'l':
+                goto yy263;
+            default:
+                goto yy248;
+            }
+        yy263:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy264;
+            default:
+                goto yy248;
+            }
+        yy264:
+            yych = (char)*++p;
+            switch (yych) {
+            case '1':
+                goto yy265;
+            case '9':
+                goto yy266;
+            default:
+                goto yy248;
+            }
+        yy265:
+            yych = (char)*++p;
+            switch (yych) {
+            case '2':
+                goto yy268;
+            case '5':
+                goto yy270;
+            default:
+                goto yy248;
+            }
+        yy266:
+            ++p;
 #line 408 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_ITRIANGLE9;}
+            {
+                return S_FE_ITRIANGLE9;
+            }
 #line 1662 "../../source/ProgramOptions.c++"
-yy268:
-	++p;
+        yy268:
+            ++p;
 #line 410 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_ITRIANGLE12;}
+            {
+                return S_FE_ITRIANGLE12;
+            }
 #line 1667 "../../source/ProgramOptions.c++"
-yy270:
-	++p;
+        yy270:
+            ++p;
 #line 412 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_ITRIANGLE15;}
+            {
+                return S_FE_ITRIANGLE15;
+            }
 #line 1672 "../../source/ProgramOptions.c++"
-yy272:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy284;
-	default:	goto yy248;
-	}
-yy273:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy274;
-	default:	goto yy248;
-	}
-yy274:
-	yych = (char)*++p;
-	switch (yych) {
-	case 's':	goto yy275;
-	default:	goto yy248;
-	}
-yy275:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'm':	goto yy276;
-	default:	goto yy248;
-	}
-yy276:
-	yych = (char)*++p;
-	switch (yych) {
-	case '1':	goto yy277;
-	case '6':	goto yy278;
-	default:	goto yy248;
-	}
-yy277:
-	yych = (char)*++p;
-	switch (yych) {
-	case '5':	goto yy282;
-	case '8':	goto yy280;
-	default:	goto yy248;
-	}
-yy278:
-	++p;
+        yy272:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy284;
+            default:
+                goto yy248;
+            }
+        yy273:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy274;
+            default:
+                goto yy248;
+            }
+        yy274:
+            yych = (char)*++p;
+            switch (yych) {
+            case 's':
+                goto yy275;
+            default:
+                goto yy248;
+            }
+        yy275:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'm':
+                goto yy276;
+            default:
+                goto yy248;
+            }
+        yy276:
+            yych = (char)*++p;
+            switch (yych) {
+            case '1':
+                goto yy277;
+            case '6':
+                goto yy278;
+            default:
+                goto yy248;
+            }
+        yy277:
+            yych = (char)*++p;
+            switch (yych) {
+            case '5':
+                goto yy282;
+            case '8':
+                goto yy280;
+            default:
+                goto yy248;
+            }
+        yy278:
+            ++p;
 #line 395 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_PRISM6;}
+            {
+                return S_FE_PRISM6;
+            }
 #line 1715 "../../source/ProgramOptions.c++"
-yy280:
-	++p;
+        yy280:
+            ++p;
 #line 402 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_PRISM18;}
+            {
+                return S_FE_PRISM18;
+            }
 #line 1720 "../../source/ProgramOptions.c++"
-yy282:
-	++p;
+        yy282:
+            ++p;
 #line 406 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_PRISM15;}
+            {
+                return S_FE_PRISM15;
+            }
 #line 1725 "../../source/ProgramOptions.c++"
-yy284:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy285;
-	default:	goto yy248;
-	}
-yy285:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'm':	goto yy286;
-	default:	goto yy248;
-	}
-yy286:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy287;
-	default:	goto yy248;
-	}
-yy287:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'd':	goto yy288;
-	default:	goto yy248;
-	}
-yy288:
-	yych = (char)*++p;
-	switch (yych) {
-	case '1':	goto yy289;
-	case '5':	goto yy290;
-	default:	goto yy248;
-	}
-yy289:
-	yych = (char)*++p;
-	switch (yych) {
-	case '3':	goto yy294;
-	case '4':	goto yy292;
-	default:	goto yy248;
-	}
-yy290:
-	++p;
+        yy284:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy285;
+            default:
+                goto yy248;
+            }
+        yy285:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'm':
+                goto yy286;
+            default:
+                goto yy248;
+            }
+        yy286:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy287;
+            default:
+                goto yy248;
+            }
+        yy287:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'd':
+                goto yy288;
+            default:
+                goto yy248;
+            }
+        yy288:
+            yych = (char)*++p;
+            switch (yych) {
+            case '1':
+                goto yy289;
+            case '5':
+                goto yy290;
+            default:
+                goto yy248;
+            }
+        yy289:
+            yych = (char)*++p;
+            switch (yych) {
+            case '3':
+                goto yy294;
+            case '4':
+                goto yy292;
+            default:
+                goto yy248;
+            }
+        yy290:
+            ++p;
 #line 396 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_PYRAMID5;}
+            {
+                return S_FE_PYRAMID5;
+            }
 #line 1768 "../../source/ProgramOptions.c++"
-yy292:
-	++p;
+        yy292:
+            ++p;
 #line 403 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_PYRAMID14;}
+            {
+                return S_FE_PYRAMID14;
+            }
 #line 1773 "../../source/ProgramOptions.c++"
-yy294:
-	++p;
+        yy294:
+            ++p;
 #line 407 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_PYRAMID13;}
+            {
+                return S_FE_PYRAMID13;
+            }
 #line 1778 "../../source/ProgramOptions.c++"
-yy296:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'x':	goto yy297;
-	default:	goto yy248;
-	}
-yy297:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy298;
-	default:	goto yy248;
-	}
-yy298:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'h':	goto yy299;
-	default:	goto yy248;
-	}
-yy299:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy300;
-	default:	goto yy248;
-	}
-yy300:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'd':	goto yy301;
-	default:	goto yy248;
-	}
-yy301:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy302;
-	default:	goto yy248;
-	}
-yy302:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'o':	goto yy303;
-	default:	goto yy248;
-	}
-yy303:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy304;
-	default:	goto yy248;
-	}
-yy304:
-	yych = (char)*++p;
-	switch (yych) {
-	case '2':	goto yy307;
-	case '8':	goto yy305;
-	default:	goto yy248;
-	}
-yy305:
-	++p;
+        yy296:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'x':
+                goto yy297;
+            default:
+                goto yy248;
+            }
+        yy297:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy298;
+            default:
+                goto yy248;
+            }
+        yy298:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'h':
+                goto yy299;
+            default:
+                goto yy248;
+            }
+        yy299:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy300;
+            default:
+                goto yy248;
+            }
+        yy300:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'd':
+                goto yy301;
+            default:
+                goto yy248;
+            }
+        yy301:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy302;
+            default:
+                goto yy248;
+            }
+        yy302:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'o':
+                goto yy303;
+            default:
+                goto yy248;
+            }
+        yy303:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy304;
+            default:
+                goto yy248;
+            }
+        yy304:
+            yych = (char)*++p;
+            switch (yych) {
+            case '2':
+                goto yy307;
+            case '8':
+                goto yy305;
+            default:
+                goto yy248;
+            }
+        yy305:
+            ++p;
 #line 394 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_HEXAHEDRON8;}
+            {
+                return S_FE_HEXAHEDRON8;
+            }
 #line 1838 "../../source/ProgramOptions.c++"
-yy307:
-	yych = (char)*++p;
-	switch (yych) {
-	case '0':	goto yy308;
-	case '7':	goto yy310;
-	default:	goto yy248;
-	}
-yy308:
-	++p;
+        yy307:
+            yych = (char)*++p;
+            switch (yych) {
+            case '0':
+                goto yy308;
+            case '7':
+                goto yy310;
+            default:
+                goto yy248;
+            }
+        yy308:
+            ++p;
 #line 405 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_HEXAHEDRON20;}
+            {
+                return S_FE_HEXAHEDRON20;
+            }
 #line 1850 "../../source/ProgramOptions.c++"
-yy310:
-	++p;
+        yy310:
+            ++p;
 #line 401 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_HEXAHEDRON27;}
+            {
+                return S_FE_HEXAHEDRON27;
+            }
 #line 1855 "../../source/ProgramOptions.c++"
-yy312:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy313;
-	default:	goto yy248;
-	}
-yy313:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'd':	goto yy314;
-	default:	goto yy248;
-	}
-yy314:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy315;
-	default:	goto yy248;
-	}
-yy315:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy316;
-	default:	goto yy248;
-	}
-yy316:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy317;
-	default:	goto yy248;
-	}
-yy317:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'g':	goto yy318;
-	default:	goto yy248;
-	}
-yy318:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'l':	goto yy319;
-	default:	goto yy248;
-	}
-yy319:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy320;
-	default:	goto yy248;
-	}
-yy320:
-	yych = (char)*++p;
-	switch (yych) {
-	case '4':	goto yy321;
-	case '8':	goto yy325;
-	case '9':	goto yy323;
-	default:	goto yy248;
-	}
-yy321:
-	++p;
+        yy312:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy313;
+            default:
+                goto yy248;
+            }
+        yy313:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'd':
+                goto yy314;
+            default:
+                goto yy248;
+            }
+        yy314:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy315;
+            default:
+                goto yy248;
+            }
+        yy315:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy316;
+            default:
+                goto yy248;
+            }
+        yy316:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy317;
+            default:
+                goto yy248;
+            }
+        yy317:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'g':
+                goto yy318;
+            default:
+                goto yy248;
+            }
+        yy318:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'l':
+                goto yy319;
+            default:
+                goto yy248;
+            }
+        yy319:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy320;
+            default:
+                goto yy248;
+            }
+        yy320:
+            yych = (char)*++p;
+            switch (yych) {
+            case '4':
+                goto yy321;
+            case '8':
+                goto yy325;
+            case '9':
+                goto yy323;
+            default:
+                goto yy248;
+            }
+        yy321:
+            ++p;
 #line 392 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_QUADRANGLE4;}
+            {
+                return S_FE_QUADRANGLE4;
+            }
 #line 1916 "../../source/ProgramOptions.c++"
-yy323:
-	++p;
+        yy323:
+            ++p;
 #line 399 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_QUADRANGLE9;}
+            {
+                return S_FE_QUADRANGLE9;
+            }
 #line 1921 "../../source/ProgramOptions.c++"
-yy325:
-	++p;
+        yy325:
+            ++p;
 #line 404 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_QUADRANGLE8;}
+            {
+                return S_FE_QUADRANGLE8;
+            }
 #line 1926 "../../source/ProgramOptions.c++"
-yy327:
-	yych = (char)*++p;
-	switch (yych) {
-	case 't':	goto yy347;
-	default:	goto yy248;
-	}
-yy328:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy329;
-	default:	goto yy248;
-	}
-yy329:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy330;
-	default:	goto yy248;
-	}
-yy330:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy331;
-	default:	goto yy248;
-	}
-yy331:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'g':	goto yy332;
-	default:	goto yy248;
-	}
-yy332:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'l':	goto yy333;
-	default:	goto yy248;
-	}
-yy333:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy334;
-	default:	goto yy248;
-	}
-yy334:
-	yych = (char)*++p;
-	switch (yych) {
-	case '1':	goto yy339;
-	case '2':	goto yy340;
-	case '3':	goto yy335;
-	case '6':	goto yy337;
-	default:	goto yy248;
-	}
-yy335:
-	++p;
+        yy327:
+            yych = (char)*++p;
+            switch (yych) {
+            case 't':
+                goto yy347;
+            default:
+                goto yy248;
+            }
+        yy328:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy329;
+            default:
+                goto yy248;
+            }
+        yy329:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy330;
+            default:
+                goto yy248;
+            }
+        yy330:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy331;
+            default:
+                goto yy248;
+            }
+        yy331:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'g':
+                goto yy332;
+            default:
+                goto yy248;
+            }
+        yy332:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'l':
+                goto yy333;
+            default:
+                goto yy248;
+            }
+        yy333:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy334;
+            default:
+                goto yy248;
+            }
+        yy334:
+            yych = (char)*++p;
+            switch (yych) {
+            case '1':
+                goto yy339;
+            case '2':
+                goto yy340;
+            case '3':
+                goto yy335;
+            case '6':
+                goto yy337;
+            default:
+                goto yy248;
+            }
+        yy335:
+            ++p;
 #line 391 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_TRIANGLE3;}
+            {
+                return S_FE_TRIANGLE3;
+            }
 #line 1982 "../../source/ProgramOptions.c++"
-yy337:
-	++p;
+        yy337:
+            ++p;
 #line 398 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_TRIANGLE6;}
+            {
+                return S_FE_TRIANGLE6;
+            }
 #line 1987 "../../source/ProgramOptions.c++"
-yy339:
-	yych = (char)*++p;
-	switch (yych) {
-	case '0':	goto yy345;
-	case '5':	goto yy343;
-	default:	goto yy248;
-	}
-yy340:
-	yych = (char)*++p;
-	switch (yych) {
-	case '1':	goto yy341;
-	default:	goto yy248;
-	}
-yy341:
-	++p;
+        yy339:
+            yych = (char)*++p;
+            switch (yych) {
+            case '0':
+                goto yy345;
+            case '5':
+                goto yy343;
+            default:
+                goto yy248;
+            }
+        yy340:
+            yych = (char)*++p;
+            switch (yych) {
+            case '1':
+                goto yy341;
+            default:
+                goto yy248;
+            }
+        yy341:
+            ++p;
 #line 413 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_TRIANGLE21;}
+            {
+                return S_FE_TRIANGLE21;
+            }
 #line 2005 "../../source/ProgramOptions.c++"
-yy343:
-	++p;
+        yy343:
+            ++p;
 #line 411 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_TRIANGLE15;}
+            {
+                return S_FE_TRIANGLE15;
+            }
 #line 2010 "../../source/ProgramOptions.c++"
-yy345:
-	++p;
+        yy345:
+            ++p;
 #line 409 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_TRIANGLE10;}
+            {
+                return S_FE_TRIANGLE10;
+            }
 #line 2015 "../../source/ProgramOptions.c++"
-yy347:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy348;
-	default:	goto yy248;
-	}
-yy348:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy349;
-	default:	goto yy248;
-	}
-yy349:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'h':	goto yy350;
-	default:	goto yy248;
-	}
-yy350:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy351;
-	default:	goto yy248;
-	}
-yy351:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'd':	goto yy352;
-	default:	goto yy248;
-	}
-yy352:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy353;
-	default:	goto yy248;
-	}
-yy353:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'o':	goto yy354;
-	default:	goto yy248;
-	}
-yy354:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy355;
-	default:	goto yy248;
-	}
-yy355:
-	yych = (char)*++p;
-	switch (yych) {
-	case '1':	goto yy359;
-	case '2':	goto yy358;
-	case '3':	goto yy357;
-	case '4':	goto yy360;
-	case '5':	goto yy356;
-	default:	goto yy248;
-	}
-yy356:
-	yych = (char)*++p;
-	switch (yych) {
-	case '6':	goto yy368;
-	default:	goto yy248;
-	}
-yy357:
-	yych = (char)*++p;
-	switch (yych) {
-	case '5':	goto yy366;
-	default:	goto yy248;
-	}
-yy358:
-	yych = (char)*++p;
-	switch (yych) {
-	case '0':	goto yy364;
-	default:	goto yy248;
-	}
-yy359:
-	yych = (char)*++p;
-	switch (yych) {
-	case '0':	goto yy362;
-	default:	goto yy248;
-	}
-yy360:
-	++p;
+        yy347:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy348;
+            default:
+                goto yy248;
+            }
+        yy348:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy349;
+            default:
+                goto yy248;
+            }
+        yy349:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'h':
+                goto yy350;
+            default:
+                goto yy248;
+            }
+        yy350:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy351;
+            default:
+                goto yy248;
+            }
+        yy351:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'd':
+                goto yy352;
+            default:
+                goto yy248;
+            }
+        yy352:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy353;
+            default:
+                goto yy248;
+            }
+        yy353:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'o':
+                goto yy354;
+            default:
+                goto yy248;
+            }
+        yy354:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy355;
+            default:
+                goto yy248;
+            }
+        yy355:
+            yych = (char)*++p;
+            switch (yych) {
+            case '1':
+                goto yy359;
+            case '2':
+                goto yy358;
+            case '3':
+                goto yy357;
+            case '4':
+                goto yy360;
+            case '5':
+                goto yy356;
+            default:
+                goto yy248;
+            }
+        yy356:
+            yych = (char)*++p;
+            switch (yych) {
+            case '6':
+                goto yy368;
+            default:
+                goto yy248;
+            }
+        yy357:
+            yych = (char)*++p;
+            switch (yych) {
+            case '5':
+                goto yy366;
+            default:
+                goto yy248;
+            }
+        yy358:
+            yych = (char)*++p;
+            switch (yych) {
+            case '0':
+                goto yy364;
+            default:
+                goto yy248;
+            }
+        yy359:
+            yych = (char)*++p;
+            switch (yych) {
+            case '0':
+                goto yy362;
+            default:
+                goto yy248;
+            }
+        yy360:
+            ++p;
 #line 393 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_TETRAHEDRON4;}
+            {
+                return S_FE_TETRAHEDRON4;
+            }
 #line 2102 "../../source/ProgramOptions.c++"
-yy362:
-	++p;
+        yy362:
+            ++p;
 #line 400 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_TETRAHEDRON10;}
+            {
+                return S_FE_TETRAHEDRON10;
+            }
 #line 2107 "../../source/ProgramOptions.c++"
-yy364:
-	++p;
+        yy364:
+            ++p;
 #line 417 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_TETRAHEDRON20;}
+            {
+                return S_FE_TETRAHEDRON20;
+            }
 #line 2112 "../../source/ProgramOptions.c++"
-yy366:
-	++p;
+        yy366:
+            ++p;
 #line 418 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_TETRAHEDRON35;}
+            {
+                return S_FE_TETRAHEDRON35;
+            }
 #line 2117 "../../source/ProgramOptions.c++"
-yy368:
-	++p;
+        yy368:
+            ++p;
 #line 419 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_TETRAHEDRON56;}
+            {
+                return S_FE_TETRAHEDRON56;
+            }
 #line 2122 "../../source/ProgramOptions.c++"
-yy370:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy371;
-	default:	goto yy248;
-	}
-yy371:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy372;
-	default:	goto yy248;
-	}
-yy372:
-	yych = (char)*++p;
-	switch (yych) {
-	case '2':	goto yy373;
-	case '3':	goto yy375;
-	default:	goto yy248;
-	}
-yy373:
-	++p;
+        yy370:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy371;
+            default:
+                goto yy248;
+            }
+        yy371:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy372;
+            default:
+                goto yy248;
+            }
+        yy372:
+            yych = (char)*++p;
+            switch (yych) {
+            case '2':
+                goto yy373;
+            case '3':
+                goto yy375;
+            default:
+                goto yy248;
+            }
+        yy373:
+            ++p;
 #line 390 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_LINE2;}
+            {
+                return S_FE_LINE2;
+            }
 #line 2146 "../../source/ProgramOptions.c++"
-yy375:
-	++p;
+        yy375:
+            ++p;
 #line 397 "../../source/ProgramOptions.c++.re2c"
-	{return S_FE_LINE3;}
+            {
+                return S_FE_LINE3;
+            }
 #line 2151 "../../source/ProgramOptions.c++"
-yy377:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'm':	goto yy378;
-	default:	goto yy248;
-	}
-yy378:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'a':	goto yy379;
-	default:	goto yy248;
-	}
-yy379:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy380;
-	default:	goto yy248;
-	}
-yy380:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy381;
-	default:	goto yy248;
-	}
-yy381:
-	++p;
+        yy377:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'm':
+                goto yy378;
+            default:
+                goto yy248;
+            }
+        yy378:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'a':
+                goto yy379;
+            default:
+                goto yy248;
+            }
+        yy379:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy380;
+            default:
+                goto yy248;
+            }
+        yy380:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy381;
+            default:
+                goto yy248;
+            }
+        yy381:
+            ++p;
 #line 388 "../../source/ProgramOptions.c++.re2c"
-	{ return S_IPS_DOMAIN;	}
+            {
+                return S_IPS_DOMAIN;
+            }
 #line 2180 "../../source/ProgramOptions.c++"
-yy383:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy384;
-	default:	goto yy248;
-	}
-yy384:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'f':	goto yy385;
-	default:	goto yy248;
-	}
-yy385:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'f':	goto yy386;
-	default:	goto yy248;
-	}
-yy386:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy387;
-	default:	goto yy248;
-	}
-yy387:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy388;
-	default:	goto yy248;
-	}
-yy388:
-	yych = (char)*++p;
-	switch (yych) {
-	case 's':	goto yy389;
-	default:	goto yy248;
-	}
-yy389:
-	yych = (char)*++p;
-	switch (yych) {
-	case 's':	goto yy390;
-	default:	goto yy248;
-	}
-yy390:
-	++p;
+        yy383:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy384;
+            default:
+                goto yy248;
+            }
+        yy384:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'f':
+                goto yy385;
+            default:
+                goto yy248;
+            }
+        yy385:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'f':
+                goto yy386;
+            default:
+                goto yy248;
+            }
+        yy386:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy387;
+            default:
+                goto yy248;
+            }
+        yy387:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy388;
+            default:
+                goto yy248;
+            }
+        yy388:
+            yych = (char)*++p;
+            switch (yych) {
+            case 's':
+                goto yy389;
+            default:
+                goto yy248;
+            }
+        yy389:
+            yych = (char)*++p;
+            switch (yych) {
+            case 's':
+                goto yy390;
+            default:
+                goto yy248;
+            }
+        yy390:
+            ++p;
 #line 387 "../../source/ProgramOptions.c++.re2c"
-	{ return S_IPS_STIFFNESS;	}
+            {
+                return S_IPS_STIFFNESS;
+            }
 #line 2227 "../../source/ProgramOptions.c++"
-yy392:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'h':	goto yy393;
-	case 'i':	goto yy395;
-	case 'v':	goto yy394;
-	default:	goto yy248;
-	}
-yy393:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy406;
-	default:	goto yy248;
-	}
-yy394:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'e':	goto yy399;
-	default:	goto yy248;
-	}
-yy395:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'p':	goto yy396;
-	default:	goto yy248;
-	}
-yy396:
-	yych = (char)*++p;
-	switch (yych) {
-	case 's':	goto yy397;
-	default:	goto yy248;
-	}
-yy397:
-	++p;
+        yy392:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'h':
+                goto yy393;
+            case 'i':
+                goto yy395;
+            case 'v':
+                goto yy394;
+            default:
+                goto yy248;
+            }
+        yy393:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy406;
+            default:
+                goto yy248;
+            }
+        yy394:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'e':
+                goto yy399;
+            default:
+                goto yy248;
+            }
+        yy395:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'p':
+                goto yy396;
+            default:
+                goto yy248;
+            }
+        yy396:
+            yych = (char)*++p;
+            switch (yych) {
+            case 's':
+                goto yy397;
+            default:
+                goto yy248;
+            }
+        yy397:
+            ++p;
 #line 386 "../../source/ProgramOptions.c++.re2c"
-	{ return S_IPS;	}
+            {
+                return S_IPS;
+            }
 #line 2264 "../../source/ProgramOptions.c++"
-yy399:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'r':	goto yy400;
-	default:	goto yy248;
-	}
-yy400:
-	yych = (char)*++p;
-	switch (yych) {
-	case 's':	goto yy401;
-	default:	goto yy248;
-	}
-yy401:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'i':	goto yy402;
-	default:	goto yy248;
-	}
-yy402:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'o':	goto yy403;
-	default:	goto yy248;
-	}
-yy403:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'n':	goto yy404;
-	default:	goto yy248;
-	}
-yy404:
-	++p;
+        yy399:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'r':
+                goto yy400;
+            default:
+                goto yy248;
+            }
+        yy400:
+            yych = (char)*++p;
+            switch (yych) {
+            case 's':
+                goto yy401;
+            default:
+                goto yy248;
+            }
+        yy401:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'i':
+                goto yy402;
+            default:
+                goto yy248;
+            }
+        yy402:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'o':
+                goto yy403;
+            default:
+                goto yy248;
+            }
+        yy403:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'n':
+                goto yy404;
+            default:
+                goto yy248;
+            }
+        yy404:
+            ++p;
 #line 385 "../../source/ProgramOptions.c++.re2c"
-	{ return S_VERSION;	}
+            {
+                return S_VERSION;
+            }
 #line 2299 "../../source/ProgramOptions.c++"
-yy406:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'l':	goto yy407;
-	default:	goto yy248;
-	}
-yy407:
-	yych = (char)*++p;
-	switch (yych) {
-	case 'p':	goto yy408;
-	default:	goto yy248;
-	}
-yy408:
-	++p;
+        yy406:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'l':
+                goto yy407;
+            default:
+                goto yy248;
+            }
+        yy407:
+            yych = (char)*++p;
+            switch (yych) {
+            case 'p':
+                goto yy408;
+            default:
+                goto yy248;
+            }
+        yy408:
+            ++p;
 #line 384 "../../source/ProgramOptions.c++.re2c"
-	{ return S_HELP;	}
+            {
+                return S_HELP;
+            }
 #line 2316 "../../source/ProgramOptions.c++"
-}
+        }
 #line 426 "../../source/ProgramOptions.c++.re2c"
 
-		}
-		break;
+    } break;
 
-		default:
-			return S_UNKNOWN;
-		break;
-	}
+    default:
+        return S_UNKNOWN;
+        break;
+    }
 }
 
-
-void ProgramOptions::init_lexer_vars(char **argv)
+void ProgramOptions::init_lexer_vars(char** argv)
 {
-	symbol = S_UNKNOWN;
-	argn = 1;
-	p = token = q = &argv[argn][0];
+    symbol = S_UNKNOWN;
+    argn = 1;
+    p = token = q = &argv[argn][0];
 }
-

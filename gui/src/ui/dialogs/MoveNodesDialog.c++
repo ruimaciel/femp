@@ -1,11 +1,10 @@
 #include "MoveNodesDialog.h++"
 
-MoveNodesDialog::MoveNodesDialog(QWidget *parent)
+MoveNodesDialog::MoveNodesDialog(QWidget* parent)
     : QDialog(parent)
 {
     setupUi(this);
 }
-
 
 fem::Point3D
 MoveNodesDialog::getTranslation()
@@ -18,4 +17,3 @@ MoveNodesDialog::getTranslation()
 
     return translation;
 }
-

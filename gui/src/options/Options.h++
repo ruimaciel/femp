@@ -3,13 +3,12 @@
 
 #include <QDir>
 
-#include "ViewportColors.h++"
 #include "DisplayOptions.h++"
+#include "ViewportColors.h++"
 
-class Options
-{
+class Options {
 public:
-    static Options & getInstance()
+    static Options& getInstance()
     {
         static Options instance;
 
@@ -17,19 +16,18 @@ public:
     }
 
 public:
-    Options(Options const &) = delete;
-    void operator= (Options const &) = delete;
-
+    Options(Options const&) = delete;
+    void operator=(Options const&) = delete;
 
     /**
      * returns the viewport colors
      **/
-    ViewportColors &getViewportColors();
+    ViewportColors& getViewportColors();
 
     /**
      * returns the display options
      **/
-    DisplayOptions &getDisplayOptions();
+    DisplayOptions& getDisplayOptions();
 
     QDir getProjectOpenDirectory();
     void setProjectOpenDirectory(QDir dir);
@@ -37,13 +35,11 @@ public:
     QDir getDumpResultsDirectory();
     void setDumpResultsDirectory(QDir dir);
 
-
 private:
     Options() {}
 
     ViewportColors m_viewportColors;
     DisplayOptions m_displayOptions;
-
 };
 
 #endif

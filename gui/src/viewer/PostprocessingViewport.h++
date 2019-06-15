@@ -1,9 +1,8 @@
 #ifndef POSTPROCESSING_VIEWPORT_HPP
 #define POSTPROCESSING_VIEWPORT_HPP
 
-
-#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QWidget>
+#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include "../Project.h++"
 #include <libfemp/AnalysisResult.h++>
@@ -14,26 +13,24 @@
 #include "ViewportStates/VPStateDisplacements.h++"
 #include "ViewportStates/VPStateGradients.h++"
 
-
 /**
 QGLWidget subclass designed to represent any postprocessing being done to any given model's FEM solution.
 **/
 class PostprocessingViewport
-    : public BaseViewport
-{
+    : public BaseViewport {
     Q_OBJECT
 
 public:
-    PostprocessingViewport(fem::Project &project, fem::AnalysisResult &result, fem::ResultsRanges<double> &ranges, QWidget *parent = nullptr);
+    PostprocessingViewport(fem::Project& project, fem::AnalysisResult& result, fem::ResultsRanges<double>& ranges, QWidget* parent = nullptr);
     ~PostprocessingViewport();
 
     /**
     Sets this viewport to represent a given analysis result
     @param	result	an analysis result
     **/
-    void setAnalysisResult(fem::AnalysisResult &result);
+    void setAnalysisResult(fem::AnalysisResult& result);
 
-    void setResultsRanges(fem::ResultsRanges<double> &ranges);
+    void setResultsRanges(fem::ResultsRanges<double>& ranges);
 
     // set the viewport state
     void showDisplacements();
@@ -54,10 +51,9 @@ public:
     void showVonMises();
 
 protected:
-    fem::AnalysisResult *m_analysis_result;
-    VPStateDisplacements 	m_vp_state_displacements;
-    VPStateGradients	m_vp_state_gradients;
-
+    fem::AnalysisResult* m_analysis_result;
+    VPStateDisplacements m_vp_state_displacements;
+    VPStateGradients m_vp_state_gradients;
 };
 
 #endif

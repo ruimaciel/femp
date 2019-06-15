@@ -5,9 +5,9 @@
 #include <libfemp/Model.h++>
 #include <libfemp/Node.h++>
 
-
-AnalysisResultsWidget::AnalysisResultsWidget(fem::Project &project, QWidget *parent)
-    : QWidget(parent), m_project(project)
+AnalysisResultsWidget::AnalysisResultsWidget(fem::Project& project, QWidget* parent)
+    : QWidget(parent)
+    , m_project(project)
 {
     setupUi(this);
 
@@ -21,35 +21,30 @@ AnalysisResultsWidget::AnalysisResultsWidget(fem::Project &project, QWidget *par
     this->tableView->setModel(&m_proxy_model);
 
     // signals and slots
-    connect(this->pushButtonFilters, SIGNAL(clicked() ), this, SLOT( setFilterOptions() ));
-
+    connect(this->pushButtonFilters, SIGNAL(clicked()), this, SLOT(setFilterOptions()));
 }
 
-
-void
-AnalysisResultsWidget::setProjectResults(fem::AnalysisResult const &results)
+void AnalysisResultsWidget::setProjectResults(fem::AnalysisResult const& results)
 {
-    m_result  = &results;
+    m_result = &results;
 }
 
-
-void
-AnalysisResultsWidget::setFilterOptions()
+void AnalysisResultsWidget::setFilterOptions()
 {
     TableFilterDialog dialog(this);
 
     // set the dialog options
-#define MEMBER_HELPER(NN,XX) dialog.set##XX##Visible(!tableView->isColumnHidden(NN));
-    MEMBER_HELPER( 0, ElementReference);
-    MEMBER_HELPER( 1, ElementType);
-    MEMBER_HELPER( 2, NodeGlobalReference);
-    MEMBER_HELPER( 3, NodeLocalReference);
-    MEMBER_HELPER( 4, NodePositionX);
-    MEMBER_HELPER( 5, NodePositionY);
-    MEMBER_HELPER( 6, NodePositionZ);
-    MEMBER_HELPER( 7, NodeDisplacementsX);
-    MEMBER_HELPER( 8, NodeDisplacementsY);
-    MEMBER_HELPER( 9, NodeDisplacementsZ);
+#define MEMBER_HELPER(NN, XX) dialog.set##XX##Visible(!tableView->isColumnHidden(NN));
+    MEMBER_HELPER(0, ElementReference);
+    MEMBER_HELPER(1, ElementType);
+    MEMBER_HELPER(2, NodeGlobalReference);
+    MEMBER_HELPER(3, NodeLocalReference);
+    MEMBER_HELPER(4, NodePositionX);
+    MEMBER_HELPER(5, NodePositionY);
+    MEMBER_HELPER(6, NodePositionZ);
+    MEMBER_HELPER(7, NodeDisplacementsX);
+    MEMBER_HELPER(8, NodeDisplacementsY);
+    MEMBER_HELPER(9, NodeDisplacementsZ);
     MEMBER_HELPER(10, E11);
     MEMBER_HELPER(11, E22);
     MEMBER_HELPER(12, E33);
@@ -65,21 +60,20 @@ AnalysisResultsWidget::setFilterOptions()
     MEMBER_HELPER(22, VonMises);
 #undef MEMBER_HELPER
 
-    switch(dialog.exec())
-    {
+    switch (dialog.exec()) {
     case QDialog::Accepted:
         // set the new options
-#define MEMBER_HELPER(NN,XX) this->tableView->setColumnHidden(NN, !dialog.get##XX##Visible());
-        MEMBER_HELPER( 0, ElementReference);
-        MEMBER_HELPER( 1, ElementType);
-        MEMBER_HELPER( 2, NodeGlobalReference);
-        MEMBER_HELPER( 3, NodeLocalReference);
-        MEMBER_HELPER( 4, NodePositionX);
-        MEMBER_HELPER( 5, NodePositionY);
-        MEMBER_HELPER( 6, NodePositionZ);
-        MEMBER_HELPER( 7, NodeDisplacementsX);
-        MEMBER_HELPER( 8, NodeDisplacementsY);
-        MEMBER_HELPER( 9, NodeDisplacementsZ);
+#define MEMBER_HELPER(NN, XX) this->tableView->setColumnHidden(NN, !dialog.get##XX##Visible());
+        MEMBER_HELPER(0, ElementReference);
+        MEMBER_HELPER(1, ElementType);
+        MEMBER_HELPER(2, NodeGlobalReference);
+        MEMBER_HELPER(3, NodeLocalReference);
+        MEMBER_HELPER(4, NodePositionX);
+        MEMBER_HELPER(5, NodePositionY);
+        MEMBER_HELPER(6, NodePositionZ);
+        MEMBER_HELPER(7, NodeDisplacementsX);
+        MEMBER_HELPER(8, NodeDisplacementsY);
+        MEMBER_HELPER(9, NodeDisplacementsZ);
         MEMBER_HELPER(10, E11);
         MEMBER_HELPER(11, E22);
         MEMBER_HELPER(12, E33);
@@ -99,6 +93,4 @@ AnalysisResultsWidget::setFilterOptions()
     default:
         break;
     }
-
 }
-

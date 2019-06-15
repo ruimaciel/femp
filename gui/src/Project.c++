@@ -1,38 +1,27 @@
 #include "Project.h++"
 
+namespace fem {
 
-namespace fem
+void Project::clear()
 {
-
-
-void
-Project::clear()
-{
-	this->m_model.clear();
-	this->result.clear();
+    this->m_model.clear();
+    this->result.clear();
 }
 
-
-void
-Project::pushAnalysisResult(fem::AnalysisResult &new_result)
+void Project::pushAnalysisResult(fem::AnalysisResult& new_result)
 {
-	this->result.push_back(new_result);
+    this->result.push_back(new_result);
 }
 
-
-Model &
+Model&
 Project::getModel()
 {
-	return this->m_model;
+    return this->m_model;
 }
 
-
-void
-Project::accept(ProjectVisitor &visitor)
+void Project::accept(ProjectVisitor& visitor)
 {
-	visitor.visit(m_model,result);
+    visitor.visit(m_model, result);
 }
 
-
-}	// fem
-
+} // fem

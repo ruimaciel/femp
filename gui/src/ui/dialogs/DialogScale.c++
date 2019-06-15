@@ -1,11 +1,10 @@
 #include "DialogScale.h++"
 
-#include <QSpinBox>
 #include <QSlider>
+#include <QSpinBox>
 #include <cmath>
 
-
-DialogScale::DialogScale(float scale, QWidget *parent)
+DialogScale::DialogScale(float scale, QWidget* parent)
     : QDialog(parent)
 {
     setupUi(this);
@@ -15,17 +14,14 @@ DialogScale::DialogScale(float scale, QWidget *parent)
     this->updateSlider(scale);
 
     // connect
-    connect(doubleSpinBox,	SIGNAL(valueChanged(double)), 	this, SLOT(updateSlider(double)));
-    connect(horizontalSlider,SIGNAL(sliderMoved(int)), 	this, SLOT(updateSpinBox(int)));
-
+    connect(doubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateSlider(double)));
+    connect(horizontalSlider, SIGNAL(sliderMoved(int)), this, SLOT(updateSpinBox(int)));
 }
-
 
 double DialogScale::getScale()
 {
     return this->doubleSpinBox->value();
 }
-
 
 void DialogScale::updateSlider(double value)
 {
@@ -36,6 +32,5 @@ void DialogScale::updateSlider(double value)
 void DialogScale::updateSpinBox(int value)
 {
     using namespace std;
-    this->doubleSpinBox->setValue(pow(10,value));
+    this->doubleSpinBox->setValue(pow(10, value));
 }
-

@@ -1,13 +1,10 @@
 #include <algorithm>
 
-
 #include <vector>
 
 #include <libfemp/Model.h++>
 
-
-namespace fem
-{
+namespace fem {
 
 Model::Model()
 {
@@ -21,12 +18,9 @@ Model::Model()
     material.nu = 0.3;
 
     this->m_material_list.push_back(material);
-
 }
 
-
-void
-Model::clear()
+void Model::clear()
 {
     m_node_list.clear();
     element_list.clear();
@@ -38,9 +32,7 @@ Model::clear()
     m_element_groups.clear();
 }
 
-
-void
-Model::setNode(size_t ref, fem::Point3D p)
+void Model::setNode(size_t ref, fem::Point3D p)
 {
     Node n;
     n.x(p.x());
@@ -49,18 +41,16 @@ Model::setNode(size_t ref, fem::Point3D p)
     this->m_node_list[ref] = n;
 }
 
-Node &Model::getNode(size_t ref)
+Node& Model::getNode(size_t ref)
 {
     return this->m_node_list[ref];
 }
 
-
-std::map<node_ref_t,Node>
+std::map<node_ref_t, Node>
 Model::getNodeMap() const
 {
     return m_node_list;
 }
-
 
 std::vector<Element>::size_type Model::numberOfElements() const
 {
@@ -78,12 +68,10 @@ Model::getElementByIndex(size_t index) const
     return element_list[index];
 }
 
-void
-Model::pushMaterial(fem::Material &material)
+void Model::pushMaterial(fem::Material& material)
 {
     m_material_list.push_back(material);
 }
-
 
 std::vector<Material>
 Model::getMaterialList() const
@@ -91,57 +79,53 @@ Model::getMaterialList() const
     return m_material_list;
 }
 
-
 Material
 Model::getMaterialByIndex(size_t index) const
 {
     return m_material_list[index];
 }
 
-
-void
-Model::pushElement(fem::Element &e)
+void Model::pushElement(fem::Element& e)
 {
     // check if element is valid
-    switch(e.type)
-    {
+    switch (e.type) {
     case Element::FE_TETRAHEDRON4:
-        if(e.getNodeAmount() != 4)
+        if (e.getNodeAmount() != 4)
             throw FemException("wrong node number");
         break;
 
     case Element::FE_TETRAHEDRON10:
-        if(e.getNodeAmount() != 10)
+        if (e.getNodeAmount() != 10)
             throw FemException("wrong node number");
         break;
 
     case Element::FE_HEXAHEDRON8:
-        if(e.getNodeAmount() != 8)
+        if (e.getNodeAmount() != 8)
             throw FemException("wrong node number");
         break;
 
     case Element::FE_HEXAHEDRON20:
-        if(e.getNodeAmount() != 20)
+        if (e.getNodeAmount() != 20)
             throw FemException("wrong node number");
         break;
 
     case Element::FE_HEXAHEDRON27:
-        if(e.getNodeAmount() != 27)
+        if (e.getNodeAmount() != 27)
             throw FemException("wrong node number");
         break;
 
     case Element::FE_PRISM6:
-        if(e.getNodeAmount() != 6)
+        if (e.getNodeAmount() != 6)
             throw FemException("wrong node number");
         break;
 
     case Element::FE_PRISM15:
-        if(e.getNodeAmount() != 15)
+        if (e.getNodeAmount() != 15)
             throw FemException("wrong node number");
         break;
 
     case Element::FE_PRISM18:
-        if(e.getNodeAmount() != 18)
+        if (e.getNodeAmount() != 18)
             throw FemException("wrong node number");
         break;
 
@@ -157,8 +141,7 @@ Model::pushElement(fem::Element &e)
     std::vector<size_t> nodes;
 
     //TODO insert element's surfaces in the surface list
-    switch(e.type)
-    {
+    switch (e.type) {
     case Element::FE_TETRAHEDRON4:
         nodes.resize(3);
 
@@ -234,13 +217,11 @@ Model::pushElement(fem::Element &e)
         nodes[2] = e.getNode(7);
         nodes[3] = e.getNode(3);
 
-
         // face 3:
         nodes[0] = e.getNode(4);
         nodes[1] = e.getNode(5);
         nodes[2] = e.getNode(6);
         nodes[3] = e.getNode(7);
-
 
         // face 4:
         nodes[0] = e.getNode(5);
@@ -248,13 +229,11 @@ Model::pushElement(fem::Element &e)
         nodes[2] = e.getNode(2);
         nodes[3] = e.getNode(6);
 
-
         // face 5:
         nodes[0] = e.getNode(0);
         nodes[1] = e.getNode(1);
         nodes[2] = e.getNode(5);
         nodes[3] = e.getNode(4);
-
 
         // face 6:
         nodes[0] = e.getNode(2);
@@ -286,7 +265,6 @@ Model::pushElement(fem::Element &e)
         nodes[6] = e.getNode(15);
         nodes[7] = e.getNode(9);
 
-
         // face 3:
         nodes[0] = e.getNode(4);
         nodes[1] = e.getNode(5);
@@ -296,7 +274,6 @@ Model::pushElement(fem::Element &e)
         nodes[5] = e.getNode(18);
         nodes[6] = e.getNode(19);
         nodes[7] = e.getNode(17);
-
 
         // face 4:
         nodes[0] = e.getNode(5);
@@ -308,7 +285,6 @@ Model::pushElement(fem::Element &e)
         nodes[6] = e.getNode(14);
         nodes[7] = e.getNode(18);
 
-
         // face 5:
         nodes[0] = e.getNode(0);
         nodes[1] = e.getNode(1);
@@ -318,7 +294,6 @@ Model::pushElement(fem::Element &e)
         nodes[5] = e.getNode(12);
         nodes[6] = e.getNode(16);
         nodes[7] = e.getNode(10);
-
 
         // face 6:
         nodes[0] = e.getNode(2);
@@ -356,7 +331,6 @@ Model::pushElement(fem::Element &e)
         nodes[7] = e.getNode(9);
         nodes[8] = e.getNode(22);
 
-
         // face 3:
         nodes[0] = e.getNode(4);
         nodes[1] = e.getNode(5);
@@ -367,7 +341,6 @@ Model::pushElement(fem::Element &e)
         nodes[6] = e.getNode(19);
         nodes[7] = e.getNode(17);
         nodes[8] = e.getNode(25);
-
 
         // face 4:
         nodes[0] = e.getNode(5);
@@ -380,7 +353,6 @@ Model::pushElement(fem::Element &e)
         nodes[7] = e.getNode(18);
         nodes[8] = e.getNode(23);
 
-
         // face 5:
         nodes[0] = e.getNode(0);
         nodes[1] = e.getNode(1);
@@ -391,7 +363,6 @@ Model::pushElement(fem::Element &e)
         nodes[6] = e.getNode(16);
         nodes[7] = e.getNode(10);
         nodes[8] = e.getNode(21);
-
 
         // face 6:
         nodes[0] = e.getNode(2);
@@ -553,12 +524,10 @@ Model::pushElement(fem::Element &e)
     }
 }
 
-
-void
-Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions nr)
+void Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions nr)
 {
     // check if node is set
-    if(m_node_list.find(pos) == m_node_list.end())
+    if (m_node_list.find(pos) == m_node_list.end())
         throw FemException("invalid node reference");
 
     //TODO perform aditional error checking
@@ -567,15 +536,12 @@ Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions nr)
     node_restrictions_list[pos] = nr;
 }
 
-
-void
-Model::popNodeRestrictions(node_ref_t const &node)
+void Model::popNodeRestrictions(node_ref_t const& node)
 {
     node_restrictions_list.erase(node);
 }
 
-
-std::map<node_restriction_ref_t,NodeRestrictions>
+std::map<node_restriction_ref_t, NodeRestrictions>
 Model::getNodeRestrictions() const
 {
     return node_restrictions_list;
@@ -586,15 +552,12 @@ NodeRestrictions Model::getNodeRestrictionsByIndex(size_t index) const
     return node_restrictions_list.at(index);
 }
 
-
-void
-Model::pushLoadPattern(fem::LoadPattern &lp)
+void Model::pushLoadPattern(fem::LoadPattern& lp)
 {
     //TODO perform error checks
 
     load_pattern_list.push_back(lp);
 }
-
 
 std::vector<LoadPattern>
 Model::getLoadPatternList() const
@@ -602,16 +565,13 @@ Model::getLoadPatternList() const
     return load_pattern_list;
 }
 
-
 std::vector<NodeGroup>
 Model::getNodeGroups() const
 {
     return m_node_groups;
 }
 
-
-void
-Model::pushNodeGroup(fem::NodeGroup &new_node_group)
+void Model::pushNodeGroup(fem::NodeGroup& new_node_group)
 {
     this->m_node_groups.push_back(new_node_group);
 }
@@ -622,14 +582,9 @@ Model::getElementGroups() const
     return this->m_element_groups;
 }
 
-
-void
-Model::pushElementGroup(fem::ElementGroup &new_element_group)
+void Model::pushElementGroup(fem::ElementGroup& new_element_group)
 {
     this->m_element_groups.push_back(new_element_group);
 }
 
-
-
-
-}	// namespace fem
+} // namespace fem

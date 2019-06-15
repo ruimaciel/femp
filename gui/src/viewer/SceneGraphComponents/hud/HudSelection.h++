@@ -1,7 +1,7 @@
 #ifndef HUD_SELECTION_HPP
 #define HUD_SELECTION_HPP
 
-#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
+#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
 #include "HudObject.h++"
 
@@ -10,28 +10,25 @@
 #include "../../ViewportData.h++"
 #include <options/Options.h++>
 
-
-namespace hud
-{
+namespace hud {
 
 /**
 Renders a rectangle on the window, representing the selection region
 **/
 class Selection
-    : public HudObject
-{
+    : public HudObject {
 protected:
-    bool		m_on;
-    fem::Point3D	m_start;
-    fem::Point3D	m_end;
+    bool m_on;
+    fem::Point3D m_start;
+    fem::Point3D m_end;
 
 public:
     Selection();
 
-    void paintGL(ViewportData &data, ViewportColors &colors);
+    void paintGL(ViewportData& data, ViewportColors& colors);
 
-    void setStart(fem::Point3D const &p);
-    void setEnd(fem::Point3D const &p);
+    void setStart(fem::Point3D const& p);
+    void setEnd(fem::Point3D const& p);
     void off();
 };
 

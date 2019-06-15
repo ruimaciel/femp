@@ -2,5 +2,4 @@
 
 Operation::OperationsVisitor::~OperationsVisitor()
 {
-
 }

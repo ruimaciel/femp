@@ -1,115 +1,98 @@
 #ifndef LALIB_MATRIX_STORAGE_POLICY_DIAGONAL_HPP
 #define LALIB_MATRIX_STORAGE_POLICY_DIAGONAL_HPP
 
-
 #include <assert.h>
 #include <vector>
 
-
-namespace lalib
-{
+namespace lalib {
 
 /**
 Diagonal: a storage policy class for the Matrix host class.
 This class implements the interface for the diagonal matrix format
 **/
-template<typename scalar>
-class Diagonal
-{
-	public:
-		struct Data
-		{
-			size_t	t_rows;		// number of rows
-			size_t	t_columns;	// number of columns
+template <typename scalar>
+class Diagonal {
+public:
+    struct Data {
+        size_t t_rows; // number of rows
+        size_t t_columns; // number of columns
 
-			std::vector<scalar> data;
-		} data;
+        std::vector<scalar> data;
+    } data;
 
-	public:
-		Diagonal(const size_t rows = 0, const size_t columns = 0);
-		~Diagonal()	{};
+public:
+    Diagonal(const size_t rows = 0, const size_t columns = 0);
+    ~Diagonal() {};
 
-		/**
+    /**
 		Sets all values to zero
 		**/
-		void clear();
+    void clear();
 
-		size_t rows()		{ return data.t_rows; };
-		size_t columns()	{ return data.t_columns; };
+    size_t rows() { return data.t_rows; };
+    size_t columns() { return data.t_columns; };
 
-		/*
+    /*
 		Returns the value in [row,column] 
 		*/
-		scalar value(const size_t row, const size_t column);
+    scalar value(const size_t row, const size_t column);
 
-		scalar & operator() (const size_t row, const size_t column);
+    scalar& operator()(const size_t row, const size_t column);
 
-
-		void resize(const size_t row, const size_t column);
+    void resize(const size_t row, const size_t column);
 };
 
-
-
-template<typename scalar>
+template <typename scalar>
 Diagonal<scalar>::Diagonal(const size_t rows, const size_t columns)
 {
-	resize(rows, columns);
+    resize(rows, columns);
 }
 
-
-
-template<typename scalar>
+template <typename scalar>
 void Diagonal<scalar>::clear()
 {
-	using namespace std;
-	for(typename vector<scalar>::iterator i = data.data.begin(); i != data.data.end(); i++)
-	{
-		*i = 0;
-	}
+    using namespace std;
+    for (typename vector<scalar>::iterator i = data.data.begin(); i != data.data.end(); i++) {
+        *i = 0;
+    }
 }
 
-
-template<typename scalar>
+template <typename scalar>
 scalar Diagonal<scalar>::value(const size_t row, const size_t column)
 {
-	using namespace std;
+    using namespace std;
 
-	assert(row < data.t_rows);
-	assert(column < data.t_columns);
+    assert(row < data.t_rows);
+    assert(column < data.t_columns);
 
+    if (row != column)
+        return 0;
 
-	if(row != column)
-		return 0;
-
-	return data.data[row];
+    return data.data[row];
 }
 
-
-template<typename scalar>
-scalar & Diagonal<scalar>::operator() (const size_t row, const size_t column)
+template <typename scalar>
+scalar& Diagonal<scalar>::operator()(const size_t row, const size_t column)
 {
-	assert(row < data.t_rows);
-	assert(column < data.t_columns);
+    assert(row < data.t_rows);
+    assert(column < data.t_columns);
 
-	assert(row == column);
+    assert(row == column);
 
-	return this->data.data[row];
+    return this->data.data[row];
 }
 
-
-template<typename scalar>
+template <typename scalar>
 void Diagonal<scalar>::resize(const size_t rows, const size_t columns)
 {
-	using namespace std;
+    using namespace std;
 
+    rows < columns ? data.data.resize(rows) : data.data.resize(columns);
 
-	rows < columns ? data.data.resize(rows): data.data.resize(columns);
-
-	data.t_rows = rows;
-	data.t_columns = columns;
+    data.t_rows = rows;
+    data.t_columns = columns;
 }
 
-
-}	// namespace lalib
+} // namespace lalib
 
 #endif

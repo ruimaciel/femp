@@ -3,35 +3,30 @@
 
 #include <libfemp/Point3D.h++>
 
-namespace fem
-{
-
+namespace fem {
 
 /**
  * Represents a load prescribed on a finite element node
  **/
-class NodalLoad
-{
+class NodalLoad {
 public:
-	Point3D force;	// the force being applied in this node
+    Point3D force; // the force being applied in this node
 
 public:
-	NodalLoad ();
-	NodalLoad (const NodalLoad &);
-	~NodalLoad ();
+    NodalLoad();
+    NodalLoad(const NodalLoad&);
+    ~NodalLoad();
 
-	double x()	const;
-	double y()	const;
-	double z()	const;
+    double x() const;
+    double y() const;
+    double z() const;
 
-	/**
+    /**
 	 * returns the force vector
 	 **/
-	const Point3D & getForce() const;
-
+    const Point3D& getForce() const;
 };
 
-
-}	// namespace fem
+} // namespace fem
 
 #endif

@@ -1,18 +1,15 @@
 #ifndef FEMP_ELEMENT_GROUP_HPP
 #define FEMP_ELEMENT_GROUP_HPP
 
-#include <vector>
 #include <string>
+#include <vector>
 
-
-namespace fem
-{
+namespace fem {
 
 /**
 Class intended to represent a group of elements
 **/
-class ElementGroup
-{
+class ElementGroup {
 public:
     /**
     adds a new element to the list
@@ -20,7 +17,7 @@ public:
     void pushElement(size_t);
 
     // iterators
-    using const_iterator =  std::vector<size_t>::const_iterator;
+    using const_iterator = std::vector<size_t>::const_iterator;
 
     std::vector<size_t>::const_iterator begin();
     std::vector<size_t>::const_iterator end();
@@ -29,10 +26,10 @@ public:
     void setLabel(std::string m_label);
 
 protected:
-    std::vector<size_t>	m_element_reference_list;
-    std::string	m_label;
+    std::vector<size_t> m_element_reference_list;
+    std::string m_label;
 };
 
-}	// namespace fem
+} // namespace fem
 
 #endif

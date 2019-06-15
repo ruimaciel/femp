@@ -1,23 +1,18 @@
 #include <libfemp/NodalDisplacement.h++>
 
-namespace fem
-{
+namespace fem {
 
-
-NodalDisplacement::NodalDisplacement ()
+NodalDisplacement::NodalDisplacement()
 {
 }
 
-
-NodalDisplacement::NodalDisplacement (const NodalDisplacement &copied)
+NodalDisplacement::NodalDisplacement(const NodalDisplacement& copied)
 {
-	this->displacement = copied.displacement;
+    this->displacement = copied.displacement;
 }
 
-
-NodalDisplacement::~NodalDisplacement ()
+NodalDisplacement::~NodalDisplacement()
 {
 }
 
-
-}	// namespace fem
+} // namespace fem

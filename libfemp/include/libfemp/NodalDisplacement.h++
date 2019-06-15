@@ -3,23 +3,19 @@
 
 #include <libfemp/Point3D.h++>
 
-namespace fem
-{
-
+namespace fem {
 
 class NodalDisplacement {
 public:
-	//TODO change this
-	Point3D displacement;
+    //TODO change this
+    Point3D displacement;
 
 public:
-	NodalDisplacement ();
-	NodalDisplacement (const NodalDisplacement &copied);
-	~NodalDisplacement ();
-
+    NodalDisplacement();
+    NodalDisplacement(const NodalDisplacement& copied);
+    ~NodalDisplacement();
 };
 
-
-}	// namespace fem
+} // namespace fem
 
 #endif

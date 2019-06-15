@@ -1,13 +1,13 @@
 #include "VPStateTensorFields.h++"
 
-#include <map>
-#include <list>
 #include <algorithm>
+#include <list>
+#include <map>
 
 #include <assert.h>
 
 #include <GL/gl.h>
-#include <GL/glu.h>	// for gluQuadric()
+#include <GL/glu.h> // for gluQuadric()
 
 #include <libfemp/Model.h++>
 #include <libfemp/Surface.h++>
@@ -20,8 +20,6 @@
 #include "../SceneGraphComponents/SGCNode.h++"
 #include "../SceneGraphComponents/SGCNodeRestrictions.h++"
 
-
-
 VPStateTensorFields::VPStateTensorFields()
     : ViewportState()
 {
@@ -29,14 +27,11 @@ VPStateTensorFields::VPStateTensorFields()
     this->m_factory.setDisplacementsPolicy(&m_displacements);
 }
 
-
 VPStateTensorFields::~VPStateTensorFields()
 {
 }
 
-
-void
-VPStateTensorFields::initialize(BaseViewport *mv)
+void VPStateTensorFields::initialize(BaseViewport* mv)
 {
     // build the displaced_nodes from the analysis
     assert(mv != nullptr);
@@ -45,37 +40,32 @@ VPStateTensorFields::initialize(BaseViewport *mv)
     this->m_displacements.setModel(mv->project->getModel());
 }
 
-
-void
-VPStateTensorFields::populateScenegraph(BaseViewport *viewport)
+void VPStateTensorFields::populateScenegraph(BaseViewport* viewport)
 {
     assert(viewport != nullptr);
 
     scenegraph.clear();
 
-    SceneGraphComponent * component;
+    SceneGraphComponent* component;
 
     // add the nodes to the scenegraph
-    fem::Model &femp_model = viewport->project->getModel();
-    for(auto node: femp_model.getNodeMap())
-    {
-        component =  new SGC::Node(node.first, node.second, &this->m_displacements);
-        if(component)
+    fem::Model& femp_model = viewport->project->getModel();
+    for (auto node : femp_model.getNodeMap()) {
+        component = new SGC::Node(node.first, node.second, &this->m_displacements);
+        if (component)
             this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
     }
 
-    for(auto node_restrictions_pair: femp_model.getNodeRestrictions())
-    {
+    for (auto node_restrictions_pair : femp_model.getNodeRestrictions()) {
         component = new SGC::NodeRestrictions(node_restrictions_pair.first, node_restrictions_pair.first, node_restrictions_pair.second, &this->m_displacements);
-        if(component)
+        if (component)
             this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, component);
     }
 
     // add the elements to the scenegraph
-    for( std::vector<fem::Element>::size_type n = 0; n < femp_model.element_list.size(); n++)
-    {
+    for (std::vector<fem::Element>::size_type n = 0; n < femp_model.element_list.size(); n++) {
         component = this->m_factory(n, femp_model.element_list[n]);
-        if(component)
+        if (component)
             this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
     }
 
@@ -83,37 +73,25 @@ VPStateTensorFields::populateScenegraph(BaseViewport *viewport)
     this->scenegraph.generateSceneGraph();
 }
 
-
-void
-VPStateTensorFields::setAnalysisResult(fem::AnalysisResult &new_result)
+void VPStateTensorFields::setAnalysisResult(fem::AnalysisResult& new_result)
 {
     this->m_stress_field_representation.setAnalysisResult(new_result);
 }
 
-
-void
-VPStateTensorFields::setResultsRanges(fem::ResultsRanges<double> &)
+void VPStateTensorFields::setResultsRanges(fem::ResultsRanges<double>&)
 {
 }
 
-
-void
-VPStateTensorFields::keyPressEvent ( BaseViewport * , QKeyEvent * )
+void VPStateTensorFields::keyPressEvent(BaseViewport*, QKeyEvent*)
 {
 }
 
-
-void
-VPStateTensorFields::showNegativePrincipalStressesVisibility(bool state)
+void VPStateTensorFields::showNegativePrincipalStressesVisibility(bool state)
 {
     m_stress_field_representation.showNegativePrincipalStressesVisibility(state);
 }
 
-
-void
-VPStateTensorFields::showPositivePrincipalStressesVisibility(bool state)
+void VPStateTensorFields::showPositivePrincipalStressesVisibility(bool state)
 {
     m_stress_field_representation.showPositivePrincipalStressesVisibility(state);
 }
-
-

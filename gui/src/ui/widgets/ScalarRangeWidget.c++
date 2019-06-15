@@ -3,26 +3,22 @@
 #include <QDoubleValidator>
 #include <QString>
 
-
-ScalarRangeWidget::ScalarRangeWidget(const QString &label, QWidget *parent)
-    :QWidget(parent)
+ScalarRangeWidget::ScalarRangeWidget(const QString& label, QWidget* parent)
+    : QWidget(parent)
 {
     ui.setupUi(this);
-    QDoubleValidator *validator;
+    QDoubleValidator* validator;
     validator = new QDoubleValidator(0.0, 9e9, 5, this);
     ui.lineEditMaxValue->setValidator(validator);
     validator = new QDoubleValidator(-9e9, 0.0, 5, this);
     ui.lineEditMinValue->setValidator(validator);
-
 
     connectSignalsToSlots();
 
     this->setLabel(label);
 }
 
-
-bool
-ScalarRangeWidget::getMaximum(double &maximum) const
+bool ScalarRangeWidget::getMaximum(double& maximum) const
 {
     QString temp;
     bool result;
@@ -33,9 +29,7 @@ ScalarRangeWidget::getMaximum(double &maximum) const
     return result;
 }
 
-
-bool
-ScalarRangeWidget::getMinimum(double &minimum) const
+bool ScalarRangeWidget::getMinimum(double& minimum) const
 {
     QString temp;
     bool result;
@@ -46,50 +40,36 @@ ScalarRangeWidget::getMinimum(double &minimum) const
     return result;
 }
 
-
-void
-ScalarRangeWidget::connectSignalsToSlots()
+void ScalarRangeWidget::connectSignalsToSlots()
 {
-    connect(ui.lineEditMaxValue,	SIGNAL(returnPressed()),	this,	SLOT(change()));
-    connect(ui.lineEditMinValue,	SIGNAL(returnPressed()),	this,	SLOT(change()));
+    connect(ui.lineEditMaxValue, SIGNAL(returnPressed()), this, SLOT(change()));
+    connect(ui.lineEditMinValue, SIGNAL(returnPressed()), this, SLOT(change()));
 }
 
-
-void
-ScalarRangeWidget::setLabel(const QString label)
+void ScalarRangeWidget::setLabel(const QString label)
 {
     this->ui.labelValue->setText(label);
 }
 
-
-void
-ScalarRangeWidget::setMaximum(const double new_maximum)
+void ScalarRangeWidget::setMaximum(const double new_maximum)
 {
-    if(new_maximum > 0)
-    {
+    if (new_maximum > 0) {
         ui.lineEditMaxValue->setText(QString::number(new_maximum));
     }
 }
 
-
-void
-ScalarRangeWidget::setMinimum(const double new_minimum)
+void ScalarRangeWidget::setMinimum(const double new_minimum)
 {
-    if(new_minimum < 0)
-    {
+    if (new_minimum < 0) {
         ui.lineEditMinValue->setText(QString::number(new_minimum));
     }
 }
 
-
-void
-ScalarRangeWidget::change()
+void ScalarRangeWidget::change()
 {
     double max, min;
     getMaximum(max);
     getMinimum(min);
 
-    emit valuesChanged(max,min);
+    emit valuesChanged(max, min);
 }
-
-

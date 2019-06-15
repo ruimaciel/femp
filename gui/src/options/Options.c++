@@ -2,15 +2,13 @@
 
 #include <QSettings>
 
-
-ViewportColors &
+ViewportColors&
 Options::getViewportColors()
 {
     return m_viewportColors;
 }
 
-
-DisplayOptions &
+DisplayOptions&
 Options::getDisplayOptions()
 {
     return m_displayOptions;
@@ -22,14 +20,12 @@ QDir Options::getProjectOpenDirectory()
 
     QString key = "project.open.default_directory";
 
-    if(settings.contains(key)) {
+    if (settings.contains(key)) {
         QVariant variant = settings.value(key);
-        if(variant.isValid())
-        {
+        if (variant.isValid()) {
             QString dirPath = variant.toString();
             QDir dir(dirPath);
-            if( dir.exists() )
-            {
+            if (dir.exists()) {
                 return dir;
             }
         }
@@ -44,7 +40,7 @@ void Options::setProjectOpenDirectory(QDir dir)
 
     QString key = "project.open.default_directory";
 
-    if(dir.exists()) {
+    if (dir.exists()) {
         settings.setValue(key, dir.absolutePath());
     }
 }
@@ -57,22 +53,19 @@ QDir Options::getDumpResultsDirectory()
 
     QDir default_path = QDir::home();
 
-    if(settings.contains(key)) {
+    if (settings.contains(key)) {
         QVariant variant = settings.value(key);
-        if(variant.isValid() && variant.canConvert<QString>())
-        {
+        if (variant.isValid() && variant.canConvert<QString>()) {
             QString path = variant.toString();
-            if( QFile::exists(path) ) {
+            if (QFile::exists(path)) {
                 default_path = QDir(path);
-            }
-            else {
+            } else {
                 settings.setValue(key, QVariant(default_path.absolutePath()));
             }
         }
     }
 
     return default_path;
-
 }
 
 void Options::setDumpResultsDirectory(QDir dir)
@@ -81,7 +74,7 @@ void Options::setDumpResultsDirectory(QDir dir)
 
     const QString key = "project.results.dump.default_directory";
 
-    if(dir.exists()) {
+    if (dir.exists()) {
         settings.setValue(key, dir.absolutePath());
     }
 }

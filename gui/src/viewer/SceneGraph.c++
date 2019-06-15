@@ -5,101 +5,76 @@
 #include "ModelViewport.h++"
 #include "SceneGraphComponents/SceneGraphComponent.h++"
 
-
 SceneGraph::SceneGraph()
 {
 }
 
-
 SceneGraph::~SceneGraph()
 {
-  this->clear();
+    this->clear();
 }
 
-
-void
-SceneGraph::clear()
+void SceneGraph::clear()
 {
-  using namespace std;
-  //TODO finish this
+    using namespace std;
+    //TODO finish this
 
-  // frees the primitives included in the list
-  for(std::list<SceneGraphComponent *>::iterator j = primitive_components.begin(); j != primitive_components.end(); j++)
-  {
-    delete(*j);
-  }
-  primitive_components.clear();
-
-  this->rendering_groups.clear();
-}
-
-
-void
-SceneGraph::paint(ViewportData &viewport_data, ViewportColors &colors)
-{
-  using namespace std;
-
-  for(map<enum Groups, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++)
-  {
-    if(i->second.isVisible())
-    {
-      i->second.paintGL(viewport_data, colors);
+    // frees the primitives included in the list
+    for (std::list<SceneGraphComponent*>::iterator j = primitive_components.begin(); j != primitive_components.end(); j++) {
+        delete (*j);
     }
-  }
+    primitive_components.clear();
 
-  // render HUD objects
-  m_selection.paintGL(viewport_data, colors);
+    this->rendering_groups.clear();
 }
 
-
-void
-SceneGraph::addPrimitiveComponent(enum Groups group, SceneGraphComponent *new_component)
+void SceneGraph::paint(ViewportData& viewport_data, ViewportColors& colors)
 {
-  assert(new_component != nullptr);
+    using namespace std;
 
-  this->primitive_components.push_back(new_component);
-  this->rendering_groups[group].primitive_components.push_back(new_component);
+    for (map<enum Groups, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++) {
+        if (i->second.isVisible()) {
+            i->second.paintGL(viewport_data, colors);
+        }
+    }
+
+    // render HUD objects
+    m_selection.paintGL(viewport_data, colors);
 }
 
-
-void
-SceneGraph::generateSceneGraph()
+void SceneGraph::addPrimitiveComponent(enum Groups group, SceneGraphComponent* new_component)
 {
-  for(std::map<enum Groups, RenderGroup>::iterator i = this->rendering_groups.begin(); i!= this->rendering_groups.end(); i++)
-  {
-    i->second.generateSceneGraph();
-  }
+    assert(new_component != nullptr);
+
+    this->primitive_components.push_back(new_component);
+    this->rendering_groups[group].primitive_components.push_back(new_component);
 }
 
-
-void
-SceneGraph::runOperation(Operation::OperationsVisitor &visitor)
+void SceneGraph::generateSceneGraph()
 {
-  for(std::list<SceneGraphComponent *>::iterator i = this->primitive_components.begin(); i != this->primitive_components.end(); i++)
-  {
-    (*i)->accept(visitor);
-  }
+    for (std::map<enum Groups, RenderGroup>::iterator i = this->rendering_groups.begin(); i != this->rendering_groups.end(); i++) {
+        i->second.generateSceneGraph();
+    }
 }
 
-
-void
-SceneGraph::setSelectionStart(const fem::Point3D & p)
+void SceneGraph::runOperation(Operation::OperationsVisitor& visitor)
 {
-  m_selection.setStart(p);
+    for (std::list<SceneGraphComponent*>::iterator i = this->primitive_components.begin(); i != this->primitive_components.end(); i++) {
+        (*i)->accept(visitor);
+    }
 }
 
-
-void
-SceneGraph::setSelectionEnd(const fem::Point3D & p)
+void SceneGraph::setSelectionStart(const fem::Point3D& p)
 {
-  m_selection.setEnd(p);
+    m_selection.setStart(p);
 }
 
-
-void
-SceneGraph::setSelectionOff()
+void SceneGraph::setSelectionEnd(const fem::Point3D& p)
 {
-  m_selection.off();
+    m_selection.setEnd(p);
 }
 
-
+void SceneGraph::setSelectionOff()
+{
+    m_selection.off();
+}

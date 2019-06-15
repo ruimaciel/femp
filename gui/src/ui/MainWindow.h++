@@ -1,14 +1,14 @@
 #ifndef FEMP_MAINWINDOW_HPP
 #define FEMP_MAINWINDOW_HPP
 
-#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
-#include <QMainWindow>
 #include <QComboBox>
 #include <QDir>
+#include <QMainWindow>
 #include <QSignalMapper>
+#include <sigc++/sigc++.h> // to side step a compiler error caused by a conflict with Qt and libsigc++
 
-#include <libfemp/LinearAnalysis.h++>
 #include <libfemp/AnalysisResult.h++>
+#include <libfemp/LinearAnalysis.h++>
 
 #include "ui/ui_MainWindow.h"
 
@@ -24,21 +24,18 @@
 #include "Document.h++"
 #include "SelectionManager.h++"
 
-
-
 class MainWindow
-        : public QMainWindow
-{
+    : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit MainWindow (QWidget *parent = nullptr);
+    explicit MainWindow(QWidget* parent = nullptr);
 
 public Q_SLOTS:
     /* starts off a brand new FEM project */
-    void newProject();	// launches the New Project wizard
+    void newProject(); // launches the New Project wizard
     void openProject();
-    void reopenProject();	// if the current model has been saved to a file then this routine reloads the document
+    void reopenProject(); // if the current model has been saved to a file then this routine reloads the document
     void saveProject();
     void saveProjectAs();
     void closeProject();
@@ -112,41 +109,39 @@ Q_SIGNALS:
     void setError(QString);
 
 private:
-    void createActions();	// creates the actions and connects them
+    void createActions(); // creates the actions and connects them
     void createToolBars();
     void createDockWidgets();
     void destroyToolBars();
 
     // sets the user interface state
-    void setUserInterfaceAsOpened();	// sets the user interface in it's "opened document" state
-    void setUserInterfaceAsClosed();	// sets the user interface in it's "closed document" state
-    void setUserInterfacePostAnalysis();	// sets the user interface in it's "analysis performed" state
+    void setUserInterfaceAsOpened(); // sets the user interface in it's "opened document" state
+    void setUserInterfaceAsClosed(); // sets the user interface in it's "closed document" state
+    void setUserInterfacePostAnalysis(); // sets the user interface in it's "analysis performed" state
 
 protected:
-    ViewportColors &getViewportColors();
+    ViewportColors& getViewportColors();
 
-    void saveDocument(Document & doc, std::string filename);
+    void saveDocument(Document& doc, std::string filename);
 
 protected:
-    Ui::MainWindow 	ui;
+    Ui::MainWindow ui;
 
     fem::LinearAnalysis<double> m_analysis;
 
-    CommandLineDockWidget *m_commandLineDockWidget;
-    SelectionDockWidget *m_selectionDockWidget;
+    CommandLineDockWidget* m_commandLineDockWidget;
+    SelectionDockWidget* m_selectionDockWidget;
 
-    QMdiArea	* m_mdiArea;
+    QMdiArea* m_mdiArea;
 
-    bool 	m_hasUnsavedChanges;	// true if the document has unsaved changes
+    bool m_hasUnsavedChanges; // true if the document has unsaved changes
 
-    Document m_document;	// the FEM document
-    SelectionManager m_selectionManager;	// object which handles object selection
+    Document m_document; // the FEM document
+    SelectionManager m_selectionManager; // object which handles object selection
 
-    ViewportColors m_colors;	// the elements' viewport colors
+    ViewportColors m_colors; // the elements' viewport colors
 
-    QSignalMapper	*m_windowMapper;	// used to map menu clicks to window activation
-
+    QSignalMapper* m_windowMapper; // used to map menu clicks to window activation
 };
-
 
 #endif

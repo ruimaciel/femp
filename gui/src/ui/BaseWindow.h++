@@ -10,23 +10,21 @@ This is a crude hack, as this role was intended for
 MdiWindow but adding non-opengl MDI windows made it a
 bit unwielding to rewrite.
 **/
-class BaseWindow
-{
+class BaseWindow {
 public:
-	/**
+    /**
 	@param label	window label
 	@param parent	this widget's parent widget
 	**/
-	BaseWindow(QString const & label);
+    BaseWindow(QString const& label);
 
-	/**
+    /**
 	Returns this window's label
 	**/
-	QString label() const;
+    QString label() const;
 
 protected:
-	QString	m_windowLabel;	// label that describes this window
-
+    QString m_windowLabel; // label that describes this window
 };
 
 #endif

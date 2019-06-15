@@ -1,7 +1,6 @@
 #include "QuadratureRulesOptionsDialog.h++"
 
-
-QuadratureRulesOptionsDialog::QuadratureRulesOptionsDialog(fem::Analysis<double> &analysis, QWidget *parent)
+QuadratureRulesOptionsDialog::QuadratureRulesOptionsDialog(fem::Analysis<double>& analysis, QWidget* parent)
     : QDialog(parent)
 {
     setupUi(this);
@@ -12,7 +11,6 @@ QuadratureRulesOptionsDialog::QuadratureRulesOptionsDialog(fem::Analysis<double>
 
     this->setSpinBoxValues();
 }
-
 
 void QuadratureRulesOptionsDialog::setSpinBoxValues()
 {
@@ -48,7 +46,6 @@ void QuadratureRulesOptionsDialog::setSpinBoxValues()
     spinBox_Su_quad8->setValue(analysis->quad8.domain_degree);
     spinBox_Su_quad9->setValue(analysis->quad9.domain_degree);
 }
-
 
 void QuadratureRulesOptionsDialog::setQuadratureRule()
 {

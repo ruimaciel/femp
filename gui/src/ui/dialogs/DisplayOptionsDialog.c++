@@ -1,19 +1,16 @@
 #include "DisplayOptionsDialog.h++"
 
-DisplayOptionsDialog::DisplayOptionsDialog(fem::Model &model, QWidget *parent)
+DisplayOptionsDialog::DisplayOptionsDialog(fem::Model& model, QWidget* parent)
     : QDialog(parent)
 {
     setupUi(this);
 
     // fill the combo box with the available load pattern
-    for(auto load_pattern: model.getLoadPatternList() )
-    {
+    for (auto load_pattern : model.getLoadPatternList()) {
         QString label = QString::fromStdString(load_pattern.getLabel());
         this->comboBoxLoadPattern->addItem(label);
     }
-
 }
-
 
 size_t
 DisplayOptionsDialog::getLoadPatternIndex()
@@ -21,32 +18,22 @@ DisplayOptionsDialog::getLoadPatternIndex()
     return this->comboBoxLoadPattern->currentIndex();
 }
 
-
-bool
-DisplayOptionsDialog::renderNodalForces()
+bool DisplayOptionsDialog::renderNodalForces()
 {
-    return(this->checkBoxNodalForces->isChecked());
+    return (this->checkBoxNodalForces->isChecked());
 }
 
-
-bool
-DisplayOptionsDialog::renderSurfaceForces()
+bool DisplayOptionsDialog::renderSurfaceForces()
 {
-    return(this->checkBoxSurfaceForces->isChecked());
+    return (this->checkBoxSurfaceForces->isChecked());
 }
 
-
-bool
-DisplayOptionsDialog::renderDomainForces()
+bool DisplayOptionsDialog::renderDomainForces()
 {
-    return(this->checkBoxDomainForces->isChecked());
+    return (this->checkBoxDomainForces->isChecked());
 }
 
-
-bool
-DisplayOptionsDialog::renderNodalDisplacements()
+bool DisplayOptionsDialog::renderNodalDisplacements()
 {
-    return(this->checkBoxNodalDisplacements->isChecked());
+    return (this->checkBoxNodalDisplacements->isChecked());
 }
-
-

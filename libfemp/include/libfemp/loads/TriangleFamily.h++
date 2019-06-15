@@ -1,42 +1,37 @@
 #ifndef FEMP_TRIANGLE_FAMILY_HPP
 #define FEMP_TRIANGLE_FAMILY_HPP
 
-
 #include <memory>
 
 #include "../elements/BaseElement.h++"
-#include <libfemp/quadrature_rules/Triangle.h++>
 #include "SurfaceLoad.h++"
+#include <libfemp/quadrature_rules/Triangle.h++>
 
-
-namespace fem
-{
+namespace fem {
 
 class TriangleFamily
-		: public SurfaceLoad
-{
+    : public SurfaceLoad {
 public:
-	std::unique_ptr<quadrature::TriangleRule>	m_domain_quadrature_rule;	// quadrature rule for domain calculations
+    std::unique_ptr<quadrature::TriangleRule> m_domain_quadrature_rule; // quadrature rule for domain calculations
 
 public:
-	TriangleFamily();
+    TriangleFamily();
 
-	enum BaseElement::ElementFamily family() const;
+    enum BaseElement::ElementFamily family() const;
 
-	virtual int getNodeAmount() const = 0;
+    virtual int getNodeAmount() const = 0;
 
-	/**
+    /**
 	 * Returns the total number of degrees of freedom
 	 **/
-	virtual unsigned int getDofAmount() const;
+    virtual unsigned int getDofAmount() const;
 
-	/**
+    /**
 	Returns a list of quadrature rules
 	**/
-	std::vector<quadrature::SurfaceRule::Point> getDomainQuadratureRule() const override;
+    std::vector<quadrature::SurfaceRule::Point> getDomainQuadratureRule() const override;
 };
 
-
-}	// namespace fem
+} // namespace fem
 
 #endif

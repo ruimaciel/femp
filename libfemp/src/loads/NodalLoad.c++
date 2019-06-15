@@ -1,47 +1,42 @@
 #include <libfemp/loads/NodalLoad.h++>
 
-namespace fem
-{
+namespace fem {
 
-NodalLoad::NodalLoad ()
+NodalLoad::NodalLoad()
 {
 }
 
-
-NodalLoad::NodalLoad (const NodalLoad &copied)
+NodalLoad::NodalLoad(const NodalLoad& copied)
 {
-	this->force = copied.force;
+    this->force = copied.force;
 }
 
-
-NodalLoad::~NodalLoad ()
+NodalLoad::~NodalLoad()
 {
 }
 
 double
 NodalLoad::x() const
 {
-	return force.x();
+    return force.x();
 }
 
 double
 NodalLoad::y() const
 {
-	return force.y();
+    return force.y();
 }
 
 double
 NodalLoad::z() const
 {
-	return force.z();
+    return force.z();
 }
 
-const Point3D &
+const Point3D&
 NodalLoad::getForce() const
 {
-	return this->force;
+    return this->force;
 }
 
-
-}	// namespace fem
-
+} // namespace fem

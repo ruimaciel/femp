@@ -1,12 +1,13 @@
 #ifndef FEM_MSH_HPP
 #define FEM_MSH_HPP
 
-#include <stdio.h>
 #include <libfemp/Model.h++>
+#include <stdio.h>
 
-enum FEM_PARSER_RETURN {FP_OK = 0, FP_UNKNOWN_ERROR};
+enum FEM_PARSER_RETURN { FP_OK = 0,
+    FP_UNKNOWN_ERROR };
 
-enum FEM_PARSER_RETURN fem_model_import_msh(FILE *file, fem::Model &model);
+enum FEM_PARSER_RETURN fem_model_import_msh(FILE* file, fem::Model& model);
 
 /** Outputs the data structure as a MSH document
 @param out an open file stream

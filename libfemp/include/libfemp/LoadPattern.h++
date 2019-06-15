@@ -1,71 +1,66 @@
 #ifndef FEMP_LOAD_PATTERN_HPP
 #define FEMP_LOAD_PATTERN_HPP
 
-#include <string>
 #include <map>
+#include <string>
 #include <vector>
 
 #include <libfemp/NodalDisplacement.h++>
+#include <libfemp/loads/DomainLoad.h++>
 #include <libfemp/loads/NodalLoad.h++>
 #include <libfemp/loads/SurfaceLoad.h++>
-#include <libfemp/loads/DomainLoad.h++>
 
-
-namespace fem
-{
+namespace fem {
 
 /**
 This class defines a set of loads which are applied on the FEM model
 **/
-class LoadPattern
-{
+class LoadPattern {
 private:
-	std::string m_label;	// this load pattern's label
+    std::string m_label; // this load pattern's label
 
 public:
-	std::map<size_t,NodalLoad> 	nodal_loads;	// maps nodal loads to node references
-	std::map<size_t,NodalDisplacement> 	nodal_displacements;	// maps nodal loads to node references
-	std::map<size_t,DomainLoad>	domain_loads;	// maps to element references
-	std::vector<SurfaceLoad *>	surface_loads;	// lists surface loads
+    std::map<size_t, NodalLoad> nodal_loads; // maps nodal loads to node references
+    std::map<size_t, NodalDisplacement> nodal_displacements; // maps nodal loads to node references
+    std::map<size_t, DomainLoad> domain_loads; // maps to element references
+    std::vector<SurfaceLoad*> surface_loads; // lists surface loads
 
 public:
-	/**
+    /**
 	 * Class default constructor
 	 **/
-	LoadPattern();
+    LoadPattern();
 
-	/** Clears all info contained in this load pattern object
+    /** Clears all info contained in this load pattern object
 	**/
-	void clear();
+    void clear();
 
-	/** checks if this load pattern has any load set **/
-	bool empty() const;
+    /** checks if this load pattern has any load set **/
+    bool empty() const;
 
-
-	/**
+    /**
 	 * returns the label
 	 **/
-	std::string getLabel() const;
+    std::string getLabel() const;
 
-	/**
+    /**
 	 * sets the label
 	 **/
-	void setLabel(std::string const &label);
+    void setLabel(std::string const& label);
 
-	void addNodalLoad(size_t, Point3D);
-	void addNodalDisplacement(size_t, Point3D);
+    void addNodalLoad(size_t, Point3D);
+    void addNodalDisplacement(size_t, Point3D);
 
-	/**
+    /**
 	sets the domain load for a given element
 	@param element	element that will get a new domain load definition
 	@param force_shape	a list of forces acting on each of the element's nodes
 	**/
-	void addDomainLoad(size_t element, Point3D force);
+    void addDomainLoad(size_t element, Point3D force);
 
-	void addSurfaceLoad(SurfaceLoad *surfaceload);
+    void addSurfaceLoad(SurfaceLoad* surfaceload);
 };
 
-
-}	// namespace fem
+} // namespace fem
 
 #endif

@@ -3,8 +3,7 @@
 #include <libfemp/Model.h++>
 #include <libfemp/Node.h++>
 
-
-MatrixWidget::MatrixWidget(fem::Project &project, QWidget *parent)
+MatrixWidget::MatrixWidget(fem::Project& project, QWidget* parent)
     : QWidget(parent)
 {
     setupUi(this);
@@ -14,5 +13,3 @@ MatrixWidget::MatrixWidget(fem::Project &project, QWidget *parent)
     m_project = &project;
     m_result = &project.result[0];
 }
-
-

@@ -5,9 +5,8 @@
 NewProjectWizardPageLast::NewProjectWizardPageLast()
 {
     setupUi(this);
-    registerField("completelocation",labelPath,"text");
+    registerField("completelocation", labelPath, "text");
 }
-
 
 void NewProjectWizardPageLast::initializePage()
 {
@@ -19,8 +18,7 @@ void NewProjectWizardPageLast::initializePage()
     this->labelPath->setText(tmp);
 
     // set the project
-    if(field("Project3DSolids") == true)
-    {
+    if (field("Project3DSolids") == true) {
         this->labelProjectType->setText("3D Solids");
     }
 }

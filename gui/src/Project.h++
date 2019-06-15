@@ -1,8 +1,8 @@
 #ifndef FEMP_PROJECT_HPP
 #define FEMP_PROJECT_HPP
 
-#include <libfemp/Model.h++>
 #include <libfemp/AnalysisResult.h++>
+#include <libfemp/Model.h++>
 
 #include <ProjectVisitor/ProjectVisitor.h++>
 
@@ -13,42 +13,37 @@ This class is intended to describe a FEM project in it's entirely, which include
 - a FEM model
 - a series of analysis results
 **/
-namespace fem
-{
+namespace fem {
 
-
-class Project
-{
+class Project {
 public:
-
-	/**
+    /**
 	 * clears the project
 	 **/
-	void clear();
+    void clear();
 
-	/**
+    /**
 	 * Adds the result of a new analysis process to the result list
 	 **/
-	void pushAnalysisResult(fem::AnalysisResult &new_result);
+    void pushAnalysisResult(fem::AnalysisResult& new_result);
 
-	/**
+    /**
 	 * returns a reference to the Project's model
 	 **/
-	Model & getModel();
+    Model& getModel();
 
-	/**
+    /**
 	 * Implements a Visitor design pattern
 	 **/
-	void accept(ProjectVisitor &visitor);
+    void accept(ProjectVisitor& visitor);
 
 protected:
-	Model m_model;	// the FEM model
+    Model m_model; // the FEM model
 
 public:
-	std::vector<AnalysisResult> result;	// a list with all analysis
-
+    std::vector<AnalysisResult> result; // a list with all analysis
 };
 
-}	// namespace fem
+} // namespace fem
 
 #endif

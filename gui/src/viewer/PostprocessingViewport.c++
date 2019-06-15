@@ -2,161 +2,121 @@
 
 #include "SceneGraph.h++"
 
-
-PostprocessingViewport::PostprocessingViewport(fem::Project &project, fem::AnalysisResult &result, fem::ResultsRanges<double> &ranges, QWidget *parent)
-	: BaseViewport(project, parent)
+PostprocessingViewport::PostprocessingViewport(fem::Project& project, fem::AnalysisResult& result, fem::ResultsRanges<double>& ranges, QWidget* parent)
+    : BaseViewport(project, parent)
 {
-	this->project = &project;
-	this->m_analysis_result = nullptr;
-	this->setAnalysisResult(result);
-	this->setResultsRanges(ranges);
+    this->project = &project;
+    this->m_analysis_result = nullptr;
+    this->setAnalysisResult(result);
+    this->setResultsRanges(ranges);
 
-	this->showDisplacements();
+    this->showDisplacements();
 
-	// set this widget's load pattern pointer
-	if(project.getModel().load_pattern_list.empty())
-	{
-		Options::getInstance().getDisplayOptions().load_pattern = nullptr;
-	}
-	else
-	{
-		// set the first load pattern
-		Options::getInstance().getDisplayOptions().load_pattern = &project.getModel().load_pattern_list.front();
-	}
-	this->setFocusPolicy(Qt::StrongFocus);
+    // set this widget's load pattern pointer
+    if (project.getModel().load_pattern_list.empty()) {
+        Options::getInstance().getDisplayOptions().load_pattern = nullptr;
+    } else {
+        // set the first load pattern
+        Options::getInstance().getDisplayOptions().load_pattern = &project.getModel().load_pattern_list.front();
+    }
+    this->setFocusPolicy(Qt::StrongFocus);
 }
-
 
 PostprocessingViewport::~PostprocessingViewport()
 {
 }
 
-
-void
-PostprocessingViewport::setAnalysisResult(fem::AnalysisResult &result)
+void PostprocessingViewport::setAnalysisResult(fem::AnalysisResult& result)
 {
-	this->m_analysis_result = &result;
-	this->m_vp_state_displacements.setAnalysisResult(result);
-	this->m_vp_state_gradients.setAnalysisResult(result);
+    this->m_analysis_result = &result;
+    this->m_vp_state_displacements.setAnalysisResult(result);
+    this->m_vp_state_gradients.setAnalysisResult(result);
 }
 
-
-void
-PostprocessingViewport::setResultsRanges(fem::ResultsRanges<double> &ranges)
+void PostprocessingViewport::setResultsRanges(fem::ResultsRanges<double>& ranges)
 {
-	this->m_vp_state_gradients.setResultsRanges(ranges);
+    this->m_vp_state_gradients.setResultsRanges(ranges);
 }
 
-
-void
-PostprocessingViewport::showDisplacements()
+void PostprocessingViewport::showDisplacements()
 {
-	this->setState(&this->m_vp_state_displacements);
+    this->setState(&this->m_vp_state_displacements);
 }
 
-
-void
-PostprocessingViewport::showStrain11()
+void PostprocessingViewport::showStrain11()
 {
-	this->m_vp_state_gradients.renderStrains11();
-	this->setState(&this->m_vp_state_gradients);
+    this->m_vp_state_gradients.renderStrains11();
+    this->setState(&this->m_vp_state_gradients);
 }
 
-
-void
-PostprocessingViewport::showStrain22()
+void PostprocessingViewport::showStrain22()
 {
-	this->m_vp_state_gradients.renderStrains22();
-	this->setState(&this->m_vp_state_gradients);
+    this->m_vp_state_gradients.renderStrains22();
+    this->setState(&this->m_vp_state_gradients);
 }
 
-
-void
-PostprocessingViewport::showStrain33()
+void PostprocessingViewport::showStrain33()
 {
-	this->m_vp_state_gradients.renderStrains33();
-	this->setState(&this->m_vp_state_gradients);
+    this->m_vp_state_gradients.renderStrains33();
+    this->setState(&this->m_vp_state_gradients);
 }
 
-
-void
-PostprocessingViewport::showStrain12()
+void PostprocessingViewport::showStrain12()
 {
-	this->m_vp_state_gradients.renderStrains12();
-	this->setState(&this->m_vp_state_gradients);
+    this->m_vp_state_gradients.renderStrains12();
+    this->setState(&this->m_vp_state_gradients);
 }
 
-
-void
-PostprocessingViewport::showStrain23()
+void PostprocessingViewport::showStrain23()
 {
-	this->m_vp_state_gradients.renderStrains23();
-	this->setState(&this->m_vp_state_gradients);
+    this->m_vp_state_gradients.renderStrains23();
+    this->setState(&this->m_vp_state_gradients);
 }
 
-
-void
-PostprocessingViewport::showStrain13()
+void PostprocessingViewport::showStrain13()
 {
-	this->m_vp_state_gradients.renderStrains13();
-	this->setState(&this->m_vp_state_gradients);
+    this->m_vp_state_gradients.renderStrains13();
+    this->setState(&this->m_vp_state_gradients);
 }
 
-
-void
-PostprocessingViewport::showStress11()
+void PostprocessingViewport::showStress11()
 {
-	this->m_vp_state_gradients.renderStresses11();
-	this->setState(&this->m_vp_state_gradients);
+    this->m_vp_state_gradients.renderStresses11();
+    this->setState(&this->m_vp_state_gradients);
 }
 
-
-
-void
-PostprocessingViewport::showStress22()
+void PostprocessingViewport::showStress22()
 {
-	this->m_vp_state_gradients.renderStresses22();
-	this->setState(&this->m_vp_state_gradients);
+    this->m_vp_state_gradients.renderStresses22();
+    this->setState(&this->m_vp_state_gradients);
 }
 
-
-void
-PostprocessingViewport::showStress33()
+void PostprocessingViewport::showStress33()
 {
-	this->m_vp_state_gradients.renderStresses33();
-	this->setState(&this->m_vp_state_gradients);
+    this->m_vp_state_gradients.renderStresses33();
+    this->setState(&this->m_vp_state_gradients);
 }
 
-
-void
-PostprocessingViewport::showStress12()
+void PostprocessingViewport::showStress12()
 {
-	this->m_vp_state_gradients.renderStresses12();
-	this->setState(&this->m_vp_state_gradients);
+    this->m_vp_state_gradients.renderStresses12();
+    this->setState(&this->m_vp_state_gradients);
 }
 
-
-void
-PostprocessingViewport::showStress23()
+void PostprocessingViewport::showStress23()
 {
-	this->m_vp_state_gradients.renderStresses23();
-	this->setState(&this->m_vp_state_gradients);
+    this->m_vp_state_gradients.renderStresses23();
+    this->setState(&this->m_vp_state_gradients);
 }
 
-
-void
-PostprocessingViewport::showStress13()
+void PostprocessingViewport::showStress13()
 {
-	this->m_vp_state_gradients.renderStresses13();
-	this->setState(&this->m_vp_state_gradients);
+    this->m_vp_state_gradients.renderStresses13();
+    this->setState(&this->m_vp_state_gradients);
 }
 
-
-void
-PostprocessingViewport::showVonMises()
+void PostprocessingViewport::showVonMises()
 {
-	this->m_vp_state_gradients.renderVonMises();
-	this->setState(&this->m_vp_state_gradients);
+    this->m_vp_state_gradients.renderVonMises();
+    this->setState(&this->m_vp_state_gradients);
 }
-
-

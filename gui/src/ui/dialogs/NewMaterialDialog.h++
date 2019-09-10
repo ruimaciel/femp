@@ -17,7 +17,9 @@ public:
     explicit NewMaterialDialog(fem::Model& model, QWidget* parent = nullptr);
 
 private:
-    // checks if a given string matches a material label already added to the list
+    /**
+     * Checks if a given string matches a material label already added to the list
+     */
     bool isDuplicate(QString name);
 
 private slots:

@@ -23,26 +23,26 @@ public slots:
     void beginSection(std::string);
 
     /**
-        Marks the end of the current progress section
-        **/
+     * Marks the end of the current progress section
+     */
     void endSection();
 
     /**
-        Sets the current progress
-        @param	progress
-        **/
+     * Sets the current progress
+     * @param	progress
+     */
     void setProgress(size_t);
 
     /**
-        Sets an informative message
-        **/
+     * Sets an informative message
+     */
     void setMessage(const std::string&);
 
     void setError(std::string);
 
     /**
-        Announces the end of the entire process
-        **/
+     * Announces the end of the entire process
+     */
     void finish();
 };
 

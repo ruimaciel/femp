@@ -8,8 +8,8 @@
 #include "ui_MoveNodesDialog.h"
 
 /**
-Dialog used by GLDisplacementsWidget to input a new displacements scale
-**/
+ * Dialog used by GLDisplacementsWidget to input a new displacements scale
+ */
 class MoveNodesDialog
     : public QDialog,
       private Ui::MoveNodesDialog {

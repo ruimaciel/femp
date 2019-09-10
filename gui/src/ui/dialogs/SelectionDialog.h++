@@ -8,10 +8,12 @@
 #include <SelectionManager.h++>
 
 /**
-Dialog box which uses the selection widget to select objects from a given fem::Project object
-**/
+ * Dialog box which uses the selection widget to select objects from a given fem::Project object
+ */
 class SelectionDialog
     : public QDialog {
+    Q_OBJECT
+
 protected:
     SelectionWidget* m_selection_widget;
 

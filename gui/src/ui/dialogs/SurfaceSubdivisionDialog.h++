@@ -5,8 +5,8 @@
 #include <QDialog>
 
 /**
-Dialog used by GLDisplacementsWidget to input a new displacements scale
-**/
+ * Dialog used by GLDisplacementsWidget to input a new displacements scale
+ */
 class SurfaceSubdivisionDialog
     : public QDialog,
       private Ui::SurfaceSubdivisionDialog {

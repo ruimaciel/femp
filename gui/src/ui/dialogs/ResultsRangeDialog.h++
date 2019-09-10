@@ -9,8 +9,8 @@
 #include <libfemp/ElementResults/ResultsRanges.h++>
 
 /**
-Dialog intended to be used to specify ranges of a given parameter
-**/
+ * Dialog intended to be used to specify ranges of a given parameter
+ */
 class ResultsRangeDialog
     : public QDialog {
     Q_OBJECT

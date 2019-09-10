@@ -6,8 +6,8 @@
 #include "ui_DialogScale.h"
 
 /**
-Dialog used by GLDisplacementsWidget to input a new displacements scale
-**/
+ * Dialog used by GLDisplacementsWidget to input a new displacements scale
+ */
 class DialogScale
     : public QDialog,
       private Ui::DialogScale {

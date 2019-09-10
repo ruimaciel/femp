@@ -9,10 +9,14 @@
 class DisplayOptionsDialog
     : public QDialog,
       public Ui_DisplayOptionsDialog {
+    Q_OBJECT
+
 public:
     DisplayOptionsDialog(fem::Model& model, QWidget* parent = nullptr);
 
-    // returns the index to the LoadOptions object that will be rendered
+    /**
+     * returns the index to the LoadOptions object that will be rendered
+     */
     size_t getLoadPatternIndex();
 
     bool renderNodalForces();

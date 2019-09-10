@@ -8,6 +8,8 @@
 class NodeRestrainsDialog
     : public QDialog,
       private Ui_NodeRestrainDialog {
+    Q_OBJECT
+
 public:
     enum Restraints {
         NONE = 0,

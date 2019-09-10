@@ -8,9 +8,9 @@
 
 #include "ui_AnalysisDialog.h"
 
-/*
-Dialog box designed to input information needed to run the analysis, such as solver
-*/
+/**
+ * Dialog box designed to input information needed to run the analysis, such as solver
+ */
 class AnalysisDialog
     : public QDialog,
       private Ui::AnalysisDialog {
@@ -19,22 +19,22 @@ class AnalysisDialog
 public:
     AnalysisDialog(fem::Model& model, QWidget* parent = nullptr);
 
-    /*
-                States which solver has been selected
-                @return	a pointer to a instance of a solver, must be freed afterwards
-                */
+    /**
+     * States which solver has been selected
+     * @return	a pointer to a instance of a solver, must be freed afterwards
+     */
     fem::Solver<double>* solver();
 
     /**
-                Returns which load patter the user selected to be analyized
-                @return	counter to the current index
-                **/
+     * Returns which load patter the user selected to be analyized
+     * @return	counter to the current index
+     */
     int loadPattern() const;
 
 protected:
     /**
-                Fills the combo box with the load pattern list from the model
-                **/
+     * Fills the combo box with the load pattern list from the model
+     */
     void loadLoadPatternList(fem::Model& model);
 };
 

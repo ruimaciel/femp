@@ -6,9 +6,9 @@
 
 #include <libfemp/Model.h++>
 
-class MaterialsEditorDialog : public QDialog, private Ui::MaterialsEditorDialog {
-    //TODO finish this
-
+class MaterialsEditorDialog
+    : public QDialog
+    , private Ui::MaterialsEditorDialog {
     Q_OBJECT
 
 private:
@@ -22,7 +22,10 @@ public slots:
     void loadMaterials();
 
 private slots:
-    // resets the UI according to the selection state
+
+    /**
+     * Resets the UI according to the selection state
+     */
     void resetSelectionUI();
 };
 

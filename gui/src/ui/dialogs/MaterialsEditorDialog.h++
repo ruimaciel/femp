@@ -12,10 +12,10 @@ class MaterialsEditorDialog : public QDialog, private Ui::MaterialsEditorDialog 
     Q_OBJECT
 
 private:
-    fem::Model* model;
+    fem::Model& model;
 
 public:
-    explicit MaterialsEditorDialog(fem::Model* model, QWidget* parent = nullptr);
+    explicit MaterialsEditorDialog(fem::Model& model, QWidget* parent = nullptr);
     ~MaterialsEditorDialog();
 
 public slots:

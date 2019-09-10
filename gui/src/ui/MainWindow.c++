@@ -503,7 +503,7 @@ void MainWindow::moveSelectedNodes()
 void MainWindow::editMaterials()
 {
     fem::Model& femp_model = m_document.getProject().getModel();
-    MaterialsEditorDialog dialog(&femp_model, this);
+    MaterialsEditorDialog dialog(femp_model, this);
     dialog.exec();
 }
 

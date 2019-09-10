@@ -4,8 +4,8 @@
 
 AnalysisResultsModel::AnalysisResultsModel(fem::Project& project, QObject* parent)
     : QAbstractTableModel(parent)
+    , m_project(project)
 {
-    this->m_project = &project;
     this->m_result = project.result.begin();
 
     m_rows = 0;
@@ -104,7 +104,7 @@ AnalysisResultsModel::data(const QModelIndex& index, int role) const
     if (role != Qt::DisplayRole) {
         return QVariant();
     } else {
-        fem::Model& femp_model = m_project->getModel();
+        fem::Model& femp_model = m_project.getModel();
         std::map<int, std::vector<fem::Element>::size_type>::const_reverse_iterator i;
 
         for (i = m_lineMap.rbegin(); i->first > index.row(); i++)
@@ -162,13 +162,13 @@ AnalysisResultsModel::data(const QModelIndex& index, int role) const
 
         case 3: // node global reference
         {
-            return QVariant((int)m_project->getModel().element_list[eref].nodes[local_ref]);
+            return QVariant((int)m_project.getModel().element_list[eref].nodes[local_ref]);
         } break;
 
         case 4: // node coordinate: x
         {
-            fem::node_ref_t nref = m_project->getModel().element_list[eref].nodes[local_ref];
-            return QVariant(m_project->getModel().getNode(nref).x());
+            fem::node_ref_t nref = m_project.getModel().element_list[eref].nodes[local_ref];
+            return QVariant(m_project.getModel().getNode(nref).x());
         } break;
 
         case 5: // node coordinate: y

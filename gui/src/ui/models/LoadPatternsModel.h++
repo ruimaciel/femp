@@ -2,7 +2,7 @@
 #define FEMP_LOADPATTERNSMODEL_HPP
 
 #include <QAbstractListModel>
-#include <libfemp/Model.h++>
+#include <libfemp/LoadPattern.h++>
 
 Q_DECLARE_METATYPE(std::string); // needed to make QVariant to work with std::string
 
@@ -14,14 +14,14 @@ class LoadPatternsModel
     Q_OBJECT
 
 public:
-    LoadPatternsModel(fem::Model const& model, QObject* parent = nullptr);
+    LoadPatternsModel(std::vector<fem::LoadPattern> load_patterns, QObject* parent = nullptr);
 
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
     int rowCount(const QModelIndex& parent) const override;
 
 protected:
-    fem::Model const& m_model;
+    std::vector<fem::LoadPattern> m_loadPatterns;
 };
 
 #endif

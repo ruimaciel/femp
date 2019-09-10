@@ -441,7 +441,7 @@ void MainWindow::setNodeRestraints()
 void MainWindow::setNodeActions()
 {
     fem::Model& femp_model = m_document.getProject().getModel();
-    LoadPatternsModel load_patterns_model(femp_model, this);
+    LoadPatternsModel load_patterns_model(femp_model.getLoadPatternList(), this);
 
     NodeActionsDialog na(load_patterns_model, this);
 
@@ -464,7 +464,7 @@ void MainWindow::setDomainLoads()
 {
     fem::Model& femp_model = m_document.getProject().getModel();
 
-    LoadPatternsModel model(femp_model, this);
+    LoadPatternsModel model(femp_model.getLoadPatternList(), this);
 
     DomainLoadsDialog dialog(model, this);
 

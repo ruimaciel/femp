@@ -4,9 +4,9 @@
 
 #include <QString>
 
-LoadPatternsModel::LoadPatternsModel(fem::Model const& model, QObject* parent)
+LoadPatternsModel::LoadPatternsModel(std::vector<fem::LoadPattern> load_patterns, QObject* parent)
     : QAbstractListModel(parent)
-    , m_model(model)
+    , m_loadPatterns(load_patterns)
 {
 }
 
@@ -19,15 +19,15 @@ LoadPatternsModel::data(const QModelIndex& index, int role) const
 
     switch (role) {
     case Qt::DisplayRole: {
-        unsigned int i = index.row();
 
-        auto load_pattern_list = m_model.getLoadPatternList();
-        if (i < load_pattern_list.size()) {
-            QVariant out = QString::fromStdString(load_pattern_list[i].getLabel());
-            return out;
-        } else {
+        if(index.row() >= m_loadPatterns.size())
+        {
             return QVariant();
         }
+
+        auto load_pattern = m_loadPatterns[index.row()];
+
+        return QString::fromStdString(load_pattern.getLabel());
     } break;
 
     default:
@@ -38,8 +38,10 @@ LoadPatternsModel::data(const QModelIndex& index, int role) const
 
 int LoadPatternsModel::rowCount(const QModelIndex& parent) const
 {
-    if (parent.isValid())
+    if(!parent.isValid())
+    {
         return 0;
-    else
-        return m_model.getLoadPatternList().size();
+    }
+
+    return m_loadPatterns.size();
 }

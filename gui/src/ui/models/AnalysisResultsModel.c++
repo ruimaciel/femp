@@ -11,7 +11,8 @@ AnalysisResultsModel::AnalysisResultsModel(fem::Project& project, QObject* paren
     m_rows = 0;
 
     fem::Model& femp_model = project.getModel();
-    for (std::vector<fem::Element>::iterator e = femp_model.element_list.begin(); e != femp_model.element_list.end(); e++) {
+    for (std::vector<fem::Element>::iterator e = femp_model.element_list.begin(); e != femp_model.element_list.end(); e++)
+    {
         m_lineMap[m_rows] = std::distance(femp_model.element_list.begin(), e);
         m_rows += e->nodes.size();
     }
@@ -103,185 +104,135 @@ AnalysisResultsModel::data(const QModelIndex& index, int role) const
 {
     if (role != Qt::DisplayRole) {
         return QVariant();
-    } else {
-        fem::Model& femp_model = m_project.getModel();
-        std::map<int, std::vector<fem::Element>::size_type>::const_reverse_iterator i;
+    }
 
-        for (i = m_lineMap.rbegin(); i->first > index.row(); i++)
-            ;
-        if (i == m_lineMap.rend())
-            return QString("out of bounds");
+    std::map<int, std::vector<fem::Element>::size_type>::const_reverse_iterator i;
 
-        fem::element_ref_t eref = i->second;
-        int local_ref = index.row() - i->first;
+    for (i = m_lineMap.rbegin(); i->first > index.row(); i++)
+        ;
+    if (i == m_lineMap.rend())
+        return QString("out of bounds");
 
-        // get element
-        switch (index.column()) {
-        case 0: // element reference
-        {
-            return QVariant((unsigned int)eref);
-        } break;
+    fem::element_ref_t selected_element_ref = i->second;
+    int local_ref = index.row() - i->first;
 
-        case 1: // element type
-        {
-            switch (femp_model.element_list[eref].type) {
-            case fem::Element::FE_TETRAHEDRON4:
-                return QString("Tetra4");
-                break;
-            case fem::Element::FE_TETRAHEDRON10:
-                return QString("Tetra10");
-                break;
-            case fem::Element::FE_HEXAHEDRON8:
-                return QString("Hexa8");
-                break;
-            case fem::Element::FE_HEXAHEDRON20:
-                return QString("Hexa20");
-                break;
-            case fem::Element::FE_HEXAHEDRON27:
-                return QString("Hexa27");
-                break;
-            case fem::Element::FE_PRISM6:
-                return QString("Prism6");
-                break;
-            case fem::Element::FE_PRISM15:
-                return QString("Prism15");
-                break;
-            case fem::Element::FE_PRISM18:
-                return QString("Prism18");
-                break;
-            default:
-                return QString("Unknown");
-                break;
-            }
-        } break;
+    fem::Model& femp_model = m_project.getModel();
+    fem::Element & selected_element = femp_model.element_list[selected_element_ref];
 
-        case 2: // node local reference
-        {
-            return QVariant(local_ref);
-        } break;
+    const fem::node_ref_t selected_node_ref = selected_element.nodes[local_ref];
 
-        case 3: // node global reference
-        {
-            return QVariant((int)m_project.getModel().element_list[eref].nodes[local_ref]);
-        } break;
+    fem::Node selected_node = femp_model.getNode(selected_node_ref);
 
-        case 4: // node coordinate: x
-        {
-            fem::node_ref_t nref = m_project.getModel().element_list[eref].nodes[local_ref];
-            return QVariant(m_project.getModel().getNode(nref).x());
-        } break;
+    fem::ElementResults* result = m_result->results[selected_element_ref];
+    fem::Strains<double> result_strains = result->strains[local_ref];
+    fem::Stresses<double> result_stresses = result->stresses[local_ref];
 
-        case 5: // node coordinate: y
-        {
-            fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
-            return QVariant(femp_model.getNode(nref).y());
-        } break;
+    // get element
+    switch (index.column())
+    {
+    case 0: // element reference
+        return QVariant((unsigned int)selected_element_ref);
 
-        case 6: // node coordinate: z
-        {
-            fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
-            return QVariant(femp_model.getNode(nref).z());
-        } break;
+    case 1: // element type
+        return generateElementTypeName(selected_element.type);
 
-        case 7: // node displacement: x
-        {
-            fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
-            return QVariant(m_result->displacements[nref].x());
-        } break;
+    case 2: // node local reference
+        return QVariant(local_ref);
 
-        case 8: // node displacement: y
-        {
-            fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
-            return QVariant(m_result->displacements[nref].y());
-        } break;
+    case 3: // node global reference
+        return QVariant((int)selected_node_ref);
 
-        case 9: // node displacement: z
-        {
-            fem::node_ref_t nref = femp_model.element_list[eref].nodes[local_ref];
-            return QVariant(m_result->displacements[nref].z());
-        } break;
+    case 4: // node coordinate: x
+        return QVariant(selected_node.x());
 
-        case 10: // strains e11
-        {
-            fem::ElementResults* result = m_result->results[eref];
-            return QVariant(result->strains[local_ref].e11);
-        } break;
+    case 5: // node coordinate: y
+        return QVariant(selected_node.y());
 
-        case 11: // strains e22
-        {
-            fem::ElementResults* result = m_result->results[eref];
-            return QVariant(result->strains[local_ref].e22);
-        } break;
+    case 6: // node coordinate: z
+        return QVariant(selected_node.z());
 
-        case 12: // strains e33
-        {
-            fem::ElementResults* result = m_result->results[eref];
-            return QVariant(result->strains[local_ref].e33);
-        } break;
+    case 7: // node displacement: x
+        return QVariant(m_result->displacements[selected_node_ref].x());
 
-        case 13: // strains e12
-        {
-            fem::ElementResults* result = m_result->results[eref];
-            return QVariant(result->strains[local_ref].e12);
-        } break;
+    case 8: // node displacement: y
+        return QVariant(m_result->displacements[selected_node_ref].y());
 
-        case 14: // strains e13
-        {
-            fem::ElementResults* result = m_result->results[eref];
-            return QVariant(result->strains[local_ref].e13);
-        } break;
+    case 9: // node displacement: z
+        return QVariant(m_result->displacements[selected_node_ref].z());
 
-        case 15: // strains e23
-        {
-            fem::ElementResults* result = m_result->results[eref];
-            return QVariant(result->strains[local_ref].e23);
-        } break;
+    case 10: // strains e11
+        return QVariant(result_strains.e11);
 
-        case 16: // stresses s11
-        {
-            fem::ElementResults* result = m_result->results[eref];
-            return QVariant(result->stresses[local_ref].s11);
-        } break;
+    case 11: // strains e22
+        return QVariant(result_strains.e22);
 
-        case 17: // stresses s22
-        {
-            fem::ElementResults* result = m_result->results[eref];
-            return QVariant(result->stresses[local_ref].s22);
-        } break;
+    case 12: // strains e33
+        return QVariant(result_strains.e33);
 
-        case 18: // stresses s33
-        {
-            fem::ElementResults* result = m_result->results[eref];
-            return QVariant(result->stresses[local_ref].s33);
-        } break;
+    case 13: // strains e12
+        return QVariant(result_strains.e12);
 
-        case 19: // stresses s12
-        {
-            fem::ElementResults* result = m_result->results[eref];
-            return QVariant(result->stresses[local_ref].s12);
-        } break;
+    case 14: // strains e13
+        return QVariant(result_strains.e13);
 
-        case 20: // stresses s13
-        {
-            fem::ElementResults* result = m_result->results[eref];
-            return QVariant(result->stresses[local_ref].s13);
-        } break;
+    case 15: // strains e23
+        return QVariant(result_strains.e23);
 
-        case 21: // stresses s23
-        {
-            fem::ElementResults* result = m_result->results[eref];
-            return QVariant(result->stresses[local_ref].s23);
-        } break;
+    case 16: // stresses s11
+        return QVariant(result_stresses.s11);
 
-        case 22: // von mises
-        {
-            fem::ElementResults* result = m_result->results[eref];
-            return QVariant(result->von_mises[local_ref]);
-        } break;
+    case 17: // stresses s22
+        return QVariant(result_stresses.s22);
 
-        default:
-            return QVariant();
-            break;
-        }
+    case 18: // stresses s33
+        return QVariant(result_stresses.s33);
+
+    case 19: // stresses s12
+        return QVariant(result_stresses.s12);
+
+    case 20: // stresses s13
+        return QVariant(result_stresses.s13);
+
+    case 21: // stresses s23
+        return QVariant(result_stresses.s23);
+
+    case 22: // von mises
+        return QVariant(result->von_mises[local_ref]);
+
+    default:
+        return QVariant();
+    }
+}
+
+QString AnalysisResultsModel::generateElementTypeName(const fem::Element::Type type) const
+{
+    switch (type)
+    {
+    case fem::Element::FE_TETRAHEDRON4:
+        return QString("Tetra4");
+
+    case fem::Element::FE_TETRAHEDRON10:
+        return QString("Tetra10");
+
+    case fem::Element::FE_HEXAHEDRON8:
+        return QString("Hexa8");
+
+    case fem::Element::FE_HEXAHEDRON20:
+        return QString("Hexa20");
+
+    case fem::Element::FE_HEXAHEDRON27:
+        return QString("Hexa27");
+
+    case fem::Element::FE_PRISM6:
+        return QString("Prism6");
+
+    case fem::Element::FE_PRISM15:
+        return QString("Prism15");
+
+    case fem::Element::FE_PRISM18:
+        return QString("Prism18");
+
+    default:
+        return QString("Unknown");
     }
 }

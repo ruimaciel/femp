@@ -123,4 +123,5 @@ void ViewportState::addPickRay(fem::Point3D const& origin, fem::Point3D const& d
 
 void ViewportState::setTrianglesVisible(bool const)
 {
+    qInfo() << "ViewportState::setTrianglesVisible(bool const)";
 }

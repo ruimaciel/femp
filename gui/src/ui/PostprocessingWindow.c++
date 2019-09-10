@@ -42,7 +42,6 @@ void PostprocessingWindow::setAnalysisResult(fem::AnalysisResult& result)
 
 void PostprocessingWindow::connectSignalsToSlots()
 {
-    // nasty hack to connect libsigc++ signal
     MdiWindow::connectSignalsToSlots();
     WindowWithScaling::connectSignalsToSlots(this);
     WindowWithPostprocessing::connectSignalsToSlots(this);
@@ -65,7 +64,6 @@ void PostprocessingWindow::createToolBars(fem::Project& project)
 
 void PostprocessingWindow::setGradientValuesRange(const fem::AnalysisResult& result)
 {
-    //TODO finish this
     this->m_resultsRanges = result.ranges;
 }
 

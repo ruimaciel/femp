@@ -16,9 +16,9 @@ namespace fem {
 
 class Model; // forward declaration
 
-/*
-Base class for all classes which are used to describe specific FEM element types
-*/
+/**
+ * Base class for all classes which are used to describe specific FEM element types
+ */
 class BaseElement {
 public:
     using MatrixDataType = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>;
@@ -59,10 +59,9 @@ public:
         FE_TETRAHEDRON56 = 31 /* 56-node fifth order tetrahedron */
     };
 
-    //TODO to be removed
     /**
-    // introduced to facilitate merging BaseElement with Element. remove this
-    **/
+     * introduced to facilitate merging BaseElement with Element. remove this
+    */
     enum ElementFamily {
         EF_TRIANGLE = 0,
         EF_QUADRILATERAL = 1,
@@ -93,9 +92,9 @@ public:
     virtual unsigned int getDofAmount() const = 0;
 
     /**
-    return the number of nodes that an element of this particular type has
-    @return	the number of nodes
-    **/
+     * return the number of nodes that an element of this particular type has
+     * @return	the number of nodes
+     */
     virtual int getNodeAmount() const = 0;
 
     /**
@@ -140,30 +139,30 @@ public:
 
 public: //WARNING: BaseElement member functions are deprecated
     /**
-    Returns a list of quadrature rules
-    **/
+     * Returns a list of quadrature rules
+     */
     virtual std::vector<boost::tuple<fem::Point3D, double>> getStiffnessQuadratureRule() = 0;
     virtual std::vector<boost::tuple<fem::Point3D, double>> getDomainQuadratureRule() = 0;
 
 public: //WARNING: fem::Element member functions are deprecated
     /**
-    returns enum representing family type.
-    TODO: This member function was introduced to facilitate merging Element with BaseElement.  Remove after cleanup
-    **/
+     * returns enum representing family type.
+     * TODO: This member function was introduced to facilitate merging Element with BaseElement.  Remove after cleanup
+     */
     virtual enum ElementFamily family() const = 0;
 
 protected: // WARNING: to be removed
     /**
-      Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
-      (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.double. Vetterling, and
-      B.P. Flannery
-    @param x	array of double, stores the abcissa of the integration Point
-    @param w	array of double, stores the weights of the integration points
-    @param n	the number of Gauss points
-    */
+     * Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
+     * (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.double. Vetterling, and
+     * B.P. Flannery
+     * @param x	array of double, stores the abcissa of the integration Point
+     * @param w	array of double, stores the weights of the integration points
+     * @param n	the number of Gauss points
+     */
     void gauleg(double x[], double w[], int n);
 };
 
-} // namespace fem
+}	// namespace fem
 
 #endif

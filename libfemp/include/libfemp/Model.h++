@@ -22,7 +22,7 @@ namespace fem {
 
 /**
  * Represents a finite element model to be used to analyse static equilibrium problems
- **/
+ */
 class Model {
 private:
     int default_material; // used when adding elements
@@ -35,10 +35,14 @@ public:
 public:
     Model();
 
-    // clears the entire model
+    /**
+     * clears the entire model
+     */
     void clear();
 
-    // sets a node
+    /**
+     * Sets a node
+     */
     void setNode(size_t ref, fem::Point3D p);
 
     fem::Node& getNode(size_t ref);
@@ -47,19 +51,19 @@ public:
     void setDefaultMaterial(int material) { default_material = material; }
 
     /**
-    returns the number of elements which form this model
-    **/
+     * returns the number of elements which form this model
+     */
     std::vector<Element>::size_type numberOfElements() const;
 
     /**
-     * getter function for the element list
-     **/
+     * Getter function for the element list
+     */
     std::vector<Element> getElementList() const;
     Element getElementByIndex(size_t index) const;
 
     /**
-    Adds a new material to the list
-    **/
+     * Adds a new material to the list
+     */
     void pushMaterial(fem::Material&);
 
     std::vector<Material> getMaterialList() const;
@@ -67,11 +71,12 @@ public:
 
     void pushElement(fem::Element&);
 
-    /** Specifies new node restrictions affecting a node
-    @param node	a reference for a node contained in node_list
-    @param nr	the new node restrictions definition
-    @return	ERR_NONE if all went well, some other error if something went bad
-    **/
+    /**
+     * Specifies new node restrictions affecting a node
+     * @param node	a reference for a node contained in node_list
+     * @param nr	the new node restrictions definition
+     * @return	ERR_NONE if all went well, some other error if something went bad
+     */
     void pushNodeRestrictions(size_t node, fem::NodeRestrictions nr);
     void popNodeRestrictions(node_ref_t const& node);
 
@@ -79,26 +84,29 @@ public:
 
     NodeRestrictions getNodeRestrictionsByIndex(size_t index) const;
 
-    /** push a new load pattern into the load pattern stack
-    @param lp	the newly added load pattern
-    @return	ERR_NONE if all went well, some other error if something went bad
-    **/
+    /**
+     * Push a new load pattern into the load pattern stack
+     * @param lp	the newly added load pattern
+     * @return	ERR_NONE if all went well, some other error if something went bad
+     */
     void pushLoadPattern(fem::LoadPattern& lp);
 
     std::vector<LoadPattern> getLoadPatternList() const;
 
     std::vector<NodeGroup> getNodeGroups() const;
 
-    /** pushes a new node group to the node group list
-    @param	new_node_group	object of type fem::NodeGroup
-    **/
+    /**
+     * Pushes a new node group to the node group list
+     * @param	new_node_group	object of type fem::NodeGroup
+     */
     void pushNodeGroup(fem::NodeGroup& new_node_group);
 
     std::vector<ElementGroup> getElementGroups() const;
 
-    /** pushes a new element group to the element group list
-    @param	new_element_group	object of type fem::NodeGroup
-    **/
+    /**
+     * Pushes a new element group to the element group list
+     * @param	new_element_group	object of type fem::NodeGroup
+     */
     void pushElementGroup(fem::ElementGroup& new_element_group);
 
 private:

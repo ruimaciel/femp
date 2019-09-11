@@ -9,8 +9,8 @@
 #include <libfemp/Model.h++>
 
 /**
-Outputs the results which were calculated in a set of nodes in CSV format
-**/
+ * Outputs the results which were calculated in a set of nodes in CSV format
+ */
 class OutputResultsInNodesCSVVisitor
     : public ProjectVisitor {
 public:

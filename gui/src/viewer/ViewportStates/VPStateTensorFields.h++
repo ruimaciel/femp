@@ -14,9 +14,9 @@
 
 class BaseViewport;
 
-/*
-A pattern for the State pattern which is used to render the tension fields
-*/
+/**
+ * A pattern for the State pattern which is used to render the tension fields
+ */
 class VPStateTensorFields
     : public ViewportState {
 protected:
@@ -32,12 +32,10 @@ public:
     void populateScenegraph(BaseViewport* mv);
 
     /**
-          Configures the viewport to render the scene according to new_result
-         **/
+     * Configures the viewport to render the scene according to new_result
+     */
     void setAnalysisResult(fem::AnalysisResult& new_result);
     void setResultsRanges(fem::ResultsRanges<double>& ranges);
-
-    //void setDisplacementsScale(float new_scale);
 
     void keyPressEvent(BaseViewport* mv, QKeyEvent* event);
 

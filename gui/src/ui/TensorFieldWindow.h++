@@ -26,7 +26,8 @@ MDI window designed to represent a tensor field of a given analysis result
 class TensorFieldWindow
     : public MdiWindow,
       public WindowWithResults,
-      public BaseWindow {
+      public BaseWindow
+{
     Q_OBJECT
 
 protected:
@@ -58,14 +59,14 @@ public Q_SLOTS:
     void setAnalysisResult(fem::AnalysisResult& result);
 
     /**
-	Calls ResultsRangeDialog and sets m_results_ranges accordingly
-	**/
+     * Calls ResultsRangeDialog and sets m_results_ranges accordingly
+     */
     void setResultsRanges();
 
 Q_SIGNALS:
     /**
-	emits a signal to dump the results from a given set of project objets
-	**/
+     * Emits a signal to dump the results from a given set of project objets
+     */
     void dumpResultsFromSelection(fem::AnalysisResult* result);
 
 protected:

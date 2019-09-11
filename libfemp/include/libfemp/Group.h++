@@ -10,13 +10,13 @@
 namespace fem {
 
 /**
-Class intended to represent a group
-**/
+ * Class intended to represent a group
+ */
 class Group {
 public:
     /**
-	adds a new element to the list
-	**/
+     * Adds a new element to the list
+     */
     void pushElement(element_ref_t);
     void pushNode(node_ref_t);
 

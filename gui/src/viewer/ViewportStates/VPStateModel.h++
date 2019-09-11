@@ -14,9 +14,9 @@
 
 class BaseViewport;
 
-/*
-A pattern for the State pattern which is used to render the model space
-*/
+/**
+ * A pattern for the State pattern which is used to render the model space
+ */
 class VPStateModel
     : public ViewportState {
 protected:
@@ -32,16 +32,16 @@ public:
     void populateScenegraph(BaseViewport* viewport);
 
     /**
-        Tweaks the way the viewport is rendered according to the current selection
-        **/
+     * Tweaks the way the viewport is rendered according to the current selection
+     */
     void setSelection(Selection);
 
     void keyPressEvent(BaseViewport* viewport, QKeyEvent* event);
 
     /**
-        Sets the relevant policies to render the OpenGL triangles with a wireframe
-        This isn't implemented in ViewportStates which won't render Opaque objects
-        **/
+     * Sets the relevant policies to render the OpenGL triangles with a wireframe
+     * This isn't implemented in ViewportStates which won't render Opaque objects
+     */
     void setTrianglesVisible(bool const state);
 };
 

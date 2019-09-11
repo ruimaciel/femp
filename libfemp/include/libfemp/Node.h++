@@ -9,9 +9,10 @@ using node_ref_t = size_t;
 
 /**
  * Data type representing a finite element node
- **/
+ */
 class Node
-    : public Point3D {
+    : public Point3D
+{
 public:
     Node();
     Node(const Node&);

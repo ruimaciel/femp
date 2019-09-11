@@ -27,14 +27,14 @@ public:
     MdiWindow(QWidget* parent = nullptr);
 
     /**
-        Sets the toolbar which provides buttons to set camera angles
-        **/
+     * Sets the toolbar which provides buttons to set camera angles
+     */
     void createViewportToolbar();
     void createVisibilityToolbar();
 
     /**
-        Sets the colors which are used by the viewports
-        **/
+     * Sets the colors which are used by the viewports
+     */
     void setColors(ViewportColors& colors);
 
 signals:
@@ -48,8 +48,8 @@ public slots:
     void setViewportIso();
 
     /**
-        Sets the visibility of the nodes
-        **/
+     * Sets the visibility of the nodes
+     */
     void setNodeVisibility(const bool);
     void setNodeRestrictionsVisibility(const bool);
 
@@ -62,8 +62,15 @@ protected:
     void normalizeAngle(int* angle);
 
 public:
-    void showSelection(const Selection); // sets the viewport so that only the selected items are shown
-    void showAll(); // sets the viewport so that all scenegraph components are shown
+    /**
+     * Sets the viewport so that only the selected items are shown
+     */
+    void showSelection(const Selection);
+
+    /**
+     * Sets the viewport so that all scenegraph components are shown
+     */
+    void showAll();
 
     void updateNodeRestriction(size_t const, fem::NodeRestrictions const&);
 

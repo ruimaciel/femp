@@ -13,9 +13,10 @@
 namespace fem {
 
 /**
-This class defines a set of loads which are applied on the FEM model
-**/
-class LoadPattern {
+ * This class defines a set of loads which are applied on the FEM model
+ */
+class LoadPattern
+{
 private:
     std::string m_label; // this load pattern's label
 
@@ -27,35 +28,38 @@ public:
 
 public:
     /**
-	 * Class default constructor
-	 **/
+     * Class default constructor
+     */
     LoadPattern();
 
-    /** Clears all info contained in this load pattern object
-	**/
+    /**
+     * Clears all info contained in this load pattern object
+     */
     void clear();
 
-    /** checks if this load pattern has any load set **/
+    /**
+     * checks if this load pattern has any load set
+     */
     bool empty() const;
 
     /**
-	 * returns the label
-	 **/
+     * returns the label
+     */
     std::string getLabel() const;
 
     /**
-	 * sets the label
-	 **/
+     * sets the label
+     */
     void setLabel(std::string const& label);
 
     void addNodalLoad(size_t, Point3D);
     void addNodalDisplacement(size_t, Point3D);
 
     /**
-	sets the domain load for a given element
-	@param element	element that will get a new domain load definition
-	@param force_shape	a list of forces acting on each of the element's nodes
-	**/
+     * sets the domain load for a given element
+     * @param element	element that will get a new domain load definition
+     * @param force_shape	a list of forces acting on each of the element's nodes
+     */
     void addDomainLoad(size_t element, Point3D force);
 
     void addSurfaceLoad(SurfaceLoad* surfaceload);

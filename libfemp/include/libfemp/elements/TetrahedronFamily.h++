@@ -23,13 +23,13 @@ public:
     enum BaseElement::ElementFamily family() const;
 
     /**
-	 * Returns the total number of degrees of freedom
-	 **/
+     * Returns the total number of degrees of freedom
+     */
     virtual unsigned int getDofAmount() const;
 
     /**
-	Returns a list of
-	**/
+     * Returns a list of
+     */
     std::vector<boost::tuple<fem::Point3D, double>> getStiffnessQuadratureRule();
     std::vector<boost::tuple<fem::Point3D, double>> getDomainQuadratureRule();
 
@@ -37,6 +37,6 @@ protected:
     void generateQuadratureData();
 };
 
-}
+}   // namespace fem
 
 #endif

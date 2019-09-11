@@ -4,8 +4,8 @@
 namespace fem {
 
 /**
-Convenience structure to store the representation ranges for all quantities which are rendered
-**/
+ * Convenience structure to store the representation ranges for all quantities which are rendered
+ */
 template <typename Scalar>
 struct ResultsRanges {
     ResultsRanges();
@@ -85,6 +85,6 @@ void ResultsRanges<Scalar>::setZero()
     max_compression = 0;
 }
 
-} // namespace fem
+}	// namespace fem
 
 #endif

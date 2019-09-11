@@ -6,8 +6,8 @@
 namespace InputStates {
 
 /**
-Represents the initial state for the user input state machine
-**/
+ * Represents the initial state for the user input state machine
+ */
 class LeftDrag
     : public InputState {
 public:

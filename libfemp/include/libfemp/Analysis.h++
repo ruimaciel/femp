@@ -27,14 +27,16 @@ namespace fem {
 /**
  *TODO: these are placeholder member variables to help transition to new quadrature rules
  **/
-struct QuadratureRulesOptions {
+struct QuadratureRulesOptions
+{
     int stiffness_degree; // Quadrature rule degree to integrate stiffness matrices
     int domain_degree; // Quadrature rule degree to integrate domain loads
 };
 
 template <typename Scalar>
-class Analysis {
-public: //TODO: these are placeholder member variables to help transition to new quadrature rules
+class Analysis
+{
+public:
     QuadratureRulesOptions tri3;
     QuadratureRulesOptions tri6;
     QuadratureRulesOptions quad4;
@@ -66,94 +68,102 @@ public:
     };
 
 public:
-    /** sets up a FEM equation according to the info contained in the instance of this class
-	The struct FemEquation objects must already be resized to handle the model and initialized
-	@param model	a reference to a fem::Model object
-	@param lp	the load pattern
-	@param result	a pointer to a AnalysisResult object, where the run results will be stored
-	@return an error
-	**/
+    /**
+     * Sets up a FEM equation according to the info contained in the
+     * instance of this class.
+     * The struct FemEquation objects must already be resized to handle the
+     * model and initialized.
+     * @param model	a reference to a fem::Model object
+     * @param lp	the load pattern
+     * @param result	a pointer to a AnalysisResult object, where the run results will be stored
+     * @return an error
+     */
     enum Error buildEquation(Model& Model, const LoadPattern& lp, AnalysisResult& result, ProgressIndicatorStrategy& progress);
 
-    /** runs the analysis
-	@param model	a reference to a fem::Model object
-	@param lp	the load pattern
-	@param result	a pointer to a AnalysisResult object, where the run results will be stored
-	@return an error
-	**/
+    /**
+     * Runs the analysis
+     * @param model	a reference to a fem::Model object
+     * @param lp	the load pattern
+     * @param result	a pointer to a AnalysisResult object, where the run results will be stored
+     * @return an error
+     */
     virtual enum Error run(Model& model, LoadPattern& lp, AnalysisResult& result, ProgressIndicatorStrategy& progress) = 0;
 
     /**
-	 * generates the global stiffness matrix
-	 * @param model the model
-	 * @param result where the result
-	 * @param progress
-	 **/
+     * Generates the global stiffness matrix
+     * @param model the model
+     * @param result where the result
+     * @param progress
+     */
     enum Error generateGlobalStiffnessMatrix(Model& model, AnalysisResult& result, ProgressIndicatorStrategy& progress);
 
     /**
-	 * generates the global domain force vector contribution defined by a load pattern
-	 * @param model the model
-	 * @param lp the load pattern
-	 * @param result
-	 * @param progress
-	 **/
+     * Generates the global domain force vector contribution defined by a load pattern
+     * @param model the model
+     * @param lp the load pattern
+     * @param result
+     * @param progress
+     */
     enum Error generateGlobalDomainForceVector(Model& model, const LoadPattern& lp, AnalysisResult& result, ProgressIndicatorStrategy& progress);
 
     /**
-	 * generates the global surface force vector contribution defined by a load pattern
-	 * @param model the model
-	 * @param lp the load pattern
-	 * @param result
-	 * @param progress
-	 **/
+     * Generates the global surface force vector contribution defined by a
+     * load pattern.
+     * @param model the model
+     * @param lp the load pattern
+     * @param result
+     * @param progress
+     */
     enum Error generateGlobalSurfaceForceVector(Model& model, const LoadPattern& lp, AnalysisResult& result, ProgressIndicatorStrategy& progress);
 
     /**
-	 * generates the global point force vector contribution defined by a load pattern
-	 * @param model the model
-	 * @param lp the load pattern
-	 * @param result
-	 * @param progress
-	 **/
+     * Generates the global point force vector contribution defined by a
+     * load pattern.
+     * @param model the model
+     * @param lp the load pattern
+     * @param result
+     * @param progress
+     */
     enum Error generateGlobalPointForceVector(Model& model, const LoadPattern& lp, AnalysisResult& result, ProgressIndicatorStrategy& progress);
 
     /**
-	Returns a map of all nodes which had any relative displacement
-	**/
+     * Returns a map of all nodes which had any relative displacement
+     */
     std::map<size_t, Node> displacementsMap(AnalysisResult& result);
 
     /**
-	Generates AnalysisResult::displacements, a map between a reference to a fem::Node object and a vector with it's displacements
-	**/
+     * Generates AnalysisResult::displacements, a map between a reference to a fem::Node object and a vector with it's displacements
+     */
     void generateDisplacementsMap(Model& model, AnalysisResult& result);
 
     /**
-	Calculates a set of recovered values in every node of each individual element
-	**/
+     * Calculates a set of recovered values in every node of each individual element
+     */
     enum Error recoverValues(Model& model, AnalysisResult& result);
 
     /**
-	Calculates a set of recovered values in every node of each individual element
-	**/
+     * Calculates a set of recovered values in every node of each individual element
+     */
     enum Error calculateStrainEnergy(Model& model, AnalysisResult& result);
 
 protected:
     /**
-	Builds the location matrix, a map between the node number and a 3-tuple holding the degree of freedom reference numbers for each degree of freedom, and resizes the temp FemEquation object
-	@param model	the reference of a fem::Model object
-	@param result	a fem::AnalysisResult object, where the information will be stored
-	**/
+     * Builds the location matrix, a map between the node number and a
+     * 3-tuple holding the degree of freedom reference numbers for each
+     * degree of freedom, and resizes the temp FemEquation object.
+     * @param model	the reference of a fem::Model object
+     * @param result	a fem::AnalysisResult object, where the information will be stored
+     */
     void makeLocationMatrix(Model& model, AnalysisResult& result);
 
     /**
-	Adds the elementary stiffness matrix and nodal force vector to the global counterparts following the location matrix
-	@param k_elem	elementary stiffness matrix
-	@param f_elem	elementary nodal force vector
-	@param lm	location matrix
-	@param f	FemEquation
-	@param element	reference to the element
-	**/
+     * Adds the elementary stiffness matrix and nodal force vector to the global counterparts following the location matrix
+     * @param k_elem	elementary stiffness matrix
+     * @param f_elem	elementary nodal force vector
+     * @param lm	location matrix
+     * @param f	FemEquation
+     * @param element	reference to the element
+     */
     void addElementaryStiffnessToGlobal(const Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>& k_elem, std::map<size_t, boost::tuple<size_t, size_t, size_t>>& lm, Element& element, AnalysisResult& result);
 };
 

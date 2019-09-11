@@ -14,9 +14,9 @@
 
 class BaseViewport;
 
-/*
-A pattern for the State pattern which is used to render the gradients (stresses, strains...)
-*/
+/**
+ * A pattern for the State pattern which is used to render the gradients (stresses, strains...)
+ */
 class VPStateGradients
     : public ViewportState {
 protected:
@@ -32,8 +32,8 @@ public:
     void populateScenegraph(BaseViewport* mv);
 
     /**
-          Configures the viewport to render the scene according to new_result
-         **/
+     * Configures the viewport to render the scene according to new_result
+     */
     void setAnalysisResult(fem::AnalysisResult& new_result);
 
     void setResultsRanges(fem::ResultsRanges<double>& ranges);
@@ -41,8 +41,8 @@ public:
     void setDisplacementsScale(float new_scale);
 
     /**
-        Tweaks the way the viewport is rendered according to the current selection
-        **/
+     * Tweaks the way the viewport is rendered according to the current selection
+     */
     void setSelection(Selection);
 
     void keyPressEvent(BaseViewport* mv, QKeyEvent* event);

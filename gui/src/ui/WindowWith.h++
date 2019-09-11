@@ -8,9 +8,10 @@ class Project;
 }
 
 /**
-Base class that defines the interface for all WindowWith classes
-**/
-class WindowWith {
+ * Base class that defines the interface for all WindowWith classes
+ */
+class WindowWith
+{
 public:
     virtual ~WindowWith();
     virtual void createMenuBar(QMainWindow*, QMenuBar*);

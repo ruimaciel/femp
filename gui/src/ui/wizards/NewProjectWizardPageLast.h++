@@ -4,13 +4,16 @@
 #include "ui/ui_NewProjectWizardPageLast.h"
 #include <QWizardPage>
 
-class NewProjectWizardPageLast : public QWizardPage, public Ui_NewProjectWizardPageLast {
+class NewProjectWizardPageLast
+    : public QWizardPage
+    , public Ui_NewProjectWizardPageLast
+{
     Q_OBJECT
 
 public:
     NewProjectWizardPageLast();
 
-    void initializePage(); // needed to update the fields
+    void initializePage();
 };
 
 #endif

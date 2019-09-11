@@ -18,23 +18,23 @@ namespace fem {
 class Project {
 public:
     /**
-	 * clears the project
-	 **/
+     * clears the project
+     */
     void clear();
 
     /**
-	 * Adds the result of a new analysis process to the result list
-	 **/
+     * Adds the result of a new analysis process to the result list
+     */
     void pushAnalysisResult(fem::AnalysisResult& new_result);
 
     /**
-	 * returns a reference to the Project's model
-	 **/
+     * returns a reference to the Project's model
+     */
     Model& getModel();
 
     /**
-	 * Implements a Visitor design pattern
-	 **/
+     * Implements a Visitor design pattern
+     */
     void accept(ProjectVisitor& visitor);
 
 protected:

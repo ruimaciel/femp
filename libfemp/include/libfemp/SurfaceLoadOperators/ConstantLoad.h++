@@ -7,8 +7,8 @@
 namespace fem {
 
 /**
-Applies a constant load in relation to the global coordinate system
-**/
+ * Applies a constant load in relation to the global coordinate system
+ */
 class ConstantLoad
     : public SurfaceLoadOperator {
 protected:

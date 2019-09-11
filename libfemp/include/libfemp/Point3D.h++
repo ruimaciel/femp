@@ -24,14 +24,21 @@ public:
     void normalize(); // converts the vector to it's director vector (norm() == 1)
     Point3D director() const; // return the vector's director vector
 
-    void zero(); // assigns 0 to all the vector's values
+    /**
+     * Assigns 0 to all the vector's values
+     */
+    void zero();
 
-    // returns individual values from the vector
+    /**
+     * Returns individual values from the vector
+     */
     double x() const;
     double y() const;
     double z() const;
 
-    // sets individual vector values
+    /**
+     * Sets individual vector values
+     */
     void x(double val);
     void y(double val);
     void z(double val);
@@ -63,6 +70,6 @@ Point3D getNormalVector(Point3D& a, Point3D& b, Point3D& c);
 
 std::ostream& operator<<(std::ostream& out, const Point3D& p);
 
-} // namespace fem
+}	// namespace fem
 
 #endif

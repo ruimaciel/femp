@@ -7,13 +7,14 @@
 namespace fem {
 
 /**
-Class intended to represent a group of elements
-**/
-class ElementGroup {
+ * Represents a group of elements
+ */
+class ElementGroup
+{
 public:
     /**
-    adds a new element to the list
-    **/
+     * Adds a new element to the list
+     */
     void pushElement(size_t);
 
     // iterators

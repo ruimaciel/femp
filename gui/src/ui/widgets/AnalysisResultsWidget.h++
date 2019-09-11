@@ -11,8 +11,8 @@
 #include <ui/models/AnalysisResultsModel.h++>
 
 /**
-Widget used in MDI windows to display the results of a given analysis
-**/
+ * Widget used in MDI windows to display the results of a given analysis
+ */
 class AnalysisResultsWidget
     : public QWidget,
       private Ui::AnalysisResultsWidget {
@@ -30,8 +30,8 @@ public:
     AnalysisResultsWidget(fem::Project& project, QWidget* parent = nullptr);
 
     /**
-    Sets which project to represent
-    **/
+     * Sets which project to represent
+     */
     void setProjectResults(fem::AnalysisResult const& result);
 
 private Q_SLOTS:

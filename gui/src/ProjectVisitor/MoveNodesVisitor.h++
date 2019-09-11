@@ -10,8 +10,8 @@
 #include <libfemp/Point3D.h++>
 
 /**
-Performs a translation on a specific set of nodes
-**/
+ * Performs a translation on a specific set of nodes
+ */
 class MoveNodesVisitor
     : public ProjectVisitor {
 public:

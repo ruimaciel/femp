@@ -7,8 +7,8 @@
 Q_DECLARE_METATYPE(std::string); // needed to make QVariant to work with std::string
 
 /**
-Model class to be used in a model-view-controller pattern with Qt's widgets.
-**/
+ * Model class to be used in a model-view-controller pattern with Qt's widgets.
+ */
 class LoadPatternsModel
     : public QAbstractListModel {
     Q_OBJECT

@@ -12,9 +12,9 @@
 
 class BaseViewport;
 
-/*
-A pattern for the State pattern which is used to render the displacements
-*/
+/**
+ * A pattern for the State pattern which is used to render the displacements
+ */
 class VPStateDisplacements
     : public ViewportState {
 protected:
@@ -30,23 +30,23 @@ public:
     void populateScenegraph(BaseViewport* viewport);
 
     /**
-          Configures the viewport to render the scene according to new_result
-         **/
+     * Configures the viewport to render the scene according to new_result
+     */
     void setAnalysisResult(fem::AnalysisResult& new_result);
 
     void setDisplacementsScale(float new_scale);
 
     /**
-        Tweaks the way the viewport is rendered according to the current selection
-        **/
+     * Tweaks the way the viewport is rendered according to the current selection
+     */
     void setSelection(Selection);
 
     void keyPressEvent(BaseViewport* viewport, QKeyEvent* event);
 
     /**
-        Sets the relevant policies to render the OpenGL triangles with a wireframe
-        This isn't implemented in ViewportStates which won't render Opaque objects
-        **/
+     * Sets the relevant policies to render the OpenGL triangles with a wireframe
+     * This isn't implemented in ViewportStates which won't render Opaque objects
+     */
     void setTrianglesVisible(bool const state);
 };
 

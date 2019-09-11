@@ -16,13 +16,13 @@ public:
     ~DomainLoad();
 
     /**
-     * returns the force
-     **/
+     * Returns the force
+     */
     const Point3D& getForce() const;
 
     /**
      * Copy assignment operator
-     **/
+     */
     DomainLoad& operator=(DomainLoad const& copied);
 };
 

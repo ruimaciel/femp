@@ -7,14 +7,14 @@
 namespace fem {
 
 /**
-Abstract base class for an operator which is applied to a surface load
-**/
-
-class SurfaceLoadOperator {
+ * Abstract base class for an operator which is applied to a surface load
+ */
+class SurfaceLoadOperator
+{
 public:
     /**
-	functor
-	**/
+     * functor
+     */
     virtual void operator()(fem::SurfaceLoad& surface_load, fem::Model& model) = 0;
 };
 

@@ -19,14 +19,14 @@ public:
     NodeRestrictions(const fem::node_ref_t& node_reference, const fem::node_restriction_ref_t& node_restrictions_reference, fem::NodeRestrictions& node_restrictions, DisplacementsRepresentationPolicy* displacements);
     ~NodeRestrictions();
 
-    /*
-  Renders this node
-  */
+    /**
+     * Renders this node
+     */
     void paintGL(ViewportData& data, ViewportColors& colors);
 
-    /*
-  Visitor pattern method
-  */
+    /**
+     * Visitor pattern method
+     */
     void accept(Operation::OperationsVisitor& visitor);
 
 protected:

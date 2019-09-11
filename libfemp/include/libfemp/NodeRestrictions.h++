@@ -7,7 +7,7 @@ using node_restriction_ref_t = unsigned int;
 
 /**
  * Prescribes a zero displacement on a degree of freedom
- **/
+ */
 class NodeRestrictions {
 public:
     enum Type { NR_INVALID,
@@ -31,19 +31,20 @@ public:
     bool dz() const { return d[2]; }
 
     /**
-    Returns true if there isn't a restriction set
-    **/
+     * Returns true if there isn't a restriction set
+     */
     bool free() const;
 
-    /** small hand-written parser to extract meaning from a small string of text
-      @param buffer a string of text
-      @return NR_DX if buffer is "dx", NR_DY if buffer is "dy", NR_DZ if buffer is "dz", NR_INVALID if otherwise
-     **/
+    /**
+     * Small hand-written parser to extract meaning from a small string of text
+     * @param buffer a string of text
+     * @return NR_DX if buffer is "dx", NR_DY if buffer is "dy", NR_DZ if buffer is "dz", NR_INVALID if otherwise
+     */
     static enum Type extractType(char* buffer);
 
     void reset();
 };
 
-}
+}	// namespace fem
 
 #endif

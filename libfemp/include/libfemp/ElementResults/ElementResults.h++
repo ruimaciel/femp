@@ -11,8 +11,8 @@
 namespace fem {
 
 /**
-Stores the results for each element
-**/
+ * Stores the results for each element
+ */
 struct ElementResults {
     std::vector<Strains<double>> strains; // strains calculated in each of the element's nodes
     std::vector<Stresses<double>> stresses; // stresses calculated in each of the element's nodes
@@ -28,6 +28,6 @@ struct ElementResults {
     void resize(unsigned int);
 };
 
-} // namespace fem
+}	// namespace fem
 
 #endif

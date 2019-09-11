@@ -9,9 +9,10 @@
 namespace fem {
 
 /**
-Class representing a linear elastic material
-**/
-class Material {
+ * Class representing a linear elastic material
+ */
+class Material
+{
 public:
     std::string label; // a label describing this material
 
@@ -21,9 +22,9 @@ public:
 
 public:
     /**
-    Generates a constitutive matrix
-    @return	a matrix type
-    **/
+     * Generates a constitutive matrix
+     * @return	a matrix type
+     */
     Eigen::Matrix<double, 6, 6> generateD() const;
 };
 

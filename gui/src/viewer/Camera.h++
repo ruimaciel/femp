@@ -3,7 +3,8 @@
 
 #include <libfemp/Point3D.h++>
 
-class Camera {
+class Camera
+{
 public:
     void setCenter(double x, double y, double z);
 
@@ -12,9 +13,9 @@ public:
     void reset();
 
     /**
-  This routine is to be used at the start of the main opengl rendering routine
-  it calls opengl routines to position the camera relative to the scene
-  **/
+     * This routine is to be used at the start of the main opengl rendering routine
+     * it calls opengl routines to position the camera relative to the scene
+     */
     void reposition();
 
     fem::Point3D getCenter() const;

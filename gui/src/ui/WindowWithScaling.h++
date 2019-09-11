@@ -12,16 +12,16 @@
 #include "WindowWith.h++"
 
 /**
-Provides a window with a toolbar which sets a scale
-**/
+ * Provides a window with a toolbar which sets a scale
+ */
 class WindowWithScaling
     : public WindowWith {
 public:
     void createToolbar(QMainWindow* parent, fem::Project& results);
 
     /**
-	Adds menu entries to the window's menu bar
-	**/
+     * Adds menu entries to the window's menu bar
+     */
     void createMenuBar(QMainWindow* parent, QMenuBar*);
 
 public slots:

@@ -9,13 +9,13 @@
 namespace fem {
 
 /**
-Class intended to represent a group of nodes
-**/
+ * Class intended to represent a group of nodes
+ */
 class NodeGroup {
 public:
     /**
-    adds a new node to the list
-    **/
+     * Adds a new node to the list
+     */
     void pushNode(size_t);
 
     // iterators
@@ -24,7 +24,9 @@ public:
     std::vector<size_t>::const_iterator begin();
     std::vector<size_t>::const_iterator end();
 
-    // clears the definition;
+    /**
+     * Clears the definition
+     */
     void clear();
 
     std::string getLabel() const;
@@ -35,5 +37,5 @@ protected:
     std::string m_label;
 };
 
-}
+}	// namespace fem
 #endif

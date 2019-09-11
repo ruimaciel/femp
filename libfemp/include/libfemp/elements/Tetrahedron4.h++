@@ -25,9 +25,9 @@ public:
 
 public: // merging with fem::Element
     /**
-		return the number of nodes that an element of this particular type has
-		@return the number of nodes
-		**/
+     * return the number of nodes that an element of this particular type has
+     * @return the number of nodes
+     */
     int getNodeAmount() const override;
 };
 

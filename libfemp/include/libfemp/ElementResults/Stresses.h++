@@ -4,8 +4,8 @@
 namespace fem {
 
 /**
-Structure intended to store the different stress values calculated from an element's node
-**/
+ * Structure intended to store the different stress values calculated from an element's node
+ */
 template <typename Scalar>
 struct Stresses {
     Scalar s11;
@@ -18,6 +18,6 @@ struct Stresses {
     void setZero() { s11 = s22 = s33 = s12 = s23 = s13 = 0; }
 };
 
-} // namespace fem
+}	// namespace fem
 
 #endif

@@ -23,9 +23,9 @@ public:
 
     virtual ~Solver() {}
 
-    /*
-	If necessary, initializes any data structure specific for this solver
-	*/
+    /**
+     * If necessary, initializes any data structure specific for this solver
+     */
     virtual enum Error initialize(Equation& equation, ProgressIndicatorStrategy* progress) = 0;
     virtual enum Error solve(Equation& equation, ProgressIndicatorStrategy* progress) = 0;
     virtual enum Error cleanup(Equation& equation, ProgressIndicatorStrategy* progress) = 0;

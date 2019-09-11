@@ -27,8 +27,8 @@
 namespace fem {
 
 /**
-Factory pattern which creates ElementResults objects based on a given element
-**/
+ * Factory pattern which creates ElementResults objects based on a given element
+ */
 class ElementResultsFactory {
 protected:
     Model* m_model;
@@ -50,19 +50,19 @@ public:
     ElementResultsFactory(Model&, AnalysisResult&);
 
     /**
-	Factory method that produces pointers to ElementResults objects from a given fem::Element object
-	**/
+     * Factory method that produces pointers to ElementResults objects from a given fem::Element object
+     */
     ElementResults* operator()(const fem::Element&);
 
 protected:
-    /** 
-	Taken from: 
-	http://www.mpi-hd.mpg.de/personalhomes/globes/3x3/
-
-	Article:
-	Efficient numerical diagonalization of hermitian 3x3 matrices
-	http://arxiv.org/abs/physics/0610206
-	**/
+    /**
+     * Taken from:
+     * http://www.mpi-hd.mpg.de/personalhomes/globes/3x3/
+     *
+     *  Article:
+     * Efficient numerical diagonalization of hermitian 3x3 matrices
+     * http://arxiv.org/abs/physics/0610206
+     */
     int dsyevj3(double A[3][3], double Q[3][3], double w[3]) const;
 };
 

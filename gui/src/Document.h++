@@ -5,10 +5,14 @@
 
 #include "Project.h++"
 
-class Document {
+class Document
+{
 public:
-    enum Type { TYPE_NONE,
-        TYPE_SOLID3D };
+    enum Type
+    {
+        TYPE_NONE,
+        TYPE_SOLID3D
+    };
 
 public:
     Document();
@@ -16,13 +20,14 @@ public:
 
     void clear(); // clears/frees everything
 
-    /*!
+    /**
      * Sets the file name
+     * @param file file name
      */
-    void setFileName(QString file); // points to a file
+    void setFileName(QString file);
     void clearFileName();
 
-    /*!
+    /**
      * Returns a QString with the file name
      */
     QString getFileName() const;
@@ -30,7 +35,7 @@ public:
 
     void setProjectType(Type type);
 
-    /*!
+    /**
      * Returns a reference to the Project object
      */
     fem::Project& getProject();

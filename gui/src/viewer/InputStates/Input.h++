@@ -10,8 +10,8 @@ class QMouseEvent;
 class InputState;
 
 /**
-Defines the interface for a state pattern that handles user input
-**/
+ * Defines the interface for a state pattern that handles user input
+ */
 class Input {
 protected:
     InputState* m_current_state;

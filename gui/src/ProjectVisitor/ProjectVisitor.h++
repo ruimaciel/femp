@@ -7,8 +7,8 @@
 #include <libfemp/Model.h++>
 
 /**
-Visitor class that is used to implement a Visitor design pattern for the Project class
-**/
+ * Visitor class that is used to implement a Visitor design pattern for the Project class
+ */
 class ProjectVisitor {
 public:
     virtual ~ProjectVisitor();

@@ -9,8 +9,8 @@
 #include "Project.h++"
 
 /**
-A set of objects contained in a given fem::Project object which have been selected
-**/
+ * A set of objects contained in a given fem::Project object which have been selected
+ */
 class Selection {
 public:
     void clear();
@@ -30,8 +30,6 @@ public:
     std::set<fem::node_ref_t> getNodeReferences() const;
 
 protected:
-    //TODO add support for a data type that specifies a selection range
-    //crude hack.  must implement some iterator of sorts
     std::set<fem::element_ref_t> m_elements_selected;
     std::set<fem::node_ref_t> m_nodes_selected;
 };

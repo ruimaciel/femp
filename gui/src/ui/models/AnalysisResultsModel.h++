@@ -10,8 +10,8 @@
 #include "../../Project.h++"
 
 /**
-Provides a Qt MVC model to use with QTableView widgets
-**/
+ * Provides a Qt MVC model to use with QTableView widgets
+ */
 class AnalysisResultsModel
     : public QAbstractTableModel {
     Q_OBJECT

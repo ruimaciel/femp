@@ -17,7 +17,7 @@ class Model; // forward declaration
 
 /**
  * Represents a pressure applied on a surface
- **/
+ */
 class SurfaceLoad
     : public Element {
 public:
@@ -28,7 +28,7 @@ public:
 
     /**
      * Returns a vector with the reference IDs of all nodes associated with the element
-     **/
+     */
     virtual std::vector<node_ref_t> getNodeReferences() const;
 
     virtual int getNodeAmount() const;
@@ -38,7 +38,7 @@ public:
     /**
      * Returns the force vector
      * @param model an object of type fem::Model
-     **/
+     */
     virtual Eigen::VectorXd getForceVector(Model& model) const;
 
     /**

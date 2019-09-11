@@ -10,8 +10,8 @@
 #include <libfemp/NodeRestrictions.h++>
 
 /**
-Sets node restraints in a specific set of nodes
-**/
+ * Sets node restraints in a specific set of nodes
+ */
 class SetNodeRestraintsVisitor
     : public ProjectVisitor {
 public:

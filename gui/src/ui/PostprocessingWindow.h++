@@ -28,11 +28,13 @@ class PostprocessingWindow
       public WindowWithResults,
       public WindowWithPostprocessing,
       public WindowWithScaling,
-      public BaseWindow {
+      public BaseWindow
+{
     Q_OBJECT
 
 protected:
-    enum AnalysisType {
+    enum AnalysisType
+    {
         A_DISPLACEMENT = 0,
         A_STRAIN_11,
         A_STRAIN_22,
@@ -70,14 +72,14 @@ public Q_SLOTS:
     void setAnalysisResult(fem::AnalysisResult& result);
 
     /**
-	Calls ResultsRangeDialog and sets m_results_ranges accordingly
-	**/
+     * Calls ResultsRangeDialog and sets m_results_ranges accordingly
+     */
     void setResultsRanges();
 
 Q_SIGNALS:
     /**
-	emits a signal to dump the results from a given set of project objets
-	**/
+     * Emits a signal to dump the results from a given set of project objets
+     */
     void dumpResultsFromSelection(fem::AnalysisResult* result);
 
 protected:

@@ -21,4 +21,4 @@ public:
 
 } // namespace femp
 
-#endif // EQUATION_H
+#endif // FEMP_EQUATION_H

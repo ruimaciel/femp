@@ -6,7 +6,10 @@
 #include <QString>
 #include <QWizardPage>
 
-class NewProjectWizardPage1 : public QWizardPage, public Ui::NewProjectWizardPage1 {
+class NewProjectWizardPage1
+    : public QWizardPage
+    , public Ui::NewProjectWizardPage1
+{
     Q_OBJECT
 
 public:
@@ -18,7 +21,7 @@ private:
     QString m_baseDir;
 
 private Q_SLOTS:
-    void setNewLocation(); // uses a QFileDialog to get a new project location
+    void setNewLocation();
 };
 
 #endif

@@ -9,8 +9,8 @@
 #include <libfemp/Element.h++>
 
 /**
-Provides a Qt MVC model to use with QTableView widgets to represent the stiffness matrix
-**/
+ * Provides a Qt MVC model to use with QTableView widgets to represent the stiffness matrix
+ */
 class MatrixModel
     : public QAbstractTableModel {
     Q_OBJECT

@@ -10,12 +10,13 @@
 #include <options/Options.h++>
 
 /**
-MDI window designed to represent the model
-**/
+ * MDI window designed to represent the model
+ */
 class ModelWindow
     : public MdiWindow,
       public WindowWithWireframe,
-      public BaseWindow {
+      public BaseWindow
+{
     Q_OBJECT
 
 public:

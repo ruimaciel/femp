@@ -5,8 +5,7 @@
 #include <string>
 
 /**
-  * class FemException
-  * This class is intended to be the base calss for all exceptions thrown by FEM routines
+  * The base calss for all exceptions thrown by FEM routines
   **/
 class FemException
     : public std::runtime_error {

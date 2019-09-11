@@ -23,23 +23,23 @@ public:
     GlobalDof(Node const& node, ParameterType& parameter_type);
 
     /**
-	 * returns the node associated with this GlobalDof
-	 **/
+     * Returns the node associated with this GlobalDof
+     */
     Node getNode() const;
 
-    /** 
-	 * returns the parameter type that defines this GlobalDof
-	 **/
+    /**
+     * Returns the parameter type that defines this GlobalDof
+     */
     ParameterType getParameterType() const;
 
     /**
-	 * Coppy assignment operator
-	 **/
+     * Coppy assignment operator
+     */
     GlobalDof& operator=(const GlobalDof& copied);
 
     /**
-	 * Relational order operator
-	 **/
+     * Relational order operator
+     */
     friend bool operator==(const GlobalDof& lhs, const GlobalDof& rhs);
     friend bool operator!=(const GlobalDof& lhs, const GlobalDof& rhs);
     friend bool operator<(const GlobalDof& lhs, const GlobalDof& rhs);

@@ -8,17 +8,20 @@
 #include "ViewportStates/VPStateModel.h++"
 
 /**
-The viewport class which is designed to render the model and enact changes on it
-**/
+ * The viewport class which is designed to render the model and enact changes on it
+ */
 class ModelViewport
-    : public BaseViewport {
+    : public BaseViewport
+{
     Q_OBJECT
 
 public:
     ModelViewport(fem::Project& project, QWidget* parent = nullptr);
     ~ModelViewport();
 
-    // set the viewport state
+    /**
+     * Set the viewport state
+     */
     void showModel();
 
 protected:

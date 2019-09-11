@@ -51,23 +51,23 @@ public:
     QSize sizeHint() const;
 
     /**
-    Generic method to implement a state pattern to render variants of the same model (i.e., XX tension, YY tension...)
-    This method:
-        - allocates memory for a new state object
-        - initializes the object
-        - generates the scenegraph
-    **/
+     * Generic method to implement a state pattern to render variants of the same model (i.e., XX tension, YY tension...)
+     * This method:
+     *   - allocates memory for a new state object
+     *   - initializes the object
+     *   - generates the scenegraph
+     */
     void setState(ViewportState* new_state);
 
     /**
-    Method to refresh the scene
-    **/
+     * Method to refresh the scene
+     */
     void refresh(void);
 
     /**
-    sets if the element nodes are visible
-    @param	state	true if nodes should be visible, false if they shouldn't be rendered
-    **/
+     * Sets if the element nodes are visible
+     * @param	state	true if nodes should be visible, false if they shouldn't be rendered
+     */
     void setNodeVisibility(bool const state);
     void setNodeRestrictionsVisibility(bool const state);
     void setSurfaceVisibility(bool const state);
@@ -82,25 +82,25 @@ public Q_SLOTS:
     void setPosition(double x, double y, double z);
 
     /**
-    Configures the current viewport to render new_result
-    **/
+     * Configures the current viewport to render new_result
+     */
     void setAnalysisResult(fem::AnalysisResult& new_result);
 
     void setDisplacementsScale(float scale);
 
     /**
-    Sets the visibility state of any scenegraph group of the current viewport state
-    **/
+     * Sets the visibility state of any scenegraph group of the current viewport state
+     */
     void setRenderGroupVisibility(SceneGraph::Groups group, bool state);
 
     /**
-    Renders only the current selection of elements
-    **/
+     * Renders only the current selection of elements
+     */
     void setViewSelection(Selection);
 
     /**
-    Extract the current pick ray and select all objects in the scene graph that are intersected
-    **/
+     * Extract the current pick ray and select all objects in the scene graph that are intersected
+     */
     void selectObjectsFromRay(fem::Point3D const& origin, fem::Point3D const& destination);
     void selectObjectsFromFrustum(std::array<fem::Point3D, 4> const& near, std::array<fem::Point3D, 4> const& far);
 

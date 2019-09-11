@@ -6,12 +6,11 @@
 
 #include <libfemp/Element.h++>
 
-/*
-Class intended to describe a surface belonging to at least one element
-*/
-
 namespace fem {
 
+/**
+ * Describes a surface belonging to at least one element
+ */
 class Surface {
 public:
     struct ReferencedElement {
@@ -22,26 +21,26 @@ public:
 
 public:
     /**
-	Sets this surface's properties
-	@param type	the type of surface
-	@param nodes	the nodes which define this surface
-	@return 	true if the number of nodes is compatible with the surface type, false otherwise
-	**/
+     * Sets this surface's properties
+     * @param type	the type of surface
+     * @param nodes	the nodes which define this surface
+     * @return 	true if the number of nodes is compatible with the surface type, false otherwise
+     */
     bool set(Element::Type& m_type, std::vector<size_t>& m_node_references);
 
     void pushElementReference(const size_t reference, const Element::Type& element_type, const unsigned char surface);
 
     /**
-	@return		true if it's an internal surface, false if it's an external surface
-	**/
+     * @return		true if it's an internal surface, false if it's an external surface
+     */
     bool internal();
     bool external();
 
     Element::Type getType();
 
     /**
-	@return	true if the number of nodes is compatible with the surface type
-	**/
+     * @return	true if the number of nodes is compatible with the surface type
+     */
     bool compatible(const Element::Type& m_type, std::vector<size_t>& m_node_references);
 
     bool operator==(const Surface& other) const;

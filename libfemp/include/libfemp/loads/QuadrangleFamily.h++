@@ -22,13 +22,13 @@ public:
     virtual int getNodeAmount() const = 0;
 
     /**
-	 * Returns the total number of degrees of freedom
-	 **/
+     * Returns the total number of degrees of freedom
+     */
     virtual unsigned int getDofAmount() const;
 
     /**
-	Returns a list of quadrature rules
-	**/
+     * Returns a list of quadrature rules
+     */
     std::vector<quadrature::SurfaceRule::Point> getDomainQuadratureRule() const override;
 };
 

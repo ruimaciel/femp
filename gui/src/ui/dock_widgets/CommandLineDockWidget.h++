@@ -19,15 +19,15 @@ public Q_SLOTS:
     void standard_error(const QString&);
 
     /**
-      Receives log messages
-     **/
+     * Receives log messages
+     */
     void getMessage(QString);
     void getWarning(QString);
     void getError(QString);
 
     /**
-      Clears the log displayed in the widget window
-     **/
+     * Clears the log displayed in the widget window
+     */
     void clear();
 
     void commandEntered(void);

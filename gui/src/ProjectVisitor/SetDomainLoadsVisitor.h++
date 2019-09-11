@@ -10,8 +10,8 @@
 #include <libfemp/Model.h++>
 
 /**
-Sets the domain loads in a selection of elements
-**/
+ * Sets the domain loads in a selection of elements
+ */
 class SetDomainLoadsVisitor
     : public ProjectVisitor {
 public:

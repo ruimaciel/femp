@@ -13,10 +13,11 @@
 #include "ViewportStates/VPStateGradients.h++"
 
 /**
-QGLWidget subclass designed to represent any postprocessing being done to any given model's FEM solution.
-**/
+ * QGLWidget subclass designed to represent any postprocessing being done to any given model's FEM solution.
+ */
 class PostprocessingViewport
-    : public BaseViewport {
+    : public BaseViewport
+{
     Q_OBJECT
 
 public:
@@ -24,9 +25,9 @@ public:
     ~PostprocessingViewport();
 
     /**
-    Sets this viewport to represent a given analysis result
-    @param	result	an analysis result
-    **/
+     * Sets this viewport to represent a given analysis result
+     * @param	result	an analysis result
+     */
     void setAnalysisResult(fem::AnalysisResult& result);
 
     void setResultsRanges(fem::ResultsRanges<double>& ranges);

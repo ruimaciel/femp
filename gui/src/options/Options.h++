@@ -21,12 +21,12 @@ public:
 
     /**
      * returns the viewport colors
-     **/
+     */
     ViewportColors& getViewportColors();
 
     /**
      * returns the display options
-     **/
+     */
     DisplayOptions& getDisplayOptions();
 
     QDir getProjectOpenDirectory();

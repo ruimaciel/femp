@@ -9,8 +9,8 @@
 #include <libfemp/Model.h++>
 
 /**
-Outputs the results which were calculated in a set of nodes
-**/
+ * Outputs the results which were calculated in a set of nodes
+ */
 class OutputElementStatisticsVisitor
     : public ProjectVisitor {
 protected:

@@ -9,8 +9,8 @@
 #include "Selection.h++"
 
 /**
-MVC pattern which manages a list of all objects contained in a given fem::Project object which have been selected
-**/
+ * MVC pattern which manages a list of all objects contained in a given fem::Project object which have been selected
+ */
 class SelectionManager : public QObject {
     Q_OBJECT
 
@@ -35,9 +35,9 @@ public slots:
     void deselectNode(const fem::node_ref_t& ref);
 
     /**
-        returns a pointer to an object of type Selection which stores a set of references to selected objects
-        @return	an object of type Selection
-        **/
+     * returns a pointer to an object of type Selection which stores a set of references to selected objects
+     * @return	an object of type Selection
+     */
     Selection const& getSelection() const;
 
 protected:

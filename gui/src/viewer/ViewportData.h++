@@ -7,10 +7,12 @@
 #include "Camera.h++"
 #include <GL/gl.h> // for GLDouble definition
 
-/*
-Struct intended to encapsulate all viewport data to be used by all ViewportState subclasses
-The main purpose is to keep stuff such as camera info, zoom and window aspect ratio common to all viewport states
-*/
+/**
+ * Struct intended to encapsulate all viewport data to be used by all
+ * ViewportState subclasses.
+ * The main purpose is to keep stuff such as camera info, zoom and window
+ * aspect ratio common to all viewport states.
+ */
 struct ViewportData {
     ViewportData();
 

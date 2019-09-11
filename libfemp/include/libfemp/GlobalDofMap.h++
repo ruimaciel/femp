@@ -8,8 +8,8 @@
 namespace fem {
 
 /**
- * data structure that maps GlobalDof objects to a global DoF reference number
- **/
+ * Maps GlobalDof objects to a global DoF reference number
+ */
 class GlobalDofMap {
 private:
     struct MappingData {
@@ -20,18 +20,18 @@ private:
 
 public:
     /**
-	 * class constructor
-	 **/
+     * class constructor
+     */
     GlobalDofMap();
 
     /**
-	 * adds a GlobalDof to the index
-	 **/
+     * adds a GlobalDof to the index
+     */
     void pushGlobalDof(GlobalDof const& gdof);
 
     /**
-	 * Returns the index of a global dof
-	 **/
+     * Returns the index of a global dof
+     */
     size_t getIndex(GlobalDof const& gdof) const;
 };
 

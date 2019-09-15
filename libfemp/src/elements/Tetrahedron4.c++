@@ -10,7 +10,6 @@ namespace fem {
 Tetrahedron4::Tetrahedron4()
     : TetrahedronFamily()
 {
-    this->type = BaseElement::FE_TETRAHEDRON4;
     this->stiffness_degree = 1;
     this->domain_degree = 1;
 

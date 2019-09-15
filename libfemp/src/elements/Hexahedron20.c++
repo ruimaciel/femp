@@ -10,7 +10,6 @@ namespace fem {
 Hexahedron20::Hexahedron20()
     : HexahedronFamily()
 {
-    this->type = BaseElement::FE_HEXAHEDRON20;
     this->stiffness_degree = 3;
     this->domain_degree = 2;
 

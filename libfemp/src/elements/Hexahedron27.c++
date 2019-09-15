@@ -10,7 +10,6 @@ namespace fem {
 Hexahedron27::Hexahedron27()
     : HexahedronFamily()
 {
-    this->type = BaseElement::FE_HEXAHEDRON27;
     this->stiffness_degree = 3;
     this->domain_degree = 2;
 

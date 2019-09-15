@@ -7,7 +7,6 @@ namespace fem {
 Prism18::Prism18()
     : PrismFamily()
 {
-    this->type = BaseElement::FE_PRISM18;
     this->stiffness_degree = 5;
     this->domain_degree = 2;
 

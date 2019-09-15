@@ -22,7 +22,7 @@ BaseElement::getStiffnessMatrix(fem::Model& model)
     using namespace Eigen;
 
     Matrix<double, Dynamic, Dynamic> k_elem;
-    Matrix<double, Dynamic, Dynamic> B, Bt;
+    Matrix<double, Dynamic, Dynamic> B;
 
     // get the number of expected nodes
     const unsigned int nnodes = this->getNodeAmount();
@@ -39,7 +39,6 @@ BaseElement::getStiffnessMatrix(fem::Model& model)
     k_elem.resize(n_dofs, n_dofs);
 
     B.resize(6, n_dofs);
-    Bt.resize(n_dofs, 6);
 
     // initialize variables
     k_elem.setZero();
@@ -104,7 +103,7 @@ BaseElement::getStiffnessMatrix(fem::Model& model)
             B(5, 3 * n + 2) = dNdy;
         }
 
-        Bt = B.transpose();
+        auto Bt = B.transpose();
 
         // add this integration Point's contribution
         const double& weight = quadrature_point.get<1>();

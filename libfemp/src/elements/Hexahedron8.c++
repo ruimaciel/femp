@@ -10,7 +10,6 @@ namespace fem {
 Hexahedron8::Hexahedron8()
     : HexahedronFamily()
 {
-    this->type = BaseElement::FE_HEXAHEDRON8;
     this->stiffness_degree = 2;
     this->domain_degree = 1;
 

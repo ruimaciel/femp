@@ -7,7 +7,6 @@ namespace fem {
 Prism6::Prism6()
     : PrismFamily()
 {
-    this->type = BaseElement::FE_PRISM6;
     this->stiffness_degree = 2;
     this->domain_degree = 2;
 

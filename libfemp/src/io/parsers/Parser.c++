@@ -1,4 +1,4 @@
-#include <libfemp/io/parsers/parser.h++>
+#include <libfemp/io/parsers/Parser.h++>
 
 #include <cstring> // for memcpy
 
@@ -8,6 +8,11 @@ Parser::Parser()
     pos = tok = limit = buffer;
     lex_state = 0;
     error.line_number = 0;
+}
+
+Parser::~Parser()
+{
+
 }
 
 void Parser::fill(std::istream& file)

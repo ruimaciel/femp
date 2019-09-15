@@ -62,7 +62,7 @@ set(libfemp_INCLUDES
 	include/libfemp/io/parsers/FemJsonParser.h++
 	include/libfemp/io/parsers/MshParser.h++
 	include/libfemp/io/parsers/fem_msh.h++
-	include/libfemp/io/parsers/parser.h++
+	include/libfemp/io/parsers/Parser.h++
 	include/libfemp/solvers/CholeskySolver.h++
 	include/libfemp/solvers/CGSolver.h++
 	include/libfemp/solvers/DenseCholeskySolver.h++
@@ -132,7 +132,7 @@ set(libfemp_SOURCES
 	src/LinearAnalysis.c++
 	src/io/parsers/FemJsonParser.c++
 	src/io/parsers/fem_msh.c++
-	src/io/parsers/parser.c++
+	src/io/parsers/Parser.c++
 	src/io/parsers/MshParser.c++
 	src/FemException.c++
 	src/GlobalDofMap.c++

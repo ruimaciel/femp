@@ -1,7 +1,7 @@
 #ifndef MSH_HPP
 #define MSH_HPP
 
-#include "parser.h++"
+#include "Parser.h++"
 
 #include <libfemp/Element.h++>
 #include <libfemp/SurfaceLoadOperators/SurfaceLoadOperator.h++>
@@ -124,8 +124,8 @@ protected:
     };
 
     /**
-	enum that provides a descriptive label to every parser rule
-	**/
+        enum that provides a descriptive label to every parser rule
+        **/
     enum ParserRule {
         PR_INVALID = 0, // default value for the map, which means that this is an error
         PR_START,
@@ -209,8 +209,8 @@ public:
     enum Error::Type operator()(std::istream& file, fem::Model& model);
 
     /**
-	sets the constant load operator, to state how to define the surface loads
-	**/
+        sets the constant load operator, to state how to define the surface loads
+        **/
     void setSurfaceLoadOperator(fem::SurfaceLoadOperator& surface_load_operator);
 
 protected:

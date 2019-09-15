@@ -9,64 +9,51 @@ NodeRestrictions::NodeRestrictions()
 
 NodeRestrictions::NodeRestrictions(const NodeRestrictions& copied)
 {
-    this->d[0] = copied.d[0];
-    this->d[1] = copied.d[1];
-    this->d[2] = copied.d[2];
+    this->m_dof[0] = copied.m_dof[0];
+    this->m_dof[1] = copied.m_dof[1];
+    this->m_dof[2] = copied.m_dof[2];
+}
+
+void NodeRestrictions::setdx()
+{
+    m_dof[0] = true;
+}
+
+void NodeRestrictions::setdy()
+{
+    m_dof[1] = true;
+}
+
+void NodeRestrictions::setdz()
+{
+    m_dof[2] = true;
+}
+
+bool NodeRestrictions::dx() const
+{
+    return m_dof[0];
+}
+
+bool NodeRestrictions::dy() const
+{
+    return m_dof[1];
+}
+
+bool NodeRestrictions::dz() const
+{
+    return m_dof[2];
 }
 
 bool NodeRestrictions::free() const
 {
-    return !(d[0] || d[1] || d[2]);
-}
-
-enum NodeRestrictions::Type
-NodeRestrictions::extractType(char* buffer)
-{
-    char* p = buffer;
-    switch (*p) {
-    case 'd':
-        p++;
-        switch (*p) {
-        case 'x':
-            p++;
-            if (*p == '\0')
-                return NR_DX;
-            else
-                return NR_INVALID;
-            break;
-
-        case 'y':
-            p++;
-            if (*p == '\0')
-                return NR_DY;
-            else
-                return NR_INVALID;
-            break;
-
-        case 'z':
-            p++;
-            if (*p == '\0')
-                return NR_DZ;
-            else
-                return NR_INVALID;
-            break;
-
-        default:
-            return NR_INVALID;
-        }
-        break;
-
-    default:
-        return NR_INVALID;
-        break;
-    }
+    return !(m_dof[0] || m_dof[1] || m_dof[2]);
 }
 
 void NodeRestrictions::reset()
 {
-    this->d[0] = false;
-    this->d[1] = false;
-    this->d[2] = false;
+    this->m_dof[0] = false;
+    this->m_dof[1] = false;
+    this->m_dof[2] = false;
 }
 
 } // namespace fem

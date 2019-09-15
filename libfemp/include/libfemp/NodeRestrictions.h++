@@ -10,41 +10,28 @@ using node_restriction_ref_t = unsigned int;
  */
 class NodeRestrictions {
 public:
-    enum Type { NR_INVALID,
-        NR_DX,
-        NR_DY,
-        NR_DZ };
-
-private:
-    bool d[3]; // specifies the node displacement restrictions along the XX, YY and ZZ axis
-
-public:
     NodeRestrictions();
     NodeRestrictions(const NodeRestrictions&);
 
-    void setdx() { d[0] = true; }
-    void setdy() { d[1] = true; }
-    void setdz() { d[2] = true; }
+    void setdx();
+    void setdy();
+    void setdz();
 
-    bool dx() const { return d[0]; }
-    bool dy() const { return d[1]; }
-    bool dz() const { return d[2]; }
+    bool dx() const;
+    bool dy() const;
+    bool dz() const;
 
     /**
      * Returns true if there isn't a restriction set
      */
     bool free() const;
 
-    /**
-     * Small hand-written parser to extract meaning from a small string of text
-     * @param buffer a string of text
-     * @return NR_DX if buffer is "dx", NR_DY if buffer is "dy", NR_DZ if buffer is "dz", NR_INVALID if otherwise
-     */
-    static enum Type extractType(char* buffer);
-
     void reset();
+
+private:
+    bool m_dof[3]; // specifies the node displacement restrictions along the XX, YY and ZZ axis
 };
 
-}	// namespace fem
+} // namespace fem
 
 #endif

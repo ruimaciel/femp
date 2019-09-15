@@ -4,8 +4,8 @@
 
 #include <libfemp/Model.h++>
 #include <libfemp/io/export/JsonExporter.h++>
-#include <libfemp/io/parsers/MshParser.h++>
-#include <libfemp/io/parsers/fem_msh.h++>
+#include <libfemp/io/import/MshParser.h++>
+#include <libfemp/io/import/fem_msh.h++>
 
 Document::Document()
 {

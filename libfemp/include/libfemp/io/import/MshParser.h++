@@ -1,7 +1,7 @@
 #ifndef MSH_HPP
 #define MSH_HPP
 
-#include "Parser.h++"
+#include <libfemp/io/import/Parser.h++>
 
 #include <libfemp/Element.h++>
 #include <libfemp/SurfaceLoadOperators/SurfaceLoadOperator.h++>

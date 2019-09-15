@@ -10,10 +10,10 @@ if(USES_RE2C)
 	message(STATUS "Adding re2c custom rules")
 	find_program(RE2C re2c REQUIRED)
 
-	add_custom_command( OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/src/io/parsers/FemJsonParser.c++
-		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/io/parsers/FemJsonParser.c++.re2c ${CMAKE_CURRENT_SOURCE_DIR}/include/libfemp/io/parsers/FemJsonParser.h++
+	add_custom_command( OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.c++
+		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.c++.re2c ${CMAKE_CURRENT_SOURCE_DIR}/include/libfemp/io/import/FemJsonParser.h++
 		COMMAND ${RE2C}
-		ARGS -i -T -o ${CMAKE_CURRENT_SOURCE_DIR}/src/io/parsers/FemJsonParser.c++ ${CMAKE_CURRENT_SOURCE_DIR}/src/io/parsers/FemJsonParser.c++.re2c
+		ARGS -i -T -o ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.c++ ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.c++.re2c
 		COMMENT "Generating re2c files"
 		)
 else(USES_RE2C)
@@ -59,10 +59,10 @@ set(libfemp_INCLUDES
 	include/libfemp/Element.h++
 	include/libfemp/LinearAnalysis.h++
 	include/libfemp/NodeGroup.h++
-	include/libfemp/io/parsers/FemJsonParser.h++
-	include/libfemp/io/parsers/MshParser.h++
-	include/libfemp/io/parsers/fem_msh.h++
-	include/libfemp/io/parsers/Parser.h++
+	include/libfemp/io/import/FemJsonParser.h++
+	include/libfemp/io/import/MshParser.h++
+	include/libfemp/io/import/fem_msh.h++
+	include/libfemp/io/import/Parser.h++
 	include/libfemp/solvers/CholeskySolver.h++
 	include/libfemp/solvers/CGSolver.h++
 	include/libfemp/solvers/DenseCholeskySolver.h++
@@ -130,10 +130,10 @@ set(libfemp_SOURCES
 	src/Material.c++
 	src/Model.c++
 	src/LinearAnalysis.c++
-	src/io/parsers/FemJsonParser.c++
-	src/io/parsers/fem_msh.c++
-	src/io/parsers/Parser.c++
-	src/io/parsers/MshParser.c++
+	src/io/import/FemJsonParser.c++
+	src/io/import/fem_msh.c++
+	src/io/import/Parser.c++
+	src/io/import/MshParser.c++
 	src/FemException.c++
 	src/GlobalDofMap.c++
 	src/Group.c++

@@ -1,5 +1,5 @@
-#ifndef JSONEXPORTER_H
-#define JSONEXPORTER_H
+#ifndef FEM_IO_JSONEXPORTER_H
+#define FEM_IO_JSONEXPORTER_H
 
 #include <fstream>
 
@@ -13,4 +13,4 @@ public:
     void output(std::ostream& out, const fem::Model& model);
 };
 
-#endif // JSONEXPORTER_H
+#endif // FEM_IO_JSONEXPORTER_H

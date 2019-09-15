@@ -45,11 +45,10 @@
 #include <libfemp/Analysis.h++>
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/LinearAnalysis.h++>
+#include <libfemp/Model.h++>
 #include <libfemp/NodeRestrictions.h++>
-#include <libfemp/export/JsonExporter.h++>
-#include <libfemp/parsers/FemJsonParser.h++>
-#include <libfemp/parsers/MshParser.h++>
-#include <libfemp/parsers/fem_msh.h++>
+#include <libfemp/io/export/JsonExporter.h++>
+#include <libfemp/io/import/ModelImporterFactory.h++>
 #include <libfemp/solvers/CGSolver.h++>
 #include <libfemp/solvers/CholeskySolver.h++>
 
@@ -142,12 +141,12 @@ void MainWindow::openProject()
         return;
     }
 
-    FemJsonParser parser;
     fem::Model& model = m_document.getProject().getModel();
-    parser.parse(file, model);
+    auto parser = fem::ModelImporterFactory::makeFemJsonParser();
+    parser->parse(file, model);
 
-    switch (parser.error.code) {
-    case FemJsonParser::Error::ERR_OK:
+    switch (parser->error.code) {
+    case Parser::Error::ERR_OK:
         // setup the user interface
         m_document.setProjectType(Document::TYPE_SOLID3D); // nasty hack due to poor design
         this->setUserInterfaceAsOpened();
@@ -155,9 +154,9 @@ void MainWindow::openProject()
 
     default:
         qCritical() << __FILE__ << ":" << __LINE__;
-        qCritical() << QString("Error: %1").arg(QString::fromStdString(parser.error.message));
+        qCritical() << QString("Error: %1").arg(QString::fromStdString(parser->error.message));
 
-        QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
+        QMessageBox::critical(this, tr("Error"), parser->error.message.c_str());
         m_document.clear();
         break;
     }
@@ -193,19 +192,20 @@ void MainWindow::reopenProject()
         return;
     }
 
-    FemJsonParser parser;
-    parser.parse(file, femp_model);
+    // import the model by parsing the Fem.Json document
+    auto parser = fem::ModelImporterFactory::makeFemJsonParser();
+    parser->parse(file, femp_model);
 
-    switch (parser.error.code) {
-    case FemJsonParser::Error::ERR_OK:
+    switch (parser->error.code) {
+    case Parser::Error::ERR_OK:
         setUserInterfaceAsOpened();
         break;
 
     default:
         qCritical() << __FILE__ << ":" << __LINE__;
-        qCritical() << QString("Error: %1").arg(QString::fromStdString(parser.error.message));
+        qCritical() << QString("Error: %1").arg(QString::fromStdString(parser->error.message));
 
-        QMessageBox::critical(this, tr("Error"), parser.error.message.c_str());
+        QMessageBox::critical(this, tr("Error"), parser->error.message.c_str());
         m_document.clear();
         break;
     }

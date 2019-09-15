@@ -1,4 +1,4 @@
-#include <libfemp/export/JsonExporter.h++>
+#include <libfemp/io/export/JsonExporter.h++>
 
 void JsonExporter::output(std::ostream& out, const fem::Model& model)
 {

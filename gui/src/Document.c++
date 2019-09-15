@@ -3,9 +3,7 @@
 #include <QTextStream>
 
 #include <libfemp/Model.h++>
-#include <libfemp/export/JsonExporter.h++>
-#include <libfemp/parsers/MshParser.h++>
-#include <libfemp/parsers/fem_msh.h++>
+#include <libfemp/io/export/JsonExporter.h++>
 
 Document::Document()
 {

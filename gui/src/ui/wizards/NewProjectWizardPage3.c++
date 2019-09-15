@@ -7,6 +7,8 @@
 #include <libfemp/SurfaceLoadOperators/SurfaceNormalLoad.h++>
 #include <ui/dialogs/NewMaterialDialog.h++>
 
+#include <libfemp/io/import/ModelImporterFactory.h++>
+
 NewProjectWizardPage3::NewProjectWizardPage3(Document& document)
     : m_document(document)
 {
@@ -81,12 +83,10 @@ void NewProjectWizardPage3::loadMeshFile()
             return;
         }
 
-        fem::SurfaceNormalLoad o;
-        o.setLoadMagnitude(-1.0f);
+        auto m_parser = fem::ModelImporterFactory::makeMshParser();
 
-        m_parser.setSurfaceLoadOperator(o);
         // parse the file
-        switch (m_parser(file, femp_model)) {
+        switch (m_parser->parse(file, femp_model)) {
         case Parser::Error::ERR_OK: {
             // update the UI accordingly
             QString temp;
@@ -109,7 +109,7 @@ void NewProjectWizardPage3::loadMeshFile()
             // update the UI
             labelNodesNumber->setText("");
             labelElementsNumber->setText("");
-            labelError->setText(QString::fromStdString(m_parser.error.message));
+            labelError->setText(QString::fromStdString(m_parser->error.message));
 
             m_successfulImport = false;
             break;

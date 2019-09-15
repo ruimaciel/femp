@@ -1,6 +1,8 @@
 #ifndef MSH_HPP
 #define MSH_HPP
 
+#include <stack>
+
 #include <libfemp/io/import/Parser.h++>
 
 #include <libfemp/Element.h++>
@@ -11,6 +13,17 @@ class MshParser
     : public Parser {
 protected:
     fem::SurfaceLoadOperator* surface_load_operator;
+
+    char buffer[1024];
+
+    // helper variables that are used by the lexer
+    char* tok; // marks the start of the current token
+    char* pos; // marks the current position
+    char* marker;
+    char* limit; // marks the string limit
+    int lex_state; // lexer state, to avoid grammar ambiguities
+
+    void fill(std::istream& file);
 
 protected:
     enum TerminalToken {
@@ -204,13 +217,13 @@ protected:
 public:
     MshParser();
 
-    enum Error::Type parse(std::istream& file, fem::Model& model);
+    enum Error::Type parse(std::istream& file, fem::Model& model) override;
 
     enum Error::Type operator()(std::istream& file, fem::Model& model);
 
     /**
-        sets the constant load operator, to state how to define the surface loads
-        **/
+     * sets the constant load operator, to state how to define the surface loads
+     */
     void setSurfaceLoadOperator(fem::SurfaceLoadOperator& surface_load_operator);
 
 protected:

@@ -27,23 +27,6 @@ public:
     virtual ~Parser();
 
     virtual enum Error::Type parse(std::istream& file, fem::Model& model) = 0;
-
-protected:
-    std::stack<int> ss; // the LL parser symbol stack
-
-    char buffer[1024];
-
-    // helper variables that are used by the lexer
-    char* tok; // marks the start of the current token
-    char* pos; // marks the current position
-    char* marker;
-    char* limit; // marks the string limit
-    int lex_state; // lexer state, to avoid grammar ambiguities
-
-    void fill(std::istream& file);
-
-    // method which is used to set up the parser table
-    virtual void setParserTable() = 0;
 };
 
 #endif

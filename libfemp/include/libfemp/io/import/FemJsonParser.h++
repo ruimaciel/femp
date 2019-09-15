@@ -8,29 +8,18 @@
 #include <vector>
 
 #include <libfemp/Model.h++>
+#include <libfemp/io/import/Parser.h++>
 
 /**
  * Class developed to parse the fem.json file format
  */
-class FemJsonParser {
+class FemJsonParser : public Parser {
 public:
     FemJsonParser();
 
     void operator()(std::istream& file, fem::Model& model);
 
-    /**
-     * class intended to provide the error message
-     */
-    struct Error {
-        enum Type {
-            ERR_OK,
-            ERR_INVALID_ELEMENT_REFERENCE,
-            ERR_UNKNOWN
-        } code;
-        std::string message;
-    } error;
-
-    enum Error::Type parse(std::istream& file, fem::Model& model);
+    enum Error::Type parse(std::istream& file, fem::Model& model) override;
 
 protected:
     // temp variables

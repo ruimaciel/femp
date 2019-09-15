@@ -59,7 +59,6 @@ set(libfemp_INCLUDES
 	include/libfemp/Element.h++
 	include/libfemp/LinearAnalysis.h++
 	include/libfemp/NodeGroup.h++
-	include/libfemp/io/import/fem_msh.h++
 	include/libfemp/io/import/Parser.h++
 	include/libfemp/io/import/ModelImporterFactory.h++
 	include/libfemp/solvers/CholeskySolver.h++
@@ -132,7 +131,6 @@ set(libfemp_SOURCES
 	src/Model.c++
 	src/LinearAnalysis.c++
 	src/io/import/FemJsonParser.c++
-	src/io/import/fem_msh.c++
 	src/io/import/Parser.c++
 	src/io/import/ModelImporterFactory.c++
 	src/io/import/MshParser.c++

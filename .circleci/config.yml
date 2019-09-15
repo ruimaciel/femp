@@ -9,13 +9,13 @@ jobs:
       - run:
           name: Install base packages
           command: |
-            apt-get update
-            apt-get install -y cmake git gcc-7
+            sudo apt-get update
+            sudo apt-get install -y cmake git gcc-7
       - checkout
       - run:
           name: Install app dependencies
           command: |
-            apt-get install -y qtbase5-dev libqt5opengl5-dev libsuitesparse-dev libboost1.62-dev libeigen3-dev flex bison re2c
+            sudo apt-get install -y qtbase5-dev libqt5opengl5-dev libsuitesparse-dev libboost1.62-dev libeigen3-dev flex bison re2c
       - run:
           name: Prepare build directory
           command: |
@@ -30,7 +30,7 @@ jobs:
       - save_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - $CIRCLE_WORKING_DIRECTORY/build
+            - build
 
   test:
     docker:
@@ -41,8 +41,8 @@ jobs:
       - run:
           name: Install packages
           command: |
-            apt-get update
-            apt-get install -y cmake
+            sudo apt-get update
+            sudo apt-get install -y cmake
       - run:
           name: test  libfemp
           command: |

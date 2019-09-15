@@ -28,7 +28,7 @@ jobs:
             cd build
             make -j2
       - save_cache:
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          key: v1-repo-{{ arch }}-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - build
 
@@ -37,7 +37,7 @@ jobs:
       - image: circleci/buildpack-deps:bionic
     steps:
       - restore_cache:
-          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          key: v1-repo-{{ arch }}-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
       - run:
           name: Install packages
           command: |

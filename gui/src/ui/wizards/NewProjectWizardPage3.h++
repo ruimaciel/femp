@@ -7,8 +7,6 @@
 
 #include "Document.h++"
 
-#include <libfemp/io/import/MshParser.h++>
-
 /**
 New Project Wizard section on how to load a mesh from a file
 **/
@@ -20,7 +18,6 @@ class NewProjectWizardPage3
 
 private:
     bool m_successfulImport;
-    MshParser m_parser;
 
     Document& m_document;
 

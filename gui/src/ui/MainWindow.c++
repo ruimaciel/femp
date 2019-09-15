@@ -46,10 +46,10 @@
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/LinearAnalysis.h++>
 #include <libfemp/NodeRestrictions.h++>
-#include <libfemp/export/JsonExporter.h++>
-#include <libfemp/parsers/FemJsonParser.h++>
-#include <libfemp/parsers/MshParser.h++>
-#include <libfemp/parsers/fem_msh.h++>
+#include <libfemp/io/export/JsonExporter.h++>
+#include <libfemp/io/parsers/FemJsonParser.h++>
+#include <libfemp/io/parsers/MshParser.h++>
+#include <libfemp/io/parsers/fem_msh.h++>
 #include <libfemp/solvers/CGSolver.h++>
 #include <libfemp/solvers/CholeskySolver.h++>
 

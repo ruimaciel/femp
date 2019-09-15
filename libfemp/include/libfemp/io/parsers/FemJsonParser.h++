@@ -1,5 +1,5 @@
-#ifndef FEM_JSON_PARSER_HPP
-#define FEM_JSON_PARSER_HPP
+#ifndef FEM_IO_JSON_PARSER_HPP
+#define FEM_IO_JSON_PARSER_HPP
 
 #include <fstream>
 #include <map>

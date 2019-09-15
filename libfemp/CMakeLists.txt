@@ -10,10 +10,10 @@ if(USES_RE2C)
 	message(STATUS "Adding re2c custom rules")
 	find_program(RE2C re2c REQUIRED)
 
-	add_custom_command( OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/src/parsers/FemJsonParser.c++
-		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/parsers/FemJsonParser.c++.re2c ${CMAKE_CURRENT_SOURCE_DIR}/include/libfemp/parsers/FemJsonParser.h++
+	add_custom_command( OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/src/io/parsers/FemJsonParser.c++
+		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/io/parsers/FemJsonParser.c++.re2c ${CMAKE_CURRENT_SOURCE_DIR}/include/libfemp/io/parsers/FemJsonParser.h++
 		COMMAND ${RE2C}
-		ARGS -i -T -o ${CMAKE_CURRENT_SOURCE_DIR}/src/parsers/FemJsonParser.c++ ${CMAKE_CURRENT_SOURCE_DIR}/src/parsers/FemJsonParser.c++.re2c
+		ARGS -i -T -o ${CMAKE_CURRENT_SOURCE_DIR}/src/io/parsers/FemJsonParser.c++ ${CMAKE_CURRENT_SOURCE_DIR}/src/io/parsers/FemJsonParser.c++.re2c
 		COMMENT "Generating re2c files"
 		)
 else(USES_RE2C)
@@ -48,7 +48,7 @@ set(libfemp_INCLUDES
 	include/libfemp/elements/Hexahedron8.h++
 	include/libfemp/elements/PrismFamily.h++
 	include/libfemp/ElementGroup.h++
-	include/libfemp/export/JsonExporter.h++
+	include/libfemp/io/export/JsonExporter.h++
 	include/libfemp/LoadPattern.h++
 	include/libfemp/Group.h++
 	include/libfemp/GlobalDof.h++
@@ -59,10 +59,10 @@ set(libfemp_INCLUDES
 	include/libfemp/Element.h++
 	include/libfemp/LinearAnalysis.h++
 	include/libfemp/NodeGroup.h++
-	include/libfemp/parsers/FemJsonParser.h++
-	include/libfemp/parsers/MshParser.h++
-	include/libfemp/parsers/fem_msh.h++
-	include/libfemp/parsers/parser.h++
+	include/libfemp/io/parsers/FemJsonParser.h++
+	include/libfemp/io/parsers/MshParser.h++
+	include/libfemp/io/parsers/fem_msh.h++
+	include/libfemp/io/parsers/parser.h++
 	include/libfemp/solvers/CholeskySolver.h++
 	include/libfemp/solvers/CGSolver.h++
 	include/libfemp/solvers/DenseCholeskySolver.h++
@@ -122,7 +122,7 @@ set(libfemp_SOURCES
 	src/elements/Prism15.c++
 	src/elements/Hexahedron27.c++
 	src/elements/PrismFamily.c++
-	src/export/JsonExporter.c++
+	src/io/export/JsonExporter.c++
 	src/GlobalDof.c++
 	src/Analysis.c++
 	src/Equation.c++
@@ -130,10 +130,10 @@ set(libfemp_SOURCES
 	src/Material.c++
 	src/Model.c++
 	src/LinearAnalysis.c++
-	src/parsers/FemJsonParser.c++
-	src/parsers/fem_msh.c++
-	src/parsers/parser.c++
-	src/parsers/MshParser.c++
+	src/io/parsers/FemJsonParser.c++
+	src/io/parsers/fem_msh.c++
+	src/io/parsers/parser.c++
+	src/io/parsers/MshParser.c++
 	src/FemException.c++
 	src/GlobalDofMap.c++
 	src/Group.c++

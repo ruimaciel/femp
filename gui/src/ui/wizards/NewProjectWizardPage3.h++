@@ -7,7 +7,7 @@
 
 #include "Document.h++"
 
-#include <libfemp/parsers/MshParser.h++>
+#include <libfemp/io/parsers/MshParser.h++>
 
 /**
 New Project Wizard section on how to load a mesh from a file

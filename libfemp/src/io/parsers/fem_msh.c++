@@ -1,10 +1,10 @@
-#include <libfemp/parsers/fem_msh.h++>
+#include <libfemp/io/parsers/fem_msh.h++>
 
 #include <assert.h>
 #include <stdio.h>
 
-#include "../lex.msh_yy.h++"
-#include "../msh.tab.h"
+#include "../../lex.msh_yy.h++"
+#include "../../msh.tab.h"
 
 enum FEM_PARSER_RETURN fem_model_import_msh(FILE* file, fem::Model& model)
 {

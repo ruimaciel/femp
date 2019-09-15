@@ -49,8 +49,6 @@
 #include <libfemp/NodeRestrictions.h++>
 #include <libfemp/io/export/JsonExporter.h++>
 #include <libfemp/io/import/ModelImporterFactory.h++>
-#include <libfemp/io/import/FemJsonParser.h++>
-#include <libfemp/io/import/MshParser.h++>
 #include <libfemp/io/import/fem_msh.h++>
 #include <libfemp/solvers/CGSolver.h++>
 #include <libfemp/solvers/CholeskySolver.h++>

@@ -11,7 +11,7 @@ if(USES_RE2C)
 	find_program(RE2C re2c REQUIRED)
 
 	add_custom_command( OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.c++
-		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.c++.re2c ${CMAKE_CURRENT_SOURCE_DIR}/include/libfemp/io/import/FemJsonParser.h++
+		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.c++.re2c ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.h++
 		COMMAND ${RE2C}
 		ARGS -i -T -o ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.c++ ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.c++.re2c
 		COMMENT "Generating re2c files"
@@ -59,8 +59,6 @@ set(libfemp_INCLUDES
 	include/libfemp/Element.h++
 	include/libfemp/LinearAnalysis.h++
 	include/libfemp/NodeGroup.h++
-	include/libfemp/io/import/FemJsonParser.h++
-	include/libfemp/io/import/MshParser.h++
 	include/libfemp/io/import/fem_msh.h++
 	include/libfemp/io/import/Parser.h++
 	include/libfemp/io/import/ModelImporterFactory.h++
@@ -97,6 +95,8 @@ set(libfemp_INCLUDES
 	)
 
 set(libfemp_HEADERS
+	src/io/import/FemJsonParser.h++
+	src/io/import/MshParser.h++
 	)
 
 set(libfemp_SOURCES

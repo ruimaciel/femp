@@ -1,4 +1,4 @@
-#include <libfemp/io/import/FemJsonParser.h++>
+#include "FemJsonParser.h++"
 
 #include <iostream>
 #include <string.h> // for memcpy

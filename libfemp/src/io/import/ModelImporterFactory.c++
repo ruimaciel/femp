@@ -1,7 +1,7 @@
 #include <libfemp/io/import/ModelImporterFactory.h++>
 
-#include <libfemp/io/import/MshParser.h++>
-#include <libfemp/io/import/FemJsonParser.h++>
+#include <io/import/MshParser.h++>
+#include <io/import/FemJsonParser.h++>
 
 #include <libfemp/SurfaceLoadOperators/SurfaceNormalLoad.h++>
 

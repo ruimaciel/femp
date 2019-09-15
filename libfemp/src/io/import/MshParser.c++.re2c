@@ -1,4 +1,4 @@
-#include <libfemp/io/import/MshParser.h++>
+#include "MshParser.h++"
 
 #include <iostream>	// for cerr
 #include <cstdlib>	// for strtol, strtod

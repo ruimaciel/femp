@@ -3,60 +3,48 @@
 
 #include <libfemp/Node.h++>
 
+namespace fem {
 
-namespace fem
-{
-
-
-enum class ParameterType
-{
-	dx,
-	dy,
-	dz
+enum class ParameterType {
+    dx,
+    dy,
+    dz
 };
-
 
 /**
  * Data type that represents a global degree-of-freedom (DoF)
  **/
-class GlobalDof
-{
+class GlobalDof {
 protected:
-	Node m_node;
-	ParameterType m_parameter_type;
+    Node m_node;
+    ParameterType m_parameter_type;
 
 public:
-	GlobalDof(Node const &node, ParameterType &parameter_type);
+    GlobalDof(Node const& node, ParameterType& parameter_type);
 
+    /**
+     * Returns the node associated with this GlobalDof
+     */
+    Node getNode() const;
 
-	/**
-	 * returns the node associated with this GlobalDof
-	 **/
-	Node getNode() const;
+    /**
+     * Returns the parameter type that defines this GlobalDof
+     */
+    ParameterType getParameterType() const;
 
+    /**
+     * Coppy assignment operator
+     */
+    GlobalDof& operator=(const GlobalDof& copied);
 
-	/** 
-	 * returns the parameter type that defines this GlobalDof
-	 **/
-	ParameterType getParameterType() const;
-
-
-	/**
-	 * Coppy assignment operator
-	 **/
-	GlobalDof & operator=(const GlobalDof & copied);
-
-
-	/**
-	 * Relational order operator
-	 **/
-	friend bool operator==(const GlobalDof &lhs, const GlobalDof &rhs);
-	friend bool operator!=(const GlobalDof &lhs, const GlobalDof &rhs);
-	friend bool operator<(const GlobalDof &lhs, const GlobalDof &rhs);
-
+    /**
+     * Relational order operator
+     */
+    friend bool operator==(const GlobalDof& lhs, const GlobalDof& rhs);
+    friend bool operator!=(const GlobalDof& lhs, const GlobalDof& rhs);
+    friend bool operator<(const GlobalDof& lhs, const GlobalDof& rhs);
 };
 
-
-}	// namespace fem
+} // namespace fem
 
 #endif

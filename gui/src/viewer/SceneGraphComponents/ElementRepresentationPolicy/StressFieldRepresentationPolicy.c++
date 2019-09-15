@@ -1,112 +1,83 @@
 #include "StressFieldRepresentationPolicy.h++"
 #include "StressField/StressFieldFactory.h++"
 
-#include <iostream>	// debugging purposes
-#include <limits>	// for infinite
-
 // Constructors/Destructors
 //
 
-StressFieldRepresentationPolicy::StressFieldRepresentationPolicy ( )
+StressFieldRepresentationPolicy::StressFieldRepresentationPolicy()
 {
     m_model = nullptr;
     m_result = nullptr;
     m_negative_principal_stress_visible = true;
     m_positive_principal_stress_visible = true;
 
-    m_diameter = std::numeric_limits<float>::infinity();	// initial value
+    m_diameter = std::numeric_limits<float>::infinity(); // initial value
 }
-
 
 //
 // Methods
 //
 
-void
-StressFieldRepresentationPolicy::tetra4 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy *)
+void StressFieldRepresentationPolicy::tetra4(fem::element_ref_t const& ref, fem::Element&, ViewportColors& color, DisplacementsRepresentationPolicy*)
 {
-    assert(m_model != nullptr);
-    assert(m_result != nullptr);
-
     m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
-
 
 /**
  */
-void
-StressFieldRepresentationPolicy::tetra10 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
+void StressFieldRepresentationPolicy::tetra10(fem::element_ref_t const& ref, fem::Element&, ViewportColors& color, DisplacementsRepresentationPolicy*)
 {
-    assert(m_model != nullptr);
-    assert(m_result != nullptr);
-
     m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
-
 
 /**
  */
-void
-StressFieldRepresentationPolicy::hexa8 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
+void StressFieldRepresentationPolicy::hexa8(fem::element_ref_t const& ref, fem::Element&, ViewportColors& color, DisplacementsRepresentationPolicy*)
 {
     m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
-
 
 /**
  */
-void
-StressFieldRepresentationPolicy::hexa20 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
+void StressFieldRepresentationPolicy::hexa20(fem::element_ref_t const& ref, fem::Element&, ViewportColors& color, DisplacementsRepresentationPolicy*)
 {
     m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
-
 
 /**
  */
-void
-StressFieldRepresentationPolicy::hexa27 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
+void StressFieldRepresentationPolicy::hexa27(fem::element_ref_t const& ref, fem::Element&, ViewportColors& color, DisplacementsRepresentationPolicy*)
 {
     m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
-
 
 /**
  */
-void
-StressFieldRepresentationPolicy::prism6 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
+void StressFieldRepresentationPolicy::prism6(fem::element_ref_t const& ref, fem::Element&, ViewportColors& color, DisplacementsRepresentationPolicy*)
 {
     m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
-
 
 /**
  */
-void
-StressFieldRepresentationPolicy::prism15 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
+void StressFieldRepresentationPolicy::prism15(fem::element_ref_t const& ref, fem::Element&, ViewportColors& color, DisplacementsRepresentationPolicy*)
 {
     m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
-
 
 /**
  */
-void
-StressFieldRepresentationPolicy::prism18 (fem::element_ref_t const &ref, fem::Element &, ViewportColors &color, DisplacementsRepresentationPolicy * /*displacements*/)
+void StressFieldRepresentationPolicy::prism18(fem::element_ref_t const& ref, fem::Element&, ViewportColors& color, DisplacementsRepresentationPolicy*)
 {
     m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
-
-void
-StressFieldRepresentationPolicy::setModel(fem::Model &model)
+void StressFieldRepresentationPolicy::setModel(fem::Model& model)
 {
     m_model = &model;
 }
 
-
-void
-StressFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult &result)
+void StressFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult& result)
 {
     m_result = &result;
 
@@ -114,30 +85,23 @@ StressFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult &result)
     generateData();
 }
 
-
-void
-StressFieldRepresentationPolicy::showNegativePrincipalStressesVisibility(bool state)
+void StressFieldRepresentationPolicy::showNegativePrincipalStressesVisibility(bool state)
 {
     m_negative_principal_stress_visible = state;
 }
 
-
-void
-StressFieldRepresentationPolicy::showPositivePrincipalStressesVisibility(bool state)
+void StressFieldRepresentationPolicy::showPositivePrincipalStressesVisibility(bool state)
 {
     m_positive_principal_stress_visible = state;
 }
 
-
-void
-StressFieldRepresentationPolicy::generateData()
+void StressFieldRepresentationPolicy::generateData()
 {
     assert(m_model != nullptr);
 
     StressFieldRepresentation::StressFieldFactory factory(m_diameter, *this->m_model, *this->m_result);
 
-    for( std::vector<fem::Element>::size_type n = 0; n < m_model->numberOfElements(); n++)
-    {
+    for (std::vector<fem::Element>::size_type n = 0; n < m_model->numberOfElements(); n++) {
         m_representation[n] = factory(m_model->element_list[n]);
     }
 
@@ -145,4 +109,3 @@ StressFieldRepresentationPolicy::generateData()
     m_max = factory.max();
     m_min = factory.min();
 }
-

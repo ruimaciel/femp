@@ -4,23 +4,21 @@
 #include <la/Matrix.h++>
 #include <la/Vector.h++>
 
-namespace fem
-{
+namespace fem {
 
-class Equation
-{
+class Equation {
 public:
-	Equation();
+    Equation();
 
-	lalib::Matrix<double, lalib::SparseDOK> K;
-	lalib::Vector<double> f;
-	lalib::Vector<double> d;
+    lalib::Matrix<double, lalib::SparseDOK> K;
+    lalib::Vector<double> f;
+    lalib::Vector<double> d;
 
 public:
-	size_t size() const;
-	void setProblemSize(size_t size);
+    size_t size() const;
+    void setProblemSize(size_t size);
 };
 
-}	// namespace femp
+} // namespace femp
 
-#endif // EQUATION_H
+#endif // FEMP_EQUATION_H

@@ -1,47 +1,40 @@
 #ifndef FEMP_GLOBAL_DOF_MAP_HPP
 #define FEMP_GLOBAL_DOF_MAP_HPP
 
-
 #include <map>
 
 #include <libfemp/GlobalDof.h++>
 
-namespace fem
-{
-
+namespace fem {
 
 /**
- * data structure that maps GlobalDof objects to a global DoF reference number
- **/
-class GlobalDofMap
-{
+ * Maps GlobalDof objects to a global DoF reference number
+ */
+class GlobalDofMap {
 private:
-	struct MappingData {
-		size_t	index;
-	};
+    struct MappingData {
+        size_t index;
+    };
 
-	std::map<GlobalDof, struct MappingData>	m_global_dof_map;
+    std::map<GlobalDof, struct MappingData> m_global_dof_map;
 
 public:
+    /**
+     * class constructor
+     */
+    GlobalDofMap();
 
-	/**
-	 * class constructor
-	 **/
-	GlobalDofMap();
+    /**
+     * adds a GlobalDof to the index
+     */
+    void pushGlobalDof(GlobalDof const& gdof);
 
-	/**
-	 * adds a GlobalDof to the index
-	 **/
-	void pushGlobalDof(GlobalDof const &gdof);
-
-	/**
-	 * Returns the index of a global dof
-	 **/
-	size_t getIndex(GlobalDof const &gdof) const;
-
+    /**
+     * Returns the index of a global dof
+     */
+    size_t getIndex(GlobalDof const& gdof) const;
 };
 
-
-}	// namespace fem
+} // namespace fem
 
 #endif

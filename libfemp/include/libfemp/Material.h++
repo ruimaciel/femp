@@ -1,39 +1,31 @@
 #ifndef FEMP_MATERIAL_HPP
 #define FEMP_MATERIAL_HPP
 
-#include <vector>
 #include <string>
+#include <vector>
 
-#include <Eigen/Core>
-
-namespace fem
-{
-
+namespace fem {
 
 /**
-Class representing a linear elastic material
-**/
-class Material
-{
+ * Class representing a linear elastic material
+ */
+class Material {
 public:
-    std::string label;	// a label describing this material
+    Material(std::string m_label, double youngsModulus, double poissonRatio);
 
-    double E, nu;	// linear elastic material
+    std::string getLabel() const;
+    double getYoungsModulus() const;
+    double getPoissonRatio() const;
 
-    double fy;	// elastic limit
+private:
+    std::string m_label; // a label describing this material
 
-public:
-    /**
-    Generates a constitutive matrix
-    @return	a matrix type
-    **/
-    Eigen::Matrix<double,6,6> generateD() const;
+    double m_E; // Young's modulus
+    double m_nu; // Poisson ratio
 };
-
 
 using material_ref_t = std::vector<Material>::size_type;
 
-
-}	// namespace fem
+} // namespace fem
 
 #endif

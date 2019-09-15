@@ -3,15 +3,13 @@
 
 #include "GradientFieldPolicy.h++"
 
-
 /**
 Test gradient field policy.  All values are constant
 **/
 class ConstantGradientFieldPolicy
-    : public GradientFieldPolicy
-{
+    : public GradientFieldPolicy {
 public:
-    float value;	// value which is set in all nodes
+    float value; // value which is set in all nodes
 
 public:
     ConstantGradientFieldPolicy();
@@ -19,12 +17,9 @@ public:
 protected:
     /** returns the gradient value for each result
     **/
-    float val(fem::element_ref_t const &ref, gradient_index_t const &p) const;
-    float maxVal(fem::ResultsRanges<double> const &) const;
-    float minVal(fem::ResultsRanges<double> const &) const;
-
+    float val(fem::element_ref_t const& ref, gradient_index_t const& p) const;
+    float maxVal(fem::ResultsRanges<double> const&) const;
+    float minVal(fem::ResultsRanges<double> const&) const;
 };
 
-
 #endif
-

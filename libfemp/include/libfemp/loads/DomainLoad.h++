@@ -1,35 +1,31 @@
 #ifndef FEMP_DOMAIN_LOAD_HPP
 #define FEMP_DOMAIN_LOAD_HPP
 
-#include <vector>
 #include <libfemp/Point3D.h++>
+#include <vector>
 
-namespace fem
-{
+namespace fem {
 
-class DomainLoad
-{
+class DomainLoad {
 public:
-    Point3D force;	// force value for the entire element
+    Point3D force; // force value for the entire element
 
 public:
     DomainLoad();
-    DomainLoad(const DomainLoad &);
+    DomainLoad(const DomainLoad&);
     ~DomainLoad();
 
-
     /**
-     * returns the force
-     **/
-    const Point3D & getForce() const;
-
+     * Returns the force
+     */
+    const Point3D& getForce() const;
 
     /**
      * Copy assignment operator
-     **/
-    DomainLoad& operator=(DomainLoad const &copied);
+     */
+    DomainLoad& operator=(DomainLoad const& copied);
 };
 
-}	// namespace fem
+} // namespace fem
 
 #endif

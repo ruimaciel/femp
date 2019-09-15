@@ -2,24 +2,18 @@
 
 #include <assert.h>
 
-#include <libfemp/Node.h++>
 #include <libfemp/AnalysisResult.h++>
+#include <libfemp/Node.h++>
 
-
-MoveNodesVisitor::MoveNodesVisitor(Selection const &selection, fem::Point3D const &translation)
-	: m_selection(selection)
+MoveNodesVisitor::MoveNodesVisitor(Selection const& selection, fem::Point3D const& translation)
+    : m_selection(selection)
 {
-	m_translation = translation;
+    m_translation = translation;
 }
 
-
-void
-MoveNodesVisitor::visit(fem::Model &model, std::vector<fem::AnalysisResult> &)
+void MoveNodesVisitor::visit(fem::Model& model, std::vector<fem::AnalysisResult>&)
 {
-	for(auto node: m_selection.getNodeReferences())
-	{
-		model.getNode(node) += m_translation;
-	}
+    for (auto node : m_selection.getNodeReferences()) {
+        model.getNode(node) += m_translation;
+    }
 }
-
-

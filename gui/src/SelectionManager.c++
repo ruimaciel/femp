@@ -1,55 +1,45 @@
 #include "SelectionManager.h++"
 
-
-void
-SelectionManager::setSelection(Selection const &selection)
+SelectionManager::~SelectionManager()
 {
-	m_selection = selection;
-
-	this->selection_changed.emit(selection);
 }
 
-
-void
-SelectionManager::clearSelection()
+void SelectionManager::setSelection(Selection const& selection)
 {
-	this->m_selection.clear();
+    m_selection = selection;
 
-	this->selection_cleared.emit();
+    emit selectionChanged(selection);
 }
 
-
-void
-SelectionManager::selectElement(const fem::element_ref_t &ref)
+void SelectionManager::clearSelection()
 {
-	m_selection.selectElement(ref);
+    this->m_selection.clear();
+
+    emit selectionCleared();
 }
 
-
-void
-SelectionManager::deselectElement(const fem::element_ref_t &ref)
+void SelectionManager::selectElement(const fem::element_ref_t& ref)
 {
-	m_selection.deselectElement(ref);
+    m_selection.selectElement(ref);
 }
 
-
-void
-SelectionManager::selectNode(const fem::node_ref_t &ref)
+void SelectionManager::deselectElement(const fem::element_ref_t& ref)
 {
-	m_selection.selectNode(ref);
+    m_selection.deselectElement(ref);
 }
 
-
-void
-SelectionManager::deselectNode(const fem::node_ref_t &ref)
+void SelectionManager::selectNode(const fem::node_ref_t& ref)
 {
-	m_selection.deselectNode(ref);
+    m_selection.selectNode(ref);
 }
 
+void SelectionManager::deselectNode(const fem::node_ref_t& ref)
+{
+    m_selection.deselectNode(ref);
+}
 
-Selection const &
+Selection const&
 SelectionManager::getSelection() const
 {
-	return m_selection;
+    return m_selection;
 }
-

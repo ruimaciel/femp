@@ -1,82 +1,59 @@
 #include <libfemp/NodeRestrictions.h++>
 
+namespace fem {
 
-namespace fem
+NodeRestrictions::NodeRestrictions()
 {
-
-NodeRestrictions:: NodeRestrictions()
-{
-	reset();
+    reset();
 }
 
-
-NodeRestrictions::NodeRestrictions(const NodeRestrictions &copied)
+NodeRestrictions::NodeRestrictions(const NodeRestrictions& copied)
 {
-	this->d[0] = copied.d[0];
-	this->d[1] = copied.d[1];
-	this->d[2] = copied.d[2];
+    this->m_dof[0] = copied.m_dof[0];
+    this->m_dof[1] = copied.m_dof[1];
+    this->m_dof[2] = copied.m_dof[2];
 }
 
-
-bool
-NodeRestrictions::free()	const
+void NodeRestrictions::setdx()
 {
-	return !(d[0] || d[1] || d[2]);
+    m_dof[0] = true;
 }
 
-
-enum NodeRestrictions::Type
-		NodeRestrictions::extractType(char *buffer)
+void NodeRestrictions::setdy()
 {
-	char *p = buffer;
-	switch(*p)
-	{
-	case 'd':
-		p++;
-		switch(*p)
-		{
-		case 'x':
-			p++;
-			if(*p == '\0')
-				return NR_DX;
-			else
-				return NR_INVALID;
-			break;
-
-		case 'y':
-			p++;
-			if(*p == '\0')
-				return NR_DY;
-			else
-				return NR_INVALID;
-			break;
-
-		case 'z':
-			p++;
-			if(*p == '\0')
-				return NR_DZ;
-			else
-				return NR_INVALID;
-			break;
-
-		default:
-			return NR_INVALID;
-		}
-		break;
-
-	default:
-		return NR_INVALID;
-		break;
-	}
+    m_dof[1] = true;
 }
 
-
-void
-NodeRestrictions::reset()
+void NodeRestrictions::setdz()
 {
-	this->d[0] = false;
-	this->d[1] = false;
-	this->d[2] = false;
+    m_dof[2] = true;
 }
 
-}	// namespace fem
+bool NodeRestrictions::dx() const
+{
+    return m_dof[0];
+}
+
+bool NodeRestrictions::dy() const
+{
+    return m_dof[1];
+}
+
+bool NodeRestrictions::dz() const
+{
+    return m_dof[2];
+}
+
+bool NodeRestrictions::free() const
+{
+    return !(m_dof[0] || m_dof[1] || m_dof[2]);
+}
+
+void NodeRestrictions::reset()
+{
+    this->m_dof[0] = false;
+    this->m_dof[1] = false;
+    this->m_dof[2] = false;
+}
+
+} // namespace fem

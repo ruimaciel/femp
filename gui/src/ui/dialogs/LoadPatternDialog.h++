@@ -1,24 +1,23 @@
-#ifndef LOADPATTERNDIALOG_HPP
-#define LOADPATTERNDIALOG_HPP
+#ifndef LOADPATTERN_DIALOG_HPP
+#define LOADPATTERN_DIALOG_HPP
 
-#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
 #include <QtWidgets/QDialog>
 #include <string>
 
 #include "ui_LoadPatternDialog.h"
+
 /**
-USAGE EXPLANATION
-**/
+ * Prompts the user to specify a name for a load pattern
+ */
 class LoadPatternDialog
-		: public QDialog, private Ui::LoadPatternDialog
-{
-	Q_OBJECT
+    : public QDialog,
+      private Ui::LoadPatternDialog {
+    Q_OBJECT
 
 public:
-	LoadPatternDialog(QWidget *parent = nullptr);
+    LoadPatternDialog(QWidget* parent = nullptr);
 
-
-	std::string getLabel() const;
+    std::string getLabel() const;
 };
 
 #endif

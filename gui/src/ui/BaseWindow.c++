@@ -1,16 +1,12 @@
 #include "BaseWindow.h++"
 
-
-BaseWindow::BaseWindow(QString const &label)
+BaseWindow::BaseWindow(QString const& label)
 {
-	this->m_windowLabel = label;
+    this->m_windowLabel = label;
 }
-
 
 QString
 BaseWindow::label() const
 {
-	return m_windowLabel;
+    return m_windowLabel;
 }
-
-

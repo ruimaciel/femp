@@ -2,44 +2,35 @@
 
 #include <libfemp/FemException.h++>
 
-
-namespace fem
-{
-
+namespace fem {
 
 GlobalDofMap::GlobalDofMap()
 {
 }
 
-
-void
-GlobalDofMap::pushGlobalDof(GlobalDof const &new_gdof)
+void GlobalDofMap::pushGlobalDof(GlobalDof const& new_gdof)
 {
-	struct MappingData new_data;
+    struct MappingData new_data;
 
-	// generates a new index value
-	new_data.index = this->m_global_dof_map.size();
+    // generates a new index value
+    new_data.index = this->m_global_dof_map.size();
 
-	std::pair<GlobalDof, MappingData> new_gdof_entry(new_gdof, new_data);
-	this->m_global_dof_map.insert(new_gdof_entry);
+    std::pair<GlobalDof, MappingData> new_gdof_entry(new_gdof, new_data);
+    this->m_global_dof_map.insert(new_gdof_entry);
 }
-
 
 size_t
-GlobalDofMap::getIndex(GlobalDof const &gdof) const
+GlobalDofMap::getIndex(GlobalDof const& gdof) const
 {
-	std::map<GlobalDof, MappingData>::const_iterator it;
-	it = this->m_global_dof_map.find(gdof);
+    std::map<GlobalDof, MappingData>::const_iterator it;
+    it = this->m_global_dof_map.find(gdof);
 
-	if(it == this->m_global_dof_map.end())
-	{
-		throw FemException("Invalid global dof");
-	}
+    if (it == this->m_global_dof_map.end()) {
+        throw FemException("Invalid global dof");
+    }
 
-	// return the current index
-	return it->second.index;
-
+    // return the current index
+    return it->second.index;
 }
 
-
-}	// namespace fem
+} // namespace fem

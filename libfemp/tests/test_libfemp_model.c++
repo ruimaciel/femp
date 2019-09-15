@@ -3,9 +3,10 @@
 
 #include <libfemp/Model.h++>
 
-namespace  {
+namespace {
 
-TEST(libfemp_model, Given_InitializedModel_When_NoElementWasAdded_Then_NumberOfElementsIsZero) {
+TEST(libfemp_model, Given_InitializedModel_When_NoElementWasAdded_Then_NumberOfElementsIsZero)
+{
 
     // Given
     fem::Model m;
@@ -16,7 +17,8 @@ TEST(libfemp_model, Given_InitializedModel_When_NoElementWasAdded_Then_NumberOfE
     EXPECT_EQ(m.numberOfElements(), 0);
 }
 
-TEST(libfemp_model, Given_InitializedModel_When_GetElementList_Then_ElementListSizeIsZero) {
+TEST(libfemp_model, Given_InitializedModel_When_GetElementList_Then_ElementListSizeIsZero)
+{
 
     // Given
     fem::Model m;
@@ -28,7 +30,8 @@ TEST(libfemp_model, Given_InitializedModel_When_GetElementList_Then_ElementListS
     EXPECT_EQ(elements.size(), 0);
 }
 
-TEST(libfemp_model, Given_InitializedModel_When_GetLoadPatternList_Then_LoadPatternListSizeIsZero) {
+TEST(libfemp_model, Given_InitializedModel_When_GetLoadPatternList_Then_LoadPatternListSizeIsZero)
+{
 
     // Given
     fem::Model m;
@@ -40,7 +43,8 @@ TEST(libfemp_model, Given_InitializedModel_When_GetLoadPatternList_Then_LoadPatt
     EXPECT_EQ(loadPatterns.size(), 0);
 }
 
-TEST(libfemp_model, Given_InitializedModel_When_GetElementGroups_Then_ElementGroupsSizeIsZero) {
+TEST(libfemp_model, Given_InitializedModel_When_GetElementGroups_Then_ElementGroupsSizeIsZero)
+{
 
     // Given
     fem::Model m;
@@ -52,7 +56,8 @@ TEST(libfemp_model, Given_InitializedModel_When_GetElementGroups_Then_ElementGro
     EXPECT_EQ(elementGroups.size(), 0);
 }
 
-TEST(libfemp_model, Given_InitializedModel_When_GetNodeGroups_Then_NodeGroupsSizeIsZero) {
+TEST(libfemp_model, Given_InitializedModel_When_GetNodeGroups_Then_NodeGroupsSizeIsZero)
+{
 
     // Given
     fem::Model m;
@@ -64,9 +69,10 @@ TEST(libfemp_model, Given_InitializedModel_When_GetNodeGroups_Then_NodeGroupsSiz
     EXPECT_EQ(nodeGroups.size(), 0);
 }
 
-}	// namespace
+} // namespace
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv)
+{
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

@@ -1,63 +1,46 @@
 #include "ISStart.h++"
 
-#include <iostream>
+#include <QDebug>
 
-#include "Input.h++"
 #include "../BaseViewport.h++"
+#include "Input.h++"
 
-namespace InputStates
+namespace InputStates {
+
+void Start::press(BaseViewport* viewport, QMouseEvent* event, Input* input)
 {
+    switch (event->buttons()) {
+    case Qt::LeftButton:
+        this->leftClick(viewport, event, input);
+        break;
 
-void 
-Start::press(BaseViewport *viewport, QMouseEvent *event, Input *input)
-{
-	// std::cerr << "Start::press(BaseViewport *viewport, QMouseEvent *event, Input *input)" << std::endl;
-	switch(event->buttons() )
-	{ 
-		case Qt::LeftButton:
-			this->leftClick(viewport, event, input);
-			break;
+    case Qt::RightButton:
+        this->rightClick(viewport, event, input);
+        break;
 
-		case Qt::RightButton:
-			this->rightClick(viewport, event, input);
-			break;
-
-		/*
-		case (Qt::LeftButton | Qt::RightButton):
-			std::cerr << "both" << std::endl;
-			break;
-		*/
-
-		default:
-			std::cerr << "other" << std::endl;
-			break;
-	}
+    default:
+        qCritical() << "other";
+        break;
+    }
 }
 
-
-void 
-Start::leftClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
+void Start::leftClick(BaseViewport* viewport, QMouseEvent* event, Input* input)
 {
-	fem::Point3D near;
-	//TODO rename this
-	near.x((float)event->x());
-	near.y((float)event->y());
-	viewport->state->setSelectionStart(near);
+    fem::Point3D near;
+    near.x((float)event->x());
+    near.y((float)event->y());
+    viewport->state->setSelectionStart(near);
 
-	// register place where mouse is clicked
-	viewport->viewport_data.lastPos = event->pos();
+    // register place where mouse is clicked
+    viewport->viewport_data.lastPos = event->pos();
 
-	input->changeState(&viewport->m_is_left_click);
+    input->changeState(&viewport->m_is_left_click);
 }
 
-
-void 
-Start::rightClick(BaseViewport *viewport, QMouseEvent *event, Input *input)
+void Start::rightClick(BaseViewport* viewport, QMouseEvent* event, Input* input)
 {
-	viewport->viewport_data.lastPos = event->pos(); // for the rotate
-	input->changeState(&viewport->m_is_right_click);
+    viewport->viewport_data.lastPos = event->pos(); // for the rotate
+    input->changeState(&viewport->m_is_right_click);
 }
 
-
 }
-

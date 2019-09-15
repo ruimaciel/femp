@@ -1,59 +1,49 @@
 #include <libfemp/AnalysisResult.h++>
 
-
 #include <iostream>
 
-
-namespace fem
-{
-
+namespace fem {
 
 AnalysisResult::AnalysisResult()
 {
-	this->clear();
+    this->clear();
 }
 
-
-AnalysisResult::AnalysisResult(const AnalysisResult &copied)
+AnalysisResult::AnalysisResult(const AnalysisResult& copied)
 {
-	this->equation = copied.equation;
+    this->equation = copied.equation;
 
-	this->lm = copied.lm;
+    this->lm = copied.lm;
 
-	this->displacements = copied.displacements;
+    this->displacements = copied.displacements;
 
-	this->results = copied.results;
+    this->results = copied.results;
 
-	this->ranges = copied.ranges;
+    this->ranges = copied.ranges;
 
-	this->energy = copied.energy;
-	this->volume = copied.volume;
+    this->energy = copied.energy;
+    this->volume = copied.volume;
 
-	this->elapsed_time = elapsed_time;
+    this->elapsed_time = elapsed_time;
 }
 
-
-void
-AnalysisResult::clear()
+void AnalysisResult::clear()
 {
-	equation = Equation();
+    equation = Equation();
 
-	lm.clear();
-	displacements.clear();
+    lm.clear();
+    displacements.clear();
 
-	for( typename std::map<element_ref_t, ElementResults *>::iterator i =  results.begin(); i!= results.end(); i++)
-	{
-		delete i->second;
-	}
-	results.clear();
+    for (typename std::map<element_ref_t, ElementResults*>::iterator i = results.begin(); i != results.end(); i++) {
+        delete i->second;
+    }
+    results.clear();
 
-	ranges.setZero();
+    ranges.setZero();
 
-	energy = 0;
-	volume = 0;
-	this->elapsed_time = 0;
+    energy = 0;
+    volume = 0;
+    this->elapsed_time = 0;
 }
 
-
-}	// namespace fem
-
+} // namespace fem

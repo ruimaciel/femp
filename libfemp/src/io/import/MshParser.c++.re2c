@@ -1,0 +1,871 @@
+#include "MshParser.h++"
+
+#include <iostream>	// for cerr
+#include <cstdlib>	// for strtol, strtod
+
+#include <boost/lexical_cast.hpp>
+
+
+MshParser::MshParser()
+{
+        setParserTable();
+
+        // set the operators
+        surface_load_operator = nullptr;
+}
+
+
+enum MshParser::Error::Type
+MshParser::parse(std::istream &file, fem::Model &model)
+{
+        ss.push(NT_START);	// initializes the symbol stack with  the start symbol
+
+        enum TerminalToken terminal_token = lexer(file);
+        std::cout << "TT_OPEN_MESH_FORMAT" << std::endl;
+
+        enum ParserRule parser_rule;	// debugging purposes only
+        int nonterminal_token;
+
+        // resets the error message
+        this->error.code = Error::ERR_OK;
+        this->error.message.clear();
+
+        // set the temp variable's default values
+        load_pattern.setLabel("Default MSH import load pattern");
+        //TODO set default material
+
+        while(!ss.empty())
+        {
+                if(terminal_token == ss.top())
+                {
+                        ss.pop();
+                        terminal_token = lexer(file);
+                        switch(terminal_token)
+                        {
+                                case TT_ERROR:
+                                        std::cout << "TT_ERROR" << std::endl;
+                                        break;
+                                case TT_OPEN_MESH_FORMAT:
+                                        std::cout << "TT_OPEN_MESH_FORMAT" << std::endl;
+                                        break;
+                                case TT_CLOSE_MESH_FORMAT:
+                                        std::cout << "TT_CLOSE_MESH_FORMAT" << std::endl;
+                                        break;
+                                case TT_OPEN_NODES:
+                                        std::cout << "TT_OPEN_NODES" << std::endl;
+                                        break;
+                                case TT_CLOSE_NODES:
+                                        std::cout << "TT_CLOSE_NODES" << std::endl;
+                                        break;
+                                case TT_OPEN_ELEMENTS:
+                                        std::cout << "TT_OPEN_ELEMENTS" << std::endl;
+                                        break;
+                                case TT_CLOSE_ELEMENTS:
+                                        std::cout << "TT_CLOSE_ELEMENTS" << std::endl;
+                                        break;
+                                case TT_OPEN_PHYSICAL_NAMES:
+                                        std::cout << "TT_OPEN_PHYSICAL_NAMES" << std::endl;
+                                        break;
+                                case TT_CLOSE_PHYSICAL_NAMES:
+                                        std::cout << "TT_CLOSE_PHYSICAL_NAMES" << std::endl;
+                                        break;
+                                case TT_OPEN_NODE_DATA:
+                                        std::cout << "TT_OPEN_NODE_DATA" << std::endl;
+                                        break;
+                                case TT_CLOSE_NODE_DATA:
+                                        std::cout << "TT_CLOSE_NODE_DATA" << std::endl;
+                                        break;
+                                case TT_OPEN_ELEMENT_DATA:
+                                        std::cout << "TT_OPEN_ELEMENT_DATA" << std::endl;
+                                        break;
+                                case TT_CLOSE_ELEMENT_DATA:
+                                        std::cout << "TT_CLOSE_ELEMENT_DATA" << std::endl;
+                                        break;
+                                case TT_OPEN_ELEMENT_NODE_DATA:
+                                        std::cout << "TT_OPEN_ELEMENT_NODE_DATA" << std::endl;
+                                        break;
+                                case TT_CLOSE_ELEMENT_NODE_DATA:
+                                        std::cout << "TT_CLOSE_ELEMENT_NODE_DATA" << std::endl;
+                                        break;
+                                case TT_INDEX:
+                                        std::cout << "TT_INDEX" << std::endl;
+                                        break;
+                                case TT_NUMBER:
+                                        std::cout << "TT_NUMBER" << std::endl;
+                                        break;
+                                case TT_ELEMENT_LINE2:
+                                        std::cout << "TT_ELEMENT_LINE2" << std::endl;
+                                        break;
+                                case TT_ELEMENT_TRIANGLE3:
+                                        std::cout << "TT_ELEMENT_TRIANGLE3" << std::endl;
+                                        break;
+                                case TT_ELEMENT_QUADRANGLE4:
+                                        std::cout << "TT_ELEMENT_QUADRANGLE4" << std::endl;
+                                        break;
+                                case TT_ELEMENT_TETRAHEDRON4:
+                                        std::cout << "TT_ELEMENT_TETRAHEDRON4" << std::endl;
+                                        break;
+                                case TT_ELEMENT_HEXAHEDRON8:
+                                        std::cout << "TT_ELEMENT_HEXAHEDRON8" << std::endl;
+                                        break;
+                                case TT_ELEMENT_PRISM6:
+                                        std::cout << "TT_ELEMENT_PRISM6" << std::endl;
+                                        break;
+                                case TT_ELEMENT_PYRAMID5:
+                                        std::cout << "TT_ELEMENT_PYRAMID5" << std::endl;
+                                        break;
+                                case TT_ELEMENT_LINE3:
+                                        std::cout << "TT_ELEMENT_LINE3" << std::endl;
+                                        break;
+                                case TT_ELEMENT_TRIANGLE6:
+                                        std::cout << "TT_ELEMENT_TRIANGLE6" << std::endl;
+                                        break;
+                                case TT_ELEMENT_QUADRANGLE9:
+                                        std::cout << "TT_ELEMENT_QUADRANGLE9" << std::endl;
+                                        break;
+                                case TT_ELEMENT_TETRAHEDRON10:
+                                        std::cout << "TT_ELEMENT_TETRAHEDRON10" << std::endl;
+                                        break;
+                                case TT_ELEMENT_HEXAHEDRON27:
+                                        std::cout << "TT_ELEMENT_HEXAHEDRON27" << std::endl;
+                                        break;
+                                case TT_ELEMENT_PRISM18:
+                                        std::cout << "TT_ELEMENT_PRISM18" << std::endl;
+                                        break;
+                                case TT_ELEMENT_PYRAMID14:
+                                        std::cout << "TT_ELEMENT_PYRAMID14" << std::endl;
+                                        break;
+                                case TT_ELEMENT_POINT:
+                                        std::cout << "TT_ELEMENT_POINT" << std::endl;
+                                        break;
+                                case TT_ELEMENT_QUADRANGLE8:
+                                        std::cout << "TT_ELEMENT_QUADRANGLE8" << std::endl; break;
+                                case TT_ELEMENT_HEXAHEDRON20:
+                                        std::cout << "TT_ELEMENT_HEXAHEDRON20" << std::endl;
+                                        break;
+                                case TT_ELEMENT_PRISM15:
+                                        std::cout << "TT_ELEMENT_PRISM15" << std::endl;
+                                        break;
+                                case TT_ELEMENT_PYRAMID13:
+                                        std::cout << "TT_ELEMENT_PYRAMID13" << std::endl;
+                                        break;
+                                case TT_ELEMENT_ITRIANGLE9:
+                                        std::cout << "TT_ELEMENT_ITRIANGLE9" << std::endl;
+                                        break;
+                                case TT_ELEMENT_TRIANGLE10:
+                                        std::cout << "TT_ELEMENT_TRIANGLE10" << std::endl;
+                                        break;
+                                case TT_ELEMENT_ITRIANGLE12:
+                                        std::cout << "TT_ELEMENT_ITRIANGLE12" << std::endl;
+                                        break;
+                                case TT_ELEMENT_TRIANGLE15:
+                                        std::cout << "TT_ELEMENT_TRIANGLE15" << std::endl;
+                                        break;
+                                case TT_ELEMENT_ITRIANGLE15:
+                                        std::cout << "TT_ELEMENT_ITRIANGLE15" << std::endl;
+                                        break;
+                                case TT_ELEMENT_TRIANGLE21:
+                                        std::cout << "TT_ELEMENT_TRIANGLE21" << std::endl;
+                                        break;
+                                case TT_ELEMENT_EDGE4:
+                                        std::cout << "TT_ELEMENT_EDGE4" << std::endl;
+                                        break;
+                                case TT_ELEMENT_EDGE5:
+                                        std::cout << "TT_ELEMENT_EDGE5" << std::endl;
+                                        break;
+                                case TT_ELEMENT_EDGE6:
+                                        std::cout << "TT_ELEMENT_EDGE6" << std::endl;
+                                        break;
+                                case TT_ELEMENT_TETRAHEDRON20:
+                                        std::cout << "TT_ELEMENT_TETRAHEDRON20" << std::endl;
+                                        break;
+                                case TT_ELEMENT_TETRAHEDRON35:
+                                        std::cout << "TT_ELEMENT_TETRAHEDRON35" << std::endl;
+                                        break;
+                                case TT_ELEMENT_TETRAHEDRON56:
+                                        std::cout << "TT_ELEMENT_TETRAHEDRON56" << std::endl;
+                                        break;
+                                case TT_0_TAGS:
+                                        std::cout << "TT_0_TAGS" << std::endl;
+                                        break;
+                                case TT_1_TAGS:
+                                        std::cout << "TT_1_TAGS" << std::endl;
+                                        break;
+                                case TT_2_TAGS:
+                                        std::cout << "TT_2_TAGS" << std::endl;
+                                        break;
+                                case TT_3_TAGS:
+                                        std::cout << "TT_3_TAGS" << std::endl;
+                                        break;
+                                case TT_EOL:
+                                        std::cout << "TT_EOL" << std::endl;
+                                        break;
+                                case TT_EOF:
+                                        std::cout << "TT_EOF" << std::endl;
+                                        break;
+                                case TT_VERSION_2_1:
+                                        std::cout << "TT_VERSION_2_1" << std::endl;
+                                        break;
+                                case TT_VERSION_2_2:
+                                        std::cout << "TT_VERSION_2_2" << std::endl;
+                                        break;
+                                case TT_MF_FILE_TYPE_ASCII:
+                                        std::cout << "TT_MF_FILE_TYPE_ASCII" << std::endl;
+                                        break;
+                                case TT_MF_DATA_SIZE:
+                                        std::cout << "TT_MF_DATA_SIZE" << std::endl;
+                                        break;
+                                case TT_UNKNOWN_TOKEN:
+                                        std::cout << "TT_UNKNOWN_TOKEN" << std::endl;
+                                        break;
+                                default:
+                                        std::cout << "default" << std::endl;
+                        }
+                }
+                else
+                {
+                        nonterminal_token = ss.top();
+                        ss.pop();
+                        parser_rule = table[(enum NonTerminalToken)nonterminal_token][terminal_token];
+                        switch(parser_rule)
+                        {
+                                case PR_START:
+                                        ss.push(TT_EOF);
+                                        ss.push(NT_DOCUMENT);
+                                        break;
+
+                                case PR_DOCUMENT:
+                                        ss.push(NT_ELEMENTS_FOLLOW);
+                                        ss.push(NT_ELEMENTS);
+                                        ss.push(NT_NODES);
+                                        ss.push(NT_HEADER);
+                                        break;
+
+                                case PR_HEADER:
+                                        /*
+                                        ss.push(TT_CLOSE_MESH_FORMAT);
+                                        ss.push(NT_MF_DATA_SIZE);
+                                        ss.push(NT_MF_FILE_TYPE);
+                                        */
+                                        ss.push(TT_EOL);
+                                        ss.push(TT_CLOSE_MESH_FORMAT);
+                                        ss.push(NT_MF_VERSION_NUMBER);
+                                        ss.push(TT_EOL);
+                                        ss.push(TT_OPEN_MESH_FORMAT);
+                                        break;
+
+                                case PR_MF_VERSION_NUMBER_2_1:
+                                        ss.push(TT_EOL);
+                                        ss.push(NT_MF_DATA_SIZE);
+                                        ss.push(NT_MF_FILE_TYPE);
+                                        ss.push(TT_VERSION_2_1);
+                                        break;
+
+                                case PR_MF_VERSION_NUMBER_2_2:
+                                        ss.push(TT_EOL);
+                                        ss.push(NT_MF_DATA_SIZE);
+                                        ss.push(NT_MF_FILE_TYPE);
+                                        ss.push(TT_VERSION_2_2);
+                                        break;
+
+                                case PR_MF_VERSION_NUMBER_ERROR:
+                                        this->error.code = Error::ERR_UNSUPPORTED_VERSION;
+                                        this->error.message = "Unsupported version";
+                                        return this->error.code;
+                                        break;
+
+                                case PR_MF_FILE_TYPE_ASCII:
+                                        ss.push(TT_MF_FILE_TYPE_ASCII);
+                                        break;
+
+                                case PR_MF_DATA_SIZE:
+                                        ss.push(TT_MF_DATA_SIZE);
+                                        break;
+
+                                // start parsing the nodes field
+                                case PR_NODES:
+                                        ss.push(TT_EOL);
+                                        ss.push(TT_CLOSE_NODES);
+                                        ss.push(NT_N_NODE_DEFINITION_FOLLOW);
+                                        ss.push(NT_N_NODE_DEFINITION);
+                                        ss.push(NT_N_NUMBER_OF_NODES);
+                                        ss.push(TT_EOL);
+                                        ss.push(TT_OPEN_NODES);
+                                        break;
+
+                                case PR_N_NUMBER_OF_NODES:
+                                        ss.push(TT_EOL);
+                                        ss.push(TT_INDEX);
+                                        break;
+
+                                case PR_N_NUMBER_OF_NODES_SET:
+                                        //TODO set limit to how many nodes have been parsed
+                                        index_list.pop_back();	// clear up the stack
+                                        break;
+
+                                case PR_N_NODE_DEFINITION:
+                                        ss.push(TT_EOL);
+                                        ss.push(NT_N_NODE_DEFINITION_SET);
+                                        ss.push(NT_COORDINATE);
+                                        ss.push(TT_INDEX);
+                                        break;
+
+                                case PR_N_NODE_DEFINITION_SET:
+                                        // set the node coordinates
+                                        node.x(float_list.front());
+                                        float_list.pop_front();
+                                        node.y(float_list.front());
+                                        float_list.pop_front();
+                                        node.z(float_list.front());
+                                        float_list.pop_front();
+
+                                        // set the node
+                                        model.setNode(index_list.back(), node);
+                                        index_list.pop_back();
+                                        break;
+
+                                case PR_N_NODE_DEFINITION_FOLLOW_1:
+                                        ss.push(NT_N_NODE_DEFINITION_FOLLOW);
+                                        ss.push(NT_N_NODE_DEFINITION);
+                                        break;
+
+                                case PR_N_NODE_DEFINITION_FOLLOW_2:
+                                        break;
+
+                                // start parsing the element field
+                                case PR_ELEMENTS:
+                                        ss.push(TT_EOL);
+                                        ss.push(NT_ELEMENTS_SET);
+                                        ss.push(TT_CLOSE_ELEMENTS);
+                                        ss.push(NT_E_ELEMENT_DEFINITION_FOLLOW);
+                                        ss.push(NT_E_ELEMENT_DEFINITION);
+                                        ss.push(NT_E_NUMBER_OF_ELEMENTS);
+                                        ss.push(TT_EOL);
+                                        ss.push(TT_OPEN_ELEMENTS);
+                                        break;
+
+                                case PR_E_NUMBER_OF_ELEMENTS:
+                                        //TODO set limit to how many elements have been parsed
+                                        ss.push(TT_EOL);
+                                        ss.push(NT_E_NUMBER_OF_ELEMENTS_SET);
+                                        ss.push(TT_INDEX);
+                                        break;
+
+                                case PR_E_NUMBER_OF_ELEMENTS_SET:
+                                        model.element_list.reserve(index_list.back());
+                                        //index_list.pop_back();
+                                        index_list.clear();
+                                        break;
+
+                                case PR_E_ELEMENT_DEFINITION:
+                                        ss.push(TT_EOL);
+                                        ss.push(NT_E_ELEMENT_TYPE);
+                                        ss.push(TT_INDEX);
+                                        break;
+
+                                case PR_E_ELEMENT_TRIANGLE3:
+                                        surface_load.type = fem::Element::FE_TRIANGLE3;
+                                        ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
+                                        for(int i = 0; i < 3; i++) ss.push(TT_INDEX);
+                                        ss.push(NT_E_TAGS);
+                                        ss.push(TT_ELEMENT_TRIANGLE3);
+                                        break;
+
+                                case PR_E_ELEMENT_TRIANGLE6:
+                                        surface_load.type = fem::Element::FE_TRIANGLE6;
+                                        ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
+                                        for(int i = 0; i < 6; i++) ss.push(TT_INDEX);
+                                        ss.push(NT_E_TAGS);
+                                        ss.push(TT_ELEMENT_TRIANGLE6);
+                                        break;
+
+                                case PR_E_ELEMENT_QUADRANGLE4:
+                                        surface_load.type = fem::Element::FE_QUADRANGLE4;
+                                        ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
+                                        for(int i = 0; i < 4; i++) ss.push(TT_INDEX);
+                                        ss.push(NT_E_TAGS);
+                                        ss.push(TT_ELEMENT_QUADRANGLE4);
+                                        break;
+
+                                case PR_E_ELEMENT_QUADRANGLE8:
+                                        surface_load.type = fem::Element::FE_QUADRANGLE8;
+                                        ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
+                                        for(int i = 0; i < 8; i++) ss.push(TT_INDEX);
+                                        ss.push(NT_E_TAGS);
+                                        ss.push(TT_ELEMENT_QUADRANGLE8);
+                                        break;
+
+                                case PR_E_ELEMENT_QUADRANGLE9:
+                                        ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
+                                        surface_load.type = fem::Element::FE_QUADRANGLE9;
+                                        for(int i = 0; i < 9; i++) ss.push(TT_INDEX);
+                                        ss.push(NT_E_TAGS);
+                                        ss.push(TT_ELEMENT_QUADRANGLE9);
+                                        break;
+
+                                case PR_E_ELEMENT_HEXAHEDRON8:
+                                        element.type = fem::Element::FE_HEXAHEDRON8;
+                                        ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+                                        for(int i = 0; i < 8; i++) ss.push(TT_INDEX);
+                                        ss.push(NT_E_TAGS);
+                                        ss.push(TT_ELEMENT_HEXAHEDRON8);
+                                        break;
+
+                                case PR_E_ELEMENT_HEXAHEDRON20:
+                                        element.type = fem::Element::FE_HEXAHEDRON20;
+                                        ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+                                        for(int i = 0; i < 20; i++) ss.push(TT_INDEX);
+                                        ss.push(NT_E_TAGS);
+                                        ss.push(TT_ELEMENT_HEXAHEDRON20);
+                                        break;
+
+                                case PR_E_ELEMENT_HEXAHEDRON27:
+                                        element.type = fem::Element::FE_HEXAHEDRON27;
+                                        ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+                                        for(int i = 0; i < 27; i++) ss.push(TT_INDEX);
+                                        ss.push(NT_E_TAGS);
+                                        ss.push(TT_ELEMENT_HEXAHEDRON27);
+                                        break;
+
+                                case PR_E_ELEMENT_TETRAHEDRON4:
+                                        element.type = fem::Element::FE_TETRAHEDRON4;
+                                        ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+                                        for(int i = 0; i < 4; i++) ss.push(TT_INDEX);
+                                        ss.push(NT_E_TAGS);
+                                        ss.push(TT_ELEMENT_TETRAHEDRON4);
+                                        break;
+
+                                case PR_E_ELEMENT_TETRAHEDRON10:
+                                        element.type = fem::Element::FE_TETRAHEDRON10;
+                                        ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+                                        for(int i = 0; i < 10; i++) ss.push(TT_INDEX);
+                                        ss.push(NT_E_TAGS);
+                                        ss.push(TT_ELEMENT_TETRAHEDRON10);
+                                        break;
+
+                                case PR_E_ELEMENT_PRISM6:
+                                        element.type = fem::Element::FE_PRISM6;
+                                        ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+                                        for(int i = 0; i < 6; i++) ss.push(TT_INDEX);
+                                        ss.push(NT_E_TAGS);
+                                        ss.push(TT_ELEMENT_PRISM6);
+                                        break;
+
+                                case PR_E_ELEMENT_PRISM15:
+                                        element.type = fem::Element::FE_PRISM15;
+                                        ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+                                        for(int i = 0; i < 15; i++) ss.push(TT_INDEX);
+                                        ss.push(NT_E_TAGS);
+                                        ss.push(TT_ELEMENT_PRISM15);
+                                        break;
+
+                                case PR_E_ELEMENT_PRISM18:
+                                        element.type = fem::Element::FE_PRISM18;
+                                        ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+                                        for(int i = 0; i < 18; i++) ss.push(TT_INDEX);
+                                        ss.push(NT_E_TAGS);
+                                        ss.push(TT_ELEMENT_PRISM18);
+                                        break;
+
+                                case PR_E_ELEMENT_TYPE_SET_ELEMENT:
+                                        index_list.pop_front();	// get rid of element index
+                                        index_list.pop_front();	// get rid of element type: nasty hack
+                                        element.nodes.assign(index_list.begin(), index_list.end());
+                                        index_list.clear();
+                                        model.pushElement(element);
+                                        break;
+
+                                case PR_E_ELEMENT_TYPE_SET_FORCE:
+                                        index_list.pop_front();	// get rid of element index
+                                        index_list.pop_front();	// get rid of element type: nasty hack
+                                        if(surface_load_operator)
+                                        {
+                                                element.nodes.assign(index_list.begin(), index_list.end());
+
+                                                index_list.clear();
+
+                                                fem::SurfaceLoad * load = fem::SurfaceLoad::makeSurfaceLoad(&element);
+
+                                                //TODO finish this
+                                                (*surface_load_operator)(*load, model);
+
+                                                load_pattern.addSurfaceLoad(load);
+                                        }
+                                        break;
+
+                                case PR_E_ELEMENT_DEFINITION_FOLLOW_1:
+                                        ss.push(NT_E_ELEMENT_DEFINITION_FOLLOW);
+                                        ss.push(NT_E_ELEMENT_DEFINITION);
+                                        break;
+
+                                case PR_E_ELEMENT_DEFINITION_FOLLOW_2:
+                                        break;
+
+                                case PR_E_TAGS_0:
+                                        ss.push(TT_0_TAGS);
+                                        break;
+
+                                case PR_E_TAGS_1:
+                                        //TODO test this
+                                        ss.push(NT_E_TAGS_1_SET);
+                                        ss.push(TT_INDEX);
+                                        ss.push(TT_1_TAGS);
+                                        break;
+
+                                case PR_E_TAGS_2:
+                                        //TODO test this
+                                        ss.push(NT_E_TAGS_2_SET);
+                                        ss.push(TT_INDEX);
+                                        ss.push(TT_INDEX);
+                                        ss.push(TT_2_TAGS);
+                                        break;
+
+                                case PR_E_TAGS_3:
+                                        //TODO test this
+                                        ss.push(NT_E_TAGS_3_SET);
+                                        ss.push(TT_INDEX);
+                                        ss.push(TT_INDEX);
+                                        ss.push(TT_INDEX);
+                                        ss.push(TT_3_TAGS);
+                                        break;
+
+                                case PR_E_TAGS_1_SET:
+                                        index_list.pop_front();
+                                        break;
+
+                                case PR_E_TAGS_2_SET:
+                                        index_list.pop_front();
+                                        index_list.pop_front();
+                                        break;
+
+                                case PR_E_TAGS_3_SET:
+                                        index_list.pop_front();
+                                        index_list.pop_front();
+                                        index_list.pop_front();
+                                        break;
+
+                                case PR_ELEMENTS_SET:
+                                        if(!load_pattern.empty())
+                                                model.pushLoadPattern(load_pattern);
+                                        break;
+
+                                case PR_ELEMENT_FOLLOW_1:
+                                case PR_ELEMENT_FOLLOW_2:
+                                case PR_ELEMENT_FOLLOW_3:
+                                        this->error.code = Error::ERR_UNKNOWN;
+                                        this->error.message = "Section is not supported" + boost::lexical_cast<std::string>(error.line_number);
+                                        return this->error.code;
+                                        break;
+
+                                case PR_ELEMENT_FOLLOW_4:
+                                        break;
+
+                                case PR_COORDINATE:		// requires 3 floats, sets a Point with them
+                                        //TODO set a vector
+                                        ss.push(TT_NUMBER);
+                                        ss.push(TT_NUMBER);
+                                        ss.push(TT_NUMBER);
+                                        break;
+
+                                default:
+                                        this->error.code = Error::ERR_UNKNOWN;
+                                        this->error.message = "Unknown error while parsing line " + boost::lexical_cast<std::string>(error.line_number);
+                                        return this->error.code;
+                                        break;
+                        }
+                }
+        }
+
+        // all is good
+        this->error.code = Error::ERR_OK;
+        this->error.message.clear();
+        return this->error.code;
+}
+
+
+enum MshParser::TerminalToken MshParser::lexer(std::istream &file)
+{
+        tok = pos;
+std:
+        switch(lex_state)
+        {
+                case 0:
+                {
+        #define YYFILL fill(file);
+        /*!re2c
+        re2c:yyfill:enable   	= 1;
+        re2c:define:YYCTYPE  	= "char";
+        re2c:define:YYCURSOR 	= pos;
+        re2c:define:YYMARKER 	= marker;
+        re2c:define:YYLIMIT	= limit;
+
+        index	= "0"|[1-9][0-9]*;
+        integer = "-"? index;
+        float	= integer "." [0-9]+([eE][+-]?[0-9]+)?;
+        number	= integer|float;
+        string	= '"' [a-zA-Z0-9]* '"';
+
+        "$MeshFormat"	{ lex_state = 1; return TT_OPEN_MESH_FORMAT;	}
+        "$Nodes"	{ lex_state = 2; return TT_OPEN_NODES;	}
+        "$Elements"	{ lex_state = 4; return TT_OPEN_ELEMENTS;	}
+        "$PhysicalNames"	{ return TT_OPEN_PHYSICAL_NAMES;	}
+        "$NodeData"	{ return TT_OPEN_NODE_DATA;	}
+        "$ElementData"	{ return TT_OPEN_ELEMENT_DATA;	}
+        "$ElementNodeData"	{ return TT_OPEN_ELEMENT_NODE_DATA;	}
+        '\n'	{ error.line_number++; return TT_EOL; }
+        "\000"			{ return TT_EOF;	}
+        ' '+	{ goto std;}
+        .	{ return TT_UNKNOWN_TOKEN; }
+        */
+                }
+                break;
+
+                case 1:	// get parser version as a lexer token
+                {
+        /*!re2c
+        "2.1"	{ return TT_VERSION_2_1;	}
+        "2.2"	{ return TT_VERSION_2_1;	}
+        "0"	{ return TT_MF_FILE_TYPE_ASCII;	}
+        [0-9]	{ return TT_MF_DATA_SIZE;	}
+        "$EndMeshFormat"	{ lex_state = 0;	return TT_CLOSE_MESH_FORMAT; }
+        '\n'	{ error.line_number++; return TT_EOL; }
+        "\000"			{ return TT_EOF;	}
+        ' '+	{ goto std;	}
+        .	{ return TT_UNKNOWN_TOKEN; }
+        */
+                }
+                break;
+
+                case 2:	// parse nodes section: index
+                {
+        /*!re2c
+        index	{
+                        lex_state = 3;
+                        setIndex();
+                        return TT_INDEX;
+                }
+        "$EndNodes"	{ lex_state = 0;	return TT_CLOSE_NODES; }
+        '\n'	{ error.line_number++; return TT_EOL; }
+        "\000"			{ return TT_EOF;	}
+        ' '+	{ goto std;	}
+        .	{ return TT_UNKNOWN_TOKEN; }
+        */
+                }
+                break;
+
+                case 3:	// parse nodes section: coordinates
+                {
+        /*!re2c
+        number	{ setNumber(); return TT_NUMBER; }
+        '\n'	{ lex_state = 2; error.line_number++; return TT_EOL; }
+        "\000"			{ return TT_EOF;	}
+        ' '+	{ goto std;	}
+        .	{ return TT_UNKNOWN_TOKEN; }
+        */
+                }
+                break;
+
+                case 4:	// parse elements section
+                {
+        /*!re2c
+        index	{ lex_state = 5; setIndex(); return TT_INDEX; }
+        "$EndElements"	{ lex_state = 0;	return TT_CLOSE_ELEMENTS; }
+        '\n'	{ error.line_number++; return TT_EOL; }
+        "\000"			{ return TT_EOF;	}
+        ' '+	{ goto std;	}
+        .	{ return TT_UNKNOWN_TOKEN; }
+        */
+                }
+                break;
+
+                case 5:	// parse element type
+                {
+        /*!re2c
+        [0-9]+	{
+                        setIndex();
+                        lex_state = 6;	// custom lexer to parse the tags
+                        switch(index_list.back())
+                        {
+                                case 2:return TT_ELEMENT_TRIANGLE3;
+                                case 3:return TT_ELEMENT_QUADRANGLE4;
+                                case 4:return TT_ELEMENT_TETRAHEDRON4;
+                                case 5:return TT_ELEMENT_HEXAHEDRON8;
+                                case 6:return TT_ELEMENT_PRISM6;
+                                case 7:return TT_ELEMENT_PYRAMID5;
+                                case 8:return TT_ELEMENT_LINE3;
+                                case 9:return TT_ELEMENT_TRIANGLE6;
+                                case 10:return TT_ELEMENT_QUADRANGLE9;
+                                case 11:return TT_ELEMENT_TETRAHEDRON10;
+                                case 12:return TT_ELEMENT_HEXAHEDRON27;
+                                case 13:return TT_ELEMENT_PRISM18;
+                                case 14:return TT_ELEMENT_PYRAMID14;
+                                case 15:return TT_ELEMENT_POINT;
+                                case 16:return TT_ELEMENT_QUADRANGLE8;
+                                case 17:return TT_ELEMENT_HEXAHEDRON20;
+                                case 18:return TT_ELEMENT_PRISM15;
+                                case 19:return TT_ELEMENT_PYRAMID13;
+                                case 20:return TT_ELEMENT_ITRIANGLE9;
+                                case 21:return TT_ELEMENT_TRIANGLE10;
+                                case 22:return TT_ELEMENT_ITRIANGLE12;
+                                case 23:return TT_ELEMENT_TRIANGLE15;
+                                case 24:return TT_ELEMENT_ITRIANGLE15;
+                                case 25:return TT_ELEMENT_TRIANGLE21;
+                                case 26:return TT_ELEMENT_EDGE4;
+                                case 27:return TT_ELEMENT_EDGE5;
+                                case 28:return TT_ELEMENT_EDGE6;
+                                case 29:return TT_ELEMENT_TETRAHEDRON20;
+                                case 30:return TT_ELEMENT_TETRAHEDRON35;
+                                case 31:return TT_ELEMENT_TETRAHEDRON56;
+                                default:
+                                        return TT_UNKNOWN_TOKEN;
+                        }
+                }
+        '\n'	{ lex_state = 4; error.line_number++; return TT_EOL; }
+        "\000"			{ return TT_EOF;	}
+        ' '+	{ goto std;	}
+        .	{ return TT_UNKNOWN_TOKEN; }
+                */
+                }
+                break;
+
+        case 6:	// get number of tokens
+                {
+        /*!re2c
+        "\000"			{ return TT_EOF;	}
+        ' '+	{ goto std;	}
+        "0"	{ lex_state = 7; return TT_0_TAGS; }
+        "1"	{ lex_state = 7; return TT_1_TAGS; }
+        "2"	{ lex_state = 7; return TT_2_TAGS; }
+        "3"	{ lex_state = 7; return TT_3_TAGS; }
+        .	{ return TT_UNKNOWN_TOKEN; }
+        */
+                }
+                break;
+
+        case 7:	// extract indexes until EOL
+                {
+        /*!re2c
+        index	{ setIndex(); return TT_INDEX; }
+        "\000"	{ return TT_EOF;	}
+        ' '+	{ goto std;	}
+        '\n'	{ lex_state = 4; error.line_number++; return TT_EOL; }
+        .	{ return TT_UNKNOWN_TOKEN; }
+        */
+                }
+
+                default:
+                        std::cerr << "Error: default lexer state" << std::endl;
+                        return TT_ERROR;
+                        break;
+        }
+
+        // should never be reached
+        return TT_ERROR;
+        #undef YYFILL
+}
+
+
+void MshParser::setIndex()
+{
+        long number;
+        number = strtol(tok, &pos, 10);
+        index_list.push_back(number);
+}
+
+
+void MshParser::setNumber()
+{
+        float number;
+        number = strtod(tok, &pos);
+        float_list.push_back(number);
+}
+
+
+void
+MshParser::setParserTable()
+{
+        table	[NT_START]		[TT_OPEN_MESH_FORMAT]	=	PR_START;
+
+        table	[NT_DOCUMENT]		[TT_OPEN_MESH_FORMAT]	=	PR_DOCUMENT;
+
+        table	[NT_HEADER]		[TT_OPEN_MESH_FORMAT]	=	PR_HEADER;
+
+        table	[NT_MF_VERSION_NUMBER]	[TT_VERSION_2_1]	=	PR_MF_VERSION_NUMBER_2_1;
+        table	[NT_MF_VERSION_NUMBER]	[TT_VERSION_2_2]	=	PR_MF_VERSION_NUMBER_2_2;
+        table	[NT_MF_VERSION_NUMBER]	[TT_UNKNOWN_TOKEN]	=	PR_MF_VERSION_NUMBER_ERROR;	// error just in case
+
+        table	[NT_MF_FILE_TYPE]	[TT_MF_FILE_TYPE_ASCII]	=	PR_MF_FILE_TYPE_ASCII;
+
+        table	[NT_MF_DATA_SIZE]	[TT_MF_DATA_SIZE]	=	PR_MF_DATA_SIZE;
+
+        table	[NT_NODES]			[TT_OPEN_NODES]		=	PR_NODES;
+        table	[NT_N_NUMBER_OF_NODES]		[TT_INDEX]		=	PR_N_NUMBER_OF_NODES;
+        table	[NT_N_NUMBER_OF_NODES_SET]	[TT_EOL]		=	PR_N_NUMBER_OF_NODES_SET;
+        table	[NT_N_NODE_DEFINITION]		[TT_INDEX]		=	PR_N_NODE_DEFINITION;
+        table	[NT_N_NODE_DEFINITION_SET]	[TT_EOL]		=	PR_N_NODE_DEFINITION_SET;
+
+        table	[NT_N_NODE_DEFINITION_FOLLOW]	[TT_INDEX]		=	PR_N_NODE_DEFINITION_FOLLOW_1;
+        table	[NT_N_NODE_DEFINITION_FOLLOW]	[TT_CLOSE_NODES]	=	PR_N_NODE_DEFINITION_FOLLOW_2;
+
+        table	[NT_ELEMENTS]			[TT_OPEN_ELEMENTS]	=	PR_ELEMENTS;
+        table	[NT_E_NUMBER_OF_ELEMENTS]	[TT_INDEX]		=	PR_E_NUMBER_OF_ELEMENTS;
+        table	[NT_E_NUMBER_OF_ELEMENTS_SET]	[TT_EOL]		=	PR_E_NUMBER_OF_ELEMENTS_SET;
+        table	[NT_E_ELEMENT_DEFINITION]	[TT_INDEX]		=	PR_E_ELEMENT_DEFINITION;
+
+        table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_TRIANGLE3]		=	PR_E_ELEMENT_TRIANGLE3;
+        table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_TRIANGLE6]		=	PR_E_ELEMENT_TRIANGLE6;
+        table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_QUADRANGLE4]	=	PR_E_ELEMENT_QUADRANGLE4;
+        table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_QUADRANGLE8]	=	PR_E_ELEMENT_QUADRANGLE8;
+        table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_QUADRANGLE9]	=	PR_E_ELEMENT_QUADRANGLE9;
+
+        table	[NT_E_ELEMENT_TYPE_SET_ELEMENT]	[TT_EOL]	=	PR_E_ELEMENT_TYPE_SET_ELEMENT;
+        table	[NT_E_ELEMENT_TYPE_SET_FORCE]	[TT_EOL]	=	PR_E_ELEMENT_TYPE_SET_FORCE;
+
+        table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_HEXAHEDRON8]	=	PR_E_ELEMENT_HEXAHEDRON8;
+        table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_HEXAHEDRON20]	=	PR_E_ELEMENT_HEXAHEDRON20;
+        table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_HEXAHEDRON27]	=	PR_E_ELEMENT_HEXAHEDRON27;
+        table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_TETRAHEDRON4]	=	PR_E_ELEMENT_TETRAHEDRON4;
+        table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_TETRAHEDRON10]	=	PR_E_ELEMENT_TETRAHEDRON10;
+        table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_PRISM6]	=	PR_E_ELEMENT_PRISM6;
+        table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_PRISM15]	=	PR_E_ELEMENT_PRISM15;
+        table	[NT_E_ELEMENT_TYPE]	[TT_ELEMENT_PRISM18]	=	PR_E_ELEMENT_PRISM18;
+
+        table	[NT_E_ELEMENT_DEFINITION_FOLLOW]	[TT_INDEX]		=	PR_E_ELEMENT_DEFINITION_FOLLOW_1;
+        table	[NT_E_ELEMENT_DEFINITION_FOLLOW]	[TT_CLOSE_ELEMENTS]	=	PR_E_ELEMENT_DEFINITION_FOLLOW_2;
+
+        table	[NT_E_TAGS]		[TT_0_TAGS]		=	PR_E_TAGS_0;
+        table	[NT_E_TAGS]		[TT_1_TAGS]		=	PR_E_TAGS_1;
+        table	[NT_E_TAGS]		[TT_2_TAGS]		=	PR_E_TAGS_2;
+        table	[NT_E_TAGS]		[TT_3_TAGS]		=	PR_E_TAGS_3;
+
+        table	[NT_E_TAGS_1_SET]	[TT_INDEX]		=	PR_E_TAGS_1_SET;
+        table	[NT_E_TAGS_2_SET]	[TT_INDEX]		=	PR_E_TAGS_2_SET;
+        table	[NT_E_TAGS_3_SET]	[TT_INDEX]		=	PR_E_TAGS_3_SET;
+
+        table	[NT_ELEMENTS_SET]	[TT_EOL]		=	PR_ELEMENTS_SET;
+
+        table	[NT_ELEMENTS_FOLLOW]	[TT_OPEN_NODE_DATA]		=	PR_ELEMENT_FOLLOW_1;
+        table	[NT_ELEMENTS_FOLLOW]	[TT_OPEN_ELEMENT_DATA]		=	PR_ELEMENT_FOLLOW_2;
+        table	[NT_ELEMENTS_FOLLOW]	[TT_OPEN_ELEMENT_NODE_DATA]	=	PR_ELEMENT_FOLLOW_3;
+        table	[NT_ELEMENTS_FOLLOW]	[TT_EOF]			=	PR_ELEMENT_FOLLOW_4;
+
+        //table	[NT_NODE_DATA]		[TT_OPEN_NODE_DATA]		=	PR_ELEMENT_FOLLOW_4;
+
+        table	[NT_COORDINATE]		[TT_NUMBER]		=	PR_COORDINATE;
+}
+
+
+enum MshParser::Error::Type
+MshParser::operator() (std::istream &file, fem::Model &model)
+{
+        return parse(file, model);
+}
+
+
+void
+MshParser::setSurfaceLoadOperator(fem::SurfaceLoadOperator &surface_load_operator)
+{
+        this->surface_load_operator = &surface_load_operator;
+}
+
+

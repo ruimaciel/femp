@@ -1,37 +1,29 @@
 #ifndef SCALAR_RANGE_DIALOG_HPP
 #define SCALAR_RANGE_DIALOG_HPP
 
-#include <sigc++/sigc++.h> 	// to side step a compiler error caused by a conflict with Qt and libsigc++
-#include <QDialog>
-#include <QString>
-#include <QDialogButtonBox>
-
 #include "ui_ResultsRangeDialog.h"
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QString>
 
 #include <libfemp/ElementResults/ResultsRanges.h++>
 
-
 /**
-Dialog intended to be used to specify ranges of a given parameter
-**/
+ * Dialog intended to be used to specify ranges of a given parameter
+ */
 class ResultsRangeDialog
-		: public QDialog
-{
-	Q_OBJECT
+    : public QDialog {
+    Q_OBJECT
 
 protected:
-	Ui::ResultsRangeDialog ui;
+    Ui::ResultsRangeDialog ui;
 
 public:
-	ResultsRangeDialog(QWidget *parent = nullptr);
+    ResultsRangeDialog(QWidget* parent = nullptr);
 
-	void setValueRanges(const fem::ResultsRanges<double> &);
+    void setValueRanges(const fem::ResultsRanges<double>&);
 
-	bool getValueRanges(fem::ResultsRanges<double> &) const;
-
-protected:
-	void connectSignalsToSlots();
+    bool getValueRanges(fem::ResultsRanges<double>&) const;
 };
-
 
 #endif

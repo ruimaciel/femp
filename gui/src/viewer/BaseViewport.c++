@@ -1,21 +1,18 @@
 #include "BaseViewport.h++"
 
-#include <iostream>	// for cerr
+#include <QDebug>
 
+#include "SceneGraphComponents/Operations/SelectFrustumInclusionOperation.h++"
+#include "SceneGraphComponents/Operations/SelectRayIntersectionOperation.h++"
 #include "SceneGraphComponents/Operations/ToggleRenderOperation.h++"
 #include "SceneGraphComponents/Operations/ToggleSelectionOperation.h++"
-#include "SceneGraphComponents/Operations/SelectRayIntersectionOperation.h++"
-#include "SceneGraphComponents/Operations/SelectFrustumInclusionOperation.h++"
 
-
-//TODO add sanity checks to this->state
-
-BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
+BaseViewport::BaseViewport(fem::Project& project, QWidget* parent)
     : QOpenGLWidget(parent)
 {
     assert(parent != nullptr);
 
-    m_input = new Input;	// to avoid circular dependencies
+    m_input = new Input; // to avoid circular dependencies
 
     // initialize the dangling pointers
     this->project = &project;
@@ -25,59 +22,49 @@ BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
     this->setFocusPolicy(Qt::StrongFocus);
 }
 
-
 BaseViewport::~BaseViewport()
 {
     delete m_input;
 }
 
-
-void
-BaseViewport::setColors(ViewportColors &new_colors)
+void BaseViewport::setColors(ViewportColors& new_colors)
 {
     colors = new_colors;
 }
 
-
-QSize
-BaseViewport::minimumSizeHint() const
+QSize BaseViewport::minimumSizeHint() const
 {
     return QSize(50, 50);
 }
 
-
-QSize
-BaseViewport::sizeHint() const
+QSize BaseViewport::sizeHint() const
 {
     return QSize(600, 400);
 }
 
-
-void
-BaseViewport::initializeGL()
+void BaseViewport::initializeGL()
 {
     // set the state->camera position according to the nodal center
-    double pos[3] = {0};
-    fem::Model &femp_model = project->getModel();
+    double pos[3] = { 0 };
+    fem::Model& femp_model = project->getModel();
     auto node_list = femp_model.getNodeMap();
-    for(auto node: node_list)
-    {
+    for (auto node : node_list) {
         pos[0] -= node.second.x();
         pos[1] -= node.second.y();
         pos[2] -= node.second.z();
 
         viewport_data.camera.reset();
-        viewport_data.camera.setCenter(0,0,-500);
-        viewport_data.camera.setPosition(pos[0]/node_list.size(),pos[1]/node_list.size(),pos[2]/node_list.size());
+        viewport_data.camera.setCenter(0, 0, -500);
+        viewport_data.camera.setPosition(pos[0] / node_list.size(), pos[1] / node_list.size(), pos[2] / node_list.size());
     }
 
     // handle opengl
     this->makeCurrent();
-    GLfloat LightAmbient[]= { 0.2f, 0.2f, 0.2f, 1.0f };
-    GLfloat LightDiffuse[]= { 0.7f, 0.7f, 0.7f, 1.0f };
-    GLfloat LightSpecular[]= { 1.0f, 1.0f, 1.0f, 1.0f };
-    GLfloat LightPosition[]= { 0.0f, 0.0f, 0.0f, 1.0f };
-    GLfloat specularity[]= { 1.0f, 1.0f, 1.0f, 1.0f };
+    GLfloat LightAmbient[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+    GLfloat LightDiffuse[] = { 0.7f, 0.7f, 0.7f, 1.0f };
+    GLfloat LightSpecular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    GLfloat LightPosition[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    GLfloat specularity[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     GLint specmaterial = 60;
 
     glClearColor(colors.background[0], colors.background[1], colors.background[2], colors.background[3]);
@@ -107,17 +94,14 @@ BaseViewport::initializeGL()
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-    glEnable(GL_MAP2_VERTEX_3);	// to interpolate the elements' surfaces
+    glEnable(GL_MAP2_VERTEX_3); // to interpolate the elements' surfaces
     glEnable(GL_AUTO_NORMAL);
 
     //glEnable(GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-
-void
-BaseViewport::resizeGL(int width, int height)
+void BaseViewport::resizeGL(int width, int height)
 {
     viewport_data.width = width;
     viewport_data.height = height;
@@ -126,15 +110,13 @@ BaseViewport::resizeGL(int width, int height)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    glOrtho(-(width*2)/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom)), (width*2)/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom)), -height*2/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom)), +height*2/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom)), 0.1, 1000.0);
+    glOrtho(-(width * 2) / (viewport_data.aspect_ratio * pow(2, viewport_data.zoom)), (width * 2) / (viewport_data.aspect_ratio * pow(2, viewport_data.zoom)), -height * 2 / (viewport_data.aspect_ratio * pow(2, viewport_data.zoom)), +height * 2 / (viewport_data.aspect_ratio * pow(2, viewport_data.zoom)), 0.1, 1000.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
 
-
-void
-BaseViewport::paintGL()
+void BaseViewport::paintGL()
 {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -143,26 +125,20 @@ BaseViewport::paintGL()
     state->paintGL(this);
 }
 
-
-void
-BaseViewport::mousePressEvent(QMouseEvent *event)
+void BaseViewport::mousePressEvent(QMouseEvent* event)
 {
     m_input->press(this, event);
 
     update();
 }
 
-
-void
-BaseViewport::mouseReleaseEvent(QMouseEvent *event)
+void BaseViewport::mouseReleaseEvent(QMouseEvent* event)
 {
     m_input->release(this, event);
     update();
 }
 
-
-void
-BaseViewport::mouseMoveEvent(QMouseEvent *event)
+void BaseViewport::mouseMoveEvent(QMouseEvent* event)
 {
     //state->mouseMoveEvent(this, event);
     m_input->move(this, event);
@@ -170,27 +146,21 @@ BaseViewport::mouseMoveEvent(QMouseEvent *event)
     update();
 }
 
-
-void
-BaseViewport::wheelEvent(QWheelEvent *event)
+void BaseViewport::wheelEvent(QWheelEvent* event)
 {
-    viewport_data.zoom += event->delta()/1000.0f;
+    viewport_data.zoom += event->delta() / 1000.0f;
 
     this->resizeGL(this->width(), this->height());
     this->update();
     event->accept();
 }
 
-
-void
-BaseViewport::keyPressEvent( QKeyEvent *event)
+void BaseViewport::keyPressEvent(QKeyEvent* event)
 {
     state->keyPressEvent(this, event);
 }
 
-
-void
-BaseViewport::setState(ViewportState *new_state)
+void BaseViewport::setState(ViewportState* new_state)
 {
     this->state = new_state;
     this->state->initialize(this);
@@ -204,34 +174,26 @@ BaseViewport::setState(ViewportState *new_state)
     this->state->setRenderGroupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, node_restrictions);
 }
 
-
-void
-BaseViewport::refresh(void)
+void BaseViewport::refresh(void)
 {
     this->update();
 }
 
-
-void
-BaseViewport::setNodeVisibility(bool const state)
+void BaseViewport::setNodeVisibility(bool const state)
 {
     this->state->setRenderGroupVisibility(SceneGraph::RG_NODES, state);
 
     Options::getInstance().getDisplayOptions().nodes = state;
 }
 
-
-void
-BaseViewport::setNodeRestrictionsVisibility(bool const state)
+void BaseViewport::setNodeRestrictionsVisibility(bool const state)
 {
     this->state->setRenderGroupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, state);
 
     Options::getInstance().getDisplayOptions().node_restrictions = state;
 }
 
-
-void
-BaseViewport::setSurfaceVisibility(bool const state)
+void BaseViewport::setSurfaceVisibility(bool const state)
 {
     this->state->setRenderGroupVisibility(SceneGraph::RG_SURFACES, state);
     this->state->setRenderGroupVisibility(SceneGraph::RG_WIREFRAME, !state);
@@ -239,61 +201,49 @@ BaseViewport::setSurfaceVisibility(bool const state)
     Options::getInstance().getDisplayOptions().surfaces = state;
 }
 
-
-void
-BaseViewport::setTrianglesVisible(bool const state)
+void BaseViewport::setTrianglesVisible(bool const state)
 {
     //TODO set triangle wireframe visibility
     Options::getInstance().getDisplayOptions().triangle_wireframe = state; // this has no effect, as currently no component uses this value
 
     /* Performs a sanity check */
-    if(state == false)
-    {
-        std::cerr << "BaseViewport::setTrianglesVisible(bool const state): this->state is nullptr" << std::endl;
+    if (state == false) {
+        qCritical() << "BaseViewport::setTrianglesVisible(bool const state): this->state is nullptr";
         return;
     }
 
     this->state->setTrianglesVisible(state);
 }
 
-
-void
-BaseViewport::setShading(bool const state)
+void BaseViewport::setShading(bool const state)
 {
     //TODO toggle shading
     Options::getInstance().getDisplayOptions().shading = state;
 }
 
-
-void
-BaseViewport::setViewSelection(Selection selection)
+void BaseViewport::setViewSelection(Selection selection)
 {
     //TODO finish this
     Operation::ToggleRenderOperation operation(selection, true);
     this->state->runSceneGraphOperation(operation);
 }
 
-
-void
-BaseViewport::selectObjectsFromRay(fem::Point3D const &origin, fem::Point3D const &destination)
+void BaseViewport::selectObjectsFromRay(fem::Point3D const& origin, fem::Point3D const& destination)
 {
     Selection selection;
 
-    float radius = viewport_data.node_scale/(viewport_data.aspect_ratio*pow(2,viewport_data.zoom));
-
-    //TODO debug purposes only. remove
+    float radius = viewport_data.node_scale / (viewport_data.aspect_ratio * pow(2, viewport_data.zoom));
 
     //get a selection list of which object has been selected
     Operation::SelectRayIntersectionOperation operation(selection, origin, destination, radius);
     this->state->runSceneGraphOperation(operation);
 
     // sends request to select a set of nodes
-    selection_changed(selection);
+    emit selectionChanged(selection);
 }
 
-
 void
-BaseViewport::selectObjectsFromFrustum(std::array<fem::Point3D,4> const &near, std::array<fem::Point3D,4> const &far)
+    BaseViewport::selectObjectsFromFrustum(std::array<fem::Point3D, 4> const& near, std::array<fem::Point3D, 4> const& far)
 {
     Selection selection;
 
@@ -303,12 +253,10 @@ BaseViewport::selectObjectsFromFrustum(std::array<fem::Point3D,4> const &near, s
     operation.selectInclusiveElements(*project);
 
     // sends request to select a set of nodes
-    selection_changed(selection);
+    emit selectionChanged(selection);
 }
 
-
-void
-BaseViewport::setXRotation(int angle)
+void BaseViewport::setXRotation(int angle)
 {
     normalizeAngle(&angle);
     viewport_data.camera.rotation.data[0] = angle;
@@ -316,9 +264,7 @@ BaseViewport::setXRotation(int angle)
     update();
 }
 
-
-void
-BaseViewport::setYRotation(int angle)
+void BaseViewport::setYRotation(int angle)
 {
     normalizeAngle(&angle);
     viewport_data.camera.rotation.data[1] = angle;
@@ -326,9 +272,7 @@ BaseViewport::setYRotation(int angle)
     update();
 }
 
-
-void
-BaseViewport::setZRotation(int angle)
+void BaseViewport::setZRotation(int angle)
 {
     normalizeAngle(&angle);
     viewport_data.camera.rotation.data[2] = angle;
@@ -336,40 +280,29 @@ BaseViewport::setZRotation(int angle)
     update();
 }
 
-
-void
-BaseViewport::setPosition(double x, double y, double z)
+void BaseViewport::setPosition(double x, double y, double z)
 {
-    //TODO implement this
     viewport_data.camera.setPosition(x, y, z);
 
     update();
 }
 
-
-void
-BaseViewport::setAnalysisResult(fem::AnalysisResult &new_result)
+void BaseViewport::setAnalysisResult(fem::AnalysisResult& new_result)
 {
     this->state->setAnalysisResult(new_result);
 }
 
-
-void
-BaseViewport::setDisplacementsScale(float scale)
+void BaseViewport::setDisplacementsScale(float scale)
 {
     this->state->setDisplacementsScale(scale);
 }
 
-
-void
-BaseViewport::setRenderGroupVisibility(SceneGraph::Groups group, bool state)
+void BaseViewport::setRenderGroupVisibility(SceneGraph::Groups group, bool state)
 {
     this->state->setRenderGroupVisibility(group, state);
 }
 
-
-void
-BaseViewport::normalizeAngle(int *angle)
+void BaseViewport::normalizeAngle(int* angle)
 {
     while (*angle < 0)
         *angle += 360 * 16;
@@ -377,38 +310,28 @@ BaseViewport::normalizeAngle(int *angle)
         *angle -= 360 * 16;
 }
 
-
-void
-BaseViewport::setSelection(Selection selection)
+void BaseViewport::setSelection(Selection selection)
 {
     Operation::ToggleSelectionOperation op(selection);
     this->state->runSceneGraphOperation(op);
     this->update();
 }
 
-
-void
-BaseViewport::clearSelection()
+void BaseViewport::clearSelection()
 {
     this->state->clearSelection();
 }
 
-
-void
-BaseViewport::showSelection(const Selection selection)
+void BaseViewport::showSelection(const Selection selection)
 {
     Operation::ToggleRenderOperation op(selection);
     this->state->runSceneGraphOperation(op);
 }
 
-
-void
-BaseViewport::showAll()
+void BaseViewport::showAll()
 {
     // nasty hack to avoid having to develop a new operator
     Selection selection;
-    Operation::ToggleRenderOperation op(selection, false);	// turns on all elements which aren't selected, which in this case means all elements
+    Operation::ToggleRenderOperation op(selection, false); // turns on all elements which aren't selected, which in this case means all elements
     this->state->runSceneGraphOperation(op);
 }
-
-

@@ -3,43 +3,39 @@
 
 #include "MdiWindow.h++"
 
-#include <QMainWindow>
 #include <QDoubleSpinBox>
-#include <QMenuBar>
+#include <QMainWindow>
 #include <QMenu>
+#include <QMenuBar>
 #include <QToolBar>
 
 #include "WindowWith.h++"
 
-
 /**
-Provides a window with a toolbar which sets a scale
-**/
+ * Provides a window with a toolbar which sets a scale
+ */
 class WindowWithScaling
-		: public WindowWith
-{
+    : public WindowWith {
 public:
-	void createToolbar(QMainWindow *parent, fem::Project &results);
+    void createToolbar(QMainWindow* parent, fem::Project& results);
 
-	/**
-	Adds menu entries to the window's menu bar
-	**/
-	void createMenuBar(QMainWindow *parent, QMenuBar *);
+    /**
+     * Adds menu entries to the window's menu bar
+     */
+    void createMenuBar(QMainWindow* parent, QMenuBar*);
 
 public slots:
-	void setDisplacementsScale(double);
+    void setDisplacementsScale(double);
 
 protected:
-	void connectSignalsToSlots(QMainWindow *parent);
-
+    void connectSignalsToSlots(QMainWindow* parent);
 
 protected:
-	QToolBar *m_toolBarScaling;	// toolbar to provide a user to select which result to run
-	QDoubleSpinBox *m_doubleSpinBoxScaling;
-	QAction *m_actionSetTensionRanges;	// action to call a dialog which sets the values for the max an min values of any given field
+    QToolBar* m_toolBarScaling; // toolbar to provide a user to select which result to run
+    QDoubleSpinBox* m_doubleSpinBoxScaling;
+    QAction* m_actionSetTensionRanges; // action to call a dialog which sets the values for the max an min values of any given field
 
-	QMenu * m_menuScaling;
+    QMenu* m_menuScaling;
 };
-
 
 #endif

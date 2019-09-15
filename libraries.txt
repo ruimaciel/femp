@@ -7,4 +7,3 @@ libsuitesparse-metis-dev
 re2c
 bison
 flex
-libsigc++-2.0-dev

@@ -15,7 +15,7 @@ jobs:
       - run:
           name: Install app dependencies
           command: |
-            apt-get install -y libsigc++-2.0-dev qtbase5-dev libqt5opengl5-dev libsuitesparse-dev libboost1.62-dev libeigen3-dev flex bison re2c
+            apt-get install -y qtbase5-dev libqt5opengl5-dev libsuitesparse-dev libboost1.62-dev libeigen3-dev flex bison re2c
       - run:
           name: Prepare build directory
           command: |

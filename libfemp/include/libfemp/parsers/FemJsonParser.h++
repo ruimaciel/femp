@@ -41,8 +41,6 @@ protected:
     bool temp_bool;
     std::string temp_token;
 
-    fem::Material temp_material;
-
     fem::Node temp_node;
     fem::Element temp_element;
     fem::NodeRestrictions temp_node_restrictions;

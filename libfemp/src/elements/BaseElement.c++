@@ -47,7 +47,7 @@ BaseElement::getStiffnessMatrix(fem::Model& model)
 
     //TODO fix how the material properties are passed
     const fem::Material material = model.getMaterialByIndex(this->material);
-    Matrix<double, 6, 6> D = material.generateD().cast<double>();
+    Matrix<double, 6, 6> D = generateConstitutiveRelationsMatrix(material);
 
     // build the stiffness matrix: cycle through the number of integration points
     for (auto quadrature_point : this->getStiffnessQuadratureRule()) {
@@ -154,6 +154,34 @@ void BaseElement::gauleg(double x[], double w[], int n)
         w[i - 1] = 2.0 / ((1.0 - z * z) * pp * pp); /* Compute the weight             */
         w[n - i] = w[i - 1]; /* and its symmetric counterpart. */
     }
+}
+
+Eigen::Matrix<double, 6, 6>
+BaseElement::generateConstitutiveRelationsMatrix(const Material &material) const
+{
+    Eigen::Matrix<double, 6, 6> D;
+
+    const double E = material.getYoungsModulus();
+    const double nu = material.getPoissonRatio();
+
+    double a = E / ((1 + nu) * (1 - 2 * nu)); // temp variable
+
+    // attribute values to D
+    // isotropic Hooke's law (fish, pg 241)
+    D.setZero();
+    D(0, 0) = a * (1 - nu);
+    D(0, 1) = a * nu;
+    D(0, 2) = a * nu;
+    D(1, 0) = a * nu;
+    D(1, 1) = a * (1 - nu);
+    D(1, 2) = a * nu;
+    D(2, 0) = a * nu;
+    D(2, 1) = a * nu;
+    D(2, 2) = a * (1 - nu);
+    D(3, 3) = a * (1 - 2 * nu) / 2.0;
+    D(4, 4) = a * (1 - 2 * nu) / 2.0;
+    D(5, 5) = a * (1 - 2 * nu) / 2.0;
+    return D;
 }
 
 } // namespace fem

@@ -151,6 +151,9 @@ public: //WARNING: fem::Element member functions are deprecated
      */
     virtual enum ElementFamily family() const = 0;
 
+protected:
+    Eigen::Matrix<double, 6, 6> generateConstitutiveRelationsMatrix(const Material & material) const;
+
 protected: // WARNING: to be removed
     /**
      * Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"

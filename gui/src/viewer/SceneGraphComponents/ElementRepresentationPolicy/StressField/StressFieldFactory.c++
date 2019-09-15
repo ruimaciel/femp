@@ -201,8 +201,8 @@ StressFieldFactory::operator()(fem::Element const& element)
         }
 
         auto material = m_model->getMaterialByIndex(element.material);
-        const double E = material.E;
-        const double nu = material.nu;
+        const double E = material.getYoungsModulus();
+        const double nu = material.getPoissonRatio();
 
         // now, set up the stress vector
         A[0][0] = ((1 - nu) * e11 + nu * e22 + nu * e33) * E / ((1 + nu) * (1 - 2 * nu));

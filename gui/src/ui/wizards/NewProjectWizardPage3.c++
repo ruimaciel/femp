@@ -34,7 +34,7 @@ void NewProjectWizardPage3::loadMaterialsCombo()
     fem::Model& femp_model = this->m_document.getProject().getModel();
 
     for (auto material : femp_model.getMaterialList()) {
-        comboBoxMaterialsList->addItem(QString::fromStdString(material.label));
+        comboBoxMaterialsList->addItem(QString::fromStdString(material.getLabel()));
     }
     if (comboBoxMaterialsList->count() > 0) {
         lineEditFilePath->setEnabled(true);

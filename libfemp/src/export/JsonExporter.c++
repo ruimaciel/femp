@@ -24,7 +24,7 @@ void JsonExporter::output(std::ostream& out, const fem::Model& model)
         out << "\n\t";
 
         out << "\t{\"type\":"
-            << "\"linear elastic\", \"label\": \"" << material->label << "\", \"E\":" << material->E << ",\"nu\":" << material->nu << ", \"fy\": " << material->fy << "}";
+            << "\"linear elastic\", \"label\": \"" << material->getLabel() << "\", \"E\":" << material->getYoungsModulus() << ",\"nu\":" << material->getPoissonRatio() << "}";
     }
     out << "\n\t],\n";
 
@@ -319,11 +319,11 @@ void JsonExporter::output(std::ostream& out, const fem::Model& model)
     }
 
     /*
-	// dump the load combinations list
-	out << "\"combinations\":[";
-	// TODO finish combinations
-	out << "\t]\n";
-	 */
+        // dump the load combinations list
+        out << "\"combinations\":[";
+        // TODO finish combinations
+        out << "\t]\n";
+         */
 
     out << "\n}\n"; // final, closing bracket
 }

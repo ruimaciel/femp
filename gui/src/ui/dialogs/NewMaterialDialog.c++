@@ -22,7 +22,7 @@ bool NewMaterialDialog::isDuplicate(QString name)
 {
     //TODO replace with STL algorithm
     for (auto material : m_model.getMaterialList()) {
-        if (material.label == name.toStdString())
+        if (material.getLabel() == name.toStdString())
             return true;
     }
 
@@ -51,11 +51,11 @@ void NewMaterialDialog::addNewMaterial()
     }
 
     // if all went well then add a new material
-    fem::Material new_material;
+    const std::string label = lineEditMaterialName->text().toStdString();
+    const double E = lineEditYoung->text().toDouble();
+    const double nu = lineEditPoisson->text().toDouble();
 
-    new_material.label = lineEditMaterialName->text().toStdString();
-    new_material.E = lineEditYoung->text().toDouble();
-    new_material.nu = lineEditPoisson->text().toDouble();
+    fem::Material new_material(label, E, nu);
 
     m_model.pushMaterial(new_material);
 

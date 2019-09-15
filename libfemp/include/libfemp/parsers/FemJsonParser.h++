@@ -10,8 +10,8 @@
 #include <libfemp/Model.h++>
 
 /**
-Class developed to parse the fem.json file format
-**/
+ * Class developed to parse the fem.json file format
+ */
 class FemJsonParser {
 public:
     FemJsonParser();
@@ -19,8 +19,8 @@ public:
     void operator()(std::istream& file, fem::Model& model);
 
     /**
-	class intended to provide the error message
-	**/
+     * class intended to provide the error message
+     */
     struct Error {
         enum Type {
             ERR_OK,
@@ -42,6 +42,7 @@ protected:
     std::string temp_token;
 
     fem::Material temp_material;
+
     fem::Node temp_node;
     fem::Element temp_element;
     fem::NodeRestrictions temp_node_restrictions;
@@ -462,16 +463,16 @@ protected:
 
 protected:
     /**
-	 * Returns a terminal token by parsing the input stream
-	@param file	opened text stream
-	**/
+     * Returns a terminal token by parsing the input stream
+     * @param file	opened text stream
+     */
     enum TerminalTokens lexer(std::istream& file);
 
     void setParserTable();
 
     /**
-	Routine intended to make the re2c code more easily readable by putting the return procedures here
-	**/
+     * Routine intended to make the re2c code more easily readable by putting the return procedures here
+     */
     TerminalTokens lexerReturnProcedures(TerminalTokens tt);
 
 protected:
@@ -484,9 +485,9 @@ protected:
     char* limit; // marks the string limit
     size_t line_number;
 
-    /** 
-	routine called by the lexer to fill the buffer by reading from the file
-	**/
+    /**
+     * Routine called by the lexer to fill the buffer by reading from the file
+     */
     void fill(std::istream& file);
 
     // temporary list for the passed strings

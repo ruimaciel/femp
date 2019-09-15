@@ -5,6 +5,21 @@ project(libfemp
 	VERSION 0.1.0
 	)
 
+option(USES_RE2C "Uses re2c to regenerate the lexer files")
+if(USES_RE2C)
+	message(STATUS "Adding re2c custom rules")
+	find_program(RE2C re2c REQUIRED)
+
+	add_custom_command( OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/src/parsers/FemJsonParser.c++
+		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/parsers/FemJsonParser.c++.re2c ${CMAKE_CURRENT_SOURCE_DIR}/include/libfemp/parsers/FemJsonParser.h++
+		COMMAND ${RE2C}
+		ARGS -i -T -o ${CMAKE_CURRENT_SOURCE_DIR}/src/parsers/FemJsonParser.c++ ${CMAKE_CURRENT_SOURCE_DIR}/src/parsers/FemJsonParser.c++.re2c
+		COMMENT "Generating re2c files"
+		)
+else(USES_RE2C)
+	message(STATUS "Skipping re2c custom rules")
+endif()
+
 set(libfemp_INCLUDES
 	include/libfemp/Point2D.h++
 	include/libfemp/SurfaceLoadOperators/SurfaceNormalLoad.h++

@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: ubuntu:bionic
+      - image: circleci/buildpack-deps:bionic
 
     steps:
       - run:
@@ -34,7 +34,7 @@ jobs:
 
   test:
     docker:
-      - image: ubuntu:bionic
+      - image: circleci/buildpack-deps:bionic
     steps:
       - restore_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}

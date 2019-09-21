@@ -6,37 +6,15 @@ NodalLoad::NodalLoad()
 {
 }
 
-NodalLoad::NodalLoad(const NodalLoad& copied)
+NodalLoad::NodalLoad(Point3D force)
 {
-    this->force = copied.force;
+    m_force = force;
 }
 
-NodalLoad::~NodalLoad()
-{
-}
-
-double
-NodalLoad::x() const
-{
-    return force.x();
-}
-
-double
-NodalLoad::y() const
-{
-    return force.y();
-}
-
-double
-NodalLoad::z() const
-{
-    return force.z();
-}
-
-const Point3D&
+Point3D
 NodalLoad::getForce() const
 {
-    return this->force;
+    return m_force;
 }
 
 } // namespace fem

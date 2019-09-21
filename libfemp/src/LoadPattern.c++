@@ -41,10 +41,7 @@ void LoadPattern::setLabel(std::string const& label)
 
 void LoadPattern::addNodalLoad(size_t node, Point3D force)
 {
-    //TODO perform sanity checks
-    NodalLoad n;
-    n.force = force;
-    nodal_loads[node] = n;
+    nodal_loads[node] = NodalLoad(force);
 }
 
 void LoadPattern::addNodalDisplacement(size_t node, Point3D displacement)

@@ -225,7 +225,7 @@ void JsonExporter::output(std::ostream& out, const fem::Model& model)
                     out << "\t\t\t\t{";
                     out << "\"node\":" << n->first;
                     out << ", \"force\":"
-                        << "[" << n->second.force.x() << ", " << n->second.force.y() << ", " << n->second.force.z() << "]}";
+                        << "[" << n->second.getForce().x() << ", " << n->second.getForce().y() << ", " << n->second.getForce().z() << "]}";
                 }
                 out << "\n\t\t\t]\n";
             }

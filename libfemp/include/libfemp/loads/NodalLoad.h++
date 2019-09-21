@@ -10,21 +10,17 @@ namespace fem {
  **/
 class NodalLoad {
 public:
-    Point3D force; // the force being applied in this node
-
-public:
     NodalLoad();
-    NodalLoad(const NodalLoad&);
-    ~NodalLoad();
-
-    double x() const;
-    double y() const;
-    double z() const;
+    NodalLoad(Point3D m_force);
 
     /**
-	 * returns the force vector
-	 **/
-    const Point3D& getForce() const;
+     * returns the force vector
+     */
+    Point3D getForce() const;
+
+private:
+    Point3D m_force; // the force being applied in this node
+
 };
 
 } // namespace fem

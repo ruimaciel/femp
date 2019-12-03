@@ -15,7 +15,6 @@ class MatrixModel
     : public QAbstractTableModel {
     Q_OBJECT
 protected:
-    fem::Project* m_project;
     std::vector<fem::AnalysisResult>::iterator m_result;
     std::map<int, std::vector<fem::Element>::size_type> m_lineMap;
 

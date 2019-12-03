@@ -19,9 +19,6 @@ class AnalysisResultsWidget
     Q_OBJECT
 
 protected:
-    fem::Project const& m_project;
-    AnalysisResultsModel* m_model;
-
     // proxy model to provide a way to filter stuff from the results
     QSortFilterProxyModel m_proxy_model;
 

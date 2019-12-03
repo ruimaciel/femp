@@ -11,9 +11,6 @@ AnalysisResultsWidget::AnalysisResultsWidget(fem::Project& project, QWidget* par
 {
     setupUi(this);
 
-    // initialize member variables
-    setProjectResults(project.result[0]);
-
     // set the table model for the model/view stuff
     m_model = new AnalysisResultsModel(project, parent);
     m_proxy_model.setSourceModel(m_model);
@@ -22,11 +19,6 @@ AnalysisResultsWidget::AnalysisResultsWidget(fem::Project& project, QWidget* par
 
     // signals and slots
     connect(this->pushButtonFilters, SIGNAL(clicked()), this, SLOT(setFilterOptions()));
-}
-
-void AnalysisResultsWidget::setProjectResults(fem::AnalysisResult const& results)
-{
-    m_result = &results;
 }
 
 void AnalysisResultsWidget::setFilterOptions()

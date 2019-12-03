@@ -20,7 +20,6 @@ class AnalysisResultsWidget
 
 protected:
     fem::Project const& m_project;
-    fem::AnalysisResult const* m_result;
     AnalysisResultsModel* m_model;
 
     // proxy model to provide a way to filter stuff from the results
@@ -28,11 +27,6 @@ protected:
 
 public:
     AnalysisResultsWidget(fem::Project& project, QWidget* parent = nullptr);
-
-    /**
-     * Sets which project to represent
-     */
-    void setProjectResults(fem::AnalysisResult const& result);
 
 private Q_SLOTS:
     // Calls the TableFilterDialog and sets the table according to the user input

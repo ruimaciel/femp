@@ -17,11 +17,6 @@ class MatrixWidget
       private Ui::MatrixWidget {
     Q_OBJECT
 
-protected:
-    fem::Project const* m_project;
-    fem::AnalysisResult const* m_result;
-    MatrixModel* m_model;
-
 public:
     MatrixWidget(fem::Project& project, QWidget* parent = nullptr);
 };

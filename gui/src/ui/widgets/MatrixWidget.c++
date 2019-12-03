@@ -8,8 +8,6 @@ MatrixWidget::MatrixWidget(fem::Project& project, QWidget* parent)
 {
     setupUi(this);
 
-    m_model = new MatrixModel(project, parent);
+    MatrixModel * m_model = new MatrixModel(project, parent);
     this->tableView->setModel(m_model);
-    m_project = &project;
-    m_result = &project.result[0];
 }

@@ -107,7 +107,7 @@ SurfaceLoad* SurfaceLoad::makeSurfaceLoad(const Element* element)
 {
     SurfaceLoad* surfaceLoad = nullptr;
 
-    switch (element->type) {
+    switch (element->getType()) {
     case Element::FE_TRIANGLE3:
         surfaceLoad = new Triangle3();
         break;

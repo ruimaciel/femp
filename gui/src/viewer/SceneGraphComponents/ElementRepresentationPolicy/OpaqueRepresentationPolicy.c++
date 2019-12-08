@@ -56,16 +56,16 @@ void OpaqueRepresentationPolicy::tri6(fem::Point3D& p1, fem::Point3D& p2, fem::P
     int partitions = 2 * (m_surface_subdivision_level + 1); //TODO implement a better code
 
     /*
-	 v
-	 ^
-	 |
-	 2
-	 |`,
-	 |  `.
-	 5    `4
-	 |      `.
-	 |        `.
-	 0-----3----1 --> u
+         v
+         ^
+         |
+         2
+         |`,
+         |  `.
+         5    `4
+         |      `.
+         |        `.
+         0-----3----1 --> u
 
 */
     // defining temporary structures for points and normal vectors
@@ -151,13 +151,13 @@ void OpaqueRepresentationPolicy::quad4(fem::Point3D& p1, fem::Point3D& p2, fem::
     int partitions = 2 * (m_surface_subdivision_level + 1); //TODO implement a better code
 
     /*
-	^ y
-	|
-	4 ------ 3
-	|        |
-	|        |
-	|        |
-	1 ------ 2 --> x
+        ^ y
+        |
+        4 ------ 3
+        |        |
+        |        |
+        |        |
+        1 ------ 2 --> x
 */
     // defining temporary structures for points and normal vectors
     fem::Point3D p_upper_row[partitions + 1];
@@ -244,13 +244,13 @@ void OpaqueRepresentationPolicy::quad8(fem::Point3D& p1, fem::Point3D& p2, fem::
     int partitions = 2 * (m_surface_subdivision_level + 1); //TODO implement a better code
 
     /*
-	^ y
-	|
-	4 -- 7 -- 3
-	|         |
-	8         6
-	|         |
-	1 -- 5 -- 2 --> x
+        ^ y
+        |
+        4 -- 7 -- 3
+        |         |
+        8         6
+        |         |
+        1 -- 5 -- 2 --> x
 */
     // defining temporary structures for points and normal vectors
     fem::Point3D p_upper_row[partitions + 1];
@@ -339,13 +339,13 @@ void OpaqueRepresentationPolicy::quad9(fem::Point3D& p1, fem::Point3D& p2, fem::
     int partitions = 2 * (m_surface_subdivision_level + 1); //TODO implement a better code
 
     /*
-	^ y
-	|
-	4 -- 7 -- 3
-	|         |
-	8    9    6
-	|         |
-	1 -- 5 -- 2 --> x
+        ^ y
+        |
+        4 -- 7 -- 3
+        |         |
+        8    9    6
+        |         |
+        1 -- 5 -- 2 --> x
 */
     // defining temporary structures for points and normal vectors
     fem::Point3D p_upper_row[partitions + 1];
@@ -422,7 +422,7 @@ void OpaqueRepresentationPolicy::quad9(fem::Point3D& p1, fem::Point3D& p2, fem::
  */
 void OpaqueRepresentationPolicy::tetra4(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_TETRAHEDRON4);
+    assert(element.getType() == fem::Element::FE_TETRAHEDRON4);
     assert(element.getNodeAmount() == 4);
 
     // generate a temporary list of all nodes
@@ -444,7 +444,7 @@ void OpaqueRepresentationPolicy::tetra4(fem::element_ref_t const&, fem::Element&
  */
 void OpaqueRepresentationPolicy::tetra10(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_TETRAHEDRON10);
+    assert(element.getType() == fem::Element::FE_TETRAHEDRON10);
     assert(element.getNodeAmount() == 10);
 
     // generate a temporary list of all nodes
@@ -465,7 +465,7 @@ void OpaqueRepresentationPolicy::tetra10(fem::element_ref_t const&, fem::Element
  */
 void OpaqueRepresentationPolicy::hexa8(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_HEXAHEDRON8);
+    assert(element.getType() == fem::Element::FE_HEXAHEDRON8);
     assert(element.getNodeAmount() == 8);
 
     // generate a temporary list of all nodes
@@ -488,7 +488,7 @@ void OpaqueRepresentationPolicy::hexa8(fem::element_ref_t const&, fem::Element& 
  */
 void OpaqueRepresentationPolicy::hexa20(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_HEXAHEDRON20);
+    assert(element.getType() == fem::Element::FE_HEXAHEDRON20);
     assert(element.getNodeAmount() == 20);
 
     // generate a temporary list of all nodes
@@ -510,7 +510,7 @@ void OpaqueRepresentationPolicy::hexa20(fem::element_ref_t const&, fem::Element&
  */
 void OpaqueRepresentationPolicy::hexa27(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_HEXAHEDRON27);
+    assert(element.getType() == fem::Element::FE_HEXAHEDRON27);
     assert(element.getNodeAmount() == 27);
 
     // generate a temporary list of all nodes
@@ -532,7 +532,7 @@ void OpaqueRepresentationPolicy::hexa27(fem::element_ref_t const&, fem::Element&
  */
 void OpaqueRepresentationPolicy::prism6(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_PRISM6);
+    assert(element.getType() == fem::Element::FE_PRISM6);
     assert(element.getNodeAmount() == 6);
 
     // generate a temporary list of all nodes
@@ -554,7 +554,7 @@ void OpaqueRepresentationPolicy::prism6(fem::element_ref_t const&, fem::Element&
  */
 void OpaqueRepresentationPolicy::prism15(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_PRISM15);
+    assert(element.getType() == fem::Element::FE_PRISM15);
     assert(element.getNodeAmount() == 15);
 
     // generate a temporary list of all nodes
@@ -576,7 +576,7 @@ void OpaqueRepresentationPolicy::prism15(fem::element_ref_t const&, fem::Element
  */
 void OpaqueRepresentationPolicy::prism18(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_PRISM18);
+    assert(element.getType() == fem::Element::FE_PRISM18);
     assert(element.getNodeAmount() == 18);
 
     // generate a temporary list of all nodes

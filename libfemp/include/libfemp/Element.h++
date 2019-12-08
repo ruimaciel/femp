@@ -75,6 +75,8 @@ public:
     **/
     enum ElementFamily family() const;
 
+    enum Type getType() const;
+
     /**
      * Returns a vector with the reference IDs of all nodes associated with the element
      **/

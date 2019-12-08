@@ -11,7 +11,7 @@ Hexahedron27::Hexahedron27(fem::element_ref_t const& ref, fem::Element& referenc
 void Hexahedron27::paintGL(ViewportData&, ViewportColors& colors)
 {
     assert(m_element != nullptr);
-    assert(m_element->type == fem::Element::FE_HEXAHEDRON27);
+    assert(m_element->getType() == fem::Element::FE_HEXAHEDRON27);
     assert(m_representation != nullptr);
     assert(m_displacements != nullptr);
 

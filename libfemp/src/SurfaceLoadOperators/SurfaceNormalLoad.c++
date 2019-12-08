@@ -34,7 +34,7 @@ void SurfaceNormalLoad::operator()(fem::SurfaceLoad& surface_load, fem::Model& m
     fem::Quadrangle9 m_quad9;
 
     // set the element
-    switch (surface_load.type) {
+    switch (surface_load.getType()) {
     case Element::FE_TRIANGLE3:
         load = &m_tri3;
         surface_load.surface_forces.resize(3);
@@ -67,9 +67,9 @@ void SurfaceNormalLoad::operator()(fem::SurfaceLoad& surface_load, fem::Model& m
     }
 
     /**
-	for each node that defines the surface, define a normal vector and
-	set the force accordingly
-	**/
+        for each node that defines the surface, define a normal vector and
+        set the force accordingly
+        **/
     using namespace std;
     auto coordinates = load->getLocalCoordinates();
     for (unsigned int i = 0; i < surface_load.getNodeAmount(); i++) {

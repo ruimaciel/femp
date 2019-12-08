@@ -82,7 +82,7 @@ Model::getMaterialByIndex(size_t index) const
 void Model::pushElement(fem::Element& e)
 {
     // check if element is valid
-    switch (e.type) {
+    switch (e.getType()) {
     case Element::FE_TETRAHEDRON4:
         if (e.getNodeAmount() != 4)
             throw FemException("wrong node number");
@@ -135,7 +135,7 @@ void Model::pushElement(fem::Element& e)
     std::vector<size_t> nodes;
 
     //TODO insert element's surfaces in the surface list
-    switch (e.type) {
+    switch (e.getType()) {
     case Element::FE_TETRAHEDRON4:
         nodes.resize(3);
 

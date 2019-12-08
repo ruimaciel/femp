@@ -11,7 +11,7 @@ Hexahedron8::Hexahedron8(fem::element_ref_t const& ref, fem::Element& reference_
 void Hexahedron8::paintGL(ViewportData&, ViewportColors& colors)
 {
     assert(m_element != nullptr);
-    assert(m_element->type == fem::Element::FE_HEXAHEDRON8);
+    assert(m_element->getType() == fem::Element::FE_HEXAHEDRON8);
     assert(m_representation != nullptr);
     assert(m_displacements != nullptr);
 

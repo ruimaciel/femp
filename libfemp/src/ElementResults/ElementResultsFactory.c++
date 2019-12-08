@@ -19,7 +19,7 @@ ElementResultsFactory::operator()(const fem::Element& reference_element)
 
     fem::BaseElement* element;
 
-    switch (reference_element.type) {
+    switch (reference_element.getType()) {
     case fem::Element::FE_TETRAHEDRON4:
         element = &m_tetrahedron4;
         results->resize(4);
@@ -209,7 +209,7 @@ ElementResultsFactory::operator()(const fem::Element& reference_element)
 
     // nasty hack to set up the tensor
     double tensor[3][3];
-    switch (reference_element.type) {
+    switch (reference_element.getType()) {
     case fem::Element::FE_TETRAHEDRON4:
         tensor[0][0] = results->stresses[4].s11;
         tensor[1][1] = results->stresses[4].s22;

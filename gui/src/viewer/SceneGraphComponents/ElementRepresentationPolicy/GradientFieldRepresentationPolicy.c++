@@ -444,7 +444,7 @@ void GradientFieldRepresentationPolicy::quad9(fem::element_ref_t const& ref, p_i
  */
 void GradientFieldRepresentationPolicy::tetra4(fem::element_ref_t const& element_reference, fem::Element& element, ViewportColors& colors, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_TETRAHEDRON4);
+    assert(element.getType() == fem::Element::FE_TETRAHEDRON4);
     assert(element.getNodeAmount() == 4);
     assert(m_gradient != nullptr);
 
@@ -468,7 +468,7 @@ void GradientFieldRepresentationPolicy::tetra4(fem::element_ref_t const& element
  */
 void GradientFieldRepresentationPolicy::tetra10(fem::element_ref_t const& element_reference, fem::Element& element, ViewportColors& colors, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_TETRAHEDRON10);
+    assert(element.getType() == fem::Element::FE_TETRAHEDRON10);
     assert(element.getNodeAmount() == 10);
     assert(m_gradient != nullptr);
 
@@ -492,7 +492,7 @@ void GradientFieldRepresentationPolicy::tetra10(fem::element_ref_t const& elemen
  */
 void GradientFieldRepresentationPolicy::hexa8(fem::element_ref_t const& element_reference, fem::Element& element, ViewportColors& colors, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_HEXAHEDRON8);
+    assert(element.getType() == fem::Element::FE_HEXAHEDRON8);
     assert(element.getNodeAmount() == 8);
     assert(m_gradient != nullptr);
 
@@ -518,7 +518,7 @@ void GradientFieldRepresentationPolicy::hexa8(fem::element_ref_t const& element_
  */
 void GradientFieldRepresentationPolicy::hexa20(fem::element_ref_t const& element_reference, fem::Element& element, ViewportColors& colors, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_HEXAHEDRON20);
+    assert(element.getType() == fem::Element::FE_HEXAHEDRON20);
     assert(element.getNodeAmount() == 20);
     assert(m_gradient != nullptr);
 
@@ -543,7 +543,7 @@ void GradientFieldRepresentationPolicy::hexa20(fem::element_ref_t const& element
  */
 void GradientFieldRepresentationPolicy::hexa27(fem::element_ref_t const& element_reference, fem::Element& element, ViewportColors& colors, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_HEXAHEDRON27);
+    assert(element.getType() == fem::Element::FE_HEXAHEDRON27);
     assert(element.getNodeAmount() == 27);
     assert(m_gradient != nullptr);
 
@@ -568,7 +568,7 @@ void GradientFieldRepresentationPolicy::hexa27(fem::element_ref_t const& element
  */
 void GradientFieldRepresentationPolicy::prism6(fem::element_ref_t const& element_reference, fem::Element& element, ViewportColors& colors, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_PRISM6);
+    assert(element.getType() == fem::Element::FE_PRISM6);
     assert(element.getNodeAmount() == 6);
     assert(m_gradient != nullptr);
 
@@ -593,7 +593,7 @@ void GradientFieldRepresentationPolicy::prism6(fem::element_ref_t const& element
  */
 void GradientFieldRepresentationPolicy::prism15(fem::element_ref_t const& element_reference, fem::Element& element, ViewportColors& colors, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_PRISM15);
+    assert(element.getType() == fem::Element::FE_PRISM15);
     assert(element.getNodeAmount() == 15);
     assert(m_gradient != nullptr);
 
@@ -618,7 +618,7 @@ void GradientFieldRepresentationPolicy::prism15(fem::element_ref_t const& elemen
  */
 void GradientFieldRepresentationPolicy::prism18(fem::element_ref_t const& element_reference, fem::Element& element, ViewportColors& colors, DisplacementsRepresentationPolicy* displacement)
 {
-    assert(element.type == fem::Element::FE_PRISM18);
+    assert(element.getType() == fem::Element::FE_PRISM18);
     assert(element.getNodeAmount() == 18);
     assert(m_gradient != nullptr);
 

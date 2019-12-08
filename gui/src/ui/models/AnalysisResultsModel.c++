@@ -134,7 +134,7 @@ AnalysisResultsModel::data(const QModelIndex& index, int role) const
         return QVariant((unsigned int)selected_element_ref);
 
     case 1: // element type
-        return generateElementTypeName(selected_element.type);
+        return generateElementTypeName(selected_element.getType());
 
     case 2: // node local reference
         return QVariant(local_ref);

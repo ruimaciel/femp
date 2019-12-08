@@ -26,7 +26,7 @@ SceneComponentFactory::operator()(fem::element_ref_t const& ref, fem::Element& e
     assert(this->m_displacement != nullptr);
 
     Element* scene_graph_element;
-    switch (element.type) {
+    switch (element.getType()) {
     case fem::Element::FE_TETRAHEDRON4:
         scene_graph_element = new Tetrahedron4(ref, element, m_representation, m_displacement);
         break;

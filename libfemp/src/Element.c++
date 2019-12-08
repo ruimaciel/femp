@@ -126,6 +126,11 @@ Element::family() const
     }
 }
 
+Element::Type Element::getType() const
+{
+    return type;
+}
+
 std::vector<size_t>
 Element::getNodeReferences() const
 {

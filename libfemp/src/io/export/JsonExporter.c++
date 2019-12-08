@@ -51,7 +51,7 @@ void JsonExporter::output(std::ostream& out, const fem::Model& model)
         out << "\n\t\t";
         out << "{\"type\":";
         // get the name of the element
-        switch (element->type) {
+        switch (element->getType()) {
         case fem::Element::FE_TETRAHEDRON4:
             out << "\"tetrahedron4\", ";
             break;
@@ -258,7 +258,7 @@ void JsonExporter::output(std::ostream& out, const fem::Model& model)
 
                     out << "\n\t\t\t\t{";
                     out << "\"type\": ";
-                    switch (surface_load->type) {
+                    switch (surface_load->getType()) {
                     case fem::Element::FE_TRIANGLE3:
                         out << "\"triangle3\"";
                         break;

@@ -15,7 +15,7 @@ fem::BaseElement* getElement(fem::Element const& old_element)
     std::vector<node_ref_t> const& nodes = old_element.getNodeReferences();
 
     // sets the current element routines
-    switch (old_element.type) {
+    switch (old_element.getType()) {
     case Element::FE_TETRAHEDRON4:
         new_element = new Tetrahedron4();
         break;

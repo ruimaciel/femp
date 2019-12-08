@@ -36,7 +36,7 @@ StressFieldFactory::operator()(fem::Element const& element)
     };
 
     //setup the stress field representation for this particular e
-    switch (element.type) {
+    switch (element.getType()) {
     case fem::Element::FE_TETRAHEDRON4:
         e = &m_tetrahedron4;
         local_points = { { 1.0 / 3, 1.0 / 3, 1.0 / 3 } };

@@ -163,9 +163,9 @@ Analysis<Scalar>::generateGlobalDomainForceVector(Model& model, const LoadPatter
         }
 
         //add the domain load's f_elem contribution to result.f
-        for (size_t i = 0; i < model.element_list[domain_load_pair.first].nodes.size(); i++) {
+        for (size_t i = 0; i < el.getNodeAmount(); i++) {
             std::map<size_t, boost::tuple<size_t, size_t, size_t>>::iterator dof; // for the force vector scatter operation
-            dof = result.lm.find(model.getElementByIndex(domain_load_pair.first).nodes[i]);
+            dof = result.lm.find(model.getElementByIndex(domain_load_pair.first).getNode(i));
             if (dof == result.lm.end())
                 continue; // no degrees of freedom on this node
             else {

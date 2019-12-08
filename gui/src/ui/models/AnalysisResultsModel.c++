@@ -14,7 +14,7 @@ AnalysisResultsModel::AnalysisResultsModel(fem::Project& project, QObject* paren
     for (std::vector<fem::Element>::iterator e = femp_model.element_list.begin(); e != femp_model.element_list.end(); e++)
     {
         m_lineMap[m_rows] = std::distance(femp_model.element_list.begin(), e);
-        m_rows += e->nodes.size();
+        m_rows += e->getNodeAmount();
     }
 }
 

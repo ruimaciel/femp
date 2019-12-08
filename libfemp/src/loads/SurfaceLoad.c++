@@ -20,7 +20,7 @@ SurfaceLoad::~SurfaceLoad() {}
 std::vector<node_ref_t>
 SurfaceLoad::getNodeReferences() const
 {
-    return this->nodes;
+    return Element::getNodeReferences();
 }
 
 int SurfaceLoad::getNodeAmount() const

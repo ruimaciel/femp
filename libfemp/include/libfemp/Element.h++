@@ -68,7 +68,7 @@ public:
     return the number of nodes that an element of this particular type has
     @return	the number of nodes
     **/
-    int getNodeAmount() const;
+    size_t getNodeAmount() const;
 
     /**
     returns enum representing family type.

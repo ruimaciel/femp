@@ -7,7 +7,7 @@ namespace fem {
 
 Element::~Element() {}
 
-int Element::getNodeAmount() const
+size_t Element::getNodeAmount() const
 {
     switch (this->type) {
     case FE_TRIANGLE3:

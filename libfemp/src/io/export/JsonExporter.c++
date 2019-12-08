@@ -93,9 +93,10 @@ void JsonExporter::output(std::ostream& out, const fem::Model& model)
 
         // output the element's nodes
         out << "\"nodes\":[";
-        for (std::vector<size_t>::const_iterator n = element->nodes.begin();
-             n != element->nodes.end(); n++) {
-            if (n != element->nodes.begin())
+        auto node_references = element->getNodeReferences();
+        for (std::vector<size_t>::const_iterator n = node_references.begin();
+             n != node_references.end(); n++) {
+            if (n != node_references.begin())
                 out << ",";
             out << *n;
         }

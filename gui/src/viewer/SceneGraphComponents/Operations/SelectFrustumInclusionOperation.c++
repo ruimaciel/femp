@@ -43,8 +43,8 @@ void SelectFrustumInclusionOperation::selectInclusiveElements(fem::Project& proj
 
         auto selected_nodes = m_selection.getNodeReferences();
 
-        for (auto node : element_list[n].nodes) {
-            i = selected_nodes.find(node);
+        for (auto node_ref : element_list[n].getNodeReferences()) {
+            i = selected_nodes.find(node_ref);
             if (i == selected_nodes.end())
                 break;
         }

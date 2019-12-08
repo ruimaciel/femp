@@ -450,7 +450,7 @@ void OpaqueRepresentationPolicy::tetra10(fem::element_ref_t const&, fem::Element
     // generate a temporary list of all nodes
     m_temp_p.resize(10);
     for (int i = 0; i < 10; i++) {
-        auto node_ref = element.nodes[i];
+        auto node_ref = element.getNode(i);
         m_temp_p[i] = (*displacement)[node_ref];
     }
 
@@ -471,7 +471,7 @@ void OpaqueRepresentationPolicy::hexa8(fem::element_ref_t const&, fem::Element& 
     // generate a temporary list of all nodes
     m_temp_p.resize(8);
     for (int i = 0; i < 8; i++) {
-        auto node_ref = element.nodes[i];
+        auto node_ref = element.getNode(i);
         m_temp_p[i] = (*displacement)[node_ref];
     }
 
@@ -494,7 +494,7 @@ void OpaqueRepresentationPolicy::hexa20(fem::element_ref_t const&, fem::Element&
     // generate a temporary list of all nodes
     m_temp_p.resize(20);
     for (int i = 0; i < 20; i++) {
-        auto node_ref = element.nodes[i];
+        auto node_ref = element.getNode(i);
         m_temp_p[i] = (*displacement)[node_ref];
     }
 
@@ -516,7 +516,7 @@ void OpaqueRepresentationPolicy::hexa27(fem::element_ref_t const&, fem::Element&
     // generate a temporary list of all nodes
     m_temp_p.resize(27);
     for (int i = 0; i < 27; i++) {
-        auto node_ref = element.nodes[i];
+        auto node_ref = element.getNode(i);
         m_temp_p[i] = (*displacement)[node_ref];
     }
 
@@ -538,7 +538,7 @@ void OpaqueRepresentationPolicy::prism6(fem::element_ref_t const&, fem::Element&
     // generate a temporary list of all nodes
     m_temp_p.resize(6);
     for (int i = 0; i < 6; i++) {
-        auto node_ref = element.nodes[i];
+        auto node_ref = element.getNode(i);
         m_temp_p[i] = (*displacement)[node_ref];
     }
 
@@ -560,7 +560,7 @@ void OpaqueRepresentationPolicy::prism15(fem::element_ref_t const&, fem::Element
     // generate a temporary list of all nodes
     m_temp_p.resize(15);
     for (int i = 0; i < 15; i++) {
-        auto node_ref = element.nodes[i];
+        auto node_ref = element.getNode(i);
         m_temp_p[i] = (*displacement)[node_ref];
     }
 
@@ -582,7 +582,7 @@ void OpaqueRepresentationPolicy::prism18(fem::element_ref_t const&, fem::Element
     // generate a temporary list of all nodes
     m_temp_p.resize(18);
     for (int i = 0; i < 18; i++) {
-        auto node_ref = element.nodes[i];
+        auto node_ref = element.getNode(i);
         m_temp_p[i] = (*displacement)[node_ref];
     }
 

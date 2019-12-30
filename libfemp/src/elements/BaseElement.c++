@@ -16,6 +16,11 @@ BaseElement::~BaseElement()
 {
 }
 
+material_ref_t BaseElement::getMaterialRef() const
+{
+	return m_material;
+}
+
 Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>
 BaseElement::getStiffnessMatrix(fem::Model& model)
 {
@@ -45,7 +50,7 @@ BaseElement::getStiffnessMatrix(fem::Model& model)
     B.setZero();
 
     //TODO fix how the material properties are passed
-    const fem::Material material = model.getMaterialByIndex(this->material);
+    const fem::Material material = model.getMaterialByIndex(this->getMaterialRef());
     Matrix<double, 6, 6> D = generateConstitutiveRelationsMatrix(material);
 
     // build the stiffness matrix: cycle through the number of integration points

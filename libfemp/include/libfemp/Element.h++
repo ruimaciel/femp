@@ -64,6 +64,8 @@ public:
 public:
     virtual ~Element();
 
+    material_ref_t getMaterialRef() const;
+
     /**
     return the number of nodes that an element of this particular type has
     @return	the number of nodes

@@ -103,9 +103,9 @@ void JsonExporter::output(std::ostream& out, const fem::Model& model)
 
         out << "]";
         // output the element's material
-        if ((element->material != material)
+        if ((element->getMaterialRef() != material)
             || (element == model.element_list.begin())) {
-            material = element->material;
+            material = element->getMaterialRef();
             out << ", \"material\": " << material;
         }
         out << "}";

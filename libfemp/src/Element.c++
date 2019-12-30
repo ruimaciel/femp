@@ -7,6 +7,11 @@ namespace fem {
 
 Element::~Element() {}
 
+material_ref_t Element::getMaterialRef() const
+{
+    return material;
+}
+
 size_t Element::getNodeAmount() const
 {
     switch (this->type) {

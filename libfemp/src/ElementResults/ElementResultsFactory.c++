@@ -128,7 +128,7 @@ ElementResultsFactory::operator()(const fem::Element& reference_element)
         }
 
         // set the stresses
-        Material material = m_model->getMaterialByIndex(reference_element.material);
+        Material material = m_model->getMaterialByIndex(reference_element.getMaterialRef());
         const double E = material.getYoungsModulus();
         const double nu = material.getPoissonRatio();
 

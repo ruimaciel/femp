@@ -41,13 +41,15 @@ public: // WARNING: deprecated. to be removed.
 
 protected:
     std::vector<fem::Point3D> coordinates;
+    material_ref_t m_material; // reference to a material in Model's material map
 
 public: // merging with fem::Element
-    material_ref_t material; // reference to a material in Model's material map
     std::vector<node_ref_t> nodes; // nodes that define this element
 
 public:
     virtual ~BaseElement();
+
+    material_ref_t getMaterialRef() const;
 
     /**
      * Returns the total number of degrees of freedom

@@ -200,7 +200,7 @@ StressFieldFactory::operator()(fem::Element const& element)
             e23 += dNdy * d.z() + dNdz * d.y();
         }
 
-        auto material = m_model->getMaterialByIndex(element.material);
+        auto material = m_model->getMaterialByIndex(element.getMaterialRef());
         const double E = material.getYoungsModulus();
         const double nu = material.getPoissonRatio();
 

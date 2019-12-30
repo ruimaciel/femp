@@ -13,6 +13,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(Qt5 COMPONENTS Core Widgets OpenGL REQUIRED)
 find_package(OpenGL REQUIRED)
 
+add_subdirectory(domain)
+
 set(gui_HEADERS
 	src/DefaultProgressIndicator.h++
 	src/ProjectVisitor/OutputResultsInNodesCSVVisitor.h++
@@ -337,6 +339,7 @@ target_include_directories(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
+    domain
 	Qt5::Widgets
 	Qt5::OpenGL
 	OpenGL::GL

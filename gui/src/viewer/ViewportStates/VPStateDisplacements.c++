@@ -61,8 +61,9 @@ void VPStateDisplacements::populateScenegraph(BaseViewport* viewport)
     }
 
     // add the elements to the scenegraph
-    for (std::vector<fem::Element>::size_type n = 0; n < femp_model.element_list.size(); n++) {
-        auto component = std::shared_ptr<SceneGraphComponent>(this->m_factory(n, femp_model.element_list[n]));
+    auto element_list = femp_model.getElementList();
+    for (std::vector<fem::Element>::size_type n = 0; n < element_list.size(); n++) {
+        auto component = std::shared_ptr<SceneGraphComponent>(this->m_factory(n, element_list[n]));
         if (component)
             this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
     }

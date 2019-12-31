@@ -10,10 +10,10 @@ AnalysisResultsModel::AnalysisResultsModel(fem::Project& project, QObject* paren
 
     m_rows = 0;
 
-    fem::Model& femp_model = m_project.getModel();
-    for (std::vector<fem::Element>::iterator e = femp_model.element_list.begin(); e != femp_model.element_list.end(); e++)
+    std::vector<fem::Element> element_list = m_project.getDomainModel()->getElementList();
+    for (std::vector<fem::Element>::iterator e = element_list.begin(); e != element_list.end(); e++)
     {
-        m_lineMap[m_rows] = std::distance(femp_model.element_list.begin(), e);
+        m_lineMap[m_rows] = std::distance(element_list.begin(), e);
         m_rows += e->getNodeAmount();
     }
 }
@@ -116,12 +116,13 @@ AnalysisResultsModel::data(const QModelIndex& index, int role) const
     fem::element_ref_t selected_element_ref = i->second;
     int local_ref = index.row() - i->first;
 
-    fem::Model& femp_model = m_project.getModel();
-    fem::Element & selected_element = femp_model.element_list[selected_element_ref];
+    auto domain_model = m_project.getDomainModel();
+
+    fem::Element selected_element = domain_model->getElementByReference(selected_element_ref);
 
     const fem::node_ref_t selected_node_ref = selected_element.nodes[local_ref];
 
-    fem::Node selected_node = femp_model.getNode(selected_node_ref);
+    fem::Node selected_node = domain_model->getNodeByReference(selected_node_ref);
 
     fem::ElementResults* result = m_result->results[selected_element_ref];
     fem::Strains<double> result_strains = result->strains[local_ref];

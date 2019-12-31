@@ -37,8 +37,8 @@ void SelectFrustumInclusionOperation::selectInclusiveElements(fem::Project& proj
 {
     std::set<fem::node_ref_t>::const_iterator i;
 
-    fem::Model& femp_model = project.getModel();
-    auto element_list = femp_model.getElementList();
+    std::shared_ptr<gui::Model> domain_model = project.getDomainModel();
+    auto element_list = domain_model->getElementList();
     for (std::vector<fem::Element>::size_type n = 0; n < element_list.size(); n++) {
 
         auto selected_nodes = m_selection.getNodeReferences();

@@ -33,9 +33,9 @@ bool NewProjectWizardPage3::validatePage()
 
 void NewProjectWizardPage3::loadMaterialsCombo()
 {
-    fem::Model& femp_model = this->m_document.getProject().getModel();
+    auto domain_model = this->m_document.getProject().getDomainModel();
 
-    for (auto material : femp_model.getMaterialList()) {
+    for (auto material : domain_model->getMaterialList()) {
         comboBoxMaterialsList->addItem(QString::fromStdString(material.getLabel()));
     }
     if (comboBoxMaterialsList->count() > 0) {

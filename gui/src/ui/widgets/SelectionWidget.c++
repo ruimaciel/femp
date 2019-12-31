@@ -30,7 +30,9 @@ void SelectionWidget::initializeWidget(fem::Project& project, SelectionManager& 
     Selection s = selection_manager.getSelection();
     //TODO test memory allocation
 
-    for (std::vector<fem::Element>::size_type n = 0; n < project.getModel().numberOfElements(); n++) {
+    std::shared_ptr<gui::Model> domain_model = project.getDomainModel();
+
+    for (std::vector<fem::Element>::size_type n = 0; n < domain_model->getElementSize(); n++) {
         QTreeWidgetItem* item = new QTreeWidgetItem(m_element_item);
         item->setText(0, QString::number(n));
         item->setSelected(s.getElementReferences().find(n) != s.getElementReferences().end());
@@ -39,9 +41,8 @@ void SelectionWidget::initializeWidget(fem::Project& project, SelectionManager& 
 
     m_node_item = new QTreeWidgetItem(this->objectTreeWidget);
     m_node_item->setText(0, tr("Nodes"));
-    for (auto node_pair : project.getModel().getNodeMap()) {
-        size_t node_id;
-        std::tie(node_id, std::ignore) = node_pair;
+
+    for (auto node_id: domain_model->getNodeReferenceList()) {
         QTreeWidgetItem* item = new QTreeWidgetItem(m_node_item);
         item->setText(0, QString::number(node_id));
         item->setSelected(s.getNodeReferences().find(node_id) != s.getNodeReferences().end());
@@ -89,9 +90,9 @@ void SelectionWidget::clearSelection()
 
 void SelectionWidget::initializeSelectionGroups(fem::Project& project)
 {
-    fem::Model& femp_model = project.getModel();
+    auto femp_model = project.getDomainModel();
 
-    for (auto node_group : femp_model.getNodeGroups()) {
+    for (auto node_group : femp_model->getNodeGroupList()) {
         fem::Group group;
         group.setLabel(node_group.getLabel());
 
@@ -103,7 +104,7 @@ void SelectionWidget::initializeSelectionGroups(fem::Project& project)
         m_selection_groups.push_back(group);
     }
 
-    for (auto element_group : femp_model.getNodeGroups()) {
+    for (auto element_group : femp_model->getElementGroupList()) {
         fem::Group group;
         group.setLabel(element_group.getLabel());
 

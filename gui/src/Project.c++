@@ -3,7 +3,7 @@
 namespace fem {
 
 Project::Project()
-    : m_domainModel(m_model)
+    : m_domainModel(std::make_shared<gui::Model>(m_model))
 {
 
 }
@@ -30,7 +30,7 @@ Project::getModel()
     return this->m_model;
 }
 
-gui::Model & Project::getDomainModel()
+std::shared_ptr<gui::Model> Project::getDomainModel()
 {
     return this->m_domainModel;
 }

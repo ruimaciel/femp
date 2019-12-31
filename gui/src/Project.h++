@@ -36,7 +36,7 @@ public:
      * returns a reference to the Project's model
      */
     Model& getModel();
-    gui::Model& getDomainModel();
+    std::shared_ptr<gui::Model> getDomainModel();
 
     std::vector<AnalysisResult> & getAnalysisResults(); // a list with all analysis
 
@@ -47,7 +47,7 @@ public:
 
 protected:
     Model m_model; // the FEM model
-    gui::Model m_domainModel;
+    std::shared_ptr<gui::Model> m_domainModel;
     std::vector<AnalysisResult> m_analysisResults; // a list with all analysis
 };
 

@@ -6,11 +6,11 @@ AnalysisResultsModel::AnalysisResultsModel(fem::Project& project, QObject* paren
     : QAbstractTableModel(parent)
     , m_project(project)
 {
-    this->m_result = project.result.begin();
+    this->m_result = m_project.result.begin();
 
     m_rows = 0;
 
-    fem::Model& femp_model = project.getModel();
+    fem::Model& femp_model = m_project.getModel();
     for (std::vector<fem::Element>::iterator e = femp_model.element_list.begin(); e != femp_model.element_list.end(); e++)
     {
         m_lineMap[m_rows] = std::distance(femp_model.element_list.begin(), e);

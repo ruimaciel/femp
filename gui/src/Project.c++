@@ -2,6 +2,17 @@
 
 namespace fem {
 
+Project::Project()
+    : m_domainModel(m_model)
+{
+
+}
+
+Project::~Project()
+{
+
+}
+
 void Project::clear()
 {
     this->m_model.clear();
@@ -17,6 +28,11 @@ Model&
 Project::getModel()
 {
     return this->m_model;
+}
+
+gui::Model & Project::getDomainModel()
+{
+    return this->m_domainModel;
 }
 
 void Project::accept(ProjectVisitor& visitor)

@@ -4,6 +4,7 @@
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/Model.h++>
 
+#include <Model.h++>
 #include <ProjectVisitor/ProjectVisitor.h++>
 
 #include <vector>
@@ -17,6 +18,10 @@ namespace fem {
 
 class Project {
 public:
+
+    Project();
+    ~Project();
+
     /**
      * clears the project
      */
@@ -31,6 +36,7 @@ public:
      * returns a reference to the Project's model
      */
     Model& getModel();
+    gui::Model& getDomainModel();
 
     /**
      * Implements a Visitor design pattern
@@ -39,6 +45,7 @@ public:
 
 protected:
     Model m_model; // the FEM model
+    gui::Model m_domainModel;
 
 public:
     std::vector<AnalysisResult> result; // a list with all analysis

@@ -16,12 +16,12 @@ Project::~Project()
 void Project::clear()
 {
     this->m_model.clear();
-    this->result.clear();
+    this->m_analysisResults.clear();
 }
 
 void Project::pushAnalysisResult(fem::AnalysisResult& new_result)
 {
-    this->result.push_back(new_result);
+    this->m_analysisResults.push_back(new_result);
 }
 
 Model&
@@ -35,9 +35,14 @@ gui::Model & Project::getDomainModel()
     return this->m_domainModel;
 }
 
+std::vector<AnalysisResult> &Project::getAnalysisResults()
+{
+    return this->m_analysisResults;
+}
+
 void Project::accept(ProjectVisitor& visitor)
 {
-    visitor.visit(m_model, result);
+    visitor.visit(m_model, m_analysisResults);
 }
 
 } // fem

@@ -597,7 +597,7 @@ void MainWindow::runAnalysis()
 
 void MainWindow::dumpFemEquation()
 {
-    auto& femp_result = m_document.getProject().result;
+    auto& femp_result = m_document.getProject().getAnalysisResults();
 
     if (femp_result.empty()) {
         QMessageBox::information(this, "No analysis", "There isn't a equation to dump");
@@ -685,7 +685,7 @@ void MainWindow::dumpFemEquation()
 void MainWindow::showAnalysisSummary()
 {
     // crude hack
-    AnalysisSummaryDialog dialog(m_document.getProject().result.back(), this);
+    AnalysisSummaryDialog dialog(m_document.getProject().getAnalysisResults().back(), this);
     dialog.exec();
 }
 
@@ -738,7 +738,7 @@ void MainWindow::dumpResultsFromSelection()
 
     QTextStream out(&file);
     //dump the text to a text file
-    fem::AnalysisResult& femp_result = this->m_document.getProject().result.back(); // nasty hack
+    fem::AnalysisResult& femp_result = this->m_document.getProject().getAnalysisResults().back(); // nasty hack
 
     Selection selection = m_selectionManager.getSelection();
 
@@ -824,7 +824,7 @@ void MainWindow::createNewModelWindow()
 
 void MainWindow::createNewPostprocessingWindow()
 {
-    auto& femp_result = m_document.getProject().result;
+    auto& femp_result = m_document.getProject().getAnalysisResults();
     if (femp_result.empty()) {
         qCritical() << __FILE__ << ":" << __LINE__;
         qCritical() << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available";
@@ -842,11 +842,11 @@ void MainWindow::createNewPostprocessingWindow()
 
 void MainWindow::createNewTensorFieldWindow()
 {
-    if (m_document.getProject().result.empty()) {
+    if (m_document.getProject().getAnalysisResults().empty()) {
         qCritical() << __FILE__ << ":" << __LINE__;
         qCritical() << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available";
     } else {
-        TensorFieldWindow* window = new TensorFieldWindow(m_document.getProject(), m_document.getProject().result.back(), getViewportColors(), this);
+        TensorFieldWindow* window = new TensorFieldWindow(m_document.getProject(), m_document.getProject().getAnalysisResults().back(), getViewportColors(), this);
 
         // create the model's MDI window
         QMdiSubWindow* mdi_window = new QMdiSubWindow(m_mdiArea);
@@ -862,7 +862,7 @@ void MainWindow::createNewAnalysisResultsWindow()
 {
     qCritical() << __FILE__ << ":" << __LINE__;
     qCritical() << "MainWindow::createNewAnalysisResultsWindow()";
-    if (m_document.getProject().result.empty()) {
+    if (m_document.getProject().getAnalysisResults().empty()) {
         qCritical() << __FILE__ << ":" << __LINE__;
         qCritical() << "MainWindow::createNewAnalysisResultWindow(): tried to set a results window although there is no result available";
         return;
@@ -876,7 +876,7 @@ void MainWindow::createNewFemEquationWindow()
 {
     qCritical() << __FILE__ << ":" << __LINE__;
     qCritical() << "MainWindow::createNewFemEquationWindow()";
-    if (m_document.getProject().result.empty()) {
+    if (m_document.getProject().getAnalysisResults().empty()) {
         qCritical() << "MainWindow::createNewFemEquationWindow(): tried to set a results window although there is no result available";
         return;
     }

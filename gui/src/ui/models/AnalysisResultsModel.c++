@@ -6,7 +6,7 @@ AnalysisResultsModel::AnalysisResultsModel(fem::Project& project, QObject* paren
     : QAbstractTableModel(parent)
     , m_project(project)
 {
-    this->m_result = m_project.result.begin();
+    this->m_result = m_project.getAnalysisResults().begin();
 
     m_rows = 0;
 

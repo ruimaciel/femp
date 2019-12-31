@@ -38,6 +38,8 @@ public:
     Model& getModel();
     gui::Model& getDomainModel();
 
+    std::vector<AnalysisResult> & getAnalysisResults(); // a list with all analysis
+
     /**
      * Implements a Visitor design pattern
      */
@@ -46,9 +48,7 @@ public:
 protected:
     Model m_model; // the FEM model
     gui::Model m_domainModel;
-
-public:
-    std::vector<AnalysisResult> result; // a list with all analysis
+    std::vector<AnalysisResult> m_analysisResults; // a list with all analysis
 };
 
 } // namespace fem

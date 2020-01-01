@@ -6,7 +6,7 @@
 #include <libfemp/Element.h++>
 #include <libfemp/Node.h++>
 
-SetNodeRestraintsVisitor::SetNodeRestraintsVisitor(Selection const& selection, fem::NodeRestrictions const& restrictions)
+SetNodeRestraintsVisitor::SetNodeRestraintsVisitor(Selection selection, fem::NodeRestrictions const& restrictions)
     : m_selection(selection)
 {
     m_restrictions = restrictions;

@@ -4,7 +4,7 @@
 #include <libfemp/Element.h++>
 #include <libfemp/Node.h++>
 
-SetDomainLoadsVisitor::SetDomainLoadsVisitor(Selection const& selection, fem::LoadPattern& load_pattern, fem::Point3D const& force)
+SetDomainLoadsVisitor::SetDomainLoadsVisitor(Selection selection, fem::LoadPattern& load_pattern, fem::Point3D const& force)
     : m_selection(selection)
     , m_load_pattern(load_pattern)
     , m_force(force)

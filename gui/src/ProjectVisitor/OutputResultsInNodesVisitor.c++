@@ -6,7 +6,7 @@
 #include <libfemp/Element.h++>
 #include <libfemp/Node.h++>
 
-OutputResultsInNodesVisitor::OutputResultsInNodesVisitor(Selection& selection, fem::AnalysisResult* result, QTextStream& os)
+OutputResultsInNodesVisitor::OutputResultsInNodesVisitor(Selection selection, fem::AnalysisResult* result, QTextStream& os)
     : m_selection(selection)
 {
     m_result = result;

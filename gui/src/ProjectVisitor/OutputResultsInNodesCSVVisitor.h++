@@ -14,14 +14,14 @@
 class OutputResultsInNodesCSVVisitor
     : public ProjectVisitor {
 public:
-    OutputResultsInNodesCSVVisitor(Selection& selection, fem::AnalysisResult* result, QTextStream& os);
+    OutputResultsInNodesCSVVisitor(Selection selection, fem::AnalysisResult* result, QTextStream& os);
 
     void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result);
 
 protected:
     fem::AnalysisResult* m_result;
     QTextStream* m_out;
-    Selection const& m_selection;
+    Selection m_selection;
 };
 
 #endif

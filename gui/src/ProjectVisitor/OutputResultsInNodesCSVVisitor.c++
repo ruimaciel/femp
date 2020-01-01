@@ -6,7 +6,7 @@
 #include <libfemp/Element.h++>
 #include <libfemp/Node.h++>
 
-OutputResultsInNodesCSVVisitor::OutputResultsInNodesCSVVisitor(Selection& selection, fem::AnalysisResult* result, QTextStream& os)
+OutputResultsInNodesCSVVisitor::OutputResultsInNodesCSVVisitor(Selection selection, fem::AnalysisResult* result, QTextStream& os)
     : m_selection(selection)
 {
     m_result = result;

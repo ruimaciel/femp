@@ -13,13 +13,13 @@
  */
 class OutputElementStatisticsVisitor
     : public ProjectVisitor {
-protected:
-    const Selection & m_selection;
-
 public:
-    OutputElementStatisticsVisitor(Selection const& selection);
+    OutputElementStatisticsVisitor(Selection selection);
 
     void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result);
+
+protected:
+    Selection m_selection;
 };
 
 #endif

@@ -15,13 +15,13 @@
 class SetNodeRestraintsVisitor
     : public ProjectVisitor {
 public:
-    SetNodeRestraintsVisitor(Selection const& selection, fem::NodeRestrictions const& restrictions);
+    SetNodeRestraintsVisitor(Selection selection, fem::NodeRestrictions const& restrictions);
 
     void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result);
 
 protected:
     fem::NodeRestrictions m_restrictions;
-    Selection const& m_selection;
+    Selection m_selection;
 };
 
 #endif

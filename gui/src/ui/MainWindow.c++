@@ -81,6 +81,16 @@ MainWindow::MainWindow(QWidget* parent)
     m_load_pattern_repository = std::make_shared<gui::persistence::LoadPatternRepository>(m_document.getProject().getDomainModel());
 }
 
+void MainWindow::setSelection(Selection)
+{
+
+}
+
+void MainWindow::clearSelection()
+{
+
+}
+
 void MainWindow::newProject()
 {
     // tweak the UI
@@ -88,6 +98,7 @@ void MainWindow::newProject()
 
     // free everything
     m_document.clear();
+
 
     /*
     The NewProjectWizard dialog will fill up a given document object through the steps
@@ -416,9 +427,9 @@ void MainWindow::createDockWidgets()
     m_commandLineDockWidget = new CommandLineDockWidget(this);
 
     // set the MainWindow connections
-    connect(this, &MainWindow::setMessage, m_commandLineDockWidget, &CommandLineDockWidget::getMessage);
-    connect(this, &MainWindow::setWarning, m_commandLineDockWidget, &CommandLineDockWidget::getWarning);
-    connect(this, &MainWindow::setError, m_commandLineDockWidget, &CommandLineDockWidget::getError);
+    connect(this, &MainWindow::informationMessageSent, m_commandLineDockWidget, &CommandLineDockWidget::getMessage);
+    connect(this, &MainWindow::warningMessageSent, m_commandLineDockWidget, &CommandLineDockWidget::getWarning);
+    connect(this, &MainWindow::errorMessageSent, m_commandLineDockWidget, &CommandLineDockWidget::getError);
 
     // add selection dock widget
     this->addDockWidget(Qt::RightDockWidgetArea, m_commandLineDockWidget);
@@ -486,8 +497,6 @@ void MainWindow::setDomainLoads()
 
 void MainWindow::moveSelectedNodes()
 {
-    assert(m_mdiArea != nullptr);
-
     MoveNodesDialog nd(this);
     if (nd.exec() != QDialog::Accepted) {
         return;
@@ -519,6 +528,10 @@ void MainWindow::editSelection()
 {
     SelectionDialog dialog(m_document.getProject().getDomainModel(), m_selectionManager, this);
     dialog.exec();
+
+    // signal that a selection changed
+    Selection selection = m_selectionManager.getSelection();
+    emit selectionChanged(selection);
 }
 
 void MainWindow::runAnalysis()
@@ -777,17 +790,17 @@ void MainWindow::showAll()
 
 void MainWindow::getMessage(QString message)
 {
-    emit setMessage(message);
+    emit informationMessageSent(message);
 }
 
 void MainWindow::getWarning(QString message)
 {
-    emit setMessage(message);
+    emit informationMessageSent(message);
 }
 
 void MainWindow::getError(QString message)
 {
-    emit setMessage(message);
+    emit informationMessageSent(message);
 }
 
 void MainWindow::setTiledWindows()

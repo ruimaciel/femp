@@ -30,12 +30,27 @@ class MainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
 
+signals:
+    void selectionChanged(Selection);
+    void selectionCleared();
+
+    void informationMessageSent(QString);
+    void warningMessageSent(QString);
+    void errorMessageSent(QString);
+
 public slots:
+    /**
+     * @brief setSelection
+     */
+    void setSelection(Selection); // sets the selection
+    void clearSelection(); // clears the selection
+
     /**
      * Starts off a brand new FEM project
      */
     void newProject();
     void openProject();
+
     /**
      * If the current model has been saved to a file then this routine reloads the document
      */
@@ -108,11 +123,6 @@ public slots:
     void updateWindowMenu();
 
     void activateSubWindowByIndex(int);
-
-signals:
-    void setMessage(QString);
-    void setWarning(QString);
-    void setError(QString);
 
 private:
     void createActions();

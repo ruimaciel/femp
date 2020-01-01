@@ -10,7 +10,7 @@
 #include <libfemp/Element.h++>
 #include <libfemp/Node.h++>
 
-OutputElementStatisticsVisitor::OutputElementStatisticsVisitor(Selection const& selection)
+OutputElementStatisticsVisitor::OutputElementStatisticsVisitor(Selection selection)
     : m_selection(selection)
 {
 }

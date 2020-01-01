@@ -9,7 +9,6 @@
 #include <Project.h++>
 #include <libfemp/Group.h++>
 
-#include <Selection.h++>
 #include <SelectionManager.h++>
 
 #include <application/interfaces/IElementRepository.h++>

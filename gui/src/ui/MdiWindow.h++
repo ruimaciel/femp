@@ -12,8 +12,7 @@
 
 #include "ui/ui_MdiWindow.h"
 
-#include "Selection.h++"
-#include "SelectionManager.h++"
+#include <selection/Selection.h++>
 
 /**
 Base class for all the MDI windows that render the model

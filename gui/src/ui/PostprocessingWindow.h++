@@ -17,7 +17,6 @@
 
 #include <options/Options.h++>
 
-#include "Selection.h++"
 #include "SelectionManager.h++"
 
 /**

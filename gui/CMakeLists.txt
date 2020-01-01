@@ -16,6 +16,7 @@ find_package(OpenGL REQUIRED)
 add_subdirectory(domain)
 add_subdirectory(application)
 add_subdirectory(persistence)
+add_subdirectory(services/selection)
 
 set(gui_HEADERS
 	src/DefaultProgressIndicator.h++
@@ -26,7 +27,6 @@ set(gui_HEADERS
 	src/ProjectVisitor/OutputElementStatisticsVisitor.h++
 	src/ProjectVisitor/SetDomainLoadsVisitor.h++
 	src/ProjectVisitor/OutputResultsInNodesVisitor.h++
-	src/Selection.h++
 	src/SelectionManager.h++
 	src/Document.h++
 	src/FempApplication.h++
@@ -150,7 +150,6 @@ set(gui_HEADERS
 	)
 
 set(gui_SOURCES
-	src/Selection.c++
 	src/ProjectVisitor/ProjectVisitor.c++
 	src/ProjectVisitor/OutputElementStatisticsVisitor.c++
 	src/ProjectVisitor/MoveNodesVisitor.c++
@@ -345,4 +344,5 @@ target_link_libraries(${PROJECT_NAME}
 	libla
 	libfemp
 	pthread
+    selection
 	)

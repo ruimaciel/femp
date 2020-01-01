@@ -5,7 +5,7 @@
 
 #include <libfemp/AnalysisResult.h++>
 
-#include "../../Selection.h++"
+#include <selection/Selection.h++>
 
 #include "../SceneGraph.h++"
 

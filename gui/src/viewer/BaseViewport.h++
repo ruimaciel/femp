@@ -7,7 +7,7 @@
 
 #include <array>
 
-#include <Selection.h++>
+#include <selection/Selection.h++>
 #include <application/interfaces/INodeRepository.h++>
 #include <options/ViewportColors.h++>
 #include <ui/MdiWindowProperties.h++>
@@ -19,8 +19,6 @@
 
 #include "SceneGraph.h++"
 #include <options/Options.h++>
-
-#include "Selection.h++"
 
 #include "InputStates/ISLeftClick.h++" // for the state pattern that handles user input
 #include "InputStates/ISLeftDrag.h++" // for the state pattern that handles user input

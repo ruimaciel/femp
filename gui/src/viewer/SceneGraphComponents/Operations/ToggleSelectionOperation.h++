@@ -7,7 +7,7 @@
 #include "../SGCNode.h++"
 #include "../SceneGraphComponent.h++"
 
-#include <Selection.h++>
+#include <selection/Selection.h++>
 
 namespace Operation {
 

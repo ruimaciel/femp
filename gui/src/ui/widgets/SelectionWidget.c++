@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QTreeWidgetItem>
 
-#include <Selection.h++>
+#include <selection/Selection.h++>
 
 #include <application/interfaces/IElementRepository.h++>
 #include <application/interfaces/INodeRepository.h++>

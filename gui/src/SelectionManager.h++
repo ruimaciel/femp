@@ -6,7 +6,7 @@
 #include <libfemp/Element.h++>
 #include <libfemp/Node.h++>
 
-#include "Selection.h++"
+#include <selection/Selection.h++>
 
 /**
  * MVC pattern which manages a list of all objects contained in a given fem::Project object which have been selected
@@ -25,14 +25,6 @@ public slots:
     void setSelection(Selection const&);
 
     void clearSelection();
-
-    void selectElement(const fem::element_ref_t& ref);
-
-    void deselectElement(const fem::element_ref_t& ref);
-
-    void selectNode(const fem::node_ref_t& ref);
-
-    void deselectNode(const fem::node_ref_t& ref);
 
     /**
      * returns a pointer to an object of type Selection which stores a set of references to selected objects

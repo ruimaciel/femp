@@ -4,7 +4,7 @@
 #include <array>
 
 #include "ProjectVisitor.h++"
-#include <Selection.h++>
+#include <selection/Selection.h++>
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/LoadPattern.h++>
 #include <libfemp/Model.h++>

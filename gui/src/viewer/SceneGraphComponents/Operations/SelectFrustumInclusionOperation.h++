@@ -8,7 +8,7 @@
 #include "../SGCNode.h++"
 #include "../SceneGraphComponent.h++"
 
-#include <Selection.h++>
+#include <selection/Selection.h++>
 #include <libfemp/Point3D.h++>
 
 namespace Operation {

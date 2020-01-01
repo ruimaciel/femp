@@ -9,6 +9,8 @@
 
 #include <libfemp/io/import/ModelImporterFactory.h++>
 
+#include <persistence/MaterialRepository.h++>
+
 NewProjectWizardPage3::NewProjectWizardPage3(fem::Project &project)
     : m_project(project)
 {
@@ -141,7 +143,9 @@ void NewProjectWizardPage3::getFileFromDialog(void)
 
 void NewProjectWizardPage3::addNewMaterial(void)
 {
-    NewMaterialDialog dialog(m_project.getModel(), this);
+    gui::application::IMaterialRepositoryPtr material_repository = std::make_shared<gui::persistence::MaterialRepository>(m_project.getDomainModel());
+
+    NewMaterialDialog dialog(material_repository, this);
     switch (dialog.exec()) {
     case QDialog::Accepted:
         loadMaterialsCombo();

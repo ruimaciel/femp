@@ -17,6 +17,8 @@
 
 #include "ui/ModelWindow.h++"
 
+#include <application/interfaces/ILoadPatternRepository.h++>
+
 #include "viewer/ModelViewport.h++"
 
 #include "Document.h++"
@@ -147,6 +149,8 @@ protected:
     ViewportColors m_colors; // the elements' viewport colors
 
     QSignalMapper* m_windowMapper; // used to map menu clicks to window activation
+
+    gui::application::ILoadPatternRepositoryPtr m_load_pattern_repository;
 };
 
 #endif

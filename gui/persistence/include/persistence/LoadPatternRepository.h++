@@ -19,6 +19,10 @@ public:
 public:
     std::vector<fem::LoadPattern> getLoadPatternList() const override;
 
+    size_t getLoadPatternSize() const override;
+
+    fem::LoadPattern getLoadPatternByIndex(size_t index) const;
+
 private:
     std::shared_ptr<gui::Model> m_domain_model;
 };

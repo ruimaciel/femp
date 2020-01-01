@@ -5,9 +5,9 @@
 
 #include <libfemp/Material.h++>
 
-NewMaterialDialog::NewMaterialDialog(fem::Model& model, QWidget* parent)
+NewMaterialDialog::NewMaterialDialog(gui::application::IMaterialRepositoryPtr material_repository, QWidget* parent)
     : QDialog(parent)
-    , m_model(model)
+    , m_material_repository(material_repository)
 {
     setupUi(this);
 
@@ -21,17 +21,12 @@ NewMaterialDialog::NewMaterialDialog(fem::Model& model, QWidget* parent)
 bool NewMaterialDialog::isDuplicate(QString name)
 {
     //TODO replace with STL algorithm
-    for (auto material : m_model.getMaterialList()) {
+    for (auto material : m_material_repository->getMaterialList()) {
         if (material.getLabel() == name.toStdString())
             return true;
     }
 
     return false;
-}
-
-void NewMaterialDialog::checkMaterialName()
-{
-    //TODO finish
 }
 
 void NewMaterialDialog::addNewMaterial()
@@ -57,7 +52,7 @@ void NewMaterialDialog::addNewMaterial()
 
     fem::Material new_material(label, E, nu);
 
-    m_model.pushMaterial(new_material);
+    m_material_repository->pushMaterial(new_material);
 
     accept();
 }

@@ -5,6 +5,8 @@
 
 #include <libfemp/Material.h++>
 
+#include <memory>
+
 
 namespace gui {
 namespace application {
@@ -17,7 +19,11 @@ public:
     virtual ~IMaterialRepository() = default;
 
     virtual std::vector<fem::Material> getMaterialList() const = 0;
+
+    virtual void pushMaterial(fem::Material) = 0;
 };
+
+using IMaterialRepositoryPtr = std::shared_ptr<IMaterialRepository>;
 
 } // namespace application
 } // namespace gui

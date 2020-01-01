@@ -3,6 +3,7 @@
 
 #include "ui/ui_NewMaterialDialog.h"
 #include <QDialog>
+#include <application/interfaces/IMaterialRepository.h++>
 #include <libfemp/Model.h++> // for the materials list
 
 class NewMaterialDialog
@@ -10,11 +11,8 @@ class NewMaterialDialog
       private Ui::NewMaterialDialog {
     Q_OBJECT
 
-private:
-    fem::Model& m_model; // a pointer to a fem::Model object
-
 public:
-    explicit NewMaterialDialog(fem::Model& model, QWidget* parent = nullptr);
+    explicit NewMaterialDialog(gui::application::IMaterialRepositoryPtr material_repository, QWidget* parent = nullptr);
 
 private:
     /**
@@ -23,8 +21,10 @@ private:
     bool isDuplicate(QString name);
 
 private slots:
-    void checkMaterialName(); // checks for duplicates
     void addNewMaterial(); // adds a new material to the list from the data added to the forms
+
+private:
+    gui::application::IMaterialRepositoryPtr m_material_repository;
 };
 
 #endif

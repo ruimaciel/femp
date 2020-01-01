@@ -20,6 +20,8 @@ public:
 public:
     std::vector<fem::Material> getMaterialList() const override;
 
+    void pushMaterial(fem::Material new_material) override;
+
 private:
     std::shared_ptr<gui::Model> m_domain_model;
 };

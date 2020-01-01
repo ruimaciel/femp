@@ -77,7 +77,8 @@ MainWindow::MainWindow(QWidget* parent)
     this->createDockWidgets();
 
     // set the user interface
-    setUserInterfaceAsClosed();
+    setUserInterfaceAsClosed(); 
+    m_load_pattern_repository = std::make_shared<gui::persistence::LoadPatternRepository>(m_document.getProject().getDomainModel());
 }
 
 void MainWindow::newProject()
@@ -440,8 +441,7 @@ void MainWindow::setNodeRestraints()
 
 void MainWindow::setNodeActions()
 {
-    fem::Model& femp_model = m_document.getProject().getModel();
-    LoadPatternsModel load_patterns_model(femp_model.getLoadPatternList(), this);
+    LoadPatternsModel load_patterns_model(m_load_pattern_repository, this);
 
     NodeActionsDialog na(load_patterns_model, this);
 
@@ -452,7 +452,9 @@ void MainWindow::setNodeActions()
     Selection const selection = m_selectionManager.getSelection();
 
     // shortcut just to reduce code clutter
-    fem::LoadPattern& load_pattern = femp_model.load_pattern_list[na.getLoadPattern()];
+    fem::Model& femp_model = m_document.getProject().getModel();
+    auto load_pattern_index = na.getLoadPattern();
+    fem::LoadPattern& load_pattern = femp_model.load_pattern_list[load_pattern_index];
 
     // assign nodal loads
     for (fem::node_ref_t const& node : selection.getNodeReferences()) {
@@ -462,9 +464,7 @@ void MainWindow::setNodeActions()
 
 void MainWindow::setDomainLoads()
 {
-    fem::Model& femp_model = m_document.getProject().getModel();
-
-    LoadPatternsModel model(femp_model.getLoadPatternList(), this);
+    LoadPatternsModel model(m_load_pattern_repository, this);
 
     DomainLoadsDialog dialog(model, this);
 
@@ -475,7 +475,9 @@ void MainWindow::setDomainLoads()
 
     Selection const selection = m_selectionManager.getSelection();
 
-    SetDomainLoadsVisitor visitor(selection, femp_model.load_pattern_list[dialog.getLoadPattern()], dialog.getForce());
+    fem::Model& femp_model = m_document.getProject().getModel();
+    auto load_pattern_index = dialog.getLoadPattern();
+    SetDomainLoadsVisitor visitor(selection, femp_model.load_pattern_list[load_pattern_index], dialog.getForce());
 
     m_document.getProject().accept(visitor);
 
@@ -534,9 +536,7 @@ void MainWindow::runAnalysis()
     fem::Solver<double>* solver = nullptr;
 
     // run the AnalysisDialog to get the solver
-    gui::application::ILoadPatternRepositoryPtr load_pattern_repository = std::make_shared<gui::persistence::LoadPatternRepository>(m_document.getProject().getDomainModel());
-
-    AnalysisDialog analysis_dialog(load_pattern_repository, this);
+    AnalysisDialog analysis_dialog(m_load_pattern_repository, this);
     switch (analysis_dialog.exec()) {
     case QDialog::Accepted:
         solver = analysis_dialog.solver();

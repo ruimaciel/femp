@@ -24,6 +24,7 @@ public:
     std::vector<fem::LoadPattern> getLoadPatternList() const;
 
     std::vector<fem::Material> getMaterialList() const;
+    void pushMaterial(fem::Material new_material);
 
 private:
     fem::Model &m_model;

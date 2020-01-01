@@ -31,6 +31,7 @@ public:
     std::vector<fem::LoadPattern> getLoadPatternList() const;
 
     std::vector<fem::Material> getMaterialList() const;
+    void pushMaterial(fem::Material new_material);
 
 private:
     std::unique_ptr<ModelImpl> m_impl;

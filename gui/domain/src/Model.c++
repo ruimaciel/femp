@@ -67,4 +67,9 @@ std::vector<fem::Material> Model::getMaterialList() const
     return m_impl->getMaterialList();
 }
 
+void Model::pushMaterial(fem::Material new_material)
+{
+    m_impl->pushMaterial(new_material);
+}
+
 }	// namespace gui

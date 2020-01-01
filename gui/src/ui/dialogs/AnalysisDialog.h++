@@ -21,7 +21,7 @@ class AnalysisDialog
     Q_OBJECT
 
 public:
-    AnalysisDialog(std::shared_ptr<gui::application::ILoadPatternRepository> load_pattern_repository, QWidget* parent = nullptr);
+    AnalysisDialog(gui::application::ILoadPatternRepositoryPtr load_pattern_repository, QWidget* parent = nullptr);
 
     /**
      * States which solver has been selected
@@ -39,7 +39,7 @@ protected:
     /**
      * Fills the combo box with the load pattern list from the model
      */
-    void loadLoadPatternList(std::shared_ptr<gui::application::ILoadPatternRepository> load_pattern_repository);
+    void loadLoadPatternList(gui::application::ILoadPatternRepositoryPtr load_pattern_repository);
 };
 
 #endif

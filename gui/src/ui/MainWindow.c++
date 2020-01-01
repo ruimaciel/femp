@@ -534,7 +534,7 @@ void MainWindow::runAnalysis()
     fem::Solver<double>* solver = nullptr;
 
     // run the AnalysisDialog to get the solver
-    std::shared_ptr<gui::application::ILoadPatternRepository> load_pattern_repository = std::make_shared<gui::persistence::LoadPatternRepository>(m_document.getProject().getDomainModel());
+    gui::application::ILoadPatternRepositoryPtr load_pattern_repository = std::make_shared<gui::persistence::LoadPatternRepository>(m_document.getProject().getDomainModel());
 
     AnalysisDialog analysis_dialog(load_pattern_repository, this);
     switch (analysis_dialog.exec()) {

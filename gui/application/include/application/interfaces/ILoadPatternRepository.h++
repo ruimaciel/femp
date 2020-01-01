@@ -2,6 +2,7 @@
 #define GUI_APPLICATION_ILOADPATTERNREPOSITORY_H
 
 #include <vector>
+#include <memory>
 
 #include <libfemp/LoadPattern.h++>
 
@@ -16,6 +17,9 @@ public:
 
     virtual std::vector<fem::LoadPattern> getLoadPatternList() const = 0;
 };
+
+
+using ILoadPatternRepositoryPtr = std::shared_ptr<ILoadPatternRepository>;
 
 } // namespace application
 } // namespace gui

@@ -11,7 +11,7 @@
 
 #include "assert.h"
 
-AnalysisDialog::AnalysisDialog(std::shared_ptr<gui::application::ILoadPatternRepository> load_pattern_repository, QWidget* parent)
+AnalysisDialog::AnalysisDialog(gui::application::ILoadPatternRepositoryPtr load_pattern_repository, QWidget* parent)
     : QDialog(parent)
 {
     setupUi(this);
@@ -71,7 +71,7 @@ int AnalysisDialog::loadPattern() const
     return comboBoxLoadPattern->currentIndex();
 }
 
-void AnalysisDialog::loadLoadPatternList(std::shared_ptr<gui::application::ILoadPatternRepository> load_pattern_repository)
+void AnalysisDialog::loadLoadPatternList(gui::application::ILoadPatternRepositoryPtr load_pattern_repository)
 {
     for (auto load_pattern : load_pattern_repository->getLoadPatternList()) {
         QString temp = QString(load_pattern.getLabel().c_str());

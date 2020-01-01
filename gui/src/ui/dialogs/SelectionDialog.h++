@@ -18,7 +18,7 @@ protected:
     SelectionWidget* m_selection_widget;
 
 public:
-    SelectionDialog(fem::Project& project, SelectionManager& selection_manager, QWidget* parent = nullptr);
+    SelectionDialog(std::shared_ptr<gui::Model> model, SelectionManager& selection_manager, QWidget* parent = nullptr);
 };
 
 #endif

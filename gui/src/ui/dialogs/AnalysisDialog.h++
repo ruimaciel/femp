@@ -1,10 +1,14 @@
 #ifndef ANALYSIS_DIALOG_HPP
 #define ANALYSIS_DIALOG_HPP
 
+#include <memory>
+
 #include <QtWidgets/QDialog>
 #include <libfemp/LoadPattern.h++>
 #include <libfemp/Model.h++>
 #include <libfemp/solvers/Solver.h++>
+
+#include <application/interfaces/ILoadPatternRepository.h++>
 
 #include "ui_AnalysisDialog.h"
 
@@ -17,7 +21,7 @@ class AnalysisDialog
     Q_OBJECT
 
 public:
-    AnalysisDialog(fem::Model& model, QWidget* parent = nullptr);
+    AnalysisDialog(gui::application::ILoadPatternRepositoryPtr load_pattern_repository, QWidget* parent = nullptr);
 
     /**
      * States which solver has been selected
@@ -35,7 +39,7 @@ protected:
     /**
      * Fills the combo box with the load pattern list from the model
      */
-    void loadLoadPatternList(fem::Model& model);
+    void loadLoadPatternList(gui::application::ILoadPatternRepositoryPtr load_pattern_repository);
 };
 
 #endif

@@ -9,8 +9,10 @@
 
 #include <libfemp/io/import/ModelImporterFactory.h++>
 
-NewProjectWizardPage3::NewProjectWizardPage3(Document& document)
-    : m_document(document)
+#include <persistence/MaterialRepository.h++>
+
+NewProjectWizardPage3::NewProjectWizardPage3(fem::Project &project)
+    : m_project(project)
 {
     setupUi(this);
 
@@ -33,9 +35,9 @@ bool NewProjectWizardPage3::validatePage()
 
 void NewProjectWizardPage3::loadMaterialsCombo()
 {
-    fem::Model& femp_model = this->m_document.getProject().getModel();
+    auto domain_model = this->m_project.getDomainModel();
 
-    for (auto material : femp_model.getMaterialList()) {
+    for (auto material : domain_model->getMaterialList()) {
         comboBoxMaterialsList->addItem(QString::fromStdString(material.getLabel()));
     }
     if (comboBoxMaterialsList->count() > 0) {
@@ -67,7 +69,7 @@ void NewProjectWizardPage3::loadMeshFile()
 
         file.open(file_name);
 
-        fem::Model& femp_model = m_document.getProject().getModel();
+        fem::Model& femp_model = m_project.getModel();
         if (!file.good()) {
             // clear the model except the materials list
             auto material_list = femp_model.getMaterialList();
@@ -141,7 +143,9 @@ void NewProjectWizardPage3::getFileFromDialog(void)
 
 void NewProjectWizardPage3::addNewMaterial(void)
 {
-    NewMaterialDialog dialog(m_document.getProject().getModel(), this);
+    gui::application::IMaterialRepositoryPtr material_repository = std::make_shared<gui::persistence::MaterialRepository>(m_project.getDomainModel());
+
+    NewMaterialDialog dialog(material_repository, this);
     switch (dialog.exec()) {
     case QDialog::Accepted:
         loadMaterialsCombo();

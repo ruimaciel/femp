@@ -13,6 +13,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(Qt5 COMPONENTS Core Widgets OpenGL REQUIRED)
 find_package(OpenGL REQUIRED)
 
+add_subdirectory(domain)
+add_subdirectory(application)
+add_subdirectory(persistence)
+
 set(gui_HEADERS
 	src/DefaultProgressIndicator.h++
 	src/ProjectVisitor/OutputResultsInNodesCSVVisitor.h++
@@ -105,13 +109,10 @@ set(gui_HEADERS
 	src/ui/models/MatrixModel.h++
 	src/ui/WindowWithResults.h++
 	src/ui/wizards/NewProjectWizard.h++
-	src/ui/wizards/NewProjectWizardPage3.h++
-	src/ui/wizards/NewProjectWizardPageLast.h++
 	src/ui/wizards/NewProjectWizardPage2.h++
-	src/ui/wizards/NewProjectWizardPage1.h++
-	src/ui/MatrixWindow.h++
+    src/ui/wizards/NewProjectWizardPage3.h++
+    src/ui/MatrixWindow.h++
 	src/ui/dock_widgets/CommandLineDockWidget.h++
-	src/ui/dock_widgets/SelectionDockWidget.h++
 	src/ui/BaseWindow.h++
 	src/ui/WindowWithPostprocessing.h++
 	src/ui/WindowWithWireframe.h++
@@ -128,7 +129,6 @@ set(gui_HEADERS
 	src/ui/dialogs/AnalysisSummaryDialog.h++
 	src/ui/dialogs/LoadPatternDialog.h++
 	src/ui/dialogs/TableFilterDialog.h++
-	src/ui/dialogs/DisplayOptionsDialog.h++
 	src/ui/dialogs/MoveNodesDialog.h++
 	src/ui/dialogs/SurfaceSubdivisionDialog.h++
 	src/ui/dialogs/DialogScale.h++
@@ -241,11 +241,9 @@ set(gui_SOURCES
 	src/ui/models/LoadPatternsModel.c++
 	src/ui/models/MatrixModel.c++
 	src/ui/MatrixWindow.c++
-	src/ui/wizards/NewProjectWizardPage2.c++
-	src/ui/wizards/NewProjectWizardPage1.c++
 	src/ui/wizards/NewProjectWizard.c++
-	src/ui/wizards/NewProjectWizardPage3.c++
-	src/ui/wizards/NewProjectWizardPageLast.c++
+    src/ui/wizards/NewProjectWizardPage2.c++
+    src/ui/wizards/NewProjectWizardPage3.c++
 	src/ui/dock_widgets/CommandLineDockWidget.c++
 	src/ui/MdiWindowProperties.c++
 	src/ui/WindowWithResults.c++
@@ -254,7 +252,6 @@ set(gui_SOURCES
 	src/ui/dialogs/AnalysisSummaryDialog.c++
 	src/ui/dialogs/SurfaceSubdivisionDialog.c++
 	src/ui/dialogs/QuadratureRulesOptionsDialog.c++
-	src/ui/dialogs/DisplayOptionsDialog.c++
 	src/ui/dialogs/LoadPatternDialog.c++
 	src/ui/dialogs/SelectionDialog.c++
 	src/ui/dialogs/DomainLoadsDialog.c++
@@ -285,17 +282,13 @@ set(gui_SOURCES
 	)
 
 set(gui_FORMS
-	src/ui/wizards/NewProjectWizardPage3.ui
 	src/ui/wizards/NewProjectWizard.ui
-	src/ui/wizards/NewProjectWizardPageLast.ui
-	src/ui/wizards/NewProjectWizardPage2.ui
-	src/ui/wizards/NewProjectWizardPage1.ui
-	src/ui/dock_widgets/SelectionDockWidget.ui
+    src/ui/wizards/NewProjectWizardPage2.ui
+    src/ui/wizards/NewProjectWizardPage3.ui
 	src/ui/dock_widgets/CommandLineDockWidget.ui
 	src/ui/MdiWindow.ui
 	src/ui/dialogs/MoveNodesDialog.ui
 	src/ui/dialogs/MaterialsEditorDialog.ui
-	src/ui/dialogs/DisplayOptionsDialog.ui
 	src/ui/dialogs/ResultsRangeDialog.ui
 	src/ui/dialogs/SurfaceSubdivisionDialog.ui
 	src/ui/dialogs/AnalysisProgressDialog.ui
@@ -321,6 +314,12 @@ add_executable(${PROJECT_NAME}
 	${gui_FORMS}
 	)
 
+add_dependencies(${PROJECT_NAME}
+    domain
+    application
+    persistence
+    )
+
 target_include_directories(${PROJECT_NAME}
 	PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
 	)
@@ -337,7 +336,9 @@ target_include_directories(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
-	Qt5::Widgets
+    domain
+    persistence
+    Qt5::Widgets
 	Qt5::OpenGL
 	OpenGL::GL
 	OpenGL::GLU

@@ -7,7 +7,7 @@
 MatrixModel::MatrixModel(fem::Project& project, QObject* parent)
     : QAbstractTableModel(parent)
 {
-    this->m_result = project.result.begin();
+    this->m_result = project.getAnalysisResults().begin();
 }
 
 QVariant

@@ -11,11 +11,12 @@
 #include "ui/ui_MainWindow.h"
 
 #include "ui/dock_widgets/CommandLineDockWidget.h++"
-#include "ui/dock_widgets/SelectionDockWidget.h++"
 
 #include <options/Options.h++>
 
 #include "ui/ModelWindow.h++"
+
+#include <application/interfaces/ILoadPatternRepository.h++>
 
 #include "viewer/ModelViewport.h++"
 
@@ -135,7 +136,6 @@ protected:
     fem::LinearAnalysis<double> m_analysis;
 
     CommandLineDockWidget* m_commandLineDockWidget;
-    SelectionDockWidget* m_selectionDockWidget;
 
     QMdiArea* m_mdiArea;
 
@@ -147,6 +147,8 @@ protected:
     ViewportColors m_colors; // the elements' viewport colors
 
     QSignalMapper* m_windowMapper; // used to map menu clicks to window activation
+
+    gui::application::ILoadPatternRepositoryPtr m_load_pattern_repository;
 };
 
 #endif

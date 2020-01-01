@@ -7,7 +7,6 @@
 
 #include "ui/wizards/NewProjectWizardPage2.h++"
 #include "ui/wizards/NewProjectWizardPage3.h++"
-#include "ui/wizards/NewProjectWizardPageLast.h++"
 
 #include "Document.h++"
 
@@ -18,10 +17,6 @@ public:
     NewProjectWizard(Document& doc, QWidget* parent = nullptr);
 
 private:
-    NewProjectWizardPage2* m_page2; // Select project type
-    NewProjectWizardPage3* m_page3; // Import mesh
-    NewProjectWizardPageLast* m_pageLast;
-
 Q_SIGNALS:
     void newProject(Document::Type type);
 

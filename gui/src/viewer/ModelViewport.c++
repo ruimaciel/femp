@@ -8,7 +8,6 @@ ModelViewport::ModelViewport(fem::Project& project, QWidget* parent)
     : BaseViewport(project, parent)
 {
     // initialize the dangling pointers
-    this->project = &project;
     this->state = nullptr;
 
     this->setState(&m_vp_state_model); // set the current viewport state

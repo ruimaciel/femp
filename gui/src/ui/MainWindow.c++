@@ -23,7 +23,6 @@
 #include "ui/dialogs/AnalysisDialog.h++"
 #include "ui/dialogs/AnalysisProgressDialog.h++"
 #include "ui/dialogs/AnalysisSummaryDialog.h++"
-#include "ui/dialogs/DisplayOptionsDialog.h++"
 #include "ui/dialogs/DomainLoadsDialog.h++"
 #include "ui/dialogs/MaterialsEditorDialog.h++"
 #include "ui/dialogs/MoveNodesDialog.h++"
@@ -51,6 +50,7 @@
 #include <libfemp/io/import/ModelImporterFactory.h++>
 #include <libfemp/solvers/CGSolver.h++>
 #include <libfemp/solvers/CholeskySolver.h++>
+#include <persistence/LoadPatternRepository.h++>
 
 #include "ProjectVisitor/MoveNodesVisitor.h++"
 #include "ProjectVisitor/OutputElementStatisticsVisitor.h++"
@@ -77,7 +77,8 @@ MainWindow::MainWindow(QWidget* parent)
     this->createDockWidgets();
 
     // set the user interface
-    setUserInterfaceAsClosed();
+    setUserInterfaceAsClosed(); 
+    m_load_pattern_repository = std::make_shared<gui::persistence::LoadPatternRepository>(m_document.getProject().getDomainModel());
 }
 
 void MainWindow::newProject()
@@ -440,8 +441,7 @@ void MainWindow::setNodeRestraints()
 
 void MainWindow::setNodeActions()
 {
-    fem::Model& femp_model = m_document.getProject().getModel();
-    LoadPatternsModel load_patterns_model(femp_model.getLoadPatternList(), this);
+    LoadPatternsModel load_patterns_model(m_load_pattern_repository, this);
 
     NodeActionsDialog na(load_patterns_model, this);
 
@@ -452,7 +452,9 @@ void MainWindow::setNodeActions()
     Selection const selection = m_selectionManager.getSelection();
 
     // shortcut just to reduce code clutter
-    fem::LoadPattern& load_pattern = femp_model.load_pattern_list[na.getLoadPattern()];
+    fem::Model& femp_model = m_document.getProject().getModel();
+    auto load_pattern_index = na.getLoadPattern();
+    fem::LoadPattern& load_pattern = femp_model.load_pattern_list[load_pattern_index];
 
     // assign nodal loads
     for (fem::node_ref_t const& node : selection.getNodeReferences()) {
@@ -462,9 +464,7 @@ void MainWindow::setNodeActions()
 
 void MainWindow::setDomainLoads()
 {
-    fem::Model& femp_model = m_document.getProject().getModel();
-
-    LoadPatternsModel model(femp_model.getLoadPatternList(), this);
+    LoadPatternsModel model(m_load_pattern_repository, this);
 
     DomainLoadsDialog dialog(model, this);
 
@@ -475,7 +475,9 @@ void MainWindow::setDomainLoads()
 
     Selection const selection = m_selectionManager.getSelection();
 
-    SetDomainLoadsVisitor visitor(selection, femp_model.load_pattern_list[dialog.getLoadPattern()], dialog.getForce());
+    fem::Model& femp_model = m_document.getProject().getModel();
+    auto load_pattern_index = dialog.getLoadPattern();
+    SetDomainLoadsVisitor visitor(selection, femp_model.load_pattern_list[load_pattern_index], dialog.getForce());
 
     m_document.getProject().accept(visitor);
 
@@ -515,7 +517,7 @@ void MainWindow::editQuadratureRules()
 
 void MainWindow::editSelection()
 {
-    SelectionDialog dialog(m_document.getProject(), m_selectionManager, this);
+    SelectionDialog dialog(m_document.getProject().getDomainModel(), m_selectionManager, this);
     dialog.exec();
 }
 
@@ -534,7 +536,7 @@ void MainWindow::runAnalysis()
     fem::Solver<double>* solver = nullptr;
 
     // run the AnalysisDialog to get the solver
-    AnalysisDialog analysis_dialog(femp_model, this);
+    AnalysisDialog analysis_dialog(m_load_pattern_repository, this);
     switch (analysis_dialog.exec()) {
     case QDialog::Accepted:
         solver = analysis_dialog.solver();
@@ -597,7 +599,7 @@ void MainWindow::runAnalysis()
 
 void MainWindow::dumpFemEquation()
 {
-    auto& femp_result = m_document.getProject().result;
+    auto& femp_result = m_document.getProject().getAnalysisResults();
 
     if (femp_result.empty()) {
         QMessageBox::information(this, "No analysis", "There isn't a equation to dump");
@@ -685,7 +687,7 @@ void MainWindow::dumpFemEquation()
 void MainWindow::showAnalysisSummary()
 {
     // crude hack
-    AnalysisSummaryDialog dialog(m_document.getProject().result.back(), this);
+    AnalysisSummaryDialog dialog(m_document.getProject().getAnalysisResults().back(), this);
     dialog.exec();
 }
 
@@ -738,7 +740,7 @@ void MainWindow::dumpResultsFromSelection()
 
     QTextStream out(&file);
     //dump the text to a text file
-    fem::AnalysisResult& femp_result = this->m_document.getProject().result.back(); // nasty hack
+    fem::AnalysisResult& femp_result = this->m_document.getProject().getAnalysisResults().back(); // nasty hack
 
     Selection selection = m_selectionManager.getSelection();
 
@@ -824,7 +826,7 @@ void MainWindow::createNewModelWindow()
 
 void MainWindow::createNewPostprocessingWindow()
 {
-    auto& femp_result = m_document.getProject().result;
+    auto& femp_result = m_document.getProject().getAnalysisResults();
     if (femp_result.empty()) {
         qCritical() << __FILE__ << ":" << __LINE__;
         qCritical() << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available";
@@ -842,11 +844,11 @@ void MainWindow::createNewPostprocessingWindow()
 
 void MainWindow::createNewTensorFieldWindow()
 {
-    if (m_document.getProject().result.empty()) {
+    if (m_document.getProject().getAnalysisResults().empty()) {
         qCritical() << __FILE__ << ":" << __LINE__;
         qCritical() << "MainWindow::createNewPostprocessingWindow(): tried to set a postprocessing window although no results are available";
     } else {
-        TensorFieldWindow* window = new TensorFieldWindow(m_document.getProject(), m_document.getProject().result.back(), getViewportColors(), this);
+        TensorFieldWindow* window = new TensorFieldWindow(m_document.getProject(), m_document.getProject().getAnalysisResults().back(), getViewportColors(), this);
 
         // create the model's MDI window
         QMdiSubWindow* mdi_window = new QMdiSubWindow(m_mdiArea);
@@ -862,7 +864,7 @@ void MainWindow::createNewAnalysisResultsWindow()
 {
     qCritical() << __FILE__ << ":" << __LINE__;
     qCritical() << "MainWindow::createNewAnalysisResultsWindow()";
-    if (m_document.getProject().result.empty()) {
+    if (m_document.getProject().getAnalysisResults().empty()) {
         qCritical() << __FILE__ << ":" << __LINE__;
         qCritical() << "MainWindow::createNewAnalysisResultWindow(): tried to set a results window although there is no result available";
         return;
@@ -876,7 +878,7 @@ void MainWindow::createNewFemEquationWindow()
 {
     qCritical() << __FILE__ << ":" << __LINE__;
     qCritical() << "MainWindow::createNewFemEquationWindow()";
-    if (m_document.getProject().result.empty()) {
+    if (m_document.getProject().getAnalysisResults().empty()) {
         qCritical() << "MainWindow::createNewFemEquationWindow(): tried to set a results window although there is no result available";
         return;
     }

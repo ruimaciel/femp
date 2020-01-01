@@ -37,7 +37,7 @@ void VPStateModel::initialize(BaseViewport* viewport)
 
     assert(viewport != nullptr);
 
-    this->m_no_displacements.setModel(viewport->project->getModel());
+    this->m_no_displacements.setModel(viewport->getProject().getModel());
 }
 
 void VPStateModel::populateScenegraph(BaseViewport* viewport)
@@ -47,7 +47,7 @@ void VPStateModel::populateScenegraph(BaseViewport* viewport)
     scenegraph.clear();
 
     // add the nodes to the scenegraph
-    fem::Model& femp_model = viewport->project->getModel();
+    fem::Model& femp_model = viewport->getProject().getModel();
     auto map = femp_model.getNodeMap();
     for (auto node : map) {
         auto component = std::shared_ptr<SceneGraphComponent>(new SGC::Node(node.first, node.second, &this->m_no_displacements));

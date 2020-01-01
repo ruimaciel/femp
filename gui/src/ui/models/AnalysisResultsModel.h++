@@ -7,7 +7,10 @@
 
 #include <libfemp/Element.h++>
 
-#include "../../Project.h++"
+#include <application/interfaces/IElementRepository.h++>
+#include <application/interfaces/INodeRepository.h++>
+
+#include <Project.h++>
 
 /**
  * Provides a Qt MVC model to use with QTableView widgets
@@ -32,6 +35,8 @@ public:
 
 protected:
     QString generateElementTypeName(const fem::Element::Type type) const;
+    gui::application::IElementRepositoryPtr element_repository;
+    gui::application::INodeRepositoryPtr m_node_repository;
 };
 
 #endif

@@ -12,6 +12,9 @@
 #include <Selection.h++>
 #include <SelectionManager.h++>
 
+#include <application/interfaces/IElementRepository.h++>
+#include <application/interfaces/INodeRepository.h++>
+
 /**
 Widget developed to select model objects
 **/
@@ -21,12 +24,7 @@ class SelectionWidget
     Q_OBJECT
 
 public:
-    SelectionWidget(fem::Project& project, SelectionManager&, QWidget* parent = nullptr);
-
-    /*
-    void selectElement(fem::element_ref_t, bool state = true);
-    void selectNode(fem::node_ref_t, bool state = true);
-    */
+    SelectionWidget(std::shared_ptr<gui::Model> domain_model, SelectionManager&, QWidget* parent = nullptr);
 
 signals:
     void selectionChanged(const Selection&);
@@ -39,15 +37,14 @@ public slots:
 protected:
     /**
     initializes the widget by filling all the revevant values
-    @param	project
     @param selection_manager
     **/
-    void initializeWidget(fem::Project& project, SelectionManager& selection_manager);
+    void initializeWidget(SelectionManager& selection_manager);
 
     /**
     Initializes the fem::Group list according to the group definitions stored in a given fem::Project object
     **/
-    void initializeSelectionGroups(fem::Project& project);
+    void initializeSelectionGroups(std::shared_ptr<gui::Model> femp_model);
 
 protected:
     QTreeWidgetItem* m_element_item;
@@ -57,6 +54,8 @@ protected:
     std::map<fem::node_ref_t, QTreeWidgetItem*> m_node_map; // list of all element references
 
     std::vector<fem::Group> m_selection_groups;
+    gui::application::IElementRepositoryPtr m_element_repository;
+    gui::application::INodeRepositoryPtr m_node_repository;
 };
 
 #endif

@@ -7,15 +7,15 @@
 #include "SceneGraphComponents/Operations/ToggleRenderOperation.h++"
 #include "SceneGraphComponents/Operations/ToggleSelectionOperation.h++"
 
+#include <persistence/NodeRepository.h++>
+
 BaseViewport::BaseViewport(fem::Project& project, QWidget* parent)
     : QOpenGLWidget(parent)
+    , m_project(project)
 {
-    assert(parent != nullptr);
+    m_node_repository = std::make_shared<gui::persistence::NodeRepository>(m_project.getDomainModel());
 
     m_input = new Input; // to avoid circular dependencies
-
-    // initialize the dangling pointers
-    this->project = &project;
 
     this->state = nullptr;
 
@@ -46,8 +46,7 @@ void BaseViewport::initializeGL()
 {
     // set the state->camera position according to the nodal center
     double pos[3] = { 0 };
-    fem::Model& femp_model = project->getModel();
-    auto node_list = femp_model.getNodeMap();
+    auto node_list = m_node_repository->getNodeMap();
     for (auto node : node_list) {
         pos[0] -= node.second.x();
         pos[1] -= node.second.y();
@@ -250,7 +249,7 @@ void
     //get a selection list of which object has been selected
     Operation::SelectFrustumInclusionOperation operation(selection, near, far);
     this->state->runSceneGraphOperation(operation);
-    operation.selectInclusiveElements(*project);
+    operation.selectInclusiveElements(m_project.getDomainModel());
 
     // sends request to select a set of nodes
     emit selectionChanged(selection);
@@ -334,4 +333,9 @@ void BaseViewport::showAll()
     Selection selection;
     Operation::ToggleRenderOperation op(selection, false); // turns on all elements which aren't selected, which in this case means all elements
     this->state->runSceneGraphOperation(op);
+}
+
+fem::Project &BaseViewport::getProject()
+{
+    return m_project;
 }

@@ -1,19 +1,26 @@
 #include "AnalysisResultsModel.h++"
 
+#include <memory>
 #include <libfemp/ElementResults/ElementResults.h++>
+#include <application/interfaces/IElementRepository.h++>
+#include <persistence/ElementRepository.h++>
+#include <persistence/NodeRepository.h++>
 
 AnalysisResultsModel::AnalysisResultsModel(fem::Project& project, QObject* parent)
     : QAbstractTableModel(parent)
     , m_project(project)
 {
-    this->m_result = project.result.begin();
+    this->m_result = m_project.getAnalysisResults().begin();
 
     m_rows = 0;
 
-    fem::Model& femp_model = project.getModel();
-    for (std::vector<fem::Element>::iterator e = femp_model.element_list.begin(); e != femp_model.element_list.end(); e++)
+    element_repository = std::make_shared<gui::persistence::ElementRepository>(m_project.getDomainModel());
+    m_node_repository = std::make_shared<gui::persistence::NodeRepository>(m_project.getDomainModel());
+
+    std::vector<fem::Element> element_list = element_repository->getElementList();
+    for (std::vector<fem::Element>::iterator e = element_list.begin(); e != element_list.end(); e++)
     {
-        m_lineMap[m_rows] = std::distance(femp_model.element_list.begin(), e);
+        m_lineMap[m_rows] = std::distance(element_list.begin(), e);
         m_rows += e->getNodeAmount();
     }
 }
@@ -116,12 +123,12 @@ AnalysisResultsModel::data(const QModelIndex& index, int role) const
     fem::element_ref_t selected_element_ref = i->second;
     int local_ref = index.row() - i->first;
 
-    fem::Model& femp_model = m_project.getModel();
-    fem::Element & selected_element = femp_model.element_list[selected_element_ref];
+
+    fem::Element selected_element = element_repository->getElementById(selected_element_ref);
 
     const fem::node_ref_t selected_node_ref = selected_element.nodes[local_ref];
 
-    fem::Node selected_node = femp_model.getNode(selected_node_ref);
+    fem::Node selected_node = m_node_repository->getNodeById(selected_node_ref);
 
     fem::ElementResults* result = m_result->results[selected_element_ref];
     fem::Strains<double> result_strains = result->strains[local_ref];

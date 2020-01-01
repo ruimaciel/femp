@@ -8,6 +8,9 @@ project(persistence
 
 set(persistence_INCLUDES
     include/persistence/ElementRepository.h++
+    include/persistence/NodeRepository.h++
+    include/persistence/MaterialRepository.h++
+    include/persistence/LoadPatternRepository.h++
     )
 
 set(persistence_HEADERS
@@ -15,6 +18,9 @@ set(persistence_HEADERS
 
 set(persistence_SOURCES
     src/ElementRepository.c++
+    src/NodeRepository.c++
+    src/MaterialRepository.c++
+    src/LoadPatternRepository.c++
     )
 
 add_library(${PROJECT_NAME} STATIC

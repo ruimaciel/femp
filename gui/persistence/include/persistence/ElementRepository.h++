@@ -1,8 +1,11 @@
 #ifndef GUI_PERSISTENCE_ELEMENTREPOSITORY_H
 #define GUI_PERSISTENCE_ELEMENTREPOSITORY_H
 
+#include <memory>
+
 #include <libfemp/Element.h++>
 #include <application/interfaces/IElementRepository.h++>
+#include <Model.h++>
 
 namespace gui {
 namespace persistence {
@@ -10,13 +13,15 @@ namespace persistence {
 class ElementRepository : public application::IElementRepository
 {
 public:
-    ElementRepository();
-    virtual ~ElementRepository();
+    ElementRepository(std::shared_ptr<gui::Model> model);
 
-    virtual fem::Element getElementById(size_t element_id) const = 0;
+    std::vector<fem::Element> getElementList() const override;
+    fem::Element getElementById(size_t element_id) const override;
+    fem::Element getElementByIndex(size_t index) const override;
+    size_t getElementSize() const override;
 
-    virtual fem::Element getElementByIndex(size_t index) const = 0;
-    virtual size_t getElementSize() const = 0;
+private:
+    std::shared_ptr<gui::Model> m_domain_model;
 };
 
 

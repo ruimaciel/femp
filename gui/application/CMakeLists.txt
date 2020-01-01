@@ -1,26 +1,24 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(persistence
+project(application
     LANGUAGES CXX
-    VERSION 0.1.0
     )
 
-
-set(persistence_INCLUDES
-    include/persistence/ElementRepository.h++
+set(application_INCLUDES
+    include/application/interfaces/IElementRepository.h++
     )
 
-set(persistence_HEADERS
+set(application_HEADERS
     )
 
-set(persistence_SOURCES
-    src/ElementRepository.c++
+set(application_SOURCES
+    src/interfaces/IElementRepository.c++
     )
 
 add_library(${PROJECT_NAME} STATIC
-    ${persistence_INCLUDES}
-    ${persistence_HEADERS}
-    ${persistence_SOURCES}
+    ${application_INCLUDES}
+    ${application_HEADERS}
+    ${application_SOURCES}
     )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -35,6 +33,4 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
     domain
-    application
-    libfemp
     )

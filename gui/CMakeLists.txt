@@ -14,6 +14,7 @@ find_package(Qt5 COMPONENTS Core Widgets OpenGL REQUIRED)
 find_package(OpenGL REQUIRED)
 
 add_subdirectory(domain)
+add_subdirectory(application)
 add_subdirectory(persistence)
 
 set(gui_HEADERS

@@ -111,7 +111,6 @@ set(gui_HEADERS
 	src/ui/wizards/NewProjectWizard.h++
 	src/ui/wizards/NewProjectWizardPage2.h++
     src/ui/wizards/NewProjectWizardPage3.h++
-    src/ui/wizards/NewProjectWizardPageLast.h++
     src/ui/MatrixWindow.h++
 	src/ui/dock_widgets/CommandLineDockWidget.h++
 	src/ui/dock_widgets/SelectionDockWidget.h++
@@ -246,7 +245,6 @@ set(gui_SOURCES
 	src/ui/wizards/NewProjectWizard.c++
     src/ui/wizards/NewProjectWizardPage2.c++
     src/ui/wizards/NewProjectWizardPage3.c++
-	src/ui/wizards/NewProjectWizardPageLast.c++
 	src/ui/dock_widgets/CommandLineDockWidget.c++
 	src/ui/MdiWindowProperties.c++
 	src/ui/WindowWithResults.c++
@@ -288,7 +286,6 @@ set(gui_FORMS
 	src/ui/wizards/NewProjectWizard.ui
     src/ui/wizards/NewProjectWizardPage2.ui
     src/ui/wizards/NewProjectWizardPage3.ui
-    src/ui/wizards/NewProjectWizardPageLast.ui
     src/ui/dock_widgets/SelectionDockWidget.ui
 	src/ui/dock_widgets/CommandLineDockWidget.ui
 	src/ui/MdiWindow.ui

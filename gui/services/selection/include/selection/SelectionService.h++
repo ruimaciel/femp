@@ -15,6 +15,7 @@ class SelectionService final : public ISelectionService
 public:
     SelectionService();
 
+    Selection getSelection() const override;
     std::set<size_t> getSelectedElementReferences() const override;
     std::set<size_t> getSelectedNodeReferences() const override;
 };

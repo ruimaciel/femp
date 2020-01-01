@@ -11,14 +11,12 @@
 #include <libfemp/Node.h++>
 
 OutputElementStatisticsVisitor::OutputElementStatisticsVisitor(Selection const& selection)
+    : m_selection(selection)
 {
-    m_selection = &selection;
 }
 
 void OutputElementStatisticsVisitor::visit(fem::Model& model, std::vector<fem::AnalysisResult>&)
 {
-    assert(m_selection != nullptr);
-
     float de = 0; // maximum/external diameter
     float di = std::numeric_limits<float>::max(); // minimum/internal diameter
 

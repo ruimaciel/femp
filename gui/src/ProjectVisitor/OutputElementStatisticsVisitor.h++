@@ -14,7 +14,7 @@
 class OutputElementStatisticsVisitor
     : public ProjectVisitor {
 protected:
-    Selection const* m_selection;
+    const Selection & m_selection;
 
 public:
     OutputElementStatisticsVisitor(Selection const& selection);

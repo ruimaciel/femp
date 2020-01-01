@@ -21,6 +21,8 @@ add_library(${PROJECT_NAME} STATIC
     ${application_SOURCES}
     )
 
+add_dependencies(${PROJECT_NAME} domain)
+
 set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_STANDARD 11
     CXX_EXTENSIONS OFF

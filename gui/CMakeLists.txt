@@ -325,6 +325,12 @@ add_executable(${PROJECT_NAME}
 	${gui_FORMS}
 	)
 
+add_dependencies(${PROJECT_NAME}
+    domain
+    application
+    persistence
+    )
+
 target_include_directories(${PROJECT_NAME}
 	PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
 	)

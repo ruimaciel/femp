@@ -515,7 +515,7 @@ void MainWindow::editQuadratureRules()
 
 void MainWindow::editSelection()
 {
-    SelectionDialog dialog(m_document.getProject(), m_selectionManager, this);
+    SelectionDialog dialog(m_document.getProject().getDomainModel(), m_selectionManager, this);
     dialog.exec();
 }
 

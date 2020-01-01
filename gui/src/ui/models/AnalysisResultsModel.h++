@@ -7,6 +7,9 @@
 
 #include <libfemp/Element.h++>
 
+#include <application/interfaces/IElementRepository.h++>
+#include <application/interfaces/INodeRepository.h++>
+
 #include "../../Project.h++"
 
 /**
@@ -32,6 +35,8 @@ public:
 
 protected:
     QString generateElementTypeName(const fem::Element::Type type) const;
+    std::shared_ptr<gui::application::IElementRepository> element_repository;
+    std::shared_ptr<gui::application::INodeRepository> m_node_repository;
 };
 
 #endif

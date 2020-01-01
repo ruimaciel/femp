@@ -8,6 +8,7 @@
 #include <array>
 
 #include <Selection.h++>
+#include <application/interfaces/INodeRepository.h++>
 #include <options/ViewportColors.h++>
 #include <ui/MdiWindowProperties.h++>
 
@@ -148,6 +149,9 @@ public:
     fem::Project* project;
 
     ViewportState* state; // pointer to object used for the State pattern
+
+private:
+    std::shared_ptr<gui::application::INodeRepository> m_node_repository;
 };
 
 #endif

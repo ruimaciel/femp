@@ -19,7 +19,7 @@ NewProjectWizard::NewProjectWizard(Document& doc, QWidget* parent)
     m_page2 = new NewProjectWizardPage2;
     addPage(m_page2);
 
-    m_page3 = new NewProjectWizardPage3(doc);
+    m_page3 = new NewProjectWizardPage3(doc.getProject());
     addPage(m_page3);
 
     //TODO crude hack

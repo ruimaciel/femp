@@ -33,11 +33,10 @@ void SelectFrustumInclusionOperation::visit(SGC::Element& /*element*/)
 {
 }
 
-void SelectFrustumInclusionOperation::selectInclusiveElements(fem::Project& project)
+void SelectFrustumInclusionOperation::selectInclusiveElements(std::shared_ptr<gui::Model> domain_model)
 {
     std::set<fem::node_ref_t>::const_iterator i;
 
-    std::shared_ptr<gui::Model> domain_model = project.getDomainModel();
     auto element_list = domain_model->getElementList();
     for (std::vector<fem::Element>::size_type n = 0; n < element_list.size(); n++) {
 

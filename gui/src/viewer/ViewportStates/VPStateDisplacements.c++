@@ -21,6 +21,12 @@
 #include "../SceneGraphComponents/SGCNode.h++"
 #include "../SceneGraphComponents/SGCNodeRestrictions.h++"
 
+#include <application/interfaces/IElementRepository.h++>
+#include <application/interfaces/INodeRepository.h++>
+
+#include <persistence/ElementRepository.h++>
+#include <persistence/NodeRepository.h++>
+
 VPStateDisplacements::VPStateDisplacements()
     : ViewportState()
 {
@@ -47,22 +53,24 @@ void VPStateDisplacements::populateScenegraph(BaseViewport* viewport)
 
     scenegraph.clear();
 
-    fem::Model& femp_model = viewport->project->getModel();
+    std::shared_ptr<gui::application::INodeRepository> m_node_repository = std::make_shared<gui::persistence::NodeRepository>(viewport->project->getDomainModel());
 
     // add the nodes to the scenegraph
-    for (auto node : femp_model.getNodeMap()) {
+    for (auto node : m_node_repository->getNodeMap()) {
         auto component = std::shared_ptr<SceneGraphComponent>(new SGC::Node(node.first, node.second, &this->m_displacements));
         if (component)
             this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
     }
 
+    fem::Model& femp_model = viewport->project->getModel();
     for (auto node_restrictions_pair : femp_model.getNodeRestrictions()) {
         this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, std::shared_ptr<SceneGraphComponent>(new SGC::NodeRestrictions(node_restrictions_pair.first, node_restrictions_pair.first, node_restrictions_pair.second, &this->m_displacements)));
     }
 
     // add the elements to the scenegraph
-    auto element_list = femp_model.getElementList();
-    for (std::vector<fem::Element>::size_type n = 0; n < element_list.size(); n++) {
+    std::shared_ptr<gui::application::IElementRepository> m_element_repository = std::make_shared<gui::persistence::ElementRepository>(viewport->project->getDomainModel());
+    auto element_list = m_element_repository->getElementList();
+    for (std::vector<fem::Element>::size_type n = 0; n < m_element_repository->getElementSize(); n++) {
         auto component = std::shared_ptr<SceneGraphComponent>(this->m_factory(n, element_list[n]));
         if (component)
             this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);

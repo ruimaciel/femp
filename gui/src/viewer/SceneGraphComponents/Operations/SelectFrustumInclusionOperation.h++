@@ -39,7 +39,7 @@ public:
     void visit(SGC::Node& element);
     void visit(SGC::Element& element);
 
-    void selectInclusiveElements(fem::Project& project);
+    void selectInclusiveElements(std::shared_ptr<gui::Model> model);
 
 protected:
     void calculateNormalVectors(std::array<fem::Point3D, 4> const& near, std::array<fem::Point3D, 4> const& far);

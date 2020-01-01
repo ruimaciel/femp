@@ -5,16 +5,25 @@
 
 #include <Selection.h++>
 
-SelectionWidget::SelectionWidget(fem::Project& project, SelectionManager& selection_manager, QWidget* parent)
+#include <application/interfaces/IElementRepository.h++>
+#include <application/interfaces/INodeRepository.h++>
+
+#include <persistence/ElementRepository.h++>
+#include <persistence/NodeRepository.h++>
+
+SelectionWidget::SelectionWidget(std::shared_ptr<gui::Model> domain_model, SelectionManager& selection_manager, QWidget* parent)
     : QWidget(parent)
 {
     this->setupUi(this);
 
+    m_element_repository = std::make_shared<gui::persistence::ElementRepository>(domain_model);
+    m_node_repository = std::make_shared<gui::persistence::NodeRepository>(domain_model);
+
     m_element_item = nullptr;
     m_node_item = nullptr;
 
-    initializeSelectionGroups(project);
-    initializeWidget(project, selection_manager);
+    initializeSelectionGroups(domain_model);
+    initializeWidget(selection_manager);
 
     connect(this->selectPushButton, SIGNAL(clicked()), this, SLOT(updateSelection()));
     connect(this->toolButtonSet, SIGNAL(clicked()), this, SLOT(setGroupList()));
@@ -22,17 +31,14 @@ SelectionWidget::SelectionWidget(fem::Project& project, SelectionManager& select
     connect(this, &SelectionWidget::selectionChanged, this, &SelectionWidget::setSelection);
 }
 
-void SelectionWidget::initializeWidget(fem::Project& project, SelectionManager& selection_manager)
+void SelectionWidget::initializeWidget(SelectionManager& selection_manager)
 {
     m_element_item = new QTreeWidgetItem(this->objectTreeWidget);
     m_element_item->setText(0, tr("Elements"));
 
     Selection s = selection_manager.getSelection();
-    //TODO test memory allocation
 
-    std::shared_ptr<gui::Model> domain_model = project.getDomainModel();
-
-    for (std::vector<fem::Element>::size_type n = 0; n < domain_model->getElementSize(); n++) {
+    for (std::vector<fem::Element>::size_type n = 0; n < m_element_repository->getElementSize(); n++) {
         QTreeWidgetItem* item = new QTreeWidgetItem(m_element_item);
         item->setText(0, QString::number(n));
         item->setSelected(s.getElementReferences().find(n) != s.getElementReferences().end());
@@ -42,7 +48,7 @@ void SelectionWidget::initializeWidget(fem::Project& project, SelectionManager& 
     m_node_item = new QTreeWidgetItem(this->objectTreeWidget);
     m_node_item->setText(0, tr("Nodes"));
 
-    for (auto node_id: domain_model->getNodeReferenceList()) {
+    for (auto node_id: m_node_repository->getNodeReferenceList()) {
         QTreeWidgetItem* item = new QTreeWidgetItem(m_node_item);
         item->setText(0, QString::number(node_id));
         item->setSelected(s.getNodeReferences().find(node_id) != s.getNodeReferences().end());
@@ -88,10 +94,8 @@ void SelectionWidget::clearSelection()
 {
 }
 
-void SelectionWidget::initializeSelectionGroups(fem::Project& project)
+void SelectionWidget::initializeSelectionGroups(std::shared_ptr<gui::Model> femp_model)
 {
-    auto femp_model = project.getDomainModel();
-
     for (auto node_group : femp_model->getNodeGroupList()) {
         fem::Group group;
         group.setLabel(node_group.getLabel());

@@ -5,7 +5,6 @@
 PostprocessingViewport::PostprocessingViewport(fem::Project& project, fem::AnalysisResult& result, fem::ResultsRanges<double>& ranges, QWidget* parent)
     : BaseViewport(project, parent)
 {
-    this->project = &project;
     this->m_analysis_result = nullptr;
     this->setAnalysisResult(result);
     this->setResultsRanges(ranges);

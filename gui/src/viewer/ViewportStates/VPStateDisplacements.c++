@@ -44,7 +44,7 @@ void VPStateDisplacements::initialize(BaseViewport* viewport)
     assert(viewport != nullptr);
 
     this->setDisplacementsScale(1.0); //TODO tweak this value
-    this->m_displacements.setModel(viewport->project->getModel());
+    this->m_displacements.setModel(viewport->getProject().getModel());
 }
 
 void VPStateDisplacements::populateScenegraph(BaseViewport* viewport)
@@ -53,7 +53,7 @@ void VPStateDisplacements::populateScenegraph(BaseViewport* viewport)
 
     scenegraph.clear();
 
-    std::shared_ptr<gui::application::INodeRepository> m_node_repository = std::make_shared<gui::persistence::NodeRepository>(viewport->project->getDomainModel());
+    std::shared_ptr<gui::application::INodeRepository> m_node_repository = std::make_shared<gui::persistence::NodeRepository>(viewport->getProject().getDomainModel());
 
     // add the nodes to the scenegraph
     for (auto node : m_node_repository->getNodeMap()) {
@@ -62,13 +62,13 @@ void VPStateDisplacements::populateScenegraph(BaseViewport* viewport)
             this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
     }
 
-    fem::Model& femp_model = viewport->project->getModel();
+    fem::Model& femp_model = viewport->getProject().getModel();
     for (auto node_restrictions_pair : femp_model.getNodeRestrictions()) {
         this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODE_RESTRICTIONS, std::shared_ptr<SceneGraphComponent>(new SGC::NodeRestrictions(node_restrictions_pair.first, node_restrictions_pair.first, node_restrictions_pair.second, &this->m_displacements)));
     }
 
     // add the elements to the scenegraph
-    std::shared_ptr<gui::application::IElementRepository> m_element_repository = std::make_shared<gui::persistence::ElementRepository>(viewport->project->getDomainModel());
+    std::shared_ptr<gui::application::IElementRepository> m_element_repository = std::make_shared<gui::persistence::ElementRepository>(viewport->getProject().getDomainModel());
     auto element_list = m_element_repository->getElementList();
     for (std::vector<fem::Element>::size_type n = 0; n < m_element_repository->getElementSize(); n++) {
         auto component = std::shared_ptr<SceneGraphComponent>(this->m_factory(n, element_list[n]));

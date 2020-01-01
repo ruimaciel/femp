@@ -36,8 +36,8 @@ void VPStateTensorFields::initialize(BaseViewport* mv)
     // build the displaced_nodes from the analysis
     assert(mv != nullptr);
 
-    this->m_stress_field_representation.setModel(mv->project->getModel());
-    this->m_displacements.setModel(mv->project->getModel());
+    this->m_stress_field_representation.setModel(mv->getProject().getModel());
+    this->m_displacements.setModel(mv->getProject().getModel());
 }
 
 void VPStateTensorFields::populateScenegraph(BaseViewport* viewport)
@@ -47,7 +47,7 @@ void VPStateTensorFields::populateScenegraph(BaseViewport* viewport)
     scenegraph.clear();
 
     // add the nodes to the scenegraph
-    fem::Model& femp_model = viewport->project->getModel();
+    fem::Model& femp_model = viewport->getProject().getModel();
     for (auto node : femp_model.getNodeMap()) {
         auto component = std::shared_ptr<SceneGraphComponent>(new SGC::Node(node.first, node.second, &this->m_displacements));
         if (component)

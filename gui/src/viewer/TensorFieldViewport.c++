@@ -6,8 +6,8 @@
 TensorFieldViewport::TensorFieldViewport(fem::Project& project, fem::AnalysisResult& result, fem::ResultsRanges<double>& ranges, QWidget* parent)
     : BaseViewport(project, parent)
 {
-    this->project = &project;
     this->m_analysis_result = nullptr;
+
 
     this->setState(&m_vp_state_tensor_fields);
     this->setAnalysisResult(result);

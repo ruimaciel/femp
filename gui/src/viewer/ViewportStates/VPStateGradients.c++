@@ -41,7 +41,7 @@ void VPStateGradients::initialize(BaseViewport* viewport)
 
     this->setDisplacementsScale(1.0);
 
-    fem::Model& femp_model = viewport->project->getModel();
+    fem::Model& femp_model = viewport->getProject().getModel();
     this->m_gradient_representation.setModel(femp_model);
     this->m_displacements.setModel(femp_model);
 }
@@ -53,7 +53,7 @@ void VPStateGradients::populateScenegraph(BaseViewport* viewport)
     scenegraph.clear();
 
     // add the nodes to the scenegraph
-    fem::Model& femp_model = viewport->project->getModel();
+    fem::Model& femp_model = viewport->getProject().getModel();
 
     for (auto node : femp_model.getNodeMap()) {
         auto component = std::shared_ptr<SceneGraphComponent>(new SGC::Node(node.first, node.second, &this->m_displacements));

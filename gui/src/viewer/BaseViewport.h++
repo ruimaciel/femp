@@ -117,6 +117,7 @@ public:
     void clearSelection(); // clears the selection list representation
     void showSelection(const Selection);
     void showAll();
+	fem::Project & getProject();
 
 protected:
     void initializeGL();
@@ -146,11 +147,10 @@ public:
     ViewportData viewport_data;
     ViewportColors colors; // color definitions
 
-    fem::Project* project;
-
     ViewportState* state; // pointer to object used for the State pattern
 
 private:
+    fem::Project& m_project;
     std::shared_ptr<gui::application::INodeRepository> m_node_repository;
 };
 

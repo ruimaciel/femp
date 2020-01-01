@@ -11,13 +11,11 @@
 
 BaseViewport::BaseViewport(fem::Project& project, QWidget* parent)
     : QOpenGLWidget(parent)
+    , m_project(project)
 {
-    m_node_repository = std::make_shared<gui::persistence::NodeRepository>(project.getDomainModel());
+    m_node_repository = std::make_shared<gui::persistence::NodeRepository>(m_project.getDomainModel());
 
     m_input = new Input; // to avoid circular dependencies
-
-    // initialize the dangling pointers
-    this->project = &project;
 
     this->state = nullptr;
 
@@ -251,7 +249,7 @@ void
     //get a selection list of which object has been selected
     Operation::SelectFrustumInclusionOperation operation(selection, near, far);
     this->state->runSceneGraphOperation(operation);
-    operation.selectInclusiveElements(project->getDomainModel());
+    operation.selectInclusiveElements(m_project.getDomainModel());
 
     // sends request to select a set of nodes
     emit selectionChanged(selection);
@@ -335,4 +333,9 @@ void BaseViewport::showAll()
     Selection selection;
     Operation::ToggleRenderOperation op(selection, false); // turns on all elements which aren't selected, which in this case means all elements
     this->state->runSceneGraphOperation(op);
+}
+
+fem::Project &BaseViewport::getProject()
+{
+    return m_project;
 }

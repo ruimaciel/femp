@@ -51,6 +51,7 @@
 #include <libfemp/io/import/ModelImporterFactory.h++>
 #include <libfemp/solvers/CGSolver.h++>
 #include <libfemp/solvers/CholeskySolver.h++>
+#include <persistence/LoadPatternRepository.h++>
 
 #include "ProjectVisitor/MoveNodesVisitor.h++"
 #include "ProjectVisitor/OutputElementStatisticsVisitor.h++"
@@ -534,7 +535,9 @@ void MainWindow::runAnalysis()
     fem::Solver<double>* solver = nullptr;
 
     // run the AnalysisDialog to get the solver
-    AnalysisDialog analysis_dialog(femp_model, this);
+    std::shared_ptr<gui::application::ILoadPatternRepository> load_pattern_repository = std::make_shared<gui::persistence::LoadPatternRepository>(m_document.getProject().getDomainModel());
+
+    AnalysisDialog analysis_dialog(load_pattern_repository, this);
     switch (analysis_dialog.exec()) {
     case QDialog::Accepted:
         solver = analysis_dialog.solver();

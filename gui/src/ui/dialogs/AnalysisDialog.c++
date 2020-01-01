@@ -11,13 +11,13 @@
 
 #include "assert.h"
 
-AnalysisDialog::AnalysisDialog(fem::Model& model, QWidget* parent)
+AnalysisDialog::AnalysisDialog(std::shared_ptr<gui::application::ILoadPatternRepository> load_pattern_repository, QWidget* parent)
     : QDialog(parent)
 {
     setupUi(this);
 
     //set the load pattern combo box
-    loadLoadPatternList(model);
+    loadLoadPatternList(load_pattern_repository);
 }
 
 fem::Solver<double>* AnalysisDialog::solver()
@@ -71,9 +71,9 @@ int AnalysisDialog::loadPattern() const
     return comboBoxLoadPattern->currentIndex();
 }
 
-void AnalysisDialog::loadLoadPatternList(fem::Model& model)
+void AnalysisDialog::loadLoadPatternList(std::shared_ptr<gui::application::ILoadPatternRepository> load_pattern_repository)
 {
-    for (auto load_pattern : model.getLoadPatternList()) {
+    for (auto load_pattern : load_pattern_repository->getLoadPatternList()) {
         QString temp = QString(load_pattern.getLabel().c_str());
 
         comboBoxLoadPattern->addItem(temp);

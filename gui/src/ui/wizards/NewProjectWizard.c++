@@ -8,16 +8,12 @@ NewProjectWizard::NewProjectWizard(Document& doc, QWidget* parent)
 {
     // clear the model, start with a clean slate
     doc.clear();
-
-    //TODO rename ProjectWizardPage2 class
-    m_page2 = new NewProjectWizardPage2;
-    addPage(m_page2);
-
-    m_page3 = new NewProjectWizardPage3(doc.getProject());
-    addPage(m_page3);
-
     //TODO crude hack
     doc.setProjectType(Document::TYPE_SOLID3D);
+
+    //TODO rename ProjectWizardPage2 class
+    addPage(new NewProjectWizardPage2);
+    addPage(new NewProjectWizardPage3(doc.getProject()));
 }
 
 void NewProjectWizard::accept()

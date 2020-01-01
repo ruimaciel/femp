@@ -11,7 +11,6 @@
 #include "ui/ui_MainWindow.h"
 
 #include "ui/dock_widgets/CommandLineDockWidget.h++"
-#include "ui/dock_widgets/SelectionDockWidget.h++"
 
 #include <options/Options.h++>
 
@@ -137,7 +136,6 @@ protected:
     fem::LinearAnalysis<double> m_analysis;
 
     CommandLineDockWidget* m_commandLineDockWidget;
-    SelectionDockWidget* m_selectionDockWidget;
 
     QMdiArea* m_mdiArea;
 

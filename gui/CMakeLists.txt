@@ -113,7 +113,6 @@ set(gui_HEADERS
     src/ui/wizards/NewProjectWizardPage3.h++
     src/ui/MatrixWindow.h++
 	src/ui/dock_widgets/CommandLineDockWidget.h++
-	src/ui/dock_widgets/SelectionDockWidget.h++
 	src/ui/BaseWindow.h++
 	src/ui/WindowWithPostprocessing.h++
 	src/ui/WindowWithWireframe.h++
@@ -286,7 +285,6 @@ set(gui_FORMS
 	src/ui/wizards/NewProjectWizard.ui
     src/ui/wizards/NewProjectWizardPage2.ui
     src/ui/wizards/NewProjectWizardPage3.ui
-    src/ui/dock_widgets/SelectionDockWidget.ui
 	src/ui/dock_widgets/CommandLineDockWidget.ui
 	src/ui/MdiWindow.ui
 	src/ui/dialogs/MoveNodesDialog.ui

@@ -54,8 +54,8 @@ protected:
     std::map<fem::node_ref_t, QTreeWidgetItem*> m_node_map; // list of all element references
 
     std::vector<fem::Group> m_selection_groups;
-    std::shared_ptr<gui::application::IElementRepository> m_element_repository;
-    std::shared_ptr<gui::application::INodeRepository> m_node_repository;
+    gui::application::IElementRepositoryPtr m_element_repository;
+    gui::application::INodeRepositoryPtr m_node_repository;
 };
 
 #endif

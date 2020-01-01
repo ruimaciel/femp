@@ -14,6 +14,7 @@ find_package(Qt5 COMPONENTS Core Widgets OpenGL REQUIRED)
 find_package(OpenGL REQUIRED)
 
 add_subdirectory(domain)
+add_subdirectory(persistence)
 
 set(gui_HEADERS
 	src/DefaultProgressIndicator.h++
@@ -340,7 +341,8 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
     domain
-	Qt5::Widgets
+    persistence
+    Qt5::Widgets
 	Qt5::OpenGL
 	OpenGL::GL
 	OpenGL::GLU

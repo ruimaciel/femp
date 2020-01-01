@@ -69,9 +69,6 @@ MainWindow::MainWindow(QWidget* parent)
     setCentralWidget(m_mdiArea); // this main window has a Multiple Document Interface
     m_windowMapper = new QSignalMapper(this);
 
-    // initialize the member attributes
-    this->m_hasUnsavedChanges = false;
-
     // create actions and connect signals to slots
     this->createActions();
     this->createDockWidgets();
@@ -324,7 +321,7 @@ void MainWindow::closeProject()
 {
     qInfo() << "MainWindow::closeProject()";
 
-    if (this->m_hasUnsavedChanges) {
+    if (m_document.isDirty()) {
         // ask the user if he wants to save the changes
         QMessageBox msgBox;
         msgBox.setText("The document has been modified.");
@@ -362,7 +359,7 @@ void MainWindow::quit()
 {
     qInfo() << "MainWindow::quit()";
 
-    if (this->m_hasUnsavedChanges) {
+    if (m_document.isDirty()) {
         // ask the user if he wants to save the changes
         QMessageBox msgBox;
         msgBox.setText("The document has been modified.");
@@ -511,7 +508,7 @@ void MainWindow::setDomainLoads()
 
     m_document.getProject().accept(visitor);
 
-    m_document.setUnsaved();
+    m_document.setDirty();
 }
 
 void MainWindow::moveSelectedNodes()
@@ -529,7 +526,7 @@ void MainWindow::moveSelectedNodes()
 
     m_document.getProject().accept(visitor);
 
-    m_document.setUnsaved();
+    m_document.setDirty();
 }
 
 void MainWindow::editMaterials()
@@ -1092,6 +1089,5 @@ void MainWindow::saveDocument(Document& doc, std::string file_name)
     out.flush();
     out.close();
 
-    doc.setUnsaved(false);
-    m_hasUnsavedChanges = false;
+    doc.setDirty(false);
 }

@@ -149,8 +149,6 @@ protected:
 
     QMdiArea* m_mdiArea;
 
-    bool m_hasUnsavedChanges; // true if the document has unsaved changes
-
     Document m_document; // the FEM document
     SelectionManager m_selectionManager; // object which handles object selection
 

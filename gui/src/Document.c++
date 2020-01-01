@@ -7,20 +7,20 @@
 
 Document::Document()
 {
-    m_unsaved = false;
+    m_dirty = false;
     m_documentType = TYPE_SOLID3D; // nasty hack due to poor design
 }
 
 Document::Document(const Document& copied)
 {
-    this->m_unsaved = copied.m_unsaved;
+    this->m_dirty = copied.m_dirty;
     this->m_filename = copied.m_filename;
     this->m_documentType = copied.m_documentType;
 }
 
 void Document::clear()
 {
-    m_unsaved = false;
+    m_dirty = false;
     m_documentType = TYPE_NONE;
     clearFileName();
     this->m_project.clear();
@@ -58,7 +58,12 @@ Document::getProject()
     return this->m_project;
 }
 
-void Document::setUnsaved(bool unsaved)
+void Document::setDirty(bool unsaved)
 {
-    m_unsaved = unsaved;
+    m_dirty = unsaved;
+}
+
+bool Document::isDirty() const
+{
+    return m_dirty;
 }

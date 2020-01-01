@@ -40,10 +40,16 @@ public:
      */
     fem::Project& getProject();
 
-    void setUnsaved(bool saved = false);
+    /**
+     * @brief setDirty sets the document as containing changes that haven't
+     * been saved to disk.
+     * @param dirty
+     */
+    void setDirty(bool dirty = true);
+    bool isDirty() const;
 
 protected:
-    bool m_unsaved; // true if this document suffered changes that are saveable
+    bool m_dirty; // true if this document suffered changes that are saveable
     Type m_documentType; // specifies the model type
     fem::Project m_project; // the FEM project
     QString m_filename; // path for the project's directory

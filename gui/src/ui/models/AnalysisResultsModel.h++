@@ -10,7 +10,7 @@
 #include <application/interfaces/IElementRepository.h++>
 #include <application/interfaces/INodeRepository.h++>
 
-#include "../../Project.h++"
+#include <Project.h++>
 
 /**
  * Provides a Qt MVC model to use with QTableView widgets
@@ -35,8 +35,8 @@ public:
 
 protected:
     QString generateElementTypeName(const fem::Element::Type type) const;
-    std::shared_ptr<gui::application::IElementRepository> element_repository;
-    std::shared_ptr<gui::application::INodeRepository> m_node_repository;
+    gui::application::IElementRepositoryPtr element_repository;
+    gui::application::INodeRepositoryPtr m_node_repository;
 };
 
 #endif

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <map>
+#include <memory>
 
 #include <libfemp/Node.h++>
 
@@ -21,6 +22,8 @@ public:
     virtual fem::Node getNodeById(size_t node_id) const = 0;
     virtual size_t getNodeSize() const = 0;
 };
+
+using INodeRepositoryPtr = std::shared_ptr<INodeRepository>;
 
 } // namespace application
 } // namespace gui

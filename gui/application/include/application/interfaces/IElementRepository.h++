@@ -1,6 +1,8 @@
 #ifndef GUI_APPLICATION_IELEMENTREPOSITORY_H
 #define GUI_APPLICATION_IELEMENTREPOSITORY_H
 
+#include <memory>
+
 #include <libfemp/Element.h++>
 
 namespace gui {
@@ -22,6 +24,7 @@ public:
     virtual size_t getElementSize() const = 0;
 };
 
+using IElementRepositoryPtr = std::shared_ptr<IElementRepository>;
 
 } // namespace persistence
 } // namespace gui

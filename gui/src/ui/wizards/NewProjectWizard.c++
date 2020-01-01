@@ -9,12 +9,6 @@ NewProjectWizard::NewProjectWizard(Document& doc, QWidget* parent)
     // clear the model, start with a clean slate
     doc.clear();
 
-    // sets the pages that will be displayed by the wizard
-    /*
-    page1 = new NewProjectWizardPage1(this,basedir);
-    addPage(page1);
-    */
-
     //TODO rename ProjectWizardPage2 class
     m_page2 = new NewProjectWizardPage2;
     addPage(m_page2);

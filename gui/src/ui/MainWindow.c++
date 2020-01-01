@@ -23,7 +23,6 @@
 #include "ui/dialogs/AnalysisDialog.h++"
 #include "ui/dialogs/AnalysisProgressDialog.h++"
 #include "ui/dialogs/AnalysisSummaryDialog.h++"
-#include "ui/dialogs/DisplayOptionsDialog.h++"
 #include "ui/dialogs/DomainLoadsDialog.h++"
 #include "ui/dialogs/MaterialsEditorDialog.h++"
 #include "ui/dialogs/MoveNodesDialog.h++"

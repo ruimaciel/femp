@@ -132,7 +132,6 @@ set(gui_HEADERS
 	src/ui/dialogs/AnalysisSummaryDialog.h++
 	src/ui/dialogs/LoadPatternDialog.h++
 	src/ui/dialogs/TableFilterDialog.h++
-	src/ui/dialogs/DisplayOptionsDialog.h++
 	src/ui/dialogs/MoveNodesDialog.h++
 	src/ui/dialogs/SurfaceSubdivisionDialog.h++
 	src/ui/dialogs/DialogScale.h++
@@ -258,7 +257,6 @@ set(gui_SOURCES
 	src/ui/dialogs/AnalysisSummaryDialog.c++
 	src/ui/dialogs/SurfaceSubdivisionDialog.c++
 	src/ui/dialogs/QuadratureRulesOptionsDialog.c++
-	src/ui/dialogs/DisplayOptionsDialog.c++
 	src/ui/dialogs/LoadPatternDialog.c++
 	src/ui/dialogs/SelectionDialog.c++
 	src/ui/dialogs/DomainLoadsDialog.c++
@@ -299,7 +297,6 @@ set(gui_FORMS
 	src/ui/MdiWindow.ui
 	src/ui/dialogs/MoveNodesDialog.ui
 	src/ui/dialogs/MaterialsEditorDialog.ui
-	src/ui/dialogs/DisplayOptionsDialog.ui
 	src/ui/dialogs/ResultsRangeDialog.ui
 	src/ui/dialogs/SurfaceSubdivisionDialog.ui
 	src/ui/dialogs/AnalysisProgressDialog.ui

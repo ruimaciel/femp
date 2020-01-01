@@ -1,5 +1,5 @@
-#ifndef GUI_APPLICATION_ELEMENTREPOSITORY_H
-#define GUI_APPLICATION_ELEMENTREPOSITORY_H
+#ifndef GUI_APPLICATION_IELEMENTREPOSITORY_H
+#define GUI_APPLICATION_IELEMENTREPOSITORY_H
 
 #include <libfemp/Element.h++>
 
@@ -13,6 +13,8 @@ public:
 
     virtual ~IElementRepository();
 
+    virtual std::vector<fem::Element> getElementList() const = 0;
+
     virtual fem::Element getElementById(size_t element_id) const = 0;
 
     virtual fem::Element getElementByIndex(size_t index) const = 0;
@@ -24,4 +26,4 @@ public:
 } // namespace persistence
 } // namespace gui
 
-#endif // GUI_APPLICATION_ELEMENTREPOSITORY_H
+#endif // GUI_APPLICATION_IELEMENTREPOSITORY_H

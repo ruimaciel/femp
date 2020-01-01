@@ -6,6 +6,9 @@ project(application
 
 set(application_INCLUDES
     include/application/interfaces/IElementRepository.h++
+    include/application/interfaces/INodeRepository.h++
+    include/application/interfaces/IMaterialRepository.h++
+    include/application/interfaces/ILoadPatternRepository.h++
     )
 
 set(application_HEADERS
@@ -13,6 +16,9 @@ set(application_HEADERS
 
 set(application_SOURCES
     src/interfaces/IElementRepository.c++
+    src/interfaces/INodeRepository.c++
+    src/interfaces/IMaterialRepository.c++
+    src/interfaces/ILoadPatternRepository.c++
     )
 
 add_library(${PROJECT_NAME} STATIC

@@ -11,13 +11,6 @@ PostprocessingViewport::PostprocessingViewport(fem::Project& project, fem::Analy
 
     this->showDisplacements();
 
-    // set this widget's load pattern pointer
-    if (project.getModel().load_pattern_list.empty()) {
-        Options::getInstance().getDisplayOptions().load_pattern = nullptr;
-    } else {
-        // set the first load pattern
-        Options::getInstance().getDisplayOptions().load_pattern = &project.getModel().load_pattern_list.front();
-    }
     this->setFocusPolicy(Qt::StrongFocus);
 }
 

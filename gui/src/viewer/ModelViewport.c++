@@ -12,13 +12,6 @@ ModelViewport::ModelViewport(fem::Project& project, QWidget* parent)
 
     this->setState(&m_vp_state_model); // set the current viewport state
 
-    // set this widget's load pattern pointer
-    if (project.getModel().load_pattern_list.empty()) {
-        Options::getInstance().getDisplayOptions().load_pattern = nullptr;
-    } else {
-        // set the first load pattern
-        Options::getInstance().getDisplayOptions().load_pattern = &project.getModel().load_pattern_list.front();
-    }
     this->setFocusPolicy(Qt::StrongFocus);
 }
 

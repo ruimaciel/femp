@@ -1,16 +1,10 @@
-#ifndef DISPLAY_OPTIONS_HPP
-#define DISPLAY_OPTIONS_HPP
-
-#include <libfemp/LoadPattern.h++>
+#ifndef GUI_DISPLAY_OPTIONS_HPP
+#define GUI_DISPLAY_OPTIONS_HPP
 
 /**
 Helper class belonging to glwidget (a has-a relationship) that states what model properties should be rendered
 **/
-
 struct DisplayOptions {
-    //FIXIT don't include load pattern as a display option
-    fem::LoadPattern* load_pattern; //	pointer to the load pattern to be displayed
-
     // boolean
     unsigned int nodes : 1;
     unsigned int node_restrictions : 1;

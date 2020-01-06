@@ -2,7 +2,6 @@
 
 DisplayOptions::DisplayOptions()
 {
-    load_pattern = nullptr;
     nodes = 1;
     node_restrictions = 1;
     surfaces = 1;

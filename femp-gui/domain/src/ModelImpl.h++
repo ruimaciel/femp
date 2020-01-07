@@ -2,6 +2,7 @@
 #define GUI_MODELIMPL_H
 
 #include <libfemp/Model.h++>
+#include <libfemp/NodeRestrictions.h++>
 
 namespace gui {
 
@@ -26,6 +27,7 @@ public:
     std::vector<fem::Material> getMaterialList() const;
     void pushMaterial(fem::Material new_material);
 
+    std::map<unsigned int, fem::NodeRestrictions> getNodeRestrictions() const;
 private:
     fem::Model &m_model;
 };

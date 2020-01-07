@@ -72,4 +72,9 @@ void Model::pushMaterial(fem::Material new_material)
     m_impl->pushMaterial(new_material);
 }
 
+std::map<unsigned int, fem::NodeRestrictions> Model::getNodeRestrictions() const
+{
+    return m_impl->getNodeRestrictions();
+}
+
 }	// namespace gui

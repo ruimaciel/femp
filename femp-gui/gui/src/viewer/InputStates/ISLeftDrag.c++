@@ -8,6 +8,7 @@
 #include <GL/glu.h>
 
 #include "../BaseViewport.h++"
+#include "../ViewportStates/ViewportState.h++"
 #include "Input.h++"
 
 namespace InputStates {

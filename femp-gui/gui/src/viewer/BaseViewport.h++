@@ -19,8 +19,6 @@
 #include "SceneGraph.h++"
 #include <options/Options.h++>
 
-#include "ViewportStates/ViewportState.h++" // for the vieport's state pattern base class
-
 class ViewportState;
 class Input;
 

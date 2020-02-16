@@ -2,6 +2,8 @@
 
 #include <QDebug>
 
+#include "ViewportStates/ViewportState.h++" // for the vieport's state pattern base class
+
 #include "InputStates/Input.h++" // for the state pattern that handles user input
 #include "SceneGraphComponents/Operations/SelectFrustumInclusionOperation.h++"
 #include "SceneGraphComponents/Operations/SelectRayIntersectionOperation.h++"

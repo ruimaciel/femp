@@ -1,5 +1,7 @@
 #include "Input.h++"
 
+#include <QMouseEvent>
+
 #include "../BaseViewport.h++"
 #include "InputState.h++"
 

@@ -1,7 +1,9 @@
 #include "ISStart.h++"
 
 #include <QDebug>
+#include <QMouseEvent>
 
+#include "../ViewportStates/ViewportState.h++"
 #include "../BaseViewport.h++"
 #include "Input.h++"
 

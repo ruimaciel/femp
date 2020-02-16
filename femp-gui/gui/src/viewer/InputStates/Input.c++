@@ -5,7 +5,7 @@
 
 Input::Input()
 {
-    m_current_state = &m_s_start; //TODO remove this
+    m_current_state = &m_is_start; //TODO remove this
 }
 
 void Input::press(BaseViewport* viewport, QMouseEvent* event)

@@ -29,7 +29,7 @@ void LeftClick::release(BaseViewport* viewport, QMouseEvent* event, Input* input
 
 void LeftClick::leftRelease(BaseViewport* viewport, QMouseEvent* event, Input* input)
 {
-    input->changeState(&viewport->m_is_start);
+    input->changeState(&input->m_is_start);
 
     {
         fem::Point3D near, far;
@@ -51,7 +51,7 @@ void LeftClick::leftRelease(BaseViewport* viewport, QMouseEvent* event, Input* i
 void LeftClick::move(BaseViewport* viewport, QMouseEvent* /*event*/, Input* input)
 {
 
-    input->changeState(&viewport->m_is_left_drag);
+    input->changeState(&input->m_is_left_drag);
 }
 
 }

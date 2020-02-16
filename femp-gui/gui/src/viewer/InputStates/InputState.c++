@@ -4,6 +4,7 @@
 
 #include <QMouseEvent>
 
+#include "Input.h++" // for the state pattern that handles user input
 #include "../BaseViewport.h++"
 
 InputState::~InputState()

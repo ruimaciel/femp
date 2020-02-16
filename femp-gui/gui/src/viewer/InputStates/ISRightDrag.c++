@@ -25,7 +25,7 @@ void RightDrag::release(BaseViewport* viewport, QMouseEvent* event, Input* input
 
 void RightDrag::rightRelease(BaseViewport* viewport, QMouseEvent* /*event*/, Input* input)
 {
-    input->changeState(&viewport->m_is_start);
+    input->changeState(&input->m_is_start);
 }
 
 void RightDrag::move(BaseViewport* viewport, QMouseEvent* event, Input* /*input*/)

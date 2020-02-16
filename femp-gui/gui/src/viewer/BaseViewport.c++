@@ -2,6 +2,7 @@
 
 #include <QDebug>
 
+#include "InputStates/Input.h++" // for the state pattern that handles user input
 #include "SceneGraphComponents/Operations/SelectFrustumInclusionOperation.h++"
 #include "SceneGraphComponents/Operations/SelectRayIntersectionOperation.h++"
 #include "SceneGraphComponents/Operations/ToggleRenderOperation.h++"

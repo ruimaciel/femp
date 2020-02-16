@@ -34,13 +34,13 @@ void Start::leftClick(BaseViewport* viewport, QMouseEvent* event, Input* input)
     // register place where mouse is clicked
     viewport->viewport_data.lastPos = event->pos();
 
-    input->changeState(&viewport->m_is_left_click);
+    input->changeState(&input->m_is_left_click);
 }
 
 void Start::rightClick(BaseViewport* viewport, QMouseEvent* event, Input* input)
 {
     viewport->viewport_data.lastPos = event->pos(); // for the rotate
-    input->changeState(&viewport->m_is_right_click);
+    input->changeState(&input->m_is_right_click);
 }
 
 }

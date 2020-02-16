@@ -29,7 +29,7 @@ void LeftDrag::release(BaseViewport* viewport, QMouseEvent* event, Input* input)
 void LeftDrag::leftRelease(BaseViewport* viewport, QMouseEvent* event, Input* input)
 {
     viewport->state->setSelectionOff();
-    input->changeState(&viewport->m_is_start);
+    input->changeState(&input->m_is_start);
     {
         std::array<fem::Point3D, 4> near; // near plane vertices
         std::array<fem::Point3D, 4> far; // far plane vertices

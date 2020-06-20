@@ -340,5 +340,10 @@ void BaseViewport::showAll()
 
 fem::Project &BaseViewport::getProject()
 {
-    return m_project;
+	return m_project;
+}
+
+std::shared_ptr<gui::Model> BaseViewport::getDomainModel()
+{
+	return m_project.getDomainModel();
 }

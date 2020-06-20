@@ -107,6 +107,7 @@ public:
     void showSelection(const Selection);
     void showAll();
 	fem::Project & getProject();
+	std::shared_ptr<gui::Model> getDomainModel();
 
 protected:
     void initializeGL();

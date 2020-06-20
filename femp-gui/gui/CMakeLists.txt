@@ -341,3 +341,7 @@ target_link_libraries(${PROJECT_NAME}
 	pthread
     selection
 	)
+
+if(RUN_TESTS)
+    add_subdirectory(tests)
+endif()

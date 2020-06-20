@@ -9,3 +9,5 @@ add_subdirectory(libla)
 add_subdirectory(libfemp)
 add_subdirectory(femp-gui)
 add_subdirectory(femp-cli)
+
+option(RUN_TESTS "Runs tests" ON)

@@ -37,3 +37,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     libfemp
     )
+
+if(RUN_TESTS)
+	add_subdirectory(tests)
+endif(RUN_TESTS)

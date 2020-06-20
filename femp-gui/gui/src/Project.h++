@@ -4,7 +4,7 @@
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/Model.h++>
 
-#include <Model.h++>
+#include <domain/Model.h++>
 #include <ProjectVisitor/ProjectVisitor.h++>
 
 #include <vector>

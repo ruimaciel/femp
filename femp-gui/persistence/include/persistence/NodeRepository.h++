@@ -3,7 +3,7 @@
 
 #include <application/interfaces/INodeRepository.h++>
 
-#include <Model.h++>
+#include <domain/Model.h++>
 #include <memory>
 
 namespace gui {

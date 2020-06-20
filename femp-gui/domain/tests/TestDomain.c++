@@ -1,6 +1,6 @@
 #include <QtTest/QtTest>
 
-#include <Model.h++>
+#include <domain/Model.h++>
 
 
 class TestDomain: public QObject

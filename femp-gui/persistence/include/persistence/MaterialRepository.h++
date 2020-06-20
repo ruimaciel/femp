@@ -1,7 +1,7 @@
 #ifndef GUI_PERSISTENCE_MATERIALREPOSITORY_H
 #define GUI_PERSISTENCE_MATERIALREPOSITORY_H
 
-#include <Model.h++>
+#include <domain/Model.h++>
 #include <memory>
 
 #include <application/interfaces/IMaterialRepository.h++>

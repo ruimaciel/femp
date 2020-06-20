@@ -5,7 +5,7 @@
 
 #include <libfemp/Element.h++>
 #include <application/interfaces/IElementRepository.h++>
-#include <Model.h++>
+#include <domain/Model.h++>
 
 namespace gui {
 namespace persistence {

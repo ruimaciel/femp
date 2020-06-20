@@ -6,7 +6,7 @@ project(domain
     )
 
 set(domain_INCLUDES
-    include/Model.h++
+	include/domain/Model.h++
     )
 
 set(domain_HEADERS

@@ -3,7 +3,7 @@
 
 #include <application/interfaces/ILoadPatternRepository.h++>
 
-#include <Model.h++>
+#include <domain/Model.h++>
 
 
 

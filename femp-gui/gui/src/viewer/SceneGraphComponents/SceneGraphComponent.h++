@@ -15,8 +15,8 @@
 #include "../../Project.h++"
 #include <libfemp/AnalysisResult.h++>
 
-/*
-Component class which is used to implement a bounding volume hierarchy for the scene graph through a composit design pattern
+/**
+ * Component class which is used to implement a bounding volume hierarchy for the scene graph through a composit design pattern
 **/
 class SceneGraphComponent {
 public:
@@ -35,20 +35,20 @@ public:
 
     static void setDetailFactor(const float& new_detail_factor) { detail_factor = new_detail_factor; }
 
-    /*
-        Render the content of this Scenegraph component
-        */
+    /**
+     * Render the content of this Scenegraph component
+     **/
     virtual void paintGL(ViewportData& data, ViewportColors& colors);
 
-    /*
-        Pushes a new scenegraph component to this component's children's list
-        This routine makes a copy of object new_component and adds a pointer to thew new object in the children's list
-        */
+    /**
+     * Pushes a new scenegraph component to this component's children's list
+     * This routine makes a copy of object new_component and adds a pointer to thew new object in the children's list
+    **/
     void pushComponent(std::shared_ptr<SceneGraphComponent> new_component);
 
-    /*
-        Method to be able to implement a Visitor pattern for operations on selected objects
-        */
+    /**
+     * Method to be able to implement a Visitor pattern for operations on selected objects
+     **/
     virtual void accept(Operation::OperationsVisitor& v);
 };
 

@@ -68,7 +68,7 @@ public:
     GradientFieldPolicy* vonMises();
 
     /**
-	Sets the objects that are needed to access displacements fields and material info
+     * Sets the objects that are needed to access displacements fields and material info
 	**/
     void setModel(fem::Model& model);
     void setAnalysisResult(fem::AnalysisResult& result);

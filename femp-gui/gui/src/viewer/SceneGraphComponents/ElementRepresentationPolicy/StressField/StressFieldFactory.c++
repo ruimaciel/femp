@@ -151,6 +151,7 @@ StressFieldFactory::operator()(fem::Element const& element)
         e11 = e22 = e33 = e12 = e13 = e23 = 0;
 
         // set Dg
+        Eigen::Matrix3d Dg;
         Dg.setZero();
         auto coordinates = e->getLocalCoordinates();
         for (unsigned int node = 0; node < coordinates.size(); node++) {
@@ -172,6 +173,7 @@ StressFieldFactory::operator()(fem::Element const& element)
         Dg(2, 1) = dxdzeta.y();
         Dg(2, 2) = dxdzeta.z();
 
+        Eigen::Matrix3d invDg;
         invDg = Dg.inverse();
 
         //m_gradient_value[coord] = 0;

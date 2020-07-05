@@ -9,13 +9,12 @@
 //#include "TensorFieldRepresentationPolicy.h++"
 
 /**
-A flyweight factory pattern to store and provide ways to represent an element
+ * A flyweight factory pattern to store and provide ways to represent an element
 **/
 class ElementRepresentationFlyweightFactory {
 protected:
     OpaqueRepresentationPolicy m_opaque_policy;
     GradientFieldRepresentationPolicy m_gradient_policy;
-    //TensorFieldRepresentationPolicy	m_tensor_policy;
 
 public:
     ElementRepresentationFlyweightFactory();
@@ -23,17 +22,16 @@ public:
 protected:
 public:
     /**
-	Sets the current displacements policy for all the ElementRepresentationPolicy objects
-	@param	displacements	pointer to a DisplacementsRepresentationPolicy object
+     * Sets the current displacements policy for all the ElementRepresentationPolicy objects
+     * @param	displacements	pointer to a DisplacementsRepresentationPolicy object
 	**/
     void setDisplacementsRepresentationPolicy(DisplacementsRepresentationPolicy* displacements);
 
     ElementRepresentationPolicy* opaque();
     ElementRepresentationPolicy* gradient();
-    //ElementRepresentationPolicy * tensor();
 
     /**
-	Toggles opengl wireframe rendering on all relevant policies
+     * Toggles opengl wireframe rendering on all relevant policies
 	**/
     void setTriangleWireframeRendering(bool const state);
     void toggleTriangleWireframeRendering();

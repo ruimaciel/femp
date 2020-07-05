@@ -4,7 +4,7 @@
 #include "GradientFieldPolicy.h++"
 
 /**
-Test gradient field policy.  All values are constant
+ * Test gradient field policy.  All values are constant
 **/
 class ConstantGradientFieldPolicy
     : public GradientFieldPolicy {
@@ -15,7 +15,8 @@ public:
     ConstantGradientFieldPolicy();
 
 protected:
-    /** returns the gradient value for each result
+    /**
+     * returns the gradient value for each result
     **/
     float val(fem::element_ref_t const& ref, gradient_index_t const& p) const;
     float maxVal(fem::ResultsRanges<double> const&) const;

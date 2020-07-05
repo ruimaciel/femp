@@ -2,10 +2,6 @@
 
 #include "../../SceneGraphException.h++"
 
-NeutralGradientFieldPolicy::NeutralGradientFieldPolicy()
-{
-}
-
 float NeutralGradientFieldPolicy::val(fem::element_ref_t const& ref, gradient_index_t const&) const
 {
     assert(m_analysis_result != nullptr);

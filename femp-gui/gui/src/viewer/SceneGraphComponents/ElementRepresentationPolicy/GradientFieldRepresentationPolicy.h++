@@ -16,13 +16,12 @@
 #include "GradientFieldPolicy/GradientFieldPolicy.h++"
 
 /**
-Represents elements in the scene with a gradient field defined by GradientFieldPolicy, a policy pattern
+ * Represents elements in the scene with a gradient field defined by GradientFieldPolicy, a policy pattern
 **/
 class GradientFieldRepresentationPolicy
     : virtual public ElementRepresentationPolicy {
 protected:
     std::vector<fem::Point3D> m_temp_p;
-    //typedef std::vector<fem::Point>::size_type p_index_t;	// syntactically convenient helper identifier
     typedef unsigned int p_index_t; // syntactically convenient helper identifier
 
     GradientFieldPolicy* m_gradient; // policy pattern used to calculate and set the gradient values
@@ -39,8 +38,6 @@ protected:
     inline void quad9(fem::element_ref_t const& ref, p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, p_index_t p9, ViewportColors& colors);
 
 public:
-    /**
-     */
     void tetra4(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacements);
     void tetra10(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacements);
     void hexa8(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacements);
@@ -51,7 +48,7 @@ public:
     void prism18(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacements);
 
     /**
-    sets the gradient rendering policy
+     * Sets the gradient rendering policy
     **/
     void renderNeutral();
     void renderConstant(float value);
@@ -72,7 +69,7 @@ public:
     void renderVonMises();
 
     /**
-    Sets the objects that are needed to access displacements fields and material info
+     * Sets the objects that are needed to access displacements fields and material info
     **/
     void setModel(fem::Model& model);
     void setAnalysisResult(fem::AnalysisResult& result);

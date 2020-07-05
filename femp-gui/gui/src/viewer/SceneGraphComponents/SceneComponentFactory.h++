@@ -11,7 +11,7 @@ namespace SGC // namespace for all scene graph components
 {
 
 /**
-Defines a factory class which creates objects of type Element given an object of type fem::Element
+ * Defines a factory class which creates objects of type Element given an object of type fem::Element
 **/
 class SceneComponentFactory {
 public:
@@ -21,8 +21,8 @@ public:
     void setDisplacementsPolicy(DisplacementsRepresentationPolicy* displacements);
 
     /**
-  Factory method
-  **/
+     * Factory method
+    **/
     virtual Element* operator()(fem::element_ref_t const&, fem::Element& element);
 
 protected:

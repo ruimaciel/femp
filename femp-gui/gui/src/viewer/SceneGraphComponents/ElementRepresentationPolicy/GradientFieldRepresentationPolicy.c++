@@ -20,8 +20,6 @@ void GradientFieldRepresentationPolicy::tri3(fem::element_ref_t const& ref, p_in
 
     glEnable(GL_BLEND);
 
-    //int partitions = 4;	//TODO implement a better code
-
     fem::Point3D temp;
     fem::Point3D ptemp;
     temp = fem::getNormalVector(m_temp_p[p1], m_temp_p[p2], m_temp_p[p3]);
@@ -152,7 +150,7 @@ void GradientFieldRepresentationPolicy::tri6(fem::element_ref_t const& ref, p_in
 void GradientFieldRepresentationPolicy::quad4(fem::element_ref_t const& ref, p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, ViewportColors& colors)
 {
     glEnable(GL_BLEND);
-    int partitions = 3; //TODO implement a better code
+    int partitions = 3;
 
     /*
     ^ y
@@ -249,7 +247,7 @@ void GradientFieldRepresentationPolicy::quad4(fem::element_ref_t const& ref, p_i
 void GradientFieldRepresentationPolicy::quad8(fem::element_ref_t const& ref, p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7, p_index_t p8, ViewportColors& colors)
 {
     glEnable(GL_BLEND);
-    int partitions = 6; //TODO implement a better code
+    int partitions = 6;
 
     /*
     ^ y

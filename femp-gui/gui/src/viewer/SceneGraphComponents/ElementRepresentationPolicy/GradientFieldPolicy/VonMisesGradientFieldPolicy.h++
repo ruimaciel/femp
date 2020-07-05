@@ -4,7 +4,7 @@
 #include "GradientFieldPolicy.h++"
 
 /**
-Stress11 gradient field policy
+ * Stress11 gradient field policy
 **/
 class VonMisesGradientFieldPolicy
     : public GradientFieldPolicy {

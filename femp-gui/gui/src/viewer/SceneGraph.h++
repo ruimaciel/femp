@@ -16,9 +16,9 @@ class SceneGraphComponent;
 #include "ViewportData.h++"
 #include <options/Options.h++>
 
-/*
-Facade pattern for the scenegraph structure
-*/
+/**
+ * Facade pattern for the scenegraph structure
+**/
 class SceneGraph {
 public:
     enum Groups // common groups for all scenegraphs
@@ -34,30 +34,30 @@ public:
     SceneGraph();
     ~SceneGraph();
 
-    /*
-  Clears all the data structures managed by this class
-  */
+    /**
+     * Clears all the data structures managed by this class
+    **/
     void clear();
 
     void paint(ViewportData& viewport_data, ViewportColors& colors);
 
-    /*
-  Generic routine to add a primitive component to this scenegraph
-  The template was provided for syntax convenience only; this class only accepts specific types derived from SceneGraphComponent
-  @param group	destination RenderGroup
-  @param *newcomponent	new scenegraph component
-  */
+    /**
+     * Generic routine to add a primitive component to this scenegraph
+     * The template was provided for syntax convenience only; this class only accepts specific types derived from SceneGraphComponent
+     * @param group	destination RenderGroup
+     * @param *newcomponent	new scenegraph component
+    **/
     void addPrimitiveComponent(enum Groups group, std::shared_ptr<SceneGraphComponent> new_component);
 
-    /*
-  Generate a new scenegraph tree from the current list of primitive components
-  */
+    /**
+     * Generate a new scenegraph tree from the current list of primitive components
+    **/
     void generateSceneGraph();
 
     /**
-  visitor pattern for the scenegraph
-  @param	visitor	class which will act on each object
-  **/
+     * visitor pattern for the scenegraph
+     * @param	visitor	class which will act on each object
+    **/
     void runOperation(Operation::OperationsVisitor&);
 
     void setSelectionStart(fem::Point3D const& p);
@@ -68,10 +68,10 @@ public:
     std::map<enum Groups, RenderGroup> rendering_groups;
 
 private:
-    /*
-  This is the master list of all scene graph objects in this scene graph.
-  It is used to store every object of type SGCSurface (etc...) managed by this scenegraph.
-  */
+    /**
+     * This is the master list of all scene graph objects in this scene graph.
+     * It is used to store every object of type SGCSurface (etc...) managed by this scenegraph.
+    **/
     std::list<std::shared_ptr<SceneGraphComponent>> m_primitive_components;
 
     hud::Selection m_selection; // HUD object to render selection

@@ -5,7 +5,7 @@
 
 #include <libfemp/Point3D.h++>
 
-#include "../../ViewportData.h++"
+#include <viewer/ViewportData.h++>
 #include <options/Options.h++>
 
 namespace hud {

@@ -4,11 +4,10 @@
 #include "GradientFieldPolicy.h++"
 
 /**
-Stress23 gradient field policy
+ * Stress23 gradient field policy
 **/
 class Stress23GradientFieldPolicy
     : public GradientFieldPolicy {
-
 protected:
     float val(fem::element_ref_t const& ref, gradient_index_t const& p) const;
     float maxVal(fem::ResultsRanges<double> const&) const;

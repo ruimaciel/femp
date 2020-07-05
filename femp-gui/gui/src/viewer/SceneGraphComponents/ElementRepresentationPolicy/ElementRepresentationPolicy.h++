@@ -7,8 +7,8 @@
 #include <options/Options.h++>
 
 /**
-Defines a policy to represent elements according to specific criteria.
-Each member function runs a set of OpenGL commands.
+ * Defines a policy to represent elements according to specific criteria.
+ * Each member function runs a set of OpenGL commands.
 **/
 class ElementRepresentationPolicy {
 protected:
@@ -21,8 +21,6 @@ public:
 
     void setDisplacementPolicy(DisplacementsRepresentationPolicy* displacement);
 
-    /**
-     */
     virtual void tetra4(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement) = 0;
     virtual void tetra10(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement) = 0;
     virtual void hexa8(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement) = 0;

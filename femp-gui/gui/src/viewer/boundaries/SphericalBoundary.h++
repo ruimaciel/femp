@@ -5,9 +5,9 @@
 
 #include <libfemp/Point3D.h++>
 
-/*
-A concrete class that implements a sphere boundary throught the Boundary strategy pattern
-*/
+/**
+ * A concrete class that implements a sphere boundary throught the Boundary strategy pattern
+**/
 class SphericalBoundary
     : public BoundaryStrategy {
 public:
@@ -18,20 +18,20 @@ public:
     SphericalBoundary();
     ~SphericalBoundary();
 
-    /*
-		Checks if a given point is inside this boundary
-		@return	true if it is, false if it isn't
-		*/
+    /**
+     * Checks if a given point is inside this boundary
+     * @return	true if it is, false if it isn't
+    **/
     bool inside(const fem::Point3D&);
 
-    /*
-		Sets this sphere's starting point
-		*/
+    /**
+     * Sets this sphere's starting point
+    **/
     void setPoint(const fem::Point3D&);
 
-    /*
-		Resizes the spherical boundary, if needed, to include a new point
-		*/
+    /**
+     * Resizes the spherical boundary, if needed, to include a new point
+    **/
     void addPoint(const fem::Point3D&);
 };
 

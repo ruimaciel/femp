@@ -15,7 +15,7 @@ jobs:
       - run:
           name: Install app dependencies
           command: |
-            sudo apt-get install -y qtbase5-dev libqt5opengl5-dev libsuitesparse-dev libboost1.62-dev libeigen3-dev flex bison re2c libboost-program-options-dev
+            sudo apt-get install -y qtbase5-dev libqt5opengl5-dev libsuitesparse-dev libboost-dev libeigen3-dev flex bison re2c libboost-program-options-dev
       - run:
           name: Prepare build directory
           command: |

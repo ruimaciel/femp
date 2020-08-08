@@ -8,7 +8,7 @@ project(fempcli
 find_package( Boost REQUIRED COMPONENTS program_options)
 
 
-set(cmdline_HEADERS
+set(fempcli_HEADERS
     src/commands/FempCommand.h++
     src/commands/ErrorReportingCommand.h++
     src/commands/HelpCommand.h++
@@ -16,7 +16,7 @@ set(cmdline_HEADERS
     src/CliProgressIndicatorStrategy.h++
     )
 
-set(cmdline_SOURCES
+set(fempcli_SOURCES
     src/commands/FempCommand.c++
     src/commands/ErrorReportingCommand.c++
     src/commands/HelpCommand.c++
@@ -25,22 +25,22 @@ set(cmdline_SOURCES
     src/main.c++
     )
 
-add_executable(cmdline
-    ${cmdline_HEADERS}
-    ${cmdline_SOURCES}
+add_executable(fempcli
+    ${fempcli_HEADERS}
+    ${fempcli_SOURCES}
     )
 
-target_link_libraries(cmdline
+target_link_libraries(fempcli
     libla
     libfemp
     ${Boost_LIBRARIES}
     )
 
-target_include_directories(cmdline
+target_include_directories(fempcli
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
 
-set_target_properties(cmdline PROPERTIES
+set_target_properties(fempcli PROPERTIES
     CXX_STANDARD 11
     CXX_EXTENSIONS OFF
 )

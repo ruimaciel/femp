@@ -1,66 +1,58 @@
-#include <cstdio>
 #include <iostream>
-#include <limits>
-
-#include <libfemp/FemException.h++>
-#include <libfemp/LinearAnalysis.h++>
-#include <libfemp/Model.h++>
-
-#include "ProgramOptions.h++"
+#include <stdlib.h>
+#include <boost/program_options.hpp>
+#include "commands/FempCommand.h++"
+#include "commands/HelpCommand.h++"
+#include "commands/AnalysisCommand.h++"
+#include "commands/ErrorReportingCommand.h++"
 
 int main(int argc, char** argv)
 {
+    namespace po = boost::program_options;
     using namespace std;
-    using namespace fem;
 
+    po::variables_map variables_map;
+    std::unique_ptr<FempCommand> command;
     try {
-        // declaring the objects
-        ProgramOptions options;
-        fem::Model model;
-        fem::LinearAnalysis<double> analysis;
+        // Declare the supported options.
+        po::options_description description("Allowed options");
+        description.add_options()
+                ("help", "produce help message")
+                ("version,v", "produce help message")
+                ("input", po::value<string>(), "the input file")
+                ("output", po::value<string>()->default_value("./"), "the output file")
+                ;
 
-        // get the remaining options from the command line
-        switch (options.setCommandLineOptions(argc, argv)) {
-        case ProgramOptions::OPT_PARSER_ERROR: // some invalid options passed
-            cout << "Invalid option" << endl;
-            return 1;
-            break;
+        auto parsed = po::command_line_parser(argc, argv)
+                .options(description)
+                .run();
 
-        case ProgramOptions::OPT_HELP: // return the help menu
-            //TODO finish this
-            cout << "usage:" << endl;
-            cout << "\tcmdline --help\n";
-            cout << "\tcmdline --version\n";
-            cout << "\tcmdline <option>*\n\n";
-            cout << "options:\n";
-            cout << "\t--ips:stiffness (<element type>:<degree>)+\n";
-            cout << "\t--ips:domain (<element type>:<degree>)+\n";
-            cout << "\t--output-matrix\n";
-            cout << endl;
-            break;
+        po::store(parsed, variables_map);
+        po::notify(variables_map);
 
-        case ProgramOptions::OPT_VERSION: // return the program's version
-            //TODO get version from config.h
-            cout << "cmdline version 0.1" << endl;
-            break;
-
-        case ProgramOptions::OPT_RUN: // run the model
-            break;
-
-        default:
-            // this part should never be reached
-            cerr << "ProgramOptions defaulted" << endl;
-            break;
+        if (variables_map.count("help")) {
+            command = std::unique_ptr<FempCommand>(new HelpCommand(description));
         }
+        else  if (variables_map.count("input")) {
+            AnalysisCommand::Builder builder;
 
-    } catch (FemException e) {
-        cout << "FemException: " << e.what() << endl;
-    } catch (std::exception e) {
-        cout << "exception: " << e.what() << endl;
-    } catch (...) {
-        cout << "An exception was thrownn" << endl;
+            std::string input_file = variables_map["input"].as<std::string>();
+            builder.setInputFilename(input_file);
+
+            std::string output_path = variables_map["output"].as<std::string>();
+            builder.setOutputPath(output_path);
+
+            command = builder.build();
+        }
+        else {
+            command = std::unique_ptr<FempCommand>(new ErrorReportingCommand());
+        }
+    }
+    catch (std::exception &e) {
+        cout << "Some error occurred" << std::endl;
+        return EXIT_FAILURE;
     }
 
-    // exit
-    return 0;
+    return command->execute();
 }
+

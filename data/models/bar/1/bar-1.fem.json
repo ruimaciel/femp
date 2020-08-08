@@ -75,7 +75,7 @@
 			"label": "distributed domain load",
 
 			"domain loads":[
-				{"element":[0,15], "force": [0,-1000,0]}
+				{"element":[0,7], "force": [0,-1000,0]}
 			]
 
 		}

@@ -8,6 +8,11 @@ TriangleFamily::TriangleFamily()
 {
 }
 
+TriangleFamily::~TriangleFamily()
+{
+
+}
+
 enum BaseElement::ElementFamily
 TriangleFamily::family() const
 {

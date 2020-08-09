@@ -16,6 +16,7 @@ public:
 
 public:
     TriangleFamily();
+    virtual ~TriangleFamily();
 
     enum BaseElement::ElementFamily family() const;
 

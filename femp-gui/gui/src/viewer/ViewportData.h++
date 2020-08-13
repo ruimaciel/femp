@@ -30,8 +30,6 @@ struct ViewportData {
     QPoint lastPos;
 
     std::list<size_t> selected_node_list;
-
-    void reset();
 };
 
 #endif

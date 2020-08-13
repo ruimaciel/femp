@@ -35,8 +35,10 @@ void RightDrag::move(BaseViewport* viewport, QMouseEvent* event, Input* /*input*
     int dx = event->x() - viewport_data.lastPos.x();
     int dy = event->y() - viewport_data.lastPos.y();
 
-    viewport_data.camera.rotation.data[0] += dy / pow(2, viewport_data.zoom);
-    viewport_data.camera.rotation.data[1] += dx / pow(2, viewport_data.zoom);
+    fem::Point3D rotation = viewport_data.camera.getRotation();
+    rotation.data[0] += dy / pow(2, viewport_data.zoom);
+    rotation.data[1] += dx / pow(2, viewport_data.zoom);
+    viewport_data.camera.setRotation(rotation);
 
     viewport_data.lastPos = event->pos();
 }

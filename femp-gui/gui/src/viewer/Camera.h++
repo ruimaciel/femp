@@ -10,6 +10,8 @@ public:
 
     void setPosition(double x, double y, double z);
 
+    void setRotation(fem::Point3D rotation);
+
     void reset();
 
     /**
@@ -22,12 +24,13 @@ public:
 
     fem::Point3D getPosition() const;
 
-public:
-    fem::Point3D rotation;
+    fem::Point3D getRotation() const;
 
 private:
     fem::Point3D m_center;
     fem::Point3D m_pos;
+    fem::Point3D m_rotation;
 };
 
 #endif
+

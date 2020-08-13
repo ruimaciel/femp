@@ -261,7 +261,9 @@ void
 void BaseViewport::setXRotation(int angle)
 {
     normalizeAngle(&angle);
-    viewport_data.camera.rotation.data[0] = angle;
+    fem::Point3D rotation = viewport_data.camera.getRotation();
+    rotation.data[0] = angle;
+    viewport_data.camera.setRotation(rotation);
     Q_EMIT xRotationChanged(angle);
     update();
 }
@@ -269,7 +271,9 @@ void BaseViewport::setXRotation(int angle)
 void BaseViewport::setYRotation(int angle)
 {
     normalizeAngle(&angle);
-    viewport_data.camera.rotation.data[1] = angle;
+    fem::Point3D rotation = viewport_data.camera.getRotation();
+    rotation.data[1] = angle;
+    viewport_data.camera.setRotation(rotation);
     Q_EMIT yRotationChanged(angle);
     update();
 }
@@ -277,7 +281,10 @@ void BaseViewport::setYRotation(int angle)
 void BaseViewport::setZRotation(int angle)
 {
     normalizeAngle(&angle);
-    viewport_data.camera.rotation.data[2] = angle;
+    fem::Point3D rotation = viewport_data.camera.getRotation();
+    rotation.data[2] = angle;
+    viewport_data.camera.setRotation(rotation);
+    Q_EMIT yRotationChanged(angle);
     Q_EMIT zRotationChanged(angle);
     update();
 }

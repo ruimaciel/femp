@@ -65,8 +65,10 @@ void ViewportState::mouseMoveEvent(BaseViewport* viewport, QMouseEvent* event)
     if (event->buttons() & Qt::LeftButton) {
         //TODO set action for left click button
     } else if (event->buttons() & Qt::RightButton) {
-        viewport->viewport_data.camera.rotation.data[0] += dy / pow(2, viewport->viewport_data.zoom);
-        viewport->viewport_data.camera.rotation.data[1] += dx / pow(2, viewport->viewport_data.zoom);
+        fem::Point3D rotation = viewport->viewport_data.camera.getRotation();
+        rotation.data[0] += dy / pow(2, viewport->viewport_data.zoom);
+        rotation.data[1] += dx / pow(2, viewport->viewport_data.zoom);
+        viewport->viewport_data.camera.setRotation(rotation);
     }
 
     viewport->viewport_data.lastPos = event->pos();

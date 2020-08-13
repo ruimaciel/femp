@@ -109,6 +109,8 @@ public:
 	fem::Project & getProject();
 	std::shared_ptr<gui::Model> getDomainModel();
 
+    ViewportColors getColors() const;
+
 protected:
     void initializeGL();
     void resizeGL(int width, int height);
@@ -128,12 +130,11 @@ protected:
 
 public:
     ViewportData viewport_data;
-    ViewportColors colors; // color definitions
-
     ViewportState* state; // pointer to object used for the State pattern
 
 private:
     fem::Project& m_project;
+    ViewportColors m_colors; // color definitions
     std::shared_ptr<gui::application::INodeRepository> m_node_repository;
 };
 

@@ -39,7 +39,7 @@ public:
     **/
     void clear();
 
-    void paint(ViewportData& viewport_data, ViewportColors& colors);
+    void paint(ViewportData& viewport_data, ViewportColors colors);
 
     /**
      * Generic routine to add a primitive component to this scenegraph

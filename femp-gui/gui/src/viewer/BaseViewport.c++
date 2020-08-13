@@ -32,7 +32,7 @@ BaseViewport::~BaseViewport()
 
 void BaseViewport::setColors(ViewportColors& new_colors)
 {
-    colors = new_colors;
+    m_colors = new_colors;
 }
 
 QSize BaseViewport::minimumSizeHint() const
@@ -69,7 +69,7 @@ void BaseViewport::initializeGL()
     GLfloat specularity[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     GLint specmaterial = 60;
 
-    glClearColor(colors.background[0], colors.background[1], colors.background[2], colors.background[3]);
+    glClearColor(m_colors.background[0], m_colors.background[1], m_colors.background[2], m_colors.background[3]);
 
     glClearDepth(1.0f);
     glEnable(GL_DEPTH_TEST);
@@ -352,5 +352,10 @@ fem::Project &BaseViewport::getProject()
 
 std::shared_ptr<gui::Model> BaseViewport::getDomainModel()
 {
-	return m_project.getDomainModel();
+    return m_project.getDomainModel();
+}
+
+ViewportColors BaseViewport::getColors() const
+{
+    return this->m_colors;
 }

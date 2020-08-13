@@ -34,7 +34,7 @@ void ViewportState::paintGL(BaseViewport* viewport)
 
     viewport->viewport_data.camera.reposition();
 
-    this->scenegraph.paint(viewport->viewport_data, viewport->colors);
+    this->scenegraph.paint(viewport->viewport_data, viewport->getColors());
 }
 
 void ViewportState::mousePressEvent(BaseViewport* viewport, QMouseEvent* event)

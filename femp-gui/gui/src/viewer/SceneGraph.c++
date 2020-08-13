@@ -25,7 +25,7 @@ void SceneGraph::clear()
     this->rendering_groups.clear();
 }
 
-void SceneGraph::paint(ViewportData& viewport_data, ViewportColors& colors)
+void SceneGraph::paint(ViewportData& viewport_data, ViewportColors colors)
 {
     using namespace std;
 

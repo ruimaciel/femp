@@ -3,7 +3,7 @@
 #include <memory>
 
 #include <libfemp/FemException.h++>
-#include <libfemp/quadrature_rules/Line.h++>
+#include <quadrature_rules/Line.h++>
 
 namespace fem {
 

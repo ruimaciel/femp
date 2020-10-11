@@ -9,7 +9,7 @@
 #include <libfemp/Node.h++>
 #include <libfemp/Point3D.h++>
 #include <libfemp/elements/BaseElement.h++> // added to help transition to properly polymorphic
-#include <libfemp/quadrature_rules/SurfaceRule.h++>
+#include <quadrature_rules/SurfaceRule.h++>
 
 namespace fem {
 

@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "BaseElement.h++"
-#include <libfemp/quadrature_rules/Tetrahedron.h++>
+#include <quadrature_rules/Tetrahedron.h++>
 
 namespace fem {
 

@@ -1,4 +1,4 @@
-#include <libfemp/quadrature_rules/Triangle.h++>
+#include <quadrature_rules/Triangle.h++>
 
 #include <cmath>
 

@@ -3,7 +3,7 @@
 #include <memory>
 
 #include <libfemp/FemException.h++>
-#include <libfemp/quadrature_rules/Tetrahedron.h++>
+#include <quadrature_rules/Tetrahedron.h++>
 
 namespace fem {
 

@@ -1,7 +1,7 @@
 #ifndef VOLUMERULE_H
 #define VOLUMERULE_H
 
-#include "../Point3D.h++"
+#include <array>
 #include <vector>
 
 namespace fem {
@@ -14,7 +14,7 @@ class VolumeRule {
 public:
     struct QuadraturePoint {
         double weight;
-        Point3D x;
+        std::array<double, 3> x;
     };
 
 public:

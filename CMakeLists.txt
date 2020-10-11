@@ -6,6 +6,7 @@ project(femp
     )
 
 add_subdirectory(libla)
+add_subdirectory(libquadrature)
 add_subdirectory(libfemp)
 add_subdirectory(femp-gui)
 add_subdirectory(femp-cli)

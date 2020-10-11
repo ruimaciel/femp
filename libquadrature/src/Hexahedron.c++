@@ -1,4 +1,4 @@
-#include <libfemp/quadrature_rules/Hexahedron.h++>
+#include <quadrature_rules/Hexahedron.h++>
 
 namespace fem {
 namespace quadrature {

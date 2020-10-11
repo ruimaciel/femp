@@ -1,4 +1,4 @@
-#include <libfemp/quadrature_rules/Line.h++>
+#include <quadrature_rules/Line.h++>
 
 #include <cmath>
 

@@ -1,4 +1,4 @@
-#include <libfemp/quadrature_rules/Prism.h++>
+#include <quadrature_rules/Prism.h++>
 
 namespace fem {
 namespace quadrature {

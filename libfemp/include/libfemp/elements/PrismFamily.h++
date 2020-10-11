@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "BaseElement.h++"
-#include <libfemp/quadrature_rules/Prism.h++>
+#include <quadrature_rules/Prism.h++>
 
 namespace fem {
 

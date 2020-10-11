@@ -1,4 +1,4 @@
-#include <libfemp/quadrature_rules/SurfaceRule.h++>
+#include <quadrature_rules/SurfaceRule.h++>
 
 namespace fem {
 namespace quadrature {

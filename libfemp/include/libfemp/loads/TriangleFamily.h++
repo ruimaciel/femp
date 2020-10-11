@@ -5,7 +5,7 @@
 
 #include "../elements/BaseElement.h++"
 #include "SurfaceLoad.h++"
-#include <libfemp/quadrature_rules/Triangle.h++>
+#include <quadrature_rules/Triangle.h++>
 
 namespace fem {
 

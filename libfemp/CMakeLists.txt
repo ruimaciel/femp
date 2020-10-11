@@ -69,15 +69,6 @@ set(libfemp_INCLUDES
 	include/libfemp/AnalysisResult.h++
 	include/libfemp/FemException.h++
 	include/libfemp/GlobalDofMap.h++
-	include/libfemp/quadrature_rules/Line.h++
-	include/libfemp/quadrature_rules/Prism.h++
-	include/libfemp/quadrature_rules/Tetrahedron.h++
-	include/libfemp/quadrature_rules/QuadraturePoint.h++
-	include/libfemp/quadrature_rules/Triangle.h++
-	include/libfemp/quadrature_rules/SurfaceRule.h++
-	include/libfemp/quadrature_rules/Quadrangle.h++
-	include/libfemp/quadrature_rules/Hexahedron.h++
-	include/libfemp/quadrature_rules/VolumeRule.h++
 	include/libfemp/loads/Triangle6.h++
 	include/libfemp/loads/Quadrangle9.h++
 	include/libfemp/loads/DomainLoad.h++
@@ -139,13 +130,6 @@ set(libfemp_SOURCES
 	src/Group.c++
 	src/Surface.c++
 	src/NodalDisplacement.c++
-	src/quadrature_rules/Line.c++
-	src/quadrature_rules/Quadrangle.c++
-	src/quadrature_rules/Hexahedron.c++
-	src/quadrature_rules/Prism.c++
-	src/quadrature_rules/Triangle.c++
-	src/quadrature_rules/SurfaceRule.c++
-	src/quadrature_rules/Tetrahedron.c++
 	src/loads/SurfaceLoad.c++
 	src/loads/NodalLoad.c++
 	src/loads/TriangleFamily.c++
@@ -171,6 +155,7 @@ find_package(Eigen3 3.3 REQUIRED)
 
 target_link_libraries(libfemp
 	libla
+    libquadrature
 	Eigen3::Eigen
 	)
 

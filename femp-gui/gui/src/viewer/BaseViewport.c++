@@ -150,7 +150,7 @@ void BaseViewport::mouseMoveEvent(QMouseEvent* event)
 
 void BaseViewport::wheelEvent(QWheelEvent* event)
 {
-    viewport_data.zoom += event->delta() / 1000.0f;
+    viewport_data.zoom += event->angleDelta().ry() / 1000.0f;
 
     this->resizeGL(this->width(), this->height());
     this->update();

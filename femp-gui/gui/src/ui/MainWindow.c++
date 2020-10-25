@@ -1,9 +1,11 @@
 #include "MainWindow.h++"
 #include <QAction>
 #include <QFileDialog>
+#include <QMdiArea>
 #include <QMdiSubWindow>
 #include <QMessageBox>
 #include <QProgressDialog>
+#include <QSignalMapper>
 #include <QString>
 #include <QTextStream>
 #include <QTime>
@@ -65,7 +67,7 @@ MainWindow::MainWindow(QWidget* parent)
     ui.setupUi(this);
 
     // set the MDI area widget as the window's central widget
-    m_mdiArea = new QMdiArea;
+    m_mdiArea = new QMdiArea();
     setCentralWidget(m_mdiArea); // this main window has a Multiple Document Interface
     m_windowMapper = new QSignalMapper(this);
 
@@ -698,7 +700,7 @@ void MainWindow::dumpFemEquation()
         }
         out << "\n";
     }
-    out << endl;
+    out << Qt::endl;
 
     out << "# Created by lalib\n";
     out << "# name: f\n";
@@ -709,7 +711,7 @@ void MainWindow::dumpFemEquation()
     for (size_t i = 0; i < femp_result.back().equation.size(); i++) {
         out << " " << femp_result.back().equation.f.value(i) << "\n";
     }
-    out << endl;
+    out << Qt::endl;
 
     out << "# Created by lalib\n";
     out << "# name: d\n";
@@ -721,7 +723,7 @@ void MainWindow::dumpFemEquation()
         out << " " << femp_result.back().equation.d.value(i) << "\n";
     }
 
-    out << endl;
+    out << Qt::endl;
     file.close();
 }
 

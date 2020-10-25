@@ -4,6 +4,8 @@ project(selection
     LANGUAGES CXX
     )
 
+find_package(Qt5 COMPONENTS Core Widgets OpenGL REQUIRED)
+
 set(selection_INCLUDES
     include/selection/Selection.h++
     include/selection/ISelectionService.h++

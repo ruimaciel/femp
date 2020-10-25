@@ -9,7 +9,7 @@ Femp was developed by Rui Maciel as part of his master's thesis in Civil Enginee
 
 The project depends on the following software packages:
 
-* Qt5
+* Qt 5.15
 * Eigen3
 * SuiteSparse
 * OpenGL

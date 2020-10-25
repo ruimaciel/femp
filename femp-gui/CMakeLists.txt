@@ -10,3 +10,5 @@ add_subdirectory(application)
 add_subdirectory(persistence)
 add_subdirectory(services/selection)
 add_subdirectory(gui)
+
+option(RUN_TESTS "Runs tests" ON)

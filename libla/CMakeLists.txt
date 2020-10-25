@@ -60,3 +60,5 @@ set_target_properties(libla PROPERTIES
     CXX_STANDARD 11
     CXX_EXTENSIONS OFF
     )
+
+option(RUN_TESTS "Runs tests" ON)

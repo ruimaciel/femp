@@ -46,3 +46,5 @@ option(RUN_TESTS ON "Run libquadrature's tests")
 if(RUN_TESTS)
     add_subdirectory(tests)
 endif()
+
+option(RUN_TESTS "Runs tests" ON)

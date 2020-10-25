@@ -33,7 +33,7 @@ add_library(libquadrature
     )
 
 set_target_properties(libquadrature PROPERTIES
-    CXX_STANDARD 11
+	CXX_STANDARD 14
     CXX_EXTENSIONS OFF
     )
 

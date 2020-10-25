@@ -319,7 +319,7 @@ target_include_directories(${PROJECT_NAME}
 	)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-	CXX_STANDARD 11
+	CXX_STANDARD 14
 	CXX_EXTENSIONS OFF
 	AUTOMOC ON
 	AUTOUIC ON

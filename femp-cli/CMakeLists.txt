@@ -41,6 +41,6 @@ target_include_directories(fempcli
     )
 
 set_target_properties(fempcli PROPERTIES
-    CXX_STANDARD 11
+	CXX_STANDARD 14
     CXX_EXTENSIONS OFF
 )

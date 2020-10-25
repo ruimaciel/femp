@@ -160,7 +160,7 @@ target_link_libraries(libfemp
 	)
 
 set_target_properties(libfemp PROPERTIES
-	CXX_STANDARD 11
+	CXX_STANDARD 14
 	CXX_EXTENSIONS OFF
 	)
 

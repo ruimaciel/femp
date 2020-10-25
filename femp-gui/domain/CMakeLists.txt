@@ -25,7 +25,7 @@ add_library(${PROJECT_NAME} STATIC
     )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    CXX_STANDARD 11
+	CXX_STANDARD 14
     CXX_EXTENSIONS OFF
     )
 

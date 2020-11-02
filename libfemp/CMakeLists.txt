@@ -154,7 +154,13 @@ add_library(libfemp
 	${libfemp_SOURCES}
 	)
 
+add_dependencies(libfemp
+    libfemp_mesh
+    libfemp_io
+    )
+
 find_package(Eigen3 3.3 REQUIRED)
+
 
 target_link_libraries(libfemp
 	libla

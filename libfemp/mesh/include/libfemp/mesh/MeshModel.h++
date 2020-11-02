@@ -7,6 +7,7 @@
 namespace fem {
 namespace mesh {
 
+class Element;
 class Node;
 
 class MeshModel
@@ -16,8 +17,10 @@ public:
 
     virtual std::shared_ptr<fem::mesh::Node> getNodeById(size_t nodeId) const = 0;
     virtual size_t numberOfNodes() const = 0;
+    virtual const std::vector<std::shared_ptr<fem::mesh::Node>> & getNodes() const = 0;
 
     virtual size_t numberOfElements() const = 0;
+    virtual const std::vector<std::shared_ptr<fem::mesh::Element>> & getElements() const = 0;
 };
 
 } 	// namespace mesh

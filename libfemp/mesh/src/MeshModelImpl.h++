@@ -19,8 +19,10 @@ public:
 
     std::shared_ptr<Node> getNodeById(size_t nodeId) const override;
     size_t numberOfNodes() const override;
+    const std::vector<std::shared_ptr<fem::mesh::Node> > &getNodes() const override;
 
     size_t numberOfElements() const override;
+    const std::vector<std::shared_ptr<Element> > &getElements() const;
 
 private:
     std::vector<std::shared_ptr<Element>> m_elementCollection;

@@ -12,9 +12,13 @@ namespace mesh {
 class Tetrahedron56: public Element
 {
 public:
-    Tetrahedron56(std::array<std::shared_ptr<Node>, 56> nodes);
+    Tetrahedron56(size_t element_id, std::array<std::shared_ptr<Node>, 56> nodes);
 
     int getNodeAmount() const override;
+
+    void accept(ElementVisitor &visitor) override;
+
+    const std::array<std::shared_ptr<Node>, 56> & getNodes() const;
 
 private:
     std::array<std::shared_ptr<Node>, 56> m_nodes;

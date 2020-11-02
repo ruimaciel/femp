@@ -12,9 +12,13 @@ namespace mesh {
 class Prism18: public Element
 {
 public:
-    Prism18(std::array<std::shared_ptr<Node>, 18> nodes);
+    Prism18(size_t element_id, std::array<std::shared_ptr<Node>, 18> nodes);
 
     int getNodeAmount() const override;
+
+    void accept(ElementVisitor &visitor) override;
+
+    const std::array<std::shared_ptr<Node>, 18> & getNodes() const;
 
 private:
     std::array<std::shared_ptr<Node>, 18> m_nodes;

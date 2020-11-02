@@ -12,9 +12,13 @@ namespace mesh {
 class Hexahedron20: public Element
 {
 public:
-    Hexahedron20(std::array<std::shared_ptr<Node>, 20> nodes);
+    Hexahedron20(size_t element_id, std::array<std::shared_ptr<Node>, 20> nodes);
 
     int getNodeAmount() const override;
+
+    void accept(ElementVisitor &visitor) override;
+
+    const std::array<std::shared_ptr<Node>, 20> & getNodes() const;
 
 private:
     std::array<std::shared_ptr<Node>, 20> m_nodes;

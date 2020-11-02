@@ -20,8 +20,18 @@ size_t fem::mesh::MeshModelImpl::numberOfNodes() const
     return this->m_nodeCollection.size();
 }
 
+const std::vector<std::shared_ptr<fem::mesh::Node> > &fem::mesh::MeshModelImpl::getNodes() const
+{
+    return this->m_nodeCollection;
+}
+
 size_t fem::mesh::MeshModelImpl::numberOfElements() const
 {
     return this->m_elementCollection.size();
+}
+
+const std::vector<std::shared_ptr<fem::mesh::Element> > &fem::mesh::MeshModelImpl::getElements() const
+{
+    return this->m_elementCollection;
 }
 

@@ -58,6 +58,11 @@ foreach(libfemp_test_SOURCE_FILE ${libfemp_test_SOURCES})
         libgmock
         )
 
+    target_include_directories(${libfemp_test_NAME}
+        PUBLIC
+        ${PROJECT_SOURCE_DIR}
+    )
+
     add_test(NAME ${libfemp_test_NAME}
         COMMAND ${libfemp_test_NAME}
         )

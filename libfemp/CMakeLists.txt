@@ -21,6 +21,7 @@ else(USES_RE2C)
 endif()
 
 add_subdirectory(io)
+add_subdirectory(mesh)
 
 set(libfemp_INCLUDES
 	include/libfemp/Point2D.h++
@@ -160,6 +161,7 @@ target_link_libraries(libfemp
     libquadrature
 	Eigen3::Eigen
     libfemp_io
+    libfemp_mesh
 	)
 
 set_target_properties(libfemp PROPERTIES

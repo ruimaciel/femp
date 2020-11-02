@@ -20,6 +20,8 @@ else(USES_RE2C)
 	message(STATUS "Skipping re2c custom rules")
 endif()
 
+add_subdirectory(io)
+
 set(libfemp_INCLUDES
 	include/libfemp/Point2D.h++
 	include/libfemp/SurfaceLoadOperators/SurfaceNormalLoad.h++
@@ -157,6 +159,7 @@ target_link_libraries(libfemp
 	libla
     libquadrature
 	Eigen3::Eigen
+    libfemp_io
 	)
 
 set_target_properties(libfemp PROPERTIES

@@ -5,9 +5,7 @@
 
 #include "FempCommand.h++"
 
-
-class HelpCommand : public FempCommand
-{
+class HelpCommand : public FempCommand {
 public:
     HelpCommand(boost::program_options::options_description description);
 

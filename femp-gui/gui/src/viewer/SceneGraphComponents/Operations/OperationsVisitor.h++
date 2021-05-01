@@ -21,7 +21,6 @@ public:
     virtual void visit(SGC::Node& element) = 0;
     virtual void visit(SGC::Element& element) = 0;
 };
-
 }
 
 #endif

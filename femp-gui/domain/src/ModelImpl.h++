@@ -6,10 +6,9 @@
 
 namespace gui {
 
-class ModelImpl
-{
+class ModelImpl {
 public:
-    ModelImpl(fem::Model &model);
+    ModelImpl(fem::Model& model);
 
     std::vector<fem::Element> getElementList() const;
     fem::Element getElementByReference(size_t element_ref) const;
@@ -28,8 +27,9 @@ public:
     void pushMaterial(fem::Material new_material);
 
     std::map<unsigned int, fem::NodeRestrictions> getNodeRestrictions() const;
+
 private:
-    fem::Model &m_model;
+    fem::Model& m_model;
 };
 
 } // namespace gui

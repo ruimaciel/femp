@@ -76,18 +76,16 @@ MainWindow::MainWindow(QWidget* parent)
     this->createDockWidgets();
 
     // set the user interface
-    setUserInterfaceAsClosed(); 
+    setUserInterfaceAsClosed();
     m_load_pattern_repository = std::make_shared<gui::persistence::LoadPatternRepository>(m_document.getProject().getDomainModel());
 }
 
 void MainWindow::setSelection(Selection)
 {
-
 }
 
 void MainWindow::clearSelection()
 {
-
 }
 
 void MainWindow::newProject()
@@ -99,7 +97,6 @@ void MainWindow::newProject()
 
     // free everything
     m_document.clear();
-
 
     // The NewProjectWizard dialog will fill up a given document object through the steps
     NewProjectWizard np(m_document, this);
@@ -394,40 +391,40 @@ void MainWindow::quit()
 void MainWindow::createActions()
 {
     // connect the actions
-    connect(ui.actionNew,               &QAction::triggered, this, &MainWindow::newProject);
-    connect(ui.actionOpen,              &QAction::triggered, this, &MainWindow::openProject);
-    connect(ui.actionReopen,            &QAction::triggered, this, &MainWindow::reopenProject);
-    connect(ui.actionSave,              &QAction::triggered, this, &MainWindow::saveProject);
-    connect(ui.actionSaveAs,            &QAction::triggered, this, &MainWindow::saveProjectAs);
-    connect(ui.actionClose,             &QAction::triggered, this, &MainWindow::closeProject);
-    connect(ui.actionQuit,              &QAction::triggered, this, &MainWindow::quit);
-    connect(ui.actionNodeRestraints,    &QAction::triggered, this, &MainWindow::setNodeRestraints);
-    connect(ui.actionNodeActions,       &QAction::triggered, this, &MainWindow::setNodeActions);
-    connect(ui.actionDomainLoads,       &QAction::triggered, this, &MainWindow::setDomainLoads);
-    connect(ui.actionMoveNodes,         &QAction::triggered, this, &MainWindow::moveSelectedNodes);
+    connect(ui.actionNew, &QAction::triggered, this, &MainWindow::newProject);
+    connect(ui.actionOpen, &QAction::triggered, this, &MainWindow::openProject);
+    connect(ui.actionReopen, &QAction::triggered, this, &MainWindow::reopenProject);
+    connect(ui.actionSave, &QAction::triggered, this, &MainWindow::saveProject);
+    connect(ui.actionSaveAs, &QAction::triggered, this, &MainWindow::saveProjectAs);
+    connect(ui.actionClose, &QAction::triggered, this, &MainWindow::closeProject);
+    connect(ui.actionQuit, &QAction::triggered, this, &MainWindow::quit);
+    connect(ui.actionNodeRestraints, &QAction::triggered, this, &MainWindow::setNodeRestraints);
+    connect(ui.actionNodeActions, &QAction::triggered, this, &MainWindow::setNodeActions);
+    connect(ui.actionDomainLoads, &QAction::triggered, this, &MainWindow::setDomainLoads);
+    connect(ui.actionMoveNodes, &QAction::triggered, this, &MainWindow::moveSelectedNodes);
 
-    connect(ui.actionRun,               &QAction::triggered, this, &MainWindow::runAnalysis);
+    connect(ui.actionRun, &QAction::triggered, this, &MainWindow::runAnalysis);
     connect(ui.actionDump_FEM_equation, &QAction::triggered, this, &MainWindow::dumpFemEquation);
-    connect(ui.actionAnalysisSummary,	 &QAction::triggered, this, &MainWindow::showAnalysisSummary);
+    connect(ui.actionAnalysisSummary, &QAction::triggered, this, &MainWindow::showAnalysisSummary);
 
-    connect(ui.actionEditMaterials, 	 &QAction::triggered, this, &MainWindow::editMaterials);
+    connect(ui.actionEditMaterials, &QAction::triggered, this, &MainWindow::editMaterials);
 
-    connect(ui.actionWindowTile, 	 &QAction::triggered, this, &MainWindow::setTiledWindows);
-    connect(ui.actionWindowCascade, 	 &QAction::triggered, this, &MainWindow::setCascadeWindows);
+    connect(ui.actionWindowTile, &QAction::triggered, this, &MainWindow::setTiledWindows);
+    connect(ui.actionWindowCascade, &QAction::triggered, this, &MainWindow::setCascadeWindows);
 
     // MDI window creation
-    connect(ui.actionNewModelWindow, 		&QAction::triggered, this, &MainWindow::createNewModelWindow);
-    connect(ui.actionNewPostprocessingWindow, 	&QAction::triggered, this, &MainWindow::createNewPostprocessingWindow);
-    connect(ui.actionNewTensorFieldWindow, 	&QAction::triggered, this, &MainWindow::createNewTensorFieldWindow);
+    connect(ui.actionNewModelWindow, &QAction::triggered, this, &MainWindow::createNewModelWindow);
+    connect(ui.actionNewPostprocessingWindow, &QAction::triggered, this, &MainWindow::createNewPostprocessingWindow);
+    connect(ui.actionNewTensorFieldWindow, &QAction::triggered, this, &MainWindow::createNewTensorFieldWindow);
     connect(ui.actionNewAnalysisResultsWindow, &QAction::triggered, this, &MainWindow::createNewAnalysisResultsWindow);
-    connect(ui.actionNewFemEquationWindow, 	&QAction::triggered, this, &MainWindow::createNewFemEquationWindow);
+    connect(ui.actionNewFemEquationWindow, &QAction::triggered, this, &MainWindow::createNewFemEquationWindow);
 
-    connect(ui.actionViewSelection, 	&QAction::triggered, this, &MainWindow::showSelection);
-    connect(ui.actionViewAll, 		&QAction::triggered, this, &MainWindow::showAll);
+    connect(ui.actionViewSelection, &QAction::triggered, this, &MainWindow::showSelection);
+    connect(ui.actionViewAll, &QAction::triggered, this, &MainWindow::showAll);
 
-    connect(ui.actionQuadrature_rules, 	&QAction::triggered, this, &MainWindow::editQuadratureRules);
-    connect(ui.actionSelection, 		&QAction::triggered, this, &MainWindow::editSelection);
-    connect(ui.actionResults_from_selection, 	&QAction::triggered, this, &MainWindow::dumpResultsFromSelection);
+    connect(ui.actionQuadrature_rules, &QAction::triggered, this, &MainWindow::editQuadratureRules);
+    connect(ui.actionSelection, &QAction::triggered, this, &MainWindow::editSelection);
+    connect(ui.actionResults_from_selection, &QAction::triggered, this, &MainWindow::dumpResultsFromSelection);
 
     connect(ui.menuWindowOpened, &QMenu::aboutToShow, this, &MainWindow::updateWindowMenu);
 }
@@ -438,9 +435,9 @@ void MainWindow::createDockWidgets()
     m_commandLineDockWidget = new CommandLineDockWidget(this);
 
     // set the MainWindow connections
-    connect(this, &MainWindow::informationMessageSent,	m_commandLineDockWidget, &CommandLineDockWidget::getMessage);
-    connect(this, &MainWindow::warningMessageSent, 	m_commandLineDockWidget, &CommandLineDockWidget::getWarning);
-    connect(this, &MainWindow::errorMessageSent, 	m_commandLineDockWidget, &CommandLineDockWidget::getError);
+    connect(this, &MainWindow::informationMessageSent, m_commandLineDockWidget, &CommandLineDockWidget::getMessage);
+    connect(this, &MainWindow::warningMessageSent, m_commandLineDockWidget, &CommandLineDockWidget::getWarning);
+    connect(this, &MainWindow::errorMessageSent, m_commandLineDockWidget, &CommandLineDockWidget::getError);
 
     // add selection dock widget
     this->addDockWidget(Qt::RightDockWidgetArea, m_commandLineDockWidget);
@@ -598,11 +595,11 @@ void MainWindow::runAnalysis()
 
     // connect the dialog with the progress indicator
     connect(&progress, &DefaultProgressIndicator::beginSection, &dialog, &AnalysisProgressDialog::beginSection);
-    connect(&progress, &DefaultProgressIndicator::endSection, 	  &dialog, &AnalysisProgressDialog::endSection);
-    connect(&progress, &DefaultProgressIndicator::setProgress,  &dialog, &AnalysisProgressDialog::setProgress);
-    connect(&progress, &DefaultProgressIndicator::setMessage,   &dialog, &AnalysisProgressDialog::setMessage);
-    connect(&progress, &DefaultProgressIndicator::setError,	&dialog, &AnalysisProgressDialog::setError);
-    connect(&progress, &DefaultProgressIndicator::finish,	&dialog, &AnalysisProgressDialog::finish);
+    connect(&progress, &DefaultProgressIndicator::endSection, &dialog, &AnalysisProgressDialog::endSection);
+    connect(&progress, &DefaultProgressIndicator::setProgress, &dialog, &AnalysisProgressDialog::setProgress);
+    connect(&progress, &DefaultProgressIndicator::setMessage, &dialog, &AnalysisProgressDialog::setMessage);
+    connect(&progress, &DefaultProgressIndicator::setError, &dialog, &AnalysisProgressDialog::setError);
+    connect(&progress, &DefaultProgressIndicator::finish, &dialog, &AnalysisProgressDialog::finish);
 
     //TODO finish this
     fem::AnalysisResult analysis_result;

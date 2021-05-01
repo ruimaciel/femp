@@ -13,7 +13,7 @@ protected:
 
 public:
     DenseStaticVector();
-    ~DenseStaticVector() {};
+    ~DenseStaticVector(){};
 
     /**
 		Informs if the current instance is a row vector
@@ -45,7 +45,6 @@ scalar& DenseStaticVector<scalar, t_rows>::value(const size_t row)
 
     return data[row];
 }
-
 }
 
 #endif

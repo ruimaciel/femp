@@ -7,8 +7,8 @@
 #include "../SGCNode.h++"
 #include "../SceneGraphComponent.h++"
 
-#include <selection/Selection.h++>
 #include <libfemp/Point3D.h++>
+#include <selection/Selection.h++>
 
 namespace Operation {
 
@@ -39,7 +39,6 @@ public:
     void visit(SGC::Node& element);
     void visit(SGC::Element& element);
 };
-
 }
 
 #endif

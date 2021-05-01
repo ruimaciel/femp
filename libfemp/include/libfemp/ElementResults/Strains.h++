@@ -18,6 +18,6 @@ struct Strains {
     void setZero() { e11 = e22 = e33 = e12 = e23 = e13 = 0; }
 };
 
-}	// namespace fem
+} // namespace fem
 
 #endif

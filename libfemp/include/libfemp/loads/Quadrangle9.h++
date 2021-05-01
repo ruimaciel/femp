@@ -27,7 +27,6 @@ public:
      */
     virtual int getNodeAmount() const override { return 9; }
 };
-
 }
 
 #endif

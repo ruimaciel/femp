@@ -29,7 +29,6 @@ protected:
     ElementRepresentationPolicy* m_representation;
     DisplacementsRepresentationPolicy* m_displacement;
 };
-
 }
 
 #endif

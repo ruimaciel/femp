@@ -1,8 +1,8 @@
 #include "AnalysisResultsModel.h++"
 
-#include <memory>
-#include <libfemp/ElementResults/ElementResults.h++>
 #include <application/interfaces/IElementRepository.h++>
+#include <libfemp/ElementResults/ElementResults.h++>
+#include <memory>
 #include <persistence/ElementRepository.h++>
 #include <persistence/NodeRepository.h++>
 
@@ -18,8 +18,7 @@ AnalysisResultsModel::AnalysisResultsModel(fem::Project& project, QObject* paren
     m_node_repository = std::make_shared<gui::persistence::NodeRepository>(m_project.getDomainModel());
 
     std::vector<fem::Element> element_list = element_repository->getElementList();
-    for (std::vector<fem::Element>::iterator e = element_list.begin(); e != element_list.end(); e++)
-    {
+    for (std::vector<fem::Element>::iterator e = element_list.begin(); e != element_list.end(); e++) {
         m_lineMap[m_rows] = std::distance(element_list.begin(), e);
         m_rows += e->getNodeAmount();
     }
@@ -123,7 +122,6 @@ AnalysisResultsModel::data(const QModelIndex& index, int role) const
     fem::element_ref_t selected_element_ref = i->second;
     int local_ref = index.row() - i->first;
 
-
     fem::Element selected_element = element_repository->getElementById(selected_element_ref);
 
     const fem::node_ref_t selected_node_ref = selected_element.nodes[local_ref];
@@ -135,8 +133,7 @@ AnalysisResultsModel::data(const QModelIndex& index, int role) const
     fem::Stresses<double> result_stresses = result->stresses[local_ref];
 
     // get element
-    switch (index.column())
-    {
+    switch (index.column()) {
     case 0: // element reference
         return QVariant((unsigned int)selected_element_ref);
 
@@ -213,8 +210,7 @@ AnalysisResultsModel::data(const QModelIndex& index, int role) const
 
 QString AnalysisResultsModel::generateElementTypeName(const fem::Element::Type type) const
 {
-    switch (type)
-    {
+    switch (type) {
     case fem::Element::FE_TETRAHEDRON4:
         return QString("Tetra4");
 

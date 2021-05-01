@@ -2,17 +2,15 @@
 
 #include <stdlib.h>
 
+#include "CliProgressIndicatorStrategy.h++"
 #include <libfemp/Analysis.h++>
 #include <libfemp/LinearAnalysis.h++>
 #include <libfemp/io/import/ModelImporterFactory.h++>
 #include <libfemp/solvers/UmfpackSolver.h++>
-#include "CliProgressIndicatorStrategy.h++"
-
 
 AnalysisCommand::AnalysisCommand(AnalysisCommand::Builder inputParameters)
     : m_inputParameters(inputParameters)
 {
-
 }
 
 int AnalysisCommand::execute()
@@ -21,7 +19,7 @@ int AnalysisCommand::execute()
     std::fstream inputFileStream;
     inputFileStream.open(m_inputParameters.inputFilename(), std::fstream::in);
     if (!inputFileStream) {
-        std::cout << "Failed to open file stream. File: " << m_inputParameters.inputFilename() <<	std::endl;
+        std::cout << "Failed to open file stream. File: " << m_inputParameters.inputFilename() << std::endl;
         return EXIT_FAILURE;
     }
 
@@ -29,8 +27,8 @@ int AnalysisCommand::execute()
     fem::Model model;
     std::shared_ptr<Parser> parser = fem::ModelImporterFactory::makeFemJsonParser();
 
-    switch(parser->parse(inputFileStream, model)) {
-        case Parser::Error::Type::ERR_OK:
+    switch (parser->parse(inputFileStream, model)) {
+    case Parser::Error::Type::ERR_OK:
         break;
 
     default:
@@ -42,12 +40,12 @@ int AnalysisCommand::execute()
     fem::LinearAnalysis<double> analysis;
     fem::LoadPattern lp = model.load_pattern_list[0];
 
-    fem::UmfpackSolver<double>* solver =  new fem::UmfpackSolver<double>;
+    fem::UmfpackSolver<double>* solver = new fem::UmfpackSolver<double>;
 
     CliProgressIndicatorStrategy progress;
     analysis.set(model, lp, analysis_result, progress, solver);
 
-    switch(analysis.run(model, lp, analysis_result, progress)) {
+    switch (analysis.run(model, lp, analysis_result, progress)) {
     case fem::Analysis<double>::Error::ERR_OK:
         break;
 
@@ -60,14 +58,14 @@ int AnalysisCommand::execute()
     return EXIT_SUCCESS;
 }
 
-AnalysisCommand::Builder &AnalysisCommand::Builder::setInputFilename(std::string inputFilename)
+AnalysisCommand::Builder& AnalysisCommand::Builder::setInputFilename(std::string inputFilename)
 {
     m_inputFilename = inputFilename;
 
     return *this;
 }
 
-AnalysisCommand::Builder &AnalysisCommand::Builder::setOutputPath(std::string outputPath)
+AnalysisCommand::Builder& AnalysisCommand::Builder::setOutputPath(std::string outputPath)
 {
     m_outputPath = outputPath;
     return *this;

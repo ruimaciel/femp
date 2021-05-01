@@ -11,7 +11,7 @@ Model::Model()
     default_material = 0;
 
     // add default steel material
-    this->m_material_list.push_back( Material("Steel", 200e9, 0.3) );
+    this->m_material_list.push_back(Material("Steel", 200e9, 0.3));
 }
 
 void Model::clear()

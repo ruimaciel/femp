@@ -17,5 +17,4 @@ void Tetrahedron10::paintGL(ViewportData&, ViewportColors& colors)
 
     m_representation->tetra10(m_element_reference, *m_element, colors, m_displacements);
 }
-
 }

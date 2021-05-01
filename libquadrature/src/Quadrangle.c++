@@ -16,7 +16,7 @@ namespace quadrature {
 
         for (LineRule::Point& p1 : (*m_rule1)()) {
             for (LineRule::Point& p2 : (*m_rule2)()) {
-                square_rule.push_back(Point { p1.weight * p2.weight, { p1.x[0], p2.x[0] } });
+                square_rule.push_back(Point{ p1.weight * p2.weight, { p1.x[0], p2.x[0] } });
             }
         }
 

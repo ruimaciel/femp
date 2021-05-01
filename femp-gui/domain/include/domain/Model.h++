@@ -6,15 +6,13 @@
 #include <libfemp/Model.h++>
 #include <libfemp/NodeRestrictions.h++>
 
-namespace gui
-{
+namespace gui {
 
 class ModelImpl;
 
-class Model
-{
+class Model {
 public:
-    Model(fem::Model &model);
+    Model(fem::Model& model);
     ~Model();
 
     std::vector<fem::Element> getElementList() const;
@@ -35,10 +33,11 @@ public:
     void pushMaterial(fem::Material new_material);
 
     std::map<unsigned int, fem::NodeRestrictions> getNodeRestrictions() const;
+
 private:
     std::unique_ptr<ModelImpl> m_impl;
 };
 
-}	// namespace gui
+} // namespace gui
 
 #endif // GUI_MODEL_H

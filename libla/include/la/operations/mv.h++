@@ -52,7 +52,6 @@ Vector<scalar, DenseVector> operator*(Matrix<scalar, SparseCRS>& m, Vector<scala
     return v_out;
 }
 // */
-
 }
 
 #endif

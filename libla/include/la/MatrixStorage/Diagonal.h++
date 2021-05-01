@@ -22,7 +22,7 @@ public:
 
 public:
     Diagonal(const size_t rows = 0, const size_t columns = 0);
-    ~Diagonal() {};
+    ~Diagonal(){};
 
     /**
 		Sets all values to zero

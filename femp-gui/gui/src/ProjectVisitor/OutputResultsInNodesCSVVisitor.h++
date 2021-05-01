@@ -4,9 +4,9 @@
 #include <QTextStream>
 
 #include "ProjectVisitor.h++"
-#include <selection/Selection.h++>
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/Model.h++>
+#include <selection/Selection.h++>
 
 /**
  * Outputs the results which were calculated in a set of nodes in CSV format

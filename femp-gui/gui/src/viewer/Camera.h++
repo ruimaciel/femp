@@ -3,8 +3,7 @@
 
 #include <libfemp/Point3D.h++>
 
-class Camera
-{
+class Camera {
 public:
     void setCenter(double x, double y, double z);
 
@@ -33,4 +32,3 @@ private:
 };
 
 #endif
-

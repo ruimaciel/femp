@@ -28,6 +28,6 @@ struct ElementResults {
     void resize(unsigned int);
 };
 
-}	// namespace fem
+} // namespace fem
 
 #endif

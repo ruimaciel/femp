@@ -37,6 +37,6 @@ protected:
     void generateQuadratureData();
 };
 
-}   // namespace fem
+} // namespace fem
 
 #endif

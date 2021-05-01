@@ -1,9 +1,7 @@
 #ifndef FEMPCOMMAND_H
 #define FEMPCOMMAND_H
 
-
-class FempCommand
-{
+class FempCommand {
 public:
     FempCommand();
     virtual ~FempCommand();

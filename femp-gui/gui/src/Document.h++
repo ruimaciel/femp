@@ -5,11 +5,9 @@
 
 #include "Project.h++"
 
-class Document
-{
+class Document {
 public:
-    enum Type
-    {
+    enum Type {
         TYPE_NONE,
         TYPE_SOLID3D
     };

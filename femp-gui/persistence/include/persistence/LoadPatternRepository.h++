@@ -5,27 +5,24 @@
 
 #include <domain/Model.h++>
 
-
-
 namespace gui {
 namespace persistence {
 
-class LoadPatternRepository : public application::ILoadPatternRepository
-{
-public:
-    LoadPatternRepository(std::shared_ptr<gui::Model> model);
+    class LoadPatternRepository : public application::ILoadPatternRepository {
+    public:
+        LoadPatternRepository(std::shared_ptr<gui::Model> model);
 
-    // ILoadPatternRepository interface
-public:
-    std::vector<fem::LoadPattern> getLoadPatternList() const override;
+        // ILoadPatternRepository interface
+    public:
+        std::vector<fem::LoadPattern> getLoadPatternList() const override;
 
-    size_t getLoadPatternSize() const override;
+        size_t getLoadPatternSize() const override;
 
-    fem::LoadPattern getLoadPatternByIndex(size_t index) const;
+        fem::LoadPattern getLoadPatternByIndex(size_t index) const;
 
-private:
-    std::shared_ptr<gui::Model> m_domain_model;
-};
+    private:
+        std::shared_ptr<gui::Model> m_domain_model;
+    };
 
 } // namespace persistence
 } // namespace gui

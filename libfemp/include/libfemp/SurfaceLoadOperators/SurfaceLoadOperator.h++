@@ -9,8 +9,7 @@ namespace fem {
 /**
  * Abstract base class for an operator which is applied to a surface load
  */
-class SurfaceLoadOperator
-{
+class SurfaceLoadOperator {
 public:
     /**
      * functor

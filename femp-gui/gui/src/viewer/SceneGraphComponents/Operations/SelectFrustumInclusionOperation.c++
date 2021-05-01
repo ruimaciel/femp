@@ -70,5 +70,4 @@ void
     m_normal[2] = calc(near[2], near[3], far[2]);
     m_normal[3] = calc(near[3], near[0], far[3]);
 }
-
 }

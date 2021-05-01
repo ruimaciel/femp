@@ -1,8 +1,8 @@
 #ifndef ANALYSIS_PROGRESS_DIALOG_HPP
 #define ANALYSIS_PROGRESS_DIALOG_HPP
 
-#include <QTime>
 #include <QElapsedTimer>
+#include <QTime>
 #include <QtWidgets/QDialog>
 #include <string>
 

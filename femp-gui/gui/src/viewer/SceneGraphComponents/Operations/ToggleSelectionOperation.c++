@@ -29,5 +29,4 @@ void ToggleSelectionOperation::visit(SGC::Element& element)
     else
         element.selected = !m_selection_state;
 }
-
 }

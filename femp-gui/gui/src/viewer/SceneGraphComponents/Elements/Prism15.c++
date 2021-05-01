@@ -17,5 +17,4 @@ void Prism15::paintGL(ViewportData&, ViewportColors& colors)
 
     m_representation->prism15(m_element_reference, *m_element, colors, m_displacements);
 }
-
 }

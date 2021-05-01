@@ -18,7 +18,6 @@ public:
 
     void move(BaseViewport* viewport, QMouseEvent* event, Input* input) override;
 };
-
 }
 
 #endif

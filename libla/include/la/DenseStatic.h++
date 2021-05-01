@@ -11,8 +11,8 @@ protected:
     scalar data[t_rows][t_columns];
 
 public:
-    DenseStaticMatrix() {};
-    ~DenseStaticMatrix() {};
+    DenseStaticMatrix(){};
+    ~DenseStaticMatrix(){};
 
     size_t rows() { return t_rows; };
     size_t columns() { return t_columns; };
@@ -28,7 +28,6 @@ scalar& DenseStaticMatrix<scalar, t_rows, t_columns>::value(const size_t row, co
 
     return data[row][column];
 }
-
 }
 
 #endif

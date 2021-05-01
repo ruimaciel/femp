@@ -7,9 +7,9 @@
 
 #include <array>
 
-#include <selection/Selection.h++>
 #include <application/interfaces/INodeRepository.h++>
 #include <options/ViewportColors.h++>
+#include <selection/Selection.h++>
 
 #include "../Project.h++"
 
@@ -106,8 +106,8 @@ public:
     void clearSelection(); // clears the selection list representation
     void showSelection(const Selection);
     void showAll();
-	fem::Project & getProject();
-	std::shared_ptr<gui::Model> getDomainModel();
+    fem::Project& getProject();
+    std::shared_ptr<gui::Model> getDomainModel();
 
     ViewportColors getColors() const;
 

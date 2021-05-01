@@ -73,6 +73,6 @@ protected:
     int dsyevj3(double A[3][3], double Q[3][3], double w[3]) const;
 };
 
-}	// namespace StressFieldRepresentation
+} // namespace StressFieldRepresentation
 
 #endif

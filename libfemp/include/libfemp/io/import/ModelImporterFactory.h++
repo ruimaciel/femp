@@ -10,10 +10,8 @@ namespace fem {
 /**
  * @brief The ModelImporterFactory class provides the interface to instantiate importers
  */
-class ModelImporterFactory
-{
+class ModelImporterFactory {
 public:
-
     /**
      * @brief makeMeshParser factory method that generates a parser for
      * Gmsh's MSH file format.

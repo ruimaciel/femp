@@ -7,23 +7,21 @@
 
 #include <memory>
 
-
 namespace gui {
 namespace application {
 
-class IMaterialRepository
-{
-public:
-    IMaterialRepository();
+    class IMaterialRepository {
+    public:
+        IMaterialRepository();
 
-    virtual ~IMaterialRepository() = default;
+        virtual ~IMaterialRepository() = default;
 
-    virtual std::vector<fem::Material> getMaterialList() const = 0;
+        virtual std::vector<fem::Material> getMaterialList() const = 0;
 
-    virtual void pushMaterial(fem::Material) = 0;
-};
+        virtual void pushMaterial(fem::Material) = 0;
+    };
 
-using IMaterialRepositoryPtr = std::shared_ptr<IMaterialRepository>;
+    using IMaterialRepositoryPtr = std::shared_ptr<IMaterialRepository>;
 
 } // namespace application
 } // namespace gui

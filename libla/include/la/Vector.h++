@@ -15,7 +15,7 @@ class Vector
     : public VectorStoragePolicy<scalar> {
 public:
     Vector(const size_t size = 1);
-    ~Vector() {};
+    ~Vector(){};
 
     size_t size() const { return VectorStoragePolicy<scalar>::size(); };
 
@@ -58,7 +58,6 @@ scalar& Vector<scalar, VectorStoragePolicy>::operator()(const size_t index)
 {
     return VectorStoragePolicy<scalar>::operator()(index);
 }
-
 }
 
 #endif

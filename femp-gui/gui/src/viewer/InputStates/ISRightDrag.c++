@@ -42,5 +42,4 @@ void RightDrag::move(BaseViewport* viewport, QMouseEvent* event, Input* /*input*
 
     viewport_data.lastPos = event->pos();
 }
-
 }

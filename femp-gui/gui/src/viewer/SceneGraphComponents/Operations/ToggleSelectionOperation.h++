@@ -37,7 +37,6 @@ public:
     void visit(SGC::Node& element);
     void visit(SGC::Element& element);
 };
-
 }
 
 #endif

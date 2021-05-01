@@ -22,7 +22,7 @@ public:
 
 public:
     SparseCS(const size_t size = 0);
-    ~SparseCS() {};
+    ~SparseCS(){};
 
     size_t size() const { return data.t_size; };
 

@@ -17,5 +17,4 @@ void Hexahedron27::paintGL(ViewportData&, ViewportColors& colors)
 
     m_representation->hexa27(m_element_reference, *m_element, colors, m_displacements);
 }
-
 }

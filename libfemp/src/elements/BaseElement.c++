@@ -18,7 +18,7 @@ BaseElement::~BaseElement()
 
 material_ref_t BaseElement::getMaterialRef() const
 {
-	return m_material;
+    return m_material;
 }
 
 Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>
@@ -161,7 +161,7 @@ void BaseElement::gauleg(double x[], double w[], int n)
 }
 
 Eigen::Matrix<double, 6, 6>
-BaseElement::generateConstitutiveRelationsMatrix(const Material &material) const
+BaseElement::generateConstitutiveRelationsMatrix(const Material& material) const
 {
     Eigen::Matrix<double, 6, 6> D;
 

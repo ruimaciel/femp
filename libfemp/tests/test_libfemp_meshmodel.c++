@@ -1,8 +1,8 @@
 
 #include "gtest/gtest.h"
 
-#include <libfemp/mesh/MeshModel.h++>
 #include "mesh/src/MeshModelImpl.h++"
+#include <libfemp/mesh/MeshModel.h++>
 
 namespace {
 

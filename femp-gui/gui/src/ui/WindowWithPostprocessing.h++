@@ -13,11 +13,9 @@ class QComboBox;
  * Provides a window with the ability to select which AnalysisResults<> object to use
  */
 class WindowWithPostprocessing
-    : public WindowWith
-{
+    : public WindowWith {
 protected:
-    enum PostprocessingType
-    {
+    enum PostprocessingType {
         P_DISPLACEMENT,
         P_STRAIN_11,
         P_STRAIN_22,

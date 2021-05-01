@@ -3,11 +3,11 @@
 
 #include "InputState.h++"
 
-#include "ISStart.h++"
 #include "ISLeftClick.h++" // for the state pattern that handles user input
 #include "ISLeftDrag.h++" // for the state pattern that handles user input
 #include "ISRightClick.h++" // for the state pattern that handles user input
 #include "ISRightDrag.h++" // for the state pattern that handles user input
+#include "ISStart.h++"
 #include "ISStart.h++" // for the state pattern that handles user input
 
 class BaseViewport;

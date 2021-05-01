@@ -5,8 +5,7 @@
 
 namespace fem {
 
-class NodalDisplacement
-{
+class NodalDisplacement {
 public:
     Point3D displacement;
 

@@ -345,9 +345,9 @@ void BaseViewport::showAll()
     this->state->runSceneGraphOperation(op);
 }
 
-fem::Project &BaseViewport::getProject()
+fem::Project& BaseViewport::getProject()
 {
-	return m_project;
+    return m_project;
 }
 
 std::shared_ptr<gui::Model> BaseViewport::getDomainModel()

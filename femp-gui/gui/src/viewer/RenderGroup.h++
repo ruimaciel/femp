@@ -13,8 +13,7 @@
 /**
  * Definition of a render group: an independent scene graph branch
  */
-struct RenderGroup
-{
+struct RenderGroup {
     std::list<std::shared_ptr<SceneGraphComponent>> primitive_components; // list of primitive components included in this group
 
     SceneGraphComponent scenegraph;

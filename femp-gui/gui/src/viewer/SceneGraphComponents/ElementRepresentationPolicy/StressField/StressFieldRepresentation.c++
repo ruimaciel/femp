@@ -24,5 +24,4 @@ void StressFieldRepresentation::push(fem::Point3D const& pos, std::array<fem::Po
 
     m_tensor.push_back(tensor);
 }
-
 }

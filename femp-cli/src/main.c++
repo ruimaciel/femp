@@ -1,10 +1,10 @@
-#include <iostream>
-#include <stdlib.h>
-#include <boost/program_options.hpp>
-#include "commands/FempCommand.h++"
-#include "commands/HelpCommand.h++"
 #include "commands/AnalysisCommand.h++"
 #include "commands/ErrorReportingCommand.h++"
+#include "commands/FempCommand.h++"
+#include "commands/HelpCommand.h++"
+#include <boost/program_options.hpp>
+#include <iostream>
+#include <stdlib.h>
 
 int main(int argc, char** argv)
 {
@@ -16,24 +16,18 @@ int main(int argc, char** argv)
     try {
         // Declare the supported options.
         po::options_description description("Allowed options");
-        description.add_options()
-                ("help", "produce help message")
-                ("version,v", "produce help message")
-                ("input", po::value<string>(), "the input file")
-                ("output", po::value<string>()->default_value("./"), "the output file")
-                ;
+        description.add_options()("help", "produce help message")("version,v", "produce help message")("input", po::value<string>(), "the input file")("output", po::value<string>()->default_value("./"), "the output file");
 
         auto parsed = po::command_line_parser(argc, argv)
-                .options(description)
-                .run();
+                          .options(description)
+                          .run();
 
         po::store(parsed, variables_map);
         po::notify(variables_map);
 
         if (variables_map.count("help")) {
             command = std::unique_ptr<FempCommand>(new HelpCommand(description));
-        }
-        else  if (variables_map.count("input")) {
+        } else if (variables_map.count("input")) {
             AnalysisCommand::Builder builder;
 
             std::string input_file = variables_map["input"].as<std::string>();
@@ -43,16 +37,13 @@ int main(int argc, char** argv)
             builder.setOutputPath(output_path);
 
             command = builder.build();
-        }
-        else {
+        } else {
             command = std::unique_ptr<FempCommand>(new ErrorReportingCommand());
         }
-    }
-    catch (std::exception &e) {
+    } catch (std::exception& e) {
         cout << "Some error occurred" << std::endl;
         return EXIT_FAILURE;
     }
 
     return command->execute();
 }
-

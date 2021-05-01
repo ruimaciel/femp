@@ -53,7 +53,7 @@ void VPStateDisplacements::populateScenegraph(BaseViewport* viewport)
 
     scenegraph.clear();
 
-	std::shared_ptr<gui::application::INodeRepository> m_node_repository = std::make_shared<gui::persistence::NodeRepository>(viewport->getDomainModel());
+    std::shared_ptr<gui::application::INodeRepository> m_node_repository = std::make_shared<gui::persistence::NodeRepository>(viewport->getDomainModel());
 
     // add the nodes to the scenegraph
     for (auto node : m_node_repository->getNodeMap()) {

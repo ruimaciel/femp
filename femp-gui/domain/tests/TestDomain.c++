@@ -2,15 +2,12 @@
 
 #include <domain/Model.h++>
 
-
-class TestDomain: public QObject
-{
+class TestDomain : public QObject {
     Q_OBJECT
 
 private slots:
     void toUpper()
     {
-
     }
 };
 

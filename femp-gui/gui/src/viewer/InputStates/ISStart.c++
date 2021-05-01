@@ -3,8 +3,8 @@
 #include <QDebug>
 #include <QMouseEvent>
 
-#include "../ViewportStates/ViewportState.h++"
 #include "../BaseViewport.h++"
+#include "../ViewportStates/ViewportState.h++"
 #include "Input.h++"
 
 namespace InputStates {
@@ -44,5 +44,4 @@ void Start::rightClick(BaseViewport* viewport, QMouseEvent* event, Input* input)
     viewport->viewport_data.lastPos = event->pos(); // for the rotate
     input->changeState(&input->m_is_right_click);
 }
-
 }

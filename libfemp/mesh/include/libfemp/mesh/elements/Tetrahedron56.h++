@@ -9,20 +9,19 @@
 namespace fem {
 namespace mesh {
 
-class Tetrahedron56: public Element
-{
-public:
-    Tetrahedron56(size_t element_id, std::array<std::shared_ptr<Node>, 56> nodes);
+    class Tetrahedron56 : public Element {
+    public:
+        Tetrahedron56(size_t element_id, std::array<std::shared_ptr<Node>, 56> nodes);
 
-    int getNodeAmount() const override;
+        int getNodeAmount() const override;
 
-    void accept(ElementVisitor &visitor) override;
+        void accept(ElementVisitor& visitor) override;
 
-    const std::array<std::shared_ptr<Node>, 56> & getNodes() const;
+        const std::array<std::shared_ptr<Node>, 56>& getNodes() const;
 
-private:
-    std::array<std::shared_ptr<Node>, 56> m_nodes;
-};
+    private:
+        std::array<std::shared_ptr<Node>, 56> m_nodes;
+    };
 
 } // namespace mesh
 } // namespace fem

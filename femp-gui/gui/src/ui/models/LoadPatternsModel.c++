@@ -20,8 +20,7 @@ LoadPatternsModel::data(const QModelIndex& index, int role) const
     switch (role) {
     case Qt::DisplayRole: {
 
-        if(index.row() >= m_load_pattern_repository->getLoadPatternSize())
-        {
+        if (index.row() >= m_load_pattern_repository->getLoadPatternSize()) {
             return QVariant();
         }
 
@@ -38,8 +37,7 @@ LoadPatternsModel::data(const QModelIndex& index, int role) const
 
 int LoadPatternsModel::rowCount(const QModelIndex& parent) const
 {
-    if(!parent.isValid())
-    {
+    if (!parent.isValid()) {
         return 0;
     }
 

@@ -37,5 +37,5 @@ protected:
     std::string m_label;
 };
 
-}	// namespace fem
+} // namespace fem
 #endif

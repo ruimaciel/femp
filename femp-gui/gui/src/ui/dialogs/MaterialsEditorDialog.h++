@@ -7,8 +7,8 @@
 #include <libfemp/Model.h++>
 
 class MaterialsEditorDialog
-    : public QDialog
-    , private Ui::MaterialsEditorDialog {
+    : public QDialog,
+      private Ui::MaterialsEditorDialog {
     Q_OBJECT
 
 private:

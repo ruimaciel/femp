@@ -50,7 +50,6 @@ private:
     std::vector<size_t> m_node_references; // global references to the nodes which define this surface
     std::vector<ReferencedElement> m_elements; // stores 1 or 2 elements
 };
-
 }
 
 #endif

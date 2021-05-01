@@ -7,24 +7,24 @@
 namespace fem {
 namespace quadrature {
 
-/**
+    /**
  * Interface used by all quadrature rules over the square
  */
-class VolumeRule {
-public:
-    struct QuadraturePoint {
-        double weight;
-        std::array<double, 3> x;
-    };
+    class VolumeRule {
+    public:
+        struct QuadraturePoint {
+            double weight;
+            std::array<double, 3> x;
+        };
 
-public:
-    virtual ~VolumeRule() {}
+    public:
+        virtual ~VolumeRule() {}
 
-    /**
+        /**
      * functor that returns the quadrature rule
      */
-    virtual std::vector<QuadraturePoint> operator()() const = 0;
-};
+        virtual std::vector<QuadraturePoint> operator()() const = 0;
+    };
 
 } // namespace quadrature
 } // namespace fem

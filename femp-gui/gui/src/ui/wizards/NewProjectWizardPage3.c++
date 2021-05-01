@@ -11,7 +11,7 @@
 
 #include <persistence/MaterialRepository.h++>
 
-NewProjectWizardPage3::NewProjectWizardPage3(fem::Project &project)
+NewProjectWizardPage3::NewProjectWizardPage3(fem::Project& project)
     : m_project(project)
 {
     setupUi(this);

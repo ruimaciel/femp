@@ -3,10 +3,9 @@
 namespace gui {
 namespace application {
 
-ILoadPatternRepository::ILoadPatternRepository()
-{
-
-}
+    ILoadPatternRepository::ILoadPatternRepository()
+    {
+    }
 
 } // namespace application
 } // namespace gui

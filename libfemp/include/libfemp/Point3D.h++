@@ -70,6 +70,6 @@ Point3D getNormalVector(Point3D& a, Point3D& b, Point3D& c);
 
 std::ostream& operator<<(std::ostream& out, const Point3D& p);
 
-}	// namespace fem
+} // namespace fem
 
 #endif

@@ -20,7 +20,7 @@ class Matrix
 public:
     Matrix(const size_t rows = 1, const size_t columns = 1);
     Matrix(Matrix<scalar, MatrixStoragePolicy>& other);
-    ~Matrix() {};
+    ~Matrix(){};
 
     size_t rows() { return MatrixStoragePolicy<scalar>::rows(); };
     size_t columns() { return MatrixStoragePolicy<scalar>::columns(); };
@@ -71,7 +71,6 @@ scalar& Matrix<scalar, MatrixStoragePolicy>::operator()(const size_t row, const 
 {
     return MatrixStoragePolicy<scalar>::operator()(row, column);
 }
-
 }
 
 #endif

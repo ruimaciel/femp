@@ -31,7 +31,6 @@ public:
 	**/
     void push(fem::Point3D const& pos, std::array<fem::Point3D, 3> const& directions, std::array<float, 3> const& stresses);
 };
-
 }
 
 #endif

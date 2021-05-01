@@ -4,10 +4,10 @@
 #include <array>
 
 #include "ProjectVisitor.h++"
-#include <selection/Selection.h++>
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/Model.h++>
 #include <libfemp/NodeRestrictions.h++>
+#include <selection/Selection.h++>
 
 /**
  * Sets node restraints in a specific set of nodes

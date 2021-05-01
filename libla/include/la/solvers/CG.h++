@@ -66,7 +66,6 @@ ReturnCode cg(Matrix<scalar, MatrixStoragePolicy>& A, Vector<scalar, VectorStora
     progress->error(temp);
     return ERR_EXCESSIVE_ITERATIONS;
 }
-
 }
 
 #endif

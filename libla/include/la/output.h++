@@ -91,7 +91,6 @@ std::ostream& operator<<(std::ostream& out, Vector<scalar, VectorStoragePolicy> 
 }
 
 #endif
-
 }
 
 #endif

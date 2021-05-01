@@ -9,20 +9,19 @@
 namespace fem {
 namespace mesh {
 
-class Prism15: public Element
-{
-public:
-    Prism15(size_t element_id, std::array<std::shared_ptr<Node>, 15> nodes);
+    class Prism15 : public Element {
+    public:
+        Prism15(size_t element_id, std::array<std::shared_ptr<Node>, 15> nodes);
 
-    int getNodeAmount() const override;
+        int getNodeAmount() const override;
 
-    void accept(ElementVisitor &visitor) override;
+        void accept(ElementVisitor& visitor) override;
 
-    const std::array<std::shared_ptr<Node>, 15> & getNodes() const;
+        const std::array<std::shared_ptr<Node>, 15>& getNodes() const;
 
-private:
-    std::array<std::shared_ptr<Node>, 15> m_nodes;
-};
+    private:
+        std::array<std::shared_ptr<Node>, 15> m_nodes;
+    };
 
 } // namespace mesh
 } // namespace fem

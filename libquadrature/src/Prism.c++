@@ -16,7 +16,7 @@ namespace quadrature {
 
         for (TriangleRule::Point& pxy : (*m_rule_xy)()) {
             for (LineRule::Point& pz : (*m_rule_z)()) {
-                cube_rule.push_back(QuadraturePoint { pxy.weight * pz.weight, { pxy.x[0], pxy.x[1], pz.x[0] } });
+                cube_rule.push_back(QuadraturePoint{ pxy.weight * pz.weight, { pxy.x[0], pxy.x[1], pz.x[0] } });
             }
         }
 

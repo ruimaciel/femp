@@ -3,15 +3,13 @@
 namespace gui {
 namespace application {
 
-IElementRepository::IElementRepository()
-{
+    IElementRepository::IElementRepository()
+    {
+    }
 
-}
-
-IElementRepository::~IElementRepository()
-{
-
-}
+    IElementRepository::~IElementRepository()
+    {
+    }
 
 } // namespace application
 } // namespace gui

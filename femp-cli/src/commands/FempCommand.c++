@@ -2,10 +2,8 @@
 
 FempCommand::FempCommand()
 {
-
 }
 
 FempCommand::~FempCommand()
 {
-
 }

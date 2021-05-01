@@ -31,6 +31,6 @@ public: // merging with fem::Element
     int getNodeAmount() const override;
 };
 
-}   // namespace fem
+} // namespace fem
 
 #endif

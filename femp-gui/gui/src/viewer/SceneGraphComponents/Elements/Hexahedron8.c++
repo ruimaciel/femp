@@ -17,5 +17,4 @@ void Hexahedron8::paintGL(ViewportData&, ViewportColors& colors)
 
     m_representation->hexa8(m_element_reference, *m_element, colors, m_displacements);
 }
-
 }

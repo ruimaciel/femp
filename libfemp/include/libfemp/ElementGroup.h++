@@ -9,8 +9,7 @@ namespace fem {
 /**
  * Represents a group of elements
  */
-class ElementGroup
-{
+class ElementGroup {
 public:
     /**
      * Adds a new element to the list

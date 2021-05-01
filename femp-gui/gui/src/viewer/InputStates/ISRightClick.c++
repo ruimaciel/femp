@@ -33,5 +33,4 @@ void RightClick::move(BaseViewport* viewport, QMouseEvent* /*event*/, Input* inp
 {
     input->changeState(&input->m_is_right_drag);
 }
-
 }

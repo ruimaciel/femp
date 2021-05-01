@@ -5,8 +5,7 @@
  * This class is used by the UI routines in order to provide information
  * regarding the features supported by each MDI window.
  */
-class MdiWindowProperties
-{
+class MdiWindowProperties {
 
 public:
     enum WindowType { MWP_None,

@@ -15,8 +15,7 @@ namespace fem {
 /**
  * This class defines a set of loads which are applied on the FEM model
  */
-class LoadPattern
-{
+class LoadPattern {
 private:
     std::string m_label; // this load pattern's label
 

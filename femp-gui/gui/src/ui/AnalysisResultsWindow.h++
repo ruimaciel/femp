@@ -16,8 +16,7 @@ MDI window designed to represent a model's results
 **/
 class AnalysisResultsWindow
     : public QMdiSubWindow,
-      public BaseWindow
-{
+      public BaseWindow {
     Q_OBJECT
 
 protected:
@@ -26,7 +25,6 @@ protected:
 
 public:
     AnalysisResultsWindow(fem::Project& project, QWidget* parent = nullptr);
-
 };
 
 #endif

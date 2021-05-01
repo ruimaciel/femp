@@ -85,6 +85,6 @@ void ResultsRanges<Scalar>::setZero()
     max_compression = 0;
 }
 
-}	// namespace fem
+} // namespace fem
 
 #endif

@@ -22,7 +22,7 @@ public:
 
 public:
     DenseMatrix(const size_t rows = 0, const size_t columns = 0);
-    ~DenseMatrix() {};
+    ~DenseMatrix(){};
 
     /**
 		Sets all values to zero

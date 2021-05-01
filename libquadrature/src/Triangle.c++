@@ -9,7 +9,7 @@ namespace quadrature {
     Triangle1::operator()() const
     {
         return {
-            Point { 0.5, { 1.0 / 3.0, 1.0 / 3.0 } }
+            Point{ 0.5, { 1.0 / 3.0, 1.0 / 3.0 } }
         };
     }
 
@@ -17,9 +17,9 @@ namespace quadrature {
     Triangle3::operator()() const
     {
         return {
-            Point { 1.0 / 6, { 2.0 / 3, 1.0 / 6.0 } },
-            Point { 1.0 / 6, { 1.0 / 6, 2.0 / 3.0 } },
-            Point { 1.0 / 6, { 1.0 / 6, 1.0 / 6.0 } }
+            Point{ 1.0 / 6, { 2.0 / 3, 1.0 / 6.0 } },
+            Point{ 1.0 / 6, { 1.0 / 6, 2.0 / 3.0 } },
+            Point{ 1.0 / 6, { 1.0 / 6, 1.0 / 6.0 } }
         };
     }
 
@@ -32,12 +32,12 @@ namespace quadrature {
         const double w2 = (620 - sqrt(213125 - 53320 * sqrt(10))) / (2 * 3720);
 
         return {
-            Point { w1, { 1.0 - 2.0 * g1, g1 } },
-            Point { w1, { g1, 1.0 - 2.0 * g1 } },
-            Point { w1, { g1, g1 } },
-            Point { w2, { 1.0 - 2.0 * g2, g2 } },
-            Point { w2, { g2, 1.0 - 2.0 * g2 } },
-            Point { w2, { g2, g2 } }
+            Point{ w1, { 1.0 - 2.0 * g1, g1 } },
+            Point{ w1, { g1, 1.0 - 2.0 * g1 } },
+            Point{ w1, { g1, g1 } },
+            Point{ w2, { 1.0 - 2.0 * g2, g2 } },
+            Point{ w2, { g2, 1.0 - 2.0 * g2 } },
+            Point{ w2, { g2, g2 } }
         };
     }
 
@@ -50,13 +50,13 @@ namespace quadrature {
         const double w2 = (155.0 + sqrt(15)) / (2 * 1200);
 
         return {
-            Point { w1, { 1.0 - 2.0 * g1, g1 } },
-            Point { w1, { g1, 1.0 - 2.0 * g1 } },
-            Point { w1, { g1, g1 } },
-            Point { w2, { 1.0 - 2.0 * g2, g2 } },
-            Point { w2, { g2, 1.0 - 2.0 * g2 } },
-            Point { w2, { g2, g2 } },
-            Point { 9.0 / (2 * 40), { 1.0 / 3, 1.0 / 3 } }
+            Point{ w1, { 1.0 - 2.0 * g1, g1 } },
+            Point{ w1, { g1, 1.0 - 2.0 * g1 } },
+            Point{ w1, { g1, g1 } },
+            Point{ w2, { 1.0 - 2.0 * g2, g2 } },
+            Point{ w2, { g2, 1.0 - 2.0 * g2 } },
+            Point{ w2, { g2, g2 } },
+            Point{ 9.0 / (2 * 40), { 1.0 / 3, 1.0 / 3 } }
         };
     }
 

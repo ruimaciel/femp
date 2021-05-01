@@ -110,7 +110,7 @@ public: //WARNING: BaseElement member functions are deprecated
     virtual std::vector<boost::tuple<fem::Point3D, double>> getDomainQuadratureRule() = 0;
 
 protected:
-    Eigen::Matrix<double, 6, 6> generateConstitutiveRelationsMatrix(const Material & material) const;
+    Eigen::Matrix<double, 6, 6> generateConstitutiveRelationsMatrix(const Material& material) const;
 
 protected: // WARNING: to be removed
     /**
@@ -124,6 +124,6 @@ protected: // WARNING: to be removed
     void gauleg(double x[], double w[], int n);
 };
 
-}	// namespace fem
+} // namespace fem
 
 #endif

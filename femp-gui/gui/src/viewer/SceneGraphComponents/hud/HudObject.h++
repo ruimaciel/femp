@@ -1,8 +1,8 @@
 #ifndef HUD_OBJECT_HPP
 #define HUD_OBJECT_HPP
 
-#include <viewer/ViewportData.h++>
 #include <options/ViewportColors.h++>
+#include <viewer/ViewportData.h++>
 
 /**
  * Abstract base class for every HUD object which might be rendered

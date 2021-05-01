@@ -2,10 +2,9 @@
 
 namespace gui {
 
-ModelImpl::ModelImpl(fem::Model &model)
+ModelImpl::ModelImpl(fem::Model& model)
     : m_model(model)
 {
-
 }
 
 std::vector<fem::Element> ModelImpl::getElementList() const
@@ -22,15 +21,13 @@ std::vector<size_t> ModelImpl::getNodeReferenceList() const
 {
     std::vector<size_t> node_references;
 
-
     auto node_map = m_model.getNodeMap();
 
-    auto oper = [](const std::pair<size_t, fem::Node> &node) -> size_t
-    {
+    auto oper = [](const std::pair<size_t, fem::Node>& node) -> size_t {
         return node.first;
     };
 
-    std::transform(node_map.begin(), node_map.end(), std::back_inserter(node_references), oper );
+    std::transform(node_map.begin(), node_map.end(), std::back_inserter(node_references), oper);
 
     return node_references;
 }

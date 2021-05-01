@@ -2,11 +2,9 @@
 
 #include <iostream>
 
-
 HelpCommand::HelpCommand(boost::program_options::options_description description)
     : m_description(description)
 {
-
 }
 
 int HelpCommand::execute()

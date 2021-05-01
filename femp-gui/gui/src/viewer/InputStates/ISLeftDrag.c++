@@ -79,5 +79,4 @@ void LeftDrag::move(BaseViewport* viewport, QMouseEvent* event, Input* /*input*/
 
     viewport->state->setSelectionEnd(near);
 }
-
 }

@@ -3,9 +3,7 @@
 
 #include <la/ProgressIndicatorStrategy.h++>
 
-
-class CliProgressIndicatorStrategy: public ProgressIndicatorStrategy
-{
+class CliProgressIndicatorStrategy : public ProgressIndicatorStrategy {
 public:
     CliProgressIndicatorStrategy();
 

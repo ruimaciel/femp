@@ -27,15 +27,13 @@ namespace fem {
 /**
  *TODO: these are placeholder member variables to help transition to new quadrature rules
  **/
-struct QuadratureRulesOptions
-{
+struct QuadratureRulesOptions {
     int stiffness_degree; // Quadrature rule degree to integrate stiffness matrices
     int domain_degree; // Quadrature rule degree to integrate domain loads
 };
 
 template <typename Scalar>
-class Analysis
-{
+class Analysis {
 public:
     QuadratureRulesOptions tri3;
     QuadratureRulesOptions tri6;

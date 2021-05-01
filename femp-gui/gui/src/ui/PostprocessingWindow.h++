@@ -27,13 +27,11 @@ class PostprocessingWindow
       public WindowWithResults,
       public WindowWithPostprocessing,
       public WindowWithScaling,
-      public BaseWindow
-{
+      public BaseWindow {
     Q_OBJECT
 
 protected:
-    enum AnalysisType
-    {
+    enum AnalysisType {
         A_DISPLACEMENT = 0,
         A_STRAIN_11,
         A_STRAIN_22,

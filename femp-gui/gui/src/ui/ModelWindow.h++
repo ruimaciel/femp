@@ -15,8 +15,7 @@
 class ModelWindow
     : public MdiWindow,
       public WindowWithWireframe,
-      public BaseWindow
-{
+      public BaseWindow {
     Q_OBJECT
 
 public:

@@ -9,7 +9,7 @@ namespace quadrature {
     Tetrahedron1::operator()() const
     {
         return {
-            QuadraturePoint { 1.0 / 6, { 1.0 / 4, 1.0 / 4, 1.0 / 4 } }
+            QuadraturePoint{ 1.0 / 6, { 1.0 / 4, 1.0 / 4, 1.0 / 4 } }
         };
     }
 
@@ -21,10 +21,10 @@ namespace quadrature {
         const double w = 1.0 / (6 * 4);
 
         return {
-            QuadraturePoint { w, { g1, g2, g2 } },
-            QuadraturePoint { w, { g2, g1, g2 } },
-            QuadraturePoint { w, { g2, g2, g1 } },
-            QuadraturePoint { w, { g2, g2, g2 } }
+            QuadraturePoint{ w, { g1, g2, g2 } },
+            QuadraturePoint{ w, { g2, g1, g2 } },
+            QuadraturePoint{ w, { g2, g2, g1 } },
+            QuadraturePoint{ w, { g2, g2, g2 } }
         };
     }
 
@@ -38,14 +38,14 @@ namespace quadrature {
         const double w2 = (1.0 / 8 - sqrt((1715161837 - 406006699 * sqrt(17)) / 23101) / 3120) / 6.0;
 
         return {
-            QuadraturePoint { w1, { 1 - 3 * g1, g1, g1 } },
-            QuadraturePoint { w1, { g1, 1 - 3 * g1, g1 } },
-            QuadraturePoint { w1, { g1, g1, 1 - 3 * g1 } },
-            QuadraturePoint { w1, { g1, g1, g1 } },
-            QuadraturePoint { w2, { 1 - 3 * g2, g2, g2 } },
-            QuadraturePoint { w2, { g2, 1 - 3 * g2, g2 } },
-            QuadraturePoint { w2, { g2, g2, 1 - 3 * g2 } },
-            QuadraturePoint { w2, { g2, g2, g2 } }
+            QuadraturePoint{ w1, { 1 - 3 * g1, g1, g1 } },
+            QuadraturePoint{ w1, { g1, 1 - 3 * g1, g1 } },
+            QuadraturePoint{ w1, { g1, g1, 1 - 3 * g1 } },
+            QuadraturePoint{ w1, { g1, g1, g1 } },
+            QuadraturePoint{ w2, { 1 - 3 * g2, g2, g2 } },
+            QuadraturePoint{ w2, { g2, 1 - 3 * g2, g2 } },
+            QuadraturePoint{ w2, { g2, g2, 1 - 3 * g2 } },
+            QuadraturePoint{ w2, { g2, g2, g2 } }
         };
     }
 
@@ -62,22 +62,22 @@ namespace quadrature {
 
         // 1 to 4
         return {
-            QuadraturePoint { w0 / 6.0, { 1 - 3 * g0, g0, g0 } },
-            QuadraturePoint { w0 / 6.0, { g0, 1 - 3 * g0, g0 } },
-            QuadraturePoint { w0 / 6.0, { g0, g0, 1 - 3 * g0 } },
-            QuadraturePoint { w0 / 6.0, { g0, g0, g0 } },
+            QuadraturePoint{ w0 / 6.0, { 1 - 3 * g0, g0, g0 } },
+            QuadraturePoint{ w0 / 6.0, { g0, 1 - 3 * g0, g0 } },
+            QuadraturePoint{ w0 / 6.0, { g0, g0, 1 - 3 * g0 } },
+            QuadraturePoint{ w0 / 6.0, { g0, g0, g0 } },
             //QuadraturePoint{5 to 8
-            QuadraturePoint { w1 / 6.0, { 1 - 3 * g1, g1, g1 } },
-            QuadraturePoint { w1 / 6.0, { g1, 1 - 3 * g1, g1 } },
-            QuadraturePoint { w1 / 6.0, { g1, g1, 1 - 3 * g1 } },
-            QuadraturePoint { w1 / 6.0, { g1, g1, g1 } },
+            QuadraturePoint{ w1 / 6.0, { 1 - 3 * g1, g1, g1 } },
+            QuadraturePoint{ w1 / 6.0, { g1, 1 - 3 * g1, g1 } },
+            QuadraturePoint{ w1 / 6.0, { g1, g1, 1 - 3 * g1 } },
+            QuadraturePoint{ w1 / 6.0, { g1, g1, g1 } },
             //QuadraturePoint{9 to 14
-            QuadraturePoint { w2, { 1.0 / 2 - g2, 1.0 / 2 - g2, g2 } },
-            QuadraturePoint { w2, { 1.0 / 2 - g2, g2, 1.0 / 2 - g2 } },
-            QuadraturePoint { w2, { 1.0 / 2 - g2, g2, g2 } },
-            QuadraturePoint { w2, { g2, 1.0 / 2 - g2, 1.0 / 2 - g2 } },
-            QuadraturePoint { w2, { g2, 1.0 / 2 - g2, g2 } },
-            QuadraturePoint { w2, { g2, g2, 1.0 / 2 - g2 } },
+            QuadraturePoint{ w2, { 1.0 / 2 - g2, 1.0 / 2 - g2, g2 } },
+            QuadraturePoint{ w2, { 1.0 / 2 - g2, g2, 1.0 / 2 - g2 } },
+            QuadraturePoint{ w2, { 1.0 / 2 - g2, g2, g2 } },
+            QuadraturePoint{ w2, { g2, 1.0 / 2 - g2, 1.0 / 2 - g2 } },
+            QuadraturePoint{ w2, { g2, 1.0 / 2 - g2, g2 } },
+            QuadraturePoint{ w2, { g2, g2, 1.0 / 2 - g2 } },
         };
     }
 

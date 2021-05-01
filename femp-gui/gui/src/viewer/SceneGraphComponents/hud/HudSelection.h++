@@ -5,8 +5,8 @@
 
 #include <libfemp/Point3D.h++>
 
-#include <viewer/ViewportData.h++>
 #include <options/Options.h++>
+#include <viewer/ViewportData.h++>
 
 namespace hud {
 
@@ -29,7 +29,6 @@ public:
     void setEnd(fem::Point3D const& p);
     void off();
 };
-
 }
 
 #endif

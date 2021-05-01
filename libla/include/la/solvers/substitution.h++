@@ -54,6 +54,5 @@ ReturnCode back_substitution(Matrix<scalar, MatrixStoragePolicy>& L, Vector<scal
 
     return OK;
 }
-
 }
 #endif

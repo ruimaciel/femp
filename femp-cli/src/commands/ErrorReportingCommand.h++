@@ -3,10 +3,7 @@
 
 #include "FempCommand.h++"
 
-
-
-class ErrorReportingCommand : public FempCommand
-{
+class ErrorReportingCommand : public FempCommand {
     // FempCommand interface
 public:
     int execute();

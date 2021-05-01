@@ -4,10 +4,10 @@
 #include <array>
 
 #include "ProjectVisitor.h++"
-#include <selection/Selection.h++>
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/LoadPattern.h++>
 #include <libfemp/Model.h++>
+#include <selection/Selection.h++>
 
 /**
  * Sets the domain loads in a selection of elements

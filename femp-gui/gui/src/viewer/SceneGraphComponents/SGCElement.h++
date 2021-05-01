@@ -56,6 +56,5 @@ public:
 protected:
     void setReferenceElement(fem::element_ref_t const&, fem::Element&);
 };
-
 }
 #endif

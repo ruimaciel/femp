@@ -13,12 +13,10 @@ void CliProgressIndicatorStrategy::markSectionStart(std::string message)
 
 void CliProgressIndicatorStrategy::markSectionLimit(size_t)
 {
-
 }
 
 void CliProgressIndicatorStrategy::markSectionIterationIncrement()
 {
-
 }
 
 void CliProgressIndicatorStrategy::markSectionEnd()
@@ -28,7 +26,6 @@ void CliProgressIndicatorStrategy::markSectionEnd()
 
 void CliProgressIndicatorStrategy::markProgress(size_t)
 {
-
 }
 
 void CliProgressIndicatorStrategy::message(std::string message)

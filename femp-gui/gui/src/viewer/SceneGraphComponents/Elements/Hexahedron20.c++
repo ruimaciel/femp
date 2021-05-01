@@ -17,5 +17,4 @@ void Hexahedron20::paintGL(ViewportData&, ViewportColors& colors)
 
     m_representation->hexa20(m_element_reference, *m_element, colors, m_displacements);
 }
-
 }

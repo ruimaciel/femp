@@ -15,8 +15,7 @@ namespace SGC {
  * Scene graph component which renders a node
  */
 class Node
-    : public SceneGraphComponent
-{
+    : public SceneGraphComponent {
 protected:
     fem::node_ref_t node_label;
     fem::Node m_node;

@@ -15,7 +15,6 @@ public:
     void leftClick(BaseViewport* viewport, QMouseEvent* event, Input* input) override;
     void rightClick(BaseViewport* viewport, QMouseEvent* event, Input* input) override;
 };
-
 }
 
 #endif

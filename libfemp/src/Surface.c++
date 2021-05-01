@@ -571,5 +571,4 @@ bool Surface::operator==(const Surface& other) const
 
     return true;
 }
-
 }

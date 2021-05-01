@@ -31,5 +31,4 @@ void SelectRayIntersectionOperation::visit(SGC::Node& node)
 void SelectRayIntersectionOperation::visit(SGC::Element&)
 {
 }
-
 }

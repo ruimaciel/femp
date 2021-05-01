@@ -8,7 +8,6 @@ TensorFieldViewport::TensorFieldViewport(fem::Project& project, fem::AnalysisRes
 {
     this->m_analysis_result = nullptr;
 
-
     this->setState(&m_vp_state_tensor_fields);
     this->setAnalysisResult(result);
     this->setResultsRanges(ranges);

@@ -25,7 +25,7 @@ public:
 
 public:
     SparseCCS(const size_t rows = 0, const size_t columns = 0);
-    ~SparseCCS() {};
+    ~SparseCCS(){};
 
     /**
 		Sets all values to zero

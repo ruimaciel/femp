@@ -23,7 +23,6 @@ public:
 protected:
     void paintGL(ViewportData& data, ViewportColors& colors);
 };
-
 }
 
 #endif

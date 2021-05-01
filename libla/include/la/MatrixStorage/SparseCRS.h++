@@ -25,7 +25,7 @@ public:
 
 public:
     SparseCRS(const size_t rows = 0, const size_t columns = 0);
-    ~SparseCRS() {};
+    ~SparseCRS(){};
 
     size_t rows() { return data.row_pointer.size() - 1; };
     size_t columns() { return data.t_columns; };

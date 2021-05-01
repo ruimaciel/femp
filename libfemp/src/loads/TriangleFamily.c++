@@ -10,7 +10,6 @@ TriangleFamily::TriangleFamily()
 
 TriangleFamily::~TriangleFamily()
 {
-
 }
 
 enum BaseElement::ElementFamily
@@ -29,5 +28,4 @@ TriangleFamily::getDomainQuadratureRule() const
 {
     return (*m_domain_quadrature_rule)();
 }
-
 }

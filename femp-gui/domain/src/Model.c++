@@ -2,19 +2,15 @@
 
 #include "ModelImpl.h++"
 
-namespace gui
-{
+namespace gui {
 
-
-Model::Model(fem::Model &model)
+Model::Model(fem::Model& model)
     : m_impl(new ModelImpl(model))
 {
-
 }
 
 Model::~Model()
 {
-
 }
 
 std::vector<fem::Element> Model::getElementList() const
@@ -77,4 +73,4 @@ std::map<unsigned int, fem::NodeRestrictions> Model::getNodeRestrictions() const
     return m_impl->getNodeRestrictions();
 }
 
-}	// namespace gui
+} // namespace gui

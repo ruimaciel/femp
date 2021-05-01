@@ -25,5 +25,4 @@ void ToggleRenderOperation::visit(SGC::Element& element)
 
     element.render = selected_elements.find(element.reference()) != selected_elements.end();
 }
-
 }

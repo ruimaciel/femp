@@ -8,8 +8,8 @@
 #include "../SGCNode.h++"
 #include "../SceneGraphComponent.h++"
 
-#include <selection/Selection.h++>
 #include <libfemp/Point3D.h++>
+#include <selection/Selection.h++>
 
 namespace Operation {
 
@@ -44,7 +44,6 @@ public:
 protected:
     void calculateNormalVectors(std::array<fem::Point3D, 4> const& near, std::array<fem::Point3D, 4> const& far);
 };
-
 }
 
 #endif

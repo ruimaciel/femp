@@ -249,5 +249,4 @@ std::ostream& operator<<(std::ostream& out, const Point3D& p)
     out << "[" << p.x() << ", " << p.y() << ", " << p.z() << "]";
     return out;
 }
-
 }

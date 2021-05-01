@@ -48,7 +48,7 @@ void SelectionWidget::initializeWidget(SelectionManager& selection_manager)
     m_node_item = new QTreeWidgetItem(this->objectTreeWidget);
     m_node_item->setText(0, tr("Nodes"));
 
-    for (auto node_id: m_node_repository->getNodeReferenceList()) {
+    for (auto node_id : m_node_repository->getNodeReferenceList()) {
         QTreeWidgetItem* item = new QTreeWidgetItem(m_node_item);
         item->setText(0, QString::number(node_id));
         item->setSelected(s.getNodeReferences().find(node_id) != s.getNodeReferences().end());

@@ -35,5 +35,4 @@ void NodeGroup::setLabel(std::string label)
 {
     this->m_label = label;
 }
-
 }

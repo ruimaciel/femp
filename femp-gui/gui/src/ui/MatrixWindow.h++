@@ -15,8 +15,7 @@ MDI window designed to represent the stiffness matrix of an analysis
 **/
 class MatrixWindow
     : public QMdiSubWindow,
-      public BaseWindow
-{
+      public BaseWindow {
     Q_OBJECT
 
 protected:

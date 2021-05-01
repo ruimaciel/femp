@@ -19,7 +19,7 @@ public:
 
 public:
     Opengl(const size_t rows, const size_t columns);
-    ~Opengl() {};
+    ~Opengl(){};
 
     size_t rows() { return 4; };
     size_t columns() { return 4; };

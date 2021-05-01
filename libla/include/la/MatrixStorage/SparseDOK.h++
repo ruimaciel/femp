@@ -23,7 +23,7 @@ public:
 
 public:
     SparseDOK(const size_t rows = 1, const size_t columns = 1);
-    ~SparseDOK() {};
+    ~SparseDOK(){};
 
     /**
 		Sets all values to zero

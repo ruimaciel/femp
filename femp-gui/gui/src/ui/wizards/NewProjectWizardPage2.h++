@@ -6,9 +6,8 @@
 #include <QWizardPage>
 
 class NewProjectWizardPage2
-    : public QWizardPage
-    , public Ui::NewProjectWizardPage2
-{
+    : public QWizardPage,
+      public Ui::NewProjectWizardPage2 {
     Q_OBJECT
 
 public:

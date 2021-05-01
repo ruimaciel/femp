@@ -11,7 +11,7 @@ AnalysisResultsWidget::AnalysisResultsWidget(fem::Project& project, QWidget* par
     setupUi(this);
 
     // set the table model for the model/view stuff
-    AnalysisResultsModel * m_model = new AnalysisResultsModel(project, parent);
+    AnalysisResultsModel* m_model = new AnalysisResultsModel(project, parent);
     m_proxy_model.setSourceModel(m_model);
 
     this->tableView->setModel(&m_proxy_model);

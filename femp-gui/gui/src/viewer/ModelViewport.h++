@@ -11,8 +11,7 @@
  * The viewport class which is designed to render the model and enact changes on it
  */
 class ModelViewport
-    : public BaseViewport
-{
+    : public BaseViewport {
     Q_OBJECT
 
 public:

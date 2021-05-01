@@ -53,5 +53,4 @@ void LeftClick::move(BaseViewport* viewport, QMouseEvent* /*event*/, Input* inpu
 
     input->changeState(&input->m_is_left_drag);
 }
-
 }

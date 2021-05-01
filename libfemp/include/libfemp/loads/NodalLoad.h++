@@ -20,7 +20,6 @@ public:
 
 private:
     Point3D m_force; // the force being applied in this node
-
 };
 
 } // namespace fem

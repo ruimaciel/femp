@@ -83,5 +83,4 @@ void SceneComponentFactory::setDisplacementsPolicy(DisplacementsRepresentationPo
     assert(displacements != nullptr);
     this->m_displacement = displacements;
 }
-
 }

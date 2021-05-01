@@ -36,7 +36,6 @@ public:
 protected:
     void generateQuadratureData();
 };
-
 }
 
 #endif

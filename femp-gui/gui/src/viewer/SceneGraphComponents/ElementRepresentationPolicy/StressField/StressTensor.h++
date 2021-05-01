@@ -32,7 +32,6 @@ protected:
     **/
     void setColor(float const& gradient, float const& max, float const& min, std::array<GLfloat, 3>& color, ViewportColors const& colors);
 };
-
 }
 
 #endif

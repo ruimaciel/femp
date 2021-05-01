@@ -1,19 +1,18 @@
 #ifndef ANALYSISCOMMAND_H
 #define ANALYSISCOMMAND_H
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include "FempCommand.h++"
 
-class AnalysisCommand : public FempCommand
-{
+class AnalysisCommand : public FempCommand {
 public:
     class Builder {
 
     public:
-        Builder & setInputFilename(std::string inputFilename);
-        Builder & setOutputPath(std::string outputPath);
+        Builder& setInputFilename(std::string inputFilename);
+        Builder& setOutputPath(std::string outputPath);
         //solver
         //load pattern
 

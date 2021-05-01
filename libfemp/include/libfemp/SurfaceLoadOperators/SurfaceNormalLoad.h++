@@ -9,8 +9,7 @@ namespace fem {
  * Defines a surface load which is normal to the surface
  */
 class SurfaceNormalLoad
-    : public SurfaceLoadOperator
-{
+    : public SurfaceLoadOperator {
 public:
     SurfaceNormalLoad();
 

@@ -5,12 +5,10 @@ namespace fem {
 Project::Project()
     : m_domainModel(std::make_shared<gui::Model>(m_model))
 {
-
 }
 
 Project::~Project()
 {
-
 }
 
 void Project::clear()
@@ -35,7 +33,7 @@ std::shared_ptr<gui::Model> Project::getDomainModel()
     return this->m_domainModel;
 }
 
-std::vector<AnalysisResult> &Project::getAnalysisResults()
+std::vector<AnalysisResult>& Project::getAnalysisResults()
 {
     return this->m_analysisResults;
 }

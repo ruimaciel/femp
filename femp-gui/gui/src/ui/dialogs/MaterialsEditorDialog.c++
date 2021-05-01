@@ -3,8 +3,9 @@
 #include <QTreeWidget>
 #include <vector>
 
-MaterialsEditorDialog::MaterialsEditorDialog(fem::Model & model, QWidget* parent)
-    : QDialog(parent), model(model)
+MaterialsEditorDialog::MaterialsEditorDialog(fem::Model& model, QWidget* parent)
+    : QDialog(parent)
+    , model(model)
 {
     setupUi(this);
 

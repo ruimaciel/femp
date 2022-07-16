@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.10)
 
 project(gui
     LANGUAGES CXX
@@ -14,6 +14,8 @@ set(OpenGL_GL_PREFERENCE "LEGACY")
 
 find_package(Qt5 COMPONENTS Core Widgets OpenGL REQUIRED)
 find_package(OpenGL REQUIRED)
+
+set(CMAKE_INCLUDE_CURRENT_DIR "YES")
 
 set(gui_HEADERS
     src/DefaultProgressIndicator.h++
@@ -325,10 +327,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_EXTENSIONS OFF
     AUTOMOC ON
     AUTOUIC ON
-    )
-
-target_include_directories(${PROJECT_NAME}
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
 
 target_link_libraries(${PROJECT_NAME}

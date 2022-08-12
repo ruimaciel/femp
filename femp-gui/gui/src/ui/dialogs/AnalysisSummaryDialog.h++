@@ -7,15 +7,14 @@
 #include "ui_AnalysisSummaryDialog.h"
 
 /**
- * Dialog box intended to display a set of values derived from the results of a given analysis
+ * Dialog box intended to display a set of values derived from the results of a
+ * given analysis
  */
-class AnalysisSummaryDialog
-    : public QDialog,
-      private Ui::AnalysisSummaryDialog {
-    Q_OBJECT
+class AnalysisSummaryDialog : public QDialog, private Ui::AnalysisSummaryDialog {
+	Q_OBJECT
 
-public:
-    AnalysisSummaryDialog(fem::AnalysisResult const& results, QWidget* parent = nullptr);
+   public:
+	AnalysisSummaryDialog(fem::AnalysisResult const& results, QWidget* parent = nullptr);
 };
 
 #endif

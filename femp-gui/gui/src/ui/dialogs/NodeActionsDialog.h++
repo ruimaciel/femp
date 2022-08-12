@@ -7,25 +7,22 @@
 #include <libfemp/Point3D.h++>
 
 #include "ui/models/LoadPatternsModel.h++"
-
 #include "ui/ui_NodeActionsDialog.h"
 
-class NodeActionsDialog
-    : public QDialog,
-      private Ui::NodeActionsDialog {
-    Q_OBJECT
+class NodeActionsDialog : public QDialog, private Ui::NodeActionsDialog {
+	Q_OBJECT
 
-private:
-    size_t load_pattern;
+   private:
+	size_t load_pattern;
 
-public:
-    NodeActionsDialog(LoadPatternsModel& model, QWidget* parent = nullptr);
+   public:
+	NodeActionsDialog(LoadPatternsModel& model, QWidget* parent = nullptr);
 
-    size_t getLoadPattern();
-    fem::Point3D getForce();
-    fem::Point3D getDisplacement();
+	size_t getLoadPattern();
+	fem::Point3D getForce();
+	fem::Point3D getDisplacement();
 
-    void loadPatternCreated(size_t, fem::LoadPattern const&);
+	void loadPatternCreated(size_t, fem::LoadPattern const&);
 };
 
 #endif

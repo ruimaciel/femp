@@ -3,25 +3,13 @@
 namespace gui {
 namespace persistence {
 
-    LoadPatternRepository::LoadPatternRepository(std::shared_ptr<gui::Model> model)
-        : m_domain_model(model)
-    {
-    }
+LoadPatternRepository::LoadPatternRepository(std::shared_ptr<gui::Model> model) : m_domain_model(model) {}
 
-    std::vector<fem::LoadPattern> LoadPatternRepository::getLoadPatternList() const
-    {
-        return m_domain_model->getLoadPatternList();
-    }
+std::vector<fem::LoadPattern> LoadPatternRepository::getLoadPatternList() const { return m_domain_model->getLoadPatternList(); }
 
-    size_t LoadPatternRepository::getLoadPatternSize() const
-    {
-        return m_domain_model->getLoadPatternList().size();
-    }
+size_t LoadPatternRepository::getLoadPatternSize() const { return m_domain_model->getLoadPatternList().size(); }
 
-    fem::LoadPattern LoadPatternRepository::getLoadPatternByIndex(size_t index) const
-    {
-        return m_domain_model->getLoadPatternList()[index];
-    }
+fem::LoadPattern LoadPatternRepository::getLoadPatternByIndex(size_t index) const { return m_domain_model->getLoadPatternList()[index]; }
 
-} // namespace persistence
-} // namespace gui
+}  // namespace persistence
+}  // namespace gui

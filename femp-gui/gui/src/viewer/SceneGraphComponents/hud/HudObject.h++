@@ -6,12 +6,12 @@
 
 /**
  * Abstract base class for every HUD object which might be rendered
-**/
+ **/
 class HudObject {
-public:
-    virtual ~HudObject();
+   public:
+	virtual ~HudObject();
 
-    virtual void paintGL(ViewportData& data, ViewportColors& colors) = 0;
+	virtual void paintGL(ViewportData& data, ViewportColors& colors) = 0;
 };
 
 #endif

@@ -1,12 +1,10 @@
 #include <QtTest/QtTest>
 
 class TestGui : public QObject {
-    Q_OBJECT
+	Q_OBJECT
 
-private slots:
-    void toUpper()
-    {
-    }
+   private slots:
+	void toUpper() {}
 };
 
 QTEST_MAIN(TestGui)

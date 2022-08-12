@@ -1,25 +1,17 @@
 #include "SelectionManager.h++"
 
-SelectionManager::~SelectionManager()
-{
+SelectionManager::~SelectionManager() {}
+
+void SelectionManager::setSelection(Selection const& selection) {
+	m_selection = selection;
+
+	emit selectionChanged(selection);
 }
 
-void SelectionManager::setSelection(Selection const& selection)
-{
-    m_selection = selection;
+void SelectionManager::clearSelection() {
+	this->m_selection.clear();
 
-    emit selectionChanged(selection);
+	emit selectionCleared();
 }
 
-void SelectionManager::clearSelection()
-{
-    this->m_selection.clear();
-
-    emit selectionCleared();
-}
-
-Selection const&
-SelectionManager::getSelection() const
-{
-    return m_selection;
-}
+Selection const& SelectionManager::getSelection() const { return m_selection; }

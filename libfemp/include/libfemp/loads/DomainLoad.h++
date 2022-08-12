@@ -7,25 +7,25 @@
 namespace fem {
 
 class DomainLoad {
-public:
-    Point3D force; // force value for the entire element
+   public:
+	Point3D force;	// force value for the entire element
 
-public:
-    DomainLoad();
-    DomainLoad(const DomainLoad&);
-    ~DomainLoad();
+   public:
+	DomainLoad();
+	DomainLoad(const DomainLoad&);
+	~DomainLoad();
 
-    /**
-     * Returns the force
-     */
-    const Point3D& getForce() const;
+	/**
+	 * Returns the force
+	 */
+	const Point3D& getForce() const;
 
-    /**
-     * Copy assignment operator
-     */
-    DomainLoad& operator=(DomainLoad const& copied);
+	/**
+	 * Copy assignment operator
+	 */
+	DomainLoad& operator=(DomainLoad const& copied);
 };
 
-} // namespace fem
+}  // namespace fem
 
 #endif

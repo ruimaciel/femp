@@ -7,13 +7,13 @@
 namespace fem {
 namespace quadrature {
 
-    template <size_t D>
-    struct QuadraturePoint {
-        double weight;
-        std::array<double, D> x;
-    };
+template <size_t D>
+struct QuadraturePoint {
+	double weight;
+	std::array<double, D> x;
+};
 
-} // namespace quadrature
-} // namespace fem
+}  // namespace quadrature
+}  // namespace fem
 
 #endif

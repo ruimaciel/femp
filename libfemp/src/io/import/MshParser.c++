@@ -2,2464 +2,2369 @@
 #line 1 "MshParser.c++.re2c"
 #include "MshParser.h++"
 
-#include <cstdlib> // for strtol, strtod
-#include <iostream> // for cerr
-
 #include <boost/lexical_cast.hpp>
+#include <cstdlib>	 // for strtol, strtod
+#include <iostream>	 // for cerr
 
-MshParser::MshParser()
-{
-    // init the lexer
-    buffer[0] = '\0';
-    pos = tok = limit = buffer;
-    lex_state = 0;
-    error.line_number = 0;
+MshParser::MshParser() {
+	// init the lexer
+	buffer[0] = '\0';
+	pos = tok = limit = buffer;
+	lex_state = 0;
+	error.line_number = 0;
 
-    setParserTable();
+	setParserTable();
 
-    // set the operators
-    surface_load_operator = nullptr;
+	// set the operators
+	surface_load_operator = nullptr;
 }
 
-void MshParser::fill(std::istream& file)
-{
-    if (file.good()) {
-        // move the remaining unprocessed buffer to the start
-        char count = limit - tok;
-        memcpy(buffer, tok, count);
-        pos = &buffer[pos - tok];
-        marker = &buffer[marker - tok];
-        tok = buffer;
+void MshParser::fill(std::istream& file) {
+	if (file.good()) {
+		// move the remaining unprocessed buffer to the start
+		char count = limit - tok;
+		memcpy(buffer, tok, count);
+		pos = &buffer[pos - tok];
+		marker = &buffer[marker - tok];
+		tok = buffer;
 
-        // fill the vacant space
-        file.read(buffer + count, 1024 - count - 1);
-        limit = buffer + count + file.gcount();
-        *limit = '\000';
-    }
+		// fill the vacant space
+		file.read(buffer + count, 1024 - count - 1);
+		limit = buffer + count + file.gcount();
+		*limit = '\000';
+	}
 }
 
-enum MshParser::Error::Type
-MshParser::parse(std::istream& file, fem::Model& model)
-{
-    ss.push(NT_START); // initializes the symbol stack with  the start symbol
+enum MshParser::Error::Type MshParser::parse(std::istream& file, fem::Model& model) {
+	ss.push(NT_START);	// initializes the symbol stack with  the start symbol
 
-    enum TerminalToken terminal_token = lexer(file);
-    std::cout << "TT_OPEN_MESH_FORMAT" << std::endl;
+	enum TerminalToken terminal_token = lexer(file);
+	std::cout << "TT_OPEN_MESH_FORMAT" << std::endl;
 
-    enum ParserRule parser_rule; // debugging purposes only
-    int nonterminal_token;
+	enum ParserRule parser_rule;  // debugging purposes only
+	int nonterminal_token;
 
-    // resets the error message
-    this->error.code = Error::ERR_OK;
-    this->error.message.clear();
+	// resets the error message
+	this->error.code = Error::ERR_OK;
+	this->error.message.clear();
 
-    // set the temp variable's default values
-    load_pattern.setLabel("Default MSH import load pattern");
-    //TODO set default material
+	// set the temp variable's default values
+	load_pattern.setLabel("Default MSH import load pattern");
+	// TODO set default material
 
-    while (!ss.empty()) {
-        if (terminal_token == ss.top()) {
-            ss.pop();
-            terminal_token = lexer(file);
-            switch (terminal_token) {
-            case TT_ERROR:
-                std::cout << "TT_ERROR" << std::endl;
-                break;
-            case TT_OPEN_MESH_FORMAT:
-                std::cout << "TT_OPEN_MESH_FORMAT" << std::endl;
-                break;
-            case TT_CLOSE_MESH_FORMAT:
-                std::cout << "TT_CLOSE_MESH_FORMAT" << std::endl;
-                break;
-            case TT_OPEN_NODES:
-                std::cout << "TT_OPEN_NODES" << std::endl;
-                break;
-            case TT_CLOSE_NODES:
-                std::cout << "TT_CLOSE_NODES" << std::endl;
-                break;
-            case TT_OPEN_ELEMENTS:
-                std::cout << "TT_OPEN_ELEMENTS" << std::endl;
-                break;
-            case TT_CLOSE_ELEMENTS:
-                std::cout << "TT_CLOSE_ELEMENTS" << std::endl;
-                break;
-            case TT_OPEN_PHYSICAL_NAMES:
-                std::cout << "TT_OPEN_PHYSICAL_NAMES" << std::endl;
-                break;
-            case TT_CLOSE_PHYSICAL_NAMES:
-                std::cout << "TT_CLOSE_PHYSICAL_NAMES" << std::endl;
-                break;
-            case TT_OPEN_NODE_DATA:
-                std::cout << "TT_OPEN_NODE_DATA" << std::endl;
-                break;
-            case TT_CLOSE_NODE_DATA:
-                std::cout << "TT_CLOSE_NODE_DATA" << std::endl;
-                break;
-            case TT_OPEN_ELEMENT_DATA:
-                std::cout << "TT_OPEN_ELEMENT_DATA" << std::endl;
-                break;
-            case TT_CLOSE_ELEMENT_DATA:
-                std::cout << "TT_CLOSE_ELEMENT_DATA" << std::endl;
-                break;
-            case TT_OPEN_ELEMENT_NODE_DATA:
-                std::cout << "TT_OPEN_ELEMENT_NODE_DATA" << std::endl;
-                break;
-            case TT_CLOSE_ELEMENT_NODE_DATA:
-                std::cout << "TT_CLOSE_ELEMENT_NODE_DATA" << std::endl;
-                break;
-            case TT_INDEX:
-                std::cout << "TT_INDEX" << std::endl;
-                break;
-            case TT_NUMBER:
-                std::cout << "TT_NUMBER" << std::endl;
-                break;
-            case TT_ELEMENT_LINE2:
-                std::cout << "TT_ELEMENT_LINE2" << std::endl;
-                break;
-            case TT_ELEMENT_TRIANGLE3:
-                std::cout << "TT_ELEMENT_TRIANGLE3" << std::endl;
-                break;
-            case TT_ELEMENT_QUADRANGLE4:
-                std::cout << "TT_ELEMENT_QUADRANGLE4" << std::endl;
-                break;
-            case TT_ELEMENT_TETRAHEDRON4:
-                std::cout << "TT_ELEMENT_TETRAHEDRON4" << std::endl;
-                break;
-            case TT_ELEMENT_HEXAHEDRON8:
-                std::cout << "TT_ELEMENT_HEXAHEDRON8" << std::endl;
-                break;
-            case TT_ELEMENT_PRISM6:
-                std::cout << "TT_ELEMENT_PRISM6" << std::endl;
-                break;
-            case TT_ELEMENT_PYRAMID5:
-                std::cout << "TT_ELEMENT_PYRAMID5" << std::endl;
-                break;
-            case TT_ELEMENT_LINE3:
-                std::cout << "TT_ELEMENT_LINE3" << std::endl;
-                break;
-            case TT_ELEMENT_TRIANGLE6:
-                std::cout << "TT_ELEMENT_TRIANGLE6" << std::endl;
-                break;
-            case TT_ELEMENT_QUADRANGLE9:
-                std::cout << "TT_ELEMENT_QUADRANGLE9" << std::endl;
-                break;
-            case TT_ELEMENT_TETRAHEDRON10:
-                std::cout << "TT_ELEMENT_TETRAHEDRON10" << std::endl;
-                break;
-            case TT_ELEMENT_HEXAHEDRON27:
-                std::cout << "TT_ELEMENT_HEXAHEDRON27" << std::endl;
-                break;
-            case TT_ELEMENT_PRISM18:
-                std::cout << "TT_ELEMENT_PRISM18" << std::endl;
-                break;
-            case TT_ELEMENT_PYRAMID14:
-                std::cout << "TT_ELEMENT_PYRAMID14" << std::endl;
-                break;
-            case TT_ELEMENT_POINT:
-                std::cout << "TT_ELEMENT_POINT" << std::endl;
-                break;
-            case TT_ELEMENT_QUADRANGLE8:
-                std::cout << "TT_ELEMENT_QUADRANGLE8" << std::endl;
-                break;
-            case TT_ELEMENT_HEXAHEDRON20:
-                std::cout << "TT_ELEMENT_HEXAHEDRON20" << std::endl;
-                break;
-            case TT_ELEMENT_PRISM15:
-                std::cout << "TT_ELEMENT_PRISM15" << std::endl;
-                break;
-            case TT_ELEMENT_PYRAMID13:
-                std::cout << "TT_ELEMENT_PYRAMID13" << std::endl;
-                break;
-            case TT_ELEMENT_ITRIANGLE9:
-                std::cout << "TT_ELEMENT_ITRIANGLE9" << std::endl;
-                break;
-            case TT_ELEMENT_TRIANGLE10:
-                std::cout << "TT_ELEMENT_TRIANGLE10" << std::endl;
-                break;
-            case TT_ELEMENT_ITRIANGLE12:
-                std::cout << "TT_ELEMENT_ITRIANGLE12" << std::endl;
-                break;
-            case TT_ELEMENT_TRIANGLE15:
-                std::cout << "TT_ELEMENT_TRIANGLE15" << std::endl;
-                break;
-            case TT_ELEMENT_ITRIANGLE15:
-                std::cout << "TT_ELEMENT_ITRIANGLE15" << std::endl;
-                break;
-            case TT_ELEMENT_TRIANGLE21:
-                std::cout << "TT_ELEMENT_TRIANGLE21" << std::endl;
-                break;
-            case TT_ELEMENT_EDGE4:
-                std::cout << "TT_ELEMENT_EDGE4" << std::endl;
-                break;
-            case TT_ELEMENT_EDGE5:
-                std::cout << "TT_ELEMENT_EDGE5" << std::endl;
-                break;
-            case TT_ELEMENT_EDGE6:
-                std::cout << "TT_ELEMENT_EDGE6" << std::endl;
-                break;
-            case TT_ELEMENT_TETRAHEDRON20:
-                std::cout << "TT_ELEMENT_TETRAHEDRON20" << std::endl;
-                break;
-            case TT_ELEMENT_TETRAHEDRON35:
-                std::cout << "TT_ELEMENT_TETRAHEDRON35" << std::endl;
-                break;
-            case TT_ELEMENT_TETRAHEDRON56:
-                std::cout << "TT_ELEMENT_TETRAHEDRON56" << std::endl;
-                break;
-            case TT_0_TAGS:
-                std::cout << "TT_0_TAGS" << std::endl;
-                break;
-            case TT_1_TAGS:
-                std::cout << "TT_1_TAGS" << std::endl;
-                break;
-            case TT_2_TAGS:
-                std::cout << "TT_2_TAGS" << std::endl;
-                break;
-            case TT_3_TAGS:
-                std::cout << "TT_3_TAGS" << std::endl;
-                break;
-            case TT_EOL:
-                std::cout << "TT_EOL" << std::endl;
-                break;
-            case TT_EOF:
-                std::cout << "TT_EOF" << std::endl;
-                break;
-            case TT_VERSION_2_1:
-                std::cout << "TT_VERSION_2_1" << std::endl;
-                break;
-            case TT_VERSION_2_2:
-                std::cout << "TT_VERSION_2_2" << std::endl;
-                break;
-            case TT_MF_FILE_TYPE_ASCII:
-                std::cout << "TT_MF_FILE_TYPE_ASCII" << std::endl;
-                break;
-            case TT_MF_DATA_SIZE:
-                std::cout << "TT_MF_DATA_SIZE" << std::endl;
-                break;
-            case TT_UNKNOWN_TOKEN:
-                std::cout << "TT_UNKNOWN_TOKEN" << std::endl;
-                break;
-            default:
-                std::cout << "default" << std::endl;
-            }
-        } else {
-            nonterminal_token = ss.top();
-            ss.pop();
-            parser_rule = table[(enum NonTerminalToken)nonterminal_token][terminal_token];
-            switch (parser_rule) {
-            case PR_START:
-                ss.push(TT_EOF);
-                ss.push(NT_DOCUMENT);
-                break;
+	while (!ss.empty()) {
+		if (terminal_token == ss.top()) {
+			ss.pop();
+			terminal_token = lexer(file);
+			switch (terminal_token) {
+				case TT_ERROR:
+					std::cout << "TT_ERROR" << std::endl;
+					break;
+				case TT_OPEN_MESH_FORMAT:
+					std::cout << "TT_OPEN_MESH_FORMAT" << std::endl;
+					break;
+				case TT_CLOSE_MESH_FORMAT:
+					std::cout << "TT_CLOSE_MESH_FORMAT" << std::endl;
+					break;
+				case TT_OPEN_NODES:
+					std::cout << "TT_OPEN_NODES" << std::endl;
+					break;
+				case TT_CLOSE_NODES:
+					std::cout << "TT_CLOSE_NODES" << std::endl;
+					break;
+				case TT_OPEN_ELEMENTS:
+					std::cout << "TT_OPEN_ELEMENTS" << std::endl;
+					break;
+				case TT_CLOSE_ELEMENTS:
+					std::cout << "TT_CLOSE_ELEMENTS" << std::endl;
+					break;
+				case TT_OPEN_PHYSICAL_NAMES:
+					std::cout << "TT_OPEN_PHYSICAL_NAMES" << std::endl;
+					break;
+				case TT_CLOSE_PHYSICAL_NAMES:
+					std::cout << "TT_CLOSE_PHYSICAL_NAMES" << std::endl;
+					break;
+				case TT_OPEN_NODE_DATA:
+					std::cout << "TT_OPEN_NODE_DATA" << std::endl;
+					break;
+				case TT_CLOSE_NODE_DATA:
+					std::cout << "TT_CLOSE_NODE_DATA" << std::endl;
+					break;
+				case TT_OPEN_ELEMENT_DATA:
+					std::cout << "TT_OPEN_ELEMENT_DATA" << std::endl;
+					break;
+				case TT_CLOSE_ELEMENT_DATA:
+					std::cout << "TT_CLOSE_ELEMENT_DATA" << std::endl;
+					break;
+				case TT_OPEN_ELEMENT_NODE_DATA:
+					std::cout << "TT_OPEN_ELEMENT_NODE_DATA" << std::endl;
+					break;
+				case TT_CLOSE_ELEMENT_NODE_DATA:
+					std::cout << "TT_CLOSE_ELEMENT_NODE_DATA" << std::endl;
+					break;
+				case TT_INDEX:
+					std::cout << "TT_INDEX" << std::endl;
+					break;
+				case TT_NUMBER:
+					std::cout << "TT_NUMBER" << std::endl;
+					break;
+				case TT_ELEMENT_LINE2:
+					std::cout << "TT_ELEMENT_LINE2" << std::endl;
+					break;
+				case TT_ELEMENT_TRIANGLE3:
+					std::cout << "TT_ELEMENT_TRIANGLE3" << std::endl;
+					break;
+				case TT_ELEMENT_QUADRANGLE4:
+					std::cout << "TT_ELEMENT_QUADRANGLE4" << std::endl;
+					break;
+				case TT_ELEMENT_TETRAHEDRON4:
+					std::cout << "TT_ELEMENT_TETRAHEDRON4" << std::endl;
+					break;
+				case TT_ELEMENT_HEXAHEDRON8:
+					std::cout << "TT_ELEMENT_HEXAHEDRON8" << std::endl;
+					break;
+				case TT_ELEMENT_PRISM6:
+					std::cout << "TT_ELEMENT_PRISM6" << std::endl;
+					break;
+				case TT_ELEMENT_PYRAMID5:
+					std::cout << "TT_ELEMENT_PYRAMID5" << std::endl;
+					break;
+				case TT_ELEMENT_LINE3:
+					std::cout << "TT_ELEMENT_LINE3" << std::endl;
+					break;
+				case TT_ELEMENT_TRIANGLE6:
+					std::cout << "TT_ELEMENT_TRIANGLE6" << std::endl;
+					break;
+				case TT_ELEMENT_QUADRANGLE9:
+					std::cout << "TT_ELEMENT_QUADRANGLE9" << std::endl;
+					break;
+				case TT_ELEMENT_TETRAHEDRON10:
+					std::cout << "TT_ELEMENT_TETRAHEDRON10" << std::endl;
+					break;
+				case TT_ELEMENT_HEXAHEDRON27:
+					std::cout << "TT_ELEMENT_HEXAHEDRON27" << std::endl;
+					break;
+				case TT_ELEMENT_PRISM18:
+					std::cout << "TT_ELEMENT_PRISM18" << std::endl;
+					break;
+				case TT_ELEMENT_PYRAMID14:
+					std::cout << "TT_ELEMENT_PYRAMID14" << std::endl;
+					break;
+				case TT_ELEMENT_POINT:
+					std::cout << "TT_ELEMENT_POINT" << std::endl;
+					break;
+				case TT_ELEMENT_QUADRANGLE8:
+					std::cout << "TT_ELEMENT_QUADRANGLE8" << std::endl;
+					break;
+				case TT_ELEMENT_HEXAHEDRON20:
+					std::cout << "TT_ELEMENT_HEXAHEDRON20" << std::endl;
+					break;
+				case TT_ELEMENT_PRISM15:
+					std::cout << "TT_ELEMENT_PRISM15" << std::endl;
+					break;
+				case TT_ELEMENT_PYRAMID13:
+					std::cout << "TT_ELEMENT_PYRAMID13" << std::endl;
+					break;
+				case TT_ELEMENT_ITRIANGLE9:
+					std::cout << "TT_ELEMENT_ITRIANGLE9" << std::endl;
+					break;
+				case TT_ELEMENT_TRIANGLE10:
+					std::cout << "TT_ELEMENT_TRIANGLE10" << std::endl;
+					break;
+				case TT_ELEMENT_ITRIANGLE12:
+					std::cout << "TT_ELEMENT_ITRIANGLE12" << std::endl;
+					break;
+				case TT_ELEMENT_TRIANGLE15:
+					std::cout << "TT_ELEMENT_TRIANGLE15" << std::endl;
+					break;
+				case TT_ELEMENT_ITRIANGLE15:
+					std::cout << "TT_ELEMENT_ITRIANGLE15" << std::endl;
+					break;
+				case TT_ELEMENT_TRIANGLE21:
+					std::cout << "TT_ELEMENT_TRIANGLE21" << std::endl;
+					break;
+				case TT_ELEMENT_EDGE4:
+					std::cout << "TT_ELEMENT_EDGE4" << std::endl;
+					break;
+				case TT_ELEMENT_EDGE5:
+					std::cout << "TT_ELEMENT_EDGE5" << std::endl;
+					break;
+				case TT_ELEMENT_EDGE6:
+					std::cout << "TT_ELEMENT_EDGE6" << std::endl;
+					break;
+				case TT_ELEMENT_TETRAHEDRON20:
+					std::cout << "TT_ELEMENT_TETRAHEDRON20" << std::endl;
+					break;
+				case TT_ELEMENT_TETRAHEDRON35:
+					std::cout << "TT_ELEMENT_TETRAHEDRON35" << std::endl;
+					break;
+				case TT_ELEMENT_TETRAHEDRON56:
+					std::cout << "TT_ELEMENT_TETRAHEDRON56" << std::endl;
+					break;
+				case TT_0_TAGS:
+					std::cout << "TT_0_TAGS" << std::endl;
+					break;
+				case TT_1_TAGS:
+					std::cout << "TT_1_TAGS" << std::endl;
+					break;
+				case TT_2_TAGS:
+					std::cout << "TT_2_TAGS" << std::endl;
+					break;
+				case TT_3_TAGS:
+					std::cout << "TT_3_TAGS" << std::endl;
+					break;
+				case TT_EOL:
+					std::cout << "TT_EOL" << std::endl;
+					break;
+				case TT_EOF:
+					std::cout << "TT_EOF" << std::endl;
+					break;
+				case TT_VERSION_2_1:
+					std::cout << "TT_VERSION_2_1" << std::endl;
+					break;
+				case TT_VERSION_2_2:
+					std::cout << "TT_VERSION_2_2" << std::endl;
+					break;
+				case TT_MF_FILE_TYPE_ASCII:
+					std::cout << "TT_MF_FILE_TYPE_ASCII" << std::endl;
+					break;
+				case TT_MF_DATA_SIZE:
+					std::cout << "TT_MF_DATA_SIZE" << std::endl;
+					break;
+				case TT_UNKNOWN_TOKEN:
+					std::cout << "TT_UNKNOWN_TOKEN" << std::endl;
+					break;
+				default:
+					std::cout << "default" << std::endl;
+			}
+		} else {
+			nonterminal_token = ss.top();
+			ss.pop();
+			parser_rule = table[(enum NonTerminalToken)nonterminal_token][terminal_token];
+			switch (parser_rule) {
+				case PR_START:
+					ss.push(TT_EOF);
+					ss.push(NT_DOCUMENT);
+					break;
 
-            case PR_DOCUMENT:
-                ss.push(NT_ELEMENTS_FOLLOW);
-                ss.push(NT_ELEMENTS);
-                ss.push(NT_NODES);
-                ss.push(NT_HEADER);
-                break;
+				case PR_DOCUMENT:
+					ss.push(NT_ELEMENTS_FOLLOW);
+					ss.push(NT_ELEMENTS);
+					ss.push(NT_NODES);
+					ss.push(NT_HEADER);
+					break;
 
-            case PR_HEADER:
-                /*
-                                        ss.push(TT_CLOSE_MESH_FORMAT);
-                                        ss.push(NT_MF_DATA_SIZE);
-                                        ss.push(NT_MF_FILE_TYPE);
-                                        */
-                ss.push(TT_EOL);
-                ss.push(TT_CLOSE_MESH_FORMAT);
-                ss.push(NT_MF_VERSION_NUMBER);
-                ss.push(TT_EOL);
-                ss.push(TT_OPEN_MESH_FORMAT);
-                break;
+				case PR_HEADER:
+					/*
+											ss.push(TT_CLOSE_MESH_FORMAT);
+											ss.push(NT_MF_DATA_SIZE);
+											ss.push(NT_MF_FILE_TYPE);
+											*/
+					ss.push(TT_EOL);
+					ss.push(TT_CLOSE_MESH_FORMAT);
+					ss.push(NT_MF_VERSION_NUMBER);
+					ss.push(TT_EOL);
+					ss.push(TT_OPEN_MESH_FORMAT);
+					break;
 
-            case PR_MF_VERSION_NUMBER_2_1:
-                ss.push(TT_EOL);
-                ss.push(NT_MF_DATA_SIZE);
-                ss.push(NT_MF_FILE_TYPE);
-                ss.push(TT_VERSION_2_1);
-                break;
+				case PR_MF_VERSION_NUMBER_2_1:
+					ss.push(TT_EOL);
+					ss.push(NT_MF_DATA_SIZE);
+					ss.push(NT_MF_FILE_TYPE);
+					ss.push(TT_VERSION_2_1);
+					break;
 
-            case PR_MF_VERSION_NUMBER_2_2:
-                ss.push(TT_EOL);
-                ss.push(NT_MF_DATA_SIZE);
-                ss.push(NT_MF_FILE_TYPE);
-                ss.push(TT_VERSION_2_2);
-                break;
+				case PR_MF_VERSION_NUMBER_2_2:
+					ss.push(TT_EOL);
+					ss.push(NT_MF_DATA_SIZE);
+					ss.push(NT_MF_FILE_TYPE);
+					ss.push(TT_VERSION_2_2);
+					break;
 
-            case PR_MF_VERSION_NUMBER_ERROR:
-                this->error.code = Error::ERR_UNSUPPORTED_VERSION;
-                this->error.message = "Unsupported version";
-                return this->error.code;
-                break;
+				case PR_MF_VERSION_NUMBER_ERROR:
+					this->error.code = Error::ERR_UNSUPPORTED_VERSION;
+					this->error.message = "Unsupported version";
+					return this->error.code;
+					break;
 
-            case PR_MF_FILE_TYPE_ASCII:
-                ss.push(TT_MF_FILE_TYPE_ASCII);
-                break;
+				case PR_MF_FILE_TYPE_ASCII:
+					ss.push(TT_MF_FILE_TYPE_ASCII);
+					break;
 
-            case PR_MF_DATA_SIZE:
-                ss.push(TT_MF_DATA_SIZE);
-                break;
+				case PR_MF_DATA_SIZE:
+					ss.push(TT_MF_DATA_SIZE);
+					break;
 
-            // start parsing the nodes field
-            case PR_NODES:
-                ss.push(TT_EOL);
-                ss.push(TT_CLOSE_NODES);
-                ss.push(NT_N_NODE_DEFINITION_FOLLOW);
-                ss.push(NT_N_NODE_DEFINITION);
-                ss.push(NT_N_NUMBER_OF_NODES);
-                ss.push(TT_EOL);
-                ss.push(TT_OPEN_NODES);
-                break;
+				// start parsing the nodes field
+				case PR_NODES:
+					ss.push(TT_EOL);
+					ss.push(TT_CLOSE_NODES);
+					ss.push(NT_N_NODE_DEFINITION_FOLLOW);
+					ss.push(NT_N_NODE_DEFINITION);
+					ss.push(NT_N_NUMBER_OF_NODES);
+					ss.push(TT_EOL);
+					ss.push(TT_OPEN_NODES);
+					break;
 
-            case PR_N_NUMBER_OF_NODES:
-                ss.push(TT_EOL);
-                ss.push(TT_INDEX);
-                break;
+				case PR_N_NUMBER_OF_NODES:
+					ss.push(TT_EOL);
+					ss.push(TT_INDEX);
+					break;
 
-            case PR_N_NUMBER_OF_NODES_SET:
-                //TODO set limit to how many nodes have been parsed
-                index_list.pop_back(); // clear up the stack
-                break;
+				case PR_N_NUMBER_OF_NODES_SET:
+					// TODO set limit to how many nodes have been parsed
+					index_list.pop_back();	// clear up the stack
+					break;
 
-            case PR_N_NODE_DEFINITION:
-                ss.push(TT_EOL);
-                ss.push(NT_N_NODE_DEFINITION_SET);
-                ss.push(NT_COORDINATE);
-                ss.push(TT_INDEX);
-                break;
+				case PR_N_NODE_DEFINITION:
+					ss.push(TT_EOL);
+					ss.push(NT_N_NODE_DEFINITION_SET);
+					ss.push(NT_COORDINATE);
+					ss.push(TT_INDEX);
+					break;
 
-            case PR_N_NODE_DEFINITION_SET:
-                // set the node coordinates
-                node.x(float_list.front());
-                float_list.pop_front();
-                node.y(float_list.front());
-                float_list.pop_front();
-                node.z(float_list.front());
-                float_list.pop_front();
+				case PR_N_NODE_DEFINITION_SET:
+					// set the node coordinates
+					node.x(float_list.front());
+					float_list.pop_front();
+					node.y(float_list.front());
+					float_list.pop_front();
+					node.z(float_list.front());
+					float_list.pop_front();
 
-                // set the node
-                model.setNode(index_list.back(), node);
-                index_list.pop_back();
-                break;
+					// set the node
+					model.setNode(index_list.back(), node);
+					index_list.pop_back();
+					break;
 
-            case PR_N_NODE_DEFINITION_FOLLOW_1:
-                ss.push(NT_N_NODE_DEFINITION_FOLLOW);
-                ss.push(NT_N_NODE_DEFINITION);
-                break;
+				case PR_N_NODE_DEFINITION_FOLLOW_1:
+					ss.push(NT_N_NODE_DEFINITION_FOLLOW);
+					ss.push(NT_N_NODE_DEFINITION);
+					break;
 
-            case PR_N_NODE_DEFINITION_FOLLOW_2:
-                break;
+				case PR_N_NODE_DEFINITION_FOLLOW_2:
+					break;
 
-            // start parsing the element field
-            case PR_ELEMENTS:
-                ss.push(TT_EOL);
-                ss.push(NT_ELEMENTS_SET);
-                ss.push(TT_CLOSE_ELEMENTS);
-                ss.push(NT_E_ELEMENT_DEFINITION_FOLLOW);
-                ss.push(NT_E_ELEMENT_DEFINITION);
-                ss.push(NT_E_NUMBER_OF_ELEMENTS);
-                ss.push(TT_EOL);
-                ss.push(TT_OPEN_ELEMENTS);
-                break;
+				// start parsing the element field
+				case PR_ELEMENTS:
+					ss.push(TT_EOL);
+					ss.push(NT_ELEMENTS_SET);
+					ss.push(TT_CLOSE_ELEMENTS);
+					ss.push(NT_E_ELEMENT_DEFINITION_FOLLOW);
+					ss.push(NT_E_ELEMENT_DEFINITION);
+					ss.push(NT_E_NUMBER_OF_ELEMENTS);
+					ss.push(TT_EOL);
+					ss.push(TT_OPEN_ELEMENTS);
+					break;
 
-            case PR_E_NUMBER_OF_ELEMENTS:
-                //TODO set limit to how many elements have been parsed
-                ss.push(TT_EOL);
-                ss.push(NT_E_NUMBER_OF_ELEMENTS_SET);
-                ss.push(TT_INDEX);
-                break;
+				case PR_E_NUMBER_OF_ELEMENTS:
+					// TODO set limit to how many elements have been parsed
+					ss.push(TT_EOL);
+					ss.push(NT_E_NUMBER_OF_ELEMENTS_SET);
+					ss.push(TT_INDEX);
+					break;
 
-            case PR_E_NUMBER_OF_ELEMENTS_SET:
-                model.element_list.reserve(index_list.back());
-                //index_list.pop_back();
-                index_list.clear();
-                break;
+				case PR_E_NUMBER_OF_ELEMENTS_SET:
+					model.element_list.reserve(index_list.back());
+					// index_list.pop_back();
+					index_list.clear();
+					break;
 
-            case PR_E_ELEMENT_DEFINITION:
-                ss.push(TT_EOL);
-                ss.push(NT_E_ELEMENT_TYPE);
-                ss.push(TT_INDEX);
-                break;
+				case PR_E_ELEMENT_DEFINITION:
+					ss.push(TT_EOL);
+					ss.push(NT_E_ELEMENT_TYPE);
+					ss.push(TT_INDEX);
+					break;
 
-            case PR_E_ELEMENT_TRIANGLE3:
-                element.type = fem::Element::FE_TRIANGLE3;
-                ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
-                for (int i = 0; i < 3; i++)
-                    ss.push(TT_INDEX);
-                ss.push(NT_E_TAGS);
-                ss.push(TT_ELEMENT_TRIANGLE3);
-                break;
+				case PR_E_ELEMENT_TRIANGLE3:
+					element.type = fem::Element::FE_TRIANGLE3;
+					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
+					for (int i = 0; i < 3; i++) ss.push(TT_INDEX);
+					ss.push(NT_E_TAGS);
+					ss.push(TT_ELEMENT_TRIANGLE3);
+					break;
 
-            case PR_E_ELEMENT_TRIANGLE6:
-                element.type = fem::Element::FE_TRIANGLE6;
-                ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
-                for (int i = 0; i < 6; i++)
-                    ss.push(TT_INDEX);
-                ss.push(NT_E_TAGS);
-                ss.push(TT_ELEMENT_TRIANGLE6);
-                break;
+				case PR_E_ELEMENT_TRIANGLE6:
+					element.type = fem::Element::FE_TRIANGLE6;
+					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
+					for (int i = 0; i < 6; i++) ss.push(TT_INDEX);
+					ss.push(NT_E_TAGS);
+					ss.push(TT_ELEMENT_TRIANGLE6);
+					break;
 
-            case PR_E_ELEMENT_QUADRANGLE4:
-                element.type = fem::Element::FE_QUADRANGLE4;
-                ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
-                for (int i = 0; i < 4; i++)
-                    ss.push(TT_INDEX);
-                ss.push(NT_E_TAGS);
-                ss.push(TT_ELEMENT_QUADRANGLE4);
-                break;
+				case PR_E_ELEMENT_QUADRANGLE4:
+					element.type = fem::Element::FE_QUADRANGLE4;
+					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
+					for (int i = 0; i < 4; i++) ss.push(TT_INDEX);
+					ss.push(NT_E_TAGS);
+					ss.push(TT_ELEMENT_QUADRANGLE4);
+					break;
 
-            case PR_E_ELEMENT_QUADRANGLE8:
-                element.type = fem::Element::FE_QUADRANGLE8;
-                ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
-                for (int i = 0; i < 8; i++)
-                    ss.push(TT_INDEX);
-                ss.push(NT_E_TAGS);
-                ss.push(TT_ELEMENT_QUADRANGLE8);
-                break;
+				case PR_E_ELEMENT_QUADRANGLE8:
+					element.type = fem::Element::FE_QUADRANGLE8;
+					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
+					for (int i = 0; i < 8; i++) ss.push(TT_INDEX);
+					ss.push(NT_E_TAGS);
+					ss.push(TT_ELEMENT_QUADRANGLE8);
+					break;
 
-            case PR_E_ELEMENT_QUADRANGLE9:
-                ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
-                element.type = fem::Element::FE_QUADRANGLE9;
-                for (int i = 0; i < 9; i++)
-                    ss.push(TT_INDEX);
-                ss.push(NT_E_TAGS);
-                ss.push(TT_ELEMENT_QUADRANGLE9);
-                break;
+				case PR_E_ELEMENT_QUADRANGLE9:
+					ss.push(NT_E_ELEMENT_TYPE_SET_FORCE);
+					element.type = fem::Element::FE_QUADRANGLE9;
+					for (int i = 0; i < 9; i++) ss.push(TT_INDEX);
+					ss.push(NT_E_TAGS);
+					ss.push(TT_ELEMENT_QUADRANGLE9);
+					break;
 
-            case PR_E_ELEMENT_HEXAHEDRON8:
-                element.type = fem::Element::FE_HEXAHEDRON8;
-                ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
-                for (int i = 0; i < 8; i++)
-                    ss.push(TT_INDEX);
-                ss.push(NT_E_TAGS);
-                ss.push(TT_ELEMENT_HEXAHEDRON8);
-                break;
+				case PR_E_ELEMENT_HEXAHEDRON8:
+					element.type = fem::Element::FE_HEXAHEDRON8;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+					for (int i = 0; i < 8; i++) ss.push(TT_INDEX);
+					ss.push(NT_E_TAGS);
+					ss.push(TT_ELEMENT_HEXAHEDRON8);
+					break;
 
-            case PR_E_ELEMENT_HEXAHEDRON20:
-                element.type = fem::Element::FE_HEXAHEDRON20;
-                ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
-                for (int i = 0; i < 20; i++)
-                    ss.push(TT_INDEX);
-                ss.push(NT_E_TAGS);
-                ss.push(TT_ELEMENT_HEXAHEDRON20);
-                break;
+				case PR_E_ELEMENT_HEXAHEDRON20:
+					element.type = fem::Element::FE_HEXAHEDRON20;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+					for (int i = 0; i < 20; i++) ss.push(TT_INDEX);
+					ss.push(NT_E_TAGS);
+					ss.push(TT_ELEMENT_HEXAHEDRON20);
+					break;
 
-            case PR_E_ELEMENT_HEXAHEDRON27:
-                element.type = fem::Element::FE_HEXAHEDRON27;
-                ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
-                for (int i = 0; i < 27; i++)
-                    ss.push(TT_INDEX);
-                ss.push(NT_E_TAGS);
-                ss.push(TT_ELEMENT_HEXAHEDRON27);
-                break;
+				case PR_E_ELEMENT_HEXAHEDRON27:
+					element.type = fem::Element::FE_HEXAHEDRON27;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+					for (int i = 0; i < 27; i++) ss.push(TT_INDEX);
+					ss.push(NT_E_TAGS);
+					ss.push(TT_ELEMENT_HEXAHEDRON27);
+					break;
 
-            case PR_E_ELEMENT_TETRAHEDRON4:
-                element.type = fem::Element::FE_TETRAHEDRON4;
-                ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
-                for (int i = 0; i < 4; i++)
-                    ss.push(TT_INDEX);
-                ss.push(NT_E_TAGS);
-                ss.push(TT_ELEMENT_TETRAHEDRON4);
-                break;
+				case PR_E_ELEMENT_TETRAHEDRON4:
+					element.type = fem::Element::FE_TETRAHEDRON4;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+					for (int i = 0; i < 4; i++) ss.push(TT_INDEX);
+					ss.push(NT_E_TAGS);
+					ss.push(TT_ELEMENT_TETRAHEDRON4);
+					break;
 
-            case PR_E_ELEMENT_TETRAHEDRON10:
-                element.type = fem::Element::FE_TETRAHEDRON10;
-                ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
-                for (int i = 0; i < 10; i++)
-                    ss.push(TT_INDEX);
-                ss.push(NT_E_TAGS);
-                ss.push(TT_ELEMENT_TETRAHEDRON10);
-                break;
+				case PR_E_ELEMENT_TETRAHEDRON10:
+					element.type = fem::Element::FE_TETRAHEDRON10;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+					for (int i = 0; i < 10; i++) ss.push(TT_INDEX);
+					ss.push(NT_E_TAGS);
+					ss.push(TT_ELEMENT_TETRAHEDRON10);
+					break;
 
-            case PR_E_ELEMENT_PRISM6:
-                element.type = fem::Element::FE_PRISM6;
-                ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
-                for (int i = 0; i < 6; i++)
-                    ss.push(TT_INDEX);
-                ss.push(NT_E_TAGS);
-                ss.push(TT_ELEMENT_PRISM6);
-                break;
+				case PR_E_ELEMENT_PRISM6:
+					element.type = fem::Element::FE_PRISM6;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+					for (int i = 0; i < 6; i++) ss.push(TT_INDEX);
+					ss.push(NT_E_TAGS);
+					ss.push(TT_ELEMENT_PRISM6);
+					break;
 
-            case PR_E_ELEMENT_PRISM15:
-                element.type = fem::Element::FE_PRISM15;
-                ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
-                for (int i = 0; i < 15; i++)
-                    ss.push(TT_INDEX);
-                ss.push(NT_E_TAGS);
-                ss.push(TT_ELEMENT_PRISM15);
-                break;
+				case PR_E_ELEMENT_PRISM15:
+					element.type = fem::Element::FE_PRISM15;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+					for (int i = 0; i < 15; i++) ss.push(TT_INDEX);
+					ss.push(NT_E_TAGS);
+					ss.push(TT_ELEMENT_PRISM15);
+					break;
 
-            case PR_E_ELEMENT_PRISM18:
-                element.type = fem::Element::FE_PRISM18;
-                ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
-                for (int i = 0; i < 18; i++)
-                    ss.push(TT_INDEX);
-                ss.push(NT_E_TAGS);
-                ss.push(TT_ELEMENT_PRISM18);
-                break;
+				case PR_E_ELEMENT_PRISM18:
+					element.type = fem::Element::FE_PRISM18;
+					ss.push(NT_E_ELEMENT_TYPE_SET_ELEMENT);
+					for (int i = 0; i < 18; i++) ss.push(TT_INDEX);
+					ss.push(NT_E_TAGS);
+					ss.push(TT_ELEMENT_PRISM18);
+					break;
 
-            case PR_E_ELEMENT_TYPE_SET_ELEMENT:
-                index_list.pop_front(); // get rid of element index
-                index_list.pop_front(); // get rid of element type: nasty hack
-                element.nodes.assign(index_list.begin(), index_list.end());
-                index_list.clear();
-                model.pushElement(element);
-                break;
+				case PR_E_ELEMENT_TYPE_SET_ELEMENT:
+					index_list.pop_front();	 // get rid of element index
+					index_list.pop_front();	 // get rid of element type: nasty hack
+					element.nodes.assign(index_list.begin(), index_list.end());
+					index_list.clear();
+					model.pushElement(element);
+					break;
 
-            case PR_E_ELEMENT_TYPE_SET_FORCE:
-                index_list.pop_front(); // get rid of element index
-                index_list.pop_front(); // get rid of element type: nasty hack
-                if (surface_load_operator) {
-                    element.nodes.assign(index_list.begin(), index_list.end());
+				case PR_E_ELEMENT_TYPE_SET_FORCE:
+					index_list.pop_front();	 // get rid of element index
+					index_list.pop_front();	 // get rid of element type: nasty hack
+					if (surface_load_operator) {
+						element.nodes.assign(index_list.begin(), index_list.end());
 
-                    index_list.clear();
+						index_list.clear();
 
-                    fem::SurfaceLoad* load = fem::SurfaceLoad::makeSurfaceLoad(&element);
+						fem::SurfaceLoad* load = fem::SurfaceLoad::makeSurfaceLoad(&element);
 
-                    //TODO finish this
-                    (*surface_load_operator)(*load, model);
+						// TODO finish this
+						(*surface_load_operator)(*load, model);
 
-                    load_pattern.addSurfaceLoad(load);
-                }
-                break;
+						load_pattern.addSurfaceLoad(load);
+					}
+					break;
 
-            case PR_E_ELEMENT_DEFINITION_FOLLOW_1:
-                ss.push(NT_E_ELEMENT_DEFINITION_FOLLOW);
-                ss.push(NT_E_ELEMENT_DEFINITION);
-                break;
+				case PR_E_ELEMENT_DEFINITION_FOLLOW_1:
+					ss.push(NT_E_ELEMENT_DEFINITION_FOLLOW);
+					ss.push(NT_E_ELEMENT_DEFINITION);
+					break;
 
-            case PR_E_ELEMENT_DEFINITION_FOLLOW_2:
-                break;
+				case PR_E_ELEMENT_DEFINITION_FOLLOW_2:
+					break;
 
-            case PR_E_TAGS_0:
-                ss.push(TT_0_TAGS);
-                break;
+				case PR_E_TAGS_0:
+					ss.push(TT_0_TAGS);
+					break;
 
-            case PR_E_TAGS_1:
-                //TODO test this
-                ss.push(NT_E_TAGS_1_SET);
-                ss.push(TT_INDEX);
-                ss.push(TT_1_TAGS);
-                break;
+				case PR_E_TAGS_1:
+					// TODO test this
+					ss.push(NT_E_TAGS_1_SET);
+					ss.push(TT_INDEX);
+					ss.push(TT_1_TAGS);
+					break;
 
-            case PR_E_TAGS_2:
-                //TODO test this
-                ss.push(NT_E_TAGS_2_SET);
-                ss.push(TT_INDEX);
-                ss.push(TT_INDEX);
-                ss.push(TT_2_TAGS);
-                break;
+				case PR_E_TAGS_2:
+					// TODO test this
+					ss.push(NT_E_TAGS_2_SET);
+					ss.push(TT_INDEX);
+					ss.push(TT_INDEX);
+					ss.push(TT_2_TAGS);
+					break;
 
-            case PR_E_TAGS_3:
-                //TODO test this
-                ss.push(NT_E_TAGS_3_SET);
-                ss.push(TT_INDEX);
-                ss.push(TT_INDEX);
-                ss.push(TT_INDEX);
-                ss.push(TT_3_TAGS);
-                break;
+				case PR_E_TAGS_3:
+					// TODO test this
+					ss.push(NT_E_TAGS_3_SET);
+					ss.push(TT_INDEX);
+					ss.push(TT_INDEX);
+					ss.push(TT_INDEX);
+					ss.push(TT_3_TAGS);
+					break;
 
-            case PR_E_TAGS_1_SET:
-                index_list.pop_front();
-                break;
+				case PR_E_TAGS_1_SET:
+					index_list.pop_front();
+					break;
 
-            case PR_E_TAGS_2_SET:
-                index_list.pop_front();
-                index_list.pop_front();
-                break;
+				case PR_E_TAGS_2_SET:
+					index_list.pop_front();
+					index_list.pop_front();
+					break;
 
-            case PR_E_TAGS_3_SET:
-                index_list.pop_front();
-                index_list.pop_front();
-                index_list.pop_front();
-                break;
+				case PR_E_TAGS_3_SET:
+					index_list.pop_front();
+					index_list.pop_front();
+					index_list.pop_front();
+					break;
 
-            case PR_ELEMENTS_SET:
-                if (!load_pattern.empty())
-                    model.pushLoadPattern(load_pattern);
-                break;
+				case PR_ELEMENTS_SET:
+					if (!load_pattern.empty()) model.pushLoadPattern(load_pattern);
+					break;
 
-            case PR_ELEMENT_FOLLOW_1:
-            case PR_ELEMENT_FOLLOW_2:
-            case PR_ELEMENT_FOLLOW_3:
-                this->error.code = Error::ERR_UNKNOWN;
-                this->error.message = "Section is not supported" + boost::lexical_cast<std::string>(error.line_number);
-                return this->error.code;
-                break;
+				case PR_ELEMENT_FOLLOW_1:
+				case PR_ELEMENT_FOLLOW_2:
+				case PR_ELEMENT_FOLLOW_3:
+					this->error.code = Error::ERR_UNKNOWN;
+					this->error.message = "Section is not supported" + boost::lexical_cast<std::string>(error.line_number);
+					return this->error.code;
+					break;
 
-            case PR_ELEMENT_FOLLOW_4:
-                break;
+				case PR_ELEMENT_FOLLOW_4:
+					break;
 
-            case PR_COORDINATE: // requires 3 floats, sets a Point with them
-                //TODO set a vector
-                ss.push(TT_NUMBER);
-                ss.push(TT_NUMBER);
-                ss.push(TT_NUMBER);
-                break;
+				case PR_COORDINATE:	 // requires 3 floats, sets a Point with them
+					// TODO set a vector
+					ss.push(TT_NUMBER);
+					ss.push(TT_NUMBER);
+					ss.push(TT_NUMBER);
+					break;
 
-            default:
-                this->error.code = Error::ERR_UNKNOWN;
-                this->error.message = "Unknown error while parsing line " + boost::lexical_cast<std::string>(error.line_number);
-                return this->error.code;
-                break;
-            }
-        }
-    }
+				default:
+					this->error.code = Error::ERR_UNKNOWN;
+					this->error.message = "Unknown error while parsing line " + boost::lexical_cast<std::string>(error.line_number);
+					return this->error.code;
+					break;
+			}
+		}
+	}
 
-    // all is good
-    this->error.code = Error::ERR_OK;
-    this->error.message.clear();
-    return this->error.code;
+	// all is good
+	this->error.code = Error::ERR_OK;
+	this->error.message.clear();
+	return this->error.code;
 }
 
-enum MshParser::TerminalToken MshParser::lexer(std::istream& file)
-{
-    tok = pos;
+enum MshParser::TerminalToken MshParser::lexer(std::istream& file) {
+	tok = pos;
 std:
-    switch (lex_state) {
-    case 0: {
+	switch (lex_state) {
+		case 0: {
 #define YYFILL fill(file);
 
 #line 599 "MshParser.c++"
-        {
-            char yych;
-            if ((limit - pos) < 16)
-                YYFILL(16);
-            yych = *pos;
-            switch (yych) {
-            case 0x00:
-                goto yy2;
-            case '\n':
-                goto yy6;
-            case ' ':
-                goto yy8;
-            case '$':
-                goto yy11;
-            default:
-                goto yy4;
-            }
-        yy2:
-            ++pos;
+			{
+				char yych;
+				if ((limit - pos) < 16) YYFILL(16);
+				yych = *pos;
+				switch (yych) {
+					case 0x00:
+						goto yy2;
+					case '\n':
+						goto yy6;
+					case ' ':
+						goto yy8;
+					case '$':
+						goto yy11;
+					default:
+						goto yy4;
+				}
+			yy2:
+				++pos;
 #line 616 "MshParser.c++.re2c"
-            {
-                return TT_EOF;
-            }
+				{ return TT_EOF; }
 #line 615 "MshParser.c++"
-        yy4:
-            ++pos;
-        yy5 :
+			yy4:
+				++pos;
+			yy5 :
 #line 618 "MshParser.c++.re2c"
-        {
-            return TT_UNKNOWN_TOKEN;
-        }
+			{
+				return TT_UNKNOWN_TOKEN;
+			}
 #line 621 "MshParser.c++"
-        yy6:
-            ++pos;
+			yy6:
+				++pos;
 #line 615 "MshParser.c++.re2c"
-            {
-                error.line_number++;
-                return TT_EOL;
-            }
+				{
+					error.line_number++;
+					return TT_EOL;
+				}
 #line 626 "MshParser.c++"
-        yy8:
-            ++pos;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case ' ':
-                goto yy8;
-            default:
-                goto yy10;
-            }
-        yy10 :
+			yy8:
+				++pos;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case ' ':
+						goto yy8;
+					default:
+						goto yy10;
+				}
+			yy10 :
 #line 617 "MshParser.c++.re2c"
-        {
-            goto std;
-        }
+			{
+				goto std;
+			}
 #line 638 "MshParser.c++"
-        yy11:
-            yych = *(marker = ++pos);
-            switch (yych) {
-            case 'E':
-                goto yy12;
-            case 'M':
-                goto yy14;
-            case 'N':
-                goto yy15;
-            case 'P':
-                goto yy16;
-            default:
-                goto yy5;
-            }
-        yy12:
-            yych = *++pos;
-            switch (yych) {
-            case 'l':
-                goto yy17;
-            default:
-                goto yy13;
-            }
-        yy13:
-            pos = marker;
-            goto yy5;
-        yy14:
-            yych = *++pos;
-            switch (yych) {
-            case 'e':
-                goto yy18;
-            default:
-                goto yy13;
-            }
-        yy15:
-            yych = *++pos;
-            switch (yych) {
-            case 'o':
-                goto yy19;
-            default:
-                goto yy13;
-            }
-        yy16:
-            yych = *++pos;
-            switch (yych) {
-            case 'h':
-                goto yy20;
-            default:
-                goto yy13;
-            }
-        yy17:
-            yych = *++pos;
-            switch (yych) {
-            case 'e':
-                goto yy21;
-            default:
-                goto yy13;
-            }
-        yy18:
-            yych = *++pos;
-            switch (yych) {
-            case 's':
-                goto yy22;
-            default:
-                goto yy13;
-            }
-        yy19:
-            yych = *++pos;
-            switch (yych) {
-            case 'd':
-                goto yy23;
-            default:
-                goto yy13;
-            }
-        yy20:
-            yych = *++pos;
-            switch (yych) {
-            case 'y':
-                goto yy24;
-            default:
-                goto yy13;
-            }
-        yy21:
-            yych = *++pos;
-            switch (yych) {
-            case 'm':
-                goto yy25;
-            default:
-                goto yy13;
-            }
-        yy22:
-            yych = *++pos;
-            switch (yych) {
-            case 'h':
-                goto yy26;
-            default:
-                goto yy13;
-            }
-        yy23:
-            yych = *++pos;
-            switch (yych) {
-            case 'e':
-                goto yy27;
-            default:
-                goto yy13;
-            }
-        yy24:
-            yych = *++pos;
-            switch (yych) {
-            case 's':
-                goto yy28;
-            default:
-                goto yy13;
-            }
-        yy25:
-            yych = *++pos;
-            switch (yych) {
-            case 'e':
-                goto yy29;
-            default:
-                goto yy13;
-            }
-        yy26:
-            yych = *++pos;
-            switch (yych) {
-            case 'F':
-                goto yy30;
-            default:
-                goto yy13;
-            }
-        yy27:
-            yych = *++pos;
-            switch (yych) {
-            case 'D':
-                goto yy31;
-            case 's':
-                goto yy32;
-            default:
-                goto yy13;
-            }
-        yy28:
-            yych = *++pos;
-            switch (yych) {
-            case 'i':
-                goto yy34;
-            default:
-                goto yy13;
-            }
-        yy29:
-            yych = *++pos;
-            switch (yych) {
-            case 'n':
-                goto yy35;
-            default:
-                goto yy13;
-            }
-        yy30:
-            yych = *++pos;
-            switch (yych) {
-            case 'o':
-                goto yy36;
-            default:
-                goto yy13;
-            }
-        yy31:
-            yych = *++pos;
-            switch (yych) {
-            case 'a':
-                goto yy37;
-            default:
-                goto yy13;
-            }
-        yy32:
-            ++pos;
+			yy11:
+				yych = *(marker = ++pos);
+				switch (yych) {
+					case 'E':
+						goto yy12;
+					case 'M':
+						goto yy14;
+					case 'N':
+						goto yy15;
+					case 'P':
+						goto yy16;
+					default:
+						goto yy5;
+				}
+			yy12:
+				yych = *++pos;
+				switch (yych) {
+					case 'l':
+						goto yy17;
+					default:
+						goto yy13;
+				}
+			yy13:
+				pos = marker;
+				goto yy5;
+			yy14:
+				yych = *++pos;
+				switch (yych) {
+					case 'e':
+						goto yy18;
+					default:
+						goto yy13;
+				}
+			yy15:
+				yych = *++pos;
+				switch (yych) {
+					case 'o':
+						goto yy19;
+					default:
+						goto yy13;
+				}
+			yy16:
+				yych = *++pos;
+				switch (yych) {
+					case 'h':
+						goto yy20;
+					default:
+						goto yy13;
+				}
+			yy17:
+				yych = *++pos;
+				switch (yych) {
+					case 'e':
+						goto yy21;
+					default:
+						goto yy13;
+				}
+			yy18:
+				yych = *++pos;
+				switch (yych) {
+					case 's':
+						goto yy22;
+					default:
+						goto yy13;
+				}
+			yy19:
+				yych = *++pos;
+				switch (yych) {
+					case 'd':
+						goto yy23;
+					default:
+						goto yy13;
+				}
+			yy20:
+				yych = *++pos;
+				switch (yych) {
+					case 'y':
+						goto yy24;
+					default:
+						goto yy13;
+				}
+			yy21:
+				yych = *++pos;
+				switch (yych) {
+					case 'm':
+						goto yy25;
+					default:
+						goto yy13;
+				}
+			yy22:
+				yych = *++pos;
+				switch (yych) {
+					case 'h':
+						goto yy26;
+					default:
+						goto yy13;
+				}
+			yy23:
+				yych = *++pos;
+				switch (yych) {
+					case 'e':
+						goto yy27;
+					default:
+						goto yy13;
+				}
+			yy24:
+				yych = *++pos;
+				switch (yych) {
+					case 's':
+						goto yy28;
+					default:
+						goto yy13;
+				}
+			yy25:
+				yych = *++pos;
+				switch (yych) {
+					case 'e':
+						goto yy29;
+					default:
+						goto yy13;
+				}
+			yy26:
+				yych = *++pos;
+				switch (yych) {
+					case 'F':
+						goto yy30;
+					default:
+						goto yy13;
+				}
+			yy27:
+				yych = *++pos;
+				switch (yych) {
+					case 'D':
+						goto yy31;
+					case 's':
+						goto yy32;
+					default:
+						goto yy13;
+				}
+			yy28:
+				yych = *++pos;
+				switch (yych) {
+					case 'i':
+						goto yy34;
+					default:
+						goto yy13;
+				}
+			yy29:
+				yych = *++pos;
+				switch (yych) {
+					case 'n':
+						goto yy35;
+					default:
+						goto yy13;
+				}
+			yy30:
+				yych = *++pos;
+				switch (yych) {
+					case 'o':
+						goto yy36;
+					default:
+						goto yy13;
+				}
+			yy31:
+				yych = *++pos;
+				switch (yych) {
+					case 'a':
+						goto yy37;
+					default:
+						goto yy13;
+				}
+			yy32:
+				++pos;
 #line 609 "MshParser.c++.re2c"
-            {
-                lex_state = 2;
-                return TT_OPEN_NODES;
-            }
+				{
+					lex_state = 2;
+					return TT_OPEN_NODES;
+				}
 #line 770 "MshParser.c++"
-        yy34:
-            yych = *++pos;
-            switch (yych) {
-            case 'c':
-                goto yy38;
-            default:
-                goto yy13;
-            }
-        yy35:
-            yych = *++pos;
-            switch (yych) {
-            case 't':
-                goto yy39;
-            default:
-                goto yy13;
-            }
-        yy36:
-            yych = *++pos;
-            switch (yych) {
-            case 'r':
-                goto yy40;
-            default:
-                goto yy13;
-            }
-        yy37:
-            yych = *++pos;
-            switch (yych) {
-            case 't':
-                goto yy41;
-            default:
-                goto yy13;
-            }
-        yy38:
-            yych = *++pos;
-            switch (yych) {
-            case 'a':
-                goto yy42;
-            default:
-                goto yy13;
-            }
-        yy39:
-            yych = *++pos;
-            switch (yych) {
-            case 'D':
-                goto yy43;
-            case 'N':
-                goto yy44;
-            case 's':
-                goto yy45;
-            default:
-                goto yy13;
-            }
-        yy40:
-            yych = *++pos;
-            switch (yych) {
-            case 'm':
-                goto yy47;
-            default:
-                goto yy13;
-            }
-        yy41:
-            yych = *++pos;
-            switch (yych) {
-            case 'a':
-                goto yy48;
-            default:
-                goto yy13;
-            }
-        yy42:
-            yych = *++pos;
-            switch (yych) {
-            case 'l':
-                goto yy50;
-            default:
-                goto yy13;
-            }
-        yy43:
-            yych = *++pos;
-            switch (yych) {
-            case 'a':
-                goto yy51;
-            default:
-                goto yy13;
-            }
-        yy44:
-            yych = *++pos;
-            switch (yych) {
-            case 'o':
-                goto yy52;
-            default:
-                goto yy13;
-            }
-        yy45:
-            ++pos;
+			yy34:
+				yych = *++pos;
+				switch (yych) {
+					case 'c':
+						goto yy38;
+					default:
+						goto yy13;
+				}
+			yy35:
+				yych = *++pos;
+				switch (yych) {
+					case 't':
+						goto yy39;
+					default:
+						goto yy13;
+				}
+			yy36:
+				yych = *++pos;
+				switch (yych) {
+					case 'r':
+						goto yy40;
+					default:
+						goto yy13;
+				}
+			yy37:
+				yych = *++pos;
+				switch (yych) {
+					case 't':
+						goto yy41;
+					default:
+						goto yy13;
+				}
+			yy38:
+				yych = *++pos;
+				switch (yych) {
+					case 'a':
+						goto yy42;
+					default:
+						goto yy13;
+				}
+			yy39:
+				yych = *++pos;
+				switch (yych) {
+					case 'D':
+						goto yy43;
+					case 'N':
+						goto yy44;
+					case 's':
+						goto yy45;
+					default:
+						goto yy13;
+				}
+			yy40:
+				yych = *++pos;
+				switch (yych) {
+					case 'm':
+						goto yy47;
+					default:
+						goto yy13;
+				}
+			yy41:
+				yych = *++pos;
+				switch (yych) {
+					case 'a':
+						goto yy48;
+					default:
+						goto yy13;
+				}
+			yy42:
+				yych = *++pos;
+				switch (yych) {
+					case 'l':
+						goto yy50;
+					default:
+						goto yy13;
+				}
+			yy43:
+				yych = *++pos;
+				switch (yych) {
+					case 'a':
+						goto yy51;
+					default:
+						goto yy13;
+				}
+			yy44:
+				yych = *++pos;
+				switch (yych) {
+					case 'o':
+						goto yy52;
+					default:
+						goto yy13;
+				}
+			yy45:
+				++pos;
 #line 610 "MshParser.c++.re2c"
-            {
-                lex_state = 4;
-                return TT_OPEN_ELEMENTS;
-            }
+				{
+					lex_state = 4;
+					return TT_OPEN_ELEMENTS;
+				}
 #line 843 "MshParser.c++"
-        yy47:
-            yych = *++pos;
-            switch (yych) {
-            case 'a':
-                goto yy53;
-            default:
-                goto yy13;
-            }
-        yy48:
-            ++pos;
+			yy47:
+				yych = *++pos;
+				switch (yych) {
+					case 'a':
+						goto yy53;
+					default:
+						goto yy13;
+				}
+			yy48:
+				++pos;
 #line 612 "MshParser.c++.re2c"
-            {
-                return TT_OPEN_NODE_DATA;
-            }
+				{ return TT_OPEN_NODE_DATA; }
 #line 854 "MshParser.c++"
-        yy50:
-            yych = *++pos;
-            switch (yych) {
-            case 'N':
-                goto yy54;
-            default:
-                goto yy13;
-            }
-        yy51:
-            yych = *++pos;
-            switch (yych) {
-            case 't':
-                goto yy55;
-            default:
-                goto yy13;
-            }
-        yy52:
-            yych = *++pos;
-            switch (yych) {
-            case 'd':
-                goto yy56;
-            default:
-                goto yy13;
-            }
-        yy53:
-            yych = *++pos;
-            switch (yych) {
-            case 't':
-                goto yy57;
-            default:
-                goto yy13;
-            }
-        yy54:
-            yych = *++pos;
-            switch (yych) {
-            case 'a':
-                goto yy59;
-            default:
-                goto yy13;
-            }
-        yy55:
-            yych = *++pos;
-            switch (yych) {
-            case 'a':
-                goto yy60;
-            default:
-                goto yy13;
-            }
-        yy56:
-            yych = *++pos;
-            switch (yych) {
-            case 'e':
-                goto yy62;
-            default:
-                goto yy13;
-            }
-        yy57:
-            ++pos;
+			yy50:
+				yych = *++pos;
+				switch (yych) {
+					case 'N':
+						goto yy54;
+					default:
+						goto yy13;
+				}
+			yy51:
+				yych = *++pos;
+				switch (yych) {
+					case 't':
+						goto yy55;
+					default:
+						goto yy13;
+				}
+			yy52:
+				yych = *++pos;
+				switch (yych) {
+					case 'd':
+						goto yy56;
+					default:
+						goto yy13;
+				}
+			yy53:
+				yych = *++pos;
+				switch (yych) {
+					case 't':
+						goto yy57;
+					default:
+						goto yy13;
+				}
+			yy54:
+				yych = *++pos;
+				switch (yych) {
+					case 'a':
+						goto yy59;
+					default:
+						goto yy13;
+				}
+			yy55:
+				yych = *++pos;
+				switch (yych) {
+					case 'a':
+						goto yy60;
+					default:
+						goto yy13;
+				}
+			yy56:
+				yych = *++pos;
+				switch (yych) {
+					case 'e':
+						goto yy62;
+					default:
+						goto yy13;
+				}
+			yy57:
+				++pos;
 #line 608 "MshParser.c++.re2c"
-            {
-                lex_state = 1;
-                return TT_OPEN_MESH_FORMAT;
-            }
+				{
+					lex_state = 1;
+					return TT_OPEN_MESH_FORMAT;
+				}
 #line 901 "MshParser.c++"
-        yy59:
-            yych = *++pos;
-            switch (yych) {
-            case 'm':
-                goto yy63;
-            default:
-                goto yy13;
-            }
-        yy60:
-            ++pos;
+			yy59:
+				yych = *++pos;
+				switch (yych) {
+					case 'm':
+						goto yy63;
+					default:
+						goto yy13;
+				}
+			yy60:
+				++pos;
 #line 613 "MshParser.c++.re2c"
-            {
-                return TT_OPEN_ELEMENT_DATA;
-            }
+				{ return TT_OPEN_ELEMENT_DATA; }
 #line 912 "MshParser.c++"
-        yy62:
-            yych = *++pos;
-            switch (yych) {
-            case 'D':
-                goto yy64;
-            default:
-                goto yy13;
-            }
-        yy63:
-            yych = *++pos;
-            switch (yych) {
-            case 'e':
-                goto yy65;
-            default:
-                goto yy13;
-            }
-        yy64:
-            yych = *++pos;
-            switch (yych) {
-            case 'a':
-                goto yy66;
-            default:
-                goto yy13;
-            }
-        yy65:
-            yych = *++pos;
-            switch (yych) {
-            case 's':
-                goto yy67;
-            default:
-                goto yy13;
-            }
-        yy66:
-            yych = *++pos;
-            switch (yych) {
-            case 't':
-                goto yy69;
-            default:
-                goto yy13;
-            }
-        yy67:
-            ++pos;
+			yy62:
+				yych = *++pos;
+				switch (yych) {
+					case 'D':
+						goto yy64;
+					default:
+						goto yy13;
+				}
+			yy63:
+				yych = *++pos;
+				switch (yych) {
+					case 'e':
+						goto yy65;
+					default:
+						goto yy13;
+				}
+			yy64:
+				yych = *++pos;
+				switch (yych) {
+					case 'a':
+						goto yy66;
+					default:
+						goto yy13;
+				}
+			yy65:
+				yych = *++pos;
+				switch (yych) {
+					case 's':
+						goto yy67;
+					default:
+						goto yy13;
+				}
+			yy66:
+				yych = *++pos;
+				switch (yych) {
+					case 't':
+						goto yy69;
+					default:
+						goto yy13;
+				}
+			yy67:
+				++pos;
 #line 611 "MshParser.c++.re2c"
-            {
-                return TT_OPEN_PHYSICAL_NAMES;
-            }
+				{ return TT_OPEN_PHYSICAL_NAMES; }
 #line 947 "MshParser.c++"
-        yy69:
-            yych = *++pos;
-            switch (yych) {
-            case 'a':
-                goto yy70;
-            default:
-                goto yy13;
-            }
-        yy70:
-            ++pos;
+			yy69:
+				yych = *++pos;
+				switch (yych) {
+					case 'a':
+						goto yy70;
+					default:
+						goto yy13;
+				}
+			yy70:
+				++pos;
 #line 614 "MshParser.c++.re2c"
-            {
-                return TT_OPEN_ELEMENT_NODE_DATA;
-            }
+				{ return TT_OPEN_ELEMENT_NODE_DATA; }
 #line 958 "MshParser.c++"
-        }
+			}
 #line 619 "MshParser.c++.re2c"
 
-    } break;
+		} break;
 
-    case 1: // get parser version as a lexer token
-    {
-
+		case 1:	 // get parser version as a lexer token
+		{
 #line 968 "MshParser.c++"
-        {
-            char yych;
-            unsigned int yyaccept = 0;
-            if ((limit - pos) < 14)
-                YYFILL(14);
-            yych = *pos;
-            switch (yych) {
-            case 0x00:
-                goto yy74;
-            case '\n':
-                goto yy78;
-            case ' ':
-                goto yy80;
-            case '$':
-                goto yy83;
-            case '0':
-                goto yy84;
-            case '1':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy86;
-            case '2':
-                goto yy88;
-            default:
-                goto yy76;
-            }
-        yy74:
-            ++pos;
+			{
+				char yych;
+				unsigned int yyaccept = 0;
+				if ((limit - pos) < 14) YYFILL(14);
+				yych = *pos;
+				switch (yych) {
+					case 0x00:
+						goto yy74;
+					case '\n':
+						goto yy78;
+					case ' ':
+						goto yy80;
+					case '$':
+						goto yy83;
+					case '0':
+						goto yy84;
+					case '1':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy86;
+					case '2':
+						goto yy88;
+					default:
+						goto yy76;
+				}
+			yy74:
+				++pos;
 #line 632 "MshParser.c++.re2c"
-            {
-                return TT_EOF;
-            }
+				{ return TT_EOF; }
 #line 995 "MshParser.c++"
-        yy76:
-            ++pos;
-        yy77 :
+			yy76:
+				++pos;
+			yy77 :
 #line 634 "MshParser.c++.re2c"
-        {
-            return TT_UNKNOWN_TOKEN;
-        }
+			{
+				return TT_UNKNOWN_TOKEN;
+			}
 #line 1001 "MshParser.c++"
-        yy78:
-            ++pos;
+			yy78:
+				++pos;
 #line 631 "MshParser.c++.re2c"
-            {
-                error.line_number++;
-                return TT_EOL;
-            }
+				{
+					error.line_number++;
+					return TT_EOL;
+				}
 #line 1006 "MshParser.c++"
-        yy80:
-            ++pos;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case ' ':
-                goto yy80;
-            default:
-                goto yy82;
-            }
-        yy82 :
+			yy80:
+				++pos;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case ' ':
+						goto yy80;
+					default:
+						goto yy82;
+				}
+			yy82 :
 #line 633 "MshParser.c++.re2c"
-        {
-            goto std;
-        }
+			{
+				goto std;
+			}
 #line 1018 "MshParser.c++"
-        yy83:
-            yyaccept = 0;
-            yych = *(marker = ++pos);
-            switch (yych) {
-            case 'E':
-                goto yy89;
-            default:
-                goto yy77;
-            }
-        yy84:
-            ++pos;
+			yy83:
+				yyaccept = 0;
+				yych = *(marker = ++pos);
+				switch (yych) {
+					case 'E':
+						goto yy89;
+					default:
+						goto yy77;
+				}
+			yy84:
+				++pos;
 #line 628 "MshParser.c++.re2c"
-            {
-                return TT_MF_FILE_TYPE_ASCII;
-            }
+				{ return TT_MF_FILE_TYPE_ASCII; }
 #line 1030 "MshParser.c++"
-        yy86:
-            ++pos;
-        yy87 :
+			yy86:
+				++pos;
+			yy87 :
 #line 629 "MshParser.c++.re2c"
-        {
-            return TT_MF_DATA_SIZE;
-        }
+			{
+				return TT_MF_DATA_SIZE;
+			}
 #line 1036 "MshParser.c++"
-        yy88:
-            yyaccept = 1;
-            yych = *(marker = ++pos);
-            switch (yych) {
-            case '.':
-                goto yy91;
-            default:
-                goto yy87;
-            }
-        yy89:
-            yych = *++pos;
-            switch (yych) {
-            case 'n':
-                goto yy92;
-            default:
-                goto yy90;
-            }
-        yy90:
-            pos = marker;
-            if (yyaccept == 0) {
-                goto yy77;
-            } else {
-                goto yy87;
-            }
-        yy91:
-            yych = *++pos;
-            switch (yych) {
-            case '1':
-                goto yy93;
-            case '2':
-                goto yy95;
-            default:
-                goto yy90;
-            }
-        yy92:
-            yych = *++pos;
-            switch (yych) {
-            case 'd':
-                goto yy97;
-            default:
-                goto yy90;
-            }
-        yy93:
-            ++pos;
+			yy88:
+				yyaccept = 1;
+				yych = *(marker = ++pos);
+				switch (yych) {
+					case '.':
+						goto yy91;
+					default:
+						goto yy87;
+				}
+			yy89:
+				yych = *++pos;
+				switch (yych) {
+					case 'n':
+						goto yy92;
+					default:
+						goto yy90;
+				}
+			yy90:
+				pos = marker;
+				if (yyaccept == 0) {
+					goto yy77;
+				} else {
+					goto yy87;
+				}
+			yy91:
+				yych = *++pos;
+				switch (yych) {
+					case '1':
+						goto yy93;
+					case '2':
+						goto yy95;
+					default:
+						goto yy90;
+				}
+			yy92:
+				yych = *++pos;
+				switch (yych) {
+					case 'd':
+						goto yy97;
+					default:
+						goto yy90;
+				}
+			yy93:
+				++pos;
 #line 626 "MshParser.c++.re2c"
-            {
-                return TT_VERSION_2_1;
-            }
+				{ return TT_VERSION_2_1; }
 #line 1074 "MshParser.c++"
-        yy95:
-            ++pos;
+			yy95:
+				++pos;
 #line 627 "MshParser.c++.re2c"
-            {
-                return TT_VERSION_2_1;
-            }
+				{ return TT_VERSION_2_1; }
 #line 1079 "MshParser.c++"
-        yy97:
-            yych = *++pos;
-            switch (yych) {
-            case 'M':
-                goto yy98;
-            default:
-                goto yy90;
-            }
-        yy98:
-            yych = *++pos;
-            switch (yych) {
-            case 'e':
-                goto yy99;
-            default:
-                goto yy90;
-            }
-        yy99:
-            yych = *++pos;
-            switch (yych) {
-            case 's':
-                goto yy100;
-            default:
-                goto yy90;
-            }
-        yy100:
-            yych = *++pos;
-            switch (yych) {
-            case 'h':
-                goto yy101;
-            default:
-                goto yy90;
-            }
-        yy101:
-            yych = *++pos;
-            switch (yych) {
-            case 'F':
-                goto yy102;
-            default:
-                goto yy90;
-            }
-        yy102:
-            yych = *++pos;
-            switch (yych) {
-            case 'o':
-                goto yy103;
-            default:
-                goto yy90;
-            }
-        yy103:
-            yych = *++pos;
-            switch (yych) {
-            case 'r':
-                goto yy104;
-            default:
-                goto yy90;
-            }
-        yy104:
-            yych = *++pos;
-            switch (yych) {
-            case 'm':
-                goto yy105;
-            default:
-                goto yy90;
-            }
-        yy105:
-            yych = *++pos;
-            switch (yych) {
-            case 'a':
-                goto yy106;
-            default:
-                goto yy90;
-            }
-        yy106:
-            yych = *++pos;
-            switch (yych) {
-            case 't':
-                goto yy107;
-            default:
-                goto yy90;
-            }
-        yy107:
-            ++pos;
+			yy97:
+				yych = *++pos;
+				switch (yych) {
+					case 'M':
+						goto yy98;
+					default:
+						goto yy90;
+				}
+			yy98:
+				yych = *++pos;
+				switch (yych) {
+					case 'e':
+						goto yy99;
+					default:
+						goto yy90;
+				}
+			yy99:
+				yych = *++pos;
+				switch (yych) {
+					case 's':
+						goto yy100;
+					default:
+						goto yy90;
+				}
+			yy100:
+				yych = *++pos;
+				switch (yych) {
+					case 'h':
+						goto yy101;
+					default:
+						goto yy90;
+				}
+			yy101:
+				yych = *++pos;
+				switch (yych) {
+					case 'F':
+						goto yy102;
+					default:
+						goto yy90;
+				}
+			yy102:
+				yych = *++pos;
+				switch (yych) {
+					case 'o':
+						goto yy103;
+					default:
+						goto yy90;
+				}
+			yy103:
+				yych = *++pos;
+				switch (yych) {
+					case 'r':
+						goto yy104;
+					default:
+						goto yy90;
+				}
+			yy104:
+				yych = *++pos;
+				switch (yych) {
+					case 'm':
+						goto yy105;
+					default:
+						goto yy90;
+				}
+			yy105:
+				yych = *++pos;
+				switch (yych) {
+					case 'a':
+						goto yy106;
+					default:
+						goto yy90;
+				}
+			yy106:
+				yych = *++pos;
+				switch (yych) {
+					case 't':
+						goto yy107;
+					default:
+						goto yy90;
+				}
+			yy107:
+				++pos;
 #line 630 "MshParser.c++.re2c"
-            {
-                lex_state = 0;
-                return TT_CLOSE_MESH_FORMAT;
-            }
+				{
+					lex_state = 0;
+					return TT_CLOSE_MESH_FORMAT;
+				}
 #line 1144 "MshParser.c++"
-        }
+			}
 #line 635 "MshParser.c++.re2c"
 
-    } break;
+		} break;
 
-    case 2: // parse nodes section: index
-    {
-
+		case 2:	 // parse nodes section: index
+		{
 #line 1154 "MshParser.c++"
-        {
-            char yych;
-            if ((limit - pos) < 9)
-                YYFILL(9);
-            yych = *pos;
-            switch (yych) {
-            case 0x00:
-                goto yy111;
-            case '\n':
-                goto yy115;
-            case ' ':
-                goto yy117;
-            case '$':
-                goto yy120;
-            case '0':
-                goto yy121;
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy123;
-            default:
-                goto yy113;
-            }
-        yy111:
-            ++pos;
+			{
+				char yych;
+				if ((limit - pos) < 9) YYFILL(9);
+				yych = *pos;
+				switch (yych) {
+					case 0x00:
+						goto yy111;
+					case '\n':
+						goto yy115;
+					case ' ':
+						goto yy117;
+					case '$':
+						goto yy120;
+					case '0':
+						goto yy121;
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy123;
+					default:
+						goto yy113;
+				}
+			yy111:
+				++pos;
 #line 649 "MshParser.c++.re2c"
-            {
-                return TT_EOF;
-            }
+				{ return TT_EOF; }
 #line 1180 "MshParser.c++"
-        yy113:
-            ++pos;
-        yy114 :
+			yy113:
+				++pos;
+			yy114 :
 #line 651 "MshParser.c++.re2c"
-        {
-            return TT_UNKNOWN_TOKEN;
-        }
+			{
+				return TT_UNKNOWN_TOKEN;
+			}
 #line 1186 "MshParser.c++"
-        yy115:
-            ++pos;
+			yy115:
+				++pos;
 #line 648 "MshParser.c++.re2c"
-            {
-                error.line_number++;
-                return TT_EOL;
-            }
+				{
+					error.line_number++;
+					return TT_EOL;
+				}
 #line 1191 "MshParser.c++"
-        yy117:
-            ++pos;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case ' ':
-                goto yy117;
-            default:
-                goto yy119;
-            }
-        yy119 :
+			yy117:
+				++pos;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case ' ':
+						goto yy117;
+					default:
+						goto yy119;
+				}
+			yy119 :
 #line 650 "MshParser.c++.re2c"
-        {
-            goto std;
-        }
+			{
+				goto std;
+			}
 #line 1203 "MshParser.c++"
-        yy120:
-            yych = *(marker = ++pos);
-            switch (yych) {
-            case 'E':
-                goto yy125;
-            default:
-                goto yy114;
-            }
-        yy121:
-            ++pos;
-        yy122 :
+			yy120:
+				yych = *(marker = ++pos);
+				switch (yych) {
+					case 'E':
+						goto yy125;
+					default:
+						goto yy114;
+				}
+			yy121:
+				++pos;
+			yy122 :
 #line 642 "MshParser.c++.re2c"
-        {
-            lex_state = 3;
-            setIndex();
-            return TT_INDEX;
-        }
+			{
+				lex_state = 3;
+				setIndex();
+				return TT_INDEX;
+			}
 #line 1219 "MshParser.c++"
-        yy123:
-            ++pos;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy123;
-            default:
-                goto yy122;
-            }
-        yy125:
-            yych = *++pos;
-            switch (yych) {
-            case 'n':
-                goto yy127;
-            default:
-                goto yy126;
-            }
-        yy126:
-            pos = marker;
-            goto yy114;
-        yy127:
-            yych = *++pos;
-            switch (yych) {
-            case 'd':
-                goto yy128;
-            default:
-                goto yy126;
-            }
-        yy128:
-            yych = *++pos;
-            switch (yych) {
-            case 'N':
-                goto yy129;
-            default:
-                goto yy126;
-            }
-        yy129:
-            yych = *++pos;
-            switch (yych) {
-            case 'o':
-                goto yy130;
-            default:
-                goto yy126;
-            }
-        yy130:
-            yych = *++pos;
-            switch (yych) {
-            case 'd':
-                goto yy131;
-            default:
-                goto yy126;
-            }
-        yy131:
-            yych = *++pos;
-            switch (yych) {
-            case 'e':
-                goto yy132;
-            default:
-                goto yy126;
-            }
-        yy132:
-            yych = *++pos;
-            switch (yych) {
-            case 's':
-                goto yy133;
-            default:
-                goto yy126;
-            }
-        yy133:
-            ++pos;
+			yy123:
+				++pos;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy123;
+					default:
+						goto yy122;
+				}
+			yy125:
+				yych = *++pos;
+				switch (yych) {
+					case 'n':
+						goto yy127;
+					default:
+						goto yy126;
+				}
+			yy126:
+				pos = marker;
+				goto yy114;
+			yy127:
+				yych = *++pos;
+				switch (yych) {
+					case 'd':
+						goto yy128;
+					default:
+						goto yy126;
+				}
+			yy128:
+				yych = *++pos;
+				switch (yych) {
+					case 'N':
+						goto yy129;
+					default:
+						goto yy126;
+				}
+			yy129:
+				yych = *++pos;
+				switch (yych) {
+					case 'o':
+						goto yy130;
+					default:
+						goto yy126;
+				}
+			yy130:
+				yych = *++pos;
+				switch (yych) {
+					case 'd':
+						goto yy131;
+					default:
+						goto yy126;
+				}
+			yy131:
+				yych = *++pos;
+				switch (yych) {
+					case 'e':
+						goto yy132;
+					default:
+						goto yy126;
+				}
+			yy132:
+				yych = *++pos;
+				switch (yych) {
+					case 's':
+						goto yy133;
+					default:
+						goto yy126;
+				}
+			yy133:
+				++pos;
 #line 647 "MshParser.c++.re2c"
-            {
-                lex_state = 0;
-                return TT_CLOSE_NODES;
-            }
+				{
+					lex_state = 0;
+					return TT_CLOSE_NODES;
+				}
 #line 1286 "MshParser.c++"
-        }
+			}
 #line 652 "MshParser.c++.re2c"
 
-    } break;
+		} break;
 
-    case 3: // parse nodes section: coordinates
-    {
-
+		case 3:	 // parse nodes section: coordinates
+		{
 #line 1296 "MshParser.c++"
-        {
-            char yych;
-            if ((limit - pos) < 4)
-                YYFILL(4);
-            yych = *pos;
-            switch (yych) {
-            case 0x00:
-                goto yy137;
-            case '\n':
-                goto yy141;
-            case ' ':
-                goto yy143;
-            case '-':
-                goto yy146;
-            case '0':
-                goto yy147;
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy149;
-            default:
-                goto yy139;
-            }
-        yy137:
-            ++pos;
+			{
+				char yych;
+				if ((limit - pos) < 4) YYFILL(4);
+				yych = *pos;
+				switch (yych) {
+					case 0x00:
+						goto yy137;
+					case '\n':
+						goto yy141;
+					case ' ':
+						goto yy143;
+					case '-':
+						goto yy146;
+					case '0':
+						goto yy147;
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy149;
+					default:
+						goto yy139;
+				}
+			yy137:
+				++pos;
 #line 661 "MshParser.c++.re2c"
-            {
-                return TT_EOF;
-            }
+				{ return TT_EOF; }
 #line 1322 "MshParser.c++"
-        yy139:
-            ++pos;
-        yy140 :
+			yy139:
+				++pos;
+			yy140 :
 #line 663 "MshParser.c++.re2c"
-        {
-            return TT_UNKNOWN_TOKEN;
-        }
+			{
+				return TT_UNKNOWN_TOKEN;
+			}
 #line 1328 "MshParser.c++"
-        yy141:
-            ++pos;
+			yy141:
+				++pos;
 #line 660 "MshParser.c++.re2c"
-            {
-                lex_state = 2;
-                error.line_number++;
-                return TT_EOL;
-            }
+				{
+					lex_state = 2;
+					error.line_number++;
+					return TT_EOL;
+				}
 #line 1333 "MshParser.c++"
-        yy143:
-            ++pos;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case ' ':
-                goto yy143;
-            default:
-                goto yy145;
-            }
-        yy145 :
+			yy143:
+				++pos;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case ' ':
+						goto yy143;
+					default:
+						goto yy145;
+				}
+			yy145 :
 #line 662 "MshParser.c++.re2c"
-        {
-            goto std;
-        }
+			{
+				goto std;
+			}
 #line 1345 "MshParser.c++"
-        yy146:
-            yych = *++pos;
-            switch (yych) {
-            case '0':
-                goto yy147;
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy149;
-            default:
-                goto yy140;
-            }
-        yy147:
-            yych = *(marker = ++pos);
-            switch (yych) {
-            case '.':
-                goto yy151;
-            default:
-                goto yy148;
-            }
-        yy148 :
+			yy146:
+				yych = *++pos;
+				switch (yych) {
+					case '0':
+						goto yy147;
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy149;
+					default:
+						goto yy140;
+				}
+			yy147:
+				yych = *(marker = ++pos);
+				switch (yych) {
+					case '.':
+						goto yy151;
+					default:
+						goto yy148;
+				}
+			yy148 :
 #line 659 "MshParser.c++.re2c"
-        {
-            setNumber();
-            return TT_NUMBER;
-        }
+			{
+				setNumber();
+				return TT_NUMBER;
+			}
 #line 1370 "MshParser.c++"
-        yy149:
-            marker = ++pos;
-            if ((limit - pos) < 2)
-                YYFILL(2);
-            yych = *pos;
-            switch (yych) {
-            case '.':
-                goto yy151;
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy149;
-            default:
-                goto yy148;
-            }
-        yy151:
-            yych = *++pos;
-            switch (yych) {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy153;
-            default:
-                goto yy152;
-            }
-        yy152:
-            pos = marker;
-            goto yy148;
-        yy153:
-            marker = ++pos;
-            if ((limit - pos) < 3)
-                YYFILL(3);
-            yych = *pos;
-            switch (yych) {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy153;
-            case 'E':
-            case 'e':
-                goto yy155;
-            default:
-                goto yy148;
-            }
-        yy155:
-            yych = *++pos;
-            switch (yych) {
-            case '+':
-            case '-':
-                goto yy156;
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy157;
-            default:
-                goto yy152;
-            }
-        yy156:
-            yych = *++pos;
-            switch (yych) {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy157;
-            default:
-                goto yy152;
-            }
-        yy157:
-            ++pos;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy157;
-            default:
-                goto yy148;
-            }
-        }
+			yy149:
+				marker = ++pos;
+				if ((limit - pos) < 2) YYFILL(2);
+				yych = *pos;
+				switch (yych) {
+					case '.':
+						goto yy151;
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy149;
+					default:
+						goto yy148;
+				}
+			yy151:
+				yych = *++pos;
+				switch (yych) {
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy153;
+					default:
+						goto yy152;
+				}
+			yy152:
+				pos = marker;
+				goto yy148;
+			yy153:
+				marker = ++pos;
+				if ((limit - pos) < 3) YYFILL(3);
+				yych = *pos;
+				switch (yych) {
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy153;
+					case 'E':
+					case 'e':
+						goto yy155;
+					default:
+						goto yy148;
+				}
+			yy155:
+				yych = *++pos;
+				switch (yych) {
+					case '+':
+					case '-':
+						goto yy156;
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy157;
+					default:
+						goto yy152;
+				}
+			yy156:
+				yych = *++pos;
+				switch (yych) {
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy157;
+					default:
+						goto yy152;
+				}
+			yy157:
+				++pos;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy157;
+					default:
+						goto yy148;
+				}
+			}
 #line 664 "MshParser.c++.re2c"
 
-    } break;
+		} break;
 
-    case 4: // parse elements section
-    {
-
+		case 4:	 // parse elements section
+		{
 #line 1484 "MshParser.c++"
-        {
-            char yych;
-            if ((limit - pos) < 12)
-                YYFILL(12);
-            yych = *pos;
-            switch (yych) {
-            case 0x00:
-                goto yy161;
-            case '\n':
-                goto yy165;
-            case ' ':
-                goto yy167;
-            case '$':
-                goto yy170;
-            case '0':
-                goto yy171;
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy173;
-            default:
-                goto yy163;
-            }
-        yy161:
-            ++pos;
+			{
+				char yych;
+				if ((limit - pos) < 12) YYFILL(12);
+				yych = *pos;
+				switch (yych) {
+					case 0x00:
+						goto yy161;
+					case '\n':
+						goto yy165;
+					case ' ':
+						goto yy167;
+					case '$':
+						goto yy170;
+					case '0':
+						goto yy171;
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy173;
+					default:
+						goto yy163;
+				}
+			yy161:
+				++pos;
 #line 674 "MshParser.c++.re2c"
-            {
-                return TT_EOF;
-            }
+				{ return TT_EOF; }
 #line 1510 "MshParser.c++"
-        yy163:
-            ++pos;
-        yy164 :
+			yy163:
+				++pos;
+			yy164 :
 #line 676 "MshParser.c++.re2c"
-        {
-            return TT_UNKNOWN_TOKEN;
-        }
+			{
+				return TT_UNKNOWN_TOKEN;
+			}
 #line 1516 "MshParser.c++"
-        yy165:
-            ++pos;
+			yy165:
+				++pos;
 #line 673 "MshParser.c++.re2c"
-            {
-                error.line_number++;
-                return TT_EOL;
-            }
+				{
+					error.line_number++;
+					return TT_EOL;
+				}
 #line 1521 "MshParser.c++"
-        yy167:
-            ++pos;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case ' ':
-                goto yy167;
-            default:
-                goto yy169;
-            }
-        yy169 :
+			yy167:
+				++pos;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case ' ':
+						goto yy167;
+					default:
+						goto yy169;
+				}
+			yy169 :
 #line 675 "MshParser.c++.re2c"
-        {
-            goto std;
-        }
+			{
+				goto std;
+			}
 #line 1533 "MshParser.c++"
-        yy170:
-            yych = *(marker = ++pos);
-            switch (yych) {
-            case 'E':
-                goto yy175;
-            default:
-                goto yy164;
-            }
-        yy171:
-            ++pos;
-        yy172 :
+			yy170:
+				yych = *(marker = ++pos);
+				switch (yych) {
+					case 'E':
+						goto yy175;
+					default:
+						goto yy164;
+				}
+			yy171:
+				++pos;
+			yy172 :
 #line 671 "MshParser.c++.re2c"
-        {
-            lex_state = 5;
-            setIndex();
-            return TT_INDEX;
-        }
+			{
+				lex_state = 5;
+				setIndex();
+				return TT_INDEX;
+			}
 #line 1545 "MshParser.c++"
-        yy173:
-            ++pos;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy173;
-            default:
-                goto yy172;
-            }
-        yy175:
-            yych = *++pos;
-            switch (yych) {
-            case 'n':
-                goto yy177;
-            default:
-                goto yy176;
-            }
-        yy176:
-            pos = marker;
-            goto yy164;
-        yy177:
-            yych = *++pos;
-            switch (yych) {
-            case 'd':
-                goto yy178;
-            default:
-                goto yy176;
-            }
-        yy178:
-            yych = *++pos;
-            switch (yych) {
-            case 'E':
-                goto yy179;
-            default:
-                goto yy176;
-            }
-        yy179:
-            yych = *++pos;
-            switch (yych) {
-            case 'l':
-                goto yy180;
-            default:
-                goto yy176;
-            }
-        yy180:
-            yych = *++pos;
-            switch (yych) {
-            case 'e':
-                goto yy181;
-            default:
-                goto yy176;
-            }
-        yy181:
-            yych = *++pos;
-            switch (yych) {
-            case 'm':
-                goto yy182;
-            default:
-                goto yy176;
-            }
-        yy182:
-            yych = *++pos;
-            switch (yych) {
-            case 'e':
-                goto yy183;
-            default:
-                goto yy176;
-            }
-        yy183:
-            yych = *++pos;
-            switch (yych) {
-            case 'n':
-                goto yy184;
-            default:
-                goto yy176;
-            }
-        yy184:
-            yych = *++pos;
-            switch (yych) {
-            case 't':
-                goto yy185;
-            default:
-                goto yy176;
-            }
-        yy185:
-            yych = *++pos;
-            switch (yych) {
-            case 's':
-                goto yy186;
-            default:
-                goto yy176;
-            }
-        yy186:
-            ++pos;
+			yy173:
+				++pos;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy173;
+					default:
+						goto yy172;
+				}
+			yy175:
+				yych = *++pos;
+				switch (yych) {
+					case 'n':
+						goto yy177;
+					default:
+						goto yy176;
+				}
+			yy176:
+				pos = marker;
+				goto yy164;
+			yy177:
+				yych = *++pos;
+				switch (yych) {
+					case 'd':
+						goto yy178;
+					default:
+						goto yy176;
+				}
+			yy178:
+				yych = *++pos;
+				switch (yych) {
+					case 'E':
+						goto yy179;
+					default:
+						goto yy176;
+				}
+			yy179:
+				yych = *++pos;
+				switch (yych) {
+					case 'l':
+						goto yy180;
+					default:
+						goto yy176;
+				}
+			yy180:
+				yych = *++pos;
+				switch (yych) {
+					case 'e':
+						goto yy181;
+					default:
+						goto yy176;
+				}
+			yy181:
+				yych = *++pos;
+				switch (yych) {
+					case 'm':
+						goto yy182;
+					default:
+						goto yy176;
+				}
+			yy182:
+				yych = *++pos;
+				switch (yych) {
+					case 'e':
+						goto yy183;
+					default:
+						goto yy176;
+				}
+			yy183:
+				yych = *++pos;
+				switch (yych) {
+					case 'n':
+						goto yy184;
+					default:
+						goto yy176;
+				}
+			yy184:
+				yych = *++pos;
+				switch (yych) {
+					case 't':
+						goto yy185;
+					default:
+						goto yy176;
+				}
+			yy185:
+				yych = *++pos;
+				switch (yych) {
+					case 's':
+						goto yy186;
+					default:
+						goto yy176;
+				}
+			yy186:
+				++pos;
 #line 672 "MshParser.c++.re2c"
-            {
-                lex_state = 0;
-                return TT_CLOSE_ELEMENTS;
-            }
+				{
+					lex_state = 0;
+					return TT_CLOSE_ELEMENTS;
+				}
 #line 1630 "MshParser.c++"
-        }
+			}
 #line 677 "MshParser.c++.re2c"
 
-    } break;
+		} break;
 
-    case 5: // parse element type
-    {
-
+		case 5:	 // parse element type
+		{
 #line 1640 "MshParser.c++"
-        {
-            char yych;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case 0x00:
-                goto yy190;
-            case '\n':
-                goto yy194;
-            case ' ':
-                goto yy196;
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy199;
-            default:
-                goto yy192;
-            }
-        yy190:
-            ++pos;
+			{
+				char yych;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case 0x00:
+						goto yy190;
+					case '\n':
+						goto yy194;
+					case ' ':
+						goto yy196;
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy199;
+					default:
+						goto yy192;
+				}
+			yy190:
+				++pos;
 #line 724 "MshParser.c++.re2c"
-            {
-                return TT_EOF;
-            }
+				{ return TT_EOF; }
 #line 1665 "MshParser.c++"
-        yy192:
-            ++pos;
+			yy192:
+				++pos;
 #line 726 "MshParser.c++.re2c"
-            {
-                return TT_UNKNOWN_TOKEN;
-            }
+				{ return TT_UNKNOWN_TOKEN; }
 #line 1670 "MshParser.c++"
-        yy194:
-            ++pos;
+			yy194:
+				++pos;
 #line 723 "MshParser.c++.re2c"
-            {
-                lex_state = 4;
-                error.line_number++;
-                return TT_EOL;
-            }
+				{
+					lex_state = 4;
+					error.line_number++;
+					return TT_EOL;
+				}
 #line 1675 "MshParser.c++"
-        yy196:
-            ++pos;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case ' ':
-                goto yy196;
-            default:
-                goto yy198;
-            }
-        yy198 :
+			yy196:
+				++pos;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case ' ':
+						goto yy196;
+					default:
+						goto yy198;
+				}
+			yy198 :
 #line 725 "MshParser.c++.re2c"
-        {
-            goto std;
-        }
+			{
+				goto std;
+			}
 #line 1687 "MshParser.c++"
-        yy199:
-            ++pos;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy199;
-            default:
-                goto yy201;
-            }
-        yy201 :
+			yy199:
+				++pos;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy199;
+					default:
+						goto yy201;
+				}
+			yy201 :
 #line 684 "MshParser.c++.re2c"
-        {
-            setIndex();
-            lex_state = 6; // custom lexer to parse the tags
-            switch (index_list.back()) {
-            case 2:
-                return TT_ELEMENT_TRIANGLE3;
-            case 3:
-                return TT_ELEMENT_QUADRANGLE4;
-            case 4:
-                return TT_ELEMENT_TETRAHEDRON4;
-            case 5:
-                return TT_ELEMENT_HEXAHEDRON8;
-            case 6:
-                return TT_ELEMENT_PRISM6;
-            case 7:
-                return TT_ELEMENT_PYRAMID5;
-            case 8:
-                return TT_ELEMENT_LINE3;
-            case 9:
-                return TT_ELEMENT_TRIANGLE6;
-            case 10:
-                return TT_ELEMENT_QUADRANGLE9;
-            case 11:
-                return TT_ELEMENT_TETRAHEDRON10;
-            case 12:
-                return TT_ELEMENT_HEXAHEDRON27;
-            case 13:
-                return TT_ELEMENT_PRISM18;
-            case 14:
-                return TT_ELEMENT_PYRAMID14;
-            case 15:
-                return TT_ELEMENT_POINT;
-            case 16:
-                return TT_ELEMENT_QUADRANGLE8;
-            case 17:
-                return TT_ELEMENT_HEXAHEDRON20;
-            case 18:
-                return TT_ELEMENT_PRISM15;
-            case 19:
-                return TT_ELEMENT_PYRAMID13;
-            case 20:
-                return TT_ELEMENT_ITRIANGLE9;
-            case 21:
-                return TT_ELEMENT_TRIANGLE10;
-            case 22:
-                return TT_ELEMENT_ITRIANGLE12;
-            case 23:
-                return TT_ELEMENT_TRIANGLE15;
-            case 24:
-                return TT_ELEMENT_ITRIANGLE15;
-            case 25:
-                return TT_ELEMENT_TRIANGLE21;
-            case 26:
-                return TT_ELEMENT_EDGE4;
-            case 27:
-                return TT_ELEMENT_EDGE5;
-            case 28:
-                return TT_ELEMENT_EDGE6;
-            case 29:
-                return TT_ELEMENT_TETRAHEDRON20;
-            case 30:
-                return TT_ELEMENT_TETRAHEDRON35;
-            case 31:
-                return TT_ELEMENT_TETRAHEDRON56;
-            default:
-                return TT_UNKNOWN_TOKEN;
-            }
-        }
+			{
+				setIndex();
+				lex_state = 6;	// custom lexer to parse the tags
+				switch (index_list.back()) {
+					case 2:
+						return TT_ELEMENT_TRIANGLE3;
+					case 3:
+						return TT_ELEMENT_QUADRANGLE4;
+					case 4:
+						return TT_ELEMENT_TETRAHEDRON4;
+					case 5:
+						return TT_ELEMENT_HEXAHEDRON8;
+					case 6:
+						return TT_ELEMENT_PRISM6;
+					case 7:
+						return TT_ELEMENT_PYRAMID5;
+					case 8:
+						return TT_ELEMENT_LINE3;
+					case 9:
+						return TT_ELEMENT_TRIANGLE6;
+					case 10:
+						return TT_ELEMENT_QUADRANGLE9;
+					case 11:
+						return TT_ELEMENT_TETRAHEDRON10;
+					case 12:
+						return TT_ELEMENT_HEXAHEDRON27;
+					case 13:
+						return TT_ELEMENT_PRISM18;
+					case 14:
+						return TT_ELEMENT_PYRAMID14;
+					case 15:
+						return TT_ELEMENT_POINT;
+					case 16:
+						return TT_ELEMENT_QUADRANGLE8;
+					case 17:
+						return TT_ELEMENT_HEXAHEDRON20;
+					case 18:
+						return TT_ELEMENT_PRISM15;
+					case 19:
+						return TT_ELEMENT_PYRAMID13;
+					case 20:
+						return TT_ELEMENT_ITRIANGLE9;
+					case 21:
+						return TT_ELEMENT_TRIANGLE10;
+					case 22:
+						return TT_ELEMENT_ITRIANGLE12;
+					case 23:
+						return TT_ELEMENT_TRIANGLE15;
+					case 24:
+						return TT_ELEMENT_ITRIANGLE15;
+					case 25:
+						return TT_ELEMENT_TRIANGLE21;
+					case 26:
+						return TT_ELEMENT_EDGE4;
+					case 27:
+						return TT_ELEMENT_EDGE5;
+					case 28:
+						return TT_ELEMENT_EDGE6;
+					case 29:
+						return TT_ELEMENT_TETRAHEDRON20;
+					case 30:
+						return TT_ELEMENT_TETRAHEDRON35;
+					case 31:
+						return TT_ELEMENT_TETRAHEDRON56;
+					default:
+						return TT_UNKNOWN_TOKEN;
+				}
+			}
 #line 1746 "MshParser.c++"
-        }
+			}
 #line 727 "MshParser.c++.re2c"
 
-    } break;
+		} break;
 
-    case 6: // get number of tokens
-    {
-
+		case 6:	 // get number of tokens
+		{
 #line 1756 "MshParser.c++"
-        {
-            char yych;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case 0x00:
-                goto yy205;
-            case '\n':
-                goto yy204;
-            case ' ':
-                goto yy209;
-            case '0':
-                goto yy212;
-            case '1':
-                goto yy214;
-            case '2':
-                goto yy216;
-            case '3':
-                goto yy218;
-            default:
-                goto yy207;
-            }
-        yy204:
-        yy205:
-            ++pos;
+			{
+				char yych;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case 0x00:
+						goto yy205;
+					case '\n':
+						goto yy204;
+					case ' ':
+						goto yy209;
+					case '0':
+						goto yy212;
+					case '1':
+						goto yy214;
+					case '2':
+						goto yy216;
+					case '3':
+						goto yy218;
+					default:
+						goto yy207;
+				}
+			yy204:
+			yy205:
+				++pos;
 #line 734 "MshParser.c++.re2c"
-            {
-                return TT_EOF;
-            }
+				{ return TT_EOF; }
 #line 1776 "MshParser.c++"
-        yy207:
-            ++pos;
+			yy207:
+				++pos;
 #line 740 "MshParser.c++.re2c"
-            {
-                return TT_UNKNOWN_TOKEN;
-            }
+				{ return TT_UNKNOWN_TOKEN; }
 #line 1781 "MshParser.c++"
-        yy209:
-            ++pos;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case ' ':
-                goto yy209;
-            default:
-                goto yy211;
-            }
-        yy211 :
+			yy209:
+				++pos;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case ' ':
+						goto yy209;
+					default:
+						goto yy211;
+				}
+			yy211 :
 #line 735 "MshParser.c++.re2c"
-        {
-            goto std;
-        }
+			{
+				goto std;
+			}
 #line 1793 "MshParser.c++"
-        yy212:
-            ++pos;
+			yy212:
+				++pos;
 #line 736 "MshParser.c++.re2c"
-            {
-                lex_state = 7;
-                return TT_0_TAGS;
-            }
+				{
+					lex_state = 7;
+					return TT_0_TAGS;
+				}
 #line 1798 "MshParser.c++"
-        yy214:
-            ++pos;
+			yy214:
+				++pos;
 #line 737 "MshParser.c++.re2c"
-            {
-                lex_state = 7;
-                return TT_1_TAGS;
-            }
+				{
+					lex_state = 7;
+					return TT_1_TAGS;
+				}
 #line 1803 "MshParser.c++"
-        yy216:
-            ++pos;
+			yy216:
+				++pos;
 #line 738 "MshParser.c++.re2c"
-            {
-                lex_state = 7;
-                return TT_2_TAGS;
-            }
+				{
+					lex_state = 7;
+					return TT_2_TAGS;
+				}
 #line 1808 "MshParser.c++"
-        yy218:
-            ++pos;
+			yy218:
+				++pos;
 #line 739 "MshParser.c++.re2c"
-            {
-                lex_state = 7;
-                return TT_3_TAGS;
-            }
+				{
+					lex_state = 7;
+					return TT_3_TAGS;
+				}
 #line 1813 "MshParser.c++"
-        }
+			}
 #line 741 "MshParser.c++.re2c"
 
-    } break;
+		} break;
 
-    case 7: // extract indexes until EOL
-    {
-
+		case 7:	 // extract indexes until EOL
+		{
 #line 1823 "MshParser.c++"
-        {
-            char yych;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case 0x00:
-                goto yy222;
-            case '\n':
-                goto yy226;
-            case ' ':
-                goto yy228;
-            case '0':
-                goto yy231;
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy233;
-            default:
-                goto yy224;
-            }
-        yy222:
-            ++pos;
+			{
+				char yych;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case 0x00:
+						goto yy222;
+					case '\n':
+						goto yy226;
+					case ' ':
+						goto yy228;
+					case '0':
+						goto yy231;
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy233;
+					default:
+						goto yy224;
+				}
+			yy222:
+				++pos;
 #line 749 "MshParser.c++.re2c"
-            {
-                return TT_EOF;
-            }
+				{ return TT_EOF; }
 #line 1848 "MshParser.c++"
-        yy224:
-            ++pos;
+			yy224:
+				++pos;
 #line 752 "MshParser.c++.re2c"
-            {
-                return TT_UNKNOWN_TOKEN;
-            }
+				{ return TT_UNKNOWN_TOKEN; }
 #line 1853 "MshParser.c++"
-        yy226:
-            ++pos;
+			yy226:
+				++pos;
 #line 751 "MshParser.c++.re2c"
-            {
-                lex_state = 4;
-                error.line_number++;
-                return TT_EOL;
-            }
+				{
+					lex_state = 4;
+					error.line_number++;
+					return TT_EOL;
+				}
 #line 1858 "MshParser.c++"
-        yy228:
-            ++pos;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case ' ':
-                goto yy228;
-            default:
-                goto yy230;
-            }
-        yy230 :
+			yy228:
+				++pos;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case ' ':
+						goto yy228;
+					default:
+						goto yy230;
+				}
+			yy230 :
 #line 750 "MshParser.c++.re2c"
-        {
-            goto std;
-        }
+			{
+				goto std;
+			}
 #line 1870 "MshParser.c++"
-        yy231:
-            ++pos;
-        yy232 :
+			yy231:
+				++pos;
+			yy232 :
 #line 748 "MshParser.c++.re2c"
-        {
-            setIndex();
-            return TT_INDEX;
-        }
+			{
+				setIndex();
+				return TT_INDEX;
+			}
 #line 1876 "MshParser.c++"
-        yy233:
-            ++pos;
-            if (limit <= pos)
-                YYFILL(1);
-            yych = *pos;
-            switch (yych) {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                goto yy233;
-            default:
-                goto yy232;
-            }
-        }
+			yy233:
+				++pos;
+				if (limit <= pos) YYFILL(1);
+				yych = *pos;
+				switch (yych) {
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						goto yy233;
+					default:
+						goto yy232;
+				}
+			}
 #line 753 "MshParser.c++.re2c"
-    }
+		}
 
-    default:
-        std::cerr << "Error: default lexer state" << std::endl;
-        return TT_ERROR;
-        break;
-    }
+		default:
+			std::cerr << "Error: default lexer state" << std::endl;
+			return TT_ERROR;
+			break;
+	}
 
-    // should never be reached
-    return TT_ERROR;
+	// should never be reached
+	return TT_ERROR;
 #undef YYFILL
 }
 
-void MshParser::setIndex()
-{
-    long number;
-    number = strtol(tok, &pos, 10);
-    index_list.push_back(number);
+void MshParser::setIndex() {
+	long number;
+	number = strtol(tok, &pos, 10);
+	index_list.push_back(number);
 }
 
-void MshParser::setNumber()
-{
-    float number;
-    number = strtod(tok, &pos);
-    float_list.push_back(number);
+void MshParser::setNumber() {
+	float number;
+	number = strtod(tok, &pos);
+	float_list.push_back(number);
 }
 
-void MshParser::setParserTable()
-{
-    table[NT_START][TT_OPEN_MESH_FORMAT] = PR_START;
+void MshParser::setParserTable() {
+	table[NT_START][TT_OPEN_MESH_FORMAT] = PR_START;
 
-    table[NT_DOCUMENT][TT_OPEN_MESH_FORMAT] = PR_DOCUMENT;
+	table[NT_DOCUMENT][TT_OPEN_MESH_FORMAT] = PR_DOCUMENT;
 
-    table[NT_HEADER][TT_OPEN_MESH_FORMAT] = PR_HEADER;
+	table[NT_HEADER][TT_OPEN_MESH_FORMAT] = PR_HEADER;
 
-    table[NT_MF_VERSION_NUMBER][TT_VERSION_2_1] = PR_MF_VERSION_NUMBER_2_1;
-    table[NT_MF_VERSION_NUMBER][TT_VERSION_2_2] = PR_MF_VERSION_NUMBER_2_2;
-    table[NT_MF_VERSION_NUMBER][TT_UNKNOWN_TOKEN] = PR_MF_VERSION_NUMBER_ERROR; // error just in case
+	table[NT_MF_VERSION_NUMBER][TT_VERSION_2_1] = PR_MF_VERSION_NUMBER_2_1;
+	table[NT_MF_VERSION_NUMBER][TT_VERSION_2_2] = PR_MF_VERSION_NUMBER_2_2;
+	table[NT_MF_VERSION_NUMBER][TT_UNKNOWN_TOKEN] = PR_MF_VERSION_NUMBER_ERROR;	 // error just in case
 
-    table[NT_MF_FILE_TYPE][TT_MF_FILE_TYPE_ASCII] = PR_MF_FILE_TYPE_ASCII;
+	table[NT_MF_FILE_TYPE][TT_MF_FILE_TYPE_ASCII] = PR_MF_FILE_TYPE_ASCII;
 
-    table[NT_MF_DATA_SIZE][TT_MF_DATA_SIZE] = PR_MF_DATA_SIZE;
+	table[NT_MF_DATA_SIZE][TT_MF_DATA_SIZE] = PR_MF_DATA_SIZE;
 
-    table[NT_NODES][TT_OPEN_NODES] = PR_NODES;
-    table[NT_N_NUMBER_OF_NODES][TT_INDEX] = PR_N_NUMBER_OF_NODES;
-    table[NT_N_NUMBER_OF_NODES_SET][TT_EOL] = PR_N_NUMBER_OF_NODES_SET;
-    table[NT_N_NODE_DEFINITION][TT_INDEX] = PR_N_NODE_DEFINITION;
-    table[NT_N_NODE_DEFINITION_SET][TT_EOL] = PR_N_NODE_DEFINITION_SET;
+	table[NT_NODES][TT_OPEN_NODES] = PR_NODES;
+	table[NT_N_NUMBER_OF_NODES][TT_INDEX] = PR_N_NUMBER_OF_NODES;
+	table[NT_N_NUMBER_OF_NODES_SET][TT_EOL] = PR_N_NUMBER_OF_NODES_SET;
+	table[NT_N_NODE_DEFINITION][TT_INDEX] = PR_N_NODE_DEFINITION;
+	table[NT_N_NODE_DEFINITION_SET][TT_EOL] = PR_N_NODE_DEFINITION_SET;
 
-    table[NT_N_NODE_DEFINITION_FOLLOW][TT_INDEX] = PR_N_NODE_DEFINITION_FOLLOW_1;
-    table[NT_N_NODE_DEFINITION_FOLLOW][TT_CLOSE_NODES] = PR_N_NODE_DEFINITION_FOLLOW_2;
+	table[NT_N_NODE_DEFINITION_FOLLOW][TT_INDEX] = PR_N_NODE_DEFINITION_FOLLOW_1;
+	table[NT_N_NODE_DEFINITION_FOLLOW][TT_CLOSE_NODES] = PR_N_NODE_DEFINITION_FOLLOW_2;
 
-    table[NT_ELEMENTS][TT_OPEN_ELEMENTS] = PR_ELEMENTS;
-    table[NT_E_NUMBER_OF_ELEMENTS][TT_INDEX] = PR_E_NUMBER_OF_ELEMENTS;
-    table[NT_E_NUMBER_OF_ELEMENTS_SET][TT_EOL] = PR_E_NUMBER_OF_ELEMENTS_SET;
-    table[NT_E_ELEMENT_DEFINITION][TT_INDEX] = PR_E_ELEMENT_DEFINITION;
+	table[NT_ELEMENTS][TT_OPEN_ELEMENTS] = PR_ELEMENTS;
+	table[NT_E_NUMBER_OF_ELEMENTS][TT_INDEX] = PR_E_NUMBER_OF_ELEMENTS;
+	table[NT_E_NUMBER_OF_ELEMENTS_SET][TT_EOL] = PR_E_NUMBER_OF_ELEMENTS_SET;
+	table[NT_E_ELEMENT_DEFINITION][TT_INDEX] = PR_E_ELEMENT_DEFINITION;
 
-    table[NT_E_ELEMENT_TYPE][TT_ELEMENT_TRIANGLE3] = PR_E_ELEMENT_TRIANGLE3;
-    table[NT_E_ELEMENT_TYPE][TT_ELEMENT_TRIANGLE6] = PR_E_ELEMENT_TRIANGLE6;
-    table[NT_E_ELEMENT_TYPE][TT_ELEMENT_QUADRANGLE4] = PR_E_ELEMENT_QUADRANGLE4;
-    table[NT_E_ELEMENT_TYPE][TT_ELEMENT_QUADRANGLE8] = PR_E_ELEMENT_QUADRANGLE8;
-    table[NT_E_ELEMENT_TYPE][TT_ELEMENT_QUADRANGLE9] = PR_E_ELEMENT_QUADRANGLE9;
+	table[NT_E_ELEMENT_TYPE][TT_ELEMENT_TRIANGLE3] = PR_E_ELEMENT_TRIANGLE3;
+	table[NT_E_ELEMENT_TYPE][TT_ELEMENT_TRIANGLE6] = PR_E_ELEMENT_TRIANGLE6;
+	table[NT_E_ELEMENT_TYPE][TT_ELEMENT_QUADRANGLE4] = PR_E_ELEMENT_QUADRANGLE4;
+	table[NT_E_ELEMENT_TYPE][TT_ELEMENT_QUADRANGLE8] = PR_E_ELEMENT_QUADRANGLE8;
+	table[NT_E_ELEMENT_TYPE][TT_ELEMENT_QUADRANGLE9] = PR_E_ELEMENT_QUADRANGLE9;
 
-    table[NT_E_ELEMENT_TYPE_SET_ELEMENT][TT_EOL] = PR_E_ELEMENT_TYPE_SET_ELEMENT;
-    table[NT_E_ELEMENT_TYPE_SET_FORCE][TT_EOL] = PR_E_ELEMENT_TYPE_SET_FORCE;
+	table[NT_E_ELEMENT_TYPE_SET_ELEMENT][TT_EOL] = PR_E_ELEMENT_TYPE_SET_ELEMENT;
+	table[NT_E_ELEMENT_TYPE_SET_FORCE][TT_EOL] = PR_E_ELEMENT_TYPE_SET_FORCE;
 
-    table[NT_E_ELEMENT_TYPE][TT_ELEMENT_HEXAHEDRON8] = PR_E_ELEMENT_HEXAHEDRON8;
-    table[NT_E_ELEMENT_TYPE][TT_ELEMENT_HEXAHEDRON20] = PR_E_ELEMENT_HEXAHEDRON20;
-    table[NT_E_ELEMENT_TYPE][TT_ELEMENT_HEXAHEDRON27] = PR_E_ELEMENT_HEXAHEDRON27;
-    table[NT_E_ELEMENT_TYPE][TT_ELEMENT_TETRAHEDRON4] = PR_E_ELEMENT_TETRAHEDRON4;
-    table[NT_E_ELEMENT_TYPE][TT_ELEMENT_TETRAHEDRON10] = PR_E_ELEMENT_TETRAHEDRON10;
-    table[NT_E_ELEMENT_TYPE][TT_ELEMENT_PRISM6] = PR_E_ELEMENT_PRISM6;
-    table[NT_E_ELEMENT_TYPE][TT_ELEMENT_PRISM15] = PR_E_ELEMENT_PRISM15;
-    table[NT_E_ELEMENT_TYPE][TT_ELEMENT_PRISM18] = PR_E_ELEMENT_PRISM18;
+	table[NT_E_ELEMENT_TYPE][TT_ELEMENT_HEXAHEDRON8] = PR_E_ELEMENT_HEXAHEDRON8;
+	table[NT_E_ELEMENT_TYPE][TT_ELEMENT_HEXAHEDRON20] = PR_E_ELEMENT_HEXAHEDRON20;
+	table[NT_E_ELEMENT_TYPE][TT_ELEMENT_HEXAHEDRON27] = PR_E_ELEMENT_HEXAHEDRON27;
+	table[NT_E_ELEMENT_TYPE][TT_ELEMENT_TETRAHEDRON4] = PR_E_ELEMENT_TETRAHEDRON4;
+	table[NT_E_ELEMENT_TYPE][TT_ELEMENT_TETRAHEDRON10] = PR_E_ELEMENT_TETRAHEDRON10;
+	table[NT_E_ELEMENT_TYPE][TT_ELEMENT_PRISM6] = PR_E_ELEMENT_PRISM6;
+	table[NT_E_ELEMENT_TYPE][TT_ELEMENT_PRISM15] = PR_E_ELEMENT_PRISM15;
+	table[NT_E_ELEMENT_TYPE][TT_ELEMENT_PRISM18] = PR_E_ELEMENT_PRISM18;
 
-    table[NT_E_ELEMENT_DEFINITION_FOLLOW][TT_INDEX] = PR_E_ELEMENT_DEFINITION_FOLLOW_1;
-    table[NT_E_ELEMENT_DEFINITION_FOLLOW][TT_CLOSE_ELEMENTS] = PR_E_ELEMENT_DEFINITION_FOLLOW_2;
+	table[NT_E_ELEMENT_DEFINITION_FOLLOW][TT_INDEX] = PR_E_ELEMENT_DEFINITION_FOLLOW_1;
+	table[NT_E_ELEMENT_DEFINITION_FOLLOW][TT_CLOSE_ELEMENTS] = PR_E_ELEMENT_DEFINITION_FOLLOW_2;
 
-    table[NT_E_TAGS][TT_0_TAGS] = PR_E_TAGS_0;
-    table[NT_E_TAGS][TT_1_TAGS] = PR_E_TAGS_1;
-    table[NT_E_TAGS][TT_2_TAGS] = PR_E_TAGS_2;
-    table[NT_E_TAGS][TT_3_TAGS] = PR_E_TAGS_3;
+	table[NT_E_TAGS][TT_0_TAGS] = PR_E_TAGS_0;
+	table[NT_E_TAGS][TT_1_TAGS] = PR_E_TAGS_1;
+	table[NT_E_TAGS][TT_2_TAGS] = PR_E_TAGS_2;
+	table[NT_E_TAGS][TT_3_TAGS] = PR_E_TAGS_3;
 
-    table[NT_E_TAGS_1_SET][TT_INDEX] = PR_E_TAGS_1_SET;
-    table[NT_E_TAGS_2_SET][TT_INDEX] = PR_E_TAGS_2_SET;
-    table[NT_E_TAGS_3_SET][TT_INDEX] = PR_E_TAGS_3_SET;
+	table[NT_E_TAGS_1_SET][TT_INDEX] = PR_E_TAGS_1_SET;
+	table[NT_E_TAGS_2_SET][TT_INDEX] = PR_E_TAGS_2_SET;
+	table[NT_E_TAGS_3_SET][TT_INDEX] = PR_E_TAGS_3_SET;
 
-    table[NT_ELEMENTS_SET][TT_EOL] = PR_ELEMENTS_SET;
+	table[NT_ELEMENTS_SET][TT_EOL] = PR_ELEMENTS_SET;
 
-    table[NT_ELEMENTS_FOLLOW][TT_OPEN_NODE_DATA] = PR_ELEMENT_FOLLOW_1;
-    table[NT_ELEMENTS_FOLLOW][TT_OPEN_ELEMENT_DATA] = PR_ELEMENT_FOLLOW_2;
-    table[NT_ELEMENTS_FOLLOW][TT_OPEN_ELEMENT_NODE_DATA] = PR_ELEMENT_FOLLOW_3;
-    table[NT_ELEMENTS_FOLLOW][TT_EOF] = PR_ELEMENT_FOLLOW_4;
+	table[NT_ELEMENTS_FOLLOW][TT_OPEN_NODE_DATA] = PR_ELEMENT_FOLLOW_1;
+	table[NT_ELEMENTS_FOLLOW][TT_OPEN_ELEMENT_DATA] = PR_ELEMENT_FOLLOW_2;
+	table[NT_ELEMENTS_FOLLOW][TT_OPEN_ELEMENT_NODE_DATA] = PR_ELEMENT_FOLLOW_3;
+	table[NT_ELEMENTS_FOLLOW][TT_EOF] = PR_ELEMENT_FOLLOW_4;
 
-    //table	[NT_NODE_DATA]		[TT_OPEN_NODE_DATA]		=	PR_ELEMENT_FOLLOW_4;
+	// table	[NT_NODE_DATA]		[TT_OPEN_NODE_DATA]		=
+	// PR_ELEMENT_FOLLOW_4;
 
-    table[NT_COORDINATE][TT_NUMBER] = PR_COORDINATE;
+	table[NT_COORDINATE][TT_NUMBER] = PR_COORDINATE;
 }
 
-enum MshParser::Error::Type
-MshParser::operator()(std::istream& file, fem::Model& model)
-{
-    return parse(file, model);
-}
+enum MshParser::Error::Type MshParser::operator()(std::istream& file, fem::Model& model) { return parse(file, model); }
 
-void MshParser::setSurfaceLoadOperator(fem::SurfaceLoadOperator& surface_load_operator)
-{
-    this->surface_load_operator = &surface_load_operator;
-}
+void MshParser::setSurfaceLoadOperator(fem::SurfaceLoadOperator& surface_load_operator) { this->surface_load_operator = &surface_load_operator; }

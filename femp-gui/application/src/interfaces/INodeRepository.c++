@@ -3,9 +3,7 @@
 namespace gui {
 namespace application {
 
-    INodeRepository::INodeRepository()
-    {
-    }
+INodeRepository::INodeRepository() {}
 
-} // namespace application
-} // namespace gui
+}  // namespace application
+}  // namespace gui

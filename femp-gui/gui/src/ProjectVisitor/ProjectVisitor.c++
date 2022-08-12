@@ -1,5 +1,3 @@
 #include "ProjectVisitor.h++"
 
-ProjectVisitor::~ProjectVisitor()
-{
-}
+ProjectVisitor::~ProjectVisitor() {}

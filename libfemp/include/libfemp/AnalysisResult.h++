@@ -1,17 +1,15 @@
 #ifndef FEMP_ANALYSIS_RESULT_HPP
 #define FEMP_ANALYSIS_RESULT_HPP
 
-#include <map>
-
 #include <boost/tuple/tuple.hpp>
-
-#include "Equation.h++"
+#include <la/Matrix.h++>
+#include <la/Vector.h++>
 #include <libfemp/ElementResults/ElementResults.h++>
 #include <libfemp/ElementResults/ResultsRanges.h++>
 #include <libfemp/Point3D.h++>
+#include <map>
 
-#include <la/Matrix.h++>
-#include <la/Vector.h++>
+#include "Equation.h++"
 
 namespace fem {
 
@@ -20,34 +18,34 @@ namespace fem {
  * fem::Analysis and are needed in post-processing.
  */
 struct AnalysisResult {
-    AnalysisResult();
-    AnalysisResult(const AnalysisResult&);
+	AnalysisResult();
+	AnalysisResult(const AnalysisResult&);
 
-    // The FEM equation bit
-    Equation equation;
+	// The FEM equation bit
+	Equation equation;
 
-    std::map<size_t, boost::tuple<size_t, size_t, size_t>> lm;
+	std::map<size_t, boost::tuple<size_t, size_t, size_t>> lm;
 
-    // A map between the reference to a node and the displacements of it's DoF
-    std::map<size_t, fem::Point3D> displacements;
+	// A map between the reference to a node and the displacements of it's DoF
+	std::map<size_t, fem::Point3D> displacements;
 
-    // map between a element reference and the element's recovered values
-    std::map<element_ref_t, ElementResults*> results;
+	// map between a element reference and the element's recovered values
+	std::map<element_ref_t, ElementResults*> results;
 
-    // this replaces the above code
-    ResultsRanges<double> ranges;
+	// this replaces the above code
+	ResultsRanges<double> ranges;
 
-    // the model's energy
-    double energy;
+	// the model's energy
+	double energy;
 
-    double volume;
+	double volume;
 
-    // elapsed time in miliseconds (taken from Qt's qint64
-    long long int elapsed_time;
+	// elapsed time in miliseconds (taken from Qt's qint64
+	long long int elapsed_time;
 
-    void clear();
+	void clear();
 };
 
-} // namespace fem
+}  // namespace fem
 
 #endif

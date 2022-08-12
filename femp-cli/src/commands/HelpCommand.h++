@@ -6,15 +6,15 @@
 #include "FempCommand.h++"
 
 class HelpCommand : public FempCommand {
-public:
-    HelpCommand(boost::program_options::options_description description);
+   public:
+	HelpCommand(boost::program_options::options_description description);
 
-    // FempCommand interface
-public:
-    int execute() override final;
+	// FempCommand interface
+   public:
+	int execute() override final;
 
-private:
-    const boost::program_options::options_description m_description;
+   private:
+	const boost::program_options::options_description m_description;
 };
 
-#endif // HELPCOMMAND_H
+#endif	// HELPCOMMAND_H

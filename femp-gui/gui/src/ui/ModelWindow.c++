@@ -2,22 +2,18 @@
 
 #include "../viewer/ModelViewport.h++"
 
-ModelWindow::ModelWindow(fem::Project& project, ViewportColors& colors, QWidget* parent)
-    : MdiWindow(parent)
-    , BaseWindow("Model")
-{
-    viewport = new ModelViewport(project, this);
-    this->setCentralWidget(viewport);
+ModelWindow::ModelWindow(fem::Project& project, ViewportColors& colors, QWidget* parent) : MdiWindow(parent), BaseWindow("Model") {
+	viewport = new ModelViewport(project, this);
+	this->setCentralWidget(viewport);
 
-    viewport->setColors(colors);
+	viewport->setColors(colors);
 
-    WindowWithWireframe::createToolbar(this);
+	WindowWithWireframe::createToolbar(this);
 
-    connectSignalsToSlots();
+	connectSignalsToSlots();
 }
 
-void ModelWindow::connectSignalsToSlots()
-{
-    MdiWindow::connectSignalsToSlots();
-    WindowWithWireframe::connectSignalsToSlots(this);
+void ModelWindow::connectSignalsToSlots() {
+	MdiWindow::connectSignalsToSlots();
+	WindowWithWireframe::connectSignalsToSlots(this);
 }

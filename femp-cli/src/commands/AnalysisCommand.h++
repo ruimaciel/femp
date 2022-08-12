@@ -7,33 +7,32 @@
 #include "FempCommand.h++"
 
 class AnalysisCommand : public FempCommand {
-public:
-    class Builder {
+   public:
+	class Builder {
+	   public:
+		Builder& setInputFilename(std::string inputFilename);
+		Builder& setOutputPath(std::string outputPath);
+		// solver
+		// load pattern
 
-    public:
-        Builder& setInputFilename(std::string inputFilename);
-        Builder& setOutputPath(std::string outputPath);
-        //solver
-        //load pattern
+		std::string inputFilename() const;
+		std::string outputPath() const;
 
-        std::string inputFilename() const;
-        std::string outputPath() const;
+		std::unique_ptr<AnalysisCommand> build() const;
 
-        std::unique_ptr<AnalysisCommand> build() const;
+	   private:
+		std::string m_inputFilename;
+		std::string m_outputPath;
+	};
 
-    private:
-        std::string m_inputFilename;
-        std::string m_outputPath;
-    };
+	AnalysisCommand(Builder inputParameters);
 
-    AnalysisCommand(Builder inputParameters);
+	// FempCommand interface
+   public:
+	int execute() override final;
 
-    // FempCommand interface
-public:
-    int execute() override final;
-
-private:
-    Builder m_inputParameters;
+   private:
+	Builder m_inputParameters;
 };
 
-#endif // ANALYSISCOMMAND_H
+#endif	// ANALYSISCOMMAND_H

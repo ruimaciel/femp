@@ -2,9 +2,7 @@
 
 #include "../Project.h++"
 
-WindowWith::~WindowWith()
-{
-}
+WindowWith::~WindowWith() {}
 
 void WindowWith::createMenuBar(QMainWindow*, QMenuBar*) {}
 

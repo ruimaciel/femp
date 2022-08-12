@@ -2,19 +2,10 @@
 
 namespace fem {
 
-NodalLoad::NodalLoad()
-{
-}
+NodalLoad::NodalLoad() {}
 
-NodalLoad::NodalLoad(Point3D force)
-{
-    m_force = force;
-}
+NodalLoad::NodalLoad(Point3D force) { m_force = force; }
 
-Point3D
-NodalLoad::getForce() const
-{
-    return m_force;
-}
+Point3D NodalLoad::getForce() const { return m_force; }
 
-} // namespace fem
+}  // namespace fem

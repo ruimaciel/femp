@@ -1,32 +1,30 @@
 #ifndef MATERIALS_EDITOR_DIALOG_HPP
 #define MATERIALS_EDITOR_DIALOG_HPP
 
-#include "ui_MaterialsEditorDialog.h"
 #include <QDialog>
-
 #include <libfemp/Model.h++>
 
-class MaterialsEditorDialog
-    : public QDialog,
-      private Ui::MaterialsEditorDialog {
-    Q_OBJECT
+#include "ui_MaterialsEditorDialog.h"
 
-private:
-    fem::Model& model;
+class MaterialsEditorDialog : public QDialog, private Ui::MaterialsEditorDialog {
+	Q_OBJECT
 
-public:
-    explicit MaterialsEditorDialog(fem::Model& model, QWidget* parent = nullptr);
-    ~MaterialsEditorDialog();
+   private:
+	fem::Model& model;
 
-public slots:
-    void loadMaterials();
+   public:
+	explicit MaterialsEditorDialog(fem::Model& model, QWidget* parent = nullptr);
+	~MaterialsEditorDialog();
 
-private slots:
+   public slots:
+	void loadMaterials();
 
-    /**
-     * Resets the UI according to the selection state
-     */
-    void resetSelectionUI();
+   private slots:
+
+	/**
+	 * Resets the UI according to the selection state
+	 */
+	void resetSelectionUI();
 };
 
 #endif

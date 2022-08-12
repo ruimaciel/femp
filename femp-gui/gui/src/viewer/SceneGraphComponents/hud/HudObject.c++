@@ -1,5 +1,3 @@
 #include "HudObject.h++"
 
-HudObject::~HudObject()
-{
-}
+HudObject::~HudObject() {}

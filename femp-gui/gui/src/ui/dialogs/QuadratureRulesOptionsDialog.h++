@@ -1,23 +1,22 @@
 #ifndef QUADRATURE_OPTIONS_DIALOG_HPP
 #define QUADRATURE_OPTIONS_DIALOG_HPP
 
-#include "ui_QuadratureRulesOptionsDialog.h"
 #include <libfemp/Analysis.h++>
 
-class QuadratureRulesOptionsDialog
-    : public QDialog,
-      private Ui_QuadratureRulesOptionsDialog {
-    Q_OBJECT
+#include "ui_QuadratureRulesOptionsDialog.h"
 
-protected:
-    fem::Analysis<double>* analysis;
+class QuadratureRulesOptionsDialog : public QDialog, private Ui_QuadratureRulesOptionsDialog {
+	Q_OBJECT
 
-public:
-    QuadratureRulesOptionsDialog(fem::Analysis<double>& analysis, QWidget* parent = nullptr);
+   protected:
+	fem::Analysis<double>* analysis;
 
-protected slots:
-    void setSpinBoxValues();
-    void setQuadratureRule();
+   public:
+	QuadratureRulesOptionsDialog(fem::Analysis<double>& analysis, QWidget* parent = nullptr);
+
+   protected slots:
+	void setSpinBoxValues();
+	void setQuadratureRule();
 };
 
 #endif

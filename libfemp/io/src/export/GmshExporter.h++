@@ -7,14 +7,14 @@
 namespace fem {
 namespace io {
 
-    class GmshExporter {
-    public:
-        GmshExporter();
+class GmshExporter {
+   public:
+	GmshExporter();
 
-        void execute(std::ofstream& mesh_file, const fem::mesh::MeshModel& mesh_model);
-    };
+	void execute(std::ofstream& mesh_file, const fem::mesh::MeshModel& mesh_model);
+};
 
-} // namespace io
-} // namespace bem
+}  // namespace io
+}  // namespace fem
 
-#endif // FEM_IO_GMSHEXPORTER_H
+#endif	// FEM_IO_GMSHEXPORTER_H

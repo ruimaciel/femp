@@ -4,19 +4,19 @@
 #include <la/ProgressIndicatorStrategy.h++>
 
 class CliProgressIndicatorStrategy : public ProgressIndicatorStrategy {
-public:
-    CliProgressIndicatorStrategy();
+   public:
+	CliProgressIndicatorStrategy();
 
-    // ProgressIndicatorStrategy interface
-public:
-    void markSectionStart(std::string);
-    void markSectionLimit(size_t);
-    void markSectionIterationIncrement();
-    void markSectionEnd();
-    void markProgress(size_t);
-    void message(std::string);
-    void error(std::string);
-    void markFinish();
+	// ProgressIndicatorStrategy interface
+   public:
+	void markSectionStart(std::string);
+	void markSectionLimit(size_t);
+	void markSectionIterationIncrement();
+	void markSectionEnd();
+	void markProgress(size_t);
+	void message(std::string);
+	void error(std::string);
+	void markFinish();
 };
 
-#endif // CLIPROGRESSINDICATORSTRATEGY_H
+#endif	// CLIPROGRESSINDICATORSTRATEGY_H

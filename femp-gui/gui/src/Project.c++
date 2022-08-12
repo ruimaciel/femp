@@ -2,45 +2,23 @@
 
 namespace fem {
 
-Project::Project()
-    : m_domainModel(std::make_shared<gui::Model>(m_model))
-{
+Project::Project() : m_domainModel(std::make_shared<gui::Model>(m_model)) {}
+
+Project::~Project() {}
+
+void Project::clear() {
+	this->m_model.clear();
+	this->m_analysisResults.clear();
 }
 
-Project::~Project()
-{
-}
+void Project::pushAnalysisResult(fem::AnalysisResult& new_result) { this->m_analysisResults.push_back(new_result); }
 
-void Project::clear()
-{
-    this->m_model.clear();
-    this->m_analysisResults.clear();
-}
+Model& Project::getModel() { return this->m_model; }
 
-void Project::pushAnalysisResult(fem::AnalysisResult& new_result)
-{
-    this->m_analysisResults.push_back(new_result);
-}
+std::shared_ptr<gui::Model> Project::getDomainModel() { return this->m_domainModel; }
 
-Model&
-Project::getModel()
-{
-    return this->m_model;
-}
+std::vector<AnalysisResult>& Project::getAnalysisResults() { return this->m_analysisResults; }
 
-std::shared_ptr<gui::Model> Project::getDomainModel()
-{
-    return this->m_domainModel;
-}
+void Project::accept(ProjectVisitor& visitor) { visitor.visit(m_model, m_analysisResults); }
 
-std::vector<AnalysisResult>& Project::getAnalysisResults()
-{
-    return this->m_analysisResults;
-}
-
-void Project::accept(ProjectVisitor& visitor)
-{
-    visitor.visit(m_model, m_analysisResults);
-}
-
-} // fem
+}  // namespace fem

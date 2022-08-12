@@ -31,122 +31,118 @@
    version 2.2 of Bison.  */
 
 #ifndef YY_MSH_YY_SRC_MSH_TAB_H_INCLUDED
-# define YY_MSH_YY_SRC_MSH_TAB_H_INCLUDED
+#define YY_MSH_YY_SRC_MSH_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef MSH_YYDEBUG
-# if defined YYDEBUG
+#if defined YYDEBUG
 #if YYDEBUG
-#   define MSH_YYDEBUG 1
-#  else
-#   define MSH_YYDEBUG 0
-#  endif
-# else /* ! defined YYDEBUG */
-#  define MSH_YYDEBUG 1
-# endif /* ! defined YYDEBUG */
-#endif  /* ! defined MSH_YYDEBUG */
+#define MSH_YYDEBUG 1
+#else
+#define MSH_YYDEBUG 0
+#endif
+#else /* ! defined YYDEBUG */
+#define MSH_YYDEBUG 1
+#endif /* ! defined YYDEBUG */
+#endif /* ! defined MSH_YYDEBUG */
 #if MSH_YYDEBUG
 extern int msh_yydebug;
 #endif
 /* "%code requires" blocks.  */
 #line 1 "src/msh.y" /* yacc.c:1909  */
 
-//HERE
+// HERE
 #include <libfemp/Model.h++>
 
 #line 57 "src/msh.tab.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef MSH_YYTOKENTYPE
-# define MSH_YYTOKENTYPE
-  enum msh_yytokentype
-  {
-    FLOAT = 258,
-    INTEGER = 259,
-    TEXT = 260,
-    LABEL_OPEN = 261,
-    LABEL_CLOSE = 262,
-    LABEL_OPEN_ELEMENTS = 263,
-    LABEL_CLOSE_ELEMENTS = 264,
-    MESH_FORMAT = 265,
-    NODES = 266,
-    PARAMETRIC_NODES = 267,
-    PHYSICAL_NAMES = 268,
-    ELEMENTS = 269,
-    EL_LINE2 = 270,
-    EL_TRIANGLE3 = 271,
-    EL_QUADRANGLE4 = 272,
-    EL_TETRAHEDRON4 = 273,
-    EL_HEXAHEDRON8 = 274,
-    EL_PRISM6 = 275,
-    EL_PYRAMID5 = 276,
-    EL_LINE3 = 277,
-    EL_TRIANGLE6 = 278,
-    EL_QUADRANGLE9 = 279,
-    EL_TETRAHEDRON10 = 280,
-    EL_HEXAHEDRON27 = 281,
-    EL_PRISM18 = 282,
-    EL_PYRAMID14 = 283,
-    EL_POINT = 284,
-    EL_QUADRANGLE8 = 285,
-    EL_HEXAHEDRON20 = 286,
-    EL_PRISM15 = 287,
-    EL_PYRAMID13 = 288,
-    EL_ITRIANGLE9 = 289,
-    EL_TRIANGLE10 = 290,
-    EL_ITRIANGLE12 = 291,
-    EL_TRIANGLE15 = 292,
-    EL_ITRIANGLE15 = 293,
-    EL_TRIANGLE21 = 294,
-    EL_EDGE4 = 295,
-    EL_EDGE5 = 296,
-    EL_EDGE6 = 297,
-    EL_TETRAHEDRON20 = 298,
-    EL_TETRAHEDRON35 = 299,
-    EL_TETRAHEDRON56 = 300,
-    TAG0 = 301,
-    TAG1 = 302,
-    TAG2 = 303,
-    TAG3 = 304,
-    OTHER = 305
-  };
+#define MSH_YYTOKENTYPE
+enum msh_yytokentype {
+  FLOAT = 258,
+  INTEGER = 259,
+  TEXT = 260,
+  LABEL_OPEN = 261,
+  LABEL_CLOSE = 262,
+  LABEL_OPEN_ELEMENTS = 263,
+  LABEL_CLOSE_ELEMENTS = 264,
+  MESH_FORMAT = 265,
+  NODES = 266,
+  PARAMETRIC_NODES = 267,
+  PHYSICAL_NAMES = 268,
+  ELEMENTS = 269,
+  EL_LINE2 = 270,
+  EL_TRIANGLE3 = 271,
+  EL_QUADRANGLE4 = 272,
+  EL_TETRAHEDRON4 = 273,
+  EL_HEXAHEDRON8 = 274,
+  EL_PRISM6 = 275,
+  EL_PYRAMID5 = 276,
+  EL_LINE3 = 277,
+  EL_TRIANGLE6 = 278,
+  EL_QUADRANGLE9 = 279,
+  EL_TETRAHEDRON10 = 280,
+  EL_HEXAHEDRON27 = 281,
+  EL_PRISM18 = 282,
+  EL_PYRAMID14 = 283,
+  EL_POINT = 284,
+  EL_QUADRANGLE8 = 285,
+  EL_HEXAHEDRON20 = 286,
+  EL_PRISM15 = 287,
+  EL_PYRAMID13 = 288,
+  EL_ITRIANGLE9 = 289,
+  EL_TRIANGLE10 = 290,
+  EL_ITRIANGLE12 = 291,
+  EL_TRIANGLE15 = 292,
+  EL_ITRIANGLE15 = 293,
+  EL_TRIANGLE21 = 294,
+  EL_EDGE4 = 295,
+  EL_EDGE5 = 296,
+  EL_EDGE6 = 297,
+  EL_TETRAHEDRON20 = 298,
+  EL_TETRAHEDRON35 = 299,
+  EL_TETRAHEDRON56 = 300,
+  TAG0 = 301,
+  TAG1 = 302,
+  TAG2 = 303,
+  TAG3 = 304,
+  OTHER = 305
+};
 #endif
 
 /* Value type.  */
-#if ! defined MSH_YYSTYPE && ! defined MSH_YYSTYPE_IS_DECLARED
+#if !defined MSH_YYSTYPE && !defined MSH_YYSTYPE_IS_DECLARED
 
-union MSH_YYSTYPE
-{
+union MSH_YYSTYPE {
 #line 31 "src/msh.y" /* yacc.c:1909  */
 
-	double 	real;
-	int	integer;
-	char *	text;
+  double real;
+  int integer;
+  char *text;
 
 #line 126 "src/msh.tab.h" /* yacc.c:1909  */
 };
 
 typedef union MSH_YYSTYPE MSH_YYSTYPE;
-# define MSH_YYSTYPE_IS_TRIVIAL 1
-# define MSH_YYSTYPE_IS_DECLARED 1
+#define MSH_YYSTYPE_IS_TRIVIAL 1
+#define MSH_YYSTYPE_IS_DECLARED 1
 #endif
 
 /* Location type.  */
-#if ! defined MSH_YYLTYPE && ! defined MSH_YYLTYPE_IS_DECLARED
+#if !defined MSH_YYLTYPE && !defined MSH_YYLTYPE_IS_DECLARED
 typedef struct MSH_YYLTYPE MSH_YYLTYPE;
-struct MSH_YYLTYPE
-{
+struct MSH_YYLTYPE {
   int first_line;
   int first_column;
   int last_line;
   int last_column;
 };
-# define MSH_YYLTYPE_IS_DECLARED 1
-# define MSH_YYLTYPE_IS_TRIVIAL 1
+#define MSH_YYLTYPE_IS_DECLARED 1
+#define MSH_YYLTYPE_IS_TRIVIAL 1
 #endif
-
 
 extern MSH_YYSTYPE msh_yylval;
 extern MSH_YYLTYPE msh_yylloc;
-int msh_yyparse (fem::Model &model);
+int msh_yyparse(fem::Model &model);
 
 #endif /* !YY_MSH_YY_SRC_MSH_TAB_H_INCLUDED  */

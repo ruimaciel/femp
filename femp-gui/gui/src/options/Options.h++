@@ -7,39 +7,38 @@
 #include "ViewportColors.h++"
 
 class Options {
-public:
-    static Options& getInstance()
-    {
-        static Options instance;
+   public:
+	static Options& getInstance() {
+		static Options instance;
 
-        return instance;
-    }
+		return instance;
+	}
 
-public:
-    Options(Options const&) = delete;
-    void operator=(Options const&) = delete;
+   public:
+	Options(Options const&) = delete;
+	void operator=(Options const&) = delete;
 
-    /**
-     * returns the viewport colors
-     */
-    ViewportColors& getViewportColors();
+	/**
+	 * returns the viewport colors
+	 */
+	ViewportColors& getViewportColors();
 
-    /**
-     * returns the display options
-     */
-    DisplayOptions& getDisplayOptions();
+	/**
+	 * returns the display options
+	 */
+	DisplayOptions& getDisplayOptions();
 
-    QDir getProjectOpenDirectory();
-    void setProjectOpenDirectory(QDir dir);
+	QDir getProjectOpenDirectory();
+	void setProjectOpenDirectory(QDir dir);
 
-    QDir getDumpResultsDirectory();
-    void setDumpResultsDirectory(QDir dir);
+	QDir getDumpResultsDirectory();
+	void setDumpResultsDirectory(QDir dir);
 
-private:
-    Options() {}
+   private:
+	Options() {}
 
-    ViewportColors m_viewportColors;
-    DisplayOptions m_displayOptions;
+	ViewportColors m_viewportColors;
+	DisplayOptions m_displayOptions;
 };
 
 #endif

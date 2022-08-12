@@ -1,29 +1,22 @@
 #ifndef NODE_RESTRAINS_DIALOG_HPP
 #define NODE_RESTRAINS_DIALOG_HPP
 
-#include "ui/ui_NodeRestrainDialog.h"
-
 #include <libfemp/NodeRestrictions.h++>
 
-class NodeRestrainsDialog
-    : public QDialog,
-      private Ui_NodeRestrainDialog {
-    Q_OBJECT
+#include "ui/ui_NodeRestrainDialog.h"
 
-public:
-    enum Restraints {
-        NONE = 0,
-        RX = 0x01,
-        RY = 0x02,
-        RZ = 0x04
-    };
+class NodeRestrainsDialog : public QDialog, private Ui_NodeRestrainDialog {
+	Q_OBJECT
 
-public:
-    explicit NodeRestrainsDialog(QWidget* parent = nullptr);
+   public:
+	enum Restraints { NONE = 0, RX = 0x01, RY = 0x02, RZ = 0x04 };
 
-    int getRestraints();
+   public:
+	explicit NodeRestrainsDialog(QWidget* parent = nullptr);
 
-    fem::NodeRestrictions getRestrictions() const;
+	int getRestraints();
+
+	fem::NodeRestrictions getRestrictions() const;
 };
 
 #endif

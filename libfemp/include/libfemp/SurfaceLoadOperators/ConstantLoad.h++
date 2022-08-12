@@ -9,19 +9,18 @@ namespace fem {
 /**
  * Applies a constant load in relation to the global coordinate system
  */
-class ConstantLoad
-    : public SurfaceLoadOperator {
-protected:
-    fem::Point3D m_force;
+class ConstantLoad : public SurfaceLoadOperator {
+   protected:
+	fem::Point3D m_force;
 
-public:
-    ConstantLoad();
+   public:
+	ConstantLoad();
 
-    void setLoad(fem::Point3D const& force);
+	void setLoad(fem::Point3D const& force);
 
-    void operator()(fem::SurfaceLoad& surface_load, fem::Model& model) override;
+	void operator()(fem::SurfaceLoad& surface_load, fem::Model& model) override;
 };
 
-} // namespace fem
+}  // namespace fem
 
 #endif

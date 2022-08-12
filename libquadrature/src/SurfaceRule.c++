@@ -3,7 +3,7 @@
 namespace fem {
 namespace quadrature {
 
-    SurfaceRule::~SurfaceRule() {}
+SurfaceRule::~SurfaceRule() {}
 
-} // namespace quadrature
-} // namespace fem
+}  // namespace quadrature
+}  // namespace fem

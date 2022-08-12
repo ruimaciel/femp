@@ -3,9 +3,7 @@
 namespace gui {
 namespace application {
 
-    IMaterialRepository::IMaterialRepository()
-    {
-    }
+IMaterialRepository::IMaterialRepository() {}
 
-} // namespace application
-} // namespace gui
+}  // namespace application
+}  // namespace gui

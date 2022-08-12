@@ -7,18 +7,18 @@
 namespace fem {
 
 class Equation {
-public:
-    Equation();
+   public:
+	Equation();
 
-    lalib::Matrix<double, lalib::SparseDOK> K;
-    lalib::Vector<double> f;
-    lalib::Vector<double> d;
+	lalib::Matrix<double, lalib::SparseDOK> K;
+	lalib::Vector<double> f;
+	lalib::Vector<double> d;
 
-public:
-    size_t size() const;
-    void setProblemSize(size_t size);
+   public:
+	size_t size() const;
+	void setProblemSize(size_t size);
 };
 
-} // namespace femp
+}  // namespace fem
 
-#endif // FEMP_EQUATION_H
+#endif	// FEMP_EQUATION_H

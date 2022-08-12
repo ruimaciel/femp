@@ -1,35 +1,22 @@
 #include "NodeRestrainsDialog.h++"
 
-NodeRestrainsDialog::NodeRestrainsDialog(QWidget* parent)
-    : QDialog(parent)
-{
-    setupUi(this);
+NodeRestrainsDialog::NodeRestrainsDialog(QWidget* parent) : QDialog(parent) { setupUi(this); }
+
+int NodeRestrainsDialog::getRestraints() {
+	int r = NONE;
+	if (checkBoxX->isChecked()) r |= RX;
+	if (checkBoxY->isChecked()) r |= RY;
+	if (checkBoxZ->isChecked()) r |= RZ;
+
+	return r;
 }
 
-int NodeRestrainsDialog::getRestraints()
-{
-    int r = NONE;
-    if (checkBoxX->isChecked())
-        r |= RX;
-    if (checkBoxY->isChecked())
-        r |= RY;
-    if (checkBoxZ->isChecked())
-        r |= RZ;
+fem::NodeRestrictions NodeRestrainsDialog::getRestrictions() const {
+	fem::NodeRestrictions restrictions;
 
-    return r;
-}
+	if (checkBoxX->isChecked()) restrictions.setdx();
+	if (checkBoxY->isChecked()) restrictions.setdy();
+	if (checkBoxZ->isChecked()) restrictions.setdz();
 
-fem::NodeRestrictions
-NodeRestrainsDialog::getRestrictions() const
-{
-    fem::NodeRestrictions restrictions;
-
-    if (checkBoxX->isChecked())
-        restrictions.setdx();
-    if (checkBoxY->isChecked())
-        restrictions.setdy();
-    if (checkBoxZ->isChecked())
-        restrictions.setdz();
-
-    return restrictions;
+	return restrictions;
 }

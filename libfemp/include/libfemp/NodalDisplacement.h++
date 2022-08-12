@@ -6,15 +6,15 @@
 namespace fem {
 
 class NodalDisplacement {
-public:
-    Point3D displacement;
+   public:
+	Point3D displacement;
 
-public:
-    NodalDisplacement();
-    NodalDisplacement(const NodalDisplacement& copied);
-    ~NodalDisplacement();
+   public:
+	NodalDisplacement();
+	NodalDisplacement(const NodalDisplacement& copied);
+	~NodalDisplacement();
 };
 
-} // namespace fem
+}  // namespace fem
 
 #endif

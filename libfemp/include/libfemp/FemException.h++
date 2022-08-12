@@ -5,12 +5,11 @@
 #include <string>
 
 /**
-  * The base calss for all exceptions thrown by FEM routines
-  **/
-class FemException
-    : public std::runtime_error {
-public:
-    explicit FemException(const std::string& message);
+ * The base calss for all exceptions thrown by FEM routines
+ **/
+class FemException : public std::runtime_error {
+   public:
+	explicit FemException(const std::string& message);
 };
 
 #endif

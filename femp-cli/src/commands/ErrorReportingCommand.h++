@@ -4,9 +4,9 @@
 #include "FempCommand.h++"
 
 class ErrorReportingCommand : public FempCommand {
-    // FempCommand interface
-public:
-    int execute();
+	// FempCommand interface
+   public:
+	int execute();
 };
 
-#endif // ERRORREPORTINGCOMMAND_H
+#endif	// ERRORREPORTINGCOMMAND_H

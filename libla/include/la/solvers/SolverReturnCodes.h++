@@ -3,10 +3,10 @@
 
 namespace lalib {
 enum ReturnCode {
-    OK = 0,
-    ERR_EXCESSIVE_ITERATIONS,
-    ERR_NOT_SQUARE,
-    ERR_SINGULAR_MATRIX
+	OK = 0,
+	ERR_EXCESSIVE_ITERATIONS,
+	ERR_NOT_SQUARE,
+	ERR_SINGULAR_MATRIX
 
 };
 }

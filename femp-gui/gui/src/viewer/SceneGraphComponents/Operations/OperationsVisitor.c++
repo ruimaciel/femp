@@ -1,5 +1,3 @@
 #include "OperationsVisitor.h++"
 
-Operation::OperationsVisitor::~OperationsVisitor()
-{
-}
+Operation::OperationsVisitor::~OperationsVisitor() {}

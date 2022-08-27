@@ -2,9 +2,10 @@
 #define FEMP_SELECTION_HPP
 
 #include <set>
+#include <cstddef>
 
-using element_ref_t = size_t;
-using node_ref_t = size_t;
+using element_ref_t = std::size_t;
+using node_ref_t = std::size_t;
 
 class Selection {
    public:

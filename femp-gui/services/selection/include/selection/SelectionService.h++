@@ -3,6 +3,8 @@
 
 #include <selection/ISelectionService.h++>
 
+#include <cstddef>
+
 namespace gui {
 namespace services {
 
@@ -15,8 +17,8 @@ class SelectionService final : public ISelectionService {
 	SelectionService();
 
 	Selection getSelection() const override;
-	std::set<size_t> getSelectedElementReferences() const override;
-	std::set<size_t> getSelectedNodeReferences() const override;
+	std::set<std::size_t> getSelectedElementReferences() const override;
+	std::set<std::size_t> getSelectedNodeReferences() const override;
 };
 
 }  // namespace services

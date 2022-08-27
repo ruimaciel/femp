@@ -2,21 +2,22 @@
 #define FEM_MESH_NODE_H
 
 #include <array>
+#include <cstddef>
 
 namespace fem {
 namespace mesh {
 
 class Node {
    public:
-	Node(size_t nodeId, std::array<double, 3> coordinates);
+	Node(std::size_t nodeId, std::array<double, 3> coordinates);
 
-	size_t id() const;
+	std::size_t id() const;
 	double x() const;
 	double y() const;
 	double z() const;
 
    private:
-	size_t m_node_id;
+	std::size_t m_node_id;
 	std::array<double, 3> m_coordinates;
 };
 

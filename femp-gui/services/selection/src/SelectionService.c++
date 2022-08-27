@@ -3,13 +3,21 @@
 namespace gui {
 namespace services {
 
-SelectionService::SelectionService() {}
+SelectionService::SelectionService() {
 
-Selection SelectionService::getSelection() const {}
+}
 
-std::set<size_t> SelectionService::getSelectedElementReferences() const {}
+Selection SelectionService::getSelection() const {
+    return {};
+}
 
-std::set<size_t> SelectionService::getSelectedNodeReferences() const {}
+std::set<std::size_t> SelectionService::getSelectedElementReferences() const {
+    return {};
+}
+
+std::set<std::size_t> SelectionService::getSelectedNodeReferences() const {
+    return {};
+}
 
 }  // namespace services
 }  // namespace gui

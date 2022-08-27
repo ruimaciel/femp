@@ -7,7 +7,9 @@
 
 SceneGraph::SceneGraph() {}
 
-SceneGraph::~SceneGraph() { this->clear(); }
+SceneGraph::~SceneGraph() {
+	this->clear();
+}
 
 void SceneGraph::clear() {
 	using namespace std;
@@ -49,8 +51,14 @@ void SceneGraph::runOperation(Operation::OperationsVisitor& visitor) {
 	}
 }
 
-void SceneGraph::setSelectionStart(const fem::Point3D& p) { m_selection.setStart(p); }
+void SceneGraph::setSelectionStart(const fem::Point3D& p) {
+	m_selection.setStart(p);
+}
 
-void SceneGraph::setSelectionEnd(const fem::Point3D& p) { m_selection.setEnd(p); }
+void SceneGraph::setSelectionEnd(const fem::Point3D& p) {
+	m_selection.setEnd(p);
+}
 
-void SceneGraph::setSelectionOff() { m_selection.off(); }
+void SceneGraph::setSelectionOff() {
+	m_selection.off();
+}

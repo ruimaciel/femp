@@ -16,7 +16,7 @@ http://netlib.org/linalg/html_templates/node91.html#SECTION00931100000000000000
 **/
 template <typename scalar>
 class SparseCRS {
-   public:
+	public:
 	struct Data {
 		size_t t_columns;  // number of columns
 
@@ -25,12 +25,16 @@ class SparseCRS {
 		std::vector<size_t> row_pointer;
 	} data;
 
-   public:
+	public:
 	SparseCRS(const size_t rows = 0, const size_t columns = 0);
 	~SparseCRS(){};
 
-	size_t rows() { return data.row_pointer.size() - 1; };
-	size_t columns() { return data.t_columns; };
+	size_t rows() {
+		return data.row_pointer.size() - 1;
+	};
+	size_t columns() {
+		return data.t_columns;
+	};
 
 	/*
 				Returns the value in [row,column]

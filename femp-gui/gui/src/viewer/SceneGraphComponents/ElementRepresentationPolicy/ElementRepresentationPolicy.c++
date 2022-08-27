@@ -1,6 +1,8 @@
 #include "ElementRepresentationPolicy.h++"
 
-ElementRepresentationPolicy::ElementRepresentationPolicy() { m_surface_subdivision_level = 1; }
+ElementRepresentationPolicy::ElementRepresentationPolicy() {
+	m_surface_subdivision_level = 1;
+}
 
 ElementRepresentationPolicy::~ElementRepresentationPolicy() {}
 

@@ -4,7 +4,9 @@ namespace fem {
 
 ConstantLoad::ConstantLoad() {}
 
-void ConstantLoad::setLoad(fem::Point3D const& force) { this->m_force = force; }
+void ConstantLoad::setLoad(fem::Point3D const& force) {
+	this->m_force = force;
+}
 
 void ConstantLoad::operator()(fem::SurfaceLoad& surface_load, fem::Model&) {
 	surface_load.surface_forces.clear();

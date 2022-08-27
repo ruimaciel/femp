@@ -17,12 +17,12 @@ class BaseViewport;
  * A pattern for the State pattern which is used to render the model space
  */
 class VPStateModel : public ViewportState {
-   protected:
+	protected:
 	ElementRepresentationFlyweightFactory m_element_representation_factory;
 	NoDisplacementsPolicy m_no_displacements;  // the model view doesn't render displacements
 	SGC::SceneComponentFactory m_factory;
 
-   public:
+	public:
 	VPStateModel();
 	~VPStateModel();
 

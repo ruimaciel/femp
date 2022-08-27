@@ -8,7 +8,7 @@
 #include <stack>
 
 class MshParser : public Parser {
-   protected:
+	protected:
 	fem::SurfaceLoadOperator* surface_load_operator;
 
 	char buffer[1024];
@@ -22,7 +22,7 @@ class MshParser : public Parser {
 
 	void fill(std::istream& file);
 
-   protected:
+	protected:
 	enum TerminalToken {
 		TT_ERROR,
 		TT_OPEN_MESH_FORMAT,
@@ -211,7 +211,7 @@ class MshParser : public Parser {
 	fem::Element element;
 	fem::LoadPattern load_pattern;
 
-   public:
+	public:
 	MshParser();
 
 	enum Error::Type parse(std::istream& file, fem::Model& model) override;
@@ -223,7 +223,7 @@ class MshParser : public Parser {
 	 */
 	void setSurfaceLoadOperator(fem::SurfaceLoadOperator& surface_load_operator);
 
-   protected:
+	protected:
 	enum TerminalToken lexer(std::istream& file);
 	void setIndex();
 	void setNumber();

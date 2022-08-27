@@ -63,7 +63,9 @@ void VPStateModel::populateScenegraph(BaseViewport* viewport) {
 	this->scenegraph.generateSceneGraph();
 }
 
-void VPStateModel::setSelection(Selection) { qInfo() << "VPStateModel::setSelection(Selection)"; }
+void VPStateModel::setSelection(Selection) {
+	qInfo() << "VPStateModel::setSelection(Selection)";
+}
 
 void VPStateModel::keyPressEvent(BaseViewport* viewport, QKeyEvent* event) {
 	qInfo() << "VPStateModel::keyPressEvent(BaseViewport*, QKeyEvent*)";
@@ -96,4 +98,6 @@ void VPStateModel::keyPressEvent(BaseViewport* viewport, QKeyEvent* event) {
 	}
 }
 
-void VPStateModel::setTrianglesVisible(bool const state) { m_element_representation_factory.setTriangleWireframeRendering(state); }
+void VPStateModel::setTrianglesVisible(bool const state) {
+	m_element_representation_factory.setTriangleWireframeRendering(state);
+}

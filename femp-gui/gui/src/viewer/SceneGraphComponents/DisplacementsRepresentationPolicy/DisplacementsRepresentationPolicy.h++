@@ -9,12 +9,12 @@
 Defines the policy which is followed to represent element displacements
 **/
 class DisplacementsRepresentationPolicy {
-   protected:
+	protected:
 	fem::Model* m_model;  // pointer to the current model
 
-   public:
-   protected:
-   public:
+	public:
+	protected:
+	public:
 	/**
 		Must set a reference to a fem::Model class in order to obtain
 	   displacements

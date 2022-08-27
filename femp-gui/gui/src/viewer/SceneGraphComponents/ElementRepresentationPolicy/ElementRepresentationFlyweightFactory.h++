@@ -12,15 +12,15 @@
  * A flyweight factory pattern to store and provide ways to represent an element
  **/
 class ElementRepresentationFlyweightFactory {
-   protected:
+	protected:
 	OpaqueRepresentationPolicy m_opaque_policy;
 	GradientFieldRepresentationPolicy m_gradient_policy;
 
-   public:
+	public:
 	ElementRepresentationFlyweightFactory();
 
-   protected:
-   public:
+	protected:
+	public:
 	/**
 	 * Sets the current displacements policy for all the
 	 *ElementRepresentationPolicy objects

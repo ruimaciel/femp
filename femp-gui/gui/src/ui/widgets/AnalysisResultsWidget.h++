@@ -15,14 +15,14 @@
 class AnalysisResultsWidget : public QWidget, private Ui::AnalysisResultsWidget {
 	Q_OBJECT
 
-   protected:
+	protected:
 	// proxy model to provide a way to filter stuff from the results
 	QSortFilterProxyModel m_proxy_model;
 
-   public:
+	public:
 	AnalysisResultsWidget(fem::Project& project, QWidget* parent = nullptr);
 
-   private Q_SLOTS:
+	private Q_SLOTS:
 	// Calls the TableFilterDialog and sets the table according to the user input
 	void setFilterOptions();
 };

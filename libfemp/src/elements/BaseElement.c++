@@ -5,11 +5,15 @@
 
 namespace fem {
 
-std::vector<size_t> BaseElement::getNodeReferences() const { return this->nodes; }
+std::vector<size_t> BaseElement::getNodeReferences() const {
+	return this->nodes;
+}
 
 BaseElement::~BaseElement() {}
 
-material_ref_t BaseElement::getMaterialRef() const { return m_material; }
+material_ref_t BaseElement::getMaterialRef() const {
+	return m_material;
+}
 
 Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> BaseElement::getStiffnessMatrix(fem::Model& model) {
 	using namespace Eigen;

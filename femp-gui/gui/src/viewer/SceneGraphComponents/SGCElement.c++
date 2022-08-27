@@ -16,7 +16,9 @@ Element::Element(fem::element_ref_t const& ref, fem::Element& reference_element,
 	this->setDisplacementsPolicy(displacements);
 }
 
-fem::element_ref_t Element::reference() const { return m_element_reference; }
+fem::element_ref_t Element::reference() const {
+	return m_element_reference;
+}
 
 void Element::setElementRepresentationPolicy(ElementRepresentationPolicy* representation) {
 	assert(representation != nullptr);
@@ -28,7 +30,9 @@ void Element::setDisplacementsPolicy(DisplacementsRepresentationPolicy* displace
 	this->m_displacements = displacements;
 }
 
-void Element::accept(Operation::OperationsVisitor& visitor) { visitor.visit(*this); }
+void Element::accept(Operation::OperationsVisitor& visitor) {
+	visitor.visit(*this);
+}
 
 void Element::setReferenceElement(fem::element_ref_t const& ref, fem::Element& referenced_element) {
 	this->m_element_reference = ref;

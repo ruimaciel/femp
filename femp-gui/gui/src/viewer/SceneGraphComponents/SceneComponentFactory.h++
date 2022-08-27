@@ -16,7 +16,7 @@ namespace SGC  // namespace for all scene graph components
  *of type fem::Element
  **/
 class SceneComponentFactory {
-   public:
+	public:
 	virtual ~SceneComponentFactory();
 
 	void setElementRepresentationPolicy(ElementRepresentationPolicy* representation);
@@ -27,7 +27,7 @@ class SceneComponentFactory {
 	 **/
 	virtual Element* operator()(fem::element_ref_t const&, fem::Element& element);
 
-   protected:
+	protected:
 	ElementRepresentationPolicy* m_representation;
 	DisplacementsRepresentationPolicy* m_displacement;
 };

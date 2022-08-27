@@ -15,7 +15,7 @@ host class.
 **/
 template <typename scalar>
 class DenseMatrix {
-   public:
+	public:
 	struct Data {
 		size_t t_rows;	   // number of rows
 		size_t t_columns;  // number of columns
@@ -23,7 +23,7 @@ class DenseMatrix {
 		std::vector<scalar> data;
 	} data;
 
-   public:
+	public:
 	DenseMatrix(const size_t rows = 0, const size_t columns = 0);
 	~DenseMatrix(){};
 
@@ -32,8 +32,12 @@ class DenseMatrix {
 				**/
 	void clear();
 
-	size_t rows() { return data.t_rows; };
-	size_t columns() { return data.t_columns; };
+	size_t rows() {
+		return data.t_rows;
+	};
+	size_t columns() {
+		return data.t_columns;
+	};
 
 	/*
 				Returns the value in [row,column]

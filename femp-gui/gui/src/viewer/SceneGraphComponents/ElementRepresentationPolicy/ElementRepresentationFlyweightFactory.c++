@@ -13,13 +13,21 @@ void ElementRepresentationFlyweightFactory::setDisplacementsRepresentationPolicy
 	m_gradient_policy.setDisplacementPolicy(displacements);
 }
 
-ElementRepresentationPolicy* ElementRepresentationFlyweightFactory::opaque() { return &m_opaque_policy; }
+ElementRepresentationPolicy* ElementRepresentationFlyweightFactory::opaque() {
+	return &m_opaque_policy;
+}
 
-ElementRepresentationPolicy* ElementRepresentationFlyweightFactory::gradient() { return &m_gradient_policy; }
+ElementRepresentationPolicy* ElementRepresentationFlyweightFactory::gradient() {
+	return &m_gradient_policy;
+}
 
-void ElementRepresentationFlyweightFactory::setTriangleWireframeRendering(bool const state) { m_opaque_policy.setTriangleWireframeRendering(state); }
+void ElementRepresentationFlyweightFactory::setTriangleWireframeRendering(bool const state) {
+	m_opaque_policy.setTriangleWireframeRendering(state);
+}
 
-void ElementRepresentationFlyweightFactory::toggleTriangleWireframeRendering() { m_opaque_policy.toggleTriangleWireframeRendering(); }
+void ElementRepresentationFlyweightFactory::toggleTriangleWireframeRendering() {
+	m_opaque_policy.toggleTriangleWireframeRendering();
+}
 
 void ElementRepresentationFlyweightFactory::setSurfaceSubdivisionLevel(unsigned short level) {
 	m_opaque_policy.setSurfaceSubdivisionLevel(level);

@@ -10,7 +10,7 @@ class BaseViewport;
  * Input class
  */
 class InputState {
-   public:
+	public:
 	virtual ~InputState();
 
 	/**
@@ -29,7 +29,7 @@ class InputState {
 	virtual void rightRelease(BaseViewport* viewport, QMouseEvent* event, Input* input);
 	virtual void move(BaseViewport* viewport, QMouseEvent* event, Input* input);
 
-   protected:
+	protected:
 	void changeState(Input& input, InputState* new_state);
 };
 

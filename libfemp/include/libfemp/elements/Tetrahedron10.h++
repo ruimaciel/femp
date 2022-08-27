@@ -9,7 +9,7 @@
 namespace fem {
 
 class Tetrahedron10 : public TetrahedronFamily {
-   public:
+	public:
 	Tetrahedron10();
 
 	std::vector<fem::Point3D> getLocalCoordinates() override;
@@ -22,7 +22,7 @@ class Tetrahedron10 : public TetrahedronFamily {
 
 	std::vector<double> getdNdzeta(const Point3D& p) override;
 
-   public:	// merging with fem::Element
+	public:	 // merging with fem::Element
 	/**
 	 * return the number of nodes that an element of this particular type has
 	 * @return the number of nodes

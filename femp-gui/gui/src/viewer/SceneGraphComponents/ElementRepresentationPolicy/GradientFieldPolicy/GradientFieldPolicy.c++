@@ -11,11 +11,17 @@ GradientFieldPolicy::~GradientFieldPolicy() {}
 
 // Methods
 
-void GradientFieldPolicy::setModel(fem::Model& model) { this->m_model = &model; }
+void GradientFieldPolicy::setModel(fem::Model& model) {
+	this->m_model = &model;
+}
 
-void GradientFieldPolicy::setAnalysisResult(fem::AnalysisResult& result) { this->m_analysis_result = &result; }
+void GradientFieldPolicy::setAnalysisResult(fem::AnalysisResult& result) {
+	this->m_analysis_result = &result;
+}
 
-void GradientFieldPolicy::setResultsRanges(fem::ResultsRanges<double>& ranges) { this->m_results_ranges = &ranges; }
+void GradientFieldPolicy::setResultsRanges(fem::ResultsRanges<double>& ranges) {
+	this->m_results_ranges = &ranges;
+}
 
 GLfloat* GradientFieldPolicy::getColor(float& gradient, ViewportColors& colors) {
 	if (gradient > this->maxVal(*m_results_ranges)) {

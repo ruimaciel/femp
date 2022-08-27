@@ -636,6 +636,10 @@ void OpaqueRepresentationPolicy::prism18(fem::element_ref_t const&, fem::Element
 	quad9(m_temp_p[0], m_temp_p[3], m_temp_p[5], m_temp_p[2], m_temp_p[8], m_temp_p[13], m_temp_p[11], m_temp_p[7], m_temp_p[16], color);
 }
 
-void OpaqueRepresentationPolicy::setTriangleWireframeRendering(bool const state) { m_triangle_wireframe_representation = state; }
+void OpaqueRepresentationPolicy::setTriangleWireframeRendering(bool const state) {
+	m_triangle_wireframe_representation = state;
+}
 
-void OpaqueRepresentationPolicy::toggleTriangleWireframeRendering() { setTriangleWireframeRendering(!m_triangle_wireframe_representation); }
+void OpaqueRepresentationPolicy::toggleTriangleWireframeRendering() {
+	setTriangleWireframeRendering(!m_triangle_wireframe_representation);
+}

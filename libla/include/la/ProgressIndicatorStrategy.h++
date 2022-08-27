@@ -9,12 +9,12 @@ the progress indicator code without messing with the analysis code These
 routines are then used to update the GUI
 */
 class ProgressIndicatorStrategy {
-   protected:
+	protected:
 	std::string m_current_section_name;
 	size_t m_progress_limit;
 	size_t m_current_progress;
 
-   public:
+	public:
 	ProgressIndicatorStrategy() : m_progress_limit(0), m_current_progress(0) {}
 	/**
 				Marks the begining of a new progress section

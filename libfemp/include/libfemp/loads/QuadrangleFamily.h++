@@ -10,10 +10,10 @@
 namespace fem {
 
 class QuadrangleFamily : public SurfaceLoad {
-   public:
+	public:
 	std::unique_ptr<quadrature::QuadrangleRule> m_domain_quadrature_rule;  // quadrature rule for domain calculations
 
-   public:
+	public:
 	QuadrangleFamily();
 
 	enum BaseElement::ElementFamily family() const;

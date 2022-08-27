@@ -14,7 +14,7 @@ namespace quadrature {
  * Interface used by all quadrature rules over the square
  */
 class HexahedronRule : public VolumeRule {
-   public:
+	public:
 	virtual ~HexahedronRule();
 
 	/**
@@ -28,10 +28,10 @@ class HexahedronRule : public VolumeRule {
  * quadrature rules
  **/
 class HexahedronCartesianProduct : public HexahedronRule {
-   private:
+	private:
 	std::unique_ptr<LineRule> m_rule_x, m_rule_y, m_rule_z;
 
-   public:
+	public:
 	HexahedronCartesianProduct(LineRule* rule_x, LineRule* rule_y, LineRule* rule_z);
 
 	virtual std::vector<QuadraturePoint> operator()() const override;

@@ -71,9 +71,13 @@ void VPStateGradients::setAnalysisResult(fem::AnalysisResult& new_result) {
 	this->m_displacements.setAnalysisResult(new_result);
 }
 
-void VPStateGradients::setResultsRanges(fem::ResultsRanges<double>& ranges) { this->m_gradient_representation.setResultsRanges(ranges); }
+void VPStateGradients::setResultsRanges(fem::ResultsRanges<double>& ranges) {
+	this->m_gradient_representation.setResultsRanges(ranges);
+}
 
-void VPStateGradients::setDisplacementsScale(float new_scale) { this->m_displacements.setDisplacementsScale(new_scale); }
+void VPStateGradients::setDisplacementsScale(float new_scale) {
+	this->m_displacements.setDisplacementsScale(new_scale);
+}
 
 void VPStateGradients::setSelection(Selection) {}
 
@@ -116,28 +120,54 @@ void VPStateGradients::keyPressEvent(BaseViewport* viewport, QKeyEvent* event) {
 	}
 }
 
-void VPStateGradients::renderStrains11() { this->m_gradient_representation.renderStrains11(); }
+void VPStateGradients::renderStrains11() {
+	this->m_gradient_representation.renderStrains11();
+}
 
-void VPStateGradients::renderStrains22() { this->m_gradient_representation.renderStrains22(); }
+void VPStateGradients::renderStrains22() {
+	this->m_gradient_representation.renderStrains22();
+}
 
-void VPStateGradients::renderStrains33() { this->m_gradient_representation.renderStrains33(); }
+void VPStateGradients::renderStrains33() {
+	this->m_gradient_representation.renderStrains33();
+}
 
-void VPStateGradients::renderStrains12() { this->m_gradient_representation.renderStrains12(); }
+void VPStateGradients::renderStrains12() {
+	this->m_gradient_representation.renderStrains12();
+}
 
-void VPStateGradients::renderStrains23() { this->m_gradient_representation.renderStrains23(); }
+void VPStateGradients::renderStrains23() {
+	this->m_gradient_representation.renderStrains23();
+}
 
-void VPStateGradients::renderStrains13() { this->m_gradient_representation.renderStrains13(); }
+void VPStateGradients::renderStrains13() {
+	this->m_gradient_representation.renderStrains13();
+}
 
-void VPStateGradients::renderStresses11() { this->m_gradient_representation.renderStresses11(); }
+void VPStateGradients::renderStresses11() {
+	this->m_gradient_representation.renderStresses11();
+}
 
-void VPStateGradients::renderStresses22() { this->m_gradient_representation.renderStresses22(); }
+void VPStateGradients::renderStresses22() {
+	this->m_gradient_representation.renderStresses22();
+}
 
-void VPStateGradients::renderStresses33() { this->m_gradient_representation.renderStresses33(); }
+void VPStateGradients::renderStresses33() {
+	this->m_gradient_representation.renderStresses33();
+}
 
-void VPStateGradients::renderStresses12() { this->m_gradient_representation.renderStresses12(); }
+void VPStateGradients::renderStresses12() {
+	this->m_gradient_representation.renderStresses12();
+}
 
-void VPStateGradients::renderStresses23() { this->m_gradient_representation.renderStresses23(); }
+void VPStateGradients::renderStresses23() {
+	this->m_gradient_representation.renderStresses23();
+}
 
-void VPStateGradients::renderStresses13() { this->m_gradient_representation.renderStresses13(); }
+void VPStateGradients::renderStresses13() {
+	this->m_gradient_representation.renderStresses13();
+}
 
-void VPStateGradients::renderVonMises() { this->m_gradient_representation.renderVonMises(); }
+void VPStateGradients::renderVonMises() {
+	this->m_gradient_representation.renderVonMises();
+}

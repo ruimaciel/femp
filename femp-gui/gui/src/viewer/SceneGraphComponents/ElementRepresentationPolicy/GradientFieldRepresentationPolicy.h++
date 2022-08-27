@@ -18,7 +18,7 @@
  *GradientFieldPolicy, a policy pattern
  **/
 class GradientFieldRepresentationPolicy : virtual public ElementRepresentationPolicy {
-   protected:
+	protected:
 	std::vector<fem::Point3D> m_temp_p;
 	typedef unsigned int p_index_t;	 // syntactically convenient helper identifier
 
@@ -26,10 +26,10 @@ class GradientFieldRepresentationPolicy : virtual public ElementRepresentationPo
 									  // the gradient values
 	GradientFieldFlyweightFactory m_gradient_flyweight_factory;
 
-   public:
+	public:
 	GradientFieldRepresentationPolicy();
 
-   protected:
+	protected:
 	inline void tri3(fem::element_ref_t const& ref, p_index_t p1, p_index_t p2, p_index_t p3, ViewportColors& colors);
 	inline void tri6(fem::element_ref_t const& ref, p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, ViewportColors& colors);
 	inline void quad4(fem::element_ref_t const& ref, p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, ViewportColors& colors);
@@ -38,7 +38,7 @@ class GradientFieldRepresentationPolicy : virtual public ElementRepresentationPo
 	inline void quad9(fem::element_ref_t const& ref, p_index_t p1, p_index_t p2, p_index_t p3, p_index_t p4, p_index_t p5, p_index_t p6, p_index_t p7,
 					  p_index_t p8, p_index_t p9, ViewportColors& colors);
 
-   public:
+	public:
 	void tetra4(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacements);
 	void tetra10(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacements);
 	void hexa8(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacements);

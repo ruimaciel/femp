@@ -19,7 +19,9 @@ void SceneGraphComponent::paintGL(ViewportData& data, ViewportColors& colors) {
 	}
 }
 
-void SceneGraphComponent::pushComponent(std::shared_ptr<SceneGraphComponent> new_component) { this->children.push_back(new_component); }
+void SceneGraphComponent::pushComponent(std::shared_ptr<SceneGraphComponent> new_component) {
+	this->children.push_back(new_component);
+}
 
 void SceneGraphComponent::accept(Operation::OperationsVisitor& visitor) {
 	for (auto component : children) {

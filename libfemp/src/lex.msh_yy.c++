@@ -2085,7 +2085,9 @@ YY_BUFFER_STATE yy_scan_buffer(char* base, yy_size_t size) {
  * @note If you want to scan bytes that may contain NUL values, then use
  *       yy_scan_bytes() instead.
  */
-YY_BUFFER_STATE yy_scan_string(const char* yystr) { return yy_scan_bytes(yystr, (int)strlen(yystr)); }
+YY_BUFFER_STATE yy_scan_string(const char* yystr) {
+	return yy_scan_bytes(yystr, (int)strlen(yystr));
+}
 
 /** Setup the input buffer state to scan the given bytes. The next call to
  * yylex() will scan from a @e copy of @a bytes.
@@ -2147,7 +2149,9 @@ static void yy_pop_state(void) {
 	BEGIN((yy_start_stack)[(yy_start_stack_ptr)]);
 }
 
-static int yy_top_state(void) { return (yy_start_stack)[(yy_start_stack_ptr)-1]; }
+static int yy_top_state(void) {
+	return (yy_start_stack)[(yy_start_stack_ptr)-1];
+}
 
 #ifndef YY_EXIT_FAILURE
 #define YY_EXIT_FAILURE 2
@@ -2178,34 +2182,46 @@ static void yynoreturn yy_fatal_error(const char* msg) {
 /** Get the current line number.
  *
  */
-int yyget_lineno(void) { return yylineno; }
+int yyget_lineno(void) {
+	return yylineno;
+}
 
 /** Get the input stream.
  *
  */
-FILE* yyget_in(void) { return yyin; }
+FILE* yyget_in(void) {
+	return yyin;
+}
 
 /** Get the output stream.
  *
  */
-FILE* yyget_out(void) { return yyout; }
+FILE* yyget_out(void) {
+	return yyout;
+}
 
 /** Get the length of the current token.
  *
  */
-int yyget_leng(void) { return yyleng; }
+int yyget_leng(void) {
+	return yyleng;
+}
 
 /** Get the current token.
  *
  */
 
-char* yyget_text(void) { return yytext; }
+char* yyget_text(void) {
+	return yytext;
+}
 
 /** Set the current line number.
  * @param _line_number line number
  *
  */
-void yyset_lineno(int _line_number) { yylineno = _line_number; }
+void yyset_lineno(int _line_number) {
+	yylineno = _line_number;
+}
 
 /** Set the input stream. This does not discard the current
  * input buffer.
@@ -2213,13 +2229,21 @@ void yyset_lineno(int _line_number) { yylineno = _line_number; }
  *
  * @see yy_switch_to_buffer
  */
-void yyset_in(FILE* _in_str) { yyin = _in_str; }
+void yyset_in(FILE* _in_str) {
+	yyin = _in_str;
+}
 
-void yyset_out(FILE* _out_str) { yyout = _out_str; }
+void yyset_out(FILE* _out_str) {
+	yyout = _out_str;
+}
 
-int yyget_debug(void) { return yy_flex_debug; }
+int yyget_debug(void) {
+	return yy_flex_debug;
+}
 
-void yyset_debug(int _bdebug) { yy_flex_debug = _bdebug; }
+void yyset_debug(int _bdebug) {
+	yy_flex_debug = _bdebug;
+}
 
 static int yy_init_globals(void) {
 	/* Initialization is the same as for the non-reentrant scanner.
@@ -2300,7 +2324,9 @@ static int yy_flex_strlen(const char* s) {
 }
 #endif
 
-void* yyalloc(yy_size_t size) { return malloc(size); }
+void* yyalloc(yy_size_t size) {
+	return malloc(size);
+}
 
 void* yyrealloc(void* ptr, yy_size_t size) {
 	/* The cast to (char *) in the following accommodates both
@@ -2313,7 +2339,9 @@ void* yyrealloc(void* ptr, yy_size_t size) {
 	return realloc(ptr, size);
 }
 
-void yyfree(void* ptr) { free((char*)ptr); /* see yyrealloc() for (char *) cast */ }
+void yyfree(void* ptr) {
+	free((char*)ptr); /* see yyrealloc() for (char *) cast */
+}
 
 #define YYTABLES_NAME "yytables"
 

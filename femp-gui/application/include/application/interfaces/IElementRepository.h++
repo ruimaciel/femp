@@ -8,7 +8,7 @@ namespace gui {
 namespace application {
 
 class IElementRepository {
-   public:
+	public:
 	IElementRepository();
 
 	virtual ~IElementRepository();

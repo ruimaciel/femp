@@ -9,7 +9,7 @@ namespace gui {
 namespace application {
 
 class ILoadPatternRepository {
-   public:
+	public:
 	ILoadPatternRepository();
 	virtual ~ILoadPatternRepository() = default;
 

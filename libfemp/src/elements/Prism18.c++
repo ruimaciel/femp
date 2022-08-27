@@ -137,7 +137,9 @@ std::vector<double> Prism18::getdNdzeta(const Point3D& p) {
 	return dNdzeta;
 }
 
-int Prism18::getNodeAmount() const { return 18; }
+int Prism18::getNodeAmount() const {
+	return 18;
+}
 
 std::vector<fem::Point3D> Prism18::getLocalCoordinates() {
 	this->coordinates[0] = Point3D(0, 0, -1);

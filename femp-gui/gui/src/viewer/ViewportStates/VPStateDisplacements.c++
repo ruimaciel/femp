@@ -69,9 +69,13 @@ void VPStateDisplacements::populateScenegraph(BaseViewport* viewport) {
 	this->scenegraph.generateSceneGraph();
 }
 
-void VPStateDisplacements::setAnalysisResult(fem::AnalysisResult& new_result) { this->m_displacements.setAnalysisResult(new_result); }
+void VPStateDisplacements::setAnalysisResult(fem::AnalysisResult& new_result) {
+	this->m_displacements.setAnalysisResult(new_result);
+}
 
-void VPStateDisplacements::setDisplacementsScale(float new_scale) { this->m_displacements.setDisplacementsScale(new_scale); }
+void VPStateDisplacements::setDisplacementsScale(float new_scale) {
+	this->m_displacements.setDisplacementsScale(new_scale);
+}
 
 void VPStateDisplacements::setSelection(Selection) {}
 
@@ -120,4 +124,6 @@ void VPStateDisplacements::keyPressEvent(BaseViewport* viewport, QKeyEvent* even
 	}
 }
 
-void VPStateDisplacements::setTrianglesVisible(bool const state) { m_element_representation_factory.setTriangleWireframeRendering(state); }
+void VPStateDisplacements::setTrianglesVisible(bool const state) {
+	m_element_representation_factory.setTriangleWireframeRendering(state);
+}

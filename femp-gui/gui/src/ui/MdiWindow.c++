@@ -102,7 +102,9 @@ void MdiWindow::normalizeAngle(int* angle) {
 	while (*angle > 360 * 16) *angle -= 360 * 16;
 }
 
-void MdiWindow::setColors(ViewportColors& colors) { viewport->setColors(colors); }
+void MdiWindow::setColors(ViewportColors& colors) {
+	viewport->setColors(colors);
+}
 
 void MdiWindow::setSelection(Selection selection) {
 	qInfo() << "void MdiWindow::setSelection(Selection)";
@@ -110,7 +112,9 @@ void MdiWindow::setSelection(Selection selection) {
 	this->viewport->setSelection(selection);
 }
 
-void MdiWindow::clearSelection() { qInfo() << "void MdiWindow::setSelection(Selection): hasn't been implemented"; }
+void MdiWindow::clearSelection() {
+	qInfo() << "void MdiWindow::setSelection(Selection): hasn't been implemented";
+}
 
 void MdiWindow::showSelection(const Selection selection) {
 	qInfo() << "MdiWindow::viewSelection(const Selection selection)";

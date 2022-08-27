@@ -20,7 +20,9 @@ void LeftDrag::press(BaseViewport* /*viewport*/, QMouseEvent* event, Input* /*in
 	}
 }
 
-void LeftDrag::release(BaseViewport* viewport, QMouseEvent* event, Input* input) { this->leftRelease(viewport, event, input); }
+void LeftDrag::release(BaseViewport* viewport, QMouseEvent* event, Input* input) {
+	this->leftRelease(viewport, event, input);
+}
 
 void LeftDrag::leftRelease(BaseViewport* viewport, QMouseEvent* event, Input* input) {
 	viewport->state->setSelectionOff();

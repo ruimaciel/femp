@@ -7,7 +7,9 @@ namespace fem {
 
 Element::~Element() {}
 
-material_ref_t Element::getMaterialRef() const { return material; }
+material_ref_t Element::getMaterialRef() const {
+	return material;
+}
 
 size_t Element::getNodeAmount() const {
 	switch (this->type) {
@@ -125,11 +127,17 @@ enum Element::ElementFamily Element::family() const {
 	}
 }
 
-Element::Type Element::getType() const { return type; }
+Element::Type Element::getType() const {
+	return type;
+}
 
-std::vector<size_t> Element::getNodeReferences() const { return this->nodes; }
+std::vector<size_t> Element::getNodeReferences() const {
+	return this->nodes;
+}
 
-node_ref_t Element::getNode(node_ref_t ref) const { return this->nodes[ref]; }
+node_ref_t Element::getNode(node_ref_t ref) const {
+	return this->nodes[ref];
+}
 
 void Element::clear() {}
 

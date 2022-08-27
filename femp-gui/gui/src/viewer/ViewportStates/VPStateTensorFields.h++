@@ -17,12 +17,12 @@ class BaseViewport;
  * A pattern for the State pattern which is used to render the tension fields
  */
 class VPStateTensorFields : public ViewportState {
-   protected:
+	protected:
 	StressFieldRepresentationPolicy m_stress_field_representation;
 	NoDisplacementsPolicy m_displacements;	// the displacements view renders displacements
 	SGC::SceneComponentFactory m_factory;
 
-   public:
+	public:
 	VPStateTensorFields();
 	~VPStateTensorFields();
 

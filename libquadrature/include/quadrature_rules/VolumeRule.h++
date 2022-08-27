@@ -11,13 +11,13 @@ namespace quadrature {
  * Interface used by all quadrature rules over the square
  */
 class VolumeRule {
-   public:
+	public:
 	struct QuadraturePoint {
 		double weight;
 		std::array<double, 3> x;
 	};
 
-   public:
+	public:
 	virtual ~VolumeRule() {}
 
 	/**

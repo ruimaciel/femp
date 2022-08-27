@@ -17,17 +17,17 @@ class InputState;
  * Defines the interface for a state pattern that handles user input
  */
 class Input {
-   public:
+	public:
 	InputStates::Start m_is_start;
 	InputStates::LeftClick m_is_left_click;
 	InputStates::LeftDrag m_is_left_drag;
 	InputStates::RightClick m_is_right_click;
 	InputStates::RightDrag m_is_right_drag;
 
-   protected:
+	protected:
 	InputState* m_current_state;
 
-   public:
+	public:
 	Input();
 
 	void press(BaseViewport*, QMouseEvent* event);

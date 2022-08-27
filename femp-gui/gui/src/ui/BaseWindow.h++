@@ -11,7 +11,7 @@
  * bit unwielding to rewrite.
  **/
 class BaseWindow {
-   public:
+	public:
 	/**
 	 * @param label	window label
 	 * @param parent	this widget's parent widget
@@ -23,7 +23,7 @@ class BaseWindow {
 	 */
 	QString label() const;
 
-   protected:
+	protected:
 	QString m_windowLabel;
 };
 

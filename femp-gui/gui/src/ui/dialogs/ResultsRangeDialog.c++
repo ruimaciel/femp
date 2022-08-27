@@ -2,7 +2,9 @@
 
 #include <QVBoxLayout>
 
-ResultsRangeDialog::ResultsRangeDialog(QWidget* parent) : QDialog(parent) { ui.setupUi(this); }
+ResultsRangeDialog::ResultsRangeDialog(QWidget* parent) : QDialog(parent) {
+	ui.setupUi(this);
+}
 
 void ResultsRangeDialog::setValueRanges(const fem::ResultsRanges<double>& ranges) {
 	// Strains

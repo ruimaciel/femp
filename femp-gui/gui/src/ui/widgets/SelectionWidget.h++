@@ -17,18 +17,18 @@ Widget developed to select model objects
 class SelectionWidget : public QWidget, Ui::SelectionWidget {
 	Q_OBJECT
 
-   public:
+	public:
 	SelectionWidget(std::shared_ptr<gui::Model> domain_model, SelectionManager&, QWidget* parent = nullptr);
 
-   signals:
+	signals:
 	void selectionChanged(const Selection&);
 	void selectionCleared();
 
-   public slots:
+	public slots:
 	void setSelection(Selection const&);
 	void clearSelection();
 
-   protected:
+	protected:
 	/**
 	initializes the widget by filling all the revevant values
 	@param selection_manager
@@ -41,7 +41,7 @@ class SelectionWidget : public QWidget, Ui::SelectionWidget {
 	**/
 	void initializeSelectionGroups(std::shared_ptr<gui::Model> femp_model);
 
-   protected:
+	protected:
 	QTreeWidgetItem* m_element_item;
 	std::map<fem::element_ref_t, QTreeWidgetItem*> m_element_map;  // list of all element references
 

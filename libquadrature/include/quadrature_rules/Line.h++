@@ -12,10 +12,10 @@ namespace quadrature {
  * Interface used by all line rules
  */
 class LineRule {
-   public:
+	public:
 	using Point = QuadraturePoint<1>;  // helper alias
 
-   public:
+	public:
 	virtual ~LineRule();
 
 	/**
@@ -28,7 +28,7 @@ class LineRule {
  * One point Gauss-Legendre
  */
 class GaussLegendre1 : public LineRule {
-   public:
+	public:
 	virtual std::vector<Point> operator()() const override;
 };
 
@@ -36,7 +36,7 @@ class GaussLegendre1 : public LineRule {
  * two-point Gauss-Legendre
  */
 class GaussLegendre2 : public LineRule {
-   public:
+	public:
 	virtual std::vector<Point> operator()() const override;
 };
 
@@ -44,7 +44,7 @@ class GaussLegendre2 : public LineRule {
  * three-point Gauss-Legendre
  */
 class GaussLegendre3 : public LineRule {
-   public:
+	public:
 	virtual std::vector<Point> operator()() const override;
 };
 
@@ -52,7 +52,7 @@ class GaussLegendre3 : public LineRule {
  * three-point Simpson's rule
  */
 class Simpson : public LineRule {
-   public:
+	public:
 	virtual std::vector<Point> operator()() const override;
 };
 

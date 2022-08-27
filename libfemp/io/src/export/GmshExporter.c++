@@ -20,7 +20,7 @@ namespace fem {
 namespace io {
 
 class GmshElementExporterVisitor : public fem::mesh::ElementVisitor {
-   public:
+	public:
 	GmshElementExporterVisitor(std::ofstream& mesh_file) : m_mesh_file_stream(mesh_file) {}
 
 	void visit(mesh::Hexahedron8& element) {
@@ -122,7 +122,7 @@ class GmshElementExporterVisitor : public fem::mesh::ElementVisitor {
 		m_mesh_file_stream << "\n";
 	}
 
-   private:
+	private:
 	std::ofstream& m_mesh_file_stream;
 };
 

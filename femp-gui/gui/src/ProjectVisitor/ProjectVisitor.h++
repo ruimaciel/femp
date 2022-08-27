@@ -10,7 +10,7 @@
  * Project class
  */
 class ProjectVisitor {
-   public:
+	public:
 	virtual ~ProjectVisitor();
 	virtual void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result) = 0;
 };

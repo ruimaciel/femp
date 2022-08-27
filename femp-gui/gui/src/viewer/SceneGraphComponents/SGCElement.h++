@@ -18,13 +18,13 @@ namespace SGC  // namespace for all scene graph components
  * Interface for all classes which are used to render elements on a viewport
  **/
 class Element : public SceneGraphComponent {
-   protected:
+	protected:
 	fem::element_ref_t m_element_reference;
 	fem::Element* m_element;
 	ElementRepresentationPolicy* m_representation;
 	DisplacementsRepresentationPolicy* m_displacements;
 
-   public:
+	public:
 	/**
 	 * @param	reference_element	the reference to this element's fem::Element
 	 *object
@@ -54,7 +54,7 @@ class Element : public SceneGraphComponent {
 	 **/
 	virtual void accept(Operation::OperationsVisitor& visitor);
 
-   protected:
+	protected:
 	void setReferenceElement(fem::element_ref_t const&, fem::Element&);
 };
 }  // namespace SGC

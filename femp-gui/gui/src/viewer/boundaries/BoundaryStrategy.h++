@@ -9,7 +9,7 @@
  **/
 
 class BoundaryStrategy {
-   public:
+	public:
 	BoundaryStrategy();
 	~BoundaryStrategy();
 

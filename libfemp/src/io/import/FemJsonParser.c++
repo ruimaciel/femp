@@ -24,7 +24,9 @@ FemJsonParser::FemJsonParser() {
 	this->error.message.clear();
 }
 
-void FemJsonParser::operator()(std::istream& file, fem::Model& model) { parse(file, model); }
+void FemJsonParser::operator()(std::istream& file, fem::Model& model) {
+	parse(file, model);
+}
 
 enum FemJsonParser::Error::Type FemJsonParser::parse(std::istream& file, fem::Model& model) {
 	// temp variables used by the parser

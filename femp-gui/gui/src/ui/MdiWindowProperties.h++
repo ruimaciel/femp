@@ -6,10 +6,10 @@
  * regarding the features supported by each MDI window.
  */
 class MdiWindowProperties {
-   public:
+	public:
 	enum WindowType { MWP_None, MWP_Model, MWP_Displacements } window_type;
 
-   public:
+	public:
 	explicit MdiWindowProperties(enum WindowType type = MWP_None);
 };
 

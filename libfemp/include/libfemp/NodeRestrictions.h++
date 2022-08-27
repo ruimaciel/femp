@@ -9,7 +9,7 @@ using node_restriction_ref_t = unsigned int;
  * Prescribes a zero displacement on a degree of freedom
  */
 class NodeRestrictions {
-   public:
+	public:
 	NodeRestrictions();
 	NodeRestrictions(const NodeRestrictions&);
 
@@ -28,7 +28,7 @@ class NodeRestrictions {
 
 	void reset();
 
-   private:
+	private:
 	bool m_dof[3];	// specifies the node displacement restrictions along the XX,
 					// YY and ZZ axis
 };

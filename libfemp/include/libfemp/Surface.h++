@@ -11,7 +11,7 @@ namespace fem {
  * Describes a surface belonging to at least one element
  */
 class Surface {
-   public:
+	public:
 	struct ReferencedElement {
 		size_t reference;							  // the reference to the element which shares this surface
 		unsigned char surface;						  // the surface numbering.  In a hexahedron it can be [1-6]
@@ -19,7 +19,7 @@ class Surface {
 													  // the element's local space
 	};
 
-   public:
+	public:
 	/**
 	 * Sets this surface's properties
 	 * @param type	the type of surface
@@ -47,7 +47,7 @@ class Surface {
 
 	bool operator==(const Surface& other) const;
 
-   private:
+	private:
 	Element::Type m_type;						// type of surface
 	std::vector<size_t> m_node_references;		// global references to the nodes
 												// which define this surface

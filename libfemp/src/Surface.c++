@@ -480,11 +480,17 @@ void Surface::pushElementReference(const size_t reference, const Element::Type& 
 	this->m_elements.push_back(re);
 }
 
-bool Surface::internal() { return m_elements.size() > 1 ? true : false; }
+bool Surface::internal() {
+	return m_elements.size() > 1 ? true : false;
+}
 
-bool Surface::external() { return !internal(); }
+bool Surface::external() {
+	return !internal();
+}
 
-Element::Type Surface::getType() { return m_type; }
+Element::Type Surface::getType() {
+	return m_type;
+}
 
 bool Surface::compatible(const Element::Type& type, std::vector<size_t>& nodes) {
 	switch (type) {

@@ -224,9 +224,13 @@ StressFieldRepresentation StressFieldFactory::operator()(fem::Element const& ele
 	return representation;
 }
 
-float StressFieldFactory::max() const { return m_max; }
+float StressFieldFactory::max() const {
+	return m_max;
+}
 
-float StressFieldFactory::min() const { return m_min; }
+float StressFieldFactory::min() const {
+	return m_min;
+}
 
 // Macros
 #define SQR(x) ((x) * (x))	// x^2

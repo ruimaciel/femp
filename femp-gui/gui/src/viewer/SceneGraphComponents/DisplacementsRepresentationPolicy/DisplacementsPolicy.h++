@@ -11,16 +11,16 @@
  *to an analysis result
  **/
 class DisplacementsPolicy : virtual public DisplacementsRepresentationPolicy {
-   protected:
+	protected:
 	fem::AnalysisResult* m_result;
 	float m_scale;
 
-   public:
+	public:
 	DisplacementsPolicy();
 	virtual ~DisplacementsPolicy();
 
-   protected:
-   public:
+	protected:
+	public:
 	/**
 	 * returns the coordinate of a given point by providing the node's reference
 	 **/

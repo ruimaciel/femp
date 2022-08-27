@@ -13,12 +13,12 @@
  * Sets node restraints in a specific set of nodes
  */
 class SetNodeRestraintsVisitor : public ProjectVisitor {
-   public:
+	public:
 	SetNodeRestraintsVisitor(Selection selection, fem::NodeRestrictions const& restrictions);
 
 	void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result);
 
-   protected:
+	protected:
 	fem::NodeRestrictions m_restrictions;
 	Selection m_selection;
 };

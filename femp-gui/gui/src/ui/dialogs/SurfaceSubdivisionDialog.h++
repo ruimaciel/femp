@@ -11,12 +11,12 @@
 class SurfaceSubdivisionDialog : public QDialog, private Ui::SurfaceSubdivisionDialog {
 	Q_OBJECT
 
-   public:
+	public:
 	SurfaceSubdivisionDialog(unsigned short scale, QWidget* parent = nullptr);
 
 	unsigned short scale();
 
-   protected slots:
+	protected slots:
 	void updateSpinBox(int);
 	void updateSlider(int);
 };

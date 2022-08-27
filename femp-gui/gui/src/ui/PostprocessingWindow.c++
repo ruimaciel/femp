@@ -53,7 +53,9 @@ void PostprocessingWindow::createToolBars(fem::Project& project) {
 	m_toolBarToggleMenuBarVisibility->addAction(m_actionMenuVisibility);
 }
 
-void PostprocessingWindow::setGradientValuesRange(const fem::AnalysisResult& result) { this->m_resultsRanges = result.ranges; }
+void PostprocessingWindow::setGradientValuesRange(const fem::AnalysisResult& result) {
+	this->m_resultsRanges = result.ranges;
+}
 
 void PostprocessingWindow::toggleMenuBarVisibility(bool visibility) {
 	qWarning("void PostprocessingWindow::toggleMenuBarVisibility(bool visibility) ");

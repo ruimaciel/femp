@@ -17,7 +17,7 @@ This bit was shoe-horned into the previous design, with
 StressFieldRepresentation map and the flyweight factory pattern
 **/
 class StressFieldRepresentationPolicy : virtual public ElementRepresentationPolicy {
-   protected:
+	protected:
 	GLfloat m_temp_color[3];  // temporary value used to set a color
 
 	fem::Model* m_model;
@@ -33,13 +33,13 @@ class StressFieldRepresentationPolicy : virtual public ElementRepresentationPoli
 
 	std::map<fem::element_ref_t, StressFieldRepresentation::StressFieldRepresentation> m_representation;
 
-   public:
+	public:
 	/**
 	 * Empty Constructor
 	 */
 	StressFieldRepresentationPolicy();
 
-   public:
+	public:
 	/**
 		Policy functions used to represent each element type
 		 */
@@ -61,7 +61,7 @@ class StressFieldRepresentationPolicy : virtual public ElementRepresentationPoli
 	void showNegativePrincipalStressesVisibility(bool state);
 	void showPositivePrincipalStressesVisibility(bool state);
 
-   protected:
+	protected:
 	/**
 		calculates all data needed to render the tensor fields in each element
 		**/

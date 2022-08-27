@@ -16,7 +16,7 @@ includes:
 namespace fem {
 
 class Project {
-   public:
+	public:
 	Project();
 	~Project();
 
@@ -43,7 +43,7 @@ class Project {
 	 */
 	void accept(ProjectVisitor& visitor);
 
-   protected:
+	protected:
 	Model m_model;	// the FEM model
 	std::shared_ptr<gui::Model> m_domainModel;
 	std::vector<AnalysisResult> m_analysisResults;	// a list with all analysis

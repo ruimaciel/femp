@@ -13,13 +13,13 @@
  */
 class AnalysisResultsModel : public QAbstractTableModel {
 	Q_OBJECT
-   protected:
+	protected:
 	fem::Project& m_project;
 	std::vector<fem::AnalysisResult>::iterator m_result;
 	int m_rows;
 	std::map<int, std::vector<fem::Element>::size_type> m_lineMap;
 
-   public:
+	public:
 	AnalysisResultsModel(fem::Project& project, QObject* parent = nullptr);
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const;
@@ -28,7 +28,7 @@ class AnalysisResultsModel : public QAbstractTableModel {
 	int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
 
-   protected:
+	protected:
 	QString generateElementTypeName(const fem::Element::Type type) const;
 	gui::application::IElementRepositoryPtr element_repository;
 	gui::application::INodeRepositoryPtr m_node_repository;

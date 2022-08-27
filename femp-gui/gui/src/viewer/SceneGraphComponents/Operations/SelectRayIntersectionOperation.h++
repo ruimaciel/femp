@@ -16,7 +16,7 @@ Sets each scene graph component to be rendered or not, according to some
 criteria
 **/
 class SelectRayIntersectionOperation : public OperationsVisitor {
-   protected:
+	protected:
 	fem::Point3D m_origin;		 // ray origin point
 	fem::Point3D m_destination;	 // ray destination point
 
@@ -26,7 +26,7 @@ class SelectRayIntersectionOperation : public OperationsVisitor {
 	float A, B, C;	// for the quadratic equation in the ray-sphere intersection
 	float r;		// intersection radius
 
-   public:
+	public:
 	/**
 		Sets this operation to set each object in the selection with the render
 	   flag state

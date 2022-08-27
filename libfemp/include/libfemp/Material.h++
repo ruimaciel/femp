@@ -10,14 +10,14 @@ namespace fem {
  * Class representing a linear elastic material
  */
 class Material {
-   public:
+	public:
 	Material(std::string m_label, double youngsModulus, double poissonRatio);
 
 	std::string getLabel() const;
 	double getYoungsModulus() const;
 	double getPoissonRatio() const;
 
-   private:
+	private:
 	std::string m_label;  // a label describing this material
 
 	double m_E;	  // Young's modulus

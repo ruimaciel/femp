@@ -61,7 +61,9 @@ void TensorFieldWindow::createToolBars(fem::Project& project) {
 	m_tensorFieldVisualization->addAction(m_actionVisiblePositivePrincipalStresses);
 }
 
-void TensorFieldWindow::setGradientValuesRange(const fem::AnalysisResult& result) { this->m_resultsRanges = result.ranges; }
+void TensorFieldWindow::setGradientValuesRange(const fem::AnalysisResult& result) {
+	this->m_resultsRanges = result.ranges;
+}
 
 void TensorFieldWindow::toggleMenuBarVisibility(bool visibility) {
 	qWarning("void TensorFieldWindow::toggleMenuBarVisibility(bool visibility) ");

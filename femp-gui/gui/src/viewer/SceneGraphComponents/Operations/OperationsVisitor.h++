@@ -15,7 +15,7 @@ Base class for a Visitor pattern which is used to operate on selected scene
 objects
 */
 class OperationsVisitor {
-   public:
+	public:
 	virtual ~OperationsVisitor();
 
 	virtual void visit(SceneGraphComponent& element) = 0;

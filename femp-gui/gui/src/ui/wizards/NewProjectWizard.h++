@@ -12,14 +12,14 @@
 class NewProjectWizard : public QWizard {
 	Q_OBJECT
 
-   public:
+	public:
 	NewProjectWizard(Document& doc, QWidget* parent = nullptr);
 
-   private:
-   Q_SIGNALS:
+	private:
+	Q_SIGNALS:
 	void newProject(Document::Type type);
 
-   public Q_SLOTS:
+	public Q_SLOTS:
 	void accept();
 };
 

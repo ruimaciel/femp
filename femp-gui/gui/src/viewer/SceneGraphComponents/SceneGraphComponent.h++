@@ -17,7 +17,7 @@
  *the scene graph through a composit design pattern
  **/
 class SceneGraphComponent {
-   public:
+	public:
 	std::list<std::shared_ptr<SceneGraphComponent>> children;  // list of all child objects which are a part of the
 															   // composition
 	SphericalBoundary boundary;								   // a boundary volume which contains this component
@@ -25,15 +25,17 @@ class SceneGraphComponent {
 	static float detail_factor;	 // test value which is used to set the detail
 								 // level of the drawings
 
-   public:
+	public:
 	bool selected;
 	bool render;
 
-   public:
+	public:
 	SceneGraphComponent();
 	virtual ~SceneGraphComponent();
 
-	static void setDetailFactor(const float& new_detail_factor) { detail_factor = new_detail_factor; }
+	static void setDetailFactor(const float& new_detail_factor) {
+		detail_factor = new_detail_factor;
+	}
 
 	/**
 	 * Render the content of this Scenegraph component

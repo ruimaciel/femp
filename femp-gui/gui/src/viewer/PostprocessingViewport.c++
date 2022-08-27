@@ -21,9 +21,13 @@ void PostprocessingViewport::setAnalysisResult(fem::AnalysisResult& result) {
 	this->m_vp_state_gradients.setAnalysisResult(result);
 }
 
-void PostprocessingViewport::setResultsRanges(fem::ResultsRanges<double>& ranges) { this->m_vp_state_gradients.setResultsRanges(ranges); }
+void PostprocessingViewport::setResultsRanges(fem::ResultsRanges<double>& ranges) {
+	this->m_vp_state_gradients.setResultsRanges(ranges);
+}
 
-void PostprocessingViewport::showDisplacements() { this->setState(&this->m_vp_state_displacements); }
+void PostprocessingViewport::showDisplacements() {
+	this->setState(&this->m_vp_state_displacements);
+}
 
 void PostprocessingViewport::showStrain11() {
 	this->m_vp_state_gradients.renderStrains11();

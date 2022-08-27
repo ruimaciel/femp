@@ -12,7 +12,7 @@ class Element;
 class Node;
 
 class MeshModelImpl : public MeshModel {
-   public:
+	public:
 	MeshModelImpl();
 
 	std::shared_ptr<Node> getNodeById(size_t nodeId) const override;
@@ -22,7 +22,7 @@ class MeshModelImpl : public MeshModel {
 	size_t numberOfElements() const override;
 	const std::vector<std::shared_ptr<Element>>& getElements() const;
 
-   private:
+	private:
 	std::vector<std::shared_ptr<Element>> m_elementCollection;
 	std::vector<std::shared_ptr<Node>> m_nodeCollection;
 };

@@ -12,8 +12,14 @@ void RenderGroup::generateSceneGraph() {
 	}
 }
 
-void RenderGroup::setVisible(bool visible) { this->m_render = visible; }
+void RenderGroup::setVisible(bool visible) {
+	this->m_render = visible;
+}
 
-bool RenderGroup::isVisible() const { return this->m_render; }
+bool RenderGroup::isVisible() const {
+	return this->m_render;
+}
 
-void RenderGroup::paintGL(ViewportData& data, ViewportColors& colors) { this->scenegraph.paintGL(data, colors); }
+void RenderGroup::paintGL(ViewportData& data, ViewportColors& colors) {
+	this->scenegraph.paintGL(data, colors);
+}

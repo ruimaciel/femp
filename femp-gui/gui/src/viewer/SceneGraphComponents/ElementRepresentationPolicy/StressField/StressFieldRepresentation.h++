@@ -16,10 +16,10 @@ namespace StressFieldRepresentation {
  *used to represent tensor fields
  **/
 class StressFieldRepresentation {
-   protected:
+	protected:
 	std::vector<StressTensor> m_tensor;
 
-   public:
+	public:
 	/**
 	 * Renders this stress field, representing a given element
 	 **/

@@ -12,12 +12,12 @@
  * Outputs the results which were calculated in a set of nodes
  */
 class OutputElementStatisticsVisitor : public ProjectVisitor {
-   public:
+	public:
 	OutputElementStatisticsVisitor(Selection selection);
 
 	void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result);
 
-   protected:
+	protected:
 	Selection m_selection;
 };
 

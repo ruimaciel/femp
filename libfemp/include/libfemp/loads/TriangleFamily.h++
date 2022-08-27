@@ -10,10 +10,10 @@
 namespace fem {
 
 class TriangleFamily : public SurfaceLoad {
-   public:
+	public:
 	std::unique_ptr<quadrature::TriangleRule> m_domain_quadrature_rule;	 // quadrature rule for domain calculations
 
-   public:
+	public:
 	TriangleFamily();
 	virtual ~TriangleFamily();
 

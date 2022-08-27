@@ -50,7 +50,9 @@ void NodeRestrictions::paintGL(ViewportData& data, ViewportColors& colors) {
 	glPopMatrix();
 }
 
-void NodeRestrictions::accept(Operation::OperationsVisitor& visitor) { visitor.visit(*this); }
+void NodeRestrictions::accept(Operation::OperationsVisitor& visitor) {
+	visitor.visit(*this);
+}
 
 void NodeRestrictions::renderNodeRestriction() {
 	glBegin(GL_TRIANGLES);

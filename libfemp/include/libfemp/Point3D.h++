@@ -6,7 +6,7 @@
 namespace fem {
 
 class Point3D {
-   public:
+	public:
 	double data[3];
 
 	// constructors

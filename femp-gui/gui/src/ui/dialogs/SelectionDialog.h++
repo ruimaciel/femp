@@ -13,10 +13,10 @@
 class SelectionDialog : public QDialog {
 	Q_OBJECT
 
-   protected:
+	protected:
 	SelectionWidget* m_selection_widget;
 
-   public:
+	public:
 	SelectionDialog(std::shared_ptr<gui::Model> model, SelectionManager& selection_manager, QWidget* parent = nullptr);
 };
 

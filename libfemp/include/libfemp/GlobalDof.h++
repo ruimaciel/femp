@@ -11,11 +11,11 @@ enum class ParameterType { dx, dy, dz };
  * Data type that represents a global degree-of-freedom (DoF)
  **/
 class GlobalDof {
-   protected:
+	protected:
 	Node m_node;
 	ParameterType m_parameter_type;
 
-   public:
+	public:
 	GlobalDof(Node const& node, ParameterType& parameter_type);
 
 	/**

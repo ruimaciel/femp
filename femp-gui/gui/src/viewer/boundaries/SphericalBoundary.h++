@@ -10,11 +10,11 @@
  *strategy pattern
  **/
 class SphericalBoundary : public BoundaryStrategy {
-   public:
+	public:
 	fem::Point3D center;  // sphere center
 	float radius2;		  // the square of the sphere's radius
 
-   public:
+	public:
 	SphericalBoundary();
 	~SphericalBoundary();
 

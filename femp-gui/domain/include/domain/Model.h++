@@ -10,7 +10,7 @@ namespace gui {
 class ModelImpl;
 
 class Model {
-   public:
+	public:
 	Model(fem::Model& model);
 	~Model();
 
@@ -33,7 +33,7 @@ class Model {
 
 	std::map<unsigned int, fem::NodeRestrictions> getNodeRestrictions() const;
 
-   private:
+	private:
 	std::unique_ptr<ModelImpl> m_impl;
 };
 

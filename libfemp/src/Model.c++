@@ -30,21 +30,37 @@ void Model::setNode(size_t ref, fem::Point3D p) {
 	this->m_node_list[ref] = n;
 }
 
-Node& Model::getNode(size_t ref) { return this->m_node_list[ref]; }
+Node& Model::getNode(size_t ref) {
+	return this->m_node_list[ref];
+}
 
-std::map<node_ref_t, Node> Model::getNodeMap() const { return m_node_list; }
+std::map<node_ref_t, Node> Model::getNodeMap() const {
+	return m_node_list;
+}
 
-std::vector<Element>::size_type Model::numberOfElements() const { return element_list.size(); }
+std::vector<Element>::size_type Model::numberOfElements() const {
+	return element_list.size();
+}
 
-std::vector<Element> Model::getElementList() const { return element_list; }
+std::vector<Element> Model::getElementList() const {
+	return element_list;
+}
 
-Element Model::getElementByIndex(size_t index) const { return element_list[index]; }
+Element Model::getElementByIndex(size_t index) const {
+	return element_list[index];
+}
 
-void Model::pushMaterial(fem::Material& material) { m_material_list.push_back(material); }
+void Model::pushMaterial(fem::Material& material) {
+	m_material_list.push_back(material);
+}
 
-std::vector<Material> Model::getMaterialList() const { return m_material_list; }
+std::vector<Material> Model::getMaterialList() const {
+	return m_material_list;
+}
 
-Material Model::getMaterialByIndex(size_t index) const { return m_material_list[index]; }
+Material Model::getMaterialByIndex(size_t index) const {
+	return m_material_list[index];
+}
 
 void Model::pushElement(fem::Element& e) {
 	// check if element is valid
@@ -486,11 +502,17 @@ void Model::pushNodeRestrictions(size_t pos, fem::NodeRestrictions nr) {
 	node_restrictions_list[pos] = nr;
 }
 
-void Model::popNodeRestrictions(node_ref_t const& node) { node_restrictions_list.erase(node); }
+void Model::popNodeRestrictions(node_ref_t const& node) {
+	node_restrictions_list.erase(node);
+}
 
-std::map<node_restriction_ref_t, NodeRestrictions> Model::getNodeRestrictions() const { return node_restrictions_list; }
+std::map<node_restriction_ref_t, NodeRestrictions> Model::getNodeRestrictions() const {
+	return node_restrictions_list;
+}
 
-NodeRestrictions Model::getNodeRestrictionsByIndex(size_t index) const { return node_restrictions_list.at(index); }
+NodeRestrictions Model::getNodeRestrictionsByIndex(size_t index) const {
+	return node_restrictions_list.at(index);
+}
 
 void Model::pushLoadPattern(fem::LoadPattern& lp) {
 	// TODO perform error checks
@@ -498,14 +520,24 @@ void Model::pushLoadPattern(fem::LoadPattern& lp) {
 	load_pattern_list.push_back(lp);
 }
 
-std::vector<LoadPattern> Model::getLoadPatternList() const { return load_pattern_list; }
+std::vector<LoadPattern> Model::getLoadPatternList() const {
+	return load_pattern_list;
+}
 
-std::vector<NodeGroup> Model::getNodeGroups() const { return m_node_groups; }
+std::vector<NodeGroup> Model::getNodeGroups() const {
+	return m_node_groups;
+}
 
-void Model::pushNodeGroup(fem::NodeGroup& new_node_group) { this->m_node_groups.push_back(new_node_group); }
+void Model::pushNodeGroup(fem::NodeGroup& new_node_group) {
+	this->m_node_groups.push_back(new_node_group);
+}
 
-std::vector<ElementGroup> Model::getElementGroups() const { return this->m_element_groups; }
+std::vector<ElementGroup> Model::getElementGroups() const {
+	return this->m_element_groups;
+}
 
-void Model::pushElementGroup(fem::ElementGroup& new_element_group) { this->m_element_groups.push_back(new_element_group); }
+void Model::pushElementGroup(fem::ElementGroup& new_element_group) {
+	this->m_element_groups.push_back(new_element_group);
+}
 
 }  // namespace fem

@@ -9,7 +9,7 @@
 namespace fem {
 
 class Prism6 : public PrismFamily {
-   public:
+	public:
 	Prism6();
 
 	std::vector<fem::Point3D> getLocalCoordinates() override;
@@ -22,7 +22,7 @@ class Prism6 : public PrismFamily {
 
 	std::vector<double> getdNdzeta(const Point3D& p) override;
 
-   public:	// merging with fem::Element
+	public:	 // merging with fem::Element
 	/**
 	 * return the number of nodes that an element of this particular type has
 	 * @return the number of nodes

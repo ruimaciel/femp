@@ -8,7 +8,7 @@ namespace fem {
 namespace io {
 
 class GmshExporter {
-   public:
+	public:
 	GmshExporter();
 
 	void execute(std::ofstream& mesh_file, const fem::mesh::MeshModel& mesh_model);

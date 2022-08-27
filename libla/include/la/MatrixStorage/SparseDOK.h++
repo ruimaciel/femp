@@ -15,7 +15,7 @@ matrix format
 **/
 template <typename scalar>
 class SparseDOK {
-   public:
+	public:
 	struct Data {
 		size_t t_rows;	   // number of rows
 		size_t t_columns;  // number of columns
@@ -23,7 +23,7 @@ class SparseDOK {
 		std::map<size_t, scalar> data;
 	} data;
 
-   public:
+	public:
 	SparseDOK(const size_t rows = 1, const size_t columns = 1);
 	~SparseDOK(){};
 
@@ -32,8 +32,12 @@ class SparseDOK {
 				**/
 	void clear();
 
-	size_t rows() { return data.t_rows; };
-	size_t columns() { return data.t_columns; };
+	size_t rows() {
+		return data.t_rows;
+	};
+	size_t columns() {
+		return data.t_columns;
+	};
 
 	/*
 				Returns the value in [row,column]

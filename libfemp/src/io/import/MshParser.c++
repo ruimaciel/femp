@@ -2365,6 +2365,10 @@ void MshParser::setParserTable() {
 	table[NT_COORDINATE][TT_NUMBER] = PR_COORDINATE;
 }
 
-enum MshParser::Error::Type MshParser::operator()(std::istream& file, fem::Model& model) { return parse(file, model); }
+enum MshParser::Error::Type MshParser::operator()(std::istream& file, fem::Model& model) {
+	return parse(file, model);
+}
 
-void MshParser::setSurfaceLoadOperator(fem::SurfaceLoadOperator& surface_load_operator) { this->surface_load_operator = &surface_load_operator; }
+void MshParser::setSurfaceLoadOperator(fem::SurfaceLoadOperator& surface_load_operator) {
+	this->surface_load_operator = &surface_load_operator;
+}

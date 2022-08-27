@@ -4,9 +4,13 @@ namespace fem {
 
 GlobalDof::GlobalDof(Node const& node, ParameterType& parameter_type) : m_node(node), m_parameter_type(parameter_type) {}
 
-Node GlobalDof::getNode() const { return this->m_node; }
+Node GlobalDof::getNode() const {
+	return this->m_node;
+}
 
-ParameterType GlobalDof::getParameterType() const { return this->m_parameter_type; }
+ParameterType GlobalDof::getParameterType() const {
+	return this->m_parameter_type;
+}
 
 GlobalDof& GlobalDof::operator=(const GlobalDof& copied) {
 	this->m_node = copied.getNode();
@@ -27,7 +31,9 @@ bool operator==(const GlobalDof& lhs, const GlobalDof& rhs) {
 	return node_a.x() == node_b.x() && node_a.y() == node_b.y() && node_a.z() == node_b.z() && lhs.getParameterType() == rhs.getParameterType();
 }
 
-bool operator!=(const GlobalDof& lhs, const GlobalDof& rhs) { return !(lhs == rhs); }
+bool operator!=(const GlobalDof& lhs, const GlobalDof& rhs) {
+	return !(lhs == rhs);
+}
 
 /**
  * Relational order operator

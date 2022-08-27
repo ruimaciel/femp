@@ -31,4 +31,6 @@ fem::Point3D NodeActionsDialog::getDisplacement() {
 	return p;
 }
 
-void NodeActionsDialog::loadPatternCreated(size_t, fem::LoadPattern const&) { this->comboBoxLoadPattern->view()->reset(); }
+void NodeActionsDialog::loadPatternCreated(size_t, fem::LoadPattern const&) {
+	this->comboBoxLoadPattern->view()->reset();
+}

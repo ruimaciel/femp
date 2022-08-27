@@ -7,12 +7,12 @@
  * Concrete displacements policy where displacements are null
  **/
 class NoDisplacementsPolicy : virtual public DisplacementsRepresentationPolicy {
-   public:
+	public:
 	NoDisplacementsPolicy();
 	virtual ~NoDisplacementsPolicy();
 
-   protected:
-   public:
+	protected:
+	public:
 	/**
 	 * Returns the coordinate of a given point by providing the node's reference
 	 **/

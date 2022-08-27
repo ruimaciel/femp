@@ -9,16 +9,16 @@ namespace gui {
 namespace persistence {
 
 class MaterialRepository : public application::IMaterialRepository {
-   public:
+	public:
 	MaterialRepository(std::shared_ptr<gui::Model> model);
 
 	// IMaterialRepository interface
-   public:
+	public:
 	std::vector<fem::Material> getMaterialList() const override;
 
 	void pushMaterial(fem::Material new_material) override;
 
-   private:
+	private:
 	std::shared_ptr<gui::Model> m_domain_model;
 };
 

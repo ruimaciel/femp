@@ -1,14 +1,14 @@
 #ifndef FEMP_SELECTION_HPP
 #define FEMP_SELECTION_HPP
 
-#include <set>
 #include <cstddef>
+#include <set>
 
 using element_ref_t = std::size_t;
 using node_ref_t = std::size_t;
 
 class Selection {
-   public:
+	public:
 	void clear();
 
 	void setSelection(Selection const&);
@@ -25,7 +25,7 @@ class Selection {
 
 	std::set<node_ref_t> getNodeReferences() const;
 
-   protected:
+	protected:
 	std::set<element_ref_t> m_elements_selected;
 	std::set<node_ref_t> m_nodes_selected;
 };

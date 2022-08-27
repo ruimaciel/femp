@@ -8,7 +8,7 @@
  * @brief The JsonExporter class exports femp models to a JSON format
  */
 class JsonExporter {
-   public:
+	public:
 	void output(std::ostream& out, const fem::Model& model);
 };
 

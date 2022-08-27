@@ -4,7 +4,9 @@ namespace fem {
 
 Equation::Equation() {}
 
-size_t Equation::size() const { return f.size(); }
+size_t Equation::size() const {
+	return f.size();
+}
 
 void Equation::setProblemSize(size_t size) {
 	f.resize(size);

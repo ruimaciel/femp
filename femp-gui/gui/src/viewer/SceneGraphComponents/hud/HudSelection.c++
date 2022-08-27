@@ -4,7 +4,9 @@
 
 namespace hud {
 
-Selection::Selection() { m_on = false; }
+Selection::Selection() {
+	m_on = false;
+}
 
 void Selection::paintGL(ViewportData& /*data*/, ViewportColors& /*colors*/) {
 	if (m_on) {
@@ -55,8 +57,12 @@ void Selection::setStart(fem::Point3D const& p) {
 	m_end = p;
 }
 
-void Selection::setEnd(fem::Point3D const& p) { m_end = p; }
+void Selection::setEnd(fem::Point3D const& p) {
+	m_end = p;
+}
 
-void Selection::off() { m_on = false; }
+void Selection::off() {
+	m_on = false;
+}
 
 }  // namespace hud

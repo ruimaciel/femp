@@ -18,7 +18,7 @@ Base class for all the MDI windows that render the model
 class MdiWindow : public QMainWindow, protected Ui::MdiWindow {
 	Q_OBJECT
 
-   public:
+	public:
 	MdiWindow(QWidget* parent = nullptr);
 
 	/**
@@ -32,11 +32,11 @@ class MdiWindow : public QMainWindow, protected Ui::MdiWindow {
 	 */
 	void setColors(ViewportColors& colors);
 
-   signals:
+	signals:
 	void selectionChanged(Selection);
 	void selectionCleared();
 
-   public slots:
+	public slots:
 	void setViewportXY();
 	void setViewportXZ();
 	void setViewportYZ();
@@ -51,12 +51,12 @@ class MdiWindow : public QMainWindow, protected Ui::MdiWindow {
 	void setSelection(Selection);  // sets the selection
 	void clearSelection();		   // clears the selection
 
-   protected:
+	protected:
 	virtual void connectSignalsToSlots();
 
 	void normalizeAngle(int* angle);
 
-   public:
+	public:
 	/**
 	 * Sets the viewport so that only the selected items are shown
 	 */
@@ -71,7 +71,7 @@ class MdiWindow : public QMainWindow, protected Ui::MdiWindow {
 
 	BaseViewport* viewport;
 
-   protected:
+	protected:
 	QToolBar* m_viewportToolBar;	// toolbar to set camera angles
 	QToolBar* m_visibilityToolBar;	// toolbar to set which rendering group (i.e.,
 									// nodes, surfaces, etc...) is visible

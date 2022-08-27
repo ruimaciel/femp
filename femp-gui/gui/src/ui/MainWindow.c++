@@ -798,17 +798,29 @@ void MainWindow::showAll() {
 	window->showAll();
 }
 
-void MainWindow::getMessage(QString message) { emit informationMessageSent(message); }
+void MainWindow::getMessage(QString message) {
+	emit informationMessageSent(message);
+}
 
-void MainWindow::getWarning(QString message) { emit informationMessageSent(message); }
+void MainWindow::getWarning(QString message) {
+	emit informationMessageSent(message);
+}
 
-void MainWindow::getError(QString message) { emit informationMessageSent(message); }
+void MainWindow::getError(QString message) {
+	emit informationMessageSent(message);
+}
 
-void MainWindow::setTiledWindows() { m_mdiArea->tileSubWindows(); }
+void MainWindow::setTiledWindows() {
+	m_mdiArea->tileSubWindows();
+}
 
-void MainWindow::setCascadeWindows() { m_mdiArea->cascadeSubWindows(); }
+void MainWindow::setCascadeWindows() {
+	m_mdiArea->cascadeSubWindows();
+}
 
-void MainWindow::createNewViewportWindow() { this->createNewModelWindow(); }
+void MainWindow::createNewViewportWindow() {
+	this->createNewModelWindow();
+}
 
 void MainWindow::createNewModelWindow() {
 	qInfo() << "MainWindow::createNewModelWindow()";
@@ -1012,7 +1024,9 @@ void MainWindow::setUserInterfacePostAnalysis() {
 	ui.actionAnalysisSummary->setEnabled(true);
 }
 
-ViewportColors& MainWindow::getViewportColors() { return m_colors; }
+ViewportColors& MainWindow::getViewportColors() {
+	return m_colors;
+}
 
 void MainWindow::saveDocument(Document& doc, std::string file_name) {
 	// check if if the given file_name exists

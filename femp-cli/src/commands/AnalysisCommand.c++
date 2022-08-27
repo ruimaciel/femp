@@ -66,8 +66,14 @@ AnalysisCommand::Builder& AnalysisCommand::Builder::setOutputPath(std::string ou
 	return *this;
 }
 
-std::string AnalysisCommand::Builder::inputFilename() const { return m_inputFilename; }
+std::string AnalysisCommand::Builder::inputFilename() const {
+	return m_inputFilename;
+}
 
-std::string AnalysisCommand::Builder::outputPath() const { return m_outputPath; }
+std::string AnalysisCommand::Builder::outputPath() const {
+	return m_outputPath;
+}
 
-std::unique_ptr<AnalysisCommand> AnalysisCommand::Builder::build() const { return std::unique_ptr<AnalysisCommand>(new AnalysisCommand(*this)); }
+std::unique_ptr<AnalysisCommand> AnalysisCommand::Builder::build() const {
+	return std::unique_ptr<AnalysisCommand>(new AnalysisCommand(*this));
+}

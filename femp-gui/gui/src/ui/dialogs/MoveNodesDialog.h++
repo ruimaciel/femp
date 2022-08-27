@@ -12,7 +12,7 @@
 class MoveNodesDialog : public QDialog, private Ui::MoveNodesDialog {
 	Q_OBJECT
 
-   public:
+	public:
 	explicit MoveNodesDialog(QWidget* parent = nullptr);
 
 	fem::Point3D getTranslation();

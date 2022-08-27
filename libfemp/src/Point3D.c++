@@ -50,7 +50,9 @@ void Point3D::set_cylindrical(double radius, double alfa, double height) {
 /*
 	Returns the vector's norm (or length);
 */
-double Point3D::norm() const { return sqrt(this->data[0] * this->data[0] + this->data[1] * this->data[1] + this->data[2] * this->data[2]); }
+double Point3D::norm() const {
+	return sqrt(this->data[0] * this->data[0] + this->data[1] * this->data[1] + this->data[2] * this->data[2]);
+}
 
 /*
 	Normalizes the vector (norm == 1)
@@ -81,17 +83,29 @@ void Point3D::zero() {
 	this->data[2] = 0;
 }
 
-double Point3D::x() const { return data[0]; }
+double Point3D::x() const {
+	return data[0];
+}
 
-double Point3D::y() const { return data[1]; }
+double Point3D::y() const {
+	return data[1];
+}
 
-double Point3D::z() const { return data[2]; }
+double Point3D::z() const {
+	return data[2];
+}
 
-void Point3D::x(double val) { data[0] = val; }
+void Point3D::x(double val) {
+	data[0] = val;
+}
 
-void Point3D::y(double val) { data[1] = val; }
+void Point3D::y(double val) {
+	data[1] = val;
+}
 
-void Point3D::z(double val) { data[2] = val; }
+void Point3D::z(double val) {
+	data[2] = val;
+}
 
 Point3D& Point3D::operator=(const Point3D& other) {
 	if (&other != this) {
@@ -195,11 +209,17 @@ Point3D cross_product(const Point3D& LHV, const Point3D& RHV) {
 	return temp;
 }
 
-double dot_product(const Point3D& LHV, const Point3D& RHV) { return LHV.data[0] * RHV.data[0] + LHV.data[1] * RHV.data[1] + LHV.data[2] * RHV.data[2]; }
+double dot_product(const Point3D& LHV, const Point3D& RHV) {
+	return LHV.data[0] * RHV.data[0] + LHV.data[1] * RHV.data[1] + LHV.data[2] * RHV.data[2];
+}
 
-Point3D getNormalVector(const Point3D& a, const Point3D& b, const Point3D& c) { return cross_product(b - a, c - b); }
+Point3D getNormalVector(const Point3D& a, const Point3D& b, const Point3D& c) {
+	return cross_product(b - a, c - b);
+}
 
-Point3D getNormalVector(Point3D& a, Point3D& b, Point3D& c) { return cross_product(b - a, c - b); }
+Point3D getNormalVector(Point3D& a, Point3D& b, Point3D& c) {
+	return cross_product(b - a, c - b);
+}
 
 std::ostream& operator<<(std::ostream& out, const Point3D& p) {
 	out << "[" << p.x() << ", " << p.y() << ", " << p.z() << "]";

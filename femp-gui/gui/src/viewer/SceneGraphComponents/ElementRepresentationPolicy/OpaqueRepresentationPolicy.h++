@@ -9,11 +9,11 @@
 #include "ElementRepresentationPolicy.h++"
 
 class OpaqueRepresentationPolicy : virtual public ElementRepresentationPolicy {
-   protected:
+	protected:
 	std::vector<fem::Point3D> m_temp_p;
 	bool m_triangle_wireframe_representation;
 
-   public:
+	public:
 	// Constructors/Destructors
 	//
 
@@ -26,7 +26,7 @@ class OpaqueRepresentationPolicy : virtual public ElementRepresentationPolicy {
 	 * Empty Destructor
 	 */
 
-   protected:
+	protected:
 	inline void tri3(fem::Point3D& p1, fem::Point3D& p2, fem::Point3D& p3, ViewportColors& color);
 	inline void tri6(fem::Point3D& p1, fem::Point3D& p2, fem::Point3D& p3, fem::Point3D& p4, fem::Point3D& p5, fem::Point3D& p6, ViewportColors& color);
 	inline void quad4(fem::Point3D& p1, fem::Point3D& p2, fem::Point3D& p3, fem::Point3D& p4, ViewportColors& color);
@@ -35,7 +35,7 @@ class OpaqueRepresentationPolicy : virtual public ElementRepresentationPolicy {
 	inline void quad9(fem::Point3D& p1, fem::Point3D& p2, fem::Point3D& p3, fem::Point3D& p4, fem::Point3D& p5, fem::Point3D& p6, fem::Point3D& p7,
 					  fem::Point3D& p8, fem::Point3D& p9, ViewportColors& color);
 
-   public:
+	public:
 	/**
 	 */
 	void tetra4(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement);

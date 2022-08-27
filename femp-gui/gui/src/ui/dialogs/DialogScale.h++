@@ -11,12 +11,12 @@
 class DialogScale : public QDialog, private Ui::DialogScale {
 	Q_OBJECT
 
-   public:
+	public:
 	DialogScale(float scale, QWidget* parent = nullptr);
 
 	double getScale();
 
-   protected slots:
+	protected slots:
 	void updateSpinBox(int);
 	void updateSlider(double);
 };

@@ -1,9 +1,8 @@
 #ifndef GUI_SERVICES_SELECTIONSERVICE_H
 #define GUI_SERVICES_SELECTIONSERVICE_H
 
-#include <selection/ISelectionService.h++>
-
 #include <cstddef>
+#include <selection/ISelectionService.h++>
 
 namespace gui {
 namespace services {
@@ -13,7 +12,7 @@ namespace services {
  * of all elements and nodes which are currently selected.
  */
 class SelectionService final : public ISelectionService {
-   public:
+	public:
 	SelectionService();
 
 	Selection getSelection() const override;

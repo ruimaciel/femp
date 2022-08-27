@@ -20,10 +20,10 @@
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 
-   public:
+	public:
 	explicit MainWindow(QWidget* parent = nullptr);
 
-   signals:
+	signals:
 	void selectionChanged(Selection);
 	void selectionCleared();
 
@@ -31,7 +31,7 @@ class MainWindow : public QMainWindow {
 	void warningMessageSent(QString);
 	void errorMessageSent(QString);
 
-   public slots:
+	public slots:
 	/**
 	 * @brief setSelection
 	 */
@@ -120,7 +120,7 @@ class MainWindow : public QMainWindow {
 
 	void activateSubWindowByIndex(int);
 
-   private:
+	private:
 	void createActions();
 	void createToolBars();
 	void createDockWidgets();
@@ -131,12 +131,12 @@ class MainWindow : public QMainWindow {
 	void setUserInterfaceAsClosed();
 	void setUserInterfacePostAnalysis();
 
-   protected:
+	protected:
 	ViewportColors& getViewportColors();
 
 	void saveDocument(Document& doc, std::string filename);
 
-   protected:
+	protected:
 	Ui::MainWindow ui;
 
 	fem::LinearAnalysis<double> m_analysis;

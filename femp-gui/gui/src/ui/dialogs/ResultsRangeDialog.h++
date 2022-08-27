@@ -14,10 +14,10 @@
 class ResultsRangeDialog : public QDialog {
 	Q_OBJECT
 
-   protected:
+	protected:
 	Ui::ResultsRangeDialog ui;
 
-   public:
+	public:
 	ResultsRangeDialog(QWidget* parent = nullptr);
 
 	void setValueRanges(const fem::ResultsRanges<double>&);

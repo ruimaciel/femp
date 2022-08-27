@@ -10,6 +10,10 @@ float Stress22GradientFieldPolicy::val(fem::element_ref_t const& ref, gradient_i
 	return this->m_analysis_result->results[ref]->stresses[p].s22;
 }
 
-float Stress22GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const& ranges) const { return ranges.max_stress22; }
+float Stress22GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const& ranges) const {
+	return ranges.max_stress22;
+}
 
-float Stress22GradientFieldPolicy::minVal(fem::ResultsRanges<double> const& ranges) const { return ranges.min_stress22; }
+float Stress22GradientFieldPolicy::minVal(fem::ResultsRanges<double> const& ranges) const {
+	return ranges.min_stress22;
+}

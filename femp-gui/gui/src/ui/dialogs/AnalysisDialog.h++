@@ -17,7 +17,7 @@
 class AnalysisDialog : public QDialog, private Ui::AnalysisDialog {
 	Q_OBJECT
 
-   public:
+	public:
 	AnalysisDialog(gui::application::ILoadPatternRepositoryPtr load_pattern_repository, QWidget* parent = nullptr);
 
 	/**
@@ -32,7 +32,7 @@ class AnalysisDialog : public QDialog, private Ui::AnalysisDialog {
 	 */
 	int loadPattern() const;
 
-   protected:
+	protected:
 	/**
 	 * Fills the combo box with the load pattern list from the model
 	 */

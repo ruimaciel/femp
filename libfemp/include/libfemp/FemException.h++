@@ -8,7 +8,7 @@
  * The base calss for all exceptions thrown by FEM routines
  **/
 class FemException : public std::runtime_error {
-   public:
+	public:
 	explicit FemException(const std::string& message);
 };
 

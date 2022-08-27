@@ -9,7 +9,7 @@ namespace fem {
  * Represents a load prescribed on a finite element node
  **/
 class NodalLoad {
-   public:
+	public:
 	NodalLoad();
 	NodalLoad(Point3D m_force);
 
@@ -18,7 +18,7 @@ class NodalLoad {
 	 */
 	Point3D getForce() const;
 
-   private:
+	private:
 	Point3D m_force;  // the force being applied in this node
 };
 

@@ -12,7 +12,7 @@
 class LoadPatternDialog : public QDialog, private Ui::LoadPatternDialog {
 	Q_OBJECT
 
-   public:
+	public:
 	LoadPatternDialog(QWidget* parent = nullptr);
 
 	std::string getLabel() const;

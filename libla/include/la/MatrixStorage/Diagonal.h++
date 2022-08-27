@@ -13,7 +13,7 @@ This class implements the interface for the diagonal matrix format
 **/
 template <typename scalar>
 class Diagonal {
-   public:
+	public:
 	struct Data {
 		size_t t_rows;	   // number of rows
 		size_t t_columns;  // number of columns
@@ -21,7 +21,7 @@ class Diagonal {
 		std::vector<scalar> data;
 	} data;
 
-   public:
+	public:
 	Diagonal(const size_t rows = 0, const size_t columns = 0);
 	~Diagonal(){};
 
@@ -30,8 +30,12 @@ class Diagonal {
 				**/
 	void clear();
 
-	size_t rows() { return data.t_rows; };
-	size_t columns() { return data.t_columns; };
+	size_t rows() {
+		return data.t_rows;
+	};
+	size_t columns() {
+		return data.t_columns;
+	};
 
 	/*
 				Returns the value in [row,column]

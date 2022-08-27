@@ -8,13 +8,19 @@
 #include "../BaseViewport.h++"
 #include "../SceneGraphComponents/SGCPickRay.h++"  // debugging purposes only
 
-ViewportState::~ViewportState() { this->scenegraph.clear(); }
+ViewportState::~ViewportState() {
+	this->scenegraph.clear();
+}
 
 void ViewportState::setAnalysisResult(fem::AnalysisResult&) {}
 
-void ViewportState::setDisplacementsScale(float new_scale) { this->scale = new_scale; }
+void ViewportState::setDisplacementsScale(float new_scale) {
+	this->scale = new_scale;
+}
 
-void ViewportState::setRenderGroupVisibility(SceneGraph::Groups group, bool state) { this->scenegraph.rendering_groups[group].setVisible(state); }
+void ViewportState::setRenderGroupVisibility(SceneGraph::Groups group, bool state) {
+	this->scenegraph.rendering_groups[group].setVisible(state);
+}
 
 void ViewportState::paintGL(BaseViewport* viewport) {
 	assert(viewport != nullptr);
@@ -61,15 +67,21 @@ void ViewportState::mouseMoveEvent(BaseViewport* viewport, QMouseEvent* event) {
 	viewport->viewport_data.lastPos = event->pos();
 }
 
-void ViewportState::keyPressEvent(BaseViewport*, QKeyEvent* event) { event->ignore(); }
+void ViewportState::keyPressEvent(BaseViewport*, QKeyEvent* event) {
+	event->ignore();
+}
 
-void ViewportState::runSceneGraphOperation(Operation::OperationsVisitor& visitor) { scenegraph.runOperation(visitor); }
+void ViewportState::runSceneGraphOperation(Operation::OperationsVisitor& visitor) {
+	scenegraph.runOperation(visitor);
+}
 
 void ViewportState::setSelection(Selection) {}
 
 void ViewportState::clearSelection() {}
 
-void ViewportState::showSelection(const Selection) { qInfo() << "ViewportState::showSelection(const Selection selection)"; }
+void ViewportState::showSelection(const Selection) {
+	qInfo() << "ViewportState::showSelection(const Selection selection)";
+}
 
 void ViewportState::setSelectionStart(fem::Point3D const& p) {
 	qInfo() << "ViewportState::setSelectionStart(fem::Point) 	=> (" << p.x() << ", " << p.y() << ", " << p.z() << ")";
@@ -81,7 +93,9 @@ void ViewportState::setSelectionEnd(fem::Point3D const& p) {
 	scenegraph.setSelectionEnd(p);
 };
 
-void ViewportState::setSelectionOff() { scenegraph.setSelectionOff(); }
+void ViewportState::setSelectionOff() {
+	scenegraph.setSelectionOff();
+}
 
 void ViewportState::addPickRay(fem::Point3D const& origin, fem::Point3D const& destination, float const& radius) {
 	qInfo() << "ViewportState::addPickRay(fem::Point const &origin, fem::Point "
@@ -91,4 +105,6 @@ void ViewportState::addPickRay(fem::Point3D const& origin, fem::Point3D const& d
 	scenegraph.generateSceneGraph();
 }
 
-void ViewportState::setTrianglesVisible(bool const) { qInfo() << "ViewportState::setTrianglesVisible(bool const)"; }
+void ViewportState::setTrianglesVisible(bool const) {
+	qInfo() << "ViewportState::setTrianglesVisible(bool const)";
+}

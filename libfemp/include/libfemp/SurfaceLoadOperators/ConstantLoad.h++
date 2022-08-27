@@ -10,10 +10,10 @@ namespace fem {
  * Applies a constant load in relation to the global coordinate system
  */
 class ConstantLoad : public SurfaceLoadOperator {
-   protected:
+	protected:
 	fem::Point3D m_force;
 
-   public:
+	public:
 	ConstantLoad();
 
 	void setLoad(fem::Point3D const& force);

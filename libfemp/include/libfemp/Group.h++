@@ -12,7 +12,7 @@ namespace fem {
  * Class intended to represent a group
  */
 class Group {
-   public:
+	public:
 	/**
 	 * Adds a new element to the list
 	 */
@@ -24,7 +24,7 @@ class Group {
 	std::set<node_ref_t> getNodeReferences() const;
 	std::set<element_ref_t> getElementReferences() const;
 
-   private:
+	private:
 	std::string m_label;
 	std::set<element_ref_t> m_element_references;
 	std::set<node_ref_t> m_node_references;

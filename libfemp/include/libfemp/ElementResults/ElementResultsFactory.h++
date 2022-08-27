@@ -28,7 +28,7 @@ namespace fem {
  * Factory pattern which creates ElementResults objects based on a given element
  */
 class ElementResultsFactory {
-   protected:
+	protected:
 	Model* m_model;
 	AnalysisResult* m_analysis_result;
 
@@ -44,7 +44,7 @@ class ElementResultsFactory {
 	Eigen::Matrix3d Dg, invDg;
 	Eigen::Vector3d dNdcsi;
 
-   public:
+	public:
 	ElementResultsFactory(Model&, AnalysisResult&);
 
 	/**
@@ -53,7 +53,7 @@ class ElementResultsFactory {
 	 */
 	ElementResults* operator()(const fem::Element&);
 
-   protected:
+	protected:
 	/**
 	 * Taken from:
 	 * http://www.mpi-hd.mpg.de/personalhomes/globes/3x3/

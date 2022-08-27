@@ -7,14 +7,14 @@
 namespace fem {
 
 class Equation {
-   public:
+	public:
 	Equation();
 
 	lalib::Matrix<double, lalib::SparseDOK> K;
 	lalib::Vector<double> f;
 	lalib::Vector<double> d;
 
-   public:
+	public:
 	size_t size() const;
 	void setProblemSize(size_t size);
 };

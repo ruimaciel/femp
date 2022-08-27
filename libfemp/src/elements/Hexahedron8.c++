@@ -101,7 +101,9 @@ std::vector<double> Hexahedron8::getdNdzeta(const Point3D& p) {
 	return dNdzeta;
 }
 
-int Hexahedron8::getNodeAmount() const { return 8; }
+int Hexahedron8::getNodeAmount() const {
+	return 8;
+}
 
 std::vector<fem::Point3D> Hexahedron8::getLocalCoordinates() {
 	this->coordinates[0] = Point3D(-1, -1, -1);

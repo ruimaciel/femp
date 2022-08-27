@@ -10,14 +10,14 @@ namespace fem {
  * Maps GlobalDof objects to a global DoF reference number
  */
 class GlobalDofMap {
-   private:
+	private:
 	struct MappingData {
 		size_t index;
 	};
 
 	std::map<GlobalDof, struct MappingData> m_global_dof_map;
 
-   public:
+	public:
 	/**
 	 * class constructor
 	 */

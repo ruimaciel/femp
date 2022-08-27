@@ -22,16 +22,16 @@ namespace fem {
  * problems
  */
 class Model {
-   private:
+	private:
 	int default_material;  // used when adding elements
 
-   public:
+	public:
 	std::vector<Element> element_list;
 	std::map<node_restriction_ref_t, NodeRestrictions> node_restrictions_list;	// the node restrictions aren't stored in the
 																				// Node class in order to save up memory
 	std::vector<LoadPattern> load_pattern_list;
 
-   public:
+	public:
 	Model();
 
 	/**
@@ -47,7 +47,9 @@ class Model {
 	fem::Node& getNode(size_t ref);
 	std::map<node_ref_t, Node> getNodeMap() const;
 
-	void setDefaultMaterial(int material) { default_material = material; }
+	void setDefaultMaterial(int material) {
+		default_material = material;
+	}
 
 	/**
 	 * returns the number of elements which form this model
@@ -110,7 +112,7 @@ class Model {
 	 */
 	void pushElementGroup(fem::ElementGroup& new_element_group);
 
-   private:
+	private:
 	std::map<node_ref_t, Node> m_node_list;
 	std::vector<NodeGroup> m_node_groups;
 	std::vector<ElementGroup> m_element_groups;

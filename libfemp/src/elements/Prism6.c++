@@ -89,7 +89,9 @@ std::vector<double> Prism6::getdNdzeta(const Point3D& p) {
 	return dNdzeta;
 }
 
-int Prism6::getNodeAmount() const { return 16; }
+int Prism6::getNodeAmount() const {
+	return 16;
+}
 
 std::vector<fem::Point3D> Prism6::getLocalCoordinates() {
 	this->coordinates[0] = Point3D(0, 0, -1);

@@ -9,7 +9,7 @@ namespace gui {
 namespace application {
 
 class IMaterialRepository {
-   public:
+	public:
 	IMaterialRepository();
 
 	virtual ~IMaterialRepository() = default;

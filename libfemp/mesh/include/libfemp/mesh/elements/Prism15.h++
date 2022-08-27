@@ -9,7 +9,7 @@ namespace fem {
 namespace mesh {
 
 class Prism15 : public Element {
-   public:
+	public:
 	Prism15(size_t element_id, std::array<std::shared_ptr<Node>, 15> nodes);
 
 	int getNodeAmount() const override;
@@ -18,7 +18,7 @@ class Prism15 : public Element {
 
 	const std::array<std::shared_ptr<Node>, 15>& getNodes() const;
 
-   private:
+	private:
 	std::array<std::shared_ptr<Node>, 15> m_nodes;
 };
 

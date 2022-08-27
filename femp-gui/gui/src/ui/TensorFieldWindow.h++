@@ -22,7 +22,7 @@ MDI window designed to represent a tensor field of a given analysis result
 class TensorFieldWindow : public MdiWindow, public WindowWithResults, public BaseWindow {
 	Q_OBJECT
 
-   protected:
+	protected:
 	TensorFieldViewport* m_viewportTensorField;
 
 	QToolBar* m_toolBarToggleMenuBarVisibility;
@@ -39,10 +39,10 @@ class TensorFieldWindow : public MdiWindow, public WindowWithResults, public Bas
 	// gradient values
 	fem::ResultsRanges<double> m_resultsRanges;	 // used to set values for representation
 
-   public:
+	public:
 	TensorFieldWindow(fem::Project& project, fem::AnalysisResult& result, ViewportColors& colors, QWidget* parent = nullptr);
 
-   public Q_SLOTS:
+	public Q_SLOTS:
 	void setDisplacementsScale(double scale);
 
 	void toggleMenuBarVisibility(bool);
@@ -56,13 +56,13 @@ class TensorFieldWindow : public MdiWindow, public WindowWithResults, public Bas
 	 */
 	void setResultsRanges();
 
-   Q_SIGNALS:
+	Q_SIGNALS:
 	/**
 	 * Emits a signal to dump the results from a given set of project objets
 	 */
 	void dumpResultsFromSelection(fem::AnalysisResult* result);
 
-   protected:
+	protected:
 	void connectSignalsToSlots() override;
 
 	void createToolBars(fem::Project&);

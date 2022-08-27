@@ -15,11 +15,11 @@ namespace SGC {
  * Scene graph component used to debug picking operation
  */
 class PickRay : public SceneGraphComponent {
-   protected:
+	protected:
 	fem::Point3D m_origin, m_destination;
 	float radius;
 
-   public:
+	public:
 	PickRay(fem::Point3D const& origin, fem::Point3D const& destination, float const& radius);
 	~PickRay();
 

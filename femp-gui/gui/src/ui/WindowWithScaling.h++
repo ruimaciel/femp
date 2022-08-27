@@ -14,7 +14,7 @@
  * Provides a window with a toolbar which sets a scale
  */
 class WindowWithScaling : public WindowWith {
-   public:
+	public:
 	void createToolbar(QMainWindow* parent, fem::Project& results);
 
 	/**
@@ -22,13 +22,13 @@ class WindowWithScaling : public WindowWith {
 	 */
 	void createMenuBar(QMainWindow* parent, QMenuBar*);
 
-   public slots:
+	public slots:
 	void setDisplacementsScale(double);
 
-   protected:
+	protected:
 	void connectSignalsToSlots(QMainWindow* parent);
 
-   protected:
+	protected:
 	QToolBar* m_toolBarScaling;	 // toolbar to provide a user to select which
 								 // result to run
 	QDoubleSpinBox* m_doubleSpinBoxScaling;

@@ -10,7 +10,7 @@ namespace gui {
 namespace persistence {
 
 class ElementRepository : public application::IElementRepository {
-   public:
+	public:
 	ElementRepository(std::shared_ptr<gui::Model> model);
 
 	std::vector<fem::Element> getElementList() const override;
@@ -18,7 +18,7 @@ class ElementRepository : public application::IElementRepository {
 	fem::Element getElementByIndex(size_t index) const override;
 	size_t getElementSize() const override;
 
-   private:
+	private:
 	std::shared_ptr<gui::Model> m_domain_model;
 };
 

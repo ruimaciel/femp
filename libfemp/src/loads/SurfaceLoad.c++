@@ -15,7 +15,9 @@ namespace fem {
 
 SurfaceLoad::~SurfaceLoad() {}
 
-std::vector<node_ref_t> SurfaceLoad::getNodeReferences() const { return Element::getNodeReferences(); }
+std::vector<node_ref_t> SurfaceLoad::getNodeReferences() const {
+	return Element::getNodeReferences();
+}
 
 int SurfaceLoad::getNodeAmount() const {
 	// TODO replace with concrete class member variables after migration to

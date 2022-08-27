@@ -11,7 +11,7 @@ class Element;
 class Node;
 
 class MeshModel {
-   public:
+	public:
 	virtual ~MeshModel() = default;
 
 	virtual std::shared_ptr<fem::mesh::Node> getNodeById(size_t nodeId) const = 0;

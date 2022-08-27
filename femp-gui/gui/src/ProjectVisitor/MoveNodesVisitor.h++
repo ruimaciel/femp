@@ -13,12 +13,12 @@
  * Performs a translation on a specific set of nodes
  */
 class MoveNodesVisitor : public ProjectVisitor {
-   public:
+	public:
 	MoveNodesVisitor(Selection selection, fem::Point3D const& translation);
 
 	void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result);
 
-   protected:
+	protected:
 	fem::Point3D m_translation;
 	Selection m_selection;
 };

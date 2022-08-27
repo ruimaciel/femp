@@ -9,7 +9,7 @@
 namespace fem {
 
 class Quadrangle9 : public QuadrangleFamily {
-   public:
+	public:
 	Quadrangle9();
 
 	virtual std::vector<fem::Point3D> getLocalCoordinates() const override;
@@ -24,7 +24,9 @@ class Quadrangle9 : public QuadrangleFamily {
 	 * return the number of nodes that an element of this particular type has
 	 * @return the number of nodes
 	 */
-	virtual int getNodeAmount() const override { return 9; }
+	virtual int getNodeAmount() const override {
+		return 9;
+	}
 };
 }  // namespace fem
 

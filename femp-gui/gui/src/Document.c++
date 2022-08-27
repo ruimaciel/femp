@@ -22,18 +22,34 @@ void Document::clear() {
 	this->m_project.clear();
 }
 
-void Document::setFileName(QString new_file) { this->m_filename = new_file; }
+void Document::setFileName(QString new_file) {
+	this->m_filename = new_file;
+}
 
-void Document::clearFileName() { m_filename.clear(); }
+void Document::clearFileName() {
+	m_filename.clear();
+}
 
-QString Document::getFileName() const { return m_filename; }
+QString Document::getFileName() const {
+	return m_filename;
+}
 
-bool Document::isFileNameNotSet() const { return m_filename.isEmpty(); }
+bool Document::isFileNameNotSet() const {
+	return m_filename.isEmpty();
+}
 
-void Document::setProjectType(Document::Type type) { m_documentType = type; }
+void Document::setProjectType(Document::Type type) {
+	m_documentType = type;
+}
 
-fem::Project& Document::getProject() { return this->m_project; }
+fem::Project& Document::getProject() {
+	return this->m_project;
+}
 
-void Document::setDirty(bool unsaved) { m_dirty = unsaved; }
+void Document::setDirty(bool unsaved) {
+	m_dirty = unsaved;
+}
 
-bool Document::isDirty() const { return m_dirty; }
+bool Document::isDirty() const {
+	return m_dirty;
+}

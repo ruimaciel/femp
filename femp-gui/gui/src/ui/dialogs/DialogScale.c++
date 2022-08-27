@@ -16,7 +16,9 @@ DialogScale::DialogScale(float scale, QWidget* parent) : QDialog(parent) {
 	connect(horizontalSlider, SIGNAL(sliderMoved(int)), this, SLOT(updateSpinBox(int)));
 }
 
-double DialogScale::getScale() { return this->doubleSpinBox->value(); }
+double DialogScale::getScale() {
+	return this->doubleSpinBox->value();
+}
 
 void DialogScale::updateSlider(double value) {
 	using namespace std;

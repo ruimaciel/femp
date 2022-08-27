@@ -2,9 +2,13 @@
 
 #include <QSettings>
 
-ViewportColors& Options::getViewportColors() { return m_viewportColors; }
+ViewportColors& Options::getViewportColors() {
+	return m_viewportColors;
+}
 
-DisplayOptions& Options::getDisplayOptions() { return m_displayOptions; }
+DisplayOptions& Options::getDisplayOptions() {
+	return m_displayOptions;
+}
 
 QDir Options::getProjectOpenDirectory() {
 	QSettings settings;

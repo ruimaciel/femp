@@ -10,7 +10,7 @@ namespace fem {
  * Represents a point embedded in a 2D space
  */
 class Point2D : public Point3D {
-   public:
+	public:
 	Point2D(std::array<double, 2>& a);
 };
 

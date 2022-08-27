@@ -48,6 +48,10 @@ void InputState::rightRelease(BaseViewport* /*viewport*/, QMouseEvent* /*event*/
 	qCritical() << "InputState::rightRelease(Input *input) defaulted";
 }
 
-void InputState::move(BaseViewport* /*viewport*/, QMouseEvent* /*event*/, Input* /*input*/) { qCritical() << "InputState::move(Input *input) defaulted"; }
+void InputState::move(BaseViewport* /*viewport*/, QMouseEvent* /*event*/, Input* /*input*/) {
+	qCritical() << "InputState::move(Input *input) defaulted";
+}
 
-void InputState::changeState(Input& input, InputState* new_state) { input.changeState(new_state); }
+void InputState::changeState(Input& input, InputState* new_state) {
+	input.changeState(new_state);
+}

@@ -14,7 +14,7 @@ namespace quadrature {
  * Interface used by all quadrature rules over the square
  */
 class TetrahedronRule : public VolumeRule {
-   public:
+	public:
 	virtual ~TetrahedronRule();
 
 	/**
@@ -27,7 +27,7 @@ class TetrahedronRule : public VolumeRule {
  * 1-point quadrature rule over the unit triangle
  */
 class Tetrahedron1 : public TetrahedronRule {
-   public:
+	public:
 	virtual std::vector<QuadraturePoint> operator()() const override;
 };
 
@@ -35,7 +35,7 @@ class Tetrahedron1 : public TetrahedronRule {
  * 4-point quadrature rule over the unit triangle
  */
 class Tetrahedron4 : public TetrahedronRule {
-   public:
+	public:
 	virtual std::vector<QuadraturePoint> operator()() const override;
 };
 
@@ -43,7 +43,7 @@ class Tetrahedron4 : public TetrahedronRule {
  * 8-point quadrature rule over the unit triangle
  */
 class Tetrahedron8 : public TetrahedronRule {
-   public:
+	public:
 	virtual std::vector<QuadraturePoint> operator()() const override;
 };
 
@@ -51,7 +51,7 @@ class Tetrahedron8 : public TetrahedronRule {
  * 14-point quadrature rule over the unit triangle
  */
 class Tetrahedron14 : public TetrahedronRule {
-   public:
+	public:
 	virtual std::vector<QuadraturePoint> operator()() const override;
 };
 

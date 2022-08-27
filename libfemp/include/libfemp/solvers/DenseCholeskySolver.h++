@@ -14,10 +14,10 @@ namespace fem {
 
 template <typename Scalar>
 class DenseCholeskySolver : public Solver<Scalar> {
-   protected:
+	protected:
 	lalib::Matrix<Scalar> L;
 
-   public:
+	public:
 	enum Solver<Scalar>::Error initialize(Equation& equation, ProgressIndicatorStrategy* progress);
 	enum Solver<Scalar>::Error solve(Equation& equation, ProgressIndicatorStrategy* progress);
 	enum Solver<Scalar>::Error cleanup(Equation& equation, ProgressIndicatorStrategy* progress);

@@ -2,7 +2,7 @@
 #define FEMPCOMMAND_H
 
 class FempCommand {
-   public:
+	public:
 	FempCommand();
 	virtual ~FempCommand();
 

@@ -13,7 +13,7 @@ class DisplacementsRepresentationPolicy;
 namespace SGC {
 
 class NodeRestrictions : public SceneGraphComponent {
-   public:
+	public:
 	NodeRestrictions(const fem::node_ref_t& node_reference, const fem::node_restriction_ref_t& node_restrictions_reference,
 					 fem::NodeRestrictions& node_restrictions, DisplacementsRepresentationPolicy* displacements);
 	~NodeRestrictions();
@@ -28,10 +28,10 @@ class NodeRestrictions : public SceneGraphComponent {
 	 */
 	void accept(Operation::OperationsVisitor& visitor);
 
-   protected:
+	protected:
 	void renderNodeRestriction();
 
-   protected:
+	protected:
 	fem::node_ref_t m_node_reference;
 	fem::node_restriction_ref_t m_node_restrictions_reference;
 	fem::NodeRestrictions* m_node_restrictions;

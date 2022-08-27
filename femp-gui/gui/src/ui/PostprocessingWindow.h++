@@ -22,7 +22,7 @@ MDI window designed to represent the model
 class PostprocessingWindow : public MdiWindow, public WindowWithResults, public WindowWithPostprocessing, public WindowWithScaling, public BaseWindow {
 	Q_OBJECT
 
-   protected:
+	protected:
 	enum AnalysisType {
 		A_DISPLACEMENT = 0,
 		A_STRAIN_11,
@@ -49,10 +49,10 @@ class PostprocessingWindow : public MdiWindow, public WindowWithResults, public 
 	// gradient values
 	fem::ResultsRanges<double> m_resultsRanges;	 // used to set values for representation
 
-   public:
+	public:
 	PostprocessingWindow(fem::Project& project, fem::AnalysisResult& result, ViewportColors& colors, QWidget* parent = nullptr);
 
-   public Q_SLOTS:
+	public Q_SLOTS:
 	void setDisplacementsScale(double scale);
 
 	// sets the postprocessing state according
@@ -66,13 +66,13 @@ class PostprocessingWindow : public MdiWindow, public WindowWithResults, public 
 	 */
 	void setResultsRanges();
 
-   Q_SIGNALS:
+	Q_SIGNALS:
 	/**
 	 * Emits a signal to dump the results from a given set of project objets
 	 */
 	void dumpResultsFromSelection(fem::AnalysisResult* result);
 
-   protected:
+	protected:
 	void connectSignalsToSlots() override;
 
 	void createToolBars(fem::Project&);

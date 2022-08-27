@@ -12,10 +12,10 @@
 class NodeActionsDialog : public QDialog, private Ui::NodeActionsDialog {
 	Q_OBJECT
 
-   private:
+	private:
 	size_t load_pattern;
 
-   public:
+	public:
 	NodeActionsDialog(LoadPatternsModel& model, QWidget* parent = nullptr);
 
 	size_t getLoadPattern();

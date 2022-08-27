@@ -23,10 +23,18 @@ void DefaultProgressIndicator::markSectionEnd() {
 	emit endSection();
 }
 
-void DefaultProgressIndicator::markProgress(size_t progress) { emit setProgress(progress); }
+void DefaultProgressIndicator::markProgress(size_t progress) {
+	emit setProgress(progress);
+}
 
-void DefaultProgressIndicator::message(std::string error_message) { emit setMessage(error_message); }
+void DefaultProgressIndicator::message(std::string error_message) {
+	emit setMessage(error_message);
+}
 
-void DefaultProgressIndicator::error(std::string error_message) { emit setError(error_message); }
+void DefaultProgressIndicator::error(std::string error_message) {
+	emit setError(error_message);
+}
 
-void DefaultProgressIndicator::markFinish() { emit finish(); }
+void DefaultProgressIndicator::markFinish() {
+	emit finish();
+}

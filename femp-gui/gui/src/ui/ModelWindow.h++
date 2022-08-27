@@ -15,10 +15,10 @@
 class ModelWindow : public MdiWindow, public WindowWithWireframe, public BaseWindow {
 	Q_OBJECT
 
-   public:
+	public:
 	ModelWindow(fem::Project& project, ViewportColors& colors, QWidget* parent = nullptr);
 
-   protected:
+	protected:
 	void connectSignalsToSlots() override;
 };
 

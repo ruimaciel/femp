@@ -15,12 +15,12 @@ namespace SGC {
  * Scene graph component which renders a node
  */
 class Node : public SceneGraphComponent {
-   protected:
+	protected:
 	fem::node_ref_t node_label;
 	fem::Node m_node;
 	DisplacementsRepresentationPolicy* m_displacements;
 
-   public:
+	public:
 	Node(size_t, fem::Node& node, DisplacementsRepresentationPolicy* displacements);
 	~Node();
 

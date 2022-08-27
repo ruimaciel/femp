@@ -14,4 +14,6 @@ void SelectionManager::clearSelection() {
 	emit selectionCleared();
 }
 
-Selection const& SelectionManager::getSelection() const { return m_selection; }
+Selection const& SelectionManager::getSelection() const {
+	return m_selection;
+}

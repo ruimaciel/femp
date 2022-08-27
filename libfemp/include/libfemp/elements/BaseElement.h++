@@ -19,7 +19,7 @@ class Model;  // forward declaration
  * types
  */
 class BaseElement {
-   public:
+	public:
 	using MatrixDataType = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>;
 
 	/**
@@ -27,17 +27,17 @@ class BaseElement {
 	 */
 	enum ElementFamily { EF_TRIANGLE = 0, EF_QUADRILATERAL = 1, EF_TETRAHEDRON = 2, EF_PRISM = 3, EF_PYRAMID = 4, EF_HEXAHEDRON = 5, EF_INVALID };
 
-   public:																   // WARNING: deprecated. to be removed.
+	public:																   // WARNING: deprecated. to be removed.
 	std::map<int, std::vector<boost::tuple<fem::Point3D, double>>> ipwpl;  // integration points/weights pair list
 
-   protected:
+	protected:
 	std::vector<fem::Point3D> coordinates;
 	material_ref_t m_material;	// reference to a material in Model's material map
 
-   public:							// merging with fem::Element
+	public:							// merging with fem::Element
 	std::vector<node_ref_t> nodes;	// nodes that define this element
 
-   public:
+	public:
 	virtual ~BaseElement();
 
 	material_ref_t getMaterialRef() const;
@@ -97,17 +97,17 @@ class BaseElement {
 
 	virtual std::vector<fem::Point3D> getLocalCoordinates() = 0;
 
-   public:	// WARNING: BaseElement member functions are deprecated
+	public:	 // WARNING: BaseElement member functions are deprecated
 	/**
 	 * Returns a list of quadrature rules
 	 */
 	virtual std::vector<boost::tuple<fem::Point3D, double>> getStiffnessQuadratureRule() = 0;
 	virtual std::vector<boost::tuple<fem::Point3D, double>> getDomainQuadratureRule() = 0;
 
-   protected:
+	protected:
 	Eigen::Matrix<double, 6, 6> generateConstitutiveRelationsMatrix(const Material& material) const;
 
-   protected:  // WARNING: to be removed
+	protected:	// WARNING: to be removed
 	/**
 	 * Gauss-Legendre integration function, gauleg, from "Numerical Recipes in C"
 	 * (Cambridge Univ. Press) by W.H. Press, S.A. Teukolsky, W.double.

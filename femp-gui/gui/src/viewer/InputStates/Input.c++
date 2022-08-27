@@ -24,4 +24,6 @@ void Input::move(BaseViewport* viewport, QMouseEvent* event) {
 	event->accept();
 }
 
-void Input::changeState(InputState* state) { this->m_current_state = state; }
+void Input::changeState(InputState* state) {
+	this->m_current_state = state;
+}

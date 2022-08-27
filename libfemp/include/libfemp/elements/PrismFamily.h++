@@ -9,7 +9,7 @@
 namespace fem {
 
 class PrismFamily : public BaseElement {
-   public:
+	public:
 	int stiffness_degree;  // Quadrature rule degree to integrate stiffness
 						   // matrices
 	int domain_degree;	   // Quadrature rule degree to integrate domain loads
@@ -18,7 +18,7 @@ class PrismFamily : public BaseElement {
 																		 // calculations
 	std::unique_ptr<quadrature::PrismRule> m_domain_quadrature_rule;	 // quadrature rule for domain calculations
 
-   public:
+	public:
 	PrismFamily();
 
 	enum BaseElement::ElementFamily family() const;
@@ -34,7 +34,7 @@ class PrismFamily : public BaseElement {
 	std::vector<boost::tuple<fem::Point3D, double>> getStiffnessQuadratureRule();
 	std::vector<boost::tuple<fem::Point3D, double>> getDomainQuadratureRule();
 
-   protected:
+	protected:
 	void generateQuadratureData();
 };
 }  // namespace fem

@@ -15,12 +15,12 @@ class BaseViewport;
  * A pattern for the State pattern which is used to render the displacements
  */
 class VPStateDisplacements : public ViewportState {
-   protected:
+	protected:
 	ElementRepresentationFlyweightFactory m_element_representation_factory;
 	DisplacementsPolicy m_displacements;  // the displacements view renders displacements
 	SGC::SceneComponentFactory m_factory;
 
-   public:
+	public:
 	VPStateDisplacements();
 	~VPStateDisplacements();
 

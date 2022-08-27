@@ -12,10 +12,10 @@ namespace quadrature {
  * Interface used by all quadrature rules over the square
  **/
 class SurfaceRule {
-   public:
+	public:
 	using Point = QuadraturePoint<2>;  // helper alias
 
-   public:
+	public:
 	virtual ~SurfaceRule();
 
 	/**

@@ -89,9 +89,13 @@ QVariant AnalysisResultsModel::headerData(int section, Qt::Orientation orientati
 	return QVariant();
 }
 
-int AnalysisResultsModel::rowCount(const QModelIndex&) const { return m_rows; }
+int AnalysisResultsModel::rowCount(const QModelIndex&) const {
+	return m_rows;
+}
 
-int AnalysisResultsModel::columnCount(const QModelIndex&) const { return (4 + 3 + 3 + 6 + 6 + 1); }
+int AnalysisResultsModel::columnCount(const QModelIndex&) const {
+	return (4 + 3 + 3 + 6 + 6 + 1);
+}
 
 QVariant AnalysisResultsModel::data(const QModelIndex& index, int role) const {
 	if (role != Qt::DisplayRole) {

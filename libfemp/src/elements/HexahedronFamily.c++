@@ -3,15 +3,25 @@
 
 namespace fem {
 
-HexahedronFamily::HexahedronFamily() : BaseElement() { generateQuadratureData(); }
+HexahedronFamily::HexahedronFamily() : BaseElement() {
+	generateQuadratureData();
+}
 
-enum BaseElement::ElementFamily HexahedronFamily::family() const { return BaseElement::EF_HEXAHEDRON; }
+enum BaseElement::ElementFamily HexahedronFamily::family() const {
+	return BaseElement::EF_HEXAHEDRON;
+}
 
-unsigned int HexahedronFamily::getDofAmount() const { return 3 * this->getNodeAmount(); }
+unsigned int HexahedronFamily::getDofAmount() const {
+	return 3 * this->getNodeAmount();
+}
 
-std::vector<boost::tuple<fem::Point3D, double>> HexahedronFamily::getStiffnessQuadratureRule() { return this->ipwpl[stiffness_degree]; }
+std::vector<boost::tuple<fem::Point3D, double>> HexahedronFamily::getStiffnessQuadratureRule() {
+	return this->ipwpl[stiffness_degree];
+}
 
-std::vector<boost::tuple<fem::Point3D, double>> HexahedronFamily::getDomainQuadratureRule() { return this->ipwpl[domain_degree]; }
+std::vector<boost::tuple<fem::Point3D, double>> HexahedronFamily::getDomainQuadratureRule() {
+	return this->ipwpl[domain_degree];
+}
 
 void HexahedronFamily::generateQuadratureData() {
 	for (int d = 1; d <= 5; d++) {

@@ -7,7 +7,7 @@
 namespace gui {
 
 class ModelImpl {
-   public:
+	public:
 	ModelImpl(fem::Model& model);
 
 	std::vector<fem::Element> getElementList() const;
@@ -28,7 +28,7 @@ class ModelImpl {
 
 	std::map<unsigned int, fem::NodeRestrictions> getNodeRestrictions() const;
 
-   private:
+	private:
 	fem::Model& m_model;
 };
 

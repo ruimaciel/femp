@@ -8,10 +8,10 @@
 class NodeRestrainsDialog : public QDialog, private Ui_NodeRestrainDialog {
 	Q_OBJECT
 
-   public:
+	public:
 	enum Restraints { NONE = 0, RX = 0x01, RY = 0x02, RZ = 0x04 };
 
-   public:
+	public:
 	explicit NodeRestrainsDialog(QWidget* parent = nullptr);
 
 	int getRestraints();

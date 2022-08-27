@@ -8,6 +8,10 @@ float NeutralGradientFieldPolicy::val(fem::element_ref_t const& ref, gradient_in
 	return 0;
 }
 
-float NeutralGradientFieldPolicy::maxVal(fem::ResultsRanges<double> const&) const { return 1; }
+float NeutralGradientFieldPolicy::maxVal(fem::ResultsRanges<double> const&) const {
+	return 1;
+}
 
-float NeutralGradientFieldPolicy::minVal(fem::ResultsRanges<double> const&) const { return -1; }
+float NeutralGradientFieldPolicy::minVal(fem::ResultsRanges<double> const&) const {
+	return -1;
+}

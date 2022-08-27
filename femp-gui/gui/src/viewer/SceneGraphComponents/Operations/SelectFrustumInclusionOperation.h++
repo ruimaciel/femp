@@ -17,7 +17,7 @@ Sets each scene graph component to be rendered or not, according to some
 criteria
 **/
 class SelectFrustumInclusionOperation : public OperationsVisitor {
-   protected:
+	protected:
 	std::array<fem::Point3D, 4> m_near;	 // near plane vertices
 	std::array<fem::Point3D, 4> m_far;	 // far plane vertices
 
@@ -25,7 +25,7 @@ class SelectFrustumInclusionOperation : public OperationsVisitor {
 
 	Selection& m_selection;
 
-   public:
+	public:
 	/**
 		Sets this operation to set each object in the selection with the render
 	   flag state
@@ -41,7 +41,7 @@ class SelectFrustumInclusionOperation : public OperationsVisitor {
 
 	void selectInclusiveElements(std::shared_ptr<gui::Model> model);
 
-   protected:
+	protected:
 	void calculateNormalVectors(std::array<fem::Point3D, 4> const& near, std::array<fem::Point3D, 4> const& far);
 };
 }  // namespace Operation

@@ -15,10 +15,10 @@ namespace quadrature {
  * Interface used by all quadrature rules over the square
  */
 class QuadrangleRule : public SurfaceRule {
-   public:
+	public:
 	using Point = QuadraturePoint<2>;  // helper alias
 
-   public:
+	public:
 	virtual ~QuadrangleRule();
 
 	/**
@@ -32,10 +32,10 @@ class QuadrangleRule : public SurfaceRule {
  * two quadrature rules
  */
 class QuadrangleCartesianProduct : public QuadrangleRule {
-   private:
+	private:
 	std::unique_ptr<LineRule> m_rule1, m_rule2;
 
-   public:
+	public:
 	QuadrangleCartesianProduct(LineRule* rule1, LineRule* rule2);
 
 	virtual std::vector<Point> operator()() const override;

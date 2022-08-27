@@ -7,9 +7,9 @@
 #include "FempCommand.h++"
 
 class AnalysisCommand : public FempCommand {
-   public:
+	public:
 	class Builder {
-	   public:
+		public:
 		Builder& setInputFilename(std::string inputFilename);
 		Builder& setOutputPath(std::string outputPath);
 		// solver
@@ -20,7 +20,7 @@ class AnalysisCommand : public FempCommand {
 
 		std::unique_ptr<AnalysisCommand> build() const;
 
-	   private:
+		private:
 		std::string m_inputFilename;
 		std::string m_outputPath;
 	};
@@ -28,10 +28,10 @@ class AnalysisCommand : public FempCommand {
 	AnalysisCommand(Builder inputParameters);
 
 	// FempCommand interface
-   public:
+	public:
 	int execute() override final;
 
-   private:
+	private:
 	Builder m_inputParameters;
 };
 

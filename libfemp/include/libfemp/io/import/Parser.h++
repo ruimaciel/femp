@@ -9,14 +9,14 @@
  * Base class for every parser
  */
 class Parser {
-   public:
+	public:
 	struct Error {
 		enum Type { ERR_OK, ERR_INVALID_ELEMENT_REFERENCE, ERR_UNSUPPORTED_VERSION, ERR_UNKNOWN } code;
 		std::string message;
 		size_t line_number;	 // line number where the error occurred
 	} error;
 
-   public:
+	public:
 	Parser();
 	virtual ~Parser();
 

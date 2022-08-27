@@ -64,7 +64,9 @@ void StressFieldRepresentationPolicy::prism18(fem::element_ref_t const& ref, fem
 	m_representation[ref].render(m_diameter, m_max, m_min, m_positive_principal_stress_visible, m_negative_principal_stress_visible, color);
 }
 
-void StressFieldRepresentationPolicy::setModel(fem::Model& model) { m_model = &model; }
+void StressFieldRepresentationPolicy::setModel(fem::Model& model) {
+	m_model = &model;
+}
 
 void StressFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult& result) {
 	m_result = &result;
@@ -73,9 +75,13 @@ void StressFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult& res
 	generateData();
 }
 
-void StressFieldRepresentationPolicy::showNegativePrincipalStressesVisibility(bool state) { m_negative_principal_stress_visible = state; }
+void StressFieldRepresentationPolicy::showNegativePrincipalStressesVisibility(bool state) {
+	m_negative_principal_stress_visible = state;
+}
 
-void StressFieldRepresentationPolicy::showPositivePrincipalStressesVisibility(bool state) { m_positive_principal_stress_visible = state; }
+void StressFieldRepresentationPolicy::showPositivePrincipalStressesVisibility(bool state) {
+	m_positive_principal_stress_visible = state;
+}
 
 void StressFieldRepresentationPolicy::generateData() {
 	assert(m_model != nullptr);

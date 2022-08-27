@@ -14,15 +14,19 @@ namespace Operation {
 Sets each scene graph component to be rendered as selected
 **/
 class ToggleSelectionOperation : public OperationsVisitor {
-   protected:
+	protected:
 	bool m_selection_state;
 	Selection m_selection;
 
-   protected:
-	void setSelectionState(bool& new_state) { m_selection_state = new_state; }
-	void setSelection(Selection& selection) { this->m_selection = selection; }
+	protected:
+	void setSelectionState(bool& new_state) {
+		m_selection_state = new_state;
+	}
+	void setSelection(Selection& selection) {
+		this->m_selection = selection;
+	}
 
-   public:
+	public:
 	/**
 		Sets this operation to set each object in the selection with the render
 	   flag state

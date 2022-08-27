@@ -14,7 +14,7 @@ to the sparse, dynamically resizeable vector
 **/
 template <typename Scalar>
 class SparseCS {
-   public:
+	public:
 	struct Data {
 		size_t t_size;	// size
 
@@ -22,11 +22,13 @@ class SparseCS {
 		std::vector<Scalar> values;
 	} data;
 
-   public:
+	public:
 	SparseCS(const size_t size = 0);
 	~SparseCS(){};
 
-	size_t size() const { return data.t_size; };
+	size_t size() const {
+		return data.t_size;
+	};
 
 	/**
 				Sets all values to zero

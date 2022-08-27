@@ -12,11 +12,13 @@ namespace lalib {
 
 template <typename scalar, template <typename> class VectorStoragePolicy = DenseVector>
 class Vector : public VectorStoragePolicy<scalar> {
-   public:
+	public:
 	Vector(const size_t size = 1);
 	~Vector(){};
 
-	size_t size() const { return VectorStoragePolicy<scalar>::size(); };
+	size_t size() const {
+		return VectorStoragePolicy<scalar>::size();
+	};
 
 	/**
 				Sets all values to zero

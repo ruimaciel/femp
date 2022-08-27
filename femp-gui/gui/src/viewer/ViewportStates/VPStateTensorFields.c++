@@ -59,12 +59,18 @@ void VPStateTensorFields::populateScenegraph(BaseViewport* viewport) {
 	this->scenegraph.generateSceneGraph();
 }
 
-void VPStateTensorFields::setAnalysisResult(fem::AnalysisResult& new_result) { this->m_stress_field_representation.setAnalysisResult(new_result); }
+void VPStateTensorFields::setAnalysisResult(fem::AnalysisResult& new_result) {
+	this->m_stress_field_representation.setAnalysisResult(new_result);
+}
 
 void VPStateTensorFields::setResultsRanges(fem::ResultsRanges<double>&) {}
 
 void VPStateTensorFields::keyPressEvent(BaseViewport*, QKeyEvent*) {}
 
-void VPStateTensorFields::showNegativePrincipalStressesVisibility(bool state) { m_stress_field_representation.showNegativePrincipalStressesVisibility(state); }
+void VPStateTensorFields::showNegativePrincipalStressesVisibility(bool state) {
+	m_stress_field_representation.showNegativePrincipalStressesVisibility(state);
+}
 
-void VPStateTensorFields::showPositivePrincipalStressesVisibility(bool state) { m_stress_field_representation.showPositivePrincipalStressesVisibility(state); }
+void VPStateTensorFields::showPositivePrincipalStressesVisibility(bool state) {
+	m_stress_field_representation.showPositivePrincipalStressesVisibility(state);
+}

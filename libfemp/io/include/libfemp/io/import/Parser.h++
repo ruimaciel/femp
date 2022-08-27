@@ -5,7 +5,7 @@
  * Base class for every parser
  */
 class Parser {
-   public:
+	public:
 	Parser();
 	virtual ~Parser();
 };

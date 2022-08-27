@@ -16,6 +16,8 @@ std::shared_ptr<Parser> ModelImporterFactory::makeMshParser() {
 	return parser;
 }
 
-std::shared_ptr<Parser> ModelImporterFactory::makeFemJsonParser() { return std::make_shared<FemJsonParser>(); }
+std::shared_ptr<Parser> ModelImporterFactory::makeFemJsonParser() {
+	return std::make_shared<FemJsonParser>();
+}
 
 }  // namespace fem

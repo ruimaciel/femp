@@ -13,14 +13,14 @@
  * Class developed to parse the fem.json file format
  */
 class FemJsonParser : public Parser {
-   public:
+	public:
 	FemJsonParser();
 
 	void operator()(std::istream& file, fem::Model& model);
 
 	enum Error::Type parse(std::istream& file, fem::Model& model) override;
 
-   protected:
+	protected:
 	// temp variables
 	std::vector<double> temp_float;
 	std::vector<unsigned long int> temp_natural;
@@ -36,7 +36,7 @@ class FemJsonParser : public Parser {
 
 	std::string label;
 
-   protected:
+	protected:
 	enum TerminalTokens {
 		TT_UNKNOWN,	 // irrecognizable token
 
@@ -452,7 +452,7 @@ class FemJsonParser : public Parser {
 	std::map<enum NonTerminalTokens, std::map<enum TerminalTokens, enum ParserRule>> table;
 	std::stack<int> ss;	 // the LL parser symbol stack
 
-   protected:
+	protected:
 	/**
 	 * Returns a terminal token by parsing the input stream
 	 * @param file	opened text stream
@@ -467,7 +467,7 @@ class FemJsonParser : public Parser {
 	 */
 	TerminalTokens lexerReturnProcedures(TerminalTokens tt);
 
-   protected:
+	protected:
 	char buffer[1024];
 
 	// helper variables that are used by the lexer

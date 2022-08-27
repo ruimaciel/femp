@@ -11,7 +11,7 @@ namespace fem {
  * Class intended to represent a group of nodes
  */
 class NodeGroup {
-   public:
+	public:
 	/**
 	 * Adds a new node to the list
 	 */
@@ -31,7 +31,7 @@ class NodeGroup {
 	std::string getLabel() const;
 	void setLabel(std::string m_label);
 
-   protected:
+	protected:
 	std::vector<size_t> m_node_reference_list;
 	std::string m_label;
 };

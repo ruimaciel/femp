@@ -14,7 +14,7 @@ dynamically resizeable matrix that stores the values in rows
 **/
 template <typename scalar>
 class LowerTriangular {
-   public:
+	public:
 	struct Data {
 		size_t t_rows;	   // number of rows
 		size_t t_columns;  // number of columns
@@ -22,7 +22,7 @@ class LowerTriangular {
 		std::vector<scalar> data;
 	} data;
 
-   public:
+	public:
 	LowerTriangular(const size_t rows = 0, const size_t columns = 0);
 	~LowerTriangular(){};
 
@@ -31,8 +31,12 @@ class LowerTriangular {
 				**/
 	void clear();
 
-	size_t rows() { return data.t_rows; };
-	size_t columns() { return data.t_columns; };
+	size_t rows() {
+		return data.t_rows;
+	};
+	size_t columns() {
+		return data.t_columns;
+	};
 
 	/*
 				Returns the value in [row,column]

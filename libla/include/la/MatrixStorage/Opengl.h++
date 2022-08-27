@@ -14,17 +14,21 @@ the dense, dynamically resizeable matrix to be used in the Matrix host class.
 **/
 template <typename scalar>
 class Opengl {
-   public:
+	public:
 	struct Data {
 		scalar data[16];
 	} data;
 
-   public:
+	public:
 	Opengl(const size_t rows, const size_t columns);
 	~Opengl(){};
 
-	size_t rows() { return 4; };
-	size_t columns() { return 4; };
+	size_t rows() {
+		return 4;
+	};
+	size_t columns() {
+		return 4;
+	};
 
 	/*
 				Returns the value in [row,column]

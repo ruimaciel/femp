@@ -32,7 +32,7 @@ struct RenderGroup {
 	void setVisible(bool visible = true);
 	bool isVisible() const;
 
-   private:
+	private:
 	bool m_render;	// should this group be rendered?
 };
 

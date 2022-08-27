@@ -1,6 +1,8 @@
 #include "AnalysisProgressDialog.h++"
 
-AnalysisProgressDialog::AnalysisProgressDialog(QWidget* parent) : QDialog(parent) { setupUi(this); }
+AnalysisProgressDialog::AnalysisProgressDialog(QWidget* parent) : QDialog(parent) {
+	setupUi(this);
+}
 
 void AnalysisProgressDialog::beginSection(std::string section_name) {
 	timer.start();

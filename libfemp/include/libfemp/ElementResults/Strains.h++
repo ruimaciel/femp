@@ -16,7 +16,9 @@ struct Strains {
 	Scalar e23;
 	Scalar e13;
 
-	void setZero() { e11 = e22 = e33 = e12 = e23 = e13 = 0; }
+	void setZero() {
+		e11 = e22 = e33 = e12 = e23 = e13 = 0;
+	}
 };
 
 }  // namespace fem

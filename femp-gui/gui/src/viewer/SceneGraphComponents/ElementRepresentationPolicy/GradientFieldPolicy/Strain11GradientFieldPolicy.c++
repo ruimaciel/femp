@@ -12,6 +12,10 @@ float Strain11GradientFieldPolicy::val(fem::element_ref_t const& ref, gradient_i
 	return this->m_analysis_result->results[ref]->strains[p].e11;
 }
 
-float Strain11GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const& ranges) const { return ranges.max_strain11; }
+float Strain11GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const& ranges) const {
+	return ranges.max_strain11;
+}
 
-float Strain11GradientFieldPolicy::minVal(fem::ResultsRanges<double> const& ranges) const { return ranges.min_strain11; }
+float Strain11GradientFieldPolicy::minVal(fem::ResultsRanges<double> const& ranges) const {
+	return ranges.min_strain11;
+}

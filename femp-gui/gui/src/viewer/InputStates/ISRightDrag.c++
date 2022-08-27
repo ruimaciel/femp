@@ -16,9 +16,13 @@ void RightDrag::press(BaseViewport* /*viewport*/, QMouseEvent* event, Input* /*i
 	}
 }
 
-void RightDrag::release(BaseViewport* viewport, QMouseEvent* event, Input* input) { this->rightRelease(viewport, event, input); }
+void RightDrag::release(BaseViewport* viewport, QMouseEvent* event, Input* input) {
+	this->rightRelease(viewport, event, input);
+}
 
-void RightDrag::rightRelease(BaseViewport* viewport, QMouseEvent* /*event*/, Input* input) { input->changeState(&input->m_is_start); }
+void RightDrag::rightRelease(BaseViewport* viewport, QMouseEvent* /*event*/, Input* input) {
+	input->changeState(&input->m_is_start);
+}
 
 void RightDrag::move(BaseViewport* viewport, QMouseEvent* event, Input* /*input*/) {
 	ViewportData& viewport_data = viewport->viewport_data;

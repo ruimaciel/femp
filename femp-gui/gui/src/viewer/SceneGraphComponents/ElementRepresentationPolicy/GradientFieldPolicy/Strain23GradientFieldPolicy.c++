@@ -10,6 +10,10 @@ float Strain23GradientFieldPolicy::val(fem::element_ref_t const& ref, gradient_i
 	return this->m_analysis_result->results[ref]->strains[p].e23;
 }
 
-float Strain23GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const& ranges) const { return ranges.max_strain23; }
+float Strain23GradientFieldPolicy::maxVal(fem::ResultsRanges<double> const& ranges) const {
+	return ranges.max_strain23;
+}
 
-float Strain23GradientFieldPolicy::minVal(fem::ResultsRanges<double> const& ranges) const { return ranges.min_strain23; }
+float Strain23GradientFieldPolicy::minVal(fem::ResultsRanges<double> const& ranges) const {
+	return ranges.min_strain23;
+}

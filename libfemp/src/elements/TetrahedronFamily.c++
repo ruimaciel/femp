@@ -3,15 +3,25 @@
 
 namespace fem {
 
-TetrahedronFamily::TetrahedronFamily() : BaseElement() { generateQuadratureData(); }
+TetrahedronFamily::TetrahedronFamily() : BaseElement() {
+	generateQuadratureData();
+}
 
-enum BaseElement::ElementFamily TetrahedronFamily::family() const { return BaseElement::EF_TETRAHEDRON; }
+enum BaseElement::ElementFamily TetrahedronFamily::family() const {
+	return BaseElement::EF_TETRAHEDRON;
+}
 
-unsigned int TetrahedronFamily::getDofAmount() const { return 3 * this->getNodeAmount(); }
+unsigned int TetrahedronFamily::getDofAmount() const {
+	return 3 * this->getNodeAmount();
+}
 
-std::vector<boost::tuple<fem::Point3D, double>> TetrahedronFamily::getStiffnessQuadratureRule() { return this->ipwpl[stiffness_degree]; }
+std::vector<boost::tuple<fem::Point3D, double>> TetrahedronFamily::getStiffnessQuadratureRule() {
+	return this->ipwpl[stiffness_degree];
+}
 
-std::vector<boost::tuple<fem::Point3D, double>> TetrahedronFamily::getDomainQuadratureRule() { return this->ipwpl[domain_degree]; }
+std::vector<boost::tuple<fem::Point3D, double>> TetrahedronFamily::getDomainQuadratureRule() {
+	return this->ipwpl[domain_degree];
+}
 
 void TetrahedronFamily::generateQuadratureData() {
 	// TODO test this

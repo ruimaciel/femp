@@ -4,7 +4,7 @@
 #include <QApplication>
 
 class FempApplication : public QApplication {
-   public:
+	public:
 	FempApplication(int& argc, char** argv);
 };
 

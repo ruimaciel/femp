@@ -3,7 +3,9 @@
 
 namespace fem {
 
-AnalysisResult::AnalysisResult() { this->clear(); }
+AnalysisResult::AnalysisResult() {
+	this->clear();
+}
 
 AnalysisResult::AnalysisResult(const AnalysisResult& copied) {
 	this->equation = copied.equation;

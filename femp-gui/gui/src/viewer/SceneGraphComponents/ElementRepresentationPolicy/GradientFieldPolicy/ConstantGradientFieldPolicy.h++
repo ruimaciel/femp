@@ -7,13 +7,13 @@
  * Test gradient field policy.  All values are constant
  **/
 class ConstantGradientFieldPolicy : public GradientFieldPolicy {
-   public:
+	public:
 	float value;  // value which is set in all nodes
 
-   public:
+	public:
 	ConstantGradientFieldPolicy();
 
-   protected:
+	protected:
 	/**
 	 * returns the gradient value for each result
 	 **/

@@ -11,14 +11,14 @@
 class AnalysisProgressDialog : public QDialog, private Ui::AnalysisProgressDialog {
 	Q_OBJECT
 
-   protected:
+	protected:
 	std::string m_section_name;
 	QElapsedTimer timer;  // to time the run
 
-   public:
+	public:
 	AnalysisProgressDialog(QWidget* parent = nullptr);
 
-   public slots:
+	public slots:
 	void beginSection(std::string);
 
 	/**

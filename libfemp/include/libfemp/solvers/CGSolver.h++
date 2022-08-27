@@ -10,10 +10,10 @@ namespace fem {
 
 template <typename Scalar>
 class CGSolver : public Solver<Scalar> {
-   protected:
+	protected:
 	lalib::Matrix<Scalar, lalib::SparseCRS> my_k;
 
-   public:
+	public:
 	Scalar delta;
 	int max_iterations;
 

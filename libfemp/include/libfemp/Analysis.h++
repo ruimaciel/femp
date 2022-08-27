@@ -32,7 +32,7 @@ struct QuadratureRulesOptions {
 
 template <typename Scalar>
 class Analysis {
-   public:
+	public:
 	QuadratureRulesOptions tri3;
 	QuadratureRulesOptions tri6;
 	QuadratureRulesOptions quad4;
@@ -49,7 +49,7 @@ class Analysis {
 	QuadratureRulesOptions prism15;
 	QuadratureRulesOptions prism18;
 
-   public:
+	public:
 	enum Error {
 		ERR_OK = 0,	 // no error
 		ERR_NO_ELEMENTS,
@@ -64,7 +64,7 @@ class Analysis {
 		ERR_NEGATIVE_DETERMINANT
 	};
 
-   public:
+	public:
 	/**
 	 * Sets up a FEM equation according to the info contained in the
 	 * instance of this class.
@@ -149,7 +149,7 @@ class Analysis {
 	 */
 	enum Error calculateStrainEnergy(Model& model, AnalysisResult& result);
 
-   protected:
+	protected:
 	/**
 	 * Builds the location matrix, a map between the node number and a
 	 * 3-tuple holding the degree of freedom reference numbers for each

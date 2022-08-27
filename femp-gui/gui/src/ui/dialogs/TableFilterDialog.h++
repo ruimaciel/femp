@@ -13,12 +13,16 @@
 class TableFilterDialog : public QDialog, private Ui::TableFilterDialog {
 	Q_OBJECT
 
-   public:
+	public:
 	TableFilterDialog(QWidget* parent = nullptr);
 
-#define MEMBER_HELPER(XX)                                                        \
-	void set##XX##Visible(bool state) { this->checkBox##XX->setChecked(state); } \
-	bool get##XX##Visible() const { return this->checkBox##XX->isChecked(); }
+#define MEMBER_HELPER(XX)                       \
+	void set##XX##Visible(bool state) {         \
+		this->checkBox##XX->setChecked(state);  \
+	}                                           \
+	bool get##XX##Visible() const {             \
+		return this->checkBox##XX->isChecked(); \
+	}
 	MEMBER_HELPER(ElementReference);
 	MEMBER_HELPER(ElementType);
 	MEMBER_HELPER(NodeGlobalReference);
@@ -44,7 +48,7 @@ class TableFilterDialog : public QDialog, private Ui::TableFilterDialog {
 	MEMBER_HELPER(VonMises);
 #undef MEMBER_HELPER
 
-   private Q_SLOTS:
+	private Q_SLOTS:
 	void toggleElementsCheckboxes(bool);
 	void toggleElementCheckbox(bool);
 

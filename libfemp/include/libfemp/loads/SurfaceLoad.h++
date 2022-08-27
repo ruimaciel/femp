@@ -17,11 +17,11 @@ class Model;  // forward declaration
  * Represents a pressure applied on a surface
  */
 class SurfaceLoad : public Element {
-   public:
+	public:
 	std::vector<fem::Point3D> surface_forces;  // forces acting in each node, used
 											   // to interpolate the surface load
 
-   public:
+	public:
 	virtual ~SurfaceLoad();
 
 	/**
@@ -48,7 +48,7 @@ class SurfaceLoad : public Element {
 	 */
 	static SurfaceLoad* makeSurfaceLoad(const Element* element);
 
-   public:
+	public:
 	// TODO convert to pure virtual interface after migrating to polymorphic loads
 	virtual std::vector<fem::Point3D> getLocalCoordinates() const = 0;
 	virtual std::vector<double> getN(const Point3D& p) const = 0;

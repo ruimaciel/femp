@@ -16,7 +16,7 @@ http://netlib.org/linalg/html_templates/node91.html#SECTION00931100000000000000
 **/
 template <typename scalar>
 class SparseCCS {
-   public:
+	public:
 	struct Data {
 		size_t t_rows;	// number of columns
 
@@ -25,7 +25,7 @@ class SparseCCS {
 		std::vector<long int> column_pointer;
 	} data;
 
-   public:
+	public:
 	SparseCCS(const size_t rows = 0, const size_t columns = 0);
 	~SparseCCS(){};
 
@@ -34,8 +34,12 @@ class SparseCCS {
 				**/
 	void clear();
 
-	size_t rows() { return data.t_rows; };
-	size_t columns() { return data.column_pointer.size() - 1; };
+	size_t rows() {
+		return data.t_rows;
+	};
+	size_t columns() {
+		return data.column_pointer.size() - 1;
+	};
 
 	/*
 				Returns the value in [row,column]

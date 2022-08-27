@@ -9,14 +9,14 @@ namespace fem {
  * Defines a surface load which is normal to the surface
  */
 class SurfaceNormalLoad : public SurfaceLoadOperator {
-   public:
+	public:
 	SurfaceNormalLoad();
 
 	void setLoadMagnitude(float const& magnitude);
 
 	void operator()(fem::SurfaceLoad& surface_load, fem::Model& model) override;
 
-   protected:
+	protected:
 	float m_magnitude;
 };
 

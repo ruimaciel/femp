@@ -9,7 +9,7 @@
 namespace fem {
 
 class TetrahedronFamily : public BaseElement {
-   public:
+	public:
 	int stiffness_degree;  // Quadrature rule degree to integrate stiffness
 						   // matrices
 	int domain_degree;	   // Quadrature rule degree to integrate domain loads
@@ -18,7 +18,7 @@ class TetrahedronFamily : public BaseElement {
 																			   // calculations
 	std::unique_ptr<quadrature::TetrahedronRule> m_domain_quadrature_rule;	   // quadrature rule for domain calculations
 
-   public:
+	public:
 	TetrahedronFamily();
 
 	enum BaseElement::ElementFamily family() const;
@@ -34,7 +34,7 @@ class TetrahedronFamily : public BaseElement {
 	std::vector<boost::tuple<fem::Point3D, double>> getStiffnessQuadratureRule();
 	std::vector<boost::tuple<fem::Point3D, double>> getDomainQuadratureRule();
 
-   protected:
+	protected:
 	void generateQuadratureData();
 };
 

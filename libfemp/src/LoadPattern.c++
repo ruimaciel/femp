@@ -2,7 +2,9 @@
 
 namespace fem {
 
-LoadPattern::LoadPattern() { this->clear(); }
+LoadPattern::LoadPattern() {
+	this->clear();
+}
 
 void LoadPattern::clear() {
 	m_label.clear();
@@ -20,11 +22,17 @@ bool LoadPattern::empty() const {
 	return true;
 }
 
-std::string LoadPattern::getLabel() const { return this->m_label; }
+std::string LoadPattern::getLabel() const {
+	return this->m_label;
+}
 
-void LoadPattern::setLabel(std::string const& label) { this->m_label = label; }
+void LoadPattern::setLabel(std::string const& label) {
+	this->m_label = label;
+}
 
-void LoadPattern::addNodalLoad(size_t node, Point3D force) { nodal_loads[node] = NodalLoad(force); }
+void LoadPattern::addNodalLoad(size_t node, Point3D force) {
+	nodal_loads[node] = NodalLoad(force);
+}
 
 void LoadPattern::addNodalDisplacement(size_t node, Point3D displacement) {
 	// TODO perform sanity checks
@@ -40,6 +48,8 @@ void LoadPattern::addDomainLoad(size_t element, Point3D force) {
 	domain_loads[element] = n;
 }
 
-void LoadPattern::addSurfaceLoad(SurfaceLoad* surfaceload) { surface_loads.push_back(surfaceload); }
+void LoadPattern::addSurfaceLoad(SurfaceLoad* surfaceload) {
+	surface_loads.push_back(surfaceload);
+}
 
 }  // namespace fem

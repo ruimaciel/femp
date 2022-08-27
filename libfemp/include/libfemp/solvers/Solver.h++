@@ -13,7 +13,7 @@ namespace fem {
 
 template <typename Scalar>
 class Solver {
-   public:
+	public:
 	enum Error {
 		ERR_OK = 0,	 // no error
 		ERR_SINGULAR_MATRIX,

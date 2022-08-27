@@ -9,7 +9,7 @@ namespace fem {
 namespace mesh {
 
 class Element {
-   public:
+	public:
 	Element(size_t element_id);
 	virtual ~Element() = default;
 
@@ -19,7 +19,7 @@ class Element {
 
 	virtual void accept(ElementVisitor& visitor) = 0;
 
-   private:
+	private:
 	size_t m_element_id;
 };
 

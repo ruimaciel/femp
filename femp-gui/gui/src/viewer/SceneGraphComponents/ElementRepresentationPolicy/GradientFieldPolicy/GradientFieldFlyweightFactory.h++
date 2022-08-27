@@ -26,7 +26,7 @@
 Flyweight actory pattern to store all gradient field policy classes
 **/
 class GradientFieldFlyweightFactory {
-   protected:
+	protected:
 	NeutralGradientFieldPolicy m_neutral_policy;  // test pattern
 	ConstantGradientFieldPolicy m_constant_policy;
 	Strain11GradientFieldPolicy m_strain11_policy;
@@ -45,7 +45,7 @@ class GradientFieldFlyweightFactory {
 
 	VonMisesGradientFieldPolicy m_von_mises_policy;
 
-   public:
+	public:
 	GradientFieldPolicy* neutral();
 	GradientFieldPolicy* constant(float value);
 	GradientFieldPolicy* strains11();

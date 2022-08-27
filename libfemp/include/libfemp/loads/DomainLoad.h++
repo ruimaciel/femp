@@ -7,10 +7,10 @@
 namespace fem {
 
 class DomainLoad {
-   public:
+	public:
 	Point3D force;	// force value for the entire element
 
-   public:
+	public:
 	DomainLoad();
 	DomainLoad(const DomainLoad&);
 	~DomainLoad();

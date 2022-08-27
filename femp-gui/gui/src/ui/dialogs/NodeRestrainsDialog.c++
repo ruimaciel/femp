@@ -1,6 +1,8 @@
 #include "NodeRestrainsDialog.h++"
 
-NodeRestrainsDialog::NodeRestrainsDialog(QWidget* parent) : QDialog(parent) { setupUi(this); }
+NodeRestrainsDialog::NodeRestrainsDialog(QWidget* parent) : QDialog(parent) {
+	setupUi(this);
+}
 
 int NodeRestrainsDialog::getRestraints() {
 	int r = NONE;

@@ -16,7 +16,7 @@
  *render each field
  **/
 class GradientFieldPolicy {
-   protected:
+	protected:
 	typedef unsigned int gradient_index_t;
 
 	GLfloat m_temp_color[3];  // temporary value used to set a color
@@ -27,7 +27,7 @@ class GradientFieldPolicy {
 												   // access the displacements field
 	fem::ResultsRanges<double>* m_results_ranges;  // pointer to the current results ranges
 
-   public:
+	public:
 	GradientFieldPolicy();
 	virtual ~GradientFieldPolicy();
 
@@ -58,7 +58,7 @@ class GradientFieldPolicy {
 	GLfloat* quad9(fem::element_ref_t const& ref, gradient_index_t p1, gradient_index_t p2, gradient_index_t p3, gradient_index_t p4, gradient_index_t p5,
 				   gradient_index_t p6, gradient_index_t p7, gradient_index_t p8, gradient_index_t p9, fem::Point3D& pos, ViewportColors& colors);
 
-   protected:
+	protected:
 	/**
 	 * returns the gradient value for each result
 	 **/

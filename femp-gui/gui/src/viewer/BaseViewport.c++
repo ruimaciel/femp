@@ -20,13 +20,21 @@ BaseViewport::BaseViewport(fem::Project& project, QWidget* parent) : QOpenGLWidg
 	this->setFocusPolicy(Qt::StrongFocus);
 }
 
-BaseViewport::~BaseViewport() { delete m_input; }
+BaseViewport::~BaseViewport() {
+	delete m_input;
+}
 
-void BaseViewport::setColors(ViewportColors& new_colors) { m_colors = new_colors; }
+void BaseViewport::setColors(ViewportColors& new_colors) {
+	m_colors = new_colors;
+}
 
-QSize BaseViewport::minimumSizeHint() const { return QSize(50, 50); }
+QSize BaseViewport::minimumSizeHint() const {
+	return QSize(50, 50);
+}
 
-QSize BaseViewport::sizeHint() const { return QSize(600, 400); }
+QSize BaseViewport::sizeHint() const {
+	return QSize(600, 400);
+}
 
 void BaseViewport::initializeGL() {
 	// set the state->camera position according to the nodal center
@@ -135,7 +143,9 @@ void BaseViewport::wheelEvent(QWheelEvent* event) {
 	event->accept();
 }
 
-void BaseViewport::keyPressEvent(QKeyEvent* event) { state->keyPressEvent(this, event); }
+void BaseViewport::keyPressEvent(QKeyEvent* event) {
+	state->keyPressEvent(this, event);
+}
 
 void BaseViewport::setState(ViewportState* new_state) {
 	this->state = new_state;
@@ -150,7 +160,9 @@ void BaseViewport::setState(ViewportState* new_state) {
 	this->state->setRenderGroupVisibility(SceneGraph::RG_NODE_RESTRICTIONS, node_restrictions);
 }
 
-void BaseViewport::refresh(void) { this->update(); }
+void BaseViewport::refresh(void) {
+	this->update();
+}
 
 void BaseViewport::setNodeVisibility(bool const state) {
 	this->state->setRenderGroupVisibility(SceneGraph::RG_NODES, state);
@@ -255,11 +267,17 @@ void BaseViewport::setPosition(double x, double y, double z) {
 	update();
 }
 
-void BaseViewport::setAnalysisResult(fem::AnalysisResult& new_result) { this->state->setAnalysisResult(new_result); }
+void BaseViewport::setAnalysisResult(fem::AnalysisResult& new_result) {
+	this->state->setAnalysisResult(new_result);
+}
 
-void BaseViewport::setDisplacementsScale(float scale) { this->state->setDisplacementsScale(scale); }
+void BaseViewport::setDisplacementsScale(float scale) {
+	this->state->setDisplacementsScale(scale);
+}
 
-void BaseViewport::setRenderGroupVisibility(SceneGraph::Groups group, bool state) { this->state->setRenderGroupVisibility(group, state); }
+void BaseViewport::setRenderGroupVisibility(SceneGraph::Groups group, bool state) {
+	this->state->setRenderGroupVisibility(group, state);
+}
 
 void BaseViewport::normalizeAngle(int* angle) {
 	while (*angle < 0) *angle += 360 * 16;
@@ -272,7 +290,9 @@ void BaseViewport::setSelection(Selection selection) {
 	this->update();
 }
 
-void BaseViewport::clearSelection() { this->state->clearSelection(); }
+void BaseViewport::clearSelection() {
+	this->state->clearSelection();
+}
 
 void BaseViewport::showSelection(const Selection selection) {
 	Operation::ToggleRenderOperation op(selection);
@@ -287,8 +307,14 @@ void BaseViewport::showAll() {
 	this->state->runSceneGraphOperation(op);
 }
 
-fem::Project& BaseViewport::getProject() { return m_project; }
+fem::Project& BaseViewport::getProject() {
+	return m_project;
+}
 
-std::shared_ptr<gui::Model> BaseViewport::getDomainModel() { return m_project.getDomainModel(); }
+std::shared_ptr<gui::Model> BaseViewport::getDomainModel() {
+	return m_project.getDomainModel();
+}
 
-ViewportColors BaseViewport::getColors() const { return this->m_colors; }
+ViewportColors BaseViewport::getColors() const {
+	return this->m_colors;
+}

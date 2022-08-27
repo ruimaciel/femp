@@ -40,10 +40,16 @@ void Node::paintGL(ViewportData& data, ViewportColors& colors) {
 	glPopMatrix();
 }
 
-const fem::node_ref_t& Node::reference() const { return node_label; }
+const fem::node_ref_t& Node::reference() const {
+	return node_label;
+}
 
-const fem::Point3D& Node::pos() const { return m_node; }
+const fem::Point3D& Node::pos() const {
+	return m_node;
+}
 
-void Node::accept(Operation::OperationsVisitor& visitor) { visitor.visit(*this); }
+void Node::accept(Operation::OperationsVisitor& visitor) {
+	visitor.visit(*this);
+}
 
 }  // namespace SGC

@@ -16,7 +16,9 @@ struct Stresses {
 	Scalar s23;
 	Scalar s13;
 
-	void setZero() { s11 = s22 = s33 = s12 = s23 = s13 = 0; }
+	void setZero() {
+		s11 = s22 = s33 = s12 = s23 = s13 = 0;
+	}
 };
 
 }  // namespace fem

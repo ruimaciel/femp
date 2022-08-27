@@ -10,7 +10,7 @@ namespace gui {
 namespace application {
 
 class INodeRepository {
-   public:
+	public:
 	INodeRepository();
 
 	virtual ~INodeRepository() = default;

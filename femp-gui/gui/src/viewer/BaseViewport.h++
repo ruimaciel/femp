@@ -25,7 +25,7 @@ opengl viewports to render the model
 class BaseViewport : public QOpenGLWidget {
 	Q_OBJECT
 
-   public:
+	public:
 	BaseViewport(fem::Project& project, QWidget* parent);
 	virtual ~BaseViewport();
 
@@ -61,7 +61,7 @@ class BaseViewport : public QOpenGLWidget {
 	void setTrianglesVisible(bool const state);
 	void setShading(bool const state);
 
-   public Q_SLOTS:
+	public Q_SLOTS:
 	void setXRotation(int angle);
 	void setYRotation(int angle);
 	void setZRotation(int angle);
@@ -92,14 +92,14 @@ class BaseViewport : public QOpenGLWidget {
 	void selectObjectsFromRay(fem::Point3D const& origin, fem::Point3D const& destination);
 	void selectObjectsFromFrustum(std::array<fem::Point3D, 4> const& near, std::array<fem::Point3D, 4> const& far);
 
-   Q_SIGNALS:
+	Q_SIGNALS:
 	void selectionChanged(Selection);
 	void xRotationChanged(int angle);
 	void yRotationChanged(int angle);
 	void zRotationChanged(int angle);
 	void positionChanged(double x, double y, double z);
 
-   public:
+	public:
 	void setSelection(Selection);  // sets the selection
 	void clearSelection();		   // clears the selection list representation
 	void showSelection(const Selection);
@@ -109,7 +109,7 @@ class BaseViewport : public QOpenGLWidget {
 
 	ViewportColors getColors() const;
 
-   protected:
+	protected:
 	void initializeGL();
 	void resizeGL(int width, int height);
 	virtual void paintGL();
@@ -123,14 +123,14 @@ class BaseViewport : public QOpenGLWidget {
 
 	void normalizeAngle(int* angle);
 
-   protected:
+	protected:
 	Input* m_input;	 // state pattern that handles user input
 
-   public:
+	public:
 	ViewportData viewport_data;
 	ViewportState* state;  // pointer to object used for the State pattern
 
-   private:
+	private:
 	fem::Project& m_project;
 	ViewportColors m_colors;  // color definitions
 	std::shared_ptr<gui::application::INodeRepository> m_node_repository;

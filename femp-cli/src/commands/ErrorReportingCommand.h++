@@ -5,7 +5,7 @@
 
 class ErrorReportingCommand : public FempCommand {
 	// FempCommand interface
-   public:
+	public:
 	int execute();
 };
 

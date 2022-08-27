@@ -7,14 +7,14 @@
 #include "ViewportColors.h++"
 
 class Options {
-   public:
+	public:
 	static Options& getInstance() {
 		static Options instance;
 
 		return instance;
 	}
 
-   public:
+	public:
 	Options(Options const&) = delete;
 	void operator=(Options const&) = delete;
 
@@ -34,7 +34,7 @@ class Options {
 	QDir getDumpResultsDirectory();
 	void setDumpResultsDirectory(QDir dir);
 
-   private:
+	private:
 	Options() {}
 
 	ViewportColors m_viewportColors;

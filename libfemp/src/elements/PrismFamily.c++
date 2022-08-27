@@ -3,15 +3,25 @@
 
 namespace fem {
 
-PrismFamily::PrismFamily() : BaseElement() { generateQuadratureData(); }
+PrismFamily::PrismFamily() : BaseElement() {
+	generateQuadratureData();
+}
 
-enum BaseElement::ElementFamily PrismFamily::family() const { return BaseElement::EF_PRISM; }
+enum BaseElement::ElementFamily PrismFamily::family() const {
+	return BaseElement::EF_PRISM;
+}
 
-unsigned int PrismFamily::getDofAmount() const { return 3 * this->getNodeAmount(); }
+unsigned int PrismFamily::getDofAmount() const {
+	return 3 * this->getNodeAmount();
+}
 
-std::vector<boost::tuple<fem::Point3D, double>> PrismFamily::getStiffnessQuadratureRule() { return this->ipwpl[stiffness_degree]; }
+std::vector<boost::tuple<fem::Point3D, double>> PrismFamily::getStiffnessQuadratureRule() {
+	return this->ipwpl[stiffness_degree];
+}
 
-std::vector<boost::tuple<fem::Point3D, double>> PrismFamily::getDomainQuadratureRule() { return this->ipwpl[domain_degree]; }
+std::vector<boost::tuple<fem::Point3D, double>> PrismFamily::getDomainQuadratureRule() {
+	return this->ipwpl[domain_degree];
+}
 
 void PrismFamily::generateQuadratureData() {
 	using namespace boost;

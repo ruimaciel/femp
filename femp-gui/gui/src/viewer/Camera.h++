@@ -4,7 +4,7 @@
 #include <libfemp/Point3D.h++>
 
 class Camera {
-   public:
+	public:
 	void setCenter(double x, double y, double z);
 
 	void setPosition(double x, double y, double z);
@@ -26,7 +26,7 @@ class Camera {
 
 	fem::Point3D getRotation() const;
 
-   private:
+	private:
 	fem::Point3D m_center;
 	fem::Point3D m_pos;
 	fem::Point3D m_rotation;

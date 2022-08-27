@@ -16,11 +16,11 @@ MDI window designed to represent a model's results
 class AnalysisResultsWindow : public QMdiSubWindow, public BaseWindow {
 	Q_OBJECT
 
-   protected:
+	protected:
 	AnalysisResultsWidget* m_analysisResultsWidget;
 	fem::Project const* m_project;
 
-   public:
+	public:
 	AnalysisResultsWindow(fem::Project& project, QWidget* parent = nullptr);
 };
 

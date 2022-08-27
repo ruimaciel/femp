@@ -24,7 +24,9 @@ NewProjectWizardPage3::NewProjectWizardPage3(fem::Project& project) : m_project(
 	loadMaterialsCombo();
 }
 
-bool NewProjectWizardPage3::validatePage() { return m_successfulImport; }
+bool NewProjectWizardPage3::validatePage() {
+	return m_successfulImport;
+}
 
 void NewProjectWizardPage3::loadMaterialsCombo() {
 	auto domain_model = this->m_project.getDomainModel();
@@ -113,7 +115,9 @@ void NewProjectWizardPage3::loadMeshFile() {
 	}
 }
 
-bool NewProjectWizardPage3::isComplete() const { return m_successfulImport; }
+bool NewProjectWizardPage3::isComplete() const {
+	return m_successfulImport;
+}
 
 void NewProjectWizardPage3::getFileFromDialog(void) {
 	QFileDialog dialog(this);

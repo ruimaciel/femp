@@ -14,11 +14,11 @@ class BaseViewport;
  * rendering states
  */
 class ViewportState {
-   protected:
+	protected:
 	SceneGraph scenegraph;
 	float scale;
 
-   public:
+	public:
 	virtual ~ViewportState();
 
 	/**

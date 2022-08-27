@@ -11,7 +11,7 @@ namespace fem {
 
 template <typename Scalar>
 class LinearAnalysis : public Analysis<Scalar> {
-   public:
+	public:
 	LinearAnalysis();
 	~LinearAnalysis();
 
@@ -23,7 +23,7 @@ class LinearAnalysis : public Analysis<Scalar> {
 
 	enum Analysis<Scalar>::Error run(Model& model, LoadPattern& lp, AnalysisResult& result, ProgressIndicatorStrategy& progress) override;
 
-   protected:
+	protected:
 	Model* m_model;
 	LoadPattern* m_load_pattern;
 	AnalysisResult* m_result;

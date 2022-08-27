@@ -15,10 +15,10 @@ namespace quadrature {
  * Interface used by all quadrature rules over the square
  */
 class TriangleRule : public SurfaceRule {
-   public:
+	public:
 	using Point = QuadraturePoint<2>;  // helper alias
 
-   public:
+	public:
 	virtual ~TriangleRule();
 
 	/**
@@ -31,7 +31,7 @@ class TriangleRule : public SurfaceRule {
  * 1-point quadrature rule over the unit triangle
  */
 class Triangle1 : public TriangleRule {
-   public:
+	public:
 	virtual std::vector<Point> operator()() const override;
 };
 
@@ -39,7 +39,7 @@ class Triangle1 : public TriangleRule {
  * 3-point quadrature rule over the unit triangle
  */
 class Triangle3 : public TriangleRule {
-   public:
+	public:
 	virtual std::vector<Point> operator()() const override;
 };
 
@@ -47,7 +47,7 @@ class Triangle3 : public TriangleRule {
  * 6-point quadrature rule over the unit triangle
  */
 class Triangle6 : public TriangleRule {
-   public:
+	public:
 	virtual std::vector<Point> operator()() const override;
 };
 
@@ -55,7 +55,7 @@ class Triangle6 : public TriangleRule {
  * 7-point quadrature rule over the unit triangle
  */
 class Triangle7 : public TriangleRule {
-   public:
+	public:
 	virtual std::vector<Point> operator()() const override;
 };
 

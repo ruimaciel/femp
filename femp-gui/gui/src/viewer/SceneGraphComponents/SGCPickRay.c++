@@ -25,6 +25,8 @@ void PickRay::paintGL(ViewportData&, ViewportColors&) {
 	glPopMatrix();
 }
 
-void PickRay::accept(Operation::OperationsVisitor& visitor) { visitor.visit(*this); }
+void PickRay::accept(Operation::OperationsVisitor& visitor) {
+	visitor.visit(*this);
+}
 
 }  // namespace SGC

@@ -18,12 +18,12 @@ class BaseViewport;
  * (stresses, strains...)
  */
 class VPStateGradients : public ViewportState {
-   protected:
+	protected:
 	GradientFieldRepresentationPolicy m_gradient_representation;
 	DisplacementsPolicy m_displacements;  // the displacements view renders displacements
 	SGC::SceneComponentFactory m_factory;
 
-   public:
+	public:
 	VPStateGradients();
 	~VPStateGradients();
 
@@ -46,7 +46,7 @@ class VPStateGradients : public ViewportState {
 
 	void keyPressEvent(BaseViewport* mv, QKeyEvent* event);
 
-   public:
+	public:
 	// set which gradient field to render
 	void renderStrains11();
 	void renderStrains22();

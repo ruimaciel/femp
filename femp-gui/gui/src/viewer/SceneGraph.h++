@@ -20,7 +20,7 @@ class SceneGraphComponent;
  * Facade pattern for the scenegraph structure
  **/
 class SceneGraph {
-   public:
+	public:
 	enum Groups	 // common groups for all scenegraphs
 	{
 		RG_NODES,			// the element nodes
@@ -33,7 +33,7 @@ class SceneGraph {
 		RG_NODE_RESTRICTIONS
 	};
 
-   public:
+	public:
 	SceneGraph();
 	~SceneGraph();
 
@@ -69,10 +69,10 @@ class SceneGraph {
 	void setSelectionEnd(fem::Point3D const& p);
 	void setSelectionOff();
 
-   public:
+	public:
 	std::map<enum Groups, RenderGroup> rendering_groups;
 
-   private:
+	private:
 	/**
 	 * This is the master list of all scene graph objects in this scene graph.
 	 * It is used to store every object of type SGCSurface (etc...) managed by

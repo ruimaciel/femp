@@ -10,7 +10,7 @@ namespace gui {
 namespace services {
 
 class ISelectionService {
-   public:
+	public:
 	ISelectionService();
 	virtual ~ISelectionService() = default;
 

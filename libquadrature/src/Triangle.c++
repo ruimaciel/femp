@@ -4,7 +4,9 @@
 namespace fem {
 namespace quadrature {
 
-std::vector<TriangleRule::Point> Triangle1::operator()() const { return {Point{0.5, {1.0 / 3.0, 1.0 / 3.0}}}; }
+std::vector<TriangleRule::Point> Triangle1::operator()() const {
+	return {Point{0.5, {1.0 / 3.0, 1.0 / 3.0}}};
+}
 
 std::vector<TriangleRule::Point> Triangle3::operator()() const {
 	return {Point{1.0 / 6, {2.0 / 3, 1.0 / 6.0}}, Point{1.0 / 6, {1.0 / 6, 2.0 / 3.0}}, Point{1.0 / 6, {1.0 / 6, 1.0 / 6.0}}};

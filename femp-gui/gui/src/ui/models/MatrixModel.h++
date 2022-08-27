@@ -13,11 +13,11 @@
  */
 class MatrixModel : public QAbstractTableModel {
 	Q_OBJECT
-   protected:
+	protected:
 	std::vector<fem::AnalysisResult>::iterator m_result;
 	std::map<int, std::vector<fem::Element>::size_type> m_lineMap;
 
-   public:
+	public:
 	MatrixModel(fem::Project& project, QObject* parent = nullptr);
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const;

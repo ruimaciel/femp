@@ -177,7 +177,9 @@ std::vector<double> Hexahedron27::getdNdzeta(const Point3D& p) {
 	return dNdzeta;
 }
 
-int Hexahedron27::getNodeAmount() const { return 27; }
+int Hexahedron27::getNodeAmount() const {
+	return 27;
+}
 
 std::vector<fem::Point3D> Hexahedron27::getLocalCoordinates() {
 	this->coordinates[0] = Point3D(-1, -1, -1);

@@ -18,7 +18,7 @@ class Tetrahedron35;
 class Tetrahedron56;
 
 class ElementVisitor {
-   public:
+	public:
 	virtual ~ElementVisitor() = default;
 
 	virtual void visit(Hexahedron8& element) = 0;

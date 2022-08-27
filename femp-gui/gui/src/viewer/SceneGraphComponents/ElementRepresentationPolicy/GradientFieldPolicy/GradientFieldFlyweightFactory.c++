@@ -2,38 +2,66 @@
 
 #include <QDebug>
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::neutral() { return &m_neutral_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::neutral() {
+	return &m_neutral_policy;
+}
 
 GradientFieldPolicy* GradientFieldFlyweightFactory::constant(float value) {
 	m_constant_policy.value = value;
 	return &m_constant_policy;
 }
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::strains11() { return &m_strain11_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::strains11() {
+	return &m_strain11_policy;
+}
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::strains22() { return &m_strain22_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::strains22() {
+	return &m_strain22_policy;
+}
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::strains33() { return &m_strain33_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::strains33() {
+	return &m_strain33_policy;
+}
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::strains12() { return &m_strain12_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::strains12() {
+	return &m_strain12_policy;
+}
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::strains23() { return &m_strain23_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::strains23() {
+	return &m_strain23_policy;
+}
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::strains13() { return &m_strain13_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::strains13() {
+	return &m_strain13_policy;
+}
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::stresses11() { return &m_stress11_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::stresses11() {
+	return &m_stress11_policy;
+}
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::stresses22() { return &m_stress22_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::stresses22() {
+	return &m_stress22_policy;
+}
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::stresses33() { return &m_stress33_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::stresses33() {
+	return &m_stress33_policy;
+}
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::stresses12() { return &m_stress12_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::stresses12() {
+	return &m_stress12_policy;
+}
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::stresses23() { return &m_stress23_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::stresses23() {
+	return &m_stress23_policy;
+}
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::stresses13() { return &m_stress13_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::stresses13() {
+	return &m_stress13_policy;
+}
 
-GradientFieldPolicy* GradientFieldFlyweightFactory::vonMises() { return &m_von_mises_policy; }
+GradientFieldPolicy* GradientFieldFlyweightFactory::vonMises() {
+	return &m_von_mises_policy;
+}
 
 void GradientFieldFlyweightFactory::setModel(fem::Model& model) {
 	m_neutral_policy.setModel(model);  // test pattern

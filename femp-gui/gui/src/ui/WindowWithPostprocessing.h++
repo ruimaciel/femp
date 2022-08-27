@@ -14,7 +14,7 @@ class QComboBox;
  * to use
  */
 class WindowWithPostprocessing : public WindowWith {
-   protected:
+	protected:
 	enum PostprocessingType {
 		P_DISPLACEMENT,
 		P_STRAIN_11,
@@ -36,7 +36,7 @@ class WindowWithPostprocessing : public WindowWith {
 										// which result to run
 	QComboBox* m_postprocessingComboBox;
 
-   public:
+	public:
 	void createToolbar(QMainWindow* parent, fem::Project& results);
 };
 

@@ -21,7 +21,11 @@ void RightClick::release(BaseViewport* viewport, QMouseEvent* event, Input* inpu
 	this->rightRelease(viewport, event, input);
 }
 
-void RightClick::rightRelease(BaseViewport* viewport, QMouseEvent* /*event*/, Input* input) { input->changeState(&input->m_is_start); }
+void RightClick::rightRelease(BaseViewport* viewport, QMouseEvent* /*event*/, Input* input) {
+	input->changeState(&input->m_is_start);
+}
 
-void RightClick::move(BaseViewport* viewport, QMouseEvent* /*event*/, Input* input) { input->changeState(&input->m_is_right_drag); }
+void RightClick::move(BaseViewport* viewport, QMouseEvent* /*event*/, Input* input) {
+	input->changeState(&input->m_is_right_drag);
+}
 }  // namespace InputStates

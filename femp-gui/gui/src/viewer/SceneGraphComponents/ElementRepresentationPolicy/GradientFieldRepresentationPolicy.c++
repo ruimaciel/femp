@@ -692,38 +692,74 @@ void GradientFieldRepresentationPolicy::prism18(fem::element_ref_t const& elemen
 	glEnable(GL_LIGHTING);
 }
 
-void GradientFieldRepresentationPolicy::renderNeutral() { m_gradient = m_gradient_flyweight_factory.neutral(); }
+void GradientFieldRepresentationPolicy::renderNeutral() {
+	m_gradient = m_gradient_flyweight_factory.neutral();
+}
 
-void GradientFieldRepresentationPolicy::renderConstant(float value) { m_gradient = m_gradient_flyweight_factory.constant(value); }
+void GradientFieldRepresentationPolicy::renderConstant(float value) {
+	m_gradient = m_gradient_flyweight_factory.constant(value);
+}
 
-void GradientFieldRepresentationPolicy::renderStrains11() { m_gradient = m_gradient_flyweight_factory.strains11(); }
+void GradientFieldRepresentationPolicy::renderStrains11() {
+	m_gradient = m_gradient_flyweight_factory.strains11();
+}
 
-void GradientFieldRepresentationPolicy::renderStrains22() { m_gradient = m_gradient_flyweight_factory.strains22(); }
+void GradientFieldRepresentationPolicy::renderStrains22() {
+	m_gradient = m_gradient_flyweight_factory.strains22();
+}
 
-void GradientFieldRepresentationPolicy::renderStrains33() { m_gradient = m_gradient_flyweight_factory.strains33(); }
+void GradientFieldRepresentationPolicy::renderStrains33() {
+	m_gradient = m_gradient_flyweight_factory.strains33();
+}
 
-void GradientFieldRepresentationPolicy::renderStrains12() { m_gradient = m_gradient_flyweight_factory.strains12(); }
+void GradientFieldRepresentationPolicy::renderStrains12() {
+	m_gradient = m_gradient_flyweight_factory.strains12();
+}
 
-void GradientFieldRepresentationPolicy::renderStrains23() { m_gradient = m_gradient_flyweight_factory.strains23(); }
+void GradientFieldRepresentationPolicy::renderStrains23() {
+	m_gradient = m_gradient_flyweight_factory.strains23();
+}
 
-void GradientFieldRepresentationPolicy::renderStrains13() { m_gradient = m_gradient_flyweight_factory.strains13(); }
+void GradientFieldRepresentationPolicy::renderStrains13() {
+	m_gradient = m_gradient_flyweight_factory.strains13();
+}
 
-void GradientFieldRepresentationPolicy::renderStresses11() { m_gradient = m_gradient_flyweight_factory.stresses11(); }
+void GradientFieldRepresentationPolicy::renderStresses11() {
+	m_gradient = m_gradient_flyweight_factory.stresses11();
+}
 
-void GradientFieldRepresentationPolicy::renderStresses22() { m_gradient = m_gradient_flyweight_factory.stresses22(); }
+void GradientFieldRepresentationPolicy::renderStresses22() {
+	m_gradient = m_gradient_flyweight_factory.stresses22();
+}
 
-void GradientFieldRepresentationPolicy::renderStresses33() { m_gradient = m_gradient_flyweight_factory.stresses33(); }
+void GradientFieldRepresentationPolicy::renderStresses33() {
+	m_gradient = m_gradient_flyweight_factory.stresses33();
+}
 
-void GradientFieldRepresentationPolicy::renderStresses12() { m_gradient = m_gradient_flyweight_factory.stresses12(); }
+void GradientFieldRepresentationPolicy::renderStresses12() {
+	m_gradient = m_gradient_flyweight_factory.stresses12();
+}
 
-void GradientFieldRepresentationPolicy::renderStresses23() { m_gradient = m_gradient_flyweight_factory.stresses23(); }
+void GradientFieldRepresentationPolicy::renderStresses23() {
+	m_gradient = m_gradient_flyweight_factory.stresses23();
+}
 
-void GradientFieldRepresentationPolicy::renderStresses13() { m_gradient = m_gradient_flyweight_factory.stresses13(); }
+void GradientFieldRepresentationPolicy::renderStresses13() {
+	m_gradient = m_gradient_flyweight_factory.stresses13();
+}
 
-void GradientFieldRepresentationPolicy::renderVonMises() { m_gradient = m_gradient_flyweight_factory.vonMises(); }
+void GradientFieldRepresentationPolicy::renderVonMises() {
+	m_gradient = m_gradient_flyweight_factory.vonMises();
+}
 
-void GradientFieldRepresentationPolicy::setModel(fem::Model& model) { m_gradient_flyweight_factory.setModel(model); }
+void GradientFieldRepresentationPolicy::setModel(fem::Model& model) {
+	m_gradient_flyweight_factory.setModel(model);
+}
 
-void GradientFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult& result) { m_gradient_flyweight_factory.setAnalysisResult(result); }
+void GradientFieldRepresentationPolicy::setAnalysisResult(fem::AnalysisResult& result) {
+	m_gradient_flyweight_factory.setAnalysisResult(result);
+}
 
-void GradientFieldRepresentationPolicy::setResultsRanges(fem::ResultsRanges<double>& ranges) { m_gradient_flyweight_factory.setResultsRanges(ranges); }
+void GradientFieldRepresentationPolicy::setResultsRanges(fem::ResultsRanges<double>& ranges) {
+	m_gradient_flyweight_factory.setResultsRanges(ranges);
+}

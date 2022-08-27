@@ -4,7 +4,9 @@
 namespace fem {
 namespace quadrature {
 
-std::vector<TetrahedronRule::QuadraturePoint> Tetrahedron1::operator()() const { return {QuadraturePoint{1.0 / 6, {1.0 / 4, 1.0 / 4, 1.0 / 4}}}; }
+std::vector<TetrahedronRule::QuadraturePoint> Tetrahedron1::operator()() const {
+	return {QuadraturePoint{1.0 / 6, {1.0 / 4, 1.0 / 4, 1.0 / 4}}};
+}
 
 std::vector<TetrahedronRule::QuadraturePoint> Tetrahedron4::operator()() const {
 	const double g1 = 0.58541019662496845446;

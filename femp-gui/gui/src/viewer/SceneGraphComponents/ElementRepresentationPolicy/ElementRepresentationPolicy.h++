@@ -12,11 +12,11 @@
  * Each member function runs a set of OpenGL commands.
  **/
 class ElementRepresentationPolicy {
-   protected:
+	protected:
 	DisplacementsRepresentationPolicy* m_displacement;
 	unsigned short m_surface_subdivision_level;
 
-   public:
+	public:
 	ElementRepresentationPolicy();
 	virtual ~ElementRepresentationPolicy();
 
@@ -31,7 +31,9 @@ class ElementRepresentationPolicy {
 	virtual void prism15(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement) = 0;
 	virtual void prism18(fem::element_ref_t const&, fem::Element& element, ViewportColors& color, DisplacementsRepresentationPolicy* displacement) = 0;
 
-	void setSurfaceSubdivisionLevel(unsigned short level) { m_surface_subdivision_level = level; }
+	void setSurfaceSubdivisionLevel(unsigned short level) {
+		m_surface_subdivision_level = level;
+	}
 };
 
 #endif	// ELEMENTREPRESENTATIONPOLICY_H

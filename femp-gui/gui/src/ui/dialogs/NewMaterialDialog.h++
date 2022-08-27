@@ -10,20 +10,20 @@
 class NewMaterialDialog : public QDialog, private Ui::NewMaterialDialog {
 	Q_OBJECT
 
-   public:
+	public:
 	explicit NewMaterialDialog(gui::application::IMaterialRepositoryPtr material_repository, QWidget* parent = nullptr);
 
-   private:
+	private:
 	/**
 	 * Checks if a given string matches a material label already added to the list
 	 */
 	bool isDuplicate(QString name);
 
-   private slots:
+	private slots:
 	void addNewMaterial();	// adds a new material to the list from the data added
 							// to the forms
 
-   private:
+	private:
 	gui::application::IMaterialRepositoryPtr m_material_repository;
 };
 

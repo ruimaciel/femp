@@ -9,7 +9,7 @@
 namespace fem {
 
 class Triangle3 : public TriangleFamily {
-   public:
+	public:
 	Triangle3();
 
 	virtual std::vector<fem::Point3D> getLocalCoordinates() const override;
@@ -24,7 +24,9 @@ class Triangle3 : public TriangleFamily {
 	 * return the number of nodes that an element of this particular type has
 	 * @return the number of nodes
 	 */
-	virtual int getNodeAmount() const override { return 3; }
+	virtual int getNodeAmount() const override {
+		return 3;
+	}
 };
 
 }  // namespace fem

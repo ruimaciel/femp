@@ -16,7 +16,9 @@ SurfaceSubdivisionDialog::SurfaceSubdivisionDialog(unsigned short scale, QWidget
 	connect(horizontalSlider, SIGNAL(sliderMoved(int)), this, SLOT(updateSpinBox(int)));
 }
 
-unsigned short SurfaceSubdivisionDialog::scale() { return this->spinBox->value(); }
+unsigned short SurfaceSubdivisionDialog::scale() {
+	return this->spinBox->value();
+}
 
 void SurfaceSubdivisionDialog::updateSlider(int value) {
 	using namespace std;

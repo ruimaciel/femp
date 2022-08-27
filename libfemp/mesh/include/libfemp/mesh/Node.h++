@@ -8,7 +8,7 @@ namespace fem {
 namespace mesh {
 
 class Node {
-   public:
+	public:
 	Node(std::size_t nodeId, std::array<double, 3> coordinates);
 
 	std::size_t id() const;
@@ -16,7 +16,7 @@ class Node {
 	double y() const;
 	double z() const;
 
-   private:
+	private:
 	std::size_t m_node_id;
 	std::array<double, 3> m_coordinates;
 };

@@ -7,15 +7,19 @@ namespace lalib {
 
 template <typename scalar, size_t t_rows, size_t t_columns>
 class DenseStaticMatrix {
-   protected:
+	protected:
 	scalar data[t_rows][t_columns];
 
-   public:
+	public:
 	DenseStaticMatrix(){};
 	~DenseStaticMatrix(){};
 
-	size_t rows() { return t_rows; };
-	size_t columns() { return t_columns; };
+	size_t rows() {
+		return t_rows;
+	};
+	size_t columns() {
+		return t_columns;
+	};
 
 	scalar& value(const size_t row, const size_t colum);
 };

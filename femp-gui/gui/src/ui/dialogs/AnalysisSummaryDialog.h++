@@ -13,7 +13,7 @@
 class AnalysisSummaryDialog : public QDialog, private Ui::AnalysisSummaryDialog {
 	Q_OBJECT
 
-   public:
+	public:
 	AnalysisSummaryDialog(fem::AnalysisResult const& results, QWidget* parent = nullptr);
 };
 

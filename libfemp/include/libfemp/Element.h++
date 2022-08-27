@@ -10,7 +10,7 @@ namespace fem {
 // typedef size_t element_ref_t; // new definition bellow
 
 class Element {
-   public:
+	public:
 	enum Type {
 		FE_INVALID = 0,		   /* test entry */
 		FE_LINE2 = 1,		   /* 2-node line */
@@ -48,12 +48,12 @@ class Element {
 
 	enum ElementFamily { EF_TRIANGLE = 0, EF_QUADRILATERAL = 1, EF_TETRAHEDRON = 2, EF_PRISM = 3, EF_PYRAMID = 4, EF_HEXAHEDRON = 5, EF_INVALID };
 
-   public:
+	public:
 	material_ref_t material;		// reference to a material in Model's material map
 	std::vector<node_ref_t> nodes;	// nodes that define this element
 	Type type;
 
-   public:
+	public:
 	virtual ~Element();
 
 	material_ref_t getMaterialRef() const;

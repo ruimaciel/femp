@@ -10,7 +10,7 @@ namespace fem {
  * Represents a group of elements
  */
 class ElementGroup {
-   public:
+	public:
 	/**
 	 * Adds a new element to the list
 	 */
@@ -25,7 +25,7 @@ class ElementGroup {
 	std::string getLabel();
 	void setLabel(std::string m_label);
 
-   protected:
+	protected:
 	std::vector<size_t> m_element_reference_list;
 	std::string m_label;
 };

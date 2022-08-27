@@ -102,7 +102,9 @@ std::vector<double> Tetrahedron10::getdNdzeta(const Point3D& p) {
 	return dNdzeta;
 }
 
-int Tetrahedron10::getNodeAmount() const { return 10; }
+int Tetrahedron10::getNodeAmount() const {
+	return 10;
+}
 
 std::vector<fem::Point3D> Tetrahedron10::getLocalCoordinates() {
 	this->coordinates[0] = Point3D(0, 0, 0);

@@ -25,7 +25,7 @@ namespace StressFieldRepresentation {
  * Builder pattern to generate policies for the representation of each element
  **/
 class StressFieldFactory {
-   protected:
+	protected:
 	float* m_diameter;
 	fem::Model* m_model;
 	fem::AnalysisResult* m_result;
@@ -47,7 +47,7 @@ class StressFieldFactory {
 	fem::Prism15 m_prism15;
 	fem::Prism18 m_prism18;
 
-   public:
+	public:
 	StressFieldFactory(float& diameter, fem::Model& model, fem::AnalysisResult& result);
 
 	/**
@@ -61,7 +61,7 @@ class StressFieldFactory {
 	float max() const;
 	float min() const;
 
-   protected:
+	protected:
 	/**
 	 * Taken from:
 	 * http://www.mpi-hd.mpg.de/personalhomes/globes/3x3/

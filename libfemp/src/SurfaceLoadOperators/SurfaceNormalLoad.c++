@@ -10,9 +10,13 @@
 
 namespace fem {
 
-SurfaceNormalLoad::SurfaceNormalLoad() { this->m_magnitude = 1.0f; }
+SurfaceNormalLoad::SurfaceNormalLoad() {
+	this->m_magnitude = 1.0f;
+}
 
-void SurfaceNormalLoad::setLoadMagnitude(float const& magnitude) { this->m_magnitude = magnitude; }
+void SurfaceNormalLoad::setLoadMagnitude(float const& magnitude) {
+	this->m_magnitude = magnitude;
+}
 
 void SurfaceNormalLoad::operator()(fem::SurfaceLoad& surface_load, fem::Model& model) {
 	fem::SurfaceLoad* load = nullptr;  // used to store a pointer to the current object: nasty hack due

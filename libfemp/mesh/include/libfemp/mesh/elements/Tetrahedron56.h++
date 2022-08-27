@@ -9,7 +9,7 @@ namespace fem {
 namespace mesh {
 
 class Tetrahedron56 : public Element {
-   public:
+	public:
 	Tetrahedron56(size_t element_id, std::array<std::shared_ptr<Node>, 56> nodes);
 
 	int getNodeAmount() const override;
@@ -18,7 +18,7 @@ class Tetrahedron56 : public Element {
 
 	const std::array<std::shared_ptr<Node>, 56>& getNodes() const;
 
-   private:
+	private:
 	std::array<std::shared_ptr<Node>, 56> m_nodes;
 };
 

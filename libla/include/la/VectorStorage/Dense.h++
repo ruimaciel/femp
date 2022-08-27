@@ -15,15 +15,17 @@ host class.
 **/
 template <typename scalar>
 class DenseVector {
-   public:
+	public:
 	size_t t_size;	// number of size
 
 	std::vector<scalar> data;
 
-   public:
+	public:
 	DenseVector(const size_t size = 0);
 
-	size_t size() const { return t_size; }
+	size_t size() const {
+		return t_size;
+	}
 
 	/**
 		Sets all values to zero

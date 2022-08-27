@@ -15,15 +15,19 @@ Sets each scene graph component to be rendered or not, according to some
 criteria
 **/
 class ToggleRenderOperation : public OperationsVisitor {
-   protected:
+	protected:
 	bool m_render_state;
 	Selection m_selection;
 
-   protected:
-	void setRenderState(bool& new_state) { m_render_state = new_state; }
-	void setSelection(Selection& selection) { this->m_selection = selection; }
+	protected:
+	void setRenderState(bool& new_state) {
+		m_render_state = new_state;
+	}
+	void setSelection(Selection& selection) {
+		this->m_selection = selection;
+	}
 
-   public:
+	public:
 	/**
 		Sets this operation to set each object in the selection with the render
 	   flag state

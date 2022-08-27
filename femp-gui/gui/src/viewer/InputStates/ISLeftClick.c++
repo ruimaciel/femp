@@ -46,5 +46,7 @@ void LeftClick::leftRelease(BaseViewport* viewport, QMouseEvent* event, Input* i
 	}
 }
 
-void LeftClick::move(BaseViewport* viewport, QMouseEvent* /*event*/, Input* input) { input->changeState(&input->m_is_left_drag); }
+void LeftClick::move(BaseViewport* viewport, QMouseEvent* /*event*/, Input* input) {
+	input->changeState(&input->m_is_left_drag);
+}
 }  // namespace InputStates

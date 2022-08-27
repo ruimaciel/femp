@@ -15,7 +15,7 @@ namespace quadrature {
  * Interface used by all quadrature rules over the square
  **/
 class PrismRule : public VolumeRule {
-   public:
+	public:
 	virtual ~PrismRule();
 
 	/**
@@ -29,11 +29,11 @@ class PrismRule : public VolumeRule {
  * quadrature rules
  **/
 class PrismCartesianProduct : public PrismRule {
-   private:
+	private:
 	std::unique_ptr<TriangleRule> m_rule_xy;
 	std::unique_ptr<LineRule> m_rule_z;
 
-   public:
+	public:
 	PrismCartesianProduct(TriangleRule* rule_xy, LineRule* rule_z);
 
 	virtual std::vector<QuadraturePoint> operator()() const override;

@@ -17,7 +17,7 @@
 class PostprocessingViewport : public BaseViewport {
 	Q_OBJECT
 
-   public:
+	public:
 	PostprocessingViewport(fem::Project& project, fem::AnalysisResult& result, fem::ResultsRanges<double>& ranges, QWidget* parent = nullptr);
 	~PostprocessingViewport();
 
@@ -47,7 +47,7 @@ class PostprocessingViewport : public BaseViewport {
 
 	void showVonMises();
 
-   protected:
+	protected:
 	fem::AnalysisResult* m_analysis_result;
 	VPStateDisplacements m_vp_state_displacements;
 	VPStateGradients m_vp_state_gradients;

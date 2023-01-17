@@ -13,9 +13,7 @@ int main(int argc, char* argv[]) {
 	qRegisterMetaType<std::string>("std::string");
 
 	FempApplication app(argc, argv);
-
-	QScopedPointer<MainWindow> main_window(new MainWindow);
-	main_window->show();
+	app.initialize();
 
 	return app.exec();
 }

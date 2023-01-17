@@ -4,24 +4,26 @@
 #include <libfemp/Node.h++>
 #include <ui/dialogs/TableFilterDialog.h++>
 
-AnalysisResultsWidget::AnalysisResultsWidget(fem::Project& project, QWidget* parent) : QWidget(parent) {
-	setupUi(this);
+#include "ui_AnalysisResultsWidget.h"
+
+AnalysisResultsWidget::AnalysisResultsWidget(fem::Project& project, QWidget* parent) : QWidget(parent), m_ui(new Ui::AnalysisResultsWidget()) {
+	m_ui->setupUi(this);
 
 	// set the table model for the model/view stuff
 	AnalysisResultsModel* m_model = new AnalysisResultsModel(project, parent);
 	m_proxy_model.setSourceModel(m_model);
 
-	this->tableView->setModel(&m_proxy_model);
+	m_ui->tableView->setModel(&m_proxy_model);
 
 	// signals and slots
-	connect(this->pushButtonFilters, SIGNAL(clicked()), this, SLOT(setFilterOptions()));
+	connect(m_ui->pushButtonFilters, SIGNAL(clicked()), this, SLOT(setFilterOptions()));
 }
 
 void AnalysisResultsWidget::setFilterOptions() {
 	TableFilterDialog dialog(this);
 
 	// set the dialog options
-#define MEMBER_HELPER(NN, XX) dialog.set##XX##Visible(!tableView->isColumnHidden(NN));
+#define MEMBER_HELPER(NN, XX) dialog.set##XX##Visible(!m_ui->tableView->isColumnHidden(NN));
 	MEMBER_HELPER(0, ElementReference);
 	MEMBER_HELPER(1, ElementType);
 	MEMBER_HELPER(2, NodeGlobalReference);
@@ -50,7 +52,7 @@ void AnalysisResultsWidget::setFilterOptions() {
 	switch (dialog.exec()) {
 		case QDialog::Accepted:
 			// set the new options
-#define MEMBER_HELPER(NN, XX) this->tableView->setColumnHidden(NN, !dialog.get##XX##Visible());
+#define MEMBER_HELPER(NN, XX) m_ui->tableView->setColumnHidden(NN, !dialog.get##XX##Visible());
 			MEMBER_HELPER(0, ElementReference);
 			MEMBER_HELPER(1, ElementType);
 			MEMBER_HELPER(2, NodeGlobalReference);

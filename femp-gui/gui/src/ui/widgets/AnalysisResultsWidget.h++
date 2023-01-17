@@ -1,18 +1,26 @@
 #ifndef ANALYSIS_RESULTS_WIDGET_H
 #define ANALYSIS_RESULTS_WIDGET_H
 
-#include <Project.h++>
-#include <QSortFilterProxyModel>
-#include <QWidget>
-#include <libfemp/AnalysisResult.h++>
 #include <ui/models/AnalysisResultsModel.h++>
 
-#include "ui_AnalysisResultsWidget.h"
+// include gui
+#include <Project.h++>
+
+// include libfemp
+#include <libfemp/AnalysisResult.h++>
+
+// include Qt
+#include <QSortFilterProxyModel>
+#include <QWidget>
+
+namespace Ui {
+	class AnalysisResultsWidget;
+}
 
 /**
  * Widget used in MDI windows to display the results of a given analysis
  */
-class AnalysisResultsWidget : public QWidget, private Ui::AnalysisResultsWidget {
+class AnalysisResultsWidget : public QWidget {
 	Q_OBJECT
 
 	protected:
@@ -25,6 +33,9 @@ class AnalysisResultsWidget : public QWidget, private Ui::AnalysisResultsWidget 
 	private Q_SLOTS:
 	// Calls the TableFilterDialog and sets the table according to the user input
 	void setFilterOptions();
+
+	private:
+ 	Ui::AnalysisResultsWidget *m_ui;
 };
 
 #endif

@@ -1,10 +1,17 @@
 #ifndef FEMP_PROJECT_HPP
 #define FEMP_PROJECT_HPP
 
+// gui includes
 #include <ProjectVisitor/ProjectVisitor.h++>
+
+// domain includes
 #include <domain/Model.h++>
+
+// libfemp includes
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/Model.h++>
+
+// stl includes
 #include <vector>
 
 /**

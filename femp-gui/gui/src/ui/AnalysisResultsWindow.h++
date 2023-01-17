@@ -1,18 +1,23 @@
-#ifndef FEMP_ANALYSIS_RESULTS_WINDOW_H
-#define FEMP_ANALYSIS_RESULTS_WINDOW_H
+#ifndef FEMP_ANALYSISRESULTSWINDOW_H
+#define FEMP_ANALYSISRESULTSWINDOW_H
 
+// ui includes
+#include <ui/widgets/AnalysisResultsWidget.h++>
+
+// gui includes
+#include "BaseWindow.h++"
 #include <Project.h++>
+
+// Qt includes
 #include <QComboBox>
 #include <QMdiSubWindow>
 #include <QToolBar>
 #include <QWidget>
-#include <ui/widgets/AnalysisResultsWidget.h++>
 
-#include "BaseWindow.h++"
 
 /**
-MDI window designed to represent a model's results
-**/
+ * MDI window designed to represent a model's results
+ */
 class AnalysisResultsWindow : public QMdiSubWindow, public BaseWindow {
 	Q_OBJECT
 

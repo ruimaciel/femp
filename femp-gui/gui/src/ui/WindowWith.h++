@@ -1,7 +1,12 @@
 #ifndef FEMP_WINDOWWITH_HPP
 #define FEMP_WINDOWWITH_HPP
 
+// gui includes
+#include <Project.h++>
+
+// Qt includes
 #include <QMainWindow>
+#include <QMenuBar>
 
 namespace fem {
 class Project;

@@ -1,12 +1,17 @@
-#ifndef VIEWPORT_DATA_HPP
-#define VIEWPORT_DATA_HPP
+#ifndef FEMP_VIEWPORTDATA_HPP
+#define FEMP_VIEWPORTDATA_HPP
 
+// viewer includes
+#include "Camera.h++"
+
+// OpenGL includes
 #include <GL/gl.h>	// for GLDouble definition
 
+// Qt includes
 #include <QPoint>
-#include <list>
 
-#include "Camera.h++"
+// stl includes
+#include <list>
 
 /**
  * Struct intended to encapsulate all viewport data to be used by all

@@ -1,13 +1,17 @@
-#ifndef FEMP_MODEL_WINDOW_HPP
-#define FEMP_MODEL_WINDOW_HPP
+#ifndef FEMP_MODELWINDOW_HPP
+#define FEMP_MODELWINDOW_HPP
 
-#include <QMainWindow>
-#include <options/Options.h++>
-
+// gui includes
 #include "../Project.h++"
 #include "BaseWindow.h++"
 #include "MdiWindow.h++"
 #include "WindowWithWireframe.h++"
+#include <options/Options.h++>
+#include <options/ViewportColors.h++>
+
+// Qt includes
+#include <QMainWindow>
+#include <QWidget>
 
 /**
  * MDI window designed to represent the model

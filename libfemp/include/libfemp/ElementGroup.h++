@@ -1,6 +1,7 @@
-#ifndef FEMP_ELEMENT_GROUP_HPP
-#define FEMP_ELEMENT_GROUP_HPP
+#ifndef FEMP_ELEMENTGROUP_HPP
+#define FEMP_ELEMENTGROUP_HPP
 
+// std includes
 #include <string>
 #include <vector>
 

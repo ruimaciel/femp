@@ -1,10 +1,14 @@
-#ifndef FEMP_LOAD_PATTERN_HPP
-#define FEMP_LOAD_PATTERN_HPP
+#ifndef FEMP_LOADPATTERN_HPP
+#define FEMP_LOADPATTERN_HPP
 
+// libfemp includes
 #include <libfemp/NodalDisplacement.h++>
 #include <libfemp/loads/DomainLoad.h++>
 #include <libfemp/loads/NodalLoad.h++>
 #include <libfemp/loads/SurfaceLoad.h++>
+#include <libfemp/Point3D.h++>
+
+// std includes
 #include <map>
 #include <string>
 #include <vector>

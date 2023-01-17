@@ -1,21 +1,29 @@
-#ifndef OUTPUT_ELEMENT_STATISTICS_VISITOR_HPP
-#define OUTPUT_ELEMENT_STATISTICS_VISITOR_HPP
-
-#include <QTextStream>
-#include <libfemp/AnalysisResult.h++>
-#include <libfemp/Model.h++>
-#include <selection/Selection.h++>
+#ifndef PROJECTVISITOR_OUTPUTELEMENTSTATISTICSVISITOR_HPP
+#define PROJECTVISITOR_OUTPUTELEMENTSTATISTICSVISITOR_HPP
 
 #include "ProjectVisitor.h++"
+
+// services includes
+#include <selection/Selection.h++>
+
+// libfemp includes
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/Model.h++>
+
+// Qt includes
+#include <QTextStream>
+
+// stl includes
+#include <vector>
 
 /**
  * Outputs the results which were calculated in a set of nodes
  */
 class OutputElementStatisticsVisitor : public ProjectVisitor {
 	public:
-	OutputElementStatisticsVisitor(Selection selection);
+	explicit OutputElementStatisticsVisitor(Selection selection);
 
-	void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result);
+	void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result) override;
 
 	protected:
 	Selection m_selection;

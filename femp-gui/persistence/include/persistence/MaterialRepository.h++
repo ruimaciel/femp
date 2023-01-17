@@ -1,8 +1,14 @@
 #ifndef GUI_PERSISTENCE_MATERIALREPOSITORY_H
 #define GUI_PERSISTENCE_MATERIALREPOSITORY_H
 
-#include <application/interfaces/IMaterialRepository.h++>
+// gui includes
 #include <domain/Model.h++>
+#include <application/interfaces/IMaterialRepository.h++>
+
+// libfemp includes
+#include <libfemp/Material.h++>
+
+// stl includes
 #include <memory>
 
 namespace gui {

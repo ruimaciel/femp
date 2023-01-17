@@ -1,7 +1,10 @@
-#ifndef FEMP_WINDOW_WITH_POSTPROCESSING_HPP
-#define FEMP_WINDOW_WITH_POSTPROCESSING_HPP
+#ifndef FEMP_WINDOWWITHPOSTPROCESSING_HPP
+#define FEMP_WINDOWWITHPOSTPROCESSING_HPP
 
 #include "MdiWindow.h++"
+
+// gui includes
+#include <Project.h++>
 
 class QMainWindow;
 class QToolBar;

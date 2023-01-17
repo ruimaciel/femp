@@ -1,15 +1,22 @@
-#ifndef FEMP_ANALYSIS_RESULT_HPP
-#define FEMP_ANALYSIS_RESULT_HPP
+#ifndef FEMP_ANALYSISRESULT_HPP
+#define FEMP_ANALYSISRESULT_HPP
 
-#include <boost/tuple/tuple.hpp>
-#include <la/Matrix.h++>
-#include <la/Vector.h++>
+// libfemp includes
 #include <libfemp/ElementResults/ElementResults.h++>
 #include <libfemp/ElementResults/ResultsRanges.h++>
 #include <libfemp/Point3D.h++>
-#include <map>
-
 #include "Equation.h++"
+
+// la includes
+#include <la/Matrix.h++>
+#include <la/Vector.h++>
+
+
+// boost includes
+#include <boost/tuple/tuple.hpp>
+
+// std includes
+#include <map>
 
 namespace fem {
 

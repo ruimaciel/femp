@@ -1,13 +1,18 @@
-#ifndef SET_NODE_RESTRAINT_VISITOR_HPP
-#define SET_NODE_RESTRAINT_VISITOR_HPP
+#ifndef PROJECTVISITOR_SETNODERESTRAINTVISITOR_HPP
+#define PROJECTVISITOR_SETNODERESTRAINTVISITOR_HPP
 
-#include <array>
+#include "ProjectVisitor.h++"
+
+// services includes
+#include <selection/Selection.h++>
+
+// libfemp includes
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/Model.h++>
 #include <libfemp/NodeRestrictions.h++>
-#include <selection/Selection.h++>
 
-#include "ProjectVisitor.h++"
+// stl includes
+#include <array>
 
 /**
  * Sets node restraints in a specific set of nodes
@@ -16,7 +21,7 @@ class SetNodeRestraintsVisitor : public ProjectVisitor {
 	public:
 	SetNodeRestraintsVisitor(Selection selection, fem::NodeRestrictions const& restrictions);
 
-	void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result);
+	void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result) override;
 
 	protected:
 	fem::NodeRestrictions m_restrictions;

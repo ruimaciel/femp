@@ -1,10 +1,15 @@
-#ifndef FEMP_SELECTION_MANAGER_HPP
-#define FEMP_SELECTION_MANAGER_HPP
+#ifndef FEMP_SELECTIONMANAGER_HPP
+#define FEMP_SELECTIONMANAGER_HPP
 
-#include <QObject>
+// services includes
+#include <selection/Selection.h++>
+
+// libfemp includes
 #include <libfemp/Element.h++>
 #include <libfemp/Node.h++>
-#include <selection/Selection.h++>
+
+// Qt includes
+#include <QObject>
 
 /**
  * MVC pattern which manages a list of all objects contained in a given

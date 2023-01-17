@@ -1,6 +1,7 @@
-#ifndef FEMP_GLOBAL_DOF_HPP
-#define FEMP_GLOBAL_DOF_HPP
+#ifndef FEMP_GLOBALDOF_HPP
+#define FEMP_GLOBALDOF_HPP
 
+// libfemp includes
 #include <libfemp/Node.h++>
 
 namespace fem {
@@ -9,7 +10,7 @@ enum class ParameterType { dx, dy, dz };
 
 /**
  * Data type that represents a global degree-of-freedom (DoF)
- **/
+ */
 class GlobalDof {
 	protected:
 	Node m_node;

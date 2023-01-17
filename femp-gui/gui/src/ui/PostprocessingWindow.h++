@@ -1,13 +1,7 @@
-#ifndef FEMP_POSTPROCESSING__WINDOW_HPP
-#define FEMP_POSTPROCESSING__WINDOW_HPP
+#ifndef FEMP_POSTPROCESSINGWINDOW_HPP
+#define FEMP_POSTPROCESSINGWINDOW_HPP
 
-#include <QComboBox>
-#include <QToolBar>
-#include <QWidget>
-#include <libfemp/AnalysisResult.h++>
-#include <libfemp/ElementResults/ResultsRanges.h++>
-#include <options/Options.h++>
-
+// gui includes
 #include "../Project.h++"
 #include "BaseWindow.h++"
 #include "MdiWindow.h++"
@@ -15,10 +9,20 @@
 #include "WindowWithPostprocessing.h++"
 #include "WindowWithResults.h++"
 #include "WindowWithScaling.h++"
+#include <options/Options.h++>
+
+// libfemp includes
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/ElementResults/ResultsRanges.h++>
+
+// Qt includes
+#include <QComboBox>
+#include <QToolBar>
+#include <QWidget>
 
 /**
-MDI window designed to represent the model
-**/
+ * MDI window designed to represent the model
+ */
 class PostprocessingWindow : public MdiWindow, public WindowWithResults, public WindowWithPostprocessing, public WindowWithScaling, public BaseWindow {
 	Q_OBJECT
 

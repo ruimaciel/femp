@@ -1,6 +1,7 @@
 #ifndef FEMP_NODE_HPP
 #define FEMP_NODE_HPP
 
+// libfemp includes
 #include <libfemp/Point3D.h++>
 
 namespace fem {

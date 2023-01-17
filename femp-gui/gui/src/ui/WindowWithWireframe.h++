@@ -1,12 +1,14 @@
-#ifndef FEMP_WINDOW_WITH_WIREFRAME_HPP
-#define FEMP_WINDOW_WITH_WIREFRAME_HPP
+#ifndef FEMP_WINDOWWITHWIREFRAME_HPP
+#define FEMP_WINDOWWITHWIREFRAME_HPP
 
+// gui includes
+#include "MdiWindow.h++"
+#include "WindowWith.h++"
+
+// Qt includes
 #include <QComboBox>
 #include <QMainWindow>
 #include <QToolBar>
-
-#include "MdiWindow.h++"
-#include "WindowWith.h++"
 
 /**
  * Provides a window with the UI needed to select between rendering wireframe,

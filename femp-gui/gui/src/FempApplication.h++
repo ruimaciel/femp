@@ -1,6 +1,7 @@
 #ifndef FEMP_FEMPAPPLICATION_H
 #define FEMP_FEMPAPPLICATION_H
 
+// Qt includes
 #include <QApplication>
 
 class FempApplication : public QApplication {

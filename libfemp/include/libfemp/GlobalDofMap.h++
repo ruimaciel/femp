@@ -1,7 +1,9 @@
-#ifndef FEMP_GLOBAL_DOF_MAP_HPP
-#define FEMP_GLOBAL_DOF_MAP_HPP
+#ifndef FEMP_GLOBALDOFMAP_HPP
+#define FEMP_GLOBALDOFMAP_HPP
 
 #include <libfemp/GlobalDof.h++>
+
+// std includes
 #include <map>
 
 namespace fem {

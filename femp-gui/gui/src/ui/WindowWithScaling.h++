@@ -1,14 +1,17 @@
-#ifndef FEMP_WINDOW_WITH_SCALING_HPP
-#define FEMP_WINDOW_WITH_SCALING_HPP
+#ifndef FEMP_WINDOWWITHSCALING_HPP
+#define FEMP_WINDOWWITHSCALING_HPP
 
+// gui includes
+#include "MdiWindow.h++"
+#include "WindowWith.h++"
+#include <Project.h++>
+
+// Qt includes
 #include <QDoubleSpinBox>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
 #include <QToolBar>
-
-#include "MdiWindow.h++"
-#include "WindowWith.h++"
 
 /**
  * Provides a window with a toolbar which sets a scale

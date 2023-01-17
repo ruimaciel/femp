@@ -1,11 +1,7 @@
 #ifndef FEMP_ELEMENTRESULTSFACTORY_HPP
 #define FEMP_ELEMENTRESULTSFACTORY_HPP
 
-#include <Eigen/Core>
-#include <Eigen/LU>
-#include <Eigen/Sparse>
-#include <cmath>	 // sqrt
-#include <iostream>	 // cout
+// libfemp includes
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/Element.h++>
 #include <libfemp/FemException.h++>
@@ -21,6 +17,16 @@
 #include <libfemp/elements/Tetrahedron4.h++>
 
 #include "ElementResults.h++"
+
+// Eigen includes
+#include <Eigen/Core>
+#include <Eigen/LU>
+#include <Eigen/Sparse>
+
+// std includes
+#include <cmath>	 // sqrt
+#include <iostream>	 // cout
+
 
 namespace fem {
 

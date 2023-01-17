@@ -1,8 +1,11 @@
 #ifndef FEMP_GROUP_HPP
 #define FEMP_GROUP_HPP
 
+// libfemp includes
 #include <libfemp/Element.h++>
 #include <libfemp/Node.h++>
+
+// std includes
 #include <set>
 #include <string>
 

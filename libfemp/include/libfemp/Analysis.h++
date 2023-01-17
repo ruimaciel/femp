@@ -1,21 +1,30 @@
 #ifndef FEMP_ANALYSIS_HPP
 #define FEMP_ANALYSIS_HPP
 
+// Eigen includes
 #include <Eigen/Core>
 #include <Eigen/LU>
 #include <Eigen/Sparse>
+
+// boost includes
 #include <boost/tuple/tuple.hpp>
-#include <iostream>	 //TODO remove this: debug purposes only
+
+// la includes
 #include <la/Operations.h++>
 #include <la/ProgressIndicatorStrategy.h++>
+
+// libfemp includes
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/Element.h++>
 #include <libfemp/ElementResults/ElementResults.h++>
 #include <libfemp/ElementResults/ElementResultsFactory.h++>
+#include <libfemp/elements/all.h++>	 // remove individual elements after elements are refactored
+#include <libfemp/elements/BaseElement.h++>
 #include <libfemp/LoadPattern.h++>
 #include <libfemp/Model.h++>
-#include <libfemp/elements/BaseElement.h++>
-#include <libfemp/elements/all.h++>	 // remove individual elements after elements are refactored
+
+// std includes
+#include <iostream>	 //TODO remove this: debug purposes only
 #include <map>
 
 namespace fem {
@@ -23,7 +32,7 @@ namespace fem {
 /**
  *TODO: these are placeholder member variables to help transition to new
  *quadrature rules
- **/
+ */
 struct QuadratureRulesOptions {
 	int stiffness_degree;  // Quadrature rule degree to integrate stiffness
 						   // matrices

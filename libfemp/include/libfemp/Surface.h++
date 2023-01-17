@@ -1,8 +1,13 @@
 #ifndef FEMP_SURFACE_HPP
 #define FEMP_SURFACE_HPP
 
-#include <boost/tuple/tuple.hpp>
+// libfemp includes
 #include <libfemp/Element.h++>
+
+// boost includes
+#include <boost/tuple/tuple.hpp>
+
+// std includes
 #include <vector>
 
 namespace fem {

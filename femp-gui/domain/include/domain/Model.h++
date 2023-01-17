@@ -1,9 +1,20 @@
 #ifndef GUI_MODEL_H
 #define GUI_MODEL_H
 
+// libfemp includes
+#include <libfemp/ElementGroup.h++>
+#include <libfemp/LoadPattern.h++>
+#include <libfemp/Material.h++>
 #include <libfemp/Model.h++>
+#include <libfemp/Node.h++>
+#include <libfemp/NodeGroup.h++>
 #include <libfemp/NodeRestrictions.h++>
+#include <libfemp/NodeRestrictions.h++>
+
+// stl includes
+#include <map>
 #include <memory>
+#include <vector>
 
 namespace gui {
 

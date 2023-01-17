@@ -1,8 +1,14 @@
-#ifndef FEMP_DEFAULT_PROGRESS_INDICATOR_HPP
-#define FEMP_DEFAULT_PROGRESS_INDICATOR_HPP
+#ifndef FEMP_DEFAULTPROGRESSINDICATOR_HPP
+#define FEMP_DEFAULTPROGRESSINDICATOR_HPP
 
-#include <QObject>
+// libla includes
 #include <la/ProgressIndicatorStrategy.h++>
+
+// Qt includes
+#include <QObject>
+
+// stl includes
+#include <string>
 
 class DefaultProgressIndicator : public QObject, public ProgressIndicatorStrategy {
 	Q_OBJECT

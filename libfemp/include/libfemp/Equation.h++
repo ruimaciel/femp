@@ -1,11 +1,18 @@
-#ifndef FEMP_EQUATION_H
-#define FEMP_EQUATION_H
+#ifndef FEMP_EQUATION_HPP
+#define FEMP_EQUATION_HPP
 
+// la includes
 #include <la/Matrix.h++>
 #include <la/Vector.h++>
 
+// std includes
+#include <stddef.h>
+
 namespace fem {
 
+/**
+ * Represents a static analysis equation
+ **/
 class Equation {
 	public:
 	Equation();

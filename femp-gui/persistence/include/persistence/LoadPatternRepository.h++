@@ -1,8 +1,15 @@
 #ifndef GUI_PERSISTENCE_LOADPATTERNREPOSITORY_H
 #define GUI_PERSISTENCE_LOADPATTERNREPOSITORY_H
 
-#include <application/interfaces/ILoadPatternRepository.h++>
+// gui includes
 #include <domain/Model.h++>
+#include <application/interfaces/ILoadPatternRepository.h++>
+
+// libfemp includes
+#include <libfemp/LoadPattern.h++>
+
+// stl includes
+#include <memory>
 
 namespace gui {
 namespace persistence {

@@ -1,7 +1,10 @@
-#ifndef FEMP_NODE_GROUP_HPP
-#define FEMP_NODE_GROUP_HPP
+#ifndef FEMP_NODEGROUP_HPP
+#define FEMP_NODEGROUP_HPP
 
+// libfemp includes
 #include <libfemp/Node.h++>
+
+// std includes
 #include <string>
 #include <vector>
 

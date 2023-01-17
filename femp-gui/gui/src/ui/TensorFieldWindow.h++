@@ -1,24 +1,30 @@
-#ifndef FEMP_TENSOR_FIELD__WINDOW_HPP
-#define FEMP_TENSOR_FIELD__WINDOW_HPP
+#ifndef FEMP_TENSORFIELDWINDOW_HPP
+#define FEMP_TENSORFIELDWINDOW_HPP
 
-#include <Project.h++>
-#include <QComboBox>
-#include <QToolBar>
-#include <QWidget>
-#include <libfemp/AnalysisResult.h++>
-#include <libfemp/ElementResults/ResultsRanges.h++>
-#include <options/Options.h++>
-
-#include "../viewer/TensorFieldViewport.h++"
+// gui includes
 #include "BaseWindow.h++"
 #include "MdiWindow.h++"
 #include "SelectionManager.h++"
 #include "WindowWithResults.h++"
 #include "WindowWithScaling.h++"
+#include <options/Options.h++>
+#include <Project.h++>
+
+// viewer includes
+#include "../viewer/TensorFieldViewport.h++"
+
+// libfemp includes
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/ElementResults/ResultsRanges.h++>
+
+// Qt includes
+#include <QComboBox>
+#include <QToolBar>
+#include <QWidget>
 
 /**
-MDI window designed to represent a tensor field of a given analysis result
-**/
+ * MDI window designed to represent a tensor field of a given analysis result
+ */
 class TensorFieldWindow : public MdiWindow, public WindowWithResults, public BaseWindow {
 	Q_OBJECT
 

@@ -1,6 +1,7 @@
-#ifndef FEMP_NODAL_DISPLACEMENT_HPP
-#define FEMP_NODAL_DISPLACEMENT_HPP
+#ifndef FEMP_NODALDISPLACEMENT_HPP
+#define FEMP_NODALDISPLACEMENT_HPP
 
+// libfemp includes
 #include <libfemp/Point3D.h++>
 
 namespace fem {

@@ -1,22 +1,35 @@
 #ifndef FEMP_MAINWINDOW_HPP
 #define FEMP_MAINWINDOW_HPP
 
+// ui includes
+#include "ui/ModelWindow.h++"
+#include "ui/dock_widgets/CommandLineDockWidget.h++"
+#include "ui/ui_MainWindow.h"
+
+// gui includes
+#include "Document.h++"
+#include "SelectionManager.h++"
+#include <options/Options.h++>
+
+// application includes
+#include <application/interfaces/ILoadPatternRepository.h++>
+
+// viewer includes
+#include "viewer/ModelViewport.h++"
+
+// libfemp includes
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/LinearAnalysis.h++>
+
+// Qt includes
 #include <QComboBox>
 #include <QDir>
 #include <QMainWindow>
 #include <QSignalMapper>
-#include <application/interfaces/ILoadPatternRepository.h++>
-#include <libfemp/AnalysisResult.h++>
-#include <libfemp/LinearAnalysis.h++>
-#include <options/Options.h++>
 
-#include "Document.h++"
-#include "SelectionManager.h++"
-#include "ui/ModelWindow.h++"
-#include "ui/dock_widgets/CommandLineDockWidget.h++"
-#include "ui/ui_MainWindow.h"
-#include "viewer/ModelViewport.h++"
-
+/**
+ * The application's main window
+ **/
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 

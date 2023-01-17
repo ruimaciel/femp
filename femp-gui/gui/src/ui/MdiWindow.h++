@@ -1,20 +1,27 @@
-#ifndef FEMP_MDI_WINDOW_HPP
-#define FEMP_MDI_WINDOW_HPP
+#ifndef FEMP_MDIWINDOW_HPP
+#define FEMP_MDIWINDOW_HPP
 
+// ui includes
+#include "ui/ui_MdiWindow.h"
+
+// gui includes
+#include <options/Options.h++>
+#include <selection/Selection.h++>
+#include "../viewer/ViewportData.h++"
+
+// viewer includes
+#include "viewer/BaseViewport.h++"
+
+// Qt includes
 #include <QAction>
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QToolBar>
-#include <options/Options.h++>
-#include <selection/Selection.h++>
-
-#include "../viewer/ViewportData.h++"
-#include "ui/ui_MdiWindow.h"
-#include "viewer/BaseViewport.h++"
+#include <QWidget>
 
 /**
-Base class for all the MDI windows that render the model
-**/
+ * Base class for all the MDI windows that render the model
+ */
 class MdiWindow : public QMainWindow, protected Ui::MdiWindow {
 	Q_OBJECT
 

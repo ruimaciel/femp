@@ -4,6 +4,9 @@
 #include "MdiWindow.h++"
 #include "WindowWith.h++"
 
+// gui includes
+#include <Project.h++>
+
 class QMainWindow;
 class QToolBar;
 class QComboBox;

@@ -1,8 +1,14 @@
 #ifndef GUI_PERSISTENCE_NODEREPOSITORY_H
 #define GUI_PERSISTENCE_NODEREPOSITORY_H
 
-#include <application/interfaces/INodeRepository.h++>
+// gui includes
 #include <domain/Model.h++>
+#include <application/interfaces/INodeRepository.h++>
+
+// libfemp includes
+#include <libfemp/Node.h++>
+
+// stl includes
 #include <memory>
 
 namespace gui {

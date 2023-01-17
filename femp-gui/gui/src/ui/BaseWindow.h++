@@ -1,6 +1,7 @@
-#ifndef FEMP_BASE_WINDOW_HPP
-#define FEMP_BASE_WINDOW_HPP
+#ifndef FEMP_BASEWINDOW_HPP
+#define FEMP_BASEWINDOW_HPP
 
+// Qt includes
 #include <QString>
 
 /**
@@ -16,7 +17,7 @@ class BaseWindow {
 	 * @param label	window label
 	 * @param parent	this widget's parent widget
 	 */
-	BaseWindow(QString const& label);
+	explicit BaseWindow(QString const& label);
 
 	/**
 	 * Returns this window's label

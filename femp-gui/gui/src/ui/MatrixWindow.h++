@@ -1,18 +1,21 @@
-#ifndef FEMP_MATRIX_WINDOW_H
-#define FEMP_MATRIX_WINDOW_H
+#ifndef FEMP_MATRIXWINDOW_H
+#define FEMP_MATRIXWINDOW_H
 
-#include <QComboBox>
-#include <QMdiSubWindow>
-#include <QToolBar>
-#include <QWidget>
+// ui includes
 #include <ui/widgets/MatrixWidget.h++>
 
 #include "../Project.h++"
 #include "BaseWindow.h++"
 
+// Qt includes
+#include <QComboBox>
+#include <QMdiSubWindow>
+#include <QToolBar>
+#include <QWidget>
+
 /**
-MDI window designed to represent the stiffness matrix of an analysis
-**/
+ * MDI window designed to represent the stiffness matrix of an analysis
+ */
 class MatrixWindow : public QMdiSubWindow, public BaseWindow {
 	Q_OBJECT
 

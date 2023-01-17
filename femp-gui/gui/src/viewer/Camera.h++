@@ -1,6 +1,7 @@
-#ifndef CAMERA_HH
-#define CAMERA_HH
+#ifndef FEMP_CAMERA_HH
+#define FEMP_CAMERA_HH
 
+// libfemp includes
 #include <libfemp/Point3D.h++>
 
 class Camera {

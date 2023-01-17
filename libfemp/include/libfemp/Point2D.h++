@@ -1,8 +1,11 @@
 #ifndef FEMP_POINT2D_HPP
 #define FEMP_POINT2D_HPP
 
-#include <array>
+// libfemp includes
 #include <libfemp/Point3D.h++>
+
+// std includes
+#include <array>
 
 namespace fem {
 

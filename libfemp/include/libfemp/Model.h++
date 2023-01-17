@@ -1,11 +1,6 @@
 #ifndef FEMP_MODEL_HPP
 #define FEMP_MODEL_HPP
 
-#include <boost/tuple/tuple.hpp>
-#include <list>
-#include <map>
-#include <vector>
-
 #include "Element.h++"
 #include "ElementGroup.h++"
 #include "FemException.h++"
@@ -14,6 +9,14 @@
 #include "Node.h++"
 #include "NodeGroup.h++"
 #include "NodeRestrictions.h++"
+
+// include boost
+#include <boost/tuple/tuple.hpp>
+
+// include std
+#include <list>
+#include <map>
+#include <vector>
 
 namespace fem {
 

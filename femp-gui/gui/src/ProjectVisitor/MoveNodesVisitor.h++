@@ -1,13 +1,18 @@
-#ifndef MOVE_NODES_VISITOR_HPP
-#define MOVE_NODES_VISITOR_HPP
+#ifndef PROJECTVISITOR_MOVENODESVISITOR_HPP
+#define PROJECTVISITOR_MOVENODESVISITOR_HPP
 
-#include <array>
+#include "ProjectVisitor.h++"
+
+// services includes
+#include <selection/Selection.h++>
+
+// libfemp includes
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/Model.h++>
 #include <libfemp/Point3D.h++>
-#include <selection/Selection.h++>
 
-#include "ProjectVisitor.h++"
+// stl includes
+#include <array>
 
 /**
  * Performs a translation on a specific set of nodes

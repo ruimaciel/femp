@@ -1,9 +1,10 @@
 #ifndef FEMP_DOCUMENT_HPP
 #define FEMP_DOCUMENT_HPP
 
-#include <QString>
-
 #include "Project.h++"
+
+// Qt includes
+#include <QString>
 
 class Document {
 	public:

@@ -1,14 +1,19 @@
-#ifndef RENDER_GROUP_HPP
-#define RENDER_GROUP_HPP
+#ifndef VIEWER_RENDERGROUP_HPP
+#define VIEWER_RENDERGROUP_HPP
 
-#include <GL/gl.h>
-
-#include <list>
-#include <memory>
-#include <options/Options.h++>
-
+// viewer includes
 #include "SceneGraphComponents/SceneGraphComponent.h++"
 #include "ViewportData.h++"
+
+// gui includes
+#include <options/Options.h++>
+
+// OpenGL includes
+#include <GL/gl.h>
+
+// stl includes
+#include <list>
+#include <memory>
 
 /**
  * Definition of a render group: an independent scene graph branch

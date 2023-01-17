@@ -1,8 +1,11 @@
-#ifndef PROJECT_VISITOR_HPP
-#define PROJECT_VISITOR_HPP
+#ifndef PROJECTVISITOR_PROJECTVISITOR_HPP
+#define PROJECTVISITOR_PROJECTVISITOR_HPP
 
+// libfemp includes
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/Model.h++>
+
+// stl includes
 #include <vector>
 
 /**

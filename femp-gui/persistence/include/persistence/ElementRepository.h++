@@ -1,9 +1,14 @@
 #ifndef GUI_PERSISTENCE_ELEMENTREPOSITORY_H
 #define GUI_PERSISTENCE_ELEMENTREPOSITORY_H
 
-#include <application/interfaces/IElementRepository.h++>
+// gui includes
 #include <domain/Model.h++>
+#include <application/interfaces/IElementRepository.h++>
+
+// libfemp includes
 #include <libfemp/Element.h++>
+
+// stl includes
 #include <memory>
 
 namespace gui {

@@ -1,9 +1,12 @@
 #ifndef FEMP_ELEMENT_HPP
 #define FEMP_ELEMENT_HPP
 
+// libfemp includes
 #include <libfemp/FemException.h++>
 #include <libfemp/Material.h++>
 #include <libfemp/Node.h++>
+
+// std includes
 #include <vector>
 
 namespace fem {

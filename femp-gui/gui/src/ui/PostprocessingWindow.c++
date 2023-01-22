@@ -1,10 +1,15 @@
 #include "PostprocessingWindow.h++"
 
-#include <libfemp/ElementResults/ElementResults.h++>
-#include <map>
+// gui includes
 #include <ui/dialogs/ResultsRangeDialog.h++>
 
 #include "../viewer/PostprocessingViewport.h++"
+
+// libfemp includes
+#include <libfemp/ElementResults/ElementResults.h++>
+
+// stl includes
+#include <map>
 
 PostprocessingWindow::PostprocessingWindow(fem::Project& project, fem::AnalysisResult& result, ViewportColors& colors, QWidget* parent)
 	: MdiWindow(parent), WindowWithResults(), WindowWithPostprocessing(), WindowWithScaling(), BaseWindow("Gradient") {

@@ -1,11 +1,18 @@
 #include "TensorFieldWindow.h++"
 
-#include <QDebug>
-#include <libfemp/ElementResults/ElementResults.h++>
-#include <map>
+// gui includes
 #include <ui/dialogs/ResultsRangeDialog.h++>
 
 #include "../viewer/TensorFieldViewport.h++"
+
+// libfemp includes
+#include <libfemp/ElementResults/ElementResults.h++>
+
+// Qt includes
+#include <QDebug>
+
+// stl includes
+#include <map>
 
 TensorFieldWindow::TensorFieldWindow(fem::Project& project, fem::AnalysisResult& result, ViewportColors& colors, QWidget* parent)
 	: MdiWindow(parent), WindowWithResults(), BaseWindow("Tensor field") {

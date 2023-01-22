@@ -1,9 +1,11 @@
 #include "WindowWithScaling.h++"
 
-#include <assert.h>
-
+// Qt includes
 #include <QObject>	// for tr()
 #include <QString>
+
+// std includes
+#include <assert.h>
 
 void WindowWithScaling::createToolbar(QMainWindow* parent, fem::Project&) {
 	m_doubleSpinBoxScaling = new QDoubleSpinBox(parent);

@@ -1,36 +1,9 @@
 #include "MainWindow.h++"
 
-#include <stdlib.h>	 // getenv()
-
 // application includes
 #include <application/commands/DumpFemEquationCommand.h++>
 
-#include <QAction>
-#include <QDebug>
-#include <QFileDialog>
-#include <QMdiArea>
-#include <QMdiSubWindow>
-#include <QMessageBox>
-#include <QProgressDialog>
-#include <QSignalMapper>
-#include <QString>
-#include <QTextStream>
-#include <QTime>
-#include <QTranslator>
-#include <fstream>
-#include <libfemp/Analysis.h++>
-#include <libfemp/AnalysisResult.h++>
-#include <libfemp/LinearAnalysis.h++>
-#include <libfemp/Model.h++>
-#include <libfemp/NodeRestrictions.h++>
-#include <libfemp/io/export/JsonExporter.h++>
-#include <libfemp/io/import/ModelImporterFactory.h++>
-#include <libfemp/solvers/CGSolver.h++>
-#include <libfemp/solvers/CholeskySolver.h++>
-#include <persistence/LoadPatternRepository.h++>
-#include <string>
-#include <thread>
-
+// gui includes
 #include "DefaultProgressIndicator.h++"
 #include "FempApplication.h++"
 #include "ProjectVisitor/MoveNodesVisitor.h++"
@@ -57,6 +30,39 @@
 #include "ui/dialogs/SelectionDialog.h++"
 #include "ui/models/LoadPatternsModel.h++"
 #include "ui/wizards/NewProjectWizard.h++"
+
+// libfemp includes
+#include <libfemp/Analysis.h++>
+#include <libfemp/AnalysisResult.h++>
+#include <libfemp/LinearAnalysis.h++>
+#include <libfemp/Model.h++>
+#include <libfemp/NodeRestrictions.h++>
+#include <libfemp/io/export/JsonExporter.h++>
+#include <libfemp/io/import/ModelImporterFactory.h++>
+#include <libfemp/solvers/CGSolver.h++>
+#include <libfemp/solvers/CholeskySolver.h++>
+#include <persistence/LoadPatternRepository.h++>
+
+// Qt includes
+#include <QAction>
+#include <QDebug>
+#include <QFileDialog>
+#include <QMdiArea>
+#include <QMdiSubWindow>
+#include <QMessageBox>
+#include <QProgressDialog>
+#include <QSignalMapper>
+#include <QString>
+#include <QTextStream>
+#include <QTime>
+#include <QTranslator>
+
+// std includes
+#include <stdlib.h>
+
+#include <fstream>
+#include <string>
+#include <thread>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 	ui.setupUi(this);

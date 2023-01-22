@@ -1,5 +1,6 @@
 #include "WindowWithPostprocessing.h++"
 
+// Qt includes
 #include <QComboBox>
 #include <QMainWindow>
 #include <QObject>	// for tr()

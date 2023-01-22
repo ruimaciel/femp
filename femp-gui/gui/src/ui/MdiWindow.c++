@@ -1,10 +1,7 @@
 #include "MdiWindow.h++"
 
+// Qt includes
 #include <QDebug>
-
-/**
-Base class for all MDI windows which render a model
-**/
 
 MdiWindow::MdiWindow(QWidget* parent) : QMainWindow(parent) {
 	setupUi(this);

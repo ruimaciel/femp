@@ -1,5 +1,6 @@
 #include "WindowWithWireframe.h++"
 
+// Qt includes
 #include <QObject>	// for tr()
 #include <QString>
 

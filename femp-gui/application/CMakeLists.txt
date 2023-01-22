@@ -5,6 +5,7 @@ project(application
     )
 
 set(application_INCLUDES
+    include/application/commands/DumpFemEquationCommand.h++
     include/application/interfaces/IElementRepository.h++
     include/application/interfaces/INodeRepository.h++
     include/application/interfaces/IMaterialRepository.h++
@@ -15,6 +16,7 @@ set(application_HEADERS
     )
 
 set(application_SOURCES
+    src/commands/DumpFemEquationCommand.c++
     src/interfaces/IElementRepository.c++
     src/interfaces/INodeRepository.c++
     src/interfaces/IMaterialRepository.c++
@@ -41,4 +43,5 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
     domain
+    Qt5::Core
     )

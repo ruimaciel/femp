@@ -2,6 +2,9 @@
 
 #include <stdlib.h>	 // getenv()
 
+// application includes
+#include <application/commands/DumpFemEquationCommand.h++>
+
 #include <QAction>
 #include <QDebug>
 #include <QFileDialog>
@@ -633,65 +636,8 @@ void MainWindow::dumpFemEquation() {
 	QStringList sl = dialog.selectedFiles();
 	QString file_name = sl.at(0);
 
-	// check if file already exists
-	QFile file;
-	file.setFileName(file_name);
-	if (file.exists()) {
-		QMessageBox msgBox;
-		msgBox.setText(tr("File already exists"));
-		msgBox.setInformativeText(tr("Do you want to overwrite it?"));
-		msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-		msgBox.setDefaultButton(QMessageBox::No);
-		if (msgBox.exec() == QMessageBox::No) {
-			m_document.clearFileName();
-			return;
-		}
-	}
-
-	// set a new file name for this file
-
-	file.open(QFile::WriteOnly);
-	QTextStream out(&file);
-	out.setRealNumberNotation(QTextStream::ScientificNotation);
-	out.setRealNumberPrecision(16);
-
-	out << "# Created by lalib\n";
-	out << "# name: K\n";
-	out << "# type: matrix\n";
-	out << "# rows: " << femp_result.back().equation.K.rows() << "\n";
-	out << "# columns: " << femp_result.back().equation.K.columns() << "\n";
-
-	for (size_t j = 0; j < femp_result.back().equation.K.columns(); j++) {
-		for (size_t i = 0; i < femp_result.back().equation.K.rows(); i++) {
-			out << " " << femp_result.back().equation.K.value(i, j);
-		}
-		out << "\n";
-	}
-	out << Qt::endl;
-
-	out << "# Created by lalib\n";
-	out << "# name: f\n";
-	out << "# type: matrix\n";
-	out << "# rows: " << femp_result.back().equation.size() << "\n";
-	out << "# columns: 1\n";
-
-	for (size_t i = 0; i < femp_result.back().equation.size(); i++) {
-		out << " " << femp_result.back().equation.f.value(i) << "\n";
-	}
-	out << Qt::endl;
-
-	out << "# Created by lalib\n";
-	out << "# name: d\n";
-	out << "# type: matrix\n";
-	out << "# rows: " << femp_result.back().equation.d.size() << "\n";
-	out << "# columns: 1\n";
-
-	for (size_t i = 0; i < femp_result.back().equation.d.size(); i++) {
-		out << " " << femp_result.back().equation.d.value(i) << "\n";
-	}
-
-	out << Qt::endl;
-	file.close();
+	gui::application::DumpFemEquationCommand command(femp_result.back(), file_name);
+	command.execute();
 }
 
 void MainWindow::showAnalysisSummary() {

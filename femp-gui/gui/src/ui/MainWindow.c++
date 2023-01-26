@@ -2,6 +2,7 @@
 
 // application includes
 #include <application/commands/DumpFemEquationCommand.h++>
+#include <application/commands/SaveDocumentCommand.h++>
 
 // gui includes
 #include "DefaultProgressIndicator.h++"
@@ -37,7 +38,6 @@
 #include <libfemp/LinearAnalysis.h++>
 #include <libfemp/Model.h++>
 #include <libfemp/NodeRestrictions.h++>
-#include <libfemp/io/export/JsonExporter.h++>
 #include <libfemp/io/import/ModelImporterFactory.h++>
 #include <libfemp/solvers/CGSolver.h++>
 #include <libfemp/solvers/CholeskySolver.h++>
@@ -981,17 +981,8 @@ ViewportColors& MainWindow::getViewportColors() {
 }
 
 void MainWindow::saveDocument(Document& doc, std::string file_name) {
-	// check if if the given file_name exists
-	std::ofstream out;
-	out.open(file_name, std::ios::out | std::ios::trunc);
-
-	JsonExporter exporter;
-	exporter.output(out, doc.getProject().getModel());
-
-	// cleanup and exit
-	// TODO see KDE/ext4 row on proper unix file_name writing
-	out.flush();
-	out.close();
+	gui::application::SaveDocumentCommand command(doc.getProject().getModel(), file_name);
+	command.execute();
 
 	doc.setDirty(false);
 }

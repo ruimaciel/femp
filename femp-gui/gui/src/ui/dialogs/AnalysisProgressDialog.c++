@@ -46,7 +46,7 @@ void AnalysisProgressDialog::setError(std::string error_message) {
 }
 
 void AnalysisProgressDialog::finish() {
-	QString temp = QString("finished processing the model %1").arg(temp);
+	QString temp = QString("finished processing the model.");
 	this->textEdit->append(temp);
 
 	this->buttonBox->setStandardButtons(QDialogButtonBox::Ok);

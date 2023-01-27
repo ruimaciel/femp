@@ -609,12 +609,18 @@ void MainWindow::runAnalysis() {
 
 	m_document.getProject().pushAnalysisResult(analysis_result);
 
+	delete solver;
+
+	onAnalysisFinished();
+}
+
+
+void MainWindow::onAnalysisFinished() {
 	// set the UI
 	this->setUserInterfacePostAnalysis();
 	this->createNewPostprocessingWindow();
-
-	delete solver;
 }
+
 
 void MainWindow::dumpFemEquation() {
 	qInfo() << "MainWindow::dumpEquation()";

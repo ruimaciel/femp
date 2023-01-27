@@ -88,6 +88,8 @@ class MainWindow : public QMainWindow {
 	 */
 	void runAnalysis();
 
+	void onAnalysisFinished();
+
 	/**
 	 * Dumps the FEM equation (K matrix, d and f vectors) to a file following the
 	 * Matlab format

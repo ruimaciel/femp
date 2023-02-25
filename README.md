@@ -20,3 +20,7 @@ The project depends on the following software packages:
 ### Optional
 
 * re2c
+
+### How to setup ccache
+* set `Qt5_DIR=<PATH TO QtConfig.cmake>`
+* set `CMAKE_CXX_COMPILER_LAUNCHER=ccache`

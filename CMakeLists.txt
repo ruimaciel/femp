@@ -7,6 +7,9 @@ project(femp
 
 find_package(Qt5 COMPONENTS Core Widgets OpenGL REQUIRED)
 
+set(OpenGL_GL_PREFERENCE "LEGACY")
+find_package(OpenGL REQUIRED)
+
 add_subdirectory(libs/libla)
 add_subdirectory(libs/libquadrature)
 add_subdirectory(libs/libfemp)

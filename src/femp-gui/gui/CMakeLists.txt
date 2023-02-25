@@ -12,9 +12,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(OpenGL_GL_PREFERENCE "LEGACY")
 
-find_package(Qt5 COMPONENTS Core Widgets OpenGL REQUIRED)
-find_package(OpenGL REQUIRED)
-
 set(CMAKE_INCLUDE_CURRENT_DIR "YES")
 
 set(gui_HEADERS

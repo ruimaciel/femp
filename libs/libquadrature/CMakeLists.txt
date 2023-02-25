@@ -41,10 +41,3 @@ target_include_directories(libquadrature
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
-
-option(RUN_TESTS ON "Run libquadrature's tests")
-if(RUN_TESTS)
-    add_subdirectory(tests)
-endif()
-
-option(RUN_TESTS "Runs tests" ON)

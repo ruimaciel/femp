@@ -7,10 +7,14 @@ project(femp
 
 find_package(Qt5 COMPONENTS Core Widgets OpenGL REQUIRED)
 
-add_subdirectory(libla)
-add_subdirectory(libquadrature)
-add_subdirectory(libfemp)
-add_subdirectory(femp-gui)
-add_subdirectory(femp-cli)
+add_subdirectory(libs/libla)
+add_subdirectory(libs/libquadrature)
+add_subdirectory(libs/libfemp)
+add_subdirectory(src/femp-gui)
+add_subdirectory(src/femp-cli)
 
 option(RUN_TESTS "Runs tests" OFF)
+if(RUN_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()

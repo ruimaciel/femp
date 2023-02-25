@@ -179,8 +179,3 @@ target_include_directories(libfemp
 	PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 	PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
 	)
-
-if(RUN_TESTS)
-	enable_testing()
-	add_subdirectory(tests)
-endif()

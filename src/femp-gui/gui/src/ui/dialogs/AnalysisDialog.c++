@@ -8,16 +8,20 @@
 #include <libfemp/solvers/UmfpackSolver.h++>
 
 #include "assert.h"
+#include "ui_AnalysisDialog.h"
 
-AnalysisDialog::AnalysisDialog(gui::application::ILoadPatternRepositoryPtr load_pattern_repository, QWidget* parent) : QDialog(parent) {
-	setupUi(this);
+AnalysisDialog::AnalysisDialog(gui::application::ILoadPatternRepositoryPtr load_pattern_repository, QWidget* parent)
+	: QDialog(parent), m_ui(std::make_unique<Ui::AnalysisDialog>()) {
+	m_ui->setupUi(this);
 
 	// set the load pattern combo box
 	loadLoadPatternList(load_pattern_repository);
 }
 
+AnalysisDialog::~AnalysisDialog() = default;
+
 fem::Solver<double>* AnalysisDialog::solver() {
-	switch (toolBoxSolvers->currentIndex()) {
+	switch (m_ui->toolBoxSolvers->currentIndex()) {
 		case 0: {
 			fem::CholeskySolver<double>* solver = nullptr;
 			solver = new fem::CholeskySolver<double>;
@@ -30,8 +34,8 @@ fem::Solver<double>* AnalysisDialog::solver() {
 			solver = new fem::CGSolver<double>;
 
 			// set the options
-			solver->delta = pow(10, spinBoxDeltaExponent->value());
-			solver->max_iterations = spinBoxMaxIterations->value();
+			solver->delta = pow(10, m_ui->spinBoxDeltaExponent->value());
+			solver->max_iterations = m_ui->spinBoxMaxIterations->value();
 
 			return solver;
 		} break;
@@ -61,13 +65,13 @@ fem::Solver<double>* AnalysisDialog::solver() {
 
 int AnalysisDialog::loadPattern() const {
 	// TODO finish this
-	return comboBoxLoadPattern->currentIndex();
+	return m_ui->comboBoxLoadPattern->currentIndex();
 }
 
 void AnalysisDialog::loadLoadPatternList(gui::application::ILoadPatternRepositoryPtr load_pattern_repository) {
 	for (auto load_pattern : load_pattern_repository->getLoadPatternList()) {
 		QString temp = QString(load_pattern.getLabel().c_str());
 
-		comboBoxLoadPattern->addItem(temp);
+		m_ui->comboBoxLoadPattern->addItem(temp);
 	}
 }

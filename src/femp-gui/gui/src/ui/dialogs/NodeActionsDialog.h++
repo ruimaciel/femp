@@ -1,15 +1,23 @@
 #ifndef NODE_ACTIONS_DIALOG_HPP
 #define NODE_ACTIONS_DIALOG_HPP
 
-#include <QDialog>
 #include <libfemp/LoadPattern.h++>
 #include <libfemp/Model.h++>
 #include <libfemp/Point3D.h++>
 
 #include "ui/models/LoadPatternsModel.h++"
-#include "ui/ui_NodeActionsDialog.h"
 
-class NodeActionsDialog : public QDialog, private Ui::NodeActionsDialog {
+// Qt includes
+#include <QDialog>
+
+// std includes
+#include <memory>
+
+namespace Ui {
+	class NodeActionsDialog;
+}
+
+class NodeActionsDialog : public QDialog{
 	Q_OBJECT
 
 	private:
@@ -17,12 +25,16 @@ class NodeActionsDialog : public QDialog, private Ui::NodeActionsDialog {
 
 	public:
 	NodeActionsDialog(LoadPatternsModel& model, QWidget* parent = nullptr);
+	~NodeActionsDialog();
 
 	size_t getLoadPattern();
 	fem::Point3D getForce();
 	fem::Point3D getDisplacement();
 
 	void loadPatternCreated(size_t, fem::LoadPattern const&);
+
+	private:
+	std::unique_ptr<Ui::NodeActionsDialog> m_ui;
 };
 
 #endif

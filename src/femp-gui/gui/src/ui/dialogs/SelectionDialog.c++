@@ -1,6 +1,6 @@
 #include "SelectionDialog.h++"
 
-#include <QtWidgets/QVBoxLayout>
+#include <QVBoxLayout>
 
 SelectionDialog::SelectionDialog(std::shared_ptr<gui::Model> model, SelectionManager& selection_manager, QWidget* parent) : QDialog(parent) {
 	this->m_selection_widget = new SelectionWidget(model, selection_manager, this);

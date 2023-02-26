@@ -3,9 +3,17 @@
 
 #include <libfemp/NodeRestrictions.h++>
 
-#include "ui/ui_NodeRestrainDialog.h"
+// Qt includes
+#include <QDialog>
 
-class NodeRestrainsDialog : public QDialog, private Ui_NodeRestrainDialog {
+// std includes
+#include <memory>
+
+namespace Ui {
+	class NodeRestrainDialog;
+}
+
+class NodeRestrainsDialog : public QDialog{
 	Q_OBJECT
 
 	public:
@@ -13,10 +21,14 @@ class NodeRestrainsDialog : public QDialog, private Ui_NodeRestrainDialog {
 
 	public:
 	explicit NodeRestrainsDialog(QWidget* parent = nullptr);
+	~NodeRestrainsDialog();
 
 	int getRestraints();
 
 	fem::NodeRestrictions getRestrictions() const;
+
+	private:
+	std::unique_ptr<Ui::NodeRestrainDialog> m_ui;
 };
 
 #endif

@@ -1,14 +1,20 @@
 #ifndef ANALYSIS_PROGRESS_DIALOG_HPP
 #define ANALYSIS_PROGRESS_DIALOG_HPP
 
+// Qt includes
 #include <QElapsedTimer>
 #include <QTime>
-#include <QtWidgets/QDialog>
+#include <QDialog>
+
+// std includes
+#include <memory>
 #include <string>
 
-#include "ui_AnalysisProgressDialog.h"
+namespace Ui {
+	class AnalysisProgressDialog;
+}
 
-class AnalysisProgressDialog : public QDialog, private Ui::AnalysisProgressDialog {
+class AnalysisProgressDialog : public QDialog {
 	Q_OBJECT
 
 	protected:
@@ -17,6 +23,7 @@ class AnalysisProgressDialog : public QDialog, private Ui::AnalysisProgressDialo
 
 	public:
 	AnalysisProgressDialog(QWidget* parent = nullptr);
+	~AnalysisProgressDialog();
 
 	public slots:
 	void beginSection(std::string);
@@ -43,6 +50,9 @@ class AnalysisProgressDialog : public QDialog, private Ui::AnalysisProgressDialo
 	 * Announces the end of the entire process
 	 */
 	void finish();
+
+	private:
+	std::unique_ptr<Ui::AnalysisProgressDialog> m_ui;
 };
 
 #endif

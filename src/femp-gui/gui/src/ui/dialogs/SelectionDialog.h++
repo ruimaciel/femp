@@ -2,9 +2,11 @@
 #define SELECTION_DIALOG_HPP
 
 #include <Project.h++>
-#include <QtWidgets/QDialog>
 #include <SelectionManager.h++>
 #include <ui/widgets/SelectionWidget.h++>
+
+// Qt includes
+#include <QDialog>
 
 /**
  * Dialog box which uses the selection widget to select objects from a given

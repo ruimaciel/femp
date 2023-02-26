@@ -1,31 +1,39 @@
 #include "SurfaceSubdivisionDialog.h++"
 
+#include "ui_SurfaceSubdivisionDialog.h"
+
+// Qt includes
 #include <QSlider>
 #include <QSpinBox>
+
+// std includes
 #include <cmath>
 
-SurfaceSubdivisionDialog::SurfaceSubdivisionDialog(unsigned short scale, QWidget* parent) : QDialog(parent) {
-	setupUi(this);
+SurfaceSubdivisionDialog::SurfaceSubdivisionDialog(unsigned short scale, QWidget* parent)
+	: QDialog(parent), m_ui(std::make_unique<Ui::SurfaceSubdivisionDialog>()) {
+	m_ui->setupUi(this);
 
 	// set the current scale
-	this->spinBox->setValue(scale);
+	m_ui->spinBox->setValue(scale);
 	this->updateSlider(scale);
 
 	// connect
-	connect(spinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSlider(int)));
-	connect(horizontalSlider, SIGNAL(sliderMoved(int)), this, SLOT(updateSpinBox(int)));
+	connect(m_ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSlider(int)));
+	connect(m_ui->horizontalSlider, SIGNAL(sliderMoved(int)), this, SLOT(updateSpinBox(int)));
 }
 
+SurfaceSubdivisionDialog::~SurfaceSubdivisionDialog() = default;
+
 unsigned short SurfaceSubdivisionDialog::scale() {
-	return this->spinBox->value();
+	return m_ui->spinBox->value();
 }
 
 void SurfaceSubdivisionDialog::updateSlider(int value) {
 	using namespace std;
-	this->horizontalSlider->setValue(value);
+	m_ui->horizontalSlider->setValue(value);
 }
 
 void SurfaceSubdivisionDialog::updateSpinBox(int value) {
 	using namespace std;
-	this->spinBox->setValue(value);
+	m_ui->spinBox->setValue(value);
 }

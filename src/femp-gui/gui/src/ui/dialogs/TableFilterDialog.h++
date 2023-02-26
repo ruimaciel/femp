@@ -1,28 +1,32 @@
 #ifndef TABLE_FILTER_DIALOG_HPP
 #define TABLE_FILTER_DIALOG_HPP
 
-#include <QWidget>
+// Qt includes
+#include <QDialog>
 
-#include "ui_TableFilterDialog.h"
+// std includes
+#include <memory>
+
+namespace Ui {
+	class TableFilterDialog;
+}
 
 /**
  * Implements a dialog box which is used to toggle the visibility of each column
  * and filter the results After running the dialog, the status of each widget is
  * checked to tweak the visibility of each column in the table
  */
-class TableFilterDialog : public QDialog, private Ui::TableFilterDialog {
+class TableFilterDialog : public QDialog {
 	Q_OBJECT
 
 	public:
 	TableFilterDialog(QWidget* parent = nullptr);
+	~TableFilterDialog();
 
 #define MEMBER_HELPER(XX)                       \
-	void set##XX##Visible(bool state) {         \
-		this->checkBox##XX->setChecked(state);  \
-	}                                           \
-	bool get##XX##Visible() const {             \
-		return this->checkBox##XX->isChecked(); \
-	}
+	void set##XX##Visible(bool state);			\
+	bool get##XX##Visible() const ;             
+
 	MEMBER_HELPER(ElementReference);
 	MEMBER_HELPER(ElementType);
 	MEMBER_HELPER(NodeGlobalReference);
@@ -66,6 +70,9 @@ class TableFilterDialog : public QDialog, private Ui::TableFilterDialog {
 
 	void toggleStressesCheckboxes(bool);
 	void toggleStressesCheckbox(bool);
+
+	private:
+	std::unique_ptr<Ui::TableFilterDialog> m_ui;
 };
 
 #endif

@@ -1,22 +1,25 @@
 #include "DomainLoadsDialog.h++"
 
 #include "LoadPatternDialog.h++"
+#include "ui_DomainLoadsDialog.h"
 
-DomainLoadsDialog::DomainLoadsDialog(LoadPatternsModel& model, QWidget* parent) : QDialog(parent) {
-	setupUi(this);
+DomainLoadsDialog::DomainLoadsDialog(LoadPatternsModel& model, QWidget* parent) : QDialog(parent), m_ui(std::make_unique<Ui::DomainLoadsDialog>()) {
+	m_ui->setupUi(this);
 
-	this->comboBoxLoadPattern->setModel(&model);
+	m_ui->comboBoxLoadPattern->setModel(&model);
 }
+
+DomainLoadsDialog::~DomainLoadsDialog() = default;
 
 size_t DomainLoadsDialog::getLoadPattern() {
 	// TODO must get some sort of sanity check
-	return this->comboBoxLoadPattern->currentIndex();
+	return m_ui->comboBoxLoadPattern->currentIndex();
 }
 
 fem::Point3D DomainLoadsDialog::getForce() {
 	fem::Point3D p;
-	p.data[0] = this->doubleSpinBoxFx->value();
-	p.data[1] = this->doubleSpinBoxFy->value();
-	p.data[2] = this->doubleSpinBoxFz->value();
+	p.data[0] = m_ui->doubleSpinBoxFx->value();
+	p.data[1] = m_ui->doubleSpinBoxFy->value();
+	p.data[2] = m_ui->doubleSpinBoxFz->value();
 	return p;
 }

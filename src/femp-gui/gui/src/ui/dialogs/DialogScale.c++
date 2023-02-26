@@ -1,31 +1,38 @@
 #include "DialogScale.h++"
 
+#include "ui_DialogScale.h"
+
+// Qt includes
 #include <QSlider>
 #include <QSpinBox>
+
+// std includes
 #include <cmath>
 
-DialogScale::DialogScale(float scale, QWidget* parent) : QDialog(parent) {
-	setupUi(this);
+DialogScale::DialogScale(float scale, QWidget* parent) : QDialog(parent), m_ui(std::make_unique<Ui::DialogScale>()) {
+	m_ui->setupUi(this);
 
 	// set the current scale
-	this->doubleSpinBox->setValue(scale);
-	this->updateSlider(scale);
+	m_ui->doubleSpinBox->setValue(scale);
+	updateSlider(scale);
 
 	// connect
-	connect(doubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateSlider(double)));
-	connect(horizontalSlider, SIGNAL(sliderMoved(int)), this, SLOT(updateSpinBox(int)));
+	connect(m_ui->doubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateSlider(double)));
+	connect(m_ui->horizontalSlider, SIGNAL(sliderMoved(int)), this, SLOT(updateSpinBox(int)));
 }
 
+DialogScale::~DialogScale() = default;
+
 double DialogScale::getScale() {
-	return this->doubleSpinBox->value();
+	return m_ui->doubleSpinBox->value();
 }
 
 void DialogScale::updateSlider(double value) {
 	using namespace std;
-	this->horizontalSlider->setValue(ceil(log10(value)));
+	m_ui->horizontalSlider->setValue(ceil(log10(value)));
 }
 
 void DialogScale::updateSpinBox(int value) {
 	using namespace std;
-	this->doubleSpinBox->setValue(pow(10, value));
+	m_ui->doubleSpinBox->setValue(pow(10, value));
 }

@@ -1,12 +1,16 @@
 #include "LoadPatternDialog.h++"
 
-LoadPatternDialog::LoadPatternDialog(QWidget* parent) : QDialog(parent) {
-	setupUi(this);
+#include "ui_LoadPatternDialog.h"
+
+LoadPatternDialog::LoadPatternDialog(QWidget* parent) : QDialog(parent), m_ui(std::unique_ptr<Ui::LoadPatternDialog>()) {
+	m_ui->setupUi(this);
 }
+
+LoadPatternDialog::~LoadPatternDialog() = default;
 
 std::string LoadPatternDialog::getLabel() const {
 	std::string text;
-	text = this->lineEditLoadPatternName->text().toStdString();
+	text = m_ui->lineEditLoadPatternName->text().toStdString();
 
 	return text;
 }

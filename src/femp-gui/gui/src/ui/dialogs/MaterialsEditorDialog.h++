@@ -1,12 +1,20 @@
 #ifndef MATERIALS_EDITOR_DIALOG_HPP
 #define MATERIALS_EDITOR_DIALOG_HPP
 
-#include <QDialog>
 #include <libfemp/Model.h++>
 
-#include "ui_MaterialsEditorDialog.h"
+// Qt includes
+#include <QDialog>
 
-class MaterialsEditorDialog : public QDialog, private Ui::MaterialsEditorDialog {
+// std includes
+#include <memory>
+
+
+namespace Ui {
+	class MaterialsEditorDialog;
+}
+
+class MaterialsEditorDialog : public QDialog{
 	Q_OBJECT
 
 	private:
@@ -25,6 +33,9 @@ class MaterialsEditorDialog : public QDialog, private Ui::MaterialsEditorDialog 
 	 * Resets the UI according to the selection state
 	 */
 	void resetSelectionUI();
+
+	private:
+	std::unique_ptr<Ui::MaterialsEditorDialog> m_ui;
 };
 
 #endif

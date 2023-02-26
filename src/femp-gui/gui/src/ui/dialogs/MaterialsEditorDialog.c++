@@ -1,13 +1,16 @@
 #include "MaterialsEditorDialog.h++"
 
-#include <QTreeWidget>
+#include "ui_MaterialsEditorDialog.h"
+
+// std includes
 #include <vector>
 
-MaterialsEditorDialog::MaterialsEditorDialog(fem::Model& model, QWidget* parent) : QDialog(parent), model(model) {
-	setupUi(this);
+MaterialsEditorDialog::MaterialsEditorDialog(fem::Model& model, QWidget* parent)
+	: QDialog(parent), model(model), m_ui(std::make_unique<Ui::MaterialsEditorDialog>()) {
+	m_ui->setupUi(this);
 
 	// set signals and slots
-	connect(listWidgetMaterials, SIGNAL(itemSelectionChanged()), this, SLOT(resetSelectionUI()));
+	connect(m_ui->listWidgetMaterials, SIGNAL(itemSelectionChanged()), this, SLOT(resetSelectionUI()));
 
 	// fill the materials
 	loadMaterials();
@@ -18,18 +21,18 @@ MaterialsEditorDialog::~MaterialsEditorDialog() {}
 void MaterialsEditorDialog::loadMaterials() {
 	auto material_list = model.getMaterialList();
 	for (size_t i = 0; i < material_list.size(); i++) {
-		this->listWidgetMaterials->insertItem(int(i), QString::fromStdString(material_list[i].getLabel()));
+		m_ui->listWidgetMaterials->insertItem(int(i), QString::fromStdString(material_list[i].getLabel()));
 	}
 }
 
 void MaterialsEditorDialog::resetSelectionUI() {
-	if (listWidgetMaterials->selectedItems().empty()) {
-		this->pushButtonEdit->setDisabled(true);
-		this->pushButtonEditCopy->setDisabled(true);
-		this->pushButtonDelete->setDisabled(true);
+	if (m_ui->listWidgetMaterials->selectedItems().empty()) {
+		m_ui->pushButtonEdit->setDisabled(true);
+		m_ui->pushButtonEditCopy->setDisabled(true);
+		m_ui->pushButtonDelete->setDisabled(true);
 	} else {
-		this->pushButtonEdit->setEnabled(true);
-		this->pushButtonEditCopy->setEnabled(true);
-		this->pushButtonDelete->setEnabled(true);
+		m_ui->pushButtonEdit->setEnabled(true);
+		m_ui->pushButtonEditCopy->setEnabled(true);
+		m_ui->pushButtonDelete->setEnabled(true);
 	}
 }

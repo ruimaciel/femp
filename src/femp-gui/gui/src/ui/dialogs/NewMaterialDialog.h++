@@ -1,17 +1,25 @@
 #ifndef NEW_MATERIAL_DIALOG_HPP
 #define NEW_MATERIAL_DIALOG_HPP
 
-#include <QDialog>
 #include <application/interfaces/IMaterialRepository.h++>
 #include <libfemp/Model.h++>  // for the materials list
 
-#include "ui/ui_NewMaterialDialog.h"
+// Qt includes
+#include <QDialog>
 
-class NewMaterialDialog : public QDialog, private Ui::NewMaterialDialog {
+// std includes
+#include <memory>
+
+namespace Ui {
+	class NewMaterialDialog;
+}
+
+class NewMaterialDialog : public QDialog{
 	Q_OBJECT
 
 	public:
 	explicit NewMaterialDialog(gui::application::IMaterialRepositoryPtr material_repository, QWidget* parent = nullptr);
+	~NewMaterialDialog();
 
 	private:
 	/**
@@ -25,6 +33,7 @@ class NewMaterialDialog : public QDialog, private Ui::NewMaterialDialog {
 
 	private:
 	gui::application::IMaterialRepositoryPtr m_material_repository;
+	std::unique_ptr<Ui::NewMaterialDialog> m_ui;
 };
 
 #endif

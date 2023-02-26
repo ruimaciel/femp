@@ -3,9 +3,17 @@
 
 #include <libfemp/Analysis.h++>
 
-#include "ui_QuadratureRulesOptionsDialog.h"
+// Qt includes
+#include <QDialog>
 
-class QuadratureRulesOptionsDialog : public QDialog, private Ui_QuadratureRulesOptionsDialog {
+// std includes
+#include <memory>
+
+namespace Ui {
+	class QuadratureRulesOptionsDialog;
+}
+
+class QuadratureRulesOptionsDialog : public QDialog{
 	Q_OBJECT
 
 	protected:
@@ -13,10 +21,14 @@ class QuadratureRulesOptionsDialog : public QDialog, private Ui_QuadratureRulesO
 
 	public:
 	QuadratureRulesOptionsDialog(fem::Analysis<double>& analysis, QWidget* parent = nullptr);
+	~QuadratureRulesOptionsDialog();
 
 	protected slots:
 	void setSpinBoxValues();
 	void setQuadratureRule();
+
+	private:
+	std::unique_ptr<Ui::QuadratureRulesOptionsDialog> m_ui;
 };
 
 #endif

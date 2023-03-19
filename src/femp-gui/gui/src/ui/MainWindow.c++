@@ -1,5 +1,7 @@
 #include "MainWindow.h++"
 
+#include "ui/ui_MainWindow.h"
+
 // application includes
 #include <application/commands/DumpFemEquationCommand.h++>
 #include <application/commands/SaveDocumentCommand.h++>
@@ -64,8 +66,8 @@
 #include <string>
 #include <thread>
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
-	ui.setupUi(this);
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(std::make_unique<Ui::MainWindow>()) {
+	ui->setupUi(this);
 
 	// set the MDI area widget as the window's central widget
 	m_mdiArea = new QMdiArea();
@@ -80,6 +82,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
 	setUserInterfaceAsClosed();
 	m_load_pattern_repository = std::make_shared<gui::persistence::LoadPatternRepository>(m_document.getProject().getDomainModel());
 }
+
+MainWindow::~MainWindow() = default;
 
 void MainWindow::setSelection(Selection) {}
 
@@ -260,7 +264,7 @@ void MainWindow::saveProject() {
 		m_document.setFileName(file_name);
 
 		this->setWindowTitle("Femp - " + file_name);
-		ui.actionReopen->setEnabled(true);
+		ui->actionReopen->setEnabled(true);
 	}
 
 	saveDocument(m_document, m_document.getFileName().toStdString());
@@ -381,42 +385,42 @@ void MainWindow::quit() {
 
 void MainWindow::createActions() {
 	// connect the actions
-	connect(ui.actionNew, &QAction::triggered, this, &MainWindow::newProject);
-	connect(ui.actionOpen, &QAction::triggered, this, &MainWindow::openProject);
-	connect(ui.actionReopen, &QAction::triggered, this, &MainWindow::reopenProject);
-	connect(ui.actionSave, &QAction::triggered, this, &MainWindow::saveProject);
-	connect(ui.actionSaveAs, &QAction::triggered, this, &MainWindow::saveProjectAs);
-	connect(ui.actionClose, &QAction::triggered, this, &MainWindow::closeProject);
-	connect(ui.actionQuit, &QAction::triggered, this, &MainWindow::quit);
-	connect(ui.actionNodeRestraints, &QAction::triggered, this, &MainWindow::setNodeRestraints);
-	connect(ui.actionNodeActions, &QAction::triggered, this, &MainWindow::setNodeActions);
-	connect(ui.actionDomainLoads, &QAction::triggered, this, &MainWindow::setDomainLoads);
-	connect(ui.actionMoveNodes, &QAction::triggered, this, &MainWindow::moveSelectedNodes);
+	connect(ui->actionNew, &QAction::triggered, this, &MainWindow::newProject);
+	connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::openProject);
+	connect(ui->actionReopen, &QAction::triggered, this, &MainWindow::reopenProject);
+	connect(ui->actionSave, &QAction::triggered, this, &MainWindow::saveProject);
+	connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::saveProjectAs);
+	connect(ui->actionClose, &QAction::triggered, this, &MainWindow::closeProject);
+	connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::quit);
+	connect(ui->actionNodeRestraints, &QAction::triggered, this, &MainWindow::setNodeRestraints);
+	connect(ui->actionNodeActions, &QAction::triggered, this, &MainWindow::setNodeActions);
+	connect(ui->actionDomainLoads, &QAction::triggered, this, &MainWindow::setDomainLoads);
+	connect(ui->actionMoveNodes, &QAction::triggered, this, &MainWindow::moveSelectedNodes);
 
-	connect(ui.actionRun, &QAction::triggered, this, &MainWindow::runAnalysis);
-	connect(ui.actionDump_FEM_equation, &QAction::triggered, this, &MainWindow::dumpFemEquation);
-	connect(ui.actionAnalysisSummary, &QAction::triggered, this, &MainWindow::showAnalysisSummary);
+	connect(ui->actionRun, &QAction::triggered, this, &MainWindow::runAnalysis);
+	connect(ui->actionDump_FEM_equation, &QAction::triggered, this, &MainWindow::dumpFemEquation);
+	connect(ui->actionAnalysisSummary, &QAction::triggered, this, &MainWindow::showAnalysisSummary);
 
-	connect(ui.actionEditMaterials, &QAction::triggered, this, &MainWindow::editMaterials);
+	connect(ui->actionEditMaterials, &QAction::triggered, this, &MainWindow::editMaterials);
 
-	connect(ui.actionWindowTile, &QAction::triggered, this, &MainWindow::setTiledWindows);
-	connect(ui.actionWindowCascade, &QAction::triggered, this, &MainWindow::setCascadeWindows);
+	connect(ui->actionWindowTile, &QAction::triggered, this, &MainWindow::setTiledWindows);
+	connect(ui->actionWindowCascade, &QAction::triggered, this, &MainWindow::setCascadeWindows);
 
 	// MDI window creation
-	connect(ui.actionNewModelWindow, &QAction::triggered, this, &MainWindow::createNewModelWindow);
-	connect(ui.actionNewPostprocessingWindow, &QAction::triggered, this, &MainWindow::createNewPostprocessingWindow);
-	connect(ui.actionNewTensorFieldWindow, &QAction::triggered, this, &MainWindow::createNewTensorFieldWindow);
-	connect(ui.actionNewAnalysisResultsWindow, &QAction::triggered, this, &MainWindow::createNewAnalysisResultsWindow);
-	connect(ui.actionNewFemEquationWindow, &QAction::triggered, this, &MainWindow::createNewFemEquationWindow);
+	connect(ui->actionNewModelWindow, &QAction::triggered, this, &MainWindow::createNewModelWindow);
+	connect(ui->actionNewPostprocessingWindow, &QAction::triggered, this, &MainWindow::createNewPostprocessingWindow);
+	connect(ui->actionNewTensorFieldWindow, &QAction::triggered, this, &MainWindow::createNewTensorFieldWindow);
+	connect(ui->actionNewAnalysisResultsWindow, &QAction::triggered, this, &MainWindow::createNewAnalysisResultsWindow);
+	connect(ui->actionNewFemEquationWindow, &QAction::triggered, this, &MainWindow::createNewFemEquationWindow);
 
-	connect(ui.actionViewSelection, &QAction::triggered, this, &MainWindow::showSelection);
-	connect(ui.actionViewAll, &QAction::triggered, this, &MainWindow::showAll);
+	connect(ui->actionViewSelection, &QAction::triggered, this, &MainWindow::showSelection);
+	connect(ui->actionViewAll, &QAction::triggered, this, &MainWindow::showAll);
 
-	connect(ui.actionQuadrature_rules, &QAction::triggered, this, &MainWindow::editQuadratureRules);
-	connect(ui.actionSelection, &QAction::triggered, this, &MainWindow::editSelection);
-	connect(ui.actionResults_from_selection, &QAction::triggered, this, &MainWindow::dumpResultsFromSelection);
+	connect(ui->actionQuadrature_rules, &QAction::triggered, this, &MainWindow::editQuadratureRules);
+	connect(ui->actionSelection, &QAction::triggered, this, &MainWindow::editSelection);
+	connect(ui->actionResults_from_selection, &QAction::triggered, this, &MainWindow::dumpResultsFromSelection);
 
-	connect(ui.menuWindowOpened, &QMenu::aboutToShow, this, &MainWindow::updateWindowMenu);
+	connect(ui->menuWindowOpened, &QMenu::aboutToShow, this, &MainWindow::updateWindowMenu);
 }
 
 void MainWindow::createDockWidgets() {
@@ -869,7 +873,7 @@ void MainWindow::updateWindowMenu() {
 	QList<QMdiSubWindow*> subWindowList = m_mdiArea->subWindowList();
 
 	// empties the menu
-	ui.menuWindowOpened->clear();
+	ui->menuWindowOpened->clear();
 
 	// fills the menu
 	QAction* action;
@@ -887,7 +891,7 @@ void MainWindow::updateWindowMenu() {
 		// set the action name
 		action = new QAction(base->label(), this);
 		action->setData(n);
-		ui.menuWindowOpened->addAction(action);
+		ui->menuWindowOpened->addAction(action);
 
 		// map
 		m_windowMapper->setMapping(action, n);
@@ -903,23 +907,23 @@ void MainWindow::activateSubWindowByIndex(int index) {
 
 void MainWindow::setUserInterfaceAsOpened() {
 	// set the menus
-	ui.menuProject->setEnabled(true);
-	ui.menuView->setEnabled(true);
-	ui.menuWindow->setEnabled(true);
-	ui.actionReopen->setEnabled(true);
-	ui.actionSave->setEnabled(true);
-	ui.actionSaveAs->setEnabled(true);
-	ui.actionClose->setEnabled(true);
-	ui.actionNodeRestraints->setEnabled(true);
-	ui.actionNodeActions->setEnabled(true);
-	ui.actionDomainLoads->setEnabled(true);
-	ui.actionMoveNodes->setEnabled(true);
-	ui.actionEditMaterials->setEnabled(true);
-	ui.actionQuadrature_rules->setEnabled(true);
-	ui.actionSelection->setEnabled(true);
+	ui->menuProject->setEnabled(true);
+	ui->menuView->setEnabled(true);
+	ui->menuWindow->setEnabled(true);
+	ui->actionReopen->setEnabled(true);
+	ui->actionSave->setEnabled(true);
+	ui->actionSaveAs->setEnabled(true);
+	ui->actionClose->setEnabled(true);
+	ui->actionNodeRestraints->setEnabled(true);
+	ui->actionNodeActions->setEnabled(true);
+	ui->actionDomainLoads->setEnabled(true);
+	ui->actionMoveNodes->setEnabled(true);
+	ui->actionEditMaterials->setEnabled(true);
+	ui->actionQuadrature_rules->setEnabled(true);
+	ui->actionSelection->setEnabled(true);
 
-	ui.actionDisplayNodes->setChecked(true);
-	ui.actionDisplaySurfaces->setChecked(true);
+	ui->actionDisplayNodes->setChecked(true);
+	ui->actionDisplaySurfaces->setChecked(true);
 
 	this->createNewViewportWindow();
 
@@ -935,30 +939,30 @@ void MainWindow::setUserInterfaceAsOpened() {
 
 void MainWindow::setUserInterfaceAsClosed() {
 	// set the menus
-	ui.menuProject->setDisabled(true);
-	ui.menuView->setDisabled(true);
-	ui.menuWindow->setDisabled(true);
-	ui.menuDump->setDisabled(true);
+	ui->menuProject->setDisabled(true);
+	ui->menuView->setDisabled(true);
+	ui->menuWindow->setDisabled(true);
+	ui->menuDump->setDisabled(true);
 
-	ui.actionReopen->setDisabled(true);
-	ui.actionSave->setDisabled(true);
-	ui.actionSaveAs->setDisabled(true);
-	ui.actionClose->setDisabled(true);
-	ui.actionNodeRestraints->setDisabled(true);
-	ui.actionNodeActions->setDisabled(true);
-	ui.actionDomainLoads->setDisabled(true);
-	ui.actionMoveNodes->setDisabled(true);
-	ui.actionEditMaterials->setDisabled(true);
-	ui.actionQuadrature_rules->setDisabled(true);
-	ui.actionSelection->setDisabled(true);
-	ui.actionDump_FEM_equation->setDisabled(true);
-	ui.actionResults_from_selection->setDisabled(true);
+	ui->actionReopen->setDisabled(true);
+	ui->actionSave->setDisabled(true);
+	ui->actionSaveAs->setDisabled(true);
+	ui->actionClose->setDisabled(true);
+	ui->actionNodeRestraints->setDisabled(true);
+	ui->actionNodeActions->setDisabled(true);
+	ui->actionDomainLoads->setDisabled(true);
+	ui->actionMoveNodes->setDisabled(true);
+	ui->actionEditMaterials->setDisabled(true);
+	ui->actionQuadrature_rules->setDisabled(true);
+	ui->actionSelection->setDisabled(true);
+	ui->actionDump_FEM_equation->setDisabled(true);
+	ui->actionResults_from_selection->setDisabled(true);
 
-	ui.actionNewPostprocessingWindow->setDisabled(true);
-	ui.actionNewTensorFieldWindow->setDisabled(true);
-	ui.actionNewAnalysisResultsWindow->setDisabled(true);
-	ui.actionNewFemEquationWindow->setDisabled(true);
-	ui.actionAnalysisSummary->setDisabled(true);
+	ui->actionNewPostprocessingWindow->setDisabled(true);
+	ui->actionNewTensorFieldWindow->setDisabled(true);
+	ui->actionNewAnalysisResultsWindow->setDisabled(true);
+	ui->actionNewFemEquationWindow->setDisabled(true);
+	ui->actionAnalysisSummary->setDisabled(true);
 
 	// close all MDI windows
 	m_mdiArea->closeAllSubWindows();
@@ -972,14 +976,14 @@ void MainWindow::setUserInterfaceAsClosed() {
 }
 
 void MainWindow::setUserInterfacePostAnalysis() {
-	ui.menuDump->setEnabled(true);
-	ui.actionDump_FEM_equation->setEnabled(true);
-	ui.actionResults_from_selection->setEnabled(true);
-	ui.actionNewPostprocessingWindow->setEnabled(true);
-	ui.actionNewTensorFieldWindow->setEnabled(true);
-	ui.actionNewAnalysisResultsWindow->setEnabled(true);
-	ui.actionNewFemEquationWindow->setEnabled(true);
-	ui.actionAnalysisSummary->setEnabled(true);
+	ui->menuDump->setEnabled(true);
+	ui->actionDump_FEM_equation->setEnabled(true);
+	ui->actionResults_from_selection->setEnabled(true);
+	ui->actionNewPostprocessingWindow->setEnabled(true);
+	ui->actionNewTensorFieldWindow->setEnabled(true);
+	ui->actionNewAnalysisResultsWindow->setEnabled(true);
+	ui->actionNewFemEquationWindow->setEnabled(true);
+	ui->actionAnalysisSummary->setEnabled(true);
 }
 
 ViewportColors& MainWindow::getViewportColors() {

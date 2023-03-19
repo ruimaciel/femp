@@ -4,7 +4,6 @@
 // ui includes
 #include "ui/ModelWindow.h++"
 #include "ui/dock_widgets/CommandLineDockWidget.h++"
-#include "ui/ui_MainWindow.h"
 
 // gui includes
 #include "Document.h++"
@@ -25,7 +24,15 @@
 #include <QComboBox>
 #include <QDir>
 #include <QMainWindow>
+#include <QMdiArea>
 #include <QSignalMapper>
+
+// std includes
+#include <memory>
+
+namespace Ui {
+	class MainWindow;
+}
 
 /**
  * The application's main window
@@ -35,6 +42,7 @@ class MainWindow : public QMainWindow {
 
 	public:
 	explicit MainWindow(QWidget* parent = nullptr);
+	~MainWindow();
 
 	signals:
 	void selectionChanged(Selection);
@@ -152,7 +160,7 @@ class MainWindow : public QMainWindow {
 	void saveDocument(Document& doc, std::string filename);
 
 	protected:
-	Ui::MainWindow ui;
+	std::unique_ptr<Ui::MainWindow> ui;
 
 	fem::LinearAnalysis<double> m_analysis;
 

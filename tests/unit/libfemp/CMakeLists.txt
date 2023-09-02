@@ -15,8 +15,7 @@ foreach(libfemp_test_SOURCE_FILE ${libfemp_test_SOURCES})
     PUBLIC
         ${CMAKE_THREAD_LIBS_INIT}
         libfemp
-        GoogleTest::gtest
-        GoogleTest::gmock
+        GTest::gtest
         )
 
     target_include_directories(${libfemp_test_NAME}

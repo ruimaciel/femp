@@ -21,7 +21,7 @@ class MoveNodesVisitor : public ProjectVisitor {
 	public:
 	MoveNodesVisitor(Selection selection, fem::Point3D const& translation);
 
-	void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result);
+	void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result) override;
 
 	protected:
 	fem::Point3D m_translation;

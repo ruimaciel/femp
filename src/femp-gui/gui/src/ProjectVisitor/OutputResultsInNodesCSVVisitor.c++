@@ -36,7 +36,7 @@ void OutputResultsInNodesCSVVisitor::visit(fem::Model& model, std::vector<fem::A
 	assert(m_out != nullptr);
 	assert(m_result != nullptr);
 
-	for (std::map<fem::element_ref_t, fem::ElementResults*>::iterator e = m_result->results.begin(); e != m_result->results.end(); e++) {
+	for (std::map<fem::element_ref_t, fem::ElementResults*>::iterator e = m_result->results.begin(); e != m_result->results.end(); ++e) {
 		fem::ElementResults* element_results;
 		fem::Element element = model.getElementByIndex(e->first);
 

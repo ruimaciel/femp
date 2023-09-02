@@ -18,7 +18,7 @@ void OutputResultsInNodesVisitor::visit(fem::Model& model, std::vector<fem::Anal
 	*m_out << "test\n";
 
 	// for(auto e: m_result->results)
-	for (std::map<fem::element_ref_t, fem::ElementResults*>::iterator e = m_result->results.begin(); e != m_result->results.end(); e++) {
+	for (std::map<fem::element_ref_t, fem::ElementResults*>::iterator e = m_result->results.begin(); e != m_result->results.end(); ++e) {
 		fem::ElementResults* element_results;
 		fem::Element element = model.getElementByIndex(e->first);
 

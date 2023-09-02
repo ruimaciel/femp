@@ -12,8 +12,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(OpenGL_GL_PREFERENCE "LEGACY")
 
-set(CMAKE_INCLUDE_CURRENT_DIR "YES")
-
 set(gui_HEADERS
     src/DefaultProgressIndicator.h++
     src/ProjectVisitor/OutputResultsInNodesCSVVisitor.h++

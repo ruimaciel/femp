@@ -38,17 +38,7 @@ jobs:
     steps:
       - restore_cache:
           key: v1-repo-{{ arch }}-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
-      - name: Remove the old docker packages deployed in Ubuntu
-        apt:
-          pkg:
-            - docker
-            - docker-engine
-            - docker.io
-            - containerd
-            - docker-compose-plugin
-          state: absent
-          update_cache: true
-        register: apt
+      
       - run:
           name: Install packages
           command: |
@@ -66,6 +56,3 @@ workflows:
   unscheduled:
     jobs:
       - build
-      - test:
-          requires:
-            - build

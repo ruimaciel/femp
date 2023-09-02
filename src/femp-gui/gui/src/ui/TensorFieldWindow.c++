@@ -9,7 +9,10 @@
 #include <libfemp/ElementResults/ElementResults.h++>
 
 // Qt includes
+#include <QAction>
+#include <QComboBox>
 #include <QDebug>
+#include <QToolBar>
 
 // stl includes
 #include <map>

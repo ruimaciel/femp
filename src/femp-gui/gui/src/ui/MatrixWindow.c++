@@ -1,5 +1,8 @@
 #include "MatrixWindow.h++"
 
+// Qt includes
+#include <QWidget>
+
 MatrixWindow::MatrixWindow(fem::Project& project, QWidget* parent) : QMdiSubWindow(parent), BaseWindow("Stiffness matrix") {
 	m_project = &project;
 	m_matrixWidget = new MatrixWidget(project, parent);

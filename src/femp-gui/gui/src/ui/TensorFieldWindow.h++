@@ -18,9 +18,11 @@
 #include <libfemp/ElementResults/ResultsRanges.h++>
 
 // Qt includes
-#include <QComboBox>
-#include <QToolBar>
 #include <QWidget>
+
+class QAction;
+class QComboBox;
+class QToolbar;
 
 /**
  * MDI window designed to represent a tensor field of a given analysis result

@@ -16,9 +16,10 @@
 #include <libfemp/ElementResults/ResultsRanges.h++>
 
 // Qt includes
-#include <QComboBox>
-#include <QToolBar>
 #include <QWidget>
+
+class QComboBox;
+class QToolBar;
 
 /**
  * MDI window designed to represent the model

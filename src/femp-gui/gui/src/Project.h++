@@ -13,6 +13,7 @@
 
 // stl includes
 #include <vector>
+#include <memory>
 
 /**
 This class is intended to describe a FEM project in it's entirely, which

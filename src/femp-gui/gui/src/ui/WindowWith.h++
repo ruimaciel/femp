@@ -4,9 +4,8 @@
 // gui includes
 #include <Project.h++>
 
-// Qt includes
-#include <QMainWindow>
-#include <QMenuBar>
+class QMainWindow;
+class QMenuBar;
 
 namespace fem {
 class Project;

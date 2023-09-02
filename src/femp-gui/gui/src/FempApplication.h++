@@ -3,7 +3,8 @@
 
 // Qt includes
 #include <QApplication>
-#include <QMainWindow>
+
+class QMainWindow;
 
 class FempApplication : public QApplication {
 	public:

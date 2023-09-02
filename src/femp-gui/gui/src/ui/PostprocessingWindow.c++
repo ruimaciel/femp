@@ -8,6 +8,10 @@
 // libfemp includes
 #include <libfemp/ElementResults/ElementResults.h++>
 
+// Qt includes
+#include <QComboBox>
+#include <QToolBar>
+
 // stl includes
 #include <map>
 

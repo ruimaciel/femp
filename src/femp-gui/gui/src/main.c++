@@ -1,8 +1,6 @@
-#include <QScopedPointer>
 #include <string>
 
 #include "FempApplication.h++"
-#include "ui/MainWindow.h++"
 
 Q_DECLARE_METATYPE(size_t);
 Q_DECLARE_METATYPE(std::string);

@@ -2,6 +2,9 @@
 
 #include "ui/MainWindow.h++"
 
+// Qt includes
+#include <QMainWindow>
+
 FempApplication::FempApplication(int& argc, char** argv) : QApplication(argc, argv), m_main_window(nullptr) {
 	// set QSettings data
 	QCoreApplication::setOrganizationName("Rui Maciel");

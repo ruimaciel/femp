@@ -8,10 +8,9 @@
 #include "BaseWindow.h++"
 
 // Qt includes
-#include <QComboBox>
 #include <QMdiSubWindow>
-#include <QToolBar>
-#include <QWidget>
+
+class QWidget;
 
 /**
  * MDI window designed to represent the stiffness matrix of an analysis

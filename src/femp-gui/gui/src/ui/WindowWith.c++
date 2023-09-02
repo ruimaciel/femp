@@ -2,6 +2,10 @@
 
 #include "../Project.h++"
 
+// Qt includes
+#include <QMainWindow>
+#include <QMenuBar>
+
 WindowWith::~WindowWith() {}
 
 void WindowWith::createMenuBar(QMainWindow*, QMenuBar*) {}

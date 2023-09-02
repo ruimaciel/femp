@@ -13,8 +13,8 @@ class DisplacementsRepresentationPolicy {
 	fem::Model* m_model;  // pointer to the current model
 
 	public:
-	protected:
-	public:
+	virtual ~DisplacementsRepresentationPolicy();
+
 	/**
 		Must set a reference to a fem::Model class in order to obtain
 	   displacements

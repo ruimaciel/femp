@@ -1,14 +1,7 @@
 #include "DisplacementsRepresentationPolicy.h++"
 
-//
-// Methods
-//
+DisplacementsRepresentationPolicy::~DisplacementsRepresentationPolicy() = default;
 
-// Accessor methods
-//
 void DisplacementsRepresentationPolicy::setModel(fem::Model& model) {
 	this->m_model = &model;
 }
-
-// Other methods
-//

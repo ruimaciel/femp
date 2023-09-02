@@ -16,15 +16,11 @@ class DisplacementsPolicy : virtual public DisplacementsRepresentationPolicy {
 	float m_scale;
 
 	public:
-	DisplacementsPolicy();
-	virtual ~DisplacementsPolicy();
 
-	protected:
-	public:
 	/**
 	 * returns the coordinate of a given point by providing the node's reference
 	 **/
-	fem::Point3D operator[](size_t& node_reference);
+	fem::Point3D operator[](size_t& node_reference) override;
 
 	void setAnalysisResult(fem::AnalysisResult& result);
 	void setDisplacementsScale(float scale);

@@ -8,11 +8,6 @@
  **/
 class NoDisplacementsPolicy : virtual public DisplacementsRepresentationPolicy {
 	public:
-	NoDisplacementsPolicy();
-	virtual ~NoDisplacementsPolicy();
-
-	protected:
-	public:
 	/**
 	 * Returns the coordinate of a given point by providing the node's reference
 	 **/

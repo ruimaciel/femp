@@ -1,13 +1,6 @@
 #include "DisplacementsPolicy.h++"
 
-// Constructors/Destructors
-//
-
-DisplacementsPolicy::DisplacementsPolicy() : DisplacementsRepresentationPolicy() {
-	this->m_result = nullptr;
-}
-
-DisplacementsPolicy::~DisplacementsPolicy() {}
+#include <assert.h>
 
 fem::Point3D DisplacementsPolicy::operator[](size_t& node_reference) {
 	assert(this->m_model != nullptr);

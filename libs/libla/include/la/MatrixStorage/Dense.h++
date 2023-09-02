@@ -59,7 +59,7 @@ void DenseMatrix<scalar>::clear() {
 	using namespace std;
 
 	data.data.clear();
-	data.data.resize(rows * columns);
+	data.data.resize(rows() * columns());
 }
 
 template <typename scalar>

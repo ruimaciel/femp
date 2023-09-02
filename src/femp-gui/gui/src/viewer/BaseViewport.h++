@@ -9,7 +9,7 @@
 #include <libfemp/AnalysisResult.h++>
 #include <libfemp/Model.h++>
 #include <options/Options.h++>
-#include <options/ViewportColors.h++>
+#include <viewer/ViewportColors.h++>
 #include <selection/Selection.h++>
 
 #include "../Project.h++"

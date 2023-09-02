@@ -1,7 +1,7 @@
 #ifndef HUD_OBJECT_HPP
 #define HUD_OBJECT_HPP
 
-#include <options/ViewportColors.h++>
+#include <viewer/ViewportColors.h++>
 #include <viewer/ViewportData.h++>
 
 /**

@@ -4,7 +4,8 @@
 #include <libfemp/AnalysisResult.h++>
 #include <list>
 #include <memory>
-#include <options/ViewportColors.h++>
+
+#include <viewer/ViewportColors.h++>
 
 #include "../../Project.h++"
 #include "../ViewportData.h++"

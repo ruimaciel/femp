@@ -84,8 +84,6 @@ void DenseMatrix<scalar>::resize(const size_t rows, const size_t columns) {
 
 	data.data.resize(rows);
 	data.t_rows = rows;
-
-	data.t_rows = rows;
 	data.t_columns = columns;
 
 	data.data.clear();

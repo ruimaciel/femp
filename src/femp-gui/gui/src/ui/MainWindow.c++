@@ -864,8 +864,8 @@ void MainWindow::updateWindowMenu() {
 
 		// map
 		m_windowMapper->setMapping(action, n);
-		connect(action, SIGNAL(triggered()), m_windowMapper, SLOT(map()));
-		connect(m_windowMapper, SIGNAL(mapped(int)), this, SLOT(activateSubWindowByIndex(int)));
+		connect(action, &QAction::triggered, m_windowMapper, QOverload<>::of(&QSignalMapper::map));
+		connect(m_windowMapper, &QSignalMapper::mappedInt, this, &MainWindow::activateSubWindowByIndex);
 	}
 }
 

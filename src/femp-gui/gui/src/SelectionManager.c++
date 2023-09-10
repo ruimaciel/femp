@@ -9,7 +9,7 @@ void SelectionManager::setSelection(Selection const& selection) {
 }
 
 void SelectionManager::clearSelection() {
-	this->m_selection.clear();
+	this->m_selection = Selection();
 
 	emit selectionCleared();
 }

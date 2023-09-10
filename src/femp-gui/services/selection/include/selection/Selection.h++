@@ -9,19 +9,11 @@ using node_ref_t = std::size_t;
 
 class Selection {
 	public:
-	void clear();
-
-	void setSelection(Selection const&);
-
-	void selectElement(const element_ref_t& ref);
-
-	void deselectElement(const element_ref_t& ref);
+	void selectElement(element_ref_t ref);
 
 	std::set<element_ref_t> getElementReferences() const;
 
-	void selectNode(const node_ref_t& ref);
-
-	void deselectNode(const node_ref_t& ref);
+	void selectNode(node_ref_t ref);
 
 	std::set<node_ref_t> getNodeReferences() const;
 

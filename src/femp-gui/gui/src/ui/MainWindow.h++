@@ -159,8 +159,6 @@ class MainWindow : public QMainWindow {
 	protected:
 	ViewportColors& getViewportColors();
 
-	void saveDocument(Document& doc, std::string filename);
-
 	protected:
 	std::unique_ptr<Ui::MainWindow> ui;
 

@@ -193,6 +193,13 @@ void MainWindow::reopenProject() {
 	importProjectFromJsonFile(QString::fromStdString(file_name));
 }
 
+static void saveDocument(Document& doc, std::string file_name) {
+	gui::application::SaveDocumentCommand command(doc.getProject().getModel(), file_name);
+	command.execute();
+
+	doc.setDirty(false);
+}
+
 void MainWindow::saveProject() {
 	qInfo() << "MainWindow::saveProject()";
 
@@ -957,11 +964,4 @@ void MainWindow::setUserInterfacePostAnalysis() {
 
 ViewportColors& MainWindow::getViewportColors() {
 	return m_colors;
-}
-
-void MainWindow::saveDocument(Document& doc, std::string file_name) {
-	gui::application::SaveDocumentCommand command(doc.getProject().getModel(), file_name);
-	command.execute();
-
-	doc.setDirty(false);
 }

@@ -112,6 +112,39 @@ void MainWindow::newProject() {
 	}
 }
 
+void MainWindow::importProjectFromJsonFile(QString file_name) {
+	std::fstream file;
+	file.open(file_name.toStdString(), std::fstream::in);
+
+	//TODO react to failed file open
+
+	fem::Model& model = m_document.getProject().getModel();
+	model.clear();
+	auto parser = fem::ModelImporterFactory::makeFemJsonParser();
+	parser->parse(file, model);
+
+	switch (parser->error.code) {
+		case Parser::Error::ERR_OK:
+			// setup the user interface
+			m_document.setProjectType(Document::TYPE_SOLID3D);	// nasty hack due to poor design
+			setUserInterfaceAsOpened();
+			break;
+
+		default:
+			qCritical() << __FILE__ << ":" << __LINE__;
+			qCritical() << QString("Error: %1").arg(QString::fromStdString(parser->error.message));
+
+			QMessageBox::critical(this, tr("Error"), parser->error.message.c_str());
+			m_document.clear();
+			break;
+	}
+
+	m_document.setFileName(file_name);
+
+	OutputElementStatisticsVisitor visit(m_selectionManager.getSelection());
+	m_document.getProject().accept(visit);
+}
+
 void MainWindow::openProject() {
 	qInfo() << "MainWindow::openProject()";
 
@@ -139,44 +172,9 @@ void MainWindow::openProject() {
 
 	// prepare the file
 	QStringList sl = dialog.selectedFiles();
-
 	QString file_name = sl.at(0);
 
-	std::string my_file_name(sl.at(0).toUtf8());
-	std::fstream file;
-
-	file.open(my_file_name, std::fstream::in);
-	if (!file) {
-		QMessageBox::critical(this, tr("Error"), tr("There was an error opening the file"));
-		return;
-	}
-
-	fem::Model& model = m_document.getProject().getModel();
-	auto parser = fem::ModelImporterFactory::makeFemJsonParser();
-	parser->parse(file, model);
-
-	switch (parser->error.code) {
-		case Parser::Error::ERR_OK:
-			// setup the user interface
-			m_document.setProjectType(Document::TYPE_SOLID3D);	// nasty hack due to poor design
-			this->setUserInterfaceAsOpened();
-			break;
-
-		default:
-			qCritical() << __FILE__ << ":" << __LINE__;
-			qCritical() << QString("Error: %1").arg(QString::fromStdString(parser->error.message));
-
-			QMessageBox::critical(this, tr("Error"), parser->error.message.c_str());
-			m_document.clear();
-			break;
-	}
-
-	m_document.setFileName(file_name);
-
-	OutputElementStatisticsVisitor visit(m_selectionManager.getSelection());
-	m_document.getProject().accept(visit);
-
-	file.close();
+	importProjectFromJsonFile(file_name);
 }
 
 void MainWindow::reopenProject() {
@@ -189,39 +187,10 @@ void MainWindow::reopenProject() {
 
 	// clear the document
 	setUserInterfaceAsClosed();
-	fem::Model& femp_model = this->m_document.getProject().getModel();
-	femp_model.clear();
 	this->m_selectionManager.clearSelection();
 
-	std::string my_file_name(m_document.getFileName().toUtf8());
-	std::fstream file;
-
-	file.open(my_file_name, std::fstream::in);
-	if (!file) {
-		QMessageBox::critical(this, tr("Error"), tr("There was an error opening the file"));
-		m_document.clear();
-		return;
-	}
-
-	// import the model by parsing the Fem.Json document
-	auto parser = fem::ModelImporterFactory::makeFemJsonParser();
-	parser->parse(file, femp_model);
-
-	switch (parser->error.code) {
-		case Parser::Error::ERR_OK:
-			setUserInterfaceAsOpened();
-			break;
-
-		default:
-			qCritical() << __FILE__ << ":" << __LINE__;
-			qCritical() << QString("Error: %1").arg(QString::fromStdString(parser->error.message));
-
-			QMessageBox::critical(this, tr("Error"), parser->error.message.c_str());
-			m_document.clear();
-			break;
-	}
-
-	file.close();
+	std::string file_name(m_document.getFileName().toUtf8());
+	importProjectFromJsonFile(QString::fromStdString(file_name));
 }
 
 void MainWindow::saveProject() {

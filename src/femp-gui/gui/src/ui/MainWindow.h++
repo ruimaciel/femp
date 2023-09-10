@@ -65,6 +65,8 @@ class MainWindow : public QMainWindow {
 	void newProject();
 	void openProject();
 
+	void importProjectFromJsonFile(QString file_name);
+
 	/**
 	 * If the current model has been saved to a file then this routine reloads the
 	 * document

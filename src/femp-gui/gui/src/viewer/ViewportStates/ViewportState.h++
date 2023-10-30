@@ -16,7 +16,7 @@ class BaseViewport;
 class ViewportState {
 	protected:
 	SceneGraph scenegraph;
-	float scale;
+	float scale = 1.0f;
 
 	public:
 	virtual ~ViewportState();

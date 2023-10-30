@@ -13,6 +13,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(OpenGL_GL_PREFERENCE "LEGACY")
 
 add_subdirectory(libs/options)
+add_subdirectory(src/viewer)
 
 set(gui_HEADERS
     src/DefaultProgressIndicator.h++
@@ -26,79 +27,6 @@ set(gui_HEADERS
     src/SelectionManager.h++
     src/Document.h++
     src/FempApplication.h++
-    src/viewer/InputStates/ISStart.h++
-    src/viewer/InputStates/ISLeftClick.h++
-    src/viewer/InputStates/InputState.h++
-    src/viewer/InputStates/Input.h++
-    src/viewer/InputStates/ISRightClick.h++
-    src/viewer/InputStates/ISLeftDrag.h++
-    src/viewer/InputStates/ISRightDrag.h++
-    src/viewer/boundaries/SphericalBoundary.h++
-    src/viewer/boundaries/BoundaryStrategy.h++
-    src/viewer/boundaries/CollisionDetection.h++
-    src/viewer/SceneGraphComponents/Operations/SelectRayIntersectionOperation.h++
-    src/viewer/SceneGraphComponents/Operations/SelectFrustumInclusionOperation.h++
-    src/viewer/SceneGraphComponents/Operations/OperationsVisitor.h++
-    src/viewer/SceneGraphComponents/Operations/ToggleSelectionOperation.h++
-    src/viewer/SceneGraphComponents/Operations/ToggleRenderOperation.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/StressFieldRepresentationPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldRepresentationPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/OpaqueRepresentationPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationFlyweightFactory.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/StressField/StressFieldRepresentation.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/StressField/StressFieldFactory.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/StressField/StressTensor.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress33GradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/VonMisesGradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/NeutralGradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain13GradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress23GradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/ConstantGradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress12GradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain23GradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain33GradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain12GradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain11GradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/GradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress22GradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress11GradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress13GradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain22GradientFieldPolicy.h++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/GradientFieldFlyweightFactory.h++
-    src/viewer/SceneGraphComponents/SGCElement.h++
-    src/viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.h++
-    src/viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.h++
-    src/viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++
-    src/viewer/SceneGraphComponents/SGCPickRay.h++
-    src/viewer/SceneGraphComponents/SceneGraphException.h++
-    src/viewer/SceneGraphComponents/Elements/Prism6.h++
-    src/viewer/SceneGraphComponents/Elements/Tetrahedron10.h++
-    src/viewer/SceneGraphComponents/Elements/Hexahedron20.h++
-    src/viewer/SceneGraphComponents/Elements/Tetrahedron4.h++
-    src/viewer/SceneGraphComponents/Elements/Prism18.h++
-    src/viewer/SceneGraphComponents/Elements/Prism15.h++
-    src/viewer/SceneGraphComponents/Elements/Hexahedron27.h++
-    src/viewer/SceneGraphComponents/Elements/Hexahedron8.h++
-    src/viewer/SceneGraphComponents/SGCNode.h++
-    src/viewer/SceneGraphComponents/SceneGraphComponent.h++
-    src/viewer/SceneGraphComponents/SceneComponentFactory.h++
-    src/viewer/SceneGraphComponents/SGCNodeRestrictions.h++
-    src/viewer/SceneGraphComponents/hud/HudObject.h++
-    src/viewer/SceneGraphComponents/hud/HudSelection.h++
-    src/viewer/PostprocessingViewport.h++
-    src/viewer/ModelViewport.h++
-    src/viewer/SceneGraph.h++
-    src/viewer/ViewportData.h++
-    src/viewer/RenderGroup.h++
-    src/viewer/TensorFieldViewport.h++
-    src/viewer/Camera.h++
-    src/viewer/ViewportStates/VPStateDisplacements.h++
-    src/viewer/ViewportStates/ViewportState.h++
-    src/viewer/ViewportStates/VPStateGradients.h++
-    src/viewer/ViewportStates/VPStateModel.h++
-    src/viewer/ViewportStates/VPStateTensorFields.h++
-    src/viewer/BaseViewport.h++
     src/ui/MainWindow.h++
     src/ui/models/AnalysisResultsModel.h++
     src/ui/models/LoadPatternsModel.h++
@@ -156,78 +84,6 @@ set(gui_SOURCES
     src/SelectionManager.c++
     src/Project.c++
     src/main.c++
-    src/viewer/InputStates/ISRightClick.c++
-    src/viewer/InputStates/ISLeftClick.c++
-    src/viewer/InputStates/InputState.c++
-    src/viewer/InputStates/ISStart.c++
-    src/viewer/InputStates/ISRightDrag.c++
-    src/viewer/InputStates/Input.c++
-    src/viewer/InputStates/ISLeftDrag.c++
-    src/viewer/boundaries/SphericalBoundary.c++
-    src/viewer/boundaries/BoundaryStrategy.c++
-    src/viewer/boundaries/CollisionDetection.c++
-    src/viewer/ViewportData.c++
-    src/viewer/SceneGraphComponents/Operations/ToggleSelectionOperation.c++
-    src/viewer/SceneGraphComponents/Operations/SelectFrustumInclusionOperation.c++
-    src/viewer/SceneGraphComponents/Operations/SelectRayIntersectionOperation.c++
-    src/viewer/SceneGraphComponents/Operations/OperationsVisitor.c++
-    src/viewer/SceneGraphComponents/Operations/ToggleRenderOperation.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldRepresentationPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/StressFieldRepresentationPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/OpaqueRepresentationPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationFlyweightFactory.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/StressField/StressFieldFactory.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/StressField/StressTensor.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/StressField/StressFieldRepresentation.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/NeutralGradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/VonMisesGradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress33GradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress22GradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/ConstantGradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain22GradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress23GradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress11GradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/GradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain33GradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain11GradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress12GradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress13GradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain23GradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain13GradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain12GradientFieldPolicy.c++
-    src/viewer/SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/GradientFieldFlyweightFactory.c++
-    src/viewer/SceneGraphComponents/SceneComponentFactory.c++
-    src/viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.c++
-    src/viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.c++
-    src/viewer/SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.c++
-    src/viewer/SceneGraphComponents/SGCPickRay.c++
-    src/viewer/SceneGraphComponents/SceneGraphComponent.c++
-    src/viewer/SceneGraphComponents/Elements/Hexahedron8.c++
-    src/viewer/SceneGraphComponents/Elements/Tetrahedron10.c++
-    src/viewer/SceneGraphComponents/Elements/Prism18.c++
-    src/viewer/SceneGraphComponents/Elements/Hexahedron20.c++
-    src/viewer/SceneGraphComponents/Elements/Prism6.c++
-    src/viewer/SceneGraphComponents/Elements/Tetrahedron4.c++
-    src/viewer/SceneGraphComponents/Elements/Prism15.c++
-    src/viewer/SceneGraphComponents/Elements/Hexahedron27.c++
-    src/viewer/SceneGraphComponents/SGCNode.c++
-    src/viewer/SceneGraphComponents/SGCElement.c++
-    src/viewer/SceneGraphComponents/SGCNodeRestrictions.c++
-    src/viewer/SceneGraphComponents/hud/HudSelection.c++
-    src/viewer/SceneGraphComponents/hud/HudObject.c++
-    src/viewer/TensorFieldViewport.c++
-    src/viewer/RenderGroup.c++
-    src/viewer/ModelViewport.c++
-    src/viewer/SceneGraph.c++
-    src/viewer/PostprocessingViewport.c++
-    src/viewer/BaseViewport.c++
-    src/viewer/ViewportStates/ViewportState.c++
-    src/viewer/ViewportStates/VPStateModel.c++
-    src/viewer/ViewportStates/VPStateDisplacements.c++
-    src/viewer/ViewportStates/VPStateGradients.c++
-    src/viewer/ViewportStates/VPStateTensorFields.c++
-    src/viewer/Camera.c++
     src/ui/AnalysisResultsWindow.c++
     src/ui/models/AnalysisResultsModel.c++
     src/ui/models/LoadPatternsModel.c++
@@ -322,6 +178,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 target_link_libraries(${PROJECT_NAME}
     gui_options::Object
+    viewer::Object
     domain
     persistence
     Qt5::Widgets

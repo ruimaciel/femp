@@ -1,156 +1,154 @@
 cmake_minimum_required(VERSION 3.10)
 
 set(viewer_HEADERS
-    InputStates/ISStart.h++
-    InputStates/ISLeftClick.h++
-    InputStates/InputState.h++
-    InputStates/Input.h++
-    InputStates/ISRightClick.h++
-    InputStates/ISLeftDrag.h++
-    InputStates/ISRightDrag.h++
-    boundaries/SphericalBoundary.h++
+    BaseViewport.h++
     boundaries/BoundaryStrategy.h++
     boundaries/CollisionDetection.h++
-    SceneGraphComponents/Operations/SelectRayIntersectionOperation.h++
-    SceneGraphComponents/Operations/SelectFrustumInclusionOperation.h++
-    SceneGraphComponents/Operations/OperationsVisitor.h++
-    SceneGraphComponents/Operations/ToggleSelectionOperation.h++
-    SceneGraphComponents/Operations/ToggleRenderOperation.h++
-    SceneGraphComponents/ElementRepresentationPolicy/StressFieldRepresentationPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldRepresentationPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/OpaqueRepresentationPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationFlyweightFactory.h++
-    SceneGraphComponents/ElementRepresentationPolicy/StressField/StressFieldRepresentation.h++
-    SceneGraphComponents/ElementRepresentationPolicy/StressField/StressFieldFactory.h++
-    SceneGraphComponents/ElementRepresentationPolicy/StressField/StressTensor.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress33GradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/VonMisesGradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/NeutralGradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain13GradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress23GradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/ConstantGradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress12GradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain23GradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain33GradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain12GradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain11GradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/GradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress22GradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress11GradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress13GradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain22GradientFieldPolicy.h++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/GradientFieldFlyweightFactory.h++
-    SceneGraphComponents/SGCElement.h++
-    SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.h++
+    boundaries/SphericalBoundary.h++
+    Camera.h++
+    InputStates/Input.h++
+    InputStates/InputState.h++
+    InputStates/ISLeftClick.h++
+    InputStates/ISLeftDrag.h++
+    InputStates/ISRightClick.h++
+    InputStates/ISRightDrag.h++
+    InputStates/ISStart.h++
+    ModelViewport.h++
+    PostprocessingViewport.h++
+    RenderGroup.h++
+    SceneGraph.h++
     SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.h++
     SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.h++
-    SceneGraphComponents/SGCPickRay.h++
-    SceneGraphComponents/SceneGraphException.h++
-    SceneGraphComponents/Elements/Prism6.h++
-    SceneGraphComponents/Elements/Tetrahedron10.h++
+    SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationFlyweightFactory.h++
+    SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/ConstantGradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/GradientFieldFlyweightFactory.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/GradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/NeutralGradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain11GradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain12GradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain13GradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain22GradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain23GradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain33GradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress11GradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress12GradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress13GradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress22GradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress23GradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress33GradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/VonMisesGradientFieldPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldRepresentationPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/OpaqueRepresentationPolicy.h++
+    SceneGraphComponents/ElementRepresentationPolicy/StressField/StressFieldFactory.h++
+    SceneGraphComponents/ElementRepresentationPolicy/StressField/StressFieldRepresentation.h++
+    SceneGraphComponents/ElementRepresentationPolicy/StressField/StressTensor.h++
+    SceneGraphComponents/ElementRepresentationPolicy/StressFieldRepresentationPolicy.h++
     SceneGraphComponents/Elements/Hexahedron20.h++
-    SceneGraphComponents/Elements/Tetrahedron4.h++
-    SceneGraphComponents/Elements/Prism18.h++
-    SceneGraphComponents/Elements/Prism15.h++
     SceneGraphComponents/Elements/Hexahedron27.h++
     SceneGraphComponents/Elements/Hexahedron8.h++
-    SceneGraphComponents/SGCNode.h++
-    SceneGraphComponents/SceneGraphComponent.h++
-    SceneGraphComponents/SceneComponentFactory.h++
-    SceneGraphComponents/SGCNodeRestrictions.h++
+    SceneGraphComponents/Elements/Prism15.h++
+    SceneGraphComponents/Elements/Prism18.h++
+    SceneGraphComponents/Elements/Prism6.h++
+    SceneGraphComponents/Elements/Tetrahedron10.h++
+    SceneGraphComponents/Elements/Tetrahedron4.h++
     SceneGraphComponents/hud/HudObject.h++
     SceneGraphComponents/hud/HudSelection.h++
-    PostprocessingViewport.h++
-    ModelViewport.h++
-    SceneGraph.h++
-    ViewportData.h++
-    RenderGroup.h++
+    SceneGraphComponents/Operations/OperationsVisitor.h++
+    SceneGraphComponents/Operations/SelectFrustumInclusionOperation.h++
+    SceneGraphComponents/Operations/SelectRayIntersectionOperation.h++
+    SceneGraphComponents/Operations/ToggleRenderOperation.h++
+    SceneGraphComponents/Operations/ToggleSelectionOperation.h++
+    SceneGraphComponents/SceneComponentFactory.h++
+    SceneGraphComponents/SceneGraphComponent.h++
+    SceneGraphComponents/SceneGraphException.h++
+    SceneGraphComponents/SGCElement.h++
+    SceneGraphComponents/SGCNode.h++
+    SceneGraphComponents/SGCNodeRestrictions.h++
+    SceneGraphComponents/SGCPickRay.h++
     TensorFieldViewport.h++
-    Camera.h++
-    ViewportStates/VPStateDisplacements.h++
+    ViewportData.h++
     ViewportStates/ViewportState.h++
+    ViewportStates/VPStateDisplacements.h++
     ViewportStates/VPStateGradients.h++
     ViewportStates/VPStateModel.h++
     ViewportStates/VPStateTensorFields.h++
-    BaseViewport.h++
-    ViewportColors.h++
     )
 
 set(viewer_SOURCES
-    InputStates/ISRightClick.c++
-    InputStates/ISLeftClick.c++
-    InputStates/InputState.c++
-    InputStates/ISStart.c++
-    InputStates/ISRightDrag.c++
-    InputStates/Input.c++
-    InputStates/ISLeftDrag.c++
-    boundaries/SphericalBoundary.c++
+    BaseViewport.c++
     boundaries/BoundaryStrategy.c++
     boundaries/CollisionDetection.c++
-    ViewportData.c++
-    SceneGraphComponents/Operations/ToggleSelectionOperation.c++
-    SceneGraphComponents/Operations/SelectFrustumInclusionOperation.c++
-    SceneGraphComponents/Operations/SelectRayIntersectionOperation.c++
-    SceneGraphComponents/Operations/OperationsVisitor.c++
-    SceneGraphComponents/Operations/ToggleRenderOperation.c++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldRepresentationPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/StressFieldRepresentationPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/OpaqueRepresentationPolicy.c++
+    boundaries/SphericalBoundary.c++
+    Camera.c++
+    InputStates/Input.c++
+    InputStates/InputState.c++
+    InputStates/ISLeftClick.c++
+    InputStates/ISLeftDrag.c++
+    InputStates/ISRightClick.c++
+    InputStates/ISRightDrag.c++
+    InputStates/ISStart.c++
+    ModelViewport.c++
+    PostprocessingViewport.c++
+    RenderGroup.c++
+    SceneGraph.c++
+    SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.c++
+    SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.c++
+    SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.c++
     SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationFlyweightFactory.c++
     SceneGraphComponents/ElementRepresentationPolicy/ElementRepresentationPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/StressField/StressFieldFactory.c++
-    SceneGraphComponents/ElementRepresentationPolicy/StressField/StressTensor.c++
-    SceneGraphComponents/ElementRepresentationPolicy/StressField/StressFieldRepresentation.c++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/NeutralGradientFieldPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/VonMisesGradientFieldPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress33GradientFieldPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress22GradientFieldPolicy.c++
     SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/ConstantGradientFieldPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain22GradientFieldPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress23GradientFieldPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress11GradientFieldPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/GradientFieldFlyweightFactory.c++
     SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/GradientFieldPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain33GradientFieldPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/NeutralGradientFieldPolicy.c++
     SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain11GradientFieldPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain12GradientFieldPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain13GradientFieldPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain22GradientFieldPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain23GradientFieldPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain33GradientFieldPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress11GradientFieldPolicy.c++
     SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress12GradientFieldPolicy.c++
     SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress13GradientFieldPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain23GradientFieldPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain13GradientFieldPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Strain12GradientFieldPolicy.c++
-    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/GradientFieldFlyweightFactory.c++
-    SceneGraphComponents/SceneComponentFactory.c++
-    SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.c++
-    SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.c++
-    SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.c++
-    SceneGraphComponents/SGCPickRay.c++
-    SceneGraphComponents/SceneGraphComponent.c++
-    SceneGraphComponents/Elements/Hexahedron8.c++
-    SceneGraphComponents/Elements/Tetrahedron10.c++
-    SceneGraphComponents/Elements/Prism18.c++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress22GradientFieldPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress23GradientFieldPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/Stress33GradientFieldPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldPolicy/VonMisesGradientFieldPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/GradientFieldRepresentationPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/OpaqueRepresentationPolicy.c++
+    SceneGraphComponents/ElementRepresentationPolicy/StressField/StressFieldFactory.c++
+    SceneGraphComponents/ElementRepresentationPolicy/StressField/StressFieldRepresentation.c++
+    SceneGraphComponents/ElementRepresentationPolicy/StressField/StressTensor.c++
+    SceneGraphComponents/ElementRepresentationPolicy/StressFieldRepresentationPolicy.c++
     SceneGraphComponents/Elements/Hexahedron20.c++
-    SceneGraphComponents/Elements/Prism6.c++
-    SceneGraphComponents/Elements/Tetrahedron4.c++
-    SceneGraphComponents/Elements/Prism15.c++
     SceneGraphComponents/Elements/Hexahedron27.c++
-    SceneGraphComponents/SGCNode.c++
-    SceneGraphComponents/SGCElement.c++
-    SceneGraphComponents/SGCNodeRestrictions.c++
-    SceneGraphComponents/hud/HudSelection.c++
+    SceneGraphComponents/Elements/Hexahedron8.c++
+    SceneGraphComponents/Elements/Prism15.c++
+    SceneGraphComponents/Elements/Prism18.c++
+    SceneGraphComponents/Elements/Prism6.c++
+    SceneGraphComponents/Elements/Tetrahedron10.c++
+    SceneGraphComponents/Elements/Tetrahedron4.c++
     SceneGraphComponents/hud/HudObject.c++
+    SceneGraphComponents/hud/HudSelection.c++
+    SceneGraphComponents/Operations/OperationsVisitor.c++
+    SceneGraphComponents/Operations/SelectFrustumInclusionOperation.c++
+    SceneGraphComponents/Operations/SelectRayIntersectionOperation.c++
+    SceneGraphComponents/Operations/ToggleRenderOperation.c++
+    SceneGraphComponents/Operations/ToggleSelectionOperation.c++
+    SceneGraphComponents/SceneComponentFactory.c++
+    SceneGraphComponents/SceneGraphComponent.c++
+    SceneGraphComponents/SGCElement.c++
+    SceneGraphComponents/SGCNode.c++
+    SceneGraphComponents/SGCNodeRestrictions.c++
+    SceneGraphComponents/SGCPickRay.c++
     TensorFieldViewport.c++
-    RenderGroup.c++
-    ModelViewport.c++
-    SceneGraph.c++
-    PostprocessingViewport.c++
-    BaseViewport.c++
-    ViewportColors.c++
+    ViewportData.c++
     ViewportStates/ViewportState.c++
-    ViewportStates/VPStateModel.c++
     ViewportStates/VPStateDisplacements.c++
     ViewportStates/VPStateGradients.c++
+    ViewportStates/VPStateModel.c++
     ViewportStates/VPStateTensorFields.c++
-    Camera.c++
     )
 
 add_library(viewer OBJECT
@@ -161,6 +159,16 @@ add_library(viewer OBJECT
 target_include_directories(viewer
     PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}
+    PRIVATE
+    .. #TODO required to include <ProjectVisitor/ProjectVisitor.h++> sidestep dependency
+    )
+
+set_target_properties(viewer
+    PROPERTIES
+    CXX_STANDARD 14
+    CXX_EXTENSIONS OFF
+    AUTOMOC ON
+    AUTOUIC ON
     )
 
 target_link_libraries(viewer
@@ -168,5 +176,12 @@ target_link_libraries(viewer
     libfemp
     Qt5::Core
     PRIVATE
+    application
+    selection
+    persistence
+    gui_options::Object
     Qt5::Gui
+    Qt5::OpenGL
     )
+
+add_library(viewer::Object ALIAS viewer)

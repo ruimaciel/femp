@@ -22,17 +22,17 @@ class SphericalBoundary : public BoundaryStrategy {
 	 * Checks if a given point is inside this boundary
 	 * @return	true if it is, false if it isn't
 	 **/
-	bool inside(const fem::Point3D&);
+	bool inside(const fem::Point3D&) override;
 
 	/**
 	 * Sets this sphere's starting point
 	 **/
-	void setPoint(const fem::Point3D&);
+	void setPoint(const fem::Point3D&) override;
 
 	/**
 	 * Resizes the spherical boundary, if needed, to include a new point
 	 **/
-	void addPoint(const fem::Point3D&);
+	void addPoint(const fem::Point3D&) override;
 };
 
 #endif

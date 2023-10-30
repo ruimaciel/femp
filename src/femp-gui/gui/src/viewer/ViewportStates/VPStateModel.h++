@@ -26,21 +26,21 @@ class VPStateModel : public ViewportState {
 	VPStateModel();
 	~VPStateModel();
 
-	void initialize(BaseViewport* viewport);
-	void populateScenegraph(BaseViewport* viewport);
+	void initialize(BaseViewport* viewport) override;
+	void populateScenegraph(BaseViewport* viewport) override;
 
 	/**
 	 * Tweaks the way the viewport is rendered according to the current selection
 	 */
-	void setSelection(Selection);
+	void setSelection(Selection) override;
 
-	void keyPressEvent(BaseViewport* viewport, QKeyEvent* event);
+	void keyPressEvent(BaseViewport* viewport, QKeyEvent* event) override;
 
 	/**
 	 * Sets the relevant policies to render the OpenGL triangles with a wireframe
 	 * This isn't implemented in ViewportStates which won't render Opaque objects
 	 */
-	void setTrianglesVisible(bool const state);
+	void setTrianglesVisible(bool const state) override;
 };
 
 #endif

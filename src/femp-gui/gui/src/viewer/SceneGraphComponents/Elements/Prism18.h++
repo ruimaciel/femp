@@ -21,7 +21,7 @@ class Prism18 : public Element {
 			DisplacementsRepresentationPolicy* displacements);
 
 	protected:
-	void paintGL(ViewportData& data, ViewportColors& colors);
+	void paintGL(ViewportData& data, ViewportColors& colors) override;
 };
 }  // namespace SGC
 

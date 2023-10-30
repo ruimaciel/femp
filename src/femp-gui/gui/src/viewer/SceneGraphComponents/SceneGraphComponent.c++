@@ -12,9 +12,9 @@ SceneGraphComponent::~SceneGraphComponent() {
 }
 
 void SceneGraphComponent::paintGL(ViewportData& data, ViewportColors& colors) {
-	for (std::list<std::shared_ptr<SceneGraphComponent>>::iterator i = this->children.begin(); i != this->children.end(); i++) {
-		if ((*i)->render) {
-			(*i)->paintGL(data, colors);
+	for (std::shared_ptr<SceneGraphComponent>& component : children) {
+		if (component->render) {
+			component->paintGL(data, colors);
 		}
 	}
 }
@@ -24,7 +24,7 @@ void SceneGraphComponent::pushComponent(std::shared_ptr<SceneGraphComponent> new
 }
 
 void SceneGraphComponent::accept(Operation::OperationsVisitor& visitor) {
-	for (auto component : children) {
+	for (std::shared_ptr<SceneGraphComponent>& component : children) {
 		component->accept(visitor);
 	}
 }

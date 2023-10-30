@@ -7,8 +7,8 @@ RenderGroup::RenderGroup() {
 }
 
 void RenderGroup::generateSceneGraph() {
-	for (auto i : this->primitive_components) {
-		this->scenegraph.pushComponent(i);
+	for (std::shared_ptr<SceneGraphComponent>& component : this->primitive_components) {
+		this->scenegraph.pushComponent(component);
 	}
 }
 

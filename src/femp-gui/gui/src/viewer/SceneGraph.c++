@@ -24,9 +24,10 @@ void SceneGraph::clear() {
 void SceneGraph::paint(ViewportData& viewport_data, ViewportColors colors) {
 	using namespace std;
 
-	for (map<enum Groups, RenderGroup>::iterator i = rendering_groups.begin(); i != rendering_groups.end(); i++) {
-		if (i->second.isVisible()) {
-			i->second.paintGL(viewport_data, colors);
+	for (std::pair<SceneGraph::Groups, RenderGroup> i : rendering_groups) {
+		RenderGroup& render_group = i.second;
+		if (render_group.isVisible()) {
+			render_group.paintGL(viewport_data, colors);
 		}
 	}
 
@@ -40,14 +41,14 @@ void SceneGraph::addPrimitiveComponent(enum Groups group, std::shared_ptr<SceneG
 }
 
 void SceneGraph::generateSceneGraph() {
-	for (std::map<enum Groups, RenderGroup>::iterator i = this->rendering_groups.begin(); i != this->rendering_groups.end(); i++) {
-		i->second.generateSceneGraph();
+	for (std::pair<enum SceneGraph::Groups, RenderGroup> e : this->rendering_groups) {
+		e.second.generateSceneGraph();
 	}
 }
 
 void SceneGraph::runOperation(Operation::OperationsVisitor& visitor) {
-	for (auto i : this->m_primitive_components) {
-		i->accept(visitor);
+	for (std::shared_ptr<SceneGraphComponent>& component : this->m_primitive_components) {
+		component->accept(visitor);
 	}
 }
 

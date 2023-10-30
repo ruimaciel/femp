@@ -5,7 +5,7 @@
 #include <list>
 #include <memory>
 
-#include <viewer/ViewportColors.h++>
+#include <options/ViewportColors.h++>
 
 #include "../../Project.h++"
 #include "../ViewportData.h++"

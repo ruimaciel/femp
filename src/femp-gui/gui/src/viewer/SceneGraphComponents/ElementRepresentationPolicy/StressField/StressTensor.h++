@@ -5,7 +5,7 @@
 
 #include <array>
 #include <libfemp/Point3D.h++>
-#include <viewer/ViewportColors.h++>
+#include <options/ViewportColors.h++>
 
 namespace StressFieldRepresentation {
 

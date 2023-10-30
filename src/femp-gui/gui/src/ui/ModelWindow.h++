@@ -7,7 +7,7 @@
 #include "MdiWindow.h++"
 #include "WindowWithWireframe.h++"
 #include <options/Options.h++>
-#include <viewer/ViewportColors.h++>
+#include <options/ViewportColors.h++>
 
 // Qt includes
 #include <QMainWindow>

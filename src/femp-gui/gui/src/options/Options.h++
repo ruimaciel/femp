@@ -4,7 +4,7 @@
 #include <QDir>
 
 #include "DisplayOptions.h++"
-#include <viewer/ViewportColors.h++>
+#include <options/ViewportColors.h++>
 
 class Options {
 	public:

@@ -139,8 +139,8 @@ set(gui_HEADERS
     src/ui/MdiWindow.h++
     src/Project.h++
     src/options/DisplayOptions.h++
-    src/viewer/ViewportColors.h++
     src/options/Options.h++
+    src/options/ViewportColors.h++
     )
 
 set(gui_SOURCES
@@ -270,8 +270,8 @@ set(gui_SOURCES
     src/ui/TensorFieldWindow.c++
     src/ui/WindowWith.c++
     src/options/DisplayOptions.c++
-    src/viewer/ViewportColors.c++
     src/options/Options.c++
+    src/options/ViewportColors.c++
     )
 
 set(gui_FORMS

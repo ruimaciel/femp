@@ -1,4 +1,4 @@
-#include "Options.h++"
+#include <options/Options.h++>
 
 #include <QSettings>
 

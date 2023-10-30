@@ -1,9 +1,9 @@
-#ifndef OPTIONS_HPP
-#define OPTIONS_HPP
+#ifndef GUI_OPTIONS_HPP
+#define GUI_OPTIONS_HPP
 
 #include <QDir>
 
-#include "DisplayOptions.h++"
+#include <options/DisplayOptions.h++>
 #include <options/ViewportColors.h++>
 
 class Options {

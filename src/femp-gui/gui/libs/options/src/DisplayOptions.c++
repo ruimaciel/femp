@@ -1,4 +1,4 @@
-#include "DisplayOptions.h++"
+#include <options/DisplayOptions.h++>
 
 DisplayOptions::DisplayOptions() {
 	nodes = 1;

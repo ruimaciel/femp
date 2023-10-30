@@ -1,5 +1,5 @@
-#ifndef GUI_DISPLAY_OPTIONS_HPP
-#define GUI_DISPLAY_OPTIONS_HPP
+#ifndef GUI_DISPLAYOPTIONS_HPP
+#define GUI_DISPLAYOPTIONS_HPP
 
 /**
 Helper class belonging to glwidget (a has-a relationship) that states what model

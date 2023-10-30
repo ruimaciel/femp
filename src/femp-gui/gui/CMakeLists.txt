@@ -12,6 +12,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(OpenGL_GL_PREFERENCE "LEGACY")
 
+add_subdirectory(libs/options)
+
 set(gui_HEADERS
     src/DefaultProgressIndicator.h++
     src/ProjectVisitor/OutputResultsInNodesCSVVisitor.h++
@@ -138,9 +140,6 @@ set(gui_HEADERS
     src/ui/widgets/MatrixWidget.h++
     src/ui/MdiWindow.h++
     src/Project.h++
-    src/options/DisplayOptions.h++
-    src/options/Options.h++
-    src/options/ViewportColors.h++
     )
 
 set(gui_SOURCES
@@ -269,9 +268,6 @@ set(gui_SOURCES
     src/ui/widgets/SelectionWidget.c++
     src/ui/TensorFieldWindow.c++
     src/ui/WindowWith.c++
-    src/options/DisplayOptions.c++
-    src/options/Options.c++
-    src/options/ViewportColors.c++
     )
 
 set(gui_FORMS
@@ -325,6 +321,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     )
 
 target_link_libraries(${PROJECT_NAME}
+    gui_options::Object
     domain
     persistence
     Qt5::Widgets

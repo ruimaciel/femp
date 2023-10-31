@@ -2,8 +2,7 @@
 
 // gui includes
 #include <ui/dialogs/ResultsRangeDialog.h++>
-
-#include "../viewer/TensorFieldViewport.h++"
+#include <viewer/TensorFieldViewport.h++>
 
 // libfemp includes
 #include <libfemp/ElementResults/ElementResults.h++>

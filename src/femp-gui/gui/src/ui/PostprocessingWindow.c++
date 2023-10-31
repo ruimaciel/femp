@@ -2,8 +2,8 @@
 
 // gui includes
 #include <ui/dialogs/ResultsRangeDialog.h++>
-
-#include "../viewer/PostprocessingViewport.h++"
+#include <viewer/BaseViewport.h++>
+#include <viewer/PostprocessingViewport.h++>
 
 // libfemp includes
 #include <libfemp/ElementResults/ElementResults.h++>

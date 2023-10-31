@@ -11,7 +11,7 @@
 #include <Project.h++>
 
 // viewer includes
-#include "../viewer/TensorFieldViewport.h++"
+#include <viewer/TensorFieldViewport.h++>
 
 // libfemp includes
 #include <libfemp/AnalysisResult.h++>

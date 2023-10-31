@@ -14,7 +14,7 @@
 #include <application/interfaces/ILoadPatternRepository.h++>
 
 // viewer includes
-#include "viewer/ModelViewport.h++"
+#include <viewer/ModelViewport.h++>
 
 // libfemp includes
 #include <libfemp/AnalysisResult.h++>

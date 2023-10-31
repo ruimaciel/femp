@@ -1,6 +1,6 @@
 #include "ModelWindow.h++"
 
-#include "../viewer/ModelViewport.h++"
+#include "viewer/ModelViewport.h++"
 
 ModelWindow::ModelWindow(fem::Project& project, ViewportColors& colors, QWidget* parent) : MdiWindow(parent), BaseWindow("Model") {
 	viewport = new ModelViewport(project, this);

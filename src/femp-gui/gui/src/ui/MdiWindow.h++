@@ -7,10 +7,10 @@
 // gui includes
 #include <options/Options.h++>
 #include <selection/Selection.h++>
-#include "../viewer/ViewportData.h++"
+#include <viewer/ViewportData.h++>
 
 // viewer includes
-#include "viewer/BaseViewport.h++"
+#include <viewer/BaseViewport.h++>
 
 // Qt includes
 #include <QAction>

@@ -1,5 +1,5 @@
-#ifndef FEMP_TENSORFIELDVIEWPORT_HPP
-#define FEMP_TENSORFIELDVIEWPORT_HPP
+#ifndef VIEWER_TENSORFIELDVIEWPORT_HPP
+#define VIEWER_TENSORFIELDVIEWPORT_HPP
 
 // viewer includes
 #include <viewer/BaseViewport.h++>

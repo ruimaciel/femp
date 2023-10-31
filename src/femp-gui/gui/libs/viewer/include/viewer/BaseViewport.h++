@@ -1,5 +1,5 @@
-#ifndef BASE_VIEWPORT_HPP
-#define BASE_VIEWPORT_HPP
+#ifndef VIEWER_BASEVIEWPORT_HPP
+#define VIEWER_BASEVIEWPORT_HPP
 
 #include <assert.h>
 

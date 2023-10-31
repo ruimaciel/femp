@@ -1,5 +1,5 @@
-#ifndef FEMP_CAMERA_HH
-#define FEMP_CAMERA_HH
+#ifndef VIEWER_CAMERA_HPP
+#define VIEWER_CAMERA_HPP
 
 // libfemp includes
 #include <libfemp/Point3D.h++>

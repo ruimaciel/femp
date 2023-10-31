@@ -1,5 +1,5 @@
-#ifndef VIEWER_MODELVIEWPORT_HPP
-#define VIEWER_MODELVIEWPORT_HPP
+#ifndef GUI_VIEWER_MODELVIEWPORT_HPP
+#define GUI_VIEWER_MODELVIEWPORT_HPP
 
 // viewer includes
 #include <viewer/BaseViewport.h++>

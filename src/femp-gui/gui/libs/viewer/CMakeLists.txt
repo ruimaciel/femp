@@ -166,7 +166,7 @@ target_include_directories(viewer
     ${CMAKE_CURRENT_SOURCE_DIR}/src #FIXIT included to simplify migration
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
-    .. #TODO required to include <ProjectVisitor/ProjectVisitor.h++> sidestep dependency
+    ../../src #TODO required to include <ProjectVisitor/ProjectVisitor.h++> sidestep dependency
     )
 
 set_target_properties(viewer

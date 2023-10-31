@@ -7,7 +7,7 @@
 
 #include <options/ViewportColors.h++>
 
-#include "../../Project.h++"
+#include "Project.h++"
 #include <viewer/ViewportData.h++>
 #include "../boundaries/BoundaryStrategy.h++"  // a definition of a bounding volume through the use of a strategy pattern
 #include "../boundaries/SphericalBoundary.h++"

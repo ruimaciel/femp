@@ -13,7 +13,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(OpenGL_GL_PREFERENCE "LEGACY")
 
 add_subdirectory(libs/options)
-add_subdirectory(src/viewer)
+add_subdirectory(libs/viewer)
 
 set(gui_HEADERS
     src/DefaultProgressIndicator.h++

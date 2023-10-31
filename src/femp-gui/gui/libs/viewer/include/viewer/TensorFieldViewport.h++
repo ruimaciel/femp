@@ -6,7 +6,7 @@
 #include "ViewportStates/VPStateTensorFields.h++"
 
 // gui includes
-#include "../../Project.h++"
+#include "Project.h++"
 
 // libfemp includes
 #include <libfemp/AnalysisResult.h++>

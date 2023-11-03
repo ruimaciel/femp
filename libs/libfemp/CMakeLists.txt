@@ -166,6 +166,7 @@ target_link_libraries(libfemp
 	libla
     libquadrature
 	Eigen3::Eigen
+	Boost::headers
     libfemp_io
     libfemp_mesh
 	)

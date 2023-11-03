@@ -11,6 +11,7 @@ The project depends on the following software packages:
 
 * Qt5
 * Eigen3
+* Boost
 * SuiteSparse
 * OpenGL
 * GLUT

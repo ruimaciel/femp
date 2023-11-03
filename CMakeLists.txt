@@ -9,6 +9,7 @@ find_package(Qt5 COMPONENTS Core Widgets OpenGL REQUIRED)
 
 set(OpenGL_GL_PREFERENCE "LEGACY")
 find_package(OpenGL REQUIRED)
+find_package(Boost REQUIRED COMPONENTS headers)
 
 add_subdirectory(libs/libla)
 add_subdirectory(libs/libquadrature)

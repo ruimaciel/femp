@@ -5,17 +5,17 @@ project(selection
     )
 
 set(selection_INCLUDES
-    include/selection/Selection.h++
-    include/selection/ISelectionService.h++
-    include/selection/SelectionService.h++
+    include/selection/Selection.hpp
+    include/selection/ISelectionService.hpp
+    include/selection/SelectionService.hpp
     )
 
 set(selection_HEADERS
     )
 
 set(selection_SOURCES
-    src/Selection.c++
-    src/SelectionService.c++
+    src/Selection.cpp
+    src/SelectionService.cpp
     )
 
 add_library(${PROJECT_NAME} STATIC

@@ -5,16 +5,16 @@ project(libfemp_io
 	)
 
 set(libfemp_io_INCLUDES
-	include/libfemp/io/import/Parser.h++
+	include/libfemp/io/import/Parser.hpp
 	)
 
 set(libfemp_io_HEADERS
-    src/export/GmshExporter.h++
+    src/export/GmshExporter.hpp
     )
 
 set(libfemp_io_SOURCES
-    src/export/GmshExporter.c++
-    src/import/Parser.c++
+    src/export/GmshExporter.cpp
+    src/import/Parser.cpp
     )
 
 add_library(libfemp_io

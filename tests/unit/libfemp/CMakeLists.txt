@@ -1,7 +1,7 @@
 set(libfemp_test_SOURCES_PREFIX "test_libfemp_")
 
 file(GLOB libfemp_test_SOURCES
-    "${CMAKE_CURRENT_SOURCE_DIR}/${libfemp_test_SOURCES_PREFIX}*.c++"
+    "${CMAKE_CURRENT_SOURCE_DIR}/${libfemp_test_SOURCES_PREFIX}*.cpp"
     )
 
 foreach(libfemp_test_SOURCE_FILE ${libfemp_test_SOURCES})

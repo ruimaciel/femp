@@ -6,25 +6,25 @@ project(libquadrature
     )
 
 set(libquadrature_INCLUDES
-    include/quadrature_rules/Line.h++
-    include/quadrature_rules/Prism.h++
-    include/quadrature_rules/Tetrahedron.h++
-    include/quadrature_rules/QuadraturePoint.h++
-    include/quadrature_rules/Triangle.h++
-    include/quadrature_rules/SurfaceRule.h++
-    include/quadrature_rules/Quadrangle.h++
-    include/quadrature_rules/Hexahedron.h++
-    include/quadrature_rules/VolumeRule.h++
+    include/quadrature_rules/Line.hpp
+    include/quadrature_rules/Prism.hpp
+    include/quadrature_rules/Tetrahedron.hpp
+    include/quadrature_rules/QuadraturePoint.hpp
+    include/quadrature_rules/Triangle.hpp
+    include/quadrature_rules/SurfaceRule.hpp
+    include/quadrature_rules/Quadrangle.hpp
+    include/quadrature_rules/Hexahedron.hpp
+    include/quadrature_rules/VolumeRule.hpp
     )
 
 set(libquadrature_SOURCES
-    src/Line.c++
-    src/Quadrangle.c++
-    src/Hexahedron.c++
-    src/Prism.c++
-    src/Triangle.c++
-    src/SurfaceRule.c++
-    src/Tetrahedron.c++
+    src/Line.cpp
+    src/Quadrangle.cpp
+    src/Hexahedron.cpp
+    src/Prism.cpp
+    src/Triangle.cpp
+    src/SurfaceRule.cpp
+    src/Tetrahedron.cpp
     )
 
 add_library(libquadrature

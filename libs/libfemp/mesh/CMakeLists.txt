@@ -6,42 +6,42 @@ project(libfemp
     )
 
 set(libfemp_mesh_INCLUDES
-    include/libfemp/mesh/MeshModel.h++
-    include/libfemp/mesh/Element.h++
-    include/libfemp/mesh/ElementVisitor.h++
-    include/libfemp/mesh/Node.h++
-    include/libfemp/mesh/elements/Tetrahedron4.h++
-    include/libfemp/mesh/elements/Tetrahedron10.h++
-    include/libfemp/mesh/elements/Tetrahedron20.h++
-    include/libfemp/mesh/elements/Tetrahedron35.h++
-    include/libfemp/mesh/elements/Tetrahedron56.h++
-    include/libfemp/mesh/elements/Hexahedron8.h++
-    include/libfemp/mesh/elements/Hexahedron20.h++
-    include/libfemp/mesh/elements/Hexahedron27.h++
-    include/libfemp/mesh/elements/Prism6.h++
-    include/libfemp/mesh/elements/Prism15.h++
-    include/libfemp/mesh/elements/Prism18.h++
+    include/libfemp/mesh/MeshModel.hpp
+    include/libfemp/mesh/Element.hpp
+    include/libfemp/mesh/ElementVisitor.hpp
+    include/libfemp/mesh/Node.hpp
+    include/libfemp/mesh/elements/Tetrahedron4.hpp
+    include/libfemp/mesh/elements/Tetrahedron10.hpp
+    include/libfemp/mesh/elements/Tetrahedron20.hpp
+    include/libfemp/mesh/elements/Tetrahedron35.hpp
+    include/libfemp/mesh/elements/Tetrahedron56.hpp
+    include/libfemp/mesh/elements/Hexahedron8.hpp
+    include/libfemp/mesh/elements/Hexahedron20.hpp
+    include/libfemp/mesh/elements/Hexahedron27.hpp
+    include/libfemp/mesh/elements/Prism6.hpp
+    include/libfemp/mesh/elements/Prism15.hpp
+    include/libfemp/mesh/elements/Prism18.hpp
     )
 
 set(libfemp_mesh_HEADERS
-    src/MeshModelImpl.h++
+    src/MeshModelImpl.hpp
     )
 
 set(libfemp_mesh_SOURCES
-    src/MeshModelImpl.c++
-    src/Element.c++
-    src/elements/Tetrahedron4.c++
-    src/elements/Tetrahedron10.c++
-    src/elements/Tetrahedron20.c++
-    src/elements/Tetrahedron35.c++
-    src/elements/Tetrahedron56.c++
-    src/elements/Hexahedron8.c++
-    src/elements/Hexahedron20.c++
-    src/elements/Hexahedron27.c++
-    src/elements/Prism6.c++
-    src/elements/Prism15.c++
-    src/elements/Prism18.c++
-    src/Node.c++
+    src/MeshModelImpl.cpp
+    src/Element.cpp
+    src/elements/Tetrahedron4.cpp
+    src/elements/Tetrahedron10.cpp
+    src/elements/Tetrahedron20.cpp
+    src/elements/Tetrahedron35.cpp
+    src/elements/Tetrahedron56.cpp
+    src/elements/Hexahedron8.cpp
+    src/elements/Hexahedron20.cpp
+    src/elements/Hexahedron27.cpp
+    src/elements/Prism6.cpp
+    src/elements/Prism15.cpp
+    src/elements/Prism18.cpp
+    src/Node.cpp
     )
 
 add_library(libfemp_mesh

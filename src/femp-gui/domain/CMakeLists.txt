@@ -6,16 +6,16 @@ project(domain
     )
 
 set(domain_INCLUDES
-	include/domain/Model.h++
+	include/domain/Model.hpp
     )
 
 set(domain_HEADERS
-    src/ModelImpl.h++
+    src/ModelImpl.hpp
     )
 
 set(domain_SOURCES
-    src/Model.c++
-    src/ModelImpl.c++
+    src/Model.cpp
+    src/ModelImpl.cpp
     )
 
 add_library(${PROJECT_NAME} STATIC

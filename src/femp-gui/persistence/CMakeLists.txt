@@ -7,20 +7,20 @@ project(persistence
 
 
 set(persistence_INCLUDES
-    include/persistence/ElementRepository.h++
-    include/persistence/NodeRepository.h++
-    include/persistence/MaterialRepository.h++
-    include/persistence/LoadPatternRepository.h++
+    include/persistence/ElementRepository.hpp
+    include/persistence/NodeRepository.hpp
+    include/persistence/MaterialRepository.hpp
+    include/persistence/LoadPatternRepository.hpp
     )
 
 set(persistence_HEADERS
     )
 
 set(persistence_SOURCES
-    src/ElementRepository.c++
-    src/NodeRepository.c++
-    src/MaterialRepository.c++
-    src/LoadPatternRepository.c++
+    src/ElementRepository.cpp
+    src/NodeRepository.cpp
+    src/MaterialRepository.cpp
+    src/LoadPatternRepository.cpp
     )
 
 add_library(${PROJECT_NAME} STATIC

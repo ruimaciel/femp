@@ -10,10 +10,10 @@ if(USES_RE2C)
 	message(STATUS "Adding re2c custom rules")
 	find_program(RE2C re2c REQUIRED)
 
-	add_custom_command( OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.c++
-		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.c++.re2c ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.h++
+	add_custom_command( OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.cpp
+		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.cpp.re2c ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.hpp
 		COMMAND ${RE2C}
-		ARGS -i -T -o ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.c++ ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.c++.re2c
+		ARGS -i -T -o ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/io/import/FemJsonParser.cpp.re2c
 		COMMENT "Generating re2c files"
 		)
 else(USES_RE2C)
@@ -24,128 +24,128 @@ add_subdirectory(io)
 add_subdirectory(mesh)
 
 set(libfemp_INCLUDES
-	include/libfemp/Point2D.h++
-	include/libfemp/SurfaceLoadOperators/SurfaceNormalLoad.h++
-	include/libfemp/SurfaceLoadOperators/SurfaceLoadOperator.h++
-	include/libfemp/SurfaceLoadOperators/ConstantLoad.h++
-	include/libfemp/ElementResults/ElementResultsFactory.h++
-	include/libfemp/ElementResults/Stresses.h++
-	include/libfemp/ElementResults/ResultsRanges.h++
-	include/libfemp/ElementResults/Strains.h++
-	include/libfemp/ElementResults/ElementResults.h++
-	include/libfemp/Node.h++
-	include/libfemp/Material.h++
-	include/libfemp/Point3D.h++
-	include/libfemp/elements/Prism6.h++
-	include/libfemp/elements/Tetrahedron10.h++
-	include/libfemp/elements/Hexahedron20.h++
-	include/libfemp/elements/Tetrahedron4.h++
-	include/libfemp/elements/all.h++
-	include/libfemp/elements/Prism18.h++
-	include/libfemp/elements/ElementFactory.h++
-	include/libfemp/elements/Prism15.h++
-	include/libfemp/elements/Hexahedron27.h++
-	include/libfemp/elements/HexahedronFamily.h++
-	include/libfemp/elements/TetrahedronFamily.h++
-	include/libfemp/elements/BaseElement.h++
-	include/libfemp/elements/Hexahedron8.h++
-	include/libfemp/elements/PrismFamily.h++
-	include/libfemp/ElementGroup.h++
-	include/libfemp/io/export/JsonExporter.h++
-	include/libfemp/LoadPattern.h++
-	include/libfemp/Group.h++
-	include/libfemp/GlobalDof.h++
-	include/libfemp/Equation.h++
-	include/libfemp/NodalDisplacement.h++
-	include/libfemp/Analysis.h++
-	include/libfemp/NodeRestrictions.h++
-	include/libfemp/Element.h++
-	include/libfemp/LinearAnalysis.h++
-	include/libfemp/NodeGroup.h++
-	include/libfemp/io/import/Parser.h++
-	include/libfemp/io/import/ModelImporterFactory.h++
-	include/libfemp/solvers/CholeskySolver.h++
-	include/libfemp/solvers/CGSolver.h++
-	include/libfemp/solvers/DenseCholeskySolver.h++
-	include/libfemp/solvers/UmfpackSolver.h++
-	include/libfemp/solvers/Solver.h++
-	include/libfemp/AnalysisResult.h++
-	include/libfemp/FemException.h++
-	include/libfemp/GlobalDofMap.h++
-	include/libfemp/loads/Triangle6.h++
-	include/libfemp/loads/Quadrangle9.h++
-	include/libfemp/loads/DomainLoad.h++
-	include/libfemp/loads/Triangle3.h++
-	include/libfemp/loads/Triangle10.h++
-	include/libfemp/loads/SurfaceLoad.h++
-	include/libfemp/loads/Quadrangle8.h++
-	include/libfemp/loads/NodalLoad.h++
-	include/libfemp/loads/Quadrangle4.h++
-	include/libfemp/loads/QuadrangleFamily.h++
-	include/libfemp/loads/TriangleFamily.h++
-	include/libfemp/Surface.h++
-	include/libfemp/Model.h++
+	include/libfemp/Point2D.hpp
+	include/libfemp/SurfaceLoadOperators/SurfaceNormalLoad.hpp
+	include/libfemp/SurfaceLoadOperators/SurfaceLoadOperator.hpp
+	include/libfemp/SurfaceLoadOperators/ConstantLoad.hpp
+	include/libfemp/ElementResults/ElementResultsFactory.hpp
+	include/libfemp/ElementResults/Stresses.hpp
+	include/libfemp/ElementResults/ResultsRanges.hpp
+	include/libfemp/ElementResults/Strains.hpp
+	include/libfemp/ElementResults/ElementResults.hpp
+	include/libfemp/Node.hpp
+	include/libfemp/Material.hpp
+	include/libfemp/Point3D.hpp
+	include/libfemp/elements/Prism6.hpp
+	include/libfemp/elements/Tetrahedron10.hpp
+	include/libfemp/elements/Hexahedron20.hpp
+	include/libfemp/elements/Tetrahedron4.hpp
+	include/libfemp/elements/all.hpp
+	include/libfemp/elements/Prism18.hpp
+	include/libfemp/elements/ElementFactory.hpp
+	include/libfemp/elements/Prism15.hpp
+	include/libfemp/elements/Hexahedron27.hpp
+	include/libfemp/elements/HexahedronFamily.hpp
+	include/libfemp/elements/TetrahedronFamily.hpp
+	include/libfemp/elements/BaseElement.hpp
+	include/libfemp/elements/Hexahedron8.hpp
+	include/libfemp/elements/PrismFamily.hpp
+	include/libfemp/ElementGroup.hpp
+	include/libfemp/io/export/JsonExporter.hpp
+	include/libfemp/LoadPattern.hpp
+	include/libfemp/Group.hpp
+	include/libfemp/GlobalDof.hpp
+	include/libfemp/Equation.hpp
+	include/libfemp/NodalDisplacement.hpp
+	include/libfemp/Analysis.hpp
+	include/libfemp/NodeRestrictions.hpp
+	include/libfemp/Element.hpp
+	include/libfemp/LinearAnalysis.hpp
+	include/libfemp/NodeGroup.hpp
+	include/libfemp/io/import/Parser.hpp
+	include/libfemp/io/import/ModelImporterFactory.hpp
+	include/libfemp/solvers/CholeskySolver.hpp
+	include/libfemp/solvers/CGSolver.hpp
+	include/libfemp/solvers/DenseCholeskySolver.hpp
+	include/libfemp/solvers/UmfpackSolver.hpp
+	include/libfemp/solvers/Solver.hpp
+	include/libfemp/AnalysisResult.hpp
+	include/libfemp/FemException.hpp
+	include/libfemp/GlobalDofMap.hpp
+	include/libfemp/loads/Triangle6.hpp
+	include/libfemp/loads/Quadrangle9.hpp
+	include/libfemp/loads/DomainLoad.hpp
+	include/libfemp/loads/Triangle3.hpp
+	include/libfemp/loads/Triangle10.hpp
+	include/libfemp/loads/SurfaceLoad.hpp
+	include/libfemp/loads/Quadrangle8.hpp
+	include/libfemp/loads/NodalLoad.hpp
+	include/libfemp/loads/Quadrangle4.hpp
+	include/libfemp/loads/QuadrangleFamily.hpp
+	include/libfemp/loads/TriangleFamily.hpp
+	include/libfemp/Surface.hpp
+	include/libfemp/Model.hpp
 	)
 
 set(libfemp_HEADERS
-	src/io/import/FemJsonParser.h++
-	src/io/import/MshParser.h++
+	src/io/import/FemJsonParser.hpp
+	src/io/import/MshParser.hpp
 	)
 
 set(libfemp_SOURCES
-	src/NodeGroup.c++
-	src/SurfaceLoadOperators/ConstantLoad.c++
-	src/SurfaceLoadOperators/SurfaceNormalLoad.c++
-	src/ElementResults/ElementResults.c++
-	src/ElementResults/ElementResultsFactory.c++
-	src/Point3D.c++
-	src/Point2D.c++
-	src/AnalysisResult.c++
-	src/ElementGroup.c++
-	src/Element.c++
-	src/elements/Hexahedron8.c++
-	src/elements/Tetrahedron10.c++
-	src/elements/TetrahedronFamily.c++
-	src/elements/Prism18.c++
-	src/elements/Hexahedron20.c++
-	src/elements/ElementFactory.c++
-	src/elements/BaseElement.c++
-	src/elements/Prism6.c++
-	src/elements/HexahedronFamily.c++
-	src/elements/Tetrahedron4.c++
-	src/elements/Prism15.c++
-	src/elements/Hexahedron27.c++
-	src/elements/PrismFamily.c++
-	src/io/export/JsonExporter.c++
-	src/GlobalDof.c++
-	src/Analysis.c++
-	src/Equation.c++
-	src/NodeRestrictions.c++
-	src/Material.c++
-	src/Model.c++
-	src/LinearAnalysis.c++
-	src/io/import/FemJsonParser.c++
-	src/io/import/Parser.c++
-	src/io/import/ModelImporterFactory.c++
-	src/io/import/MshParser.c++
-	src/FemException.c++
-	src/GlobalDofMap.c++
-	src/Group.c++
-	src/Surface.c++
-	src/NodalDisplacement.c++
-	src/loads/SurfaceLoad.c++
-	src/loads/NodalLoad.c++
-	src/loads/TriangleFamily.c++
-	src/loads/QuadrangleFamily.c++
-	src/loads/DomainLoad.c++
-	src/loads/Triangle10.c++
-	src/loads/Quadrangle9.c++
-	src/loads/Triangle3.c++
-	src/loads/Quadrangle4.c++
-	src/loads/Quadrangle8.c++
-	src/loads/Triangle6.c++
-	src/LoadPattern.c++
-	src/Node.c++
+	src/NodeGroup.cpp
+	src/SurfaceLoadOperators/ConstantLoad.cpp
+	src/SurfaceLoadOperators/SurfaceNormalLoad.cpp
+	src/ElementResults/ElementResults.cpp
+	src/ElementResults/ElementResultsFactory.cpp
+	src/Point3D.cpp
+	src/Point2D.cpp
+	src/AnalysisResult.cpp
+	src/ElementGroup.cpp
+	src/Element.cpp
+	src/elements/Hexahedron8.cpp
+	src/elements/Tetrahedron10.cpp
+	src/elements/TetrahedronFamily.cpp
+	src/elements/Prism18.cpp
+	src/elements/Hexahedron20.cpp
+	src/elements/ElementFactory.cpp
+	src/elements/BaseElement.cpp
+	src/elements/Prism6.cpp
+	src/elements/HexahedronFamily.cpp
+	src/elements/Tetrahedron4.cpp
+	src/elements/Prism15.cpp
+	src/elements/Hexahedron27.cpp
+	src/elements/PrismFamily.cpp
+	src/io/export/JsonExporter.cpp
+	src/GlobalDof.cpp
+	src/Analysis.cpp
+	src/Equation.cpp
+	src/NodeRestrictions.cpp
+	src/Material.cpp
+	src/Model.cpp
+	src/LinearAnalysis.cpp
+	src/io/import/FemJsonParser.cpp
+	src/io/import/Parser.cpp
+	src/io/import/ModelImporterFactory.cpp
+	src/io/import/MshParser.cpp
+	src/FemException.cpp
+	src/GlobalDofMap.cpp
+	src/Group.cpp
+	src/Surface.cpp
+	src/NodalDisplacement.cpp
+	src/loads/SurfaceLoad.cpp
+	src/loads/NodalLoad.cpp
+	src/loads/TriangleFamily.cpp
+	src/loads/QuadrangleFamily.cpp
+	src/loads/DomainLoad.cpp
+	src/loads/Triangle10.cpp
+	src/loads/Quadrangle9.cpp
+	src/loads/Triangle3.cpp
+	src/loads/Quadrangle4.cpp
+	src/loads/Quadrangle8.cpp
+	src/loads/Triangle6.cpp
+	src/LoadPattern.cpp
+	src/Node.cpp
 	)
 
 add_library(libfemp

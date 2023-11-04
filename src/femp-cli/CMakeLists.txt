@@ -9,20 +9,20 @@ find_package( Boost REQUIRED COMPONENTS program_options)
 
 
 set(fempcli_HEADERS
-    src/commands/FempCommand.h++
-    src/commands/ErrorReportingCommand.h++
-    src/commands/HelpCommand.h++
-    src/commands/AnalysisCommand.h++
-    src/CliProgressIndicatorStrategy.h++
+    src/commands/FempCommand.hpp
+    src/commands/ErrorReportingCommand.hpp
+    src/commands/HelpCommand.hpp
+    src/commands/AnalysisCommand.hpp
+    src/CliProgressIndicatorStrategy.hpp
     )
 
 set(fempcli_SOURCES
-    src/commands/FempCommand.c++
-    src/commands/ErrorReportingCommand.c++
-    src/commands/HelpCommand.c++
-    src/commands/AnalysisCommand.c++
-    src/CliProgressIndicatorStrategy.c++
-    src/main.c++
+    src/commands/FempCommand.cpp
+    src/commands/ErrorReportingCommand.cpp
+    src/commands/HelpCommand.cpp
+    src/commands/AnalysisCommand.cpp
+    src/CliProgressIndicatorStrategy.cpp
+    src/main.cpp
     )
 
 add_executable(fempcli

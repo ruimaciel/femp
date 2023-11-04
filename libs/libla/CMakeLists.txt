@@ -10,36 +10,36 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 find_package(suitesparse MODULE REQUIRED)
 
 set( libla_INCLUDES
-    include/la/VectorStorage/SparseCS.h++
-    include/la/VectorStorage/Dense.h++
-    include/la/DenseStatic.h++
-    include/la/operations/mv.h++
-    include/la/operations/vv.h++
-    include/la/output.h++
-    include/la/MatrixStorage/LowerTriangular.h++
-    include/la/MatrixStorage/SparseCRS.h++
-    include/la/MatrixStorage/Opengl.h++
-    include/la/MatrixStorage/SparseDOK.h++
-    include/la/MatrixStorage/SparseCCS.h++
-    include/la/MatrixStorage/Dense.h++
-    include/la/MatrixStorage/Diagonal.h++
-    include/la/Matrix.h++
-    include/la/Operations.h++
-    include/la/ProgressIndicatorStrategy.h++
-    include/la/vector/DenseStatic.h++
-    include/la/solvers/substitution.h++
-    include/la/solvers/CG.h++
-    include/la/solvers/SolverReturnCodes.h++
-    include/la/solvers/Umfpack.h++
-    include/la/solvers/Cholesky.h++
-    include/la/Vector.h++
+    include/la/VectorStorage/SparseCS.hpp
+    include/la/VectorStorage/Dense.hpp
+    include/la/DenseStatic.hpp
+    include/la/operations/mv.hpp
+    include/la/operations/vv.hpp
+    include/la/output.hpp
+    include/la/MatrixStorage/LowerTriangular.hpp
+    include/la/MatrixStorage/SparseCRS.hpp
+    include/la/MatrixStorage/Opengl.hpp
+    include/la/MatrixStorage/SparseDOK.hpp
+    include/la/MatrixStorage/SparseCCS.hpp
+    include/la/MatrixStorage/Dense.hpp
+    include/la/MatrixStorage/Diagonal.hpp
+    include/la/Matrix.hpp
+    include/la/Operations.hpp
+    include/la/ProgressIndicatorStrategy.hpp
+    include/la/vector/DenseStatic.hpp
+    include/la/solvers/substitution.hpp
+    include/la/solvers/CG.hpp
+    include/la/solvers/SolverReturnCodes.hpp
+    include/la/solvers/Umfpack.hpp
+    include/la/solvers/Cholesky.hpp
+    include/la/Vector.hpp
     )
 
 set( libla_HEADERS
     )
 
 set( libla_SOURCES
-    src/solvers/Umfpack.c++
+    src/solvers/Umfpack.cpp
     )
 
 add_library(libla

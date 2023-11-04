@@ -11,7 +11,7 @@ set(CMAKE_AUTOMOC ON)
 
 enable_testing(true)
 
-add_executable(TestGui TestGui.c++)
-add_test(NAME TestGui COMMAND TestGui.c++)
+add_executable(TestGui TestGui.cpp)
+add_test(NAME TestGui COMMAND TestGui.cpp)
 
 target_link_libraries(TestGui PRIVATE Qt5::Test)

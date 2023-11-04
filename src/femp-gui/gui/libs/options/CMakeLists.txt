@@ -3,15 +3,15 @@ cmake_minimum_required(VERSION 3.10)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(gui_options_HEADERS
-    include/options/DisplayOptions.h++
-    include/options/Options.h++
-    include/options/ViewportColors.h++
+    include/options/DisplayOptions.hpp
+    include/options/Options.hpp
+    include/options/ViewportColors.hpp
     )
 
 set(gui_options_SOURCES
-    src/DisplayOptions.c++
-    src/Options.c++
-    src/ViewportColors.c++
+    src/DisplayOptions.cpp
+    src/Options.cpp
+    src/ViewportColors.cpp
     )
 
 add_library(gui_options OBJECT

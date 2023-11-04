@@ -1,0 +1,3 @@
+[submodule "external/libfemp"]
+	path = external/libfemp
+	url = git@github.com:ruimaciel/libfemp.git

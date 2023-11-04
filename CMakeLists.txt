@@ -12,8 +12,7 @@ find_package(OpenGL REQUIRED)
 find_package(Boost REQUIRED COMPONENTS headers)
 
 add_subdirectory(external)
-add_subdirectory(src/femp-gui)
-add_subdirectory(src/femp-cli)
+add_subdirectory(src)
 
 option(RUN_TESTS "Runs tests" OFF)
 if(RUN_TESTS)

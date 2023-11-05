@@ -1,5 +1,5 @@
-#ifndef FEMP_MATRIXWINDOW_H
-#define FEMP_MATRIXWINDOW_H
+#ifndef FEMP_UI_MATRIXWINDOW_HPP
+#define FEMP_UI_MATRIXWINDOW_HPP
 
 // ui includes
 #include <ui/widgets/MatrixWidget.hpp>

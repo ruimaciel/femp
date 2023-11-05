@@ -1,5 +1,5 @@
-#ifndef GUI_PERSISTENCE_LOADPATTERNREPOSITORY_H
-#define GUI_PERSISTENCE_LOADPATTERNREPOSITORY_H
+#ifndef FEMP_PERSISTENCE_LOADPATTERNREPOSITORY_HPP
+#define FEMP_PERSISTENCE_LOADPATTERNREPOSITORY_HPP
 
 // gui includes
 #include <application/interfaces/ILoadPatternRepository.hpp>
@@ -33,4 +33,4 @@ class LoadPatternRepository : public application::ILoadPatternRepository {
 }  // namespace persistence
 }  // namespace gui
 
-#endif	// GUI_PERSISTENCE_LOADPATTERNREPOSITORY_H
+#endif	// FEMP_PERSISTENCE_LOADPATTERNREPOSITORY_HPP

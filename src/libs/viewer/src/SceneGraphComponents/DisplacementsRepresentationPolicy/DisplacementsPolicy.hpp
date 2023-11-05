@@ -1,6 +1,5 @@
-
-#ifndef DISPLACEMENTSPOLICY_H
-#define DISPLACEMENTSPOLICY_H
+#ifndef FEMP_VIEWER_DISPLACEMENTSPOLICY_HPP
+#define FEMP_VIEWER_DISPLACEMENTSPOLICY_HPP
 
 #include <libfemp/AnalysisResult.hpp>
 
@@ -25,4 +24,4 @@ class DisplacementsPolicy : virtual public DisplacementsRepresentationPolicy {
 	void setDisplacementsScale(float scale);
 };
 
-#endif	// DISPLACEMENTSPOLICY_H
+#endif	// DISPLACEMENTSPOLICY_HPP

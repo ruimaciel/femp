@@ -1,5 +1,5 @@
-#ifndef SCALAR_RANGE_DIALOG_HPP
-#define SCALAR_RANGE_DIALOG_HPP
+#ifndef FEMP_UI_SCALARRANGEDIALOG_HPP
+#define FEMP_UI_SCALARRANGEDIALOG_HPP
 
 #include <libfemp/ElementResults/ResultsRanges.hpp>
 

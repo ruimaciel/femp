@@ -1,5 +1,5 @@
-#ifndef FEMP_MDIWINDOWPROPERTIES_HPP
-#define FEMP_MDIWINDOWPROPERTIES_HPP
+#ifndef FEMP_UI_MDIWINDOWPROPERTIES_HPP
+#define FEMP_UI_MDIWINDOWPROPERTIES_HPP
 
 /**
  * This class is used by the UI routines in order to provide information

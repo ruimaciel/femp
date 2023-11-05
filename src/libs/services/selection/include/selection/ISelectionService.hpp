@@ -1,5 +1,5 @@
-#ifndef GUI_SERVICES_ISELECTIONSERVICE_H
-#define GUI_SERVICES_ISELECTIONSERVICE_H
+#ifndef FEMP_SERVICES_ISELECTIONSERVICE_HPP
+#define FEMP_SERVICES_ISELECTIONSERVICE_HPP
 
 #include <cstddef>
 #include <set>
@@ -22,4 +22,4 @@ class ISelectionService {
 }  // namespace services
 }  // namespace gui
 
-#endif	// GUI_SERVICES_ISELECTIONSERVICE_H
+#endif	// FEMP_SERVICES_ISELECTIONSERVICE_HPP

@@ -1,5 +1,5 @@
-#ifndef NODE_RESTRAINS_DIALOG_HPP
-#define NODE_RESTRAINS_DIALOG_HPP
+#ifndef FEMP_UI_NODERESTRAINSDIALOG_HPP
+#define FEMP_UI_NODERESTRAINSDIALOG_HPP
 
 #include <libfemp/NodeRestrictions.hpp>
 

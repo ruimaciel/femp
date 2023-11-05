@@ -1,5 +1,5 @@
-#ifndef INPUT_STATE_START_HPP
-#define INPUT_STATE_START_HPP
+#ifndef FEMP_VIEWER_ISSTART_HPP
+#define FEMP_VIEWER_ISSTART_HPP
 
 #include "InputState.hpp"
 

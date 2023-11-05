@@ -1,5 +1,5 @@
-#ifndef NEW_MATERIAL_DIALOG_HPP
-#define NEW_MATERIAL_DIALOG_HPP
+#ifndef FEMP_UI_NEWMATERIALDIALOG_HPP
+#define FEMP_UI_NEWMATERIALDIALOG_HPP
 
 #include <application/interfaces/IMaterialRepository.hpp>
 #include <libfemp/Model.hpp>  // for the materials list

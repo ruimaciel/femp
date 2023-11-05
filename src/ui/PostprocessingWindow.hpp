@@ -1,5 +1,5 @@
-#ifndef FEMP_POSTPROCESSINGWINDOW_HPP
-#define FEMP_POSTPROCESSINGWINDOW_HPP
+#ifndef FEMP_UI_POSTPROCESSINGWINDOW_HPP
+#define FEMP_UI_POSTPROCESSINGWINDOW_HPP
 
 // gui includes
 #include <options/Options.hpp>
@@ -37,12 +37,12 @@ class PostprocessingWindow : public MdiWindow, public WindowWithResults, public 
 		A_STRAIN_12,
 		A_STRAIN_13,
 		A_STRAIN_23,
-		A_STRESS_11,
-		A_STRESS_22,
-		A_STRESS_33,
-		A_STRESS_12,
-		A_STRESS_13,
-		A_STRESS_23,
+		A_FEMP_VIEWER_11,
+		A_FEMP_VIEWER_22,
+		A_FEMP_VIEWER_33,
+		A_FEMP_VIEWER_12,
+		A_FEMP_VIEWER_13,
+		A_FEMP_VIEWER_23,
 		A_VON_MISES
 	};
 

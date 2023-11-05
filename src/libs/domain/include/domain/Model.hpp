@@ -1,5 +1,5 @@
-#ifndef FEMP_DOMAIN_MODEL_H
-#define FEMP_DOMAIN_MODEL_H
+#ifndef FEMP_DOMAIN_MODEL_HPP
+#define FEMP_DOMAIN_MODEL_HPP
 
 // libfemp includes
 #include <libfemp/ElementGroup.hpp>
@@ -47,4 +47,4 @@ class Model {
 };
 
 }  // namespace domain
-#endif	// FEMP_DOMAIN_MODEL_H
+#endif	// FEMP_DOMAIN_MODEL_HPP

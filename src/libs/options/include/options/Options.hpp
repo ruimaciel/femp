@@ -1,5 +1,5 @@
-#ifndef GUI_OPTIONS_HPP
-#define GUI_OPTIONS_HPP
+#ifndef FEMP_OPTIONS_HPP
+#define FEMP_OPTIONS_HPP
 
 #include <QDir>
 #include <options/DisplayOptions.hpp>

@@ -1,5 +1,5 @@
-#ifndef GRADIENT_FIELD_POLICY_H
-#define GRADIENT_FIELD_POLICY_H
+#ifndef FEMP_VIEWER_GRADIENT_FIELD_POLICY_HPP
+#define FEMP_VIEWER_GRADIENT_FIELD_POLICY_HPP
 
 #include <GL/gl.h>
 
@@ -67,4 +67,4 @@ class GradientFieldPolicy {
 	virtual float minVal(fem::ResultsRanges<double> const&) const = 0;
 };
 
-#endif	// GRADIENT_FIELD_POLICY_H
+#endif	// GRADIENT_FIELD_POLICY_HPP

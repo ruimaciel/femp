@@ -1,5 +1,5 @@
-#ifndef NODISPLACEMENTSPOLICY_H
-#define NODISPLACEMENTSPOLICY_H
+#ifndef FEMP_VIEWER_NODISPLACEMENTSPOLICY_HPP
+#define FEMP_VIEWER_NODISPLACEMENTSPOLICY_HPP
 
 #include "DisplacementsRepresentationPolicy.hpp"
 
@@ -14,4 +14,4 @@ class NoDisplacementsPolicy : virtual public DisplacementsRepresentationPolicy {
 	fem::Point3D operator[](size_t& node_reference) override;
 };
 
-#endif	// NODISPLACEMENTSPOLICY_H
+#endif	// NODISPLACEMENTSPOLICY_HPP

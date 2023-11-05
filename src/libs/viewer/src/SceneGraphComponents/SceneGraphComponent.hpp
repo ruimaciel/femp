@@ -1,5 +1,5 @@
-#ifndef SCENE_GRAPH_COMPONENT_HPP
-#define SCENE_GRAPH_COMPONENT_HPP
+#ifndef FEMP_VIEWER_SCENEGRAPHCOMPONENT_HPP
+#define FEMP_VIEWER_SCENEGRAPHCOMPONENT_HPP
 
 #include <libfemp/AnalysisResult.hpp>
 #include <list>

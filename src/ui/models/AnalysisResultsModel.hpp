@@ -1,5 +1,5 @@
-#ifndef FEMP_ANALYSIS_RESULTS_MODEL_H
-#define FEMP_ANALYSIS_RESULTS_MODEL_H
+#ifndef FEMP_UI_ANALYSISRESULTSMODEL_HPP
+#define FEMP_UI_ANALYSISRESULTSMODEL_HPP
 
 #include <Project.hpp>
 #include <QAbstractTableModel>

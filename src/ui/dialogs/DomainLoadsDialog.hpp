@@ -1,5 +1,5 @@
-#ifndef DOMAIN_LOADS_DIALOG_HPP
-#define DOMAIN_LOADS_DIALOG_HPP
+#ifndef FEMP_UI_DOMAINLOADSDIALOG_HPP
+#define FEMP_UI_DOMAINLOADSDIALOG_HPP
 
 #include <libfemp/LoadPattern.hpp>
 #include <libfemp/Model.hpp>

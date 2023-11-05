@@ -1,5 +1,5 @@
-#ifndef UI_ANALYSIS_DIALOG_HPP
-#define UI_ANALYSIS_DIALOG_HPP
+#ifndef FEMP_UI_ANALYSIS_DIALOG_HPP
+#define FEMP_UI_ANALYSIS_DIALOG_HPP
 
 #include <application/interfaces/ILoadPatternRepository.hpp>
 #include <libfemp/LoadPattern.hpp>

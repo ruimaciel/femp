@@ -1,5 +1,5 @@
-#ifndef SCENE_GRAPH_COMPONENT_ELEMENT_HPP
-#define SCENE_GRAPH_COMPONENT_ELEMENT_HPP
+#ifndef FEMP_VIEWER_SGC_ELEMENT_HPP
+#define FEMP_VIEWER_SGC_ELEMENT_HPP
 
 #include <libfemp/Element.hpp>
 #include <options/Options.hpp>

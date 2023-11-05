@@ -1,5 +1,5 @@
-#ifndef TABLE_FILTER_DIALOG_HPP
-#define TABLE_FILTER_DIALOG_HPP
+#ifndef FEMP_UI_TABLE_FILTER_DIALOG_HPP
+#define FEMP_UI_TABLE_FILTER_DIALOG_HPP
 
 // Qt includes
 #include <QDialog>

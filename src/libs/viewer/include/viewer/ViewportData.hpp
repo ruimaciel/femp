@@ -1,5 +1,5 @@
-#ifndef GUI_VIEWER_VIEWPORTDATA_HPP
-#define GUI_VIEWER_VIEWPORTDATA_HPP
+#ifndef FEMP_VIEWER_VIEWPORTDATA_HPP
+#define FEMP_VIEWER_VIEWPORTDATA_HPP
 
 // viewer includes
 #include <viewer/Camera.hpp>

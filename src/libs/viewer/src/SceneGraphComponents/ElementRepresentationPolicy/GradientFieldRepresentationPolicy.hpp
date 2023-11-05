@@ -1,6 +1,5 @@
-
-#ifndef GRADIENT_FIELDREPRESENTATIONPOLICY_H
-#define GRADIENT_FIELDREPRESENTATIONPOLICY_H
+#ifndef FEMP_VIEWER_GRADIENT_FIELDREPRESENTATIONPOLICY_HPP
+#define FEMP_VIEWER_GRADIENT_FIELDREPRESENTATIONPOLICY_HPP
 
 #include <libfemp/AnalysisResult.hpp>
 #include <libfemp/Element.hpp>
@@ -78,4 +77,4 @@ class GradientFieldRepresentationPolicy : virtual public ElementRepresentationPo
 	void setResultsRanges(fem::ResultsRanges<double>& ranges);
 };
 
-#endif	// COLORFIELDREPRESENTATIONPOLICY_H
+#endif	// COLORFIELDREPRESENTATIONPOLICY_HPP

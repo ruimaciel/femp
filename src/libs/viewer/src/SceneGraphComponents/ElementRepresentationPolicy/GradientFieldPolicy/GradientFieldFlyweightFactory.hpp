@@ -1,5 +1,5 @@
-#ifndef GRADIENT_FIELD_FLYWEIGHT_FACTORY_HPP
-#define GRADIENT_FIELD_FLYWEIGHT_FACTORY_HPP
+#ifndef FEMP_VIEWER_GRADIENT_FIELD_FLYWEIGHT_FACTORY_HPP
+#define FEMP_VIEWER_GRADIENT_FIELD_FLYWEIGHT_FACTORY_HPP
 
 #include <libfemp/AnalysisResult.hpp>
 #include <libfemp/ElementResults/ResultsRanges.hpp>

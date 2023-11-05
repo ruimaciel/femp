@@ -1,5 +1,5 @@
-#ifndef ANALYSIS_RESULTS_WIDGET_H
-#define ANALYSIS_RESULTS_WIDGET_H
+#ifndef FEMP_UI_ANALYSIS_RESULTS_WIDGET_HPP
+#define FEMP_UI_ANALYSIS_RESULTS_WIDGET_HPP
 
 #include <ui/models/AnalysisResultsModel.hpp>
 

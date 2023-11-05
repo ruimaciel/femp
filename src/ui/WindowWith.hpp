@@ -1,5 +1,5 @@
-#ifndef FEMP_WINDOWWITH_HPP
-#define FEMP_WINDOWWITH_HPP
+#ifndef FEMP_UI_WINDOWWITH_HPP
+#define FEMP_UI_WINDOWWITH_HPP
 
 // gui includes
 #include <Project.hpp>

@@ -1,5 +1,5 @@
-#ifndef INPUT_HPP
-#define INPUT_HPP
+#ifndef FEMP_VIEWER_INPUT_HPP
+#define FEMP_VIEWER_INPUT_HPP
 
 #include "ISLeftClick.hpp"	 // for the state pattern that handles user input
 #include "ISLeftDrag.hpp"	 // for the state pattern that handles user input

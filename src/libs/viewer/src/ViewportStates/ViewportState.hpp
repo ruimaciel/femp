@@ -1,5 +1,5 @@
-#ifndef VIEWPORT_STATE_HPP
-#define VIEWPORT_STATE_HPP
+#ifndef FEMP_VIEWER_VIEWPORTSTATE_HPP
+#define FEMP_VIEWER_VIEWPORTSTATE_HPP
 
 #include <QMouseEvent>
 #include <libfemp/AnalysisResult.hpp>

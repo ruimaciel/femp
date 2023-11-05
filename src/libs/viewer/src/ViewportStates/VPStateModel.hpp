@@ -1,5 +1,5 @@
-#ifndef VIEWPORT_STATE_MODEL_HPP
-#define VIEWPORT_STATE_MODEL_HPP
+#ifndef FEMP_VIEWER_VPSTATEMODEL_HPP
+#define FEMP_VIEWER_VPSTATEMODEL_HPP
 
 #include <QMouseEvent>
 #include <options/Options.hpp>

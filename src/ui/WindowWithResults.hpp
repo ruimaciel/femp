@@ -1,5 +1,5 @@
-#ifndef FEMP_WINDOWWITHRESULTS_HPP
-#define FEMP_WINDOWWITHRESULTS_HPP
+#ifndef FEMP_UI_WINDOWWITHRESULTS_HPP
+#define FEMP_UI_WINDOWWITHRESULTS_HPP
 
 #include "MdiWindow.hpp"
 #include "WindowWith.hpp"

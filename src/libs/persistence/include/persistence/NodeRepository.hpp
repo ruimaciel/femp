@@ -1,5 +1,5 @@
-#ifndef GUI_PERSISTENCE_NODEREPOSITORY_H
-#define GUI_PERSISTENCE_NODEREPOSITORY_H
+#ifndef FEMP_PERSISTENCE_NODEREPOSITORY_HPP
+#define FEMP_PERSISTENCE_NODEREPOSITORY_HPP
 
 // gui includes
 #include <application/interfaces/INodeRepository.hpp>
@@ -32,4 +32,4 @@ class NodeRepository : public application::INodeRepository {
 }  // namespace persistence
 }  // namespace gui
 
-#endif	// GUI_PERSISTENCE_NODEREPOSITORY_H
+#endif	// FEMP_PERSISTENCE_NODEREPOSITORY_HPP

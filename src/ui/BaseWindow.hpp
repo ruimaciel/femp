@@ -1,5 +1,5 @@
-#ifndef FEMP_BASEWINDOW_HPP
-#define FEMP_BASEWINDOW_HPP
+#ifndef FEMP_UI_BASEWINDOW_HPP
+#define FEMP_UI_BASEWINDOW_HPP
 
 // Qt includes
 #include <QString>

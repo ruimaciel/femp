@@ -1,5 +1,5 @@
-#ifndef VIEWPORT_STATE_GRADIENTS_HPP
-#define VIEWPORT_STATE_GRADIENTS_HPP
+#ifndef FEMP_VIEWER_VPSTATEGRADIENTS_HPP
+#define FEMP_VIEWER_VPSTATEGRADIENTS_HPP
 
 #include <QMouseEvent>
 #include <options/Options.hpp>

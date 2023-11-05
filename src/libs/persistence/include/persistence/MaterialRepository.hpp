@@ -1,5 +1,5 @@
-#ifndef GUI_PERSISTENCE_MATERIALREPOSITORY_H
-#define GUI_PERSISTENCE_MATERIALREPOSITORY_H
+#ifndef FEMP_PERSISTENCE_MATERIALREPOSITORY_HPP
+#define FEMP_PERSISTENCE_MATERIALREPOSITORY_HPP
 
 // gui includes
 #include <application/interfaces/IMaterialRepository.hpp>
@@ -31,4 +31,4 @@ class MaterialRepository : public application::IMaterialRepository {
 }  // namespace persistence
 }  // namespace gui
 
-#endif	// GUI_PERSISTENCE_MATERIALREPOSITORY_H
+#endif	// FEMP_PERSISTENCE_MATERIALREPOSITORY_HPP

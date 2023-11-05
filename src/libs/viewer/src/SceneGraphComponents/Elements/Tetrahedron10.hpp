@@ -1,5 +1,5 @@
-#ifndef SGC_ELEMENT_TETRAHEDRON10_HPP
-#define SGC_ELEMENT_TETRAHEDRON10_HPP
+#ifndef FEMP_VIEWER_SGC_TETRAHEDRON10_HPP
+#define FEMP_VIEWER_SGC_TETRAHEDRON10_HPP
 
 #include "../DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.hpp"
 #include "../ElementRepresentationPolicy/ElementRepresentationPolicy.hpp"

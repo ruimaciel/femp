@@ -1,5 +1,5 @@
-#ifndef INPUT_STATE_HPP
-#define INPUT_STATE_HPP
+#ifndef FEMP_VIEWER_INPUTSTATE_HPP
+#define FEMP_VIEWER_INPUTSTATE_HPP
 
 class Input;
 class QMouseEvent;

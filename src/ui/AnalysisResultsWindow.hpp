@@ -1,5 +1,5 @@
-#ifndef FEMP_ANALYSISRESULTSWINDOW_H
-#define FEMP_ANALYSISRESULTSWINDOW_H
+#ifndef FEMP_UI_ANALYSISRESULTSWINDOW_HPP
+#define FEMP_UI_ANALYSISRESULTSWINDOW_HPP
 
 // ui includes
 #include <ui/widgets/AnalysisResultsWidget.hpp>

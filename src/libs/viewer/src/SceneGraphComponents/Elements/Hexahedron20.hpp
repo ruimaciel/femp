@@ -1,5 +1,5 @@
-#ifndef SGC_ELEMENT_HEXAHEDRON20_HPP
-#define SGC_ELEMENT_HEXAHEDRON20_HPP
+#ifndef FEMP_VIEWER_SGC_HEXAHEDRON20_HPP
+#define FEMP_VIEWER_SGC_HEXAHEDRON20_HPP
 
 #include "../DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.hpp"
 #include "../ElementRepresentationPolicy/ElementRepresentationPolicy.hpp"

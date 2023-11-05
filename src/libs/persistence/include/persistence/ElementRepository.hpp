@@ -1,5 +1,5 @@
-#ifndef GUI_PERSISTENCE_ELEMENTREPOSITORY_H
-#define GUI_PERSISTENCE_ELEMENTREPOSITORY_H
+#ifndef FEMP_PERSISTENCE_ELEMENTREPOSITORY_HPP
+#define FEMP_PERSISTENCE_ELEMENTREPOSITORY_HPP
 
 // femp includes
 #include <application/interfaces/IElementRepository.hpp>
@@ -30,4 +30,4 @@ class ElementRepository : public application::IElementRepository {
 }  // namespace persistence
 }  // namespace gui
 
-#endif	// GUI_PERSISTENCE_ELEMENTREPOSITORY_H
+#endif	// FEMP_PERSISTENCE_ELEMENTREPOSITORY_HPP

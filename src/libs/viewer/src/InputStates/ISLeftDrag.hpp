@@ -1,5 +1,5 @@
-#ifndef INPUT_STATE_LEFT_DRAG_HPP
-#define INPUT_STATE_LEFT_DRAG_HPP
+#ifndef FEMP_VIEWER_ISLEFTDRAG_HPP
+#define FEMP_VIEWER_ISLEFTDRAG_HPP
 
 #include "InputState.hpp"
 

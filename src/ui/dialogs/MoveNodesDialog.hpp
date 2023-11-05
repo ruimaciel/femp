@@ -1,5 +1,5 @@
-#ifndef MOVE_NODES_DIALOG_HPP
-#define MOVE_NODES_DIALOG_HPP
+#ifndef FEMP_UI_MOVENODESDIALOG_HPP
+#define FEMP_UI_MOVENODESDIALOG_HPP
 
 #include <libfemp/Point3D.hpp>
 

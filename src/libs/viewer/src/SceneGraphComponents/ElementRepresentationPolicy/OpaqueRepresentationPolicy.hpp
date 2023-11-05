@@ -1,6 +1,5 @@
-
-#ifndef OPAQUEREPRESENTATIONPOLICY_H
-#define OPAQUEREPRESENTATIONPOLICY_H
+#ifndef FEMP_VIEWER_OPAQUEREPRESENTATIONPOLICY_HPP
+#define FEMP_VIEWER_OPAQUEREPRESENTATIONPOLICY_HPP
 
 #include <libfemp/Element.hpp>
 #include <libfemp/Point3D.hpp>
@@ -52,4 +51,4 @@ class OpaqueRepresentationPolicy : virtual public ElementRepresentationPolicy {
 	void toggleTriangleWireframeRendering();
 };
 
-#endif	// OPAQUEREPRESENTATIONPOLICY_H
+#endif	// OPAQUEREPRESENTATIONPOLICY_HPP

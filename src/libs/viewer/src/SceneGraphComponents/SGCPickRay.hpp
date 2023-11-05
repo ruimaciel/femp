@@ -1,5 +1,5 @@
-#ifndef SCENE_GRAPH_COMPONENT_PICK_RAY_HPP
-#define SCENE_GRAPH_COMPONENT_PICK_RAY_HPP
+#ifndef FEMP_VIEWER_SGC_PICKRAY_HPP
+#define FEMP_VIEWER_SGC_PICKRAY_HPP
 
 #include <libfemp/NodeRestrictions.hpp>
 #include <libfemp/Point3D.hpp>

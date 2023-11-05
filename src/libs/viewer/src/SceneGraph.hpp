@@ -1,5 +1,5 @@
-#ifndef SCENE_GRAPH_HPP
-#define SCENE_GRAPH_HPP
+#ifndef FEMP_VIEWER_SCENEGRAPH_HPP
+#define FEMP_VIEWER_SCENEGRAPH_HPP
 
 #include <GL/gl.h>
 

@@ -1,5 +1,5 @@
-#ifndef MATRIX_WIDGET_H
-#define MATRIX_WIDGET_H
+#ifndef FEMP_UI_MATRIX_WIDGET_HPP
+#define FEMP_UI_MATRIX_WIDGET_HPP
 
 #include <Project.hpp>
 #include <QWidget>

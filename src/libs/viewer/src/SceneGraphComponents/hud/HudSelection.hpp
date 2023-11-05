@@ -1,5 +1,5 @@
-#ifndef HUD_SELECTION_HPP
-#define HUD_SELECTION_HPP
+#ifndef FEMP_VIEWER_HUDSELECTION_HPP
+#define FEMP_VIEWER_HUDSELECTION_HPP
 
 #include <libfemp/Point3D.hpp>
 #include <options/Options.hpp>

@@ -1,6 +1,6 @@
 
-#ifndef DISPLACEMENTSREPRESENTATIONPOLICY_H
-#define DISPLACEMENTSREPRESENTATIONPOLICY_H
+#ifndef FEMP_VIEWER_DISPLACEMENTSREPRESENTATIONPOLICY_HPP
+#define FEMP_VIEWER_DISPLACEMENTSREPRESENTATIONPOLICY_HPP
 
 #include <libfemp/Model.hpp>
 #include <libfemp/Point3D.hpp>
@@ -27,4 +27,4 @@ class DisplacementsRepresentationPolicy {
 	virtual fem::Point3D operator[](size_t& node_reference) = 0;
 };
 
-#endif	// DISPLACEMENTSREPRESENTATIONPOLICY_H
+#endif	// DISPLACEMENTSREPRESENTATIONPOLICY_HPP

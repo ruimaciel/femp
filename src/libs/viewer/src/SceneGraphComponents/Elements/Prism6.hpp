@@ -1,5 +1,5 @@
-#ifndef SGC_ELEMENT_PRISM6_HPP
-#define SGC_ELEMENT_PRISM6_HPP
+#ifndef FEMP_VIEWER_SGC_PRISM6_HPP
+#define FEMP_VIEWER_SGC_PRISM6_HPP
 
 #include "../DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.hpp"
 #include "../ElementRepresentationPolicy/ElementRepresentationPolicy.hpp"

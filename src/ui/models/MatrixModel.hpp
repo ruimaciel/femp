@@ -1,5 +1,5 @@
-#ifndef FEMP_MATRIX_MODEL_H
-#define FEMP_MATRIX_MODEL_H
+#ifndef FEMP_UI_MATRIXMODEL_HPP
+#define FEMP_UI_MATRIXMODEL_HPP
 
 #include <QAbstractTableModel>
 #include <libfemp/Element.hpp>

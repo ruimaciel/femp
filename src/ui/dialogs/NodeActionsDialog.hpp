@@ -1,5 +1,5 @@
-#ifndef NODE_ACTIONS_DIALOG_HPP
-#define NODE_ACTIONS_DIALOG_HPP
+#ifndef FEMP_UI_NODEACTIONSDIALOG_HPP
+#define FEMP_UI_NODEACTIONSDIALOG_HPP
 
 #include <libfemp/LoadPattern.hpp>
 #include <libfemp/Model.hpp>

@@ -1,5 +1,5 @@
-#ifndef SELECTION_WIDGET_HPP
-#define SELECTION_WIDGET_HPP
+#ifndef FEMP_UI_SELECTION_WIDGET_HPP
+#define FEMP_UI_SELECTION_WIDGET_HPP
 
 #include <Project.hpp>
 #include <QtWidgets/QWidget>

@@ -1,5 +1,5 @@
-#ifndef HUD_OBJECT_HPP
-#define HUD_OBJECT_HPP
+#ifndef FEMP_VIEWER_HUDOBJECT_HPP
+#define FEMP_VIEWER_HUDOBJECT_HPP
 
 #include <options/ViewportColors.hpp>
 #include <viewer/ViewportData.hpp>

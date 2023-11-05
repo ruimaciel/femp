@@ -1,5 +1,5 @@
-#ifndef GUI_SERVICES_SELECTIONSERVICE_H
-#define GUI_SERVICES_SELECTIONSERVICE_H
+#ifndef FEMP_SERVICES_SELECTIONSERVICE_HPP
+#define FEMP_SERVICES_SELECTIONSERVICE_HPP
 
 #include <cstddef>
 #include <selection/ISelectionService.hpp>
@@ -23,4 +23,4 @@ class SelectionService final : public ISelectionService {
 }  // namespace services
 }  // namespace gui
 
-#endif	// GUI_SERVICES_SELECTIONSERVICE_H
+#endif	// FEMP_SERVICES_SELECTIONSERVICE_HPP

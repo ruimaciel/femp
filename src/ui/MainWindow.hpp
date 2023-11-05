@@ -1,5 +1,5 @@
-#ifndef FEMP_MAINWINDOW_HPP
-#define FEMP_MAINWINDOW_HPP
+#ifndef FEMP_UI_MAINWINDOW_HPP
+#define FEMP_UI_MAINWINDOW_HPP
 
 // ui includes
 #include "ui/ModelWindow.hpp"

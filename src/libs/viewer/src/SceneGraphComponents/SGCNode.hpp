@@ -1,5 +1,5 @@
-#ifndef SCENE_GRAPH_COMPONENT_NODE_HPP
-#define SCENE_GRAPH_COMPONENT_NODE_HPP
+#ifndef FEMP_VIEWER_SGC_NODE_HPP
+#define FEMP_VIEWER_SGC_NODE_HPP
 
 #include <libfemp/Node.hpp>
 #include <libfemp/NodeRestrictions.hpp>

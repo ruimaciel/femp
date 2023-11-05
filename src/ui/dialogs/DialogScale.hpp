@@ -1,5 +1,5 @@
-#ifndef FEMP_DIALOGSCALE_HPP
-#define FEMP_DIALOGSCALE_HPP
+#ifndef FEMP_UI_DIALOGSCALE_HPP
+#define FEMP_UI_DIALOGSCALE_HPP
 
 // Qt includes
 #include <QDialog>

@@ -1,5 +1,5 @@
-#ifndef FEMP_MODELWINDOW_HPP
-#define FEMP_MODELWINDOW_HPP
+#ifndef FEMP_UI_MODELWINDOW_HPP
+#define FEMP_UI_MODELWINDOW_HPP
 
 // gui includes
 #include <options/Options.hpp>

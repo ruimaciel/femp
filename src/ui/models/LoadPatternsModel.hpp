@@ -1,5 +1,5 @@
-#ifndef FEMP_LOADPATTERNSMODEL_HPP
-#define FEMP_LOADPATTERNSMODEL_HPP
+#ifndef FEMP_UI_LOADPATTERNSMODEL_HPP
+#define FEMP_UI_LOADPATTERNSMODEL_HPP
 
 #include <QAbstractListModel>
 #include <application/interfaces/ILoadPatternRepository.hpp>

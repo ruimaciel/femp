@@ -1,5 +1,5 @@
-#ifndef FEMP_MDIWINDOW_HPP
-#define FEMP_MDIWINDOW_HPP
+#ifndef FEMP_UI_MDIWINDOW_HPP
+#define FEMP_UI_MDIWINDOW_HPP
 
 // ui includes
 #include "ui/ui_MdiWindow.h"

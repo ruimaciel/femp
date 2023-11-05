@@ -1,5 +1,5 @@
-#ifndef VIEWER_RENDERGROUP_HPP
-#define VIEWER_RENDERGROUP_HPP
+#ifndef FEMP_VIEWER_RENDERGROUP_HPP
+#define FEMP_VIEWER_RENDERGROUP_HPP
 
 // viewer includes
 #include <viewer/ViewportData.hpp>

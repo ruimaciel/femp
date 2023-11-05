@@ -1,5 +1,5 @@
-#ifndef SELECTION_DIALOG_HPP
-#define SELECTION_DIALOG_HPP
+#ifndef FEMP_UI_SELECTIONDIALOG_HPP
+#define FEMP_UI_SELECTIONDIALOG_HPP
 
 #include <Project.hpp>
 #include <SelectionManager.hpp>

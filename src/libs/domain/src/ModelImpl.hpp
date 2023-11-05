@@ -1,5 +1,5 @@
-#ifndef FEMP_DOMAIN_MODELIMPL_H
-#define FEMP_DOMAIN_MODELIMPL_H
+#ifndef FEMP_DOMAIN_MODELIMPL_HPP
+#define FEMP_DOMAIN_MODELIMPL_HPP
 
 #include <libfemp/Model.hpp>
 #include <libfemp/NodeRestrictions.hpp>
@@ -30,4 +30,4 @@ class ModelImpl {
 	fem::Model& m_model;
 };
 
-#endif	// FEMP_DOMAIN_MODELIMPL_H
+#endif	// FEMP_DOMAIN_MODELIMPL_HPP

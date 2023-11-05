@@ -1,6 +1,5 @@
-
-#ifndef ELEMENTREPRESENTATIONFLYWEIGHTFACTORY_H
-#define ELEMENTREPRESENTATIONFLYWEIGHTFACTORY_H
+#ifndef FEMP_VIEWER_ELEMENTREPRESENTATIONFLYWEIGHTFACTORY_HPP
+#define FEMP_VIEWER_ELEMENTREPRESENTATIONFLYWEIGHTFACTORY_HPP
 
 #include "ElementRepresentationPolicy.hpp"
 #include "GradientFieldPolicy/GradientFieldPolicy.hpp"
@@ -41,4 +40,4 @@ class ElementRepresentationFlyweightFactory {
 	void setSurfaceSubdivisionLevel(unsigned short level);
 };
 
-#endif	// ELEMENTREPRESENTATIONFLYWEIGHTFACTORY_H
+#endif	// ELEMENTREPRESENTATIONFLYWEIGHTFACTORY_HPP

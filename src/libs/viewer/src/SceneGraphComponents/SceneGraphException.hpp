@@ -1,5 +1,5 @@
-#ifndef SCENE_GRAPH_EXCEPTION
-#define SCENE_GRAPH_EXCEPTION
+#ifndef FEMP_VIEWER_SCENEGRAPHEXCEPTION_HPP
+#define FEMP_VIEWER_SCENEGRAPHEXCEPTION_HPP
 
 #include <iostream>
 #include <stdexcept>

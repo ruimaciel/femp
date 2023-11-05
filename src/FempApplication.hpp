@@ -1,5 +1,5 @@
-#ifndef FEMP_FEMPAPPLICATION_H
-#define FEMP_FEMPAPPLICATION_H
+#ifndef FEMP_FEMPAPPLICATION_HPP
+#define FEMP_FEMPAPPLICATION_HPP
 
 // Qt includes
 #include <QApplication>
@@ -21,4 +21,4 @@ class FempApplication : public QApplication {
 
 #define fempApp dynamic_cast<FempApplication*>(QApplication::instance())
 
-#endif	// FEMPAPPLICATION_H
+#endif	// FEMPAPPLICATION_HPP

@@ -12,7 +12,6 @@
 #include "ProjectVisitor/MoveNodesVisitor.hpp"
 #include "ProjectVisitor/OutputElementStatisticsVisitor.hpp"
 #include "ProjectVisitor/OutputResultsInNodesCSVVisitor.hpp"
-#include "ProjectVisitor/OutputResultsInNodesVisitor.hpp"
 #include "ProjectVisitor/SetDomainLoadsVisitor.hpp"
 #include "ProjectVisitor/SetNodeRestraintsVisitor.hpp"
 #include "ui/AnalysisResultsWindow.hpp"

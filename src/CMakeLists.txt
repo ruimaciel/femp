@@ -22,7 +22,6 @@ set(gui_HEADERS
     ProjectVisitor/MoveNodesVisitor.hpp
     ProjectVisitor/OutputElementStatisticsVisitor.hpp
     ProjectVisitor/SetDomainLoadsVisitor.hpp
-    ProjectVisitor/OutputResultsInNodesVisitor.hpp
     SelectionManager.hpp
     Document.hpp
     FempApplication.hpp
@@ -73,7 +72,6 @@ set(gui_SOURCES
     ProjectVisitor/ProjectVisitor.cpp
     ProjectVisitor/OutputElementStatisticsVisitor.cpp
     ProjectVisitor/MoveNodesVisitor.cpp
-    ProjectVisitor/OutputResultsInNodesVisitor.cpp
     ProjectVisitor/SetNodeRestraintsVisitor.cpp
     ProjectVisitor/OutputResultsInNodesCSVVisitor.cpp
     ProjectVisitor/SetDomainLoadsVisitor.cpp

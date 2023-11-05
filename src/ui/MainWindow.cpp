@@ -465,11 +465,10 @@ void MainWindow::setDomainLoads() {
 		return;
 	}
 
-	Selection const selection = m_selectionManager.getSelection();
-
 	fem::Model& femp_model = m_document.getProject().getModel();
 	auto load_pattern_index = dialog.getLoadPattern();
-	SetDomainLoadsVisitor visitor(selection, femp_model.load_pattern_list[load_pattern_index], dialog.getForce());
+	SetDomainLoadsVisitor visitor(m_selectionManager.getSelection().getElementReferences(), femp_model.load_pattern_list[load_pattern_index],
+								  dialog.getForce());
 
 	m_document.getProject().accept(visitor);
 

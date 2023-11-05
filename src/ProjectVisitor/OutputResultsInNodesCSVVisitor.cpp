@@ -6,7 +6,8 @@
 #include <libfemp/Element.hpp>
 #include <libfemp/Node.hpp>
 
-OutputResultsInNodesCSVVisitor::OutputResultsInNodesCSVVisitor(Selection selection, fem::AnalysisResult* result, QTextStream& os) : m_selection(selection) {
+OutputResultsInNodesCSVVisitor::OutputResultsInNodesCSVVisitor(std::set<fem::node_ref_t> selected_nodes, fem::AnalysisResult* result, QTextStream& os)
+	: m_selected_nodes{selected_nodes} {
 	m_result = result;
 	m_out = &os;  // TODO make this more generic
 
@@ -41,10 +42,7 @@ void OutputResultsInNodesCSVVisitor::visit(fem::Model& model, std::vector<fem::A
 		fem::Element element = model.getElementByIndex(e->first);
 
 		for (size_t n = 0; n < element.getNodeAmount(); n++) {
-			std::set<fem::node_ref_t>::iterator iter;
-			auto selected_nodes = m_selection.getNodeReferences();
-			iter = selected_nodes.find(element.getNode(n));
-			if (iter != selected_nodes.end()) {
+			if (m_selected_nodes.count(element.getNode(n)) > 0) {
 				// element has a selected node.  Let's output the result
 				*m_out << e->first << "\t";
 

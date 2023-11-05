@@ -686,9 +686,7 @@ void MainWindow::dumpResultsFromSelection() {
 	// dump the text to a text file
 	fem::AnalysisResult& femp_result = this->m_document.getProject().getAnalysisResults().back();  // nasty hack
 
-	Selection selection = m_selectionManager.getSelection();
-
-	OutputResultsInNodesCSVVisitor visitor(selection, &femp_result, out);
+	OutputResultsInNodesCSVVisitor visitor(m_selectionManager.getSelection().getNodeReferences(), &femp_result, out);
 
 	m_document.getProject().accept(visitor);
 

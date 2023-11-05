@@ -3,29 +3,28 @@
 
 #include "ProjectVisitor.hpp"
 
-// services includes
-#include <selection/Selection.hpp>
-
 // libfemp includes
 #include <libfemp/AnalysisResult.hpp>
 #include <libfemp/Model.hpp>
+#include <libfemp/Node.hpp>
 #include <libfemp/NodeRestrictions.hpp>
 
 // stl includes
-#include <array>
+#include <set>
+#include <vector>
 
 /**
  * Sets node restraints in a specific set of nodes
  */
 class SetNodeRestraintsVisitor : public ProjectVisitor {
 	public:
-	SetNodeRestraintsVisitor(Selection selection, fem::NodeRestrictions const& restrictions);
+	SetNodeRestraintsVisitor(std::set<fem::node_ref_t> selected_nodes, fem::NodeRestrictions const& restrictions);
 
 	void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result) override;
 
 	protected:
+	std::set<fem::node_ref_t> m_selected_nodes;
 	fem::NodeRestrictions m_restrictions;
-	Selection m_selection;
 };
 
 #endif

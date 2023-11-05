@@ -422,9 +422,7 @@ void MainWindow::setNodeRestraints() {
 		return;
 	}
 
-	// get list of node restraints from active window
-	Selection selection = m_selectionManager.getSelection();
-	SetNodeRestraintsVisitor visitor(selection, nd.getRestrictions());
+	SetNodeRestraintsVisitor visitor(m_selectionManager.getSelection().getNodeReferences(), nd.getRestrictions());
 
 	// set the restraints in the model
 	m_document.getProject().accept(visitor);

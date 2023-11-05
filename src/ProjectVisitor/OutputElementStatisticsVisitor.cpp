@@ -1,15 +1,18 @@
 #include "OutputElementStatisticsVisitor.hpp"
 
-#include <assert.h>
-
-#include <QDebug>
+// std includes
 #include <cmath>
+#include <limits>
+
+// Qt includes
+#include <QDebug>
+
+// libfemp includes
 #include <libfemp/AnalysisResult.hpp>
 #include <libfemp/Element.hpp>
 #include <libfemp/Node.hpp>
-#include <limits>
 
-OutputElementStatisticsVisitor::OutputElementStatisticsVisitor(Selection selection) : m_selection(selection) {}
+OutputElementStatisticsVisitor::OutputElementStatisticsVisitor() {}
 
 void OutputElementStatisticsVisitor::visit(fem::Model& model, std::vector<fem::AnalysisResult>&) {
 	float de = 0;								   // maximum/external diameter

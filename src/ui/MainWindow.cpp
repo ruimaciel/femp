@@ -141,7 +141,7 @@ void MainWindow::importProjectFromJsonFile(QString file_name) {
 
 	m_document.setFileName(file_name);
 
-	OutputElementStatisticsVisitor visit(m_selectionManager.getSelection());
+	OutputElementStatisticsVisitor visit;
 	m_document.getProject().accept(visit);
 }
 

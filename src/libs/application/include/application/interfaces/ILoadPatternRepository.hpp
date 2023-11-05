@@ -1,5 +1,5 @@
-#ifndef GUI_APPLICATION_ILOADPATTERNREPOSITORY_H
-#define GUI_APPLICATION_ILOADPATTERNREPOSITORY_H
+#ifndef FEMP_APPLICATION_ILOADPATTERNREPOSITORY_H
+#define FEMP_APPLICATION_ILOADPATTERNREPOSITORY_H
 
 #include <libfemp/LoadPattern.hpp>
 #include <memory>
@@ -25,4 +25,4 @@ using ILoadPatternRepositoryPtr = std::shared_ptr<ILoadPatternRepository>;
 }  // namespace application
 }  // namespace gui
 
-#endif	// GUI_APPLICATION_ILOADPATTERNREPOSITORY_H
+#endif	// FEMP_APPLICATION_ILOADPATTERNREPOSITORY_H

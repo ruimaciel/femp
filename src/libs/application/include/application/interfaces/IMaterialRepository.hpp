@@ -1,5 +1,5 @@
-#ifndef GUI_APPLICATION_IMATERIALREPOSITORY_H
-#define GUI_APPLICATION_IMATERIALREPOSITORY_H
+#ifndef FEMP_APPLICATION_IMATERIALREPOSITORY_H
+#define FEMP_APPLICATION_IMATERIALREPOSITORY_H
 
 #include <libfemp/Material.hpp>
 #include <memory>
@@ -24,4 +24,4 @@ using IMaterialRepositoryPtr = std::shared_ptr<IMaterialRepository>;
 }  // namespace application
 }  // namespace gui
 
-#endif	// GUI_APPLICATION_IMATERIALREPOSITORY_H
+#endif	// FEMP_APPLICATION_IMATERIALREPOSITORY_H

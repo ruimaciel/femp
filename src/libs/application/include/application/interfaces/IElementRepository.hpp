@@ -1,5 +1,5 @@
-#ifndef GUI_APPLICATION_IELEMENTREPOSITORY_H
-#define GUI_APPLICATION_IELEMENTREPOSITORY_H
+#ifndef FEMP_APPLICATION_IELEMENTREPOSITORY_H
+#define FEMP_APPLICATION_IELEMENTREPOSITORY_H
 
 #include <libfemp/Element.hpp>
 #include <memory>
@@ -27,4 +27,4 @@ using IElementRepositoryPtr = std::shared_ptr<IElementRepository>;
 }  // namespace application
 }  // namespace gui
 
-#endif	// GUI_APPLICATION_IELEMENTREPOSITORY_H
+#endif	// FEMP_APPLICATION_IELEMENTREPOSITORY_H

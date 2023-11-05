@@ -1,5 +1,5 @@
-#ifndef GUI_APPLICATION_INODEREPOSITORY_H
-#define GUI_APPLICATION_INODEREPOSITORY_H
+#ifndef FEMP_APPLICATION_INODEREPOSITORY_H
+#define FEMP_APPLICATION_INODEREPOSITORY_H
 
 #include <libfemp/Node.hpp>
 #include <map>
@@ -26,4 +26,4 @@ using INodeRepositoryPtr = std::shared_ptr<INodeRepository>;
 }  // namespace application
 }  // namespace gui
 
-#endif	// GUI_APPLICATION_INODEREPOSITORY_H
+#endif	// FEMP_APPLICATION_INODEREPOSITORY_H

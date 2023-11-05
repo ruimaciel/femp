@@ -17,6 +17,7 @@
 
 class ModelImpl;
 
+namespace domain {
 class Model {
 	public:
 	Model(fem::Model& model);
@@ -45,4 +46,5 @@ class Model {
 	std::unique_ptr<ModelImpl> m_impl;
 };
 
+}  // namespace domain
 #endif	// FEMP_DOMAIN_MODEL_H

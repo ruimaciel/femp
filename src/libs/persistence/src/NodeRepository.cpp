@@ -3,7 +3,7 @@
 namespace gui {
 namespace persistence {
 
-NodeRepository::NodeRepository(std::shared_ptr<gui::Model> model) : m_domain_model(model) {}
+NodeRepository::NodeRepository(std::shared_ptr<domain::Model> model) : m_domain_model(model) {}
 
 std::vector<size_t> gui::persistence::NodeRepository::getNodeReferenceList() const {
 	return m_domain_model->getNodeReferenceList();

@@ -16,7 +16,7 @@ namespace persistence {
 
 class MaterialRepository : public application::IMaterialRepository {
 	public:
-	MaterialRepository(std::shared_ptr<gui::Model> model);
+	MaterialRepository(std::shared_ptr<domain::Model> model);
 
 	// IMaterialRepository interface
 	public:
@@ -25,7 +25,7 @@ class MaterialRepository : public application::IMaterialRepository {
 	void pushMaterial(fem::Material new_material) override;
 
 	private:
-	std::shared_ptr<gui::Model> m_domain_model;
+	std::shared_ptr<domain::Model> m_domain_model;
 };
 
 }  // namespace persistence

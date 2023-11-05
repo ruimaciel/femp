@@ -39,7 +39,7 @@ class SelectFrustumInclusionOperation : public OperationsVisitor {
 	void visit(SGC::Node& element);
 	void visit(SGC::Element& element);
 
-	void selectInclusiveElements(std::shared_ptr<gui::Model> model);
+	void selectInclusiveElements(std::shared_ptr<domain::Model> model);
 
 	protected:
 	void calculateNormalVectors(std::array<fem::Point3D, 4> const& near, std::array<fem::Point3D, 4> const& far);

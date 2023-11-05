@@ -27,7 +27,7 @@ void SelectFrustumInclusionOperation::visit(SGC::Node& node) {
 
 void SelectFrustumInclusionOperation::visit(SGC::Element& /*element*/) {}
 
-void SelectFrustumInclusionOperation::selectInclusiveElements(std::shared_ptr<gui::Model> domain_model) {
+void SelectFrustumInclusionOperation::selectInclusiveElements(std::shared_ptr<domain::Model> domain_model) {
 	std::set<fem::node_ref_t>::const_iterator i;
 
 	auto element_list = domain_model->getElementList();

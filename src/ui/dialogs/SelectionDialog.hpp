@@ -19,7 +19,7 @@ class SelectionDialog : public QDialog {
 	SelectionWidget* m_selection_widget;
 
 	public:
-	SelectionDialog(std::shared_ptr<gui::Model> model, SelectionManager& selection_manager, QWidget* parent = nullptr);
+	SelectionDialog(std::shared_ptr<domain::Model> model, SelectionManager& selection_manager, QWidget* parent = nullptr);
 };
 
 #endif

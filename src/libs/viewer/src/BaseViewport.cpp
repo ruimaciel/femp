@@ -310,7 +310,7 @@ fem::Project& BaseViewport::getProject() {
 	return m_project;
 }
 
-std::shared_ptr<gui::Model> BaseViewport::getDomainModel() {
+std::shared_ptr<domain::Model> BaseViewport::getDomainModel() {
 	return m_project.getDomainModel();
 }
 

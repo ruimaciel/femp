@@ -3,7 +3,7 @@
 namespace gui {
 namespace persistence {
 
-MaterialRepository::MaterialRepository(std::shared_ptr<gui::Model> model) : m_domain_model(model) {}
+MaterialRepository::MaterialRepository(std::shared_ptr<domain::Model> model) : m_domain_model(model) {}
 
 std::vector<fem::Material> MaterialRepository::getMaterialList() const {
 	return m_domain_model->getMaterialList();

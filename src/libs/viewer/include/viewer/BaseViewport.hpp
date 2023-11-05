@@ -111,7 +111,7 @@ class BaseViewport : public QOpenGLWidget {
 	void showSelection(const Selection);
 	void showAll();
 	fem::Project& getProject();
-	std::shared_ptr<gui::Model> getDomainModel();
+	std::shared_ptr<domain::Model> getDomainModel();
 
 	ViewportColors getColors() const;
 

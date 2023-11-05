@@ -1,7 +1,7 @@
 #ifndef GUI_PERSISTENCE_ELEMENTREPOSITORY_H
 #define GUI_PERSISTENCE_ELEMENTREPOSITORY_H
 
-// gui includes
+// femp includes
 #include <application/interfaces/IElementRepository.hpp>
 #include <domain/Model.hpp>
 
@@ -16,7 +16,7 @@ namespace persistence {
 
 class ElementRepository : public application::IElementRepository {
 	public:
-	ElementRepository(std::shared_ptr<gui::Model> model);
+	ElementRepository(std::shared_ptr<domain::Model> model);
 
 	std::vector<fem::Element> getElementList() const override;
 	fem::Element getElementById(size_t element_id) const override;
@@ -24,7 +24,7 @@ class ElementRepository : public application::IElementRepository {
 	size_t getElementSize() const override;
 
 	private:
-	std::shared_ptr<gui::Model> m_domain_model;
+	std::shared_ptr<domain::Model> m_domain_model;
 };
 
 }  // namespace persistence

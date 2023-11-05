@@ -486,7 +486,7 @@ void MainWindow::moveSelectedNodes() {
 
 	// get list of node restraints from active window
 	Selection selection = m_selectionManager.getSelection();
-	MoveNodesVisitor visitor(selection, nd.getTranslation());
+	MoveNodesVisitor visitor(selection.getNodeReferences(), nd.getTranslation());
 
 	m_document.getProject().accept(visitor);
 

@@ -1,16 +1,10 @@
 #include "MoveNodesVisitor.hpp"
 
-#include <assert.h>
-
-#include <libfemp/AnalysisResult.hpp>
-#include <libfemp/Node.hpp>
-
-MoveNodesVisitor::MoveNodesVisitor(Selection selection, fem::Point3D const& translation) : m_selection(selection) {
-	m_translation = translation;
-}
+MoveNodesVisitor::MoveNodesVisitor(std::set<fem::node_ref_t> node_ref_set, fem::Point3D const& translation)
+	: m_selected_nodes{node_ref_set}, m_translation{translation} {}
 
 void MoveNodesVisitor::visit(fem::Model& model, std::vector<fem::AnalysisResult>&) {
-	for (auto node : m_selection.getNodeReferences()) {
-		model.getNode(node) += m_translation;
+	for (fem::node_ref_t node_ref : m_selected_nodes) {
+		model.getNode(node_ref) += m_translation;
 	}
 }

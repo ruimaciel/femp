@@ -15,7 +15,7 @@ void Project::pushAnalysisResult(fem::AnalysisResult& new_result) {
 	this->m_analysisResults.push_back(new_result);
 }
 
-Model& Project::getModel() {
+fem::Model& Project::getModel() {
 	return this->m_model;
 }
 
@@ -23,7 +23,7 @@ std::shared_ptr<domain::Model> Project::getDomainModel() {
 	return this->m_domainModel;
 }
 
-std::vector<AnalysisResult>& Project::getAnalysisResults() {
+std::vector<fem::AnalysisResult>& Project::getAnalysisResults() {
 	return this->m_analysisResults;
 }
 

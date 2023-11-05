@@ -41,10 +41,10 @@ class Project {
 	/**
 	 * returns a reference to the Project's model
 	 */
-	Model& getModel();
+	fem::Model& getModel();
 	std::shared_ptr<domain::Model> getDomainModel();
 
-	std::vector<AnalysisResult>& getAnalysisResults();	// a list with all analysis
+	std::vector<fem::AnalysisResult>& getAnalysisResults();	 // a list with all analysis
 
 	/**
 	 * Implements a Visitor design pattern
@@ -52,9 +52,9 @@ class Project {
 	void accept(ProjectVisitor& visitor);
 
 	protected:
-	Model m_model;	// the FEM model
+	fem::Model m_model;	 // the FEM model
 	std::shared_ptr<domain::Model> m_domainModel;
-	std::vector<AnalysisResult> m_analysisResults;	// a list with all analysis
+	std::vector<fem::AnalysisResult> m_analysisResults;	 // a list with all analysis
 };
 
 }  // namespace fem

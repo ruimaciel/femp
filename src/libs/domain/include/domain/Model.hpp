@@ -1,5 +1,5 @@
-#ifndef GUI_MODEL_H
-#define GUI_MODEL_H
+#ifndef FEMP_DOMAIN_MODEL_H
+#define FEMP_DOMAIN_MODEL_H
 
 // libfemp includes
 #include <libfemp/ElementGroup.hpp>
@@ -14,8 +14,6 @@
 #include <map>
 #include <memory>
 #include <vector>
-
-namespace gui {
 
 class ModelImpl;
 
@@ -47,6 +45,4 @@ class Model {
 	std::unique_ptr<ModelImpl> m_impl;
 };
 
-}  // namespace gui
-
-#endif	// GUI_MODEL_H
+#endif	// FEMP_DOMAIN_MODEL_H

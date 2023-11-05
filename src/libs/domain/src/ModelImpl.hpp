@@ -1,10 +1,8 @@
-#ifndef GUI_MODELIMPL_H
-#define GUI_MODELIMPL_H
+#ifndef FEMP_DOMAIN_MODELIMPL_H
+#define FEMP_DOMAIN_MODELIMPL_H
 
 #include <libfemp/Model.hpp>
 #include <libfemp/NodeRestrictions.hpp>
-
-namespace gui {
 
 class ModelImpl {
 	public:
@@ -32,6 +30,4 @@ class ModelImpl {
 	fem::Model& m_model;
 };
 
-}  // namespace gui
-
-#endif	// GUI_MODELIMPL_H
+#endif	// FEMP_DOMAIN_MODELIMPL_H

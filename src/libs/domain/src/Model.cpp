@@ -2,8 +2,6 @@
 
 #include "ModelImpl.hpp"
 
-namespace gui {
-
 Model::Model(fem::Model& model) : m_impl(new ModelImpl(model)) {}
 
 Model::~Model() {}
@@ -55,5 +53,3 @@ void Model::pushMaterial(fem::Material new_material) {
 std::map<unsigned int, fem::NodeRestrictions> Model::getNodeRestrictions() const {
 	return m_impl->getNodeRestrictions();
 }
-
-}  // namespace gui

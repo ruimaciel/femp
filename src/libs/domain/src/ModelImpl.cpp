@@ -1,7 +1,5 @@
 #include "ModelImpl.hpp"
 
-namespace gui {
-
 ModelImpl::ModelImpl(fem::Model& model) : m_model(model) {}
 
 std::vector<fem::Element> ModelImpl::getElementList() const {
@@ -55,5 +53,3 @@ void ModelImpl::pushMaterial(fem::Material new_material) {
 std::map<unsigned int, fem::NodeRestrictions> ModelImpl::getNodeRestrictions() const {
 	return m_model.getNodeRestrictions();
 }
-
-}  // namespace gui

@@ -4,7 +4,6 @@ bool collided(const SphericalBoundary& sphere, const fem::Point3D& near, const f
 	/* taken from
 		http://wiki.cgsociety.org/index.php/Ray_Sphere_Intersection
 		*/
-	using namespace fem;
 
 	fem::Point3D d = far - near;
 	fem::Point3D oc = near - sphere.center;

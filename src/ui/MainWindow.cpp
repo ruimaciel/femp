@@ -518,8 +518,6 @@ void MainWindow::editSelection() {
 void MainWindow::runAnalysis() {
 	qInfo() << "MainWindow::runAnalysis()";
 
-	using namespace std;
-
 	fem::Model& femp_model = this->m_document.getProject().getModel();
 
 	// check if ther is a load pattern
@@ -605,8 +603,6 @@ void MainWindow::dumpFemEquation() {
 		QMessageBox::information(this, "No analysis", "There isn't a equation to dump");
 		return;
 	}
-
-	using namespace std;
 
 	QFileDialog dialog(this);
 

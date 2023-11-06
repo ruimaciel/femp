@@ -28,11 +28,9 @@ double DialogScale::getScale() {
 }
 
 void DialogScale::updateSlider(double value) {
-	using namespace std;
-	m_ui->horizontalSlider->setValue(ceil(log10(value)));
+	m_ui->horizontalSlider->setValue(std::ceil(log10(value)));
 }
 
 void DialogScale::updateSpinBox(int value) {
-	using namespace std;
-	m_ui->doubleSpinBox->setValue(pow(10, value));
+	m_ui->doubleSpinBox->setValue(std::pow(10, value));
 }

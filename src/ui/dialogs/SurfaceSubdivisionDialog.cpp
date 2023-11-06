@@ -29,11 +29,9 @@ unsigned short SurfaceSubdivisionDialog::scale() {
 }
 
 void SurfaceSubdivisionDialog::updateSlider(int value) {
-	using namespace std;
 	m_ui->horizontalSlider->setValue(value);
 }
 
 void SurfaceSubdivisionDialog::updateSpinBox(int value) {
-	using namespace std;
 	m_ui->spinBox->setValue(value);
 }

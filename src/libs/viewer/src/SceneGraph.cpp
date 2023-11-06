@@ -13,9 +13,6 @@ SceneGraph::~SceneGraph() {
 }
 
 void SceneGraph::clear() {
-	using namespace std;
-	// TODO finish this
-
 	// frees the primitives included in the list
 	m_primitive_components.clear();
 
@@ -23,8 +20,6 @@ void SceneGraph::clear() {
 }
 
 void SceneGraph::paint(ViewportData& viewport_data, ViewportColors colors) {
-	using namespace std;
-
 	for (std::pair<SceneGraph::Groups, RenderGroup> i : rendering_groups) {
 		RenderGroup& render_group = i.second;
 		if (render_group.isVisible()) {

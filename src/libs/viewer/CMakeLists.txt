@@ -10,9 +10,6 @@ set(viewer_INCLUDES
 )
 
 set(viewer_HEADERS
-    src/boundaries/BoundaryStrategy.hpp
-    src/boundaries/CollisionDetection.hpp
-    src/boundaries/SphericalBoundary.hpp
     src/InputStates/Input.hpp
     src/InputStates/InputState.hpp
     src/InputStates/ISLeftClick.hpp
@@ -22,6 +19,9 @@ set(viewer_HEADERS
     src/InputStates/ISStart.hpp
     src/RenderGroup.hpp
     src/SceneGraph.hpp
+    src/SceneGraphComponents/boundaries/BoundaryStrategy.hpp
+    src/SceneGraphComponents/boundaries/CollisionDetection.hpp
+    src/SceneGraphComponents/boundaries/SphericalBoundary.hpp
     src/SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.hpp
     src/SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.hpp
     src/SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.hpp
@@ -81,9 +81,6 @@ set(viewer_HEADERS
 
 set(viewer_SOURCES
     src/BaseViewport.cpp
-    src/boundaries/BoundaryStrategy.cpp
-    src/boundaries/CollisionDetection.cpp
-    src/boundaries/SphericalBoundary.cpp
     src/Camera.cpp
     src/InputStates/Input.cpp
     src/InputStates/InputState.cpp
@@ -96,6 +93,9 @@ set(viewer_SOURCES
     src/PostprocessingViewport.cpp
     src/RenderGroup.cpp
     src/SceneGraph.cpp
+    src/SceneGraphComponents/boundaries/BoundaryStrategy.cpp
+    src/SceneGraphComponents/boundaries/CollisionDetection.cpp
+    src/SceneGraphComponents/boundaries/SphericalBoundary.cpp
     src/SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsPolicy.cpp
     src/SceneGraphComponents/DisplacementsRepresentationPolicy/DisplacementsRepresentationPolicy.cpp
     src/SceneGraphComponents/DisplacementsRepresentationPolicy/NoDisplacementsPolicy.cpp

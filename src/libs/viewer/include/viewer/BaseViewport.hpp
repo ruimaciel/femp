@@ -1,8 +1,17 @@
-#ifndef FEMP_VIEWER_BASEFEMP_VIEWER_VIEWPORT_HPP
-#define FEMP_VIEWER_BASEFEMP_VIEWER_VIEWPORT_HPP
+#ifndef FEMP_VIEWER_BASEVIEWPORT_HPP
+#define FEMP_VIEWER_BASEVIEWPORT_HPP
 
-#include <assert.h>
+// std includes
+#include <array>
 
+// Qt includes
+#include <QOpenGLWidget>
+
+// libfemp includes
+#include <libfemp/AnalysisResult.hpp>
+#include <libfemp/Model.hpp>
+
+// femp includes
 #include <application/interfaces/INodeRepository.hpp>
 #include <options/Options.hpp>
 #include <options/ViewportColors.hpp>
@@ -11,23 +20,12 @@
 #include "Project.hpp"
 #include "SceneGraph.hpp"
 
-// libfemp includes
-#include <libfemp/AnalysisResult.hpp>
-#include <libfemp/Model.hpp>
-
-// Qt includes
-#include <QOpenGLWidget>
-
-// std includes
-#include <array>
-
 class ViewportState;
 class Input;
 
-/*
-QGLidget subclass designed for a Base class for all Qt widgets that provide an
-opengl viewports to render the model
-*/
+/**
+ * Base class for all Qt widgets that provide an opengl viewports to render the model
+ */
 class BaseViewport : public QOpenGLWidget {
 	Q_OBJECT
 

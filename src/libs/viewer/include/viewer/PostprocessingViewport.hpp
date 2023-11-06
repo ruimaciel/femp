@@ -1,5 +1,12 @@
-#ifndef FEMP_VIEWER_POSTPROCESSINGFEMP_VIEWER_VIEWPORT_HPP
-#define FEMP_VIEWER_POSTPROCESSINGFEMP_VIEWER_VIEWPORT_HPP
+#ifndef FEMP_VIEWER_POSTPROCESSINGVIEWPORT_HPP
+#define FEMP_VIEWER_POSTPROCESSINGVIEWPORT_HPP
+
+// Qt includes
+#include <QWidget>
+
+// libfemp includes
+#include <libfemp/AnalysisResult.hpp>
+#include <libfemp/ElementResults/ElementResults.hpp>
 
 // viewer includes
 #include <viewer/BaseViewport.hpp>
@@ -7,15 +14,8 @@
 #include "ViewportStates/VPStateDisplacements.hpp"
 #include "ViewportStates/VPStateGradients.hpp"
 
-// gui includes
+// femp includes
 #include "Project.hpp"
-
-// libfemp includes
-#include <libfemp/AnalysisResult.hpp>
-#include <libfemp/ElementResults/ElementResults.hpp>
-
-// Qt includes
-#include <QWidget>
 
 /**
  * QGLWidget subclass designed to represent any postprocessing being done to any

@@ -1,20 +1,20 @@
-#ifndef FEMP_VIEWER_TENSORFIELDFEMP_VIEWER_VIEWPORT_HPP
-#define FEMP_VIEWER_TENSORFIELDFEMP_VIEWER_VIEWPORT_HPP
+#ifndef FEMP_VIEWER_TENSORFIELDVIEWPORT_HPP
+#define FEMP_VIEWER_TENSORFIELDVIEWPORT_HPP
+
+// Qt includes
+#include <QWidget>
+
+// libfemp includes
+#include <libfemp/AnalysisResult.hpp>
+#include <libfemp/ElementResults/ResultsRanges.hpp>
 
 // viewer includes
 #include <viewer/BaseViewport.hpp>
 
 #include "ViewportStates/VPStateTensorFields.hpp"
 
-// gui includes
+// femp includes
 #include "Project.hpp"
-
-// libfemp includes
-#include <libfemp/AnalysisResult.hpp>
-#include <libfemp/ElementResults/ResultsRanges.hpp>
-
-// Qt includes
-#include <QWidget>
 
 /**
  * QGLWidget subclass designed to represent any postprocessing being done to any

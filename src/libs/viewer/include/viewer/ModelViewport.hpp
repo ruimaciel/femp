@@ -1,16 +1,16 @@
-#ifndef FEMP_VIEWER_MODELFEMP_VIEWER_VIEWPORT_HPP
-#define FEMP_VIEWER_MODELFEMP_VIEWER_VIEWPORT_HPP
+#ifndef FEMP_VIEWER_MODELVIEWPORT_HPP
+#define FEMP_VIEWER_MODELVIEWPORT_HPP
+
+// Qt includes
+#include <QWidget>
 
 // viewer includes
 #include <viewer/BaseViewport.hpp>
 
 #include "ViewportStates/VPStateModel.hpp"
 
-// gui includes
+// femp includes
 #include "Project.hpp"
-
-// Qt includes
-#include <QWidget>
 
 /**
  * The viewport class which is designed to render the model and enact changes on

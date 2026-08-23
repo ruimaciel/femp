@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/base:2026.08-22.04
+      - image: cimg/base:2026.08-24.04
 
     steps:
       - run:
@@ -39,7 +39,7 @@ jobs:
 
   test:
     docker:
-      - image: cimg/base:2026.08-22.04
+      - image: cimg/base:2026.08-24.04
     steps:
       - restore_cache:
           key: v1-repo-{{ arch }}-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}

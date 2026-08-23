@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10) # due to googletest
+cmake_minimum_required(VERSION 4.2) # due to googletest
 
 project(femp
     LANGUAGES CXX

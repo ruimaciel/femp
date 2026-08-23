@@ -2,8 +2,8 @@ version: 2.1
 
 jobs:
   build:
-    docker:
-      - image: ubuntu-2604:current
+    machine:
+      image: ubuntu-2604:current
 
     steps:
       - run:
@@ -38,8 +38,8 @@ jobs:
             - build
 
   test:
-    docker:
-      - image: ubuntu-2604:current
+    machine:
+      image: ubuntu-2604:current
     steps:
       - restore_cache:
           key: v1-repo-{{ arch }}-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}

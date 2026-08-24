@@ -6,39 +6,27 @@ project(persistence
     )
 
 
-set(persistence_INCLUDES
-    include/persistence/ElementRepository.hpp
-    include/persistence/NodeRepository.hpp
-    include/persistence/MaterialRepository.hpp
-    include/persistence/LoadPatternRepository.hpp
+add_library(${PROJECT_NAME} STATIC)
+
+target_sources(${PROJECT_NAME}
+    PUBLIC FILE_SET HEADERS
+        BASE_DIRS include
+        FILES
+            include/persistence/ElementRepository.hpp
+            include/persistence/NodeRepository.hpp
+            include/persistence/MaterialRepository.hpp
+            include/persistence/LoadPatternRepository.hpp
+    PRIVATE
+        src/ElementRepository.cpp
+        src/NodeRepository.cpp
+        src/MaterialRepository.cpp
+        src/LoadPatternRepository.cpp
     )
 
-set(persistence_HEADERS
-    )
-
-set(persistence_SOURCES
-    src/ElementRepository.cpp
-    src/NodeRepository.cpp
-    src/MaterialRepository.cpp
-    src/LoadPatternRepository.cpp
-    )
-
-add_library(${PROJECT_NAME} STATIC
-    ${persistence_INCLUDES}
-    ${persistence_HEADERS}
-    ${persistence_SOURCES}
-    )
-
-add_dependencies(${PROJECT_NAME} domain application)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-	CXX_STANDARD 14
     CXX_EXTENSIONS OFF
-    )
-
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     )
 
 target_link_libraries(${PROJECT_NAME}

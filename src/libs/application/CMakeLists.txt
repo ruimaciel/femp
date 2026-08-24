@@ -4,43 +4,31 @@ project(application
     LANGUAGES CXX
     )
 
-set(application_INCLUDES
-    include/application/commands/DumpFemEquationCommand.hpp
-    include/application/commands/SaveDocumentCommand.hpp
-    include/application/interfaces/IElementRepository.hpp
-    include/application/interfaces/INodeRepository.hpp
-    include/application/interfaces/IMaterialRepository.hpp
-    include/application/interfaces/ILoadPatternRepository.hpp
+add_library(${PROJECT_NAME} STATIC)
+
+target_sources(${PROJECT_NAME}
+    PUBLIC FILE_SET HEADERS
+        BASE_DIRS include
+        FILES
+            include/application/commands/DumpFemEquationCommand.hpp
+            include/application/commands/SaveDocumentCommand.hpp
+            include/application/interfaces/IElementRepository.hpp
+            include/application/interfaces/INodeRepository.hpp
+            include/application/interfaces/IMaterialRepository.hpp
+            include/application/interfaces/ILoadPatternRepository.hpp
+    PRIVATE
+        src/commands/DumpFemEquationCommand.cpp
+        src/commands/SaveDocumentCommand.cpp
+        src/interfaces/IElementRepository.cpp
+        src/interfaces/INodeRepository.cpp
+        src/interfaces/IMaterialRepository.cpp
+        src/interfaces/ILoadPatternRepository.cpp
     )
 
-set(application_HEADERS
-    )
-
-set(application_SOURCES
-    src/commands/DumpFemEquationCommand.cpp
-    src/commands/SaveDocumentCommand.cpp
-    src/interfaces/IElementRepository.cpp
-    src/interfaces/INodeRepository.cpp
-    src/interfaces/IMaterialRepository.cpp
-    src/interfaces/ILoadPatternRepository.cpp
-    )
-
-add_library(${PROJECT_NAME} STATIC
-    ${application_INCLUDES}
-    ${application_HEADERS}
-    ${application_SOURCES}
-    )
-
-add_dependencies(${PROJECT_NAME} domain)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-	CXX_STANDARD 14
     CXX_EXTENSIONS OFF
-    )
-
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     )
 
 target_link_libraries(${PROJECT_NAME}

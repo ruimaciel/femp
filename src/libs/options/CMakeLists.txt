@@ -2,32 +2,24 @@ cmake_minimum_required(VERSION 4.2)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(gui_options_HEADERS
-    include/options/DisplayOptions.hpp
-    include/options/Options.hpp
-    include/options/ViewportColors.hpp
-    )
+add_library(gui_options OBJECT)
 
-set(gui_options_SOURCES
-    src/DisplayOptions.cpp
-    src/Options.cpp
-    src/ViewportColors.cpp
-    )
-
-add_library(gui_options OBJECT
-    ${gui_options_HEADERS}
-    ${gui_options_SOURCES}
-    )
-
-target_include_directories(gui_options
-    PUBLIC
-    include
+target_sources(gui_options
+    PUBLIC FILE_SET HEADERS
+        BASE_DIRS include
+        FILES
+            include/options/DisplayOptions.hpp
+            include/options/Options.hpp
+            include/options/ViewportColors.hpp
     PRIVATE
-    src
-)
+        src/DisplayOptions.cpp
+        src/Options.cpp
+        src/ViewportColors.cpp
+    )
+
+target_compile_features(gui_options PUBLIC cxx_std_14)
 
 set_target_properties(gui_options PROPERTIES
-    CXX_STANDARD 14
     CXX_EXTENSIONS OFF
     AUTOMOC ON
     AUTOUIC ON

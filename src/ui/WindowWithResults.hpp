@@ -16,13 +16,13 @@ class QComboBox;
  * to use
  */
 class WindowWithResults : public WindowWith {
-	protected:
-	QToolBar* m_toolBarResults;	 // toolbar to provide a user to select which
-								 // result to run
-	QComboBox* m_comboBoxResults;
+  protected:
+  QToolBar* m_toolBarResults;  // toolbar to provide a user to select which
+							   // result to run
+  QComboBox* m_comboBoxResults;
 
-	public:
-	void createToolbar(QMainWindow* parent, fem::Project& results);
+  public:
+  void createToolbar(QMainWindow* parent, fem::Project& results);
 };
 
 #endif

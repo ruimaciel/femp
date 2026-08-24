@@ -13,9 +13,9 @@
  * Project class
  */
 class ProjectVisitor {
-	public:
-	virtual ~ProjectVisitor();
-	virtual void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result) = 0;
+  public:
+  virtual ~ProjectVisitor();
+  virtual void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result) = 0;
 };
 
 #endif

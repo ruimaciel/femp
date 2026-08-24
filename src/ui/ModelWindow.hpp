@@ -18,13 +18,13 @@
  * MDI window designed to represent the model
  */
 class ModelWindow : public MdiWindow, public WindowWithWireframe, public BaseWindow {
-	Q_OBJECT
+  Q_OBJECT
 
-	public:
-	ModelWindow(fem::Project& project, ViewportColors& colors, QWidget* parent = nullptr);
+  public:
+  ModelWindow(fem::Project& project, ViewportColors& colors, QWidget* parent = nullptr);
 
-	protected:
-	void connectSignalsToSlots() override;
+  protected:
+  void connectSignalsToSlots() override;
 };
 
 #endif

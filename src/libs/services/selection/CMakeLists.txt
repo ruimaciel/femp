@@ -4,24 +4,18 @@ project(selection
     LANGUAGES CXX
     )
 
-set(selection_INCLUDES
-    include/selection/Selection.hpp
-    include/selection/ISelectionService.hpp
-    include/selection/SelectionService.hpp
-    )
+add_library(${PROJECT_NAME} STATIC)
 
-set(selection_HEADERS
-    )
-
-set(selection_SOURCES
-    src/Selection.cpp
-    src/SelectionService.cpp
-    )
-
-add_library(${PROJECT_NAME} STATIC
-    ${selection_INCLUDES}
-    ${selection_HEADERS}
-    ${selection_SOURCES}
+target_sources(${PROJECT_NAME}
+    PUBLIC FILE_SET HEADERS
+        BASE_DIRS include
+        FILES
+            include/selection/Selection.hpp
+            include/selection/ISelectionService.hpp
+            include/selection/SelectionService.hpp
+    PRIVATE
+        src/Selection.cpp
+        src/SelectionService.cpp
     )
 
 add_dependencies(${PROJECT_NAME}

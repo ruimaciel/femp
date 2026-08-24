@@ -5,23 +5,17 @@ project(domain
     VERSION 0.1.0
     )
 
-set(domain_INCLUDES
-	include/domain/Model.hpp
-    )
+add_library(${PROJECT_NAME} STATIC)
 
-set(domain_HEADERS
-    src/ModelImpl.hpp
-    )
-
-set(domain_SOURCES
-    src/Model.cpp
-    src/ModelImpl.cpp
-    )
-
-add_library(${PROJECT_NAME} STATIC
-    ${domain_INCLUDES}
-    ${domain_HEADERS}
-    ${domain_SOURCES}
+target_sources(${PROJECT_NAME}
+    PUBLIC FILE_SET HEADERS
+        BASE_DIRS include
+        FILES
+            include/domain/Model.hpp
+    PRIVATE
+        src/Model.cpp
+        src/ModelImpl.cpp
+        src/ModelImpl.hpp
     )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

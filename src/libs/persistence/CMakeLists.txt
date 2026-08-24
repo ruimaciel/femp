@@ -6,27 +6,21 @@ project(persistence
     )
 
 
-set(persistence_INCLUDES
-    include/persistence/ElementRepository.hpp
-    include/persistence/NodeRepository.hpp
-    include/persistence/MaterialRepository.hpp
-    include/persistence/LoadPatternRepository.hpp
-    )
+add_library(${PROJECT_NAME} STATIC)
 
-set(persistence_HEADERS
-    )
-
-set(persistence_SOURCES
-    src/ElementRepository.cpp
-    src/NodeRepository.cpp
-    src/MaterialRepository.cpp
-    src/LoadPatternRepository.cpp
-    )
-
-add_library(${PROJECT_NAME} STATIC
-    ${persistence_INCLUDES}
-    ${persistence_HEADERS}
-    ${persistence_SOURCES}
+target_sources(${PROJECT_NAME}
+    PUBLIC FILE_SET HEADERS
+        BASE_DIRS include
+        FILES
+            include/persistence/ElementRepository.hpp
+            include/persistence/NodeRepository.hpp
+            include/persistence/MaterialRepository.hpp
+            include/persistence/LoadPatternRepository.hpp
+    PRIVATE
+        src/ElementRepository.cpp
+        src/NodeRepository.cpp
+        src/MaterialRepository.cpp
+        src/LoadPatternRepository.cpp
     )
 
 add_dependencies(${PROJECT_NAME} domain application)

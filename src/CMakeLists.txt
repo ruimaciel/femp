@@ -147,12 +147,6 @@ target_sources(${PROJECT_NAME}
         ui/MainWindow.ui
     )
 
-add_dependencies(${PROJECT_NAME}
-    domain
-    application
-    persistence
-    )
-
 target_include_directories(${PROJECT_NAME}
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
@@ -168,6 +162,7 @@ target_link_libraries(${PROJECT_NAME}
     gui_options::Object
     viewer::Object
     domain
+    application
     persistence
     Qt5::Widgets
     Qt5::OpenGL

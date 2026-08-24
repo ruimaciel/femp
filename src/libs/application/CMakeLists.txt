@@ -25,8 +25,6 @@ target_sources(${PROJECT_NAME}
         src/interfaces/ILoadPatternRepository.cpp
     )
 
-add_dependencies(${PROJECT_NAME} domain)
-
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	CXX_STANDARD 14
     CXX_EXTENSIONS OFF

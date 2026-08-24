@@ -18,15 +18,15 @@
  * Outputs the results which were calculated in a set of nodes in CSV format
  */
 class OutputResultsInNodesCSVVisitor : public ProjectVisitor {
-	public:
-	OutputResultsInNodesCSVVisitor(std::set<fem::node_ref_t> selected_nodes, fem::AnalysisResult* result, QTextStream& os);
+  public:
+  OutputResultsInNodesCSVVisitor(std::set<fem::node_ref_t> selected_nodes, fem::AnalysisResult* result, QTextStream& os);
 
-	void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result) override;
+  void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result) override;
 
-	protected:
-	fem::AnalysisResult* m_result;
-	QTextStream* m_out;
-	std::set<fem::node_ref_t> m_selected_nodes;
+  protected:
+  fem::AnalysisResult* m_result;
+  QTextStream* m_out;
+  std::set<fem::node_ref_t> m_selected_nodes;
 };
 
 #endif

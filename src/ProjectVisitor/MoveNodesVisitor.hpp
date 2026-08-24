@@ -17,14 +17,14 @@
  * Performs a translation on a specific set of nodes
  */
 class MoveNodesVisitor : public ProjectVisitor {
-	public:
-	MoveNodesVisitor(std::set<fem::node_ref_t> selected_nodes, fem::Point3D const& translation);
+  public:
+  MoveNodesVisitor(std::set<fem::node_ref_t> selected_nodes, fem::Point3D const& translation);
 
-	void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result) override;
+  void visit(fem::Model& model, std::vector<fem::AnalysisResult>& result) override;
 
-	protected:
-	fem::Point3D m_translation;
-	std::set<fem::node_ref_t> m_selected_nodes;
+  protected:
+  fem::Point3D m_translation;
+  std::set<fem::node_ref_t> m_selected_nodes;
 };
 
 #endif

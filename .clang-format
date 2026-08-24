@@ -213,7 +213,6 @@ StatementAttributeLikeMacros:
 StatementMacros:
   - Q_UNUSED
   - QT_REQUIRE_VERSION
-IndentWidth:     4
 TabWidth:        4
 UseCRLF:         false
 UseTab:          Always

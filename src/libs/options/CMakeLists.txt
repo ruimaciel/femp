@@ -17,13 +17,6 @@ target_sources(gui_options
         src/ViewportColors.cpp
     )
 
-target_include_directories(gui_options
-    PUBLIC
-    include
-    PRIVATE
-    src
-)
-
 set_target_properties(gui_options PROPERTIES
     CXX_STANDARD 14
     CXX_EXTENSIONS OFF

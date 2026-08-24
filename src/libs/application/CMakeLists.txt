@@ -25,8 +25,9 @@ target_sources(${PROJECT_NAME}
         src/interfaces/ILoadPatternRepository.cpp
     )
 
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
+
 set_target_properties(${PROJECT_NAME} PROPERTIES
-	CXX_STANDARD 14
     CXX_EXTENSIONS OFF
     )
 

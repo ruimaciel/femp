@@ -151,8 +151,9 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
 
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
+
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    CXX_STANDARD 14
     CXX_EXTENSIONS OFF
     AUTOMOC ON
     AUTOUIC ON

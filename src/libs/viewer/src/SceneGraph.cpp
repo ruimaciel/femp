@@ -37,7 +37,7 @@ void SceneGraph::addPrimitiveComponent(enum Groups group, std::shared_ptr<SceneG
 }
 
 void SceneGraph::generateSceneGraph() {
-	for (std::pair<enum SceneGraph::Groups, RenderGroup> e : this->rendering_groups) {
+	for (auto& e : this->rendering_groups) {
 		e.second.generateSceneGraph();
 	}
 }

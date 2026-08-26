@@ -176,6 +176,7 @@ target_link_libraries(viewer
     PUBLIC
     libfemp
     Qt5::Core
+    OpenGL::GL
     PRIVATE
     application
     selection

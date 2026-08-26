@@ -18,23 +18,23 @@ class NodeActionsDialog;
 }
 
 class NodeActionsDialog : public QDialog {
-	Q_OBJECT
+  Q_OBJECT
 
-	private:
-	size_t load_pattern;
+  private:
+  size_t load_pattern;
 
-	public:
-	NodeActionsDialog(LoadPatternsModel& model, QWidget* parent = nullptr);
-	~NodeActionsDialog();
+  public:
+  NodeActionsDialog(LoadPatternsModel& model, QWidget* parent = nullptr);
+  ~NodeActionsDialog();
 
-	size_t getLoadPattern();
-	fem::Point3D getForce();
-	fem::Point3D getDisplacement();
+  size_t getLoadPattern();
+  fem::Point3D getForce();
+  fem::Point3D getDisplacement();
 
-	void loadPatternCreated(size_t, fem::LoadPattern const&);
+  void loadPatternCreated(size_t, fem::LoadPattern const&);
 
-	private:
-	std::unique_ptr<Ui::NodeActionsDialog> m_ui;
+  private:
+  std::unique_ptr<Ui::NodeActionsDialog> m_ui;
 };
 
 #endif

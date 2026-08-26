@@ -12,12 +12,12 @@ namespace services {
  * of all elements and nodes which are currently selected.
  */
 class SelectionService final : public ISelectionService {
-	public:
-	SelectionService();
+  public:
+  SelectionService();
 
-	Selection getSelection() const override;
-	std::set<std::size_t> getSelectedElementReferences() const override;
-	std::set<std::size_t> getSelectedNodeReferences() const override;
+  Selection getSelection() const override;
+  std::set<std::size_t> getSelectedElementReferences() const override;
+  std::set<std::size_t> getSelectedNodeReferences() const override;
 };
 
 }  // namespace services

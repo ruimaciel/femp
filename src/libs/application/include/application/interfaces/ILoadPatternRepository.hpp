@@ -9,15 +9,15 @@ namespace gui {
 namespace application {
 
 class ILoadPatternRepository {
-	public:
-	ILoadPatternRepository();
-	virtual ~ILoadPatternRepository() = default;
+  public:
+  ILoadPatternRepository();
+  virtual ~ILoadPatternRepository() = default;
 
-	virtual std::vector<fem::LoadPattern> getLoadPatternList() const = 0;
+  virtual std::vector<fem::LoadPattern> getLoadPatternList() const = 0;
 
-	virtual size_t getLoadPatternSize() const = 0;
+  virtual size_t getLoadPatternSize() const = 0;
 
-	virtual fem::LoadPattern getLoadPatternByIndex(size_t index) const = 0;
+  virtual fem::LoadPattern getLoadPatternByIndex(size_t index) const = 0;
 };
 
 using ILoadPatternRepositoryPtr = std::shared_ptr<ILoadPatternRepository>;

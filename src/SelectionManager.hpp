@@ -16,29 +16,29 @@
  * fem::Project object which have been selected
  */
 class SelectionManager : public QObject {
-	Q_OBJECT
+  Q_OBJECT
 
-	public:
-	virtual ~SelectionManager();
+  public:
+  virtual ~SelectionManager();
 
-	signals:
-	void selectionChanged(Selection);
-	void selectionCleared();
+  signals:
+  void selectionChanged(Selection);
+  void selectionCleared();
 
-	public slots:
-	void setSelection(Selection const&);
+  public slots:
+  void setSelection(Selection const&);
 
-	void clearSelection();
+  void clearSelection();
 
-	/**
-	 * returns a pointer to an object of type Selection which stores a set of
-	 * references to selected objects
-	 * @return	an object of type Selection
-	 */
-	Selection const& getSelection() const;
+  /**
+   * returns a pointer to an object of type Selection which stores a set of
+   * references to selected objects
+   * @return	an object of type Selection
+   */
+  Selection const& getSelection() const;
 
-	protected:
-	Selection m_selection;
+  protected:
+  Selection m_selection;
 };
 
 #endif

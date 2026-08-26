@@ -11,14 +11,14 @@ namespace gui {
 namespace application {
 
 class DumpFemEquationCommand {
-	public:
-	DumpFemEquationCommand(fem::AnalysisResult &result, QString file_name);
+  public:
+  DumpFemEquationCommand(fem::AnalysisResult &result, QString file_name);
 
-	void execute();
+  void execute();
 
-	private:
-	QString file_name;
-	fem::AnalysisResult &result;
+  private:
+  QString file_name;
+  fem::AnalysisResult &result;
 };
 
 }  // namespace application

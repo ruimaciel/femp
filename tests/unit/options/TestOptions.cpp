@@ -1,7 +1,6 @@
 #include <QDir>
 #include <QSettings>
 #include <QtTest/QtTest>
-
 #include <options/DisplayOptions.hpp>
 #include <options/Options.hpp>
 #include <options/ViewportColors.hpp>
@@ -9,7 +8,7 @@
 class TestOptions : public QObject {
   Q_OBJECT
 
- private slots:
+  private slots:
   void displayOptions_nodesAreVisibleByDefault();
   void displayOptions_shadingIsEnabledByDefault();
   void viewportColors_backgroundIsBlackByDefault();

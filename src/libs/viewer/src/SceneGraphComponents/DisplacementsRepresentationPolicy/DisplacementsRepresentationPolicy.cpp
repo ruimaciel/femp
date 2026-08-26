@@ -3,5 +3,5 @@
 DisplacementsRepresentationPolicy::~DisplacementsRepresentationPolicy() = default;
 
 void DisplacementsRepresentationPolicy::setModel(fem::Model& model) {
-	this->m_model = &model;
+  this->m_model = &model;
 }

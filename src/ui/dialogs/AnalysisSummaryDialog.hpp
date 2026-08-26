@@ -18,14 +18,14 @@ class AnalysisSummaryDialog;
  * given analysis
  */
 class AnalysisSummaryDialog : public QDialog {
-	Q_OBJECT
+  Q_OBJECT
 
-	public:
-	AnalysisSummaryDialog(fem::AnalysisResult const& results, QWidget* parent = nullptr);
-	~AnalysisSummaryDialog();
+  public:
+  AnalysisSummaryDialog(fem::AnalysisResult const& results, QWidget* parent = nullptr);
+  ~AnalysisSummaryDialog();
 
-	private:
-	std::unique_ptr<Ui::AnalysisSummaryDialog> m_ui;
+  private:
+  std::unique_ptr<Ui::AnalysisSummaryDialog> m_ui;
 };
 
 #endif

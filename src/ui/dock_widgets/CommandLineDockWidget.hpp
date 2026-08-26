@@ -6,34 +6,34 @@
 #include "ui/ui_CommandLineDockWidget.h"
 
 class CommandLineDockWidget : public QDockWidget {
-	Q_OBJECT
+  Q_OBJECT
 
-	public:
-	CommandLineDockWidget(QWidget* parent = nullptr);
+  public:
+  CommandLineDockWidget(QWidget* parent = nullptr);
 
-	private:
-	Ui::CommandLineDockWidget ui;
+  private:
+  Ui::CommandLineDockWidget ui;
 
-	public Q_SLOTS:
-	void standard_output(const QString&);
-	void standard_error(const QString&);
+  public Q_SLOTS:
+  void standard_output(const QString&);
+  void standard_error(const QString&);
 
-	/**
-	 * Receives log messages
-	 */
-	void getMessage(QString);
-	void getWarning(QString);
-	void getError(QString);
+  /**
+   * Receives log messages
+   */
+  void getMessage(QString);
+  void getWarning(QString);
+  void getError(QString);
 
-	/**
-	 * Clears the log displayed in the widget window
-	 */
-	void clear();
+  /**
+   * Clears the log displayed in the widget window
+   */
+  void clear();
 
-	void commandEntered(void);
+  void commandEntered(void);
 
-	Q_SIGNALS:
-	void executeCommand(QString command);
+  Q_SIGNALS:
+  void executeCommand(QString command);
 };
 
 #endif

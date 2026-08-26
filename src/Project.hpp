@@ -24,37 +24,37 @@ includes:
 namespace fem {
 
 class Project {
-	public:
-	Project();
-	~Project();
+  public:
+  Project();
+  ~Project();
 
-	/**
-	 * clears the project
-	 */
-	void clear();
+  /**
+   * clears the project
+   */
+  void clear();
 
-	/**
-	 * Adds the result of a new analysis process to the result list
-	 */
-	void pushAnalysisResult(fem::AnalysisResult& new_result);
+  /**
+   * Adds the result of a new analysis process to the result list
+   */
+  void pushAnalysisResult(fem::AnalysisResult& new_result);
 
-	/**
-	 * returns a reference to the Project's model
-	 */
-	fem::Model& getModel();
-	std::shared_ptr<domain::Model> getDomainModel();
+  /**
+   * returns a reference to the Project's model
+   */
+  fem::Model& getModel();
+  std::shared_ptr<domain::Model> getDomainModel();
 
-	std::vector<fem::AnalysisResult>& getAnalysisResults();	 // a list with all analysis
+  std::vector<fem::AnalysisResult>& getAnalysisResults();  // a list with all analysis
 
-	/**
-	 * Implements a Visitor design pattern
-	 */
-	void accept(ProjectVisitor& visitor);
+  /**
+   * Implements a Visitor design pattern
+   */
+  void accept(ProjectVisitor& visitor);
 
-	protected:
-	fem::Model m_model;	 // the FEM model
-	std::shared_ptr<domain::Model> m_domainModel;
-	std::vector<fem::AnalysisResult> m_analysisResults;	 // a list with all analysis
+  protected:
+  fem::Model m_model;  // the FEM model
+  std::shared_ptr<domain::Model> m_domainModel;
+  std::vector<fem::AnalysisResult> m_analysisResults;  // a list with all analysis
 };
 
 }  // namespace fem

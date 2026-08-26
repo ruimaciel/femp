@@ -17,21 +17,21 @@ class DomainLoadsDialog;
 }
 
 class DomainLoadsDialog : public QDialog {
-	Q_OBJECT
+  Q_OBJECT
 
-	public:
-	DomainLoadsDialog(LoadPatternsModel& model, QWidget* parent = nullptr);
-	~DomainLoadsDialog();
+  public:
+  DomainLoadsDialog(LoadPatternsModel& model, QWidget* parent = nullptr);
+  ~DomainLoadsDialog();
 
-	size_t getLoadPattern();
+  size_t getLoadPattern();
 
-	fem::Point3D getForce();
+  fem::Point3D getForce();
 
-	private:
-	size_t load_pattern;
-	std::vector<std::string> m_newLoadPatterns;
+  private:
+  size_t load_pattern;
+  std::vector<std::string> m_newLoadPatterns;
 
-	std::unique_ptr<Ui::DomainLoadsDialog> m_ui;
+  std::unique_ptr<Ui::DomainLoadsDialog> m_ui;
 };
 
 #endif

@@ -34,6 +34,9 @@ void LeftDrag::leftRelease(BaseViewport* viewport, QMouseEvent* event, Input* in
 
 		GLint vport[4];
 
+		// Ensure the widget's GL context is current before querying matrices
+		viewport->makeCurrent();
+
 		glGetDoublev(GL_MODELVIEW_MATRIX, viewport->viewport_data.modelview);
 		glGetDoublev(GL_PROJECTION_MATRIX, viewport->viewport_data.projection);
 		glGetIntegerv(GL_VIEWPORT, vport);

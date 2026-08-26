@@ -39,6 +39,9 @@ void ViewportState::mousePressEvent(BaseViewport* viewport, QMouseEvent* event) 
 
 		GLint vport[4];
 
+		// Ensure GL context is current when reading matrices for picking
+		viewport->makeCurrent();
+
 		glGetDoublev(GL_MODELVIEW_MATRIX, viewport->viewport_data.modelview);
 		glGetDoublev(GL_PROJECTION_MATRIX, viewport->viewport_data.projection);
 		glGetIntegerv(GL_VIEWPORT, vport);

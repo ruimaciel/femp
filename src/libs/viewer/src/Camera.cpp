@@ -20,11 +20,15 @@ void Camera::reset() {
 }
 
 void Camera::reposition() {
-	glTranslated(m_center.x(), m_center.y(), m_center.z());
-	glRotated(m_rotation.data[0], 1.0, 0.0, 0.0);
-	glRotated(m_rotation.data[1], 0.0, 1.0, 0.0);
-	glRotated(m_rotation.data[2], 0.0, 0.0, 1.0);
-	glTranslated(m_pos.x(), m_pos.y(), m_pos.z());
+	// Apply the camera view transform as the inverse of the camera's
+	// world transform. Translate the world by -position, apply inverse
+	// rotations (reverse order, negated), then translate by -center so
+	// the camera looks at the scene center.
+	glTranslated(-m_pos.x(), -m_pos.y(), -m_pos.z());
+	glRotated(-m_rotation.data[2], 0.0, 0.0, 1.0);
+	glRotated(-m_rotation.data[1], 0.0, 1.0, 0.0);
+	glRotated(-m_rotation.data[0], 1.0, 0.0, 0.0);
+	glTranslated(-m_center.x(), -m_center.y(), -m_center.z());
 }
 
 fem::Point3D Camera::getCenter() const {

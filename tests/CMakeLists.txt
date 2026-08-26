@@ -1,4 +1,6 @@
 
+enable_testing()
+
 find_package(Threads REQUIRED)
 
 find_package(GTest CONFIG REQUIRED)

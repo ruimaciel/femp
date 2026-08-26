@@ -61,8 +61,7 @@ void VPStateDisplacements::populateScenegraph(BaseViewport* viewport) {
 		std::make_shared<gui::persistence::ElementRepository>(viewport->getProject().getDomainModel());
 	std::vector<fem::Element> element_list = m_element_repository->getElementList();
 	for (std::vector<fem::Element>::size_type n = 0; n < m_element_repository->getElementSize(); n++) {
-		SGC::Element* element = this->m_factory(n, element_list[n]);
-		std::shared_ptr<SceneGraphComponent> component = std::shared_ptr<SceneGraphComponent>(element);
+		std::shared_ptr<SceneGraphComponent> component = this->m_factory(n, element_list[n]);
 		if (component) this->scenegraph.addPrimitiveComponent(SceneGraph::RG_SURFACES, component);
 	}
 

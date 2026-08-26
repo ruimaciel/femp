@@ -31,6 +31,9 @@ void LeftClick::leftRelease(BaseViewport* viewport, QMouseEvent* event, Input* i
 		fem::Point3D near, far;
 		QPoint pos = event->pos();
 
+		// Ensure the widget's GL context is current before querying matrices
+		viewport->makeCurrent();
+
 		GLint vport[4];
 
 		glGetDoublev(GL_MODELVIEW_MATRIX, viewport->viewport_data.modelview);

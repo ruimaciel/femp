@@ -833,15 +833,11 @@ void MainWindow::createNewFemEquationWindow() {
 void MainWindow::updateWindowMenu() {
   qInfo() << "MainWindow::updateWindowMenu()";
 
-  QList<QMdiSubWindow*> subWindowList = m_mdiArea->subWindowList();
-
   // empties the menu
   ui->menuWindowOpened->clear();
 
   // fills the menu
-  QAction* action;
-  // for(QList<QMdiSubWindow *>::const_iterator subwindow =
-  // subWindowList.begin(); subwindow != subWindowList.end(); subwindow++)
+  QList<QMdiSubWindow*> subWindowList = m_mdiArea->subWindowList();
   for (int n = 0; n < subWindowList.size(); n++) {
 	// get current MDI window label
 	BaseWindow* base = dynamic_cast<BaseWindow*>(subWindowList[n]->widget());
@@ -852,7 +848,7 @@ void MainWindow::updateWindowMenu() {
 	}
 
 	// set the action name
-	action = new QAction(base->label(), this);
+	QAction* action = new QAction(base->label(), this);
 	action->setData(n);
 	ui->menuWindowOpened->addAction(action);
 

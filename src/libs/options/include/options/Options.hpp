@@ -1,9 +1,11 @@
 #ifndef FEMP_OPTIONS_HPP
 #define FEMP_OPTIONS_HPP
 
-#include <QDir>
 #include <options/DisplayOptions.hpp>
 #include <options/ViewportColors.hpp>
+
+// Qt includes
+#include <QDir>
 
 class Options {
   public:

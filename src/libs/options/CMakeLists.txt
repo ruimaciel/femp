@@ -26,8 +26,8 @@ set_target_properties(gui_options PROPERTIES
     )
 
 target_link_libraries(gui_options
-    PRIVATE
-    Qt5::Core
+    PUBLIC
+    Qt5::Core   # public due to QDir
     )
 
 add_library(gui_options::Object ALIAS gui_options)

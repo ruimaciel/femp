@@ -3,7 +3,8 @@
 namespace gui {
 namespace persistence {
 
-ElementRepository::ElementRepository(std::shared_ptr<domain::Model> model) : m_domain_model(model) {}
+ElementRepository::ElementRepository(std::shared_ptr<domain::Model> model)
+    : m_domain_model(model) {}
 
 std::vector<fem::Element> ElementRepository::getElementList() const {
   return m_domain_model->getElementList();
@@ -21,5 +22,5 @@ size_t ElementRepository::getElementSize() const {
   return m_domain_model->getElementSize();
 }
 
-}  // namespace persistence
-}  // namespace gui
+} // namespace persistence
+} // namespace gui

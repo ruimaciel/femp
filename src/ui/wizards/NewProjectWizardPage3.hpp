@@ -9,29 +9,30 @@
 /**
 New Project Wizard section on how to load a mesh from a file
 **/
-class NewProjectWizardPage3 : public QWizardPage, public Ui::NewProjectWizardPage3 {
+class NewProjectWizardPage3 : public QWizardPage,
+                              public Ui::NewProjectWizardPage3 {
   Q_OBJECT
 
-  private:
+private:
   bool m_successfulImport;
 
-  public:
-  NewProjectWizardPage3(fem::Project& project);
+public:
+  NewProjectWizardPage3(fem::Project &project);
 
   bool validatePage();
   bool isComplete() const;
 
-  private:
+private:
   bool validMeshFile();
   void loadMaterialsCombo();
 
-  private slots:
+private slots:
   void loadMeshFile();
   void getFileFromDialog(void);
   void addNewMaterial(void);
 
-  private:
-  fem::Project& m_project;
+private:
+  fem::Project &m_project;
 };
 
 #endif

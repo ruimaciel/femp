@@ -12,14 +12,15 @@ struct ViewportColors {
   ViewportColors();
 
   // set of color options
-  std::array<GLfloat, 4> node;		  // node colors
-  std::array<GLfloat, 4> restraints;  // color for the cinematic restraints
+  std::array<GLfloat, 4> node;       // node colors
+  std::array<GLfloat, 4> restraints; // color for the cinematic restraints
   std::array<GLfloat, 4> selected;
 
   std::array<GLfloat, 4> wireframe;
   std::array<GLfloat, 4> surface;
-  std::array<GLfloat, 4> original_surface;	// displacement: for surfaces for the model in the
-											// original configuration
+  std::array<GLfloat, 4>
+      original_surface; // displacement: for surfaces for the model in the
+                        // original configuration
 
   std::array<GLfloat, 4> arrow;
 

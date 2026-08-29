@@ -2,8 +2,10 @@
 
 #include "ui_QuadratureRulesOptionsDialog.h"
 
-QuadratureRulesOptionsDialog::QuadratureRulesOptionsDialog(fem::Analysis<double>& analysis, QWidget* parent)
-	: QDialog(parent), m_ui(std::make_unique<Ui::QuadratureRulesOptionsDialog>()) {
+QuadratureRulesOptionsDialog::QuadratureRulesOptionsDialog(
+    fem::Analysis<double> &analysis, QWidget *parent)
+    : QDialog(parent),
+      m_ui(std::make_unique<Ui::QuadratureRulesOptionsDialog>()) {
   m_ui->setupUi(this);
 
   this->analysis = &analysis;

@@ -10,10 +10,11 @@
 // stl includes
 #include <string>
 
-class DefaultProgressIndicator : public QObject, public ProgressIndicatorStrategy {
+class DefaultProgressIndicator : public QObject,
+                                 public ProgressIndicatorStrategy {
   Q_OBJECT
 
-  public:
+public:
   DefaultProgressIndicator();
 
   /**
@@ -53,7 +54,7 @@ class DefaultProgressIndicator : public QObject, public ProgressIndicatorStrateg
    */
   virtual void markFinish();
 
-  signals:
+signals:
   void beginSection(std::string);
 
   void setSectionLimit(size_t);

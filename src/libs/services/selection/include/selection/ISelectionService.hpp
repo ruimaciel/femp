@@ -10,7 +10,7 @@ namespace gui {
 namespace services {
 
 class ISelectionService {
-  public:
+public:
   ISelectionService();
   virtual ~ISelectionService() = default;
 
@@ -19,7 +19,7 @@ class ISelectionService {
   virtual std::set<std::size_t> getSelectedNodeReferences() const = 0;
 };
 
-}  // namespace services
-}  // namespace gui
+} // namespace services
+} // namespace gui
 
-#endif	// FEMP_SERVICES_ISELECTIONSERVICE_HPP
+#endif // FEMP_SERVICES_ISELECTIONSERVICE_HPP

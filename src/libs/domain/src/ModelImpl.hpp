@@ -5,8 +5,8 @@
 #include <libfemp/NodeRestrictions.hpp>
 
 class ModelImpl {
-  public:
-  ModelImpl(fem::Model& model);
+public:
+  ModelImpl(fem::Model &model);
 
   std::vector<fem::Element> getElementList() const;
   fem::Element getElementByReference(size_t element_ref) const;
@@ -26,8 +26,8 @@ class ModelImpl {
 
   std::map<unsigned int, fem::NodeRestrictions> getNodeRestrictions() const;
 
-  private:
-  fem::Model& m_model;
+private:
+  fem::Model &m_model;
 };
 
-#endif	// FEMP_DOMAIN_MODELIMPL_HPP
+#endif // FEMP_DOMAIN_MODELIMPL_HPP

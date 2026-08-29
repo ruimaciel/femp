@@ -8,7 +8,7 @@ namespace gui {
 namespace application {
 
 class IElementRepository {
-  public:
+public:
   IElementRepository();
 
   virtual ~IElementRepository();
@@ -24,7 +24,7 @@ class IElementRepository {
 
 using IElementRepositoryPtr = std::shared_ptr<IElementRepository>;
 
-}  // namespace application
-}  // namespace gui
+} // namespace application
+} // namespace gui
 
-#endif	// FEMP_APPLICATION_IELEMENTREPOSITORY_HPP
+#endif // FEMP_APPLICATION_IELEMENTREPOSITORY_HPP

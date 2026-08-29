@@ -2,7 +2,8 @@
 
 #include "ui_MoveNodesDialog.h"
 
-MoveNodesDialog::MoveNodesDialog(QWidget* parent) : QDialog(parent), m_ui(std::make_unique<Ui::MoveNodesDialog>()) {
+MoveNodesDialog::MoveNodesDialog(QWidget *parent)
+    : QDialog(parent), m_ui(std::make_unique<Ui::MoveNodesDialog>()) {
   m_ui->setupUi(this);
 }
 

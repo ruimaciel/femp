@@ -9,7 +9,7 @@
 
 #include "Operations/OperationsVisitor.hpp"
 #include "Project.hpp"
-#include "boundaries/BoundaryStrategy.hpp"	// a definition of a bounding volume through the use of a strategy pattern
+#include "boundaries/BoundaryStrategy.hpp" // a definition of a bounding volume through the use of a strategy pattern
 #include "boundaries/SphericalBoundary.hpp"
 
 /**
@@ -17,30 +17,31 @@
  *the scene graph through a composit design pattern
  **/
 class SceneGraphComponent {
-  public:
-  std::list<std::shared_ptr<SceneGraphComponent>> children;	 // list of all child objects which are a part of the
-															 // composition
-  SphericalBoundary boundary;								 // a boundary volume which contains this component
+public:
+  std::list<std::shared_ptr<SceneGraphComponent>>
+      children; // list of all child objects which are a part of the
+                // composition
+  SphericalBoundary boundary; // a boundary volume which contains this component
 
-  static float detail_factor;  // test value which is used to set the detail
-							   // level of the drawings
+  static float detail_factor; // test value which is used to set the detail
+                              // level of the drawings
 
-  public:
+public:
   bool selected;
   bool render;
 
-  public:
+public:
   SceneGraphComponent();
   virtual ~SceneGraphComponent();
 
-  static void setDetailFactor(const float& new_detail_factor) {
-	detail_factor = new_detail_factor;
+  static void setDetailFactor(const float &new_detail_factor) {
+    detail_factor = new_detail_factor;
   }
 
   /**
    * Render the content of this Scenegraph component
    **/
-  virtual void paintGL(ViewportData& data, ViewportColors& colors);
+  virtual void paintGL(ViewportData &data, ViewportColors &colors);
 
   /**
    * Pushes a new scenegraph component to this component's children's list
@@ -53,7 +54,7 @@ class SceneGraphComponent {
    * Method to be able to implement a Visitor pattern for operations on selected
    *objects
    **/
-  virtual void accept(Operation::OperationsVisitor& v);
+  virtual void accept(Operation::OperationsVisitor &v);
 };
 
 #endif

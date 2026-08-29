@@ -17,15 +17,15 @@ class AnalysisProgressDialog;
 class AnalysisProgressDialog : public QDialog {
   Q_OBJECT
 
-  protected:
+protected:
   std::string m_section_name;
-  QElapsedTimer timer;	// to time the run
+  QElapsedTimer timer; // to time the run
 
-  public:
-  AnalysisProgressDialog(QWidget* parent = nullptr);
+public:
+  AnalysisProgressDialog(QWidget *parent = nullptr);
   ~AnalysisProgressDialog();
 
-  public slots:
+public slots:
   void beginSection(std::string);
 
   /**
@@ -42,7 +42,7 @@ class AnalysisProgressDialog : public QDialog {
   /**
    * Sets an informative message
    */
-  void setMessage(const std::string&);
+  void setMessage(const std::string &);
 
   void setError(std::string);
 
@@ -51,7 +51,7 @@ class AnalysisProgressDialog : public QDialog {
    */
   void finish();
 
-  private:
+private:
   std::unique_ptr<Ui::AnalysisProgressDialog> m_ui;
 };
 

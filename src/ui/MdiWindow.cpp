@@ -3,7 +3,7 @@
 // Qt includes
 #include <QDebug>
 
-MdiWindow::MdiWindow(QWidget* parent) : QMainWindow(parent) {
+MdiWindow::MdiWindow(QWidget *parent) : QMainWindow(parent) {
   setupUi(this);
 
   this->viewport = nullptr;
@@ -84,22 +84,30 @@ void MdiWindow::setNodeRestrictionsVisibility(const bool state) {
 
 void MdiWindow::connectSignalsToSlots() {
   // signals and slots
-  connect(m_actionViewportXY, &QAction::triggered, this, &MdiWindow::setViewportXY);
-  connect(m_actionViewportXZ, &QAction::triggered, this, &MdiWindow::setViewportXZ);
-  connect(m_actionViewportYZ, &QAction::triggered, this, &MdiWindow::setViewportYZ);
+  connect(m_actionViewportXY, &QAction::triggered, this,
+          &MdiWindow::setViewportXY);
+  connect(m_actionViewportXZ, &QAction::triggered, this,
+          &MdiWindow::setViewportXZ);
+  connect(m_actionViewportYZ, &QAction::triggered, this,
+          &MdiWindow::setViewportYZ);
 
-  connect(m_actionVisibleNodes, &QAction::toggled, this, &MdiWindow::setNodeVisibility);
-  connect(m_actionVisibleRestrictions, &QAction::toggled, this, &MdiWindow::setNodeRestrictionsVisibility);
+  connect(m_actionVisibleNodes, &QAction::toggled, this,
+          &MdiWindow::setNodeVisibility);
+  connect(m_actionVisibleRestrictions, &QAction::toggled, this,
+          &MdiWindow::setNodeRestrictionsVisibility);
 
-  connect(viewport, &BaseViewport::selectionChanged, this, &MdiWindow::selectionChanged);
+  connect(viewport, &BaseViewport::selectionChanged, this,
+          &MdiWindow::selectionChanged);
 }
 
-void MdiWindow::normalizeAngle(int* angle) {
-  while (*angle < 0) *angle += 360 * 16;
-  while (*angle > 360 * 16) *angle -= 360 * 16;
+void MdiWindow::normalizeAngle(int *angle) {
+  while (*angle < 0)
+    *angle += 360 * 16;
+  while (*angle > 360 * 16)
+    *angle -= 360 * 16;
 }
 
-void MdiWindow::setColors(ViewportColors& colors) {
+void MdiWindow::setColors(ViewportColors &colors) {
   viewport->setColors(colors);
 }
 
@@ -123,7 +131,8 @@ void MdiWindow::showAll() {
   this->viewport->showAll();
 }
 
-void MdiWindow::updateNodeRestriction(size_t const id, fem::NodeRestrictions const& nr) {
+void MdiWindow::updateNodeRestriction(size_t const id,
+                                      fem::NodeRestrictions const &nr) {
   qInfo() << "MdiWindow::updateNodeRestriction(size_t const id, "
-			 "fem::NodeRestrictions const &nr)";
+             "fem::NodeRestrictions const &nr)";
 }

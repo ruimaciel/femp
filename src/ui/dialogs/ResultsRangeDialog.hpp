@@ -16,15 +16,15 @@ class ResultsRangeDialog;
 class ResultsRangeDialog : public QDialog {
   Q_OBJECT
 
-  public:
-  ResultsRangeDialog(QWidget* parent = nullptr);
+public:
+  ResultsRangeDialog(QWidget *parent = nullptr);
   ~ResultsRangeDialog();
 
-  void setValueRanges(const fem::ResultsRanges<double>&);
+  void setValueRanges(const fem::ResultsRanges<double> &);
 
-  bool getValueRanges(fem::ResultsRanges<double>&) const;
+  bool getValueRanges(fem::ResultsRanges<double> &) const;
 
-  private:
+private:
   std::unique_ptr<Ui::ResultsRangeDialog> m_ui;
 };
 

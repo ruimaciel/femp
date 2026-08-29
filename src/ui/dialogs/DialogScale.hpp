@@ -17,17 +17,17 @@ class DialogScale;
 class DialogScale : public QDialog {
   Q_OBJECT
 
-  public:
-  DialogScale(float scale, QWidget* parent = nullptr);
+public:
+  DialogScale(float scale, QWidget *parent = nullptr);
   ~DialogScale();
 
   double getScale();
 
-  protected slots:
+protected slots:
   void updateSpinBox(int);
   void updateSlider(double);
 
-  private:
+private:
   std::unique_ptr<Ui::DialogScale> m_ui;
 };
 

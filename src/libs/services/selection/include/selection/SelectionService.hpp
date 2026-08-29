@@ -12,7 +12,7 @@ namespace services {
  * of all elements and nodes which are currently selected.
  */
 class SelectionService final : public ISelectionService {
-  public:
+public:
   SelectionService();
 
   Selection getSelection() const override;
@@ -20,7 +20,7 @@ class SelectionService final : public ISelectionService {
   std::set<std::size_t> getSelectedNodeReferences() const override;
 };
 
-}  // namespace services
-}  // namespace gui
+} // namespace services
+} // namespace gui
 
-#endif	// FEMP_SERVICES_SELECTIONSERVICE_HPP
+#endif // FEMP_SERVICES_SELECTIONSERVICE_HPP

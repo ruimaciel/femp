@@ -8,7 +8,7 @@
 class TestOptions : public QObject {
   Q_OBJECT
 
-  private slots:
+private slots:
   void displayOptions_nodesAreVisibleByDefault();
   void displayOptions_shadingIsEnabledByDefault();
   void viewportColors_backgroundIsBlackByDefault();
@@ -17,7 +17,7 @@ class TestOptions : public QObject {
 
 void TestOptions::displayOptions_nodesAreVisibleByDefault() {
   // Arrange
-  auto& display = Options::getInstance().getDisplayOptions();
+  auto &display = Options::getInstance().getDisplayOptions();
 
   // Act
   auto nodes_visible = display.nodes;
@@ -28,7 +28,7 @@ void TestOptions::displayOptions_nodesAreVisibleByDefault() {
 
 void TestOptions::displayOptions_shadingIsEnabledByDefault() {
   // Arrange
-  auto& display = Options::getInstance().getDisplayOptions();
+  auto &display = Options::getInstance().getDisplayOptions();
 
   // Act
   auto shading_enabled = display.shading;
@@ -39,7 +39,7 @@ void TestOptions::displayOptions_shadingIsEnabledByDefault() {
 
 void TestOptions::viewportColors_backgroundIsBlackByDefault() {
   // Arrange
-  auto& colors = Options::getInstance().getViewportColors();
+  auto &colors = Options::getInstance().getViewportColors();
 
   // Act
   auto background_blue = colors.background[2];
@@ -56,7 +56,8 @@ void TestOptions::projectDirectory_roundTripsThroughSettings() {
 
   // Act
   Options::getInstance().setProjectOpenDirectory(dir);
-  auto stored_path = Options::getInstance().getProjectOpenDirectory().absolutePath();
+  auto stored_path =
+      Options::getInstance().getProjectOpenDirectory().absolutePath();
 
   // Assert
   QCOMPARE(stored_path, dir.absolutePath());

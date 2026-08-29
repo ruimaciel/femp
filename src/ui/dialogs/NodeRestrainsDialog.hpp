@@ -16,18 +16,18 @@ class NodeRestrainDialog;
 class NodeRestrainsDialog : public QDialog {
   Q_OBJECT
 
-  public:
+public:
   enum Restraints { NONE = 0, RX = 0x01, RY = 0x02, RZ = 0x04 };
 
-  public:
-  explicit NodeRestrainsDialog(QWidget* parent = nullptr);
+public:
+  explicit NodeRestrainsDialog(QWidget *parent = nullptr);
   ~NodeRestrainsDialog();
 
   int getRestraints();
 
   fem::NodeRestrictions getRestrictions() const;
 
-  private:
+private:
   std::unique_ptr<Ui::NodeRestrainDialog> m_ui;
 };
 

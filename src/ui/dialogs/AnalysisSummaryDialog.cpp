@@ -2,8 +2,9 @@
 
 #include "ui_AnalysisSummaryDialog.h"
 
-AnalysisSummaryDialog::AnalysisSummaryDialog(fem::AnalysisResult const& results, QWidget* parent)
-	: QDialog(parent), m_ui(std::make_unique<Ui::AnalysisSummaryDialog>()) {
+AnalysisSummaryDialog::AnalysisSummaryDialog(fem::AnalysisResult const &results,
+                                             QWidget *parent)
+    : QDialog(parent), m_ui(std::make_unique<Ui::AnalysisSummaryDialog>()) {
   m_ui->setupUi(this);
 
   m_ui->labelEnergy->setNum(results.energy);

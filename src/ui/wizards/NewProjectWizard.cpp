@@ -3,7 +3,8 @@
 #include <QDir>
 #include <QMessageBox>
 
-NewProjectWizard::NewProjectWizard(Document& doc, QWidget* parent) : QWizard(parent) {
+NewProjectWizard::NewProjectWizard(Document &doc, QWidget *parent)
+    : QWizard(parent) {
   // clear the model, start with a clean slate
   doc.clear();
   // TODO crude hack

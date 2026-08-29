@@ -5,5 +5,5 @@ namespace application {
 
 IMaterialRepository::IMaterialRepository() {}
 
-}  // namespace application
-}  // namespace gui
+} // namespace application
+} // namespace gui

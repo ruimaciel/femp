@@ -7,14 +7,14 @@
 #include <QString>
 
 class Document {
-  public:
+public:
   enum Type { TYPE_NONE, TYPE_SOLID3D };
 
-  public:
+public:
   Document();
-  Document(const Document& copied);
+  Document(const Document &copied);
 
-  void clear();	 // clears/frees everything
+  void clear(); // clears/frees everything
 
   /**
    * Sets the file name
@@ -34,7 +34,7 @@ class Document {
   /**
    * Returns a reference to the Project object
    */
-  fem::Project& getProject();
+  fem::Project &getProject();
 
   /**
    * @brief setDirty sets the document as containing changes that haven't
@@ -44,11 +44,11 @@ class Document {
   void setDirty(bool dirty = true);
   bool isDirty() const;
 
-  protected:
-  bool m_dirty;			   // true if this document suffered changes that are saveable
-  Type m_documentType;	   // specifies the model type
-  fem::Project m_project;  // the FEM project
-  QString m_filename;	   // path for the project's directory
+protected:
+  bool m_dirty; // true if this document suffered changes that are saveable
+  Type m_documentType;    // specifies the model type
+  fem::Project m_project; // the FEM project
+  QString m_filename;     // path for the project's directory
 };
 
 #endif

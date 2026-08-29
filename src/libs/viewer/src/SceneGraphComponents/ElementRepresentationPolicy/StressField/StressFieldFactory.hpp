@@ -25,14 +25,14 @@ namespace StressFieldRepresentation {
  * Builder pattern to generate policies for the representation of each element
  **/
 class StressFieldFactory {
-  protected:
-  float* m_diameter;
-  fem::Model* m_model;
-  fem::AnalysisResult* m_result;
-  float m_max, m_min;  // maximum and minimum value from any stress
+protected:
+  float *m_diameter;
+  fem::Model *m_model;
+  fem::AnalysisResult *m_result;
+  float m_max, m_min; // maximum and minimum value from any stress
 
   // temp values for dsyevj3
-  double A[3][3];  // temporary variable
+  double A[3][3]; // temporary variable
   double eig_vec[3][3];
   double eig_val[3];
 
@@ -47,13 +47,14 @@ class StressFieldFactory {
   fem::Prism15 m_prism15;
   fem::Prism18 m_prism18;
 
-  public:
-  StressFieldFactory(float& diameter, fem::Model& model, fem::AnalysisResult& result);
+public:
+  StressFieldFactory(float &diameter, fem::Model &model,
+                     fem::AnalysisResult &result);
 
   /**
    * The factory functor
    **/
-  StressFieldRepresentation operator()(fem::Element const& element);
+  StressFieldRepresentation operator()(fem::Element const &element);
 
   /**
    * Returns the maximum and minimum value for the principal stress
@@ -61,7 +62,7 @@ class StressFieldFactory {
   float max() const;
   float min() const;
 
-  protected:
+protected:
   /**
    * Taken from:
    * http://www.mpi-hd.mpg.de/personalhomes/globes/3x3/
@@ -73,6 +74,6 @@ class StressFieldFactory {
   int dsyevj3(double A[3][3], double Q[3][3], double w[3]) const;
 };
 
-}  // namespace StressFieldRepresentation
+} // namespace StressFieldRepresentation
 
 #endif

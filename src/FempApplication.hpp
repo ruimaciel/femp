@@ -7,18 +7,18 @@
 class QMainWindow;
 
 class FempApplication : public QApplication {
-  public:
-  FempApplication(int& argc, char** argv);
+public:
+  FempApplication(int &argc, char **argv);
 
   /**
    * initializes the applicaiton before running the event loop
    */
   void initialize();
 
-  private:
-  QMainWindow* m_main_window;
+private:
+  QMainWindow *m_main_window;
 };
 
-#define fempApp dynamic_cast<FempApplication*>(QApplication::instance())
+#define fempApp dynamic_cast<FempApplication *>(QApplication::instance())
 
-#endif	// FEMPAPPLICATION_HPP
+#endif // FEMPAPPLICATION_HPP

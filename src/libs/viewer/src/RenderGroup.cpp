@@ -7,19 +7,16 @@ RenderGroup::RenderGroup() {
 }
 
 void RenderGroup::generateSceneGraph() {
-  for (std::shared_ptr<SceneGraphComponent>& component : this->primitive_components) {
-	this->scenegraph.pushComponent(component);
+  for (std::shared_ptr<SceneGraphComponent> &component :
+       this->primitive_components) {
+    this->scenegraph.pushComponent(component);
   }
 }
 
-void RenderGroup::setVisible(bool visible) {
-  this->m_render = visible;
-}
+void RenderGroup::setVisible(bool visible) { this->m_render = visible; }
 
-bool RenderGroup::isVisible() const {
-  return this->m_render;
-}
+bool RenderGroup::isVisible() const { return this->m_render; }
 
-void RenderGroup::paintGL(ViewportData& data, ViewportColors& colors) {
+void RenderGroup::paintGL(ViewportData &data, ViewportColors &colors) {
   this->scenegraph.paintGL(data, colors);
 }

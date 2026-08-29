@@ -3,8 +3,11 @@
 
 #include "SceneGraph.hpp"
 
-TensorFieldViewport::TensorFieldViewport(fem::Project& project, fem::AnalysisResult& result, fem::ResultsRanges<double>& ranges, QWidget* parent)
-	: BaseViewport(project, parent) {
+TensorFieldViewport::TensorFieldViewport(fem::Project &project,
+                                         fem::AnalysisResult &result,
+                                         fem::ResultsRanges<double> &ranges,
+                                         QWidget *parent)
+    : BaseViewport(project, parent) {
   this->m_analysis_result = nullptr;
 
   this->setState(&m_vp_state_tensor_fields);
@@ -18,12 +21,12 @@ TensorFieldViewport::TensorFieldViewport(fem::Project& project, fem::AnalysisRes
 
 TensorFieldViewport::~TensorFieldViewport() {}
 
-void TensorFieldViewport::setAnalysisResult(fem::AnalysisResult& result) {
+void TensorFieldViewport::setAnalysisResult(fem::AnalysisResult &result) {
   this->m_analysis_result = &result;
   this->m_vp_state_tensor_fields.setAnalysisResult(result);
 }
 
-void TensorFieldViewport::setResultsRanges(fem::ResultsRanges<double>& ranges) {
+void TensorFieldViewport::setResultsRanges(fem::ResultsRanges<double> &ranges) {
   this->m_vp_state_tensor_fields.setResultsRanges(ranges);
 }
 

@@ -19,13 +19,13 @@ class MoveNodesDialog;
 class MoveNodesDialog : public QDialog {
   Q_OBJECT
 
-  public:
-  explicit MoveNodesDialog(QWidget* parent = nullptr);
+public:
+  explicit MoveNodesDialog(QWidget *parent = nullptr);
   ~MoveNodesDialog();
 
   fem::Point3D getTranslation();
 
-  private:
+private:
   std::unique_ptr<Ui::MoveNodesDialog> m_ui;
 };
 

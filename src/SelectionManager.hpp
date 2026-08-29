@@ -18,15 +18,15 @@
 class SelectionManager : public QObject {
   Q_OBJECT
 
-  public:
+public:
   virtual ~SelectionManager();
 
-  signals:
+signals:
   void selectionChanged(Selection);
   void selectionCleared();
 
-  public slots:
-  void setSelection(Selection const&);
+public slots:
+  void setSelection(Selection const &);
 
   void clearSelection();
 
@@ -35,9 +35,9 @@ class SelectionManager : public QObject {
    * references to selected objects
    * @return	an object of type Selection
    */
-  Selection const& getSelection() const;
+  Selection const &getSelection() const;
 
-  protected:
+protected:
   Selection m_selection;
 };
 

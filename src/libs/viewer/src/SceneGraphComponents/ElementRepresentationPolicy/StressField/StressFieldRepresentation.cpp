@@ -2,14 +2,19 @@
 
 namespace StressFieldRepresentation {
 
-void StressFieldRepresentation::render(float const& diameter, float const& max, float const& min, bool const& render_positive, bool const& render_negative,
-									   ViewportColors const& colors) const {
+void StressFieldRepresentation::render(float const &diameter, float const &max,
+                                       float const &min,
+                                       bool const &render_positive,
+                                       bool const &render_negative,
+                                       ViewportColors const &colors) const {
   for (auto tensor : m_tensor) {
-	tensor.render(diameter, max, min, render_positive, render_negative, colors);
+    tensor.render(diameter, max, min, render_positive, render_negative, colors);
   }
 }
 
-void StressFieldRepresentation::push(fem::Point3D const& pos, std::array<fem::Point3D, 3> const& directions, std::array<float, 3> const& stresses) {
+void StressFieldRepresentation::push(
+    fem::Point3D const &pos, std::array<fem::Point3D, 3> const &directions,
+    std::array<float, 3> const &stresses) {
   StressTensor tensor;
 
   tensor.m_position = pos;
@@ -23,4 +28,4 @@ void StressFieldRepresentation::push(fem::Point3D const& pos, std::array<fem::Po
 
   m_tensor.push_back(tensor);
 }
-}  // namespace StressFieldRepresentation
+} // namespace StressFieldRepresentation

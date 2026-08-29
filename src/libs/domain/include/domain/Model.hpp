@@ -19,8 +19,8 @@ class ModelImpl;
 
 namespace domain {
 class Model {
-  public:
-  Model(fem::Model& model);
+public:
+  Model(fem::Model &model);
   ~Model();
 
   std::vector<fem::Element> getElementList() const;
@@ -42,9 +42,9 @@ class Model {
 
   std::map<unsigned int, fem::NodeRestrictions> getNodeRestrictions() const;
 
-  private:
+private:
   std::unique_ptr<ModelImpl> m_impl;
 };
 
-}  // namespace domain
-#endif	// FEMP_DOMAIN_MODEL_HPP
+} // namespace domain
+#endif // FEMP_DOMAIN_MODEL_HPP

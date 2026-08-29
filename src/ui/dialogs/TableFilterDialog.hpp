@@ -19,12 +19,12 @@ class TableFilterDialog;
 class TableFilterDialog : public QDialog {
   Q_OBJECT
 
-  public:
-  TableFilterDialog(QWidget* parent = nullptr);
+public:
+  TableFilterDialog(QWidget *parent = nullptr);
   ~TableFilterDialog();
 
-#define MEMBER_HELPER(XX)            \
-  void set##XX##Visible(bool state); \
+#define MEMBER_HELPER(XX)                                                      \
+  void set##XX##Visible(bool state);                                           \
   bool get##XX##Visible() const;
 
   MEMBER_HELPER(ElementReference);
@@ -52,7 +52,7 @@ class TableFilterDialog : public QDialog {
   MEMBER_HELPER(VonMises);
 #undef MEMBER_HELPER
 
-  private Q_SLOTS:
+private Q_SLOTS:
   void toggleElementsCheckboxes(bool);
   void toggleElementCheckbox(bool);
 
@@ -71,7 +71,7 @@ class TableFilterDialog : public QDialog {
   void toggleStressesCheckboxes(bool);
   void toggleStressesCheckbox(bool);
 
-  private:
+private:
   std::unique_ptr<Ui::TableFilterDialog> m_ui;
 };
 

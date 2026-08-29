@@ -9,7 +9,7 @@ namespace gui {
 namespace application {
 
 class IMaterialRepository {
-  public:
+public:
   IMaterialRepository();
 
   virtual ~IMaterialRepository() = default;
@@ -21,7 +21,7 @@ class IMaterialRepository {
 
 using IMaterialRepositoryPtr = std::shared_ptr<IMaterialRepository>;
 
-}  // namespace application
-}  // namespace gui
+} // namespace application
+} // namespace gui
 
-#endif	// FEMP_APPLICATION_IMATERIALREPOSITORY_HPP
+#endif // FEMP_APPLICATION_IMATERIALREPOSITORY_HPP

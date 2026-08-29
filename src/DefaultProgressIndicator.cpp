@@ -35,6 +35,4 @@ void DefaultProgressIndicator::error(std::string error_message) {
   emit setError(error_message);
 }
 
-void DefaultProgressIndicator::markFinish() {
-  emit finish();
-}
+void DefaultProgressIndicator::markFinish() { emit finish(); }

@@ -3,7 +3,8 @@
 #include "LoadPatternDialog.hpp"
 #include "ui_DomainLoadsDialog.h"
 
-DomainLoadsDialog::DomainLoadsDialog(LoadPatternsModel& model, QWidget* parent) : QDialog(parent), m_ui(std::make_unique<Ui::DomainLoadsDialog>()) {
+DomainLoadsDialog::DomainLoadsDialog(LoadPatternsModel &model, QWidget *parent)
+    : QDialog(parent), m_ui(std::make_unique<Ui::DomainLoadsDialog>()) {
   m_ui->setupUi(this);
 
   m_ui->comboBoxLoadPattern->setModel(&model);

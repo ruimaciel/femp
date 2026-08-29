@@ -1,6 +1,6 @@
 #include "ModelImpl.hpp"
 
-ModelImpl::ModelImpl(fem::Model& model) : m_model(model) {}
+ModelImpl::ModelImpl(fem::Model &model) : m_model(model) {}
 
 std::vector<fem::Element> ModelImpl::getElementList() const {
   return m_model.getElementList();
@@ -15,9 +15,12 @@ std::vector<size_t> ModelImpl::getNodeReferenceList() const {
 
   auto node_map = m_model.getNodeMap();
 
-  auto oper = [](const std::pair<size_t, fem::Node>& node) -> size_t { return node.first; };
+  auto oper = [](const std::pair<size_t, fem::Node> &node) -> size_t {
+    return node.first;
+  };
 
-  std::transform(node_map.begin(), node_map.end(), std::back_inserter(node_references), oper);
+  std::transform(node_map.begin(), node_map.end(),
+                 std::back_inserter(node_references), oper);
 
   return node_references;
 }
@@ -50,6 +53,7 @@ void ModelImpl::pushMaterial(fem::Material new_material) {
   m_model.pushMaterial(new_material);
 }
 
-std::map<unsigned int, fem::NodeRestrictions> ModelImpl::getNodeRestrictions() const {
+std::map<unsigned int, fem::NodeRestrictions>
+ModelImpl::getNodeRestrictions() const {
   return m_model.getNodeRestrictions();
 }

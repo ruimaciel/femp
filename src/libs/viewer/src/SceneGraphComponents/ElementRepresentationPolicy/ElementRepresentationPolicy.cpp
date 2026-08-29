@@ -6,7 +6,8 @@ ElementRepresentationPolicy::ElementRepresentationPolicy() {
 
 ElementRepresentationPolicy::~ElementRepresentationPolicy() {}
 
-void ElementRepresentationPolicy::setDisplacementPolicy(DisplacementsRepresentationPolicy* displacement) {
+void ElementRepresentationPolicy::setDisplacementPolicy(
+    DisplacementsRepresentationPolicy *displacement) {
   assert(displacement != nullptr);
   this->m_displacement = displacement;
 }

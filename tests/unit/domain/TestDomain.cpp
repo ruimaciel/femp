@@ -4,7 +4,7 @@
 class TestDomain : public QObject {
   Q_OBJECT
 
-  private slots:
+private slots:
   void emptyModel_hasZeroElementCount();
   void emptyModel_hasZeroNodeReferences();
   void nodeAccess_returnsStoredCoordinates();

@@ -10,11 +10,11 @@
  *strategy pattern
  **/
 class SphericalBoundary : public BoundaryStrategy {
-  public:
-  fem::Point3D center;	// sphere center
-  float radius2;		// the square of the sphere's radius
+public:
+  fem::Point3D center; // sphere center
+  float radius2;       // the square of the sphere's radius
 
-  public:
+public:
   SphericalBoundary();
   ~SphericalBoundary();
 
@@ -22,17 +22,17 @@ class SphericalBoundary : public BoundaryStrategy {
    * Checks if a given point is inside this boundary
    * @return	true if it is, false if it isn't
    **/
-  bool inside(const fem::Point3D&) override;
+  bool inside(const fem::Point3D &) override;
 
   /**
    * Sets this sphere's starting point
    **/
-  void setPoint(const fem::Point3D&) override;
+  void setPoint(const fem::Point3D &) override;
 
   /**
    * Resizes the spherical boundary, if needed, to include a new point
    **/
-  void addPoint(const fem::Point3D&) override;
+  void addPoint(const fem::Point3D &) override;
 };
 
 #endif

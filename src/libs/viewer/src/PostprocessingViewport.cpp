@@ -2,8 +2,10 @@
 
 #include "SceneGraph.hpp"
 
-PostprocessingViewport::PostprocessingViewport(fem::Project& project, fem::AnalysisResult& result, fem::ResultsRanges<double>& ranges, QWidget* parent)
-	: BaseViewport(project, parent) {
+PostprocessingViewport::PostprocessingViewport(
+    fem::Project &project, fem::AnalysisResult &result,
+    fem::ResultsRanges<double> &ranges, QWidget *parent)
+    : BaseViewport(project, parent) {
   this->m_analysis_result = nullptr;
   this->setAnalysisResult(result);
   this->setResultsRanges(ranges);
@@ -15,13 +17,14 @@ PostprocessingViewport::PostprocessingViewport(fem::Project& project, fem::Analy
 
 PostprocessingViewport::~PostprocessingViewport() {}
 
-void PostprocessingViewport::setAnalysisResult(fem::AnalysisResult& result) {
+void PostprocessingViewport::setAnalysisResult(fem::AnalysisResult &result) {
   this->m_analysis_result = &result;
   this->m_vp_state_displacements.setAnalysisResult(result);
   this->m_vp_state_gradients.setAnalysisResult(result);
 }
 
-void PostprocessingViewport::setResultsRanges(fem::ResultsRanges<double>& ranges) {
+void PostprocessingViewport::setResultsRanges(
+    fem::ResultsRanges<double> &ranges) {
   this->m_vp_state_gradients.setResultsRanges(ranges);
 }
 

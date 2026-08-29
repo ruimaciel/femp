@@ -15,20 +15,20 @@ namespace gui {
 namespace persistence {
 
 class MaterialRepository : public application::IMaterialRepository {
-  public:
+public:
   MaterialRepository(std::shared_ptr<domain::Model> model);
 
   // IMaterialRepository interface
-  public:
+public:
   std::vector<fem::Material> getMaterialList() const override;
 
   void pushMaterial(fem::Material new_material) override;
 
-  private:
+private:
   std::shared_ptr<domain::Model> m_domain_model;
 };
 
-}  // namespace persistence
-}  // namespace gui
+} // namespace persistence
+} // namespace gui
 
-#endif	// FEMP_PERSISTENCE_MATERIALREPOSITORY_HPP
+#endif // FEMP_PERSISTENCE_MATERIALREPOSITORY_HPP

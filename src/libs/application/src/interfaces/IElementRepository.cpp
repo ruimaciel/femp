@@ -7,5 +7,5 @@ IElementRepository::IElementRepository() {}
 
 IElementRepository::~IElementRepository() {}
 
-}  // namespace application
-}  // namespace gui
+} // namespace application
+} // namespace gui

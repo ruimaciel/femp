@@ -24,7 +24,7 @@
 namespace fem {
 
 class Project {
-  public:
+public:
   Project();
   ~Project();
 
@@ -36,13 +36,13 @@ class Project {
   /**
    * Adds the result of a new analysis process to the result list
    */
-  void pushAnalysisResult(fem::AnalysisResult& new_result);
+  void pushAnalysisResult(fem::AnalysisResult &new_result);
 
   /**
    * Getter for the FEM model contained in this project
    * @return a reference to the Project's model
    */
-  fem::Model& getModel();
+  fem::Model &getModel();
 
   /**
    * Getter for the domain model contained in this project
@@ -54,19 +54,21 @@ class Project {
    * Getter for the analysis results contained in this project
    * @return a reference to the Project's analysis results
    */
-  std::vector<fem::AnalysisResult>& getAnalysisResults();  // a list with all analysis
+  std::vector<fem::AnalysisResult> &
+  getAnalysisResults(); // a list with all analysis
 
   /**
    * Implements a Visitor design pattern
    */
-  void accept(ProjectVisitor& visitor);
+  void accept(ProjectVisitor &visitor);
 
-  protected:
-  fem::Model m_model;  // the FEM model
+protected:
+  fem::Model m_model; // the FEM model
   std::shared_ptr<domain::Model> m_domainModel;
-  std::vector<fem::AnalysisResult> m_analysisResults;  // a list with all analysis
+  std::vector<fem::AnalysisResult>
+      m_analysisResults; // a list with all analysis
 };
 
-}  // namespace fem
+} // namespace fem
 
 #endif

@@ -2,7 +2,7 @@
 
 #include "ModelImpl.hpp"
 
-domain::Model::Model(fem::Model& model) : m_impl(new ModelImpl(model)) {}
+domain::Model::Model(fem::Model &model) : m_impl(new ModelImpl(model)) {}
 
 domain::Model::~Model() {}
 
@@ -50,6 +50,7 @@ void domain::Model::pushMaterial(fem::Material new_material) {
   m_impl->pushMaterial(new_material);
 }
 
-std::map<unsigned int, fem::NodeRestrictions> domain::Model::getNodeRestrictions() const {
+std::map<unsigned int, fem::NodeRestrictions>
+domain::Model::getNodeRestrictions() const {
   return m_impl->getNodeRestrictions();
 }

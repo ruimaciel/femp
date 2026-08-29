@@ -7,9 +7,12 @@
 
 namespace SGC {
 
-NodeRestrictions::NodeRestrictions(const fem::node_ref_t& node_reference, const fem::node_restriction_ref_t& node_restrictions_reference,
-								   fem::NodeRestrictions& node_restrictions, DisplacementsRepresentationPolicy* displacements)
-	: SceneGraphComponent()
+NodeRestrictions::NodeRestrictions(
+    const fem::node_ref_t &node_reference,
+    const fem::node_restriction_ref_t &node_restrictions_reference,
+    fem::NodeRestrictions &node_restrictions,
+    DisplacementsRepresentationPolicy *displacements)
+    : SceneGraphComponent()
 
 {
   m_node_reference = node_reference;
@@ -20,37 +23,38 @@ NodeRestrictions::NodeRestrictions(const fem::node_ref_t& node_reference, const 
 
 NodeRestrictions::~NodeRestrictions() {}
 
-void NodeRestrictions::paintGL(ViewportData& data, ViewportColors& colors) {
+void NodeRestrictions::paintGL(ViewportData &data, ViewportColors &colors) {
   fem::Point3D u = (*m_displacements)[this->m_node_reference];
   glPushMatrix();
   glTranslated(u.data[0], u.data[1], u.data[2]);
 
-  glScalef(data.node_scale / (data.aspect_ratio * pow(2, data.zoom)), data.node_scale / (data.aspect_ratio * pow(2, data.zoom)),
-		   data.node_scale / (data.aspect_ratio * pow(2, data.zoom)));
+  glScalef(data.node_scale / (data.aspect_ratio * pow(2, data.zoom)),
+           data.node_scale / (data.aspect_ratio * pow(2, data.zoom)),
+           data.node_scale / (data.aspect_ratio * pow(2, data.zoom)));
 
   // paint restrictions, if there are any
   glColor3fv(colors.restraints.data());
   if (m_node_restrictions->dx()) {
-	renderNodeRestriction();
+    renderNodeRestriction();
   }
   if (m_node_restrictions->dy()) {
-	glPushMatrix();
-	glRotatef(-90, 0, 0, 1);
-	renderNodeRestriction();
-	glPopMatrix();
+    glPushMatrix();
+    glRotatef(-90, 0, 0, 1);
+    renderNodeRestriction();
+    glPopMatrix();
   }
   if (m_node_restrictions->dz()) {
-	glPushMatrix();
-	glRotatef(-90, 0, 1, 0);
-	renderNodeRestriction();
-	glPopMatrix();
+    glPushMatrix();
+    glRotatef(-90, 0, 1, 0);
+    renderNodeRestriction();
+    glPopMatrix();
   }
 
   // end
   glPopMatrix();
 }
 
-void NodeRestrictions::accept(Operation::OperationsVisitor& visitor) {
+void NodeRestrictions::accept(Operation::OperationsVisitor &visitor) {
   visitor.visit(*this);
 }
 
@@ -118,4 +122,4 @@ void NodeRestrictions::renderNodeRestriction() {
   glEnd();
 }
 
-}  // namespace SGC
+} // namespace SGC

@@ -14,51 +14,61 @@
 #include "Elements/Tetrahedron4.hpp"
 #include "SceneGraphException.hpp"
 
-namespace SGC  // namespace for all scene graph components
+namespace SGC // namespace for all scene graph components
 {
 
-std::shared_ptr<Element> SceneComponentFactory::operator()(fem::element_ref_t const& ref, fem::Element& element) {
+std::shared_ptr<Element>
+SceneComponentFactory::operator()(fem::element_ref_t const &ref,
+                                  fem::Element &element) {
   assert(this->m_representation != nullptr);
   assert(this->m_displacement != nullptr);
 
   std::shared_ptr<Element> scene_graph_element;
   switch (element.getType()) {
-	case fem::Element::FE_TETRAHEDRON4:
-	  scene_graph_element = std::make_shared<Tetrahedron4>(ref, element, m_representation, m_displacement);
-	  break;
+  case fem::Element::FE_TETRAHEDRON4:
+    scene_graph_element = std::make_shared<Tetrahedron4>(
+        ref, element, m_representation, m_displacement);
+    break;
 
-	case fem::Element::FE_TETRAHEDRON10:
-	  scene_graph_element = std::make_shared<Tetrahedron10>(ref, element, m_representation, m_displacement);
-	  break;
+  case fem::Element::FE_TETRAHEDRON10:
+    scene_graph_element = std::make_shared<Tetrahedron10>(
+        ref, element, m_representation, m_displacement);
+    break;
 
-	case fem::Element::FE_HEXAHEDRON8:
-	  scene_graph_element = std::make_shared<Hexahedron8>(ref, element, m_representation, m_displacement);
-	  break;
+  case fem::Element::FE_HEXAHEDRON8:
+    scene_graph_element = std::make_shared<Hexahedron8>(
+        ref, element, m_representation, m_displacement);
+    break;
 
-	case fem::Element::FE_HEXAHEDRON20:
-	  scene_graph_element = std::make_shared<Hexahedron20>(ref, element, m_representation, m_displacement);
-	  break;
+  case fem::Element::FE_HEXAHEDRON20:
+    scene_graph_element = std::make_shared<Hexahedron20>(
+        ref, element, m_representation, m_displacement);
+    break;
 
-	case fem::Element::FE_HEXAHEDRON27:
-	  scene_graph_element = std::make_shared<Hexahedron27>(ref, element, m_representation, m_displacement);
-	  break;
+  case fem::Element::FE_HEXAHEDRON27:
+    scene_graph_element = std::make_shared<Hexahedron27>(
+        ref, element, m_representation, m_displacement);
+    break;
 
-	case fem::Element::FE_PRISM6:
-	  scene_graph_element = std::make_shared<Prism6>(ref, element, m_representation, m_displacement);
-	  break;
+  case fem::Element::FE_PRISM6:
+    scene_graph_element = std::make_shared<Prism6>(
+        ref, element, m_representation, m_displacement);
+    break;
 
-	case fem::Element::FE_PRISM15:
-	  scene_graph_element = std::make_shared<Prism15>(ref, element, m_representation, m_displacement);
-	  break;
+  case fem::Element::FE_PRISM15:
+    scene_graph_element = std::make_shared<Prism15>(
+        ref, element, m_representation, m_displacement);
+    break;
 
-	case fem::Element::FE_PRISM18:
-	  scene_graph_element = std::make_shared<Prism18>(ref, element, m_representation, m_displacement);
-	  break;
+  case fem::Element::FE_PRISM18:
+    scene_graph_element = std::make_shared<Prism18>(
+        ref, element, m_representation, m_displacement);
+    break;
 
-	default:
-	  throw SceneGraphException("unknown element type request");
-	  return nullptr;
-	  break;
+  default:
+    throw SceneGraphException("unknown element type request");
+    return nullptr;
+    break;
   }
 
   return scene_graph_element;
@@ -66,13 +76,15 @@ std::shared_ptr<Element> SceneComponentFactory::operator()(fem::element_ref_t co
 
 SceneComponentFactory::~SceneComponentFactory() {}
 
-void SceneComponentFactory::setElementRepresentationPolicy(ElementRepresentationPolicy* representation) {
+void SceneComponentFactory::setElementRepresentationPolicy(
+    ElementRepresentationPolicy *representation) {
   assert(representation != nullptr);
   this->m_representation = representation;
 }
 
-void SceneComponentFactory::setDisplacementsPolicy(DisplacementsRepresentationPolicy* displacements) {
+void SceneComponentFactory::setDisplacementsPolicy(
+    DisplacementsRepresentationPolicy *displacements) {
   assert(displacements != nullptr);
   this->m_displacement = displacements;
 }
-}  // namespace SGC
+} // namespace SGC

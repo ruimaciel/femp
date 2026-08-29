@@ -5,7 +5,7 @@
 class TestViewer : public QObject {
   Q_OBJECT
 
-  private slots:
+private slots:
   void camera_setCenter_updatesCenterX();
   void camera_setPosition_updatesPositionX();
   void camera_setRotation_updatesRotationX();

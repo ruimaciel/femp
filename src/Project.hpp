@@ -16,11 +16,11 @@
 #include <vector>
 
 /**
-This class is intended to describe a FEM project in it's entirely, which
-includes:
-- a FEM model
-- a series of analysis results
-**/
+ * This class is intended to describe a FEM project in it's entirely, which
+ * includes:
+ * - a FEM model
+ * - a series of analysis results
+ **/
 namespace fem {
 
 class Project {
@@ -39,11 +39,21 @@ class Project {
   void pushAnalysisResult(fem::AnalysisResult& new_result);
 
   /**
-   * returns a reference to the Project's model
+   * Getter for the FEM model contained in this project
+   * @return a reference to the Project's model
    */
   fem::Model& getModel();
+
+  /**
+   * Getter for the domain model contained in this project
+   * @return a reference to the Project's domain model
+   */
   std::shared_ptr<domain::Model> getDomainModel();
 
+  /**
+   * Getter for the analysis results contained in this project
+   * @return a reference to the Project's analysis results
+   */
   std::vector<fem::AnalysisResult>& getAnalysisResults();  // a list with all analysis
 
   /**

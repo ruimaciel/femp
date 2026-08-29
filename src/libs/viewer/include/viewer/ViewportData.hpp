@@ -36,8 +36,6 @@ struct ViewportData {
 							// handle mouse clicks
 
   QPoint lastPos;
-
-  std::list<size_t> selected_node_list;
 };
 
 #endif

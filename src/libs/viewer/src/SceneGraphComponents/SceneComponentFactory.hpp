@@ -8,7 +8,7 @@
 class ElementRepresentationPolicy;
 class DisplacementsRepresentationPolicy;
 
-namespace SGC  // namespace for all scene graph components
+namespace SGC // namespace for all scene graph components
 {
 
 /**
@@ -16,21 +16,23 @@ namespace SGC  // namespace for all scene graph components
  *of type fem::Element
  **/
 class SceneComponentFactory {
-  public:
+public:
   virtual ~SceneComponentFactory();
 
-  void setElementRepresentationPolicy(ElementRepresentationPolicy* representation);
-  void setDisplacementsPolicy(DisplacementsRepresentationPolicy* displacements);
+  void
+  setElementRepresentationPolicy(ElementRepresentationPolicy *representation);
+  void setDisplacementsPolicy(DisplacementsRepresentationPolicy *displacements);
 
   /**
    * Factory method
    **/
-  virtual std::shared_ptr<Element> operator()(fem::element_ref_t const&, fem::Element& element);
+  virtual std::shared_ptr<Element> operator()(fem::element_ref_t const &,
+                                              fem::Element &element);
 
-  protected:
-  ElementRepresentationPolicy* m_representation;
-  DisplacementsRepresentationPolicy* m_displacement;
+protected:
+  ElementRepresentationPolicy *m_representation;
+  DisplacementsRepresentationPolicy *m_displacement;
 };
-}  // namespace SGC
+} // namespace SGC
 
 #endif

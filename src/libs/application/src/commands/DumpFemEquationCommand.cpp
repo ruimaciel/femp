@@ -4,7 +4,9 @@
 #include <QDebug>
 #include <QFile>
 
-gui::application::DumpFemEquationCommand::DumpFemEquationCommand(fem::AnalysisResult& result, QString file_name) : result(result), file_name(file_name) {}
+gui::application::DumpFemEquationCommand::DumpFemEquationCommand(
+    fem::AnalysisResult &result, QString file_name)
+    : result(result), file_name(file_name) {}
 
 void gui::application::DumpFemEquationCommand::execute() {
   qInfo() << "MainWindow::dumpEquation()";
@@ -27,10 +29,10 @@ void gui::application::DumpFemEquationCommand::execute() {
   out << "# columns: " << result.equation.K.columns() << "\n";
 
   for (size_t j = 0; j < result.equation.K.columns(); j++) {
-	for (size_t i = 0; i < result.equation.K.rows(); i++) {
-	  out << " " << result.equation.K.value(i, j);
-	}
-	out << "\n";
+    for (size_t i = 0; i < result.equation.K.rows(); i++) {
+      out << " " << result.equation.K.value(i, j);
+    }
+    out << "\n";
   }
   out << Qt::endl;
 
@@ -41,7 +43,7 @@ void gui::application::DumpFemEquationCommand::execute() {
   out << "# columns: 1\n";
 
   for (size_t i = 0; i < result.equation.size(); i++) {
-	out << " " << result.equation.f.value(i) << "\n";
+    out << " " << result.equation.f.value(i) << "\n";
   }
   out << Qt::endl;
 
@@ -52,7 +54,7 @@ void gui::application::DumpFemEquationCommand::execute() {
   out << "# columns: 1\n";
 
   for (size_t i = 0; i < result.equation.d.size(); i++) {
-	out << " " << result.equation.d.value(i) << "\n";
+    out << " " << result.equation.d.value(i) << "\n";
   }
 
   out << Qt::endl;

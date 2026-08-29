@@ -24,17 +24,19 @@
 class PostprocessingViewport : public BaseViewport {
   Q_OBJECT
 
-  public:
-  PostprocessingViewport(fem::Project& project, fem::AnalysisResult& result, fem::ResultsRanges<double>& ranges, QWidget* parent = nullptr);
+public:
+  PostprocessingViewport(fem::Project &project, fem::AnalysisResult &result,
+                         fem::ResultsRanges<double> &ranges,
+                         QWidget *parent = nullptr);
   ~PostprocessingViewport();
 
   /**
    * Sets this viewport to represent a given analysis result
    * @param	result	an analysis result
    */
-  void setAnalysisResult(fem::AnalysisResult& result);
+  void setAnalysisResult(fem::AnalysisResult &result);
 
-  void setResultsRanges(fem::ResultsRanges<double>& ranges);
+  void setResultsRanges(fem::ResultsRanges<double> &ranges);
 
   // set the viewport state
   void showDisplacements();
@@ -54,8 +56,8 @@ class PostprocessingViewport : public BaseViewport {
 
   void showVonMises();
 
-  protected:
-  fem::AnalysisResult* m_analysis_result;
+protected:
+  fem::AnalysisResult *m_analysis_result;
   VPStateDisplacements m_vp_state_displacements;
   VPStateGradients m_vp_state_gradients;
 };

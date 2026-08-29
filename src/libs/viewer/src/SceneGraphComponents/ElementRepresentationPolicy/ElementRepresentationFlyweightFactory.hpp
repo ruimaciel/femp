@@ -11,25 +11,26 @@
  * A flyweight factory pattern to store and provide ways to represent an element
  **/
 class ElementRepresentationFlyweightFactory {
-  protected:
+protected:
   OpaqueRepresentationPolicy m_opaque_policy;
   GradientFieldRepresentationPolicy m_gradient_policy;
 
-  public:
+public:
   ElementRepresentationFlyweightFactory();
 
-  protected:
-  public:
+protected:
+public:
   /**
    * Sets the current displacements policy for all the
    *ElementRepresentationPolicy objects
    * @param	displacements	pointer to a DisplacementsRepresentationPolicy
    *object
    **/
-  void setDisplacementsRepresentationPolicy(DisplacementsRepresentationPolicy* displacements);
+  void setDisplacementsRepresentationPolicy(
+      DisplacementsRepresentationPolicy *displacements);
 
-  ElementRepresentationPolicy* opaque();
-  ElementRepresentationPolicy* gradient();
+  ElementRepresentationPolicy *opaque();
+  ElementRepresentationPolicy *gradient();
 
   /**
    * Toggles opengl wireframe rendering on all relevant policies
@@ -40,4 +41,4 @@ class ElementRepresentationFlyweightFactory {
   void setSurfaceSubdivisionLevel(unsigned short level);
 };
 
-#endif	// ELEMENTREPRESENTATIONFLYWEIGHTFACTORY_HPP
+#endif // ELEMENTREPRESENTATIONFLYWEIGHTFACTORY_HPP

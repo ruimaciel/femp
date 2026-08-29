@@ -11,17 +11,17 @@ namespace gui {
 namespace application {
 
 class DumpFemEquationCommand {
-  public:
+public:
   DumpFemEquationCommand(fem::AnalysisResult &result, QString file_name);
 
   void execute();
 
-  private:
+private:
   QString file_name;
   fem::AnalysisResult &result;
 };
 
-}  // namespace application
-}  // namespace gui
+} // namespace application
+} // namespace gui
 
 #endif

@@ -25,8 +25,8 @@
 class MdiWindow : public QMainWindow, protected Ui::MdiWindow {
   Q_OBJECT
 
-  public:
-  MdiWindow(QWidget* parent = nullptr);
+public:
+  MdiWindow(QWidget *parent = nullptr);
 
   /**
    * Sets the toolbar which provides buttons to set camera angles
@@ -37,13 +37,13 @@ class MdiWindow : public QMainWindow, protected Ui::MdiWindow {
   /**
    * Sets the colors which are used by the viewports
    */
-  void setColors(ViewportColors& colors);
+  void setColors(ViewportColors &colors);
 
-  signals:
+signals:
   void selectionChanged(Selection);
   void selectionCleared();
 
-  public slots:
+public slots:
   void setViewportXY();
   void setViewportXZ();
   void setViewportYZ();
@@ -55,15 +55,15 @@ class MdiWindow : public QMainWindow, protected Ui::MdiWindow {
   void setNodeVisibility(const bool);
   void setNodeRestrictionsVisibility(const bool);
 
-  void setSelection(Selection);	 // sets the selection
-  void clearSelection();		 // clears the selection
+  void setSelection(Selection); // sets the selection
+  void clearSelection();        // clears the selection
 
-  protected:
+protected:
   virtual void connectSignalsToSlots();
 
-  void normalizeAngle(int* angle);
+  void normalizeAngle(int *angle);
 
-  public:
+public:
   /**
    * Sets the viewport so that only the selected items are shown
    */
@@ -74,25 +74,25 @@ class MdiWindow : public QMainWindow, protected Ui::MdiWindow {
    */
   void showAll();
 
-  void updateNodeRestriction(size_t const, fem::NodeRestrictions const&);
+  void updateNodeRestriction(size_t const, fem::NodeRestrictions const &);
 
-  BaseViewport* viewport;
+  BaseViewport *viewport;
 
-  protected:
-  QToolBar* m_viewportToolBar;	  // toolbar to set camera angles
-  QToolBar* m_visibilityToolBar;  // toolbar to set which rendering group (i.e.,
-								  // nodes, surfaces, etc...) is visible
+protected:
+  QToolBar *m_viewportToolBar;   // toolbar to set camera angles
+  QToolBar *m_visibilityToolBar; // toolbar to set which rendering group (i.e.,
+                                 // nodes, surfaces, etc...) is visible
 
-  QAction* m_actionMenuVisibility;	// toolbar menu button that toggles the menu
-									// bar visibility
+  QAction *m_actionMenuVisibility; // toolbar menu button that toggles the menu
+                                   // bar visibility
 
-  QAction* m_actionViewportXY;	 // places the camera displaying the XY plane
-  QAction* m_actionViewportYZ;	 // places the camera displaying the XY plane
-  QAction* m_actionViewportXZ;	 // places the camera displaying the XZ plane
-  QAction* m_actionViewportIso;	 // places the camera on an isometric view angle
+  QAction *m_actionViewportXY;  // places the camera displaying the XY plane
+  QAction *m_actionViewportYZ;  // places the camera displaying the XY plane
+  QAction *m_actionViewportXZ;  // places the camera displaying the XZ plane
+  QAction *m_actionViewportIso; // places the camera on an isometric view angle
 
-  QAction* m_actionVisibleNodes;
-  QAction* m_actionVisibleRestrictions;
+  QAction *m_actionVisibleNodes;
+  QAction *m_actionVisibleRestrictions;
 };
 
 #endif

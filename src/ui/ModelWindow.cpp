@@ -2,7 +2,9 @@
 
 #include "viewer/ModelViewport.hpp"
 
-ModelWindow::ModelWindow(fem::Project& project, ViewportColors& colors, QWidget* parent) : MdiWindow(parent), BaseWindow("Model") {
+ModelWindow::ModelWindow(fem::Project &project, ViewportColors &colors,
+                         QWidget *parent)
+    : MdiWindow(parent), BaseWindow("Model") {
   viewport = new ModelViewport(project, this);
   this->setCentralWidget(viewport);
 

@@ -19,8 +19,8 @@
 class ModelViewport : public BaseViewport {
   Q_OBJECT
 
-  public:
-  ModelViewport(fem::Project& project, QWidget* parent = nullptr);
+public:
+  ModelViewport(fem::Project &project, QWidget *parent = nullptr);
   ~ModelViewport();
 
   /**
@@ -28,7 +28,7 @@ class ModelViewport : public BaseViewport {
    */
   void showModel();
 
-  protected:
+protected:
   VPStateModel m_vp_state_model;
 };
 

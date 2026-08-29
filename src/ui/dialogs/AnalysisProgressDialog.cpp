@@ -2,7 +2,8 @@
 
 #include "ui_AnalysisProgressDialog.h"
 
-AnalysisProgressDialog::AnalysisProgressDialog(QWidget* parent) : QDialog(parent), m_ui(std::make_unique<Ui::AnalysisProgressDialog>()) {
+AnalysisProgressDialog::AnalysisProgressDialog(QWidget *parent)
+    : QDialog(parent), m_ui(std::make_unique<Ui::AnalysisProgressDialog>()) {
   m_ui->setupUi(this);
 }
 
@@ -12,7 +13,8 @@ void AnalysisProgressDialog::beginSection(std::string section_name) {
   timer.start();
 
   m_section_name = section_name;
-  QString temp = QString("started %1)").arg(QString::fromStdString(m_section_name));
+  QString temp =
+      QString("started %1)").arg(QString::fromStdString(m_section_name));
   m_ui->textEdit->append(temp);
 }
 
@@ -34,15 +36,17 @@ void AnalysisProgressDialog::endSection() {
   m_section_name.clear();
 }
 
-void AnalysisProgressDialog::setMessage(const std::string& message) {
-  QString temp = QString("%1: %2").arg(QString::fromStdString(m_section_name), QString::fromStdString(message));
+void AnalysisProgressDialog::setMessage(const std::string &message) {
+  QString temp = QString("%1: %2").arg(QString::fromStdString(m_section_name),
+                                       QString::fromStdString(message));
   m_ui->textEdit->append(temp);
 }
 
 void AnalysisProgressDialog::setError(std::string error_message) {
   m_ui->textEdit->setTextColor(QColor::fromRgb(255, 0, 0));
 
-  QString temp = QString("Error: %1").arg(QString::fromStdString(error_message));
+  QString temp =
+      QString("Error: %1").arg(QString::fromStdString(error_message));
   m_ui->textEdit->append(temp);
 
   QColor current = m_ui->textEdit->textColor();

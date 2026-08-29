@@ -19,15 +19,15 @@ class DomainLoadsDialog;
 class DomainLoadsDialog : public QDialog {
   Q_OBJECT
 
-  public:
-  DomainLoadsDialog(LoadPatternsModel& model, QWidget* parent = nullptr);
+public:
+  DomainLoadsDialog(LoadPatternsModel &model, QWidget *parent = nullptr);
   ~DomainLoadsDialog();
 
   size_t getLoadPattern();
 
   fem::Point3D getForce();
 
-  private:
+private:
   size_t load_pattern;
   std::vector<std::string> m_newLoadPatterns;
 

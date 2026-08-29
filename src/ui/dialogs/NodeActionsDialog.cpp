@@ -6,7 +6,8 @@
 // Qt includes
 #include <QAbstractItemView>
 
-NodeActionsDialog::NodeActionsDialog(LoadPatternsModel& model, QWidget* parent) : QDialog(parent), m_ui(std::unique_ptr<Ui::NodeActionsDialog>()) {
+NodeActionsDialog::NodeActionsDialog(LoadPatternsModel &model, QWidget *parent)
+    : QDialog(parent), m_ui(std::unique_ptr<Ui::NodeActionsDialog>()) {
   m_ui->setupUi(this);
 
   m_ui->comboBoxLoadPattern->setModel(&model);
@@ -35,6 +36,6 @@ fem::Point3D NodeActionsDialog::getDisplacement() {
   return p;
 }
 
-void NodeActionsDialog::loadPatternCreated(size_t, fem::LoadPattern const&) {
+void NodeActionsDialog::loadPatternCreated(size_t, fem::LoadPattern const &) {
   m_ui->comboBoxLoadPattern->view()->reset();
 }

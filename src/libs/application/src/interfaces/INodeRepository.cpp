@@ -5,5 +5,5 @@ namespace application {
 
 INodeRepository::INodeRepository() {}
 
-}  // namespace application
-}  // namespace gui
+} // namespace application
+} // namespace gui

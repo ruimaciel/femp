@@ -5,5 +5,5 @@ namespace application {
 
 ILoadPatternRepository::ILoadPatternRepository() {}
 
-}  // namespace application
-}  // namespace gui
+} // namespace application
+} // namespace gui

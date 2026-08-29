@@ -5,25 +5,29 @@
 #include "../ElementRepresentationPolicy/ElementRepresentationPolicy.hpp"
 #include "../SGCElement.hpp"
 
-namespace SGC  // namespace for all scene graph components
+namespace SGC // namespace for all scene graph components
 {
 
 /**
  * Base class for a  all scene graph components that represent a 15-node prism
  **/
 class Prism15 : public Element {
-  public:
+public:
   /**
-   * @param	reference_element	the reference to this element's fem::Element object
-   * @param	representation		the representation policy for this element
-   * @param	displacements		  the displacements policy for this element
+   * @param	reference_element	the reference to this element's
+   * fem::Element object
+   * @param	representation		the representation policy for this
+   * element
+   * @param	displacements		  the displacements policy for this
+   * element
    */
-  Prism15(fem::element_ref_t const&, fem::Element& reference_element, ElementRepresentationPolicy* representation,
-		  DisplacementsRepresentationPolicy* displacements);
+  Prism15(fem::element_ref_t const &, fem::Element &reference_element,
+          ElementRepresentationPolicy *representation,
+          DisplacementsRepresentationPolicy *displacements);
 
-  protected:
-  void paintGL(ViewportData& data, ViewportColors& colors) override;
+protected:
+  void paintGL(ViewportData &data, ViewportColors &colors) override;
 };
-}  // namespace SGC
+} // namespace SGC
 
 #endif

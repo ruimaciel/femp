@@ -5,7 +5,8 @@
 // Qt includes
 #include <QMainWindow>
 
-FempApplication::FempApplication(int& argc, char** argv) : QApplication(argc, argv), m_main_window(nullptr) {
+FempApplication::FempApplication(int &argc, char **argv)
+    : QApplication(argc, argv), m_main_window(nullptr) {
   // set QSettings data
   QCoreApplication::setOrganizationName("Rui Maciel");
   QCoreApplication::setOrganizationDomain("github.com/ruimaciel/");

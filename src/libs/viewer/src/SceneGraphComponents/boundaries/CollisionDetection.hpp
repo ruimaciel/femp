@@ -8,6 +8,7 @@
 /**
  * Detects a collision between a ray, described by two points, and a sphere
  **/
-bool collided(const SphericalBoundary& sphere, const fem::Point3D& near, const fem::Point3D& far);
+bool collided(const SphericalBoundary &sphere, const fem::Point3D &near,
+              const fem::Point3D &far);
 
 #endif

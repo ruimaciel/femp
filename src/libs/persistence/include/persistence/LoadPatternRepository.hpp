@@ -15,22 +15,22 @@ namespace gui {
 namespace persistence {
 
 class LoadPatternRepository : public application::ILoadPatternRepository {
-  public:
+public:
   LoadPatternRepository(std::shared_ptr<domain::Model> model);
 
   // ILoadPatternRepository interface
-  public:
+public:
   std::vector<fem::LoadPattern> getLoadPatternList() const override;
 
   size_t getLoadPatternSize() const override;
 
   fem::LoadPattern getLoadPatternByIndex(size_t index) const;
 
-  private:
+private:
   std::shared_ptr<domain::Model> m_domain_model;
 };
 
-}  // namespace persistence
-}  // namespace gui
+} // namespace persistence
+} // namespace gui
 
-#endif	// FEMP_PERSISTENCE_LOADPATTERNREPOSITORY_HPP
+#endif // FEMP_PERSISTENCE_LOADPATTERNREPOSITORY_HPP

@@ -24,16 +24,17 @@ class ViewportState;
 class Input;
 
 /**
- * Base class for all Qt widgets that provide an opengl viewports to render the model
+ * Base class for all Qt widgets that provide an opengl viewports to render the
+ * model
  */
 class BaseViewport : public QOpenGLWidget {
   Q_OBJECT
 
-  public:
-  BaseViewport(fem::Project& project, QWidget* parent);
+public:
+  BaseViewport(fem::Project &project, QWidget *parent);
   virtual ~BaseViewport();
 
-  void setColors(ViewportColors& new_colors);
+  void setColors(ViewportColors &new_colors);
 
   QSize minimumSizeHint() const;
 
@@ -46,7 +47,7 @@ class BaseViewport : public QOpenGLWidget {
    *   - initializes the object
    *   - generates the scenegraph
    */
-  void setState(ViewportState* new_state);
+  void setState(ViewportState *new_state);
 
   /**
    * Method to refresh the scene
@@ -65,7 +66,7 @@ class BaseViewport : public QOpenGLWidget {
   void setTrianglesVisible(bool const state);
   void setShading(bool const state);
 
-  public Q_SLOTS:
+public Q_SLOTS:
   void setXRotation(int angle);
   void setYRotation(int angle);
   void setZRotation(int angle);
@@ -74,7 +75,7 @@ class BaseViewport : public QOpenGLWidget {
   /**
    * Configures the current viewport to render new_result
    */
-  void setAnalysisResult(fem::AnalysisResult& new_result);
+  void setAnalysisResult(fem::AnalysisResult &new_result);
 
   void setDisplacementsScale(float scale);
 
@@ -93,50 +94,52 @@ class BaseViewport : public QOpenGLWidget {
    * Extract the current pick ray and select all objects in the scene graph that
    * are intersected
    */
-  void selectObjectsFromRay(fem::Point3D const& origin, fem::Point3D const& destination);
-  void selectObjectsFromFrustum(std::array<fem::Point3D, 4> const& near, std::array<fem::Point3D, 4> const& far);
+  void selectObjectsFromRay(fem::Point3D const &origin,
+                            fem::Point3D const &destination);
+  void selectObjectsFromFrustum(std::array<fem::Point3D, 4> const &near,
+                                std::array<fem::Point3D, 4> const &far);
 
-  Q_SIGNALS:
+Q_SIGNALS:
   void selectionChanged(Selection);
   void xRotationChanged(int angle);
   void yRotationChanged(int angle);
   void zRotationChanged(int angle);
   void positionChanged(double x, double y, double z);
 
-  public:
-  void setSelection(Selection);	 // sets the selection
-  void clearSelection();		 // clears the selection list representation
+public:
+  void setSelection(Selection); // sets the selection
+  void clearSelection();        // clears the selection list representation
   void showSelection(const Selection);
   void showAll();
-  fem::Project& getProject();
+  fem::Project &getProject();
   std::shared_ptr<domain::Model> getDomainModel();
 
   ViewportColors getColors() const;
 
-  protected:
+protected:
   void initializeGL();
   void resizeGL(int width, int height);
   virtual void paintGL();
 
   // routines to handle input
-  void mousePressEvent(QMouseEvent* event);
-  void mouseReleaseEvent(QMouseEvent* event);
-  void mouseMoveEvent(QMouseEvent* event);
-  void wheelEvent(QWheelEvent* event);
-  void keyPressEvent(QKeyEvent* event);
+  void mousePressEvent(QMouseEvent *event);
+  void mouseReleaseEvent(QMouseEvent *event);
+  void mouseMoveEvent(QMouseEvent *event);
+  void wheelEvent(QWheelEvent *event);
+  void keyPressEvent(QKeyEvent *event);
 
-  void normalizeAngle(int* angle);
+  void normalizeAngle(int *angle);
 
-  protected:
-  Input* m_input;  // state pattern that handles user input
+protected:
+  Input *m_input; // state pattern that handles user input
 
-  public:
+public:
   ViewportData viewport_data;
-  ViewportState* state;	 // pointer to object used for the State pattern
+  ViewportState *state; // pointer to object used for the State pattern
 
-  private:
-  fem::Project& m_project;
-  ViewportColors m_colors;	// color definitions
+private:
+  fem::Project &m_project;
+  ViewportColors m_colors; // color definitions
   std::shared_ptr<gui::application::INodeRepository> m_node_repository;
 };
 

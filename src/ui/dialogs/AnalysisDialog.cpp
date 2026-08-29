@@ -1,7 +1,7 @@
 #include "AnalysisDialog.hpp"
 
 #include <QString>
-#include <cmath>  // for pow()
+#include <cmath> // for pow()
 #include <libfemp/solvers/CGSolver.hpp>
 #include <libfemp/solvers/CholeskySolver.hpp>
 #include <libfemp/solvers/DenseCholeskySolver.hpp>
@@ -10,8 +10,10 @@
 #include "assert.h"
 #include "ui_AnalysisDialog.h"
 
-AnalysisDialog::AnalysisDialog(gui::application::ILoadPatternRepositoryPtr load_pattern_repository, QWidget* parent)
-	: QDialog(parent), m_ui(std::make_unique<Ui::AnalysisDialog>()) {
+AnalysisDialog::AnalysisDialog(
+    gui::application::ILoadPatternRepositoryPtr load_pattern_repository,
+    QWidget *parent)
+    : QDialog(parent), m_ui(std::make_unique<Ui::AnalysisDialog>()) {
   m_ui->setupUi(this);
 
   // set the load pattern combo box
@@ -20,43 +22,43 @@ AnalysisDialog::AnalysisDialog(gui::application::ILoadPatternRepositoryPtr load_
 
 AnalysisDialog::~AnalysisDialog() = default;
 
-fem::Solver<double>* AnalysisDialog::solver() {
+fem::Solver<double> *AnalysisDialog::solver() {
   switch (m_ui->toolBoxSolvers->currentIndex()) {
-	case 0: {
-	  fem::CholeskySolver<double>* solver = nullptr;
-	  solver = new fem::CholeskySolver<double>;
+  case 0: {
+    fem::CholeskySolver<double> *solver = nullptr;
+    solver = new fem::CholeskySolver<double>;
 
-	  return solver;
-	} break;
+    return solver;
+  } break;
 
-	case 1: {
-	  fem::CGSolver<double>* solver = nullptr;
-	  solver = new fem::CGSolver<double>;
+  case 1: {
+    fem::CGSolver<double> *solver = nullptr;
+    solver = new fem::CGSolver<double>;
 
-	  // set the options
-	  solver->delta = pow(10, m_ui->spinBoxDeltaExponent->value());
-	  solver->max_iterations = m_ui->spinBoxMaxIterations->value();
+    // set the options
+    solver->delta = pow(10, m_ui->spinBoxDeltaExponent->value());
+    solver->max_iterations = m_ui->spinBoxMaxIterations->value();
 
-	  return solver;
-	} break;
+    return solver;
+  } break;
 
-	case 2: {
-	  fem::DenseCholeskySolver<double>* solver = nullptr;
-	  solver = new fem::DenseCholeskySolver<double>;
+  case 2: {
+    fem::DenseCholeskySolver<double> *solver = nullptr;
+    solver = new fem::DenseCholeskySolver<double>;
 
-	  return solver;
-	} break;
+    return solver;
+  } break;
 
-	case 3: {
-	  fem::UmfpackSolver<double>* solver = nullptr;
-	  solver = new fem::UmfpackSolver<double>;
+  case 3: {
+    fem::UmfpackSolver<double> *solver = nullptr;
+    solver = new fem::UmfpackSolver<double>;
 
-	  return solver;
-	} break;
+    return solver;
+  } break;
 
-	default:
-	  assert(false);
-	  break;
+  default:
+    assert(false);
+    break;
   }
 
   // this part will never be reached
@@ -68,10 +70,11 @@ int AnalysisDialog::loadPattern() const {
   return m_ui->comboBoxLoadPattern->currentIndex();
 }
 
-void AnalysisDialog::loadLoadPatternList(gui::application::ILoadPatternRepositoryPtr load_pattern_repository) {
+void AnalysisDialog::loadLoadPatternList(
+    gui::application::ILoadPatternRepositoryPtr load_pattern_repository) {
   for (auto load_pattern : load_pattern_repository->getLoadPatternList()) {
-	QString temp = QString(load_pattern.getLabel().c_str());
+    QString temp = QString(load_pattern.getLabel().c_str());
 
-	m_ui->comboBoxLoadPattern->addItem(temp);
+    m_ui->comboBoxLoadPattern->addItem(temp);
   }
 }

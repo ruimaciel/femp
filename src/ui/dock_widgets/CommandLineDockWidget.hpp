@@ -8,15 +8,15 @@
 class CommandLineDockWidget : public QDockWidget {
   Q_OBJECT
 
-  public:
-  CommandLineDockWidget(QWidget* parent = nullptr);
+public:
+  CommandLineDockWidget(QWidget *parent = nullptr);
 
-  private:
+private:
   Ui::CommandLineDockWidget ui;
 
-  public Q_SLOTS:
-  void standard_output(const QString&);
-  void standard_error(const QString&);
+public Q_SLOTS:
+  void standard_output(const QString &);
+  void standard_error(const QString &);
 
   /**
    * Receives log messages
@@ -32,7 +32,7 @@ class CommandLineDockWidget : public QDockWidget {
 
   void commandEntered(void);
 
-  Q_SIGNALS:
+Q_SIGNALS:
   void executeCommand(QString command);
 };
 

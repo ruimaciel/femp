@@ -11,17 +11,17 @@ namespace gui {
 namespace application {
 
 class SaveDocumentCommand {
-  public:
+public:
   SaveDocumentCommand(fem::Model &model, std::string file_name);
 
   void execute();
 
-  private:
+private:
   fem::Model &model;
   std::string file_name;
 };
 
-}  // namespace application
-}  // namespace gui
+} // namespace application
+} // namespace gui
 
 #endif

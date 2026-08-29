@@ -17,23 +17,24 @@ Widget developed to select model objects
 class SelectionWidget : public QWidget, Ui::SelectionWidget {
   Q_OBJECT
 
-  public:
-  SelectionWidget(std::shared_ptr<domain::Model> domain_model, SelectionManager&, QWidget* parent = nullptr);
+public:
+  SelectionWidget(std::shared_ptr<domain::Model> domain_model,
+                  SelectionManager &, QWidget *parent = nullptr);
 
-  signals:
-  void selectionChanged(const Selection&);
+signals:
+  void selectionChanged(const Selection &);
   void selectionCleared();
 
-  public slots:
-  void setSelection(Selection const&);
+public slots:
+  void setSelection(Selection const &);
   void clearSelection();
 
-  protected:
+protected:
   /**
   initializes the widget by filling all the revevant values
   @param selection_manager
   **/
-  void initializeWidget(SelectionManager& selection_manager);
+  void initializeWidget(SelectionManager &selection_manager);
 
   /**
   Initializes the fem::Group list according to the group definitions stored in a
@@ -41,12 +42,14 @@ class SelectionWidget : public QWidget, Ui::SelectionWidget {
   **/
   void initializeSelectionGroups(std::shared_ptr<domain::Model> femp_model);
 
-  protected:
-  QTreeWidgetItem* m_element_item;
-  std::map<fem::element_ref_t, QTreeWidgetItem*> m_element_map;	 // list of all element references
+protected:
+  QTreeWidgetItem *m_element_item;
+  std::map<fem::element_ref_t, QTreeWidgetItem *>
+      m_element_map; // list of all element references
 
-  QTreeWidgetItem* m_node_item;
-  std::map<fem::node_ref_t, QTreeWidgetItem*> m_node_map;  // list of all element references
+  QTreeWidgetItem *m_node_item;
+  std::map<fem::node_ref_t, QTreeWidgetItem *>
+      m_node_map; // list of all element references
 
   std::vector<fem::Group> m_selection_groups;
   gui::application::IElementRepositoryPtr m_element_repository;

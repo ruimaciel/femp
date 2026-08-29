@@ -5,7 +5,8 @@
 #include <application/interfaces/ILoadPatternRepository.hpp>
 #include <libfemp/LoadPattern.hpp>
 
-Q_DECLARE_METATYPE(std::string);  // needed to make QVariant to work with std::string
+Q_DECLARE_METATYPE(
+    std::string); // needed to make QVariant to work with std::string
 
 /**
  * Model class to be used in a model-view-controller pattern with Qt's widgets.
@@ -13,14 +14,17 @@ Q_DECLARE_METATYPE(std::string);  // needed to make QVariant to work with std::s
 class LoadPatternsModel : public QAbstractListModel {
   Q_OBJECT
 
-  public:
-  LoadPatternsModel(gui::application::ILoadPatternRepositoryPtr load_pattern_repository, QObject* parent = nullptr);
+public:
+  LoadPatternsModel(
+      gui::application::ILoadPatternRepositoryPtr load_pattern_repository,
+      QObject *parent = nullptr);
 
-  QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+  QVariant data(const QModelIndex &index,
+                int role = Qt::DisplayRole) const override;
 
-  int rowCount(const QModelIndex& parent) const override;
+  int rowCount(const QModelIndex &parent) const override;
 
-  protected:
+protected:
   std::vector<fem::LoadPattern> m_loadPatterns;
   gui::application::ILoadPatternRepositoryPtr m_load_pattern_repository;
 };

@@ -41,11 +41,11 @@ class MainWindow;
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
-  public:
-  explicit MainWindow(QWidget* parent = nullptr);
+public:
+  explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
-  signals:
+signals:
   void selectionChanged(Selection);
   void selectionCleared();
 
@@ -53,12 +53,12 @@ class MainWindow : public QMainWindow {
   void warningMessageSent(QString);
   void errorMessageSent(QString);
 
-  public slots:
+public slots:
   /**
    * @brief setSelection
    */
-  void setSelection(Selection);	 // sets the selection
-  void clearSelection();		 // clears the selection
+  void setSelection(Selection); // sets the selection
+  void clearSelection();        // clears the selection
 
   /**
    * Starts off a brand new FEM project
@@ -146,7 +146,7 @@ class MainWindow : public QMainWindow {
 
   void activateSubWindowByIndex(int);
 
-  private:
+private:
   void createActions();
   void createToolBars();
   void createDockWidgets();
@@ -157,24 +157,24 @@ class MainWindow : public QMainWindow {
   void setUserInterfaceAsClosed();
   void setUserInterfacePostAnalysis();
 
-  protected:
-  ViewportColors& getViewportColors();
+protected:
+  ViewportColors &getViewportColors();
 
-  protected:
+protected:
   std::unique_ptr<Ui::MainWindow> ui;
 
   fem::LinearAnalysis<double> m_analysis;
 
-  CommandLineDockWidget* m_commandLineDockWidget;
+  CommandLineDockWidget *m_commandLineDockWidget;
 
-  QMdiArea* m_mdiArea;
+  QMdiArea *m_mdiArea;
 
-  Document m_document;					// the FEM document
-  SelectionManager m_selectionManager;	// object which handles object selection
+  Document m_document;                 // the FEM document
+  SelectionManager m_selectionManager; // object which handles object selection
 
-  ViewportColors m_colors;	// the elements' viewport colors
+  ViewportColors m_colors; // the elements' viewport colors
 
-  QSignalMapper* m_windowMapper;  // used to map menu clicks to window activation
+  QSignalMapper *m_windowMapper; // used to map menu clicks to window activation
 
   gui::application::ILoadPatternRepositoryPtr m_load_pattern_repository;
 };

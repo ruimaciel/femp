@@ -2,7 +2,7 @@
 
 SelectionManager::~SelectionManager() {}
 
-void SelectionManager::setSelection(Selection const& selection) {
+void SelectionManager::setSelection(Selection const &selection) {
   m_selection = selection;
 
   emit selectionChanged(selection);
@@ -14,6 +14,4 @@ void SelectionManager::clearSelection() {
   emit selectionCleared();
 }
 
-Selection const& SelectionManager::getSelection() const {
-  return m_selection;
-}
+Selection const &SelectionManager::getSelection() const { return m_selection; }

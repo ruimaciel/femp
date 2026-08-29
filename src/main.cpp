@@ -5,7 +5,7 @@
 Q_DECLARE_METATYPE(size_t);
 Q_DECLARE_METATYPE(std::string);
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   // register types
   qRegisterMetaType<size_t>("size_t");
   qRegisterMetaType<std::string>("std::string");

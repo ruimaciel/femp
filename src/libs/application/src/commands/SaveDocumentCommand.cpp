@@ -6,7 +6,9 @@
 // stl includes
 #include <fstream>
 
-gui::application::SaveDocumentCommand::SaveDocumentCommand(fem::Model& model, std::string file_name) : model(model), file_name(file_name) {}
+gui::application::SaveDocumentCommand::SaveDocumentCommand(
+    fem::Model &model, std::string file_name)
+    : model(model), file_name(file_name) {}
 
 void gui::application::SaveDocumentCommand::execute() {
   // check if if the given file_name exists

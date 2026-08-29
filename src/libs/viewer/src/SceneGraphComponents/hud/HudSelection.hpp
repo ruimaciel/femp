@@ -13,20 +13,20 @@ namespace hud {
 Renders a rectangle on the window, representing the selection region
 **/
 class Selection : public HudObject {
-  protected:
+protected:
   bool m_on;
   fem::Point3D m_start;
   fem::Point3D m_end;
 
-  public:
+public:
   Selection();
 
-  void paintGL(ViewportData& data, ViewportColors& colors);
+  void paintGL(ViewportData &data, ViewportColors &colors);
 
-  void setStart(fem::Point3D const& p);
-  void setEnd(fem::Point3D const& p);
+  void setStart(fem::Point3D const &p);
+  void setEnd(fem::Point3D const &p);
   void off();
 };
-}  // namespace hud
+} // namespace hud
 
 #endif

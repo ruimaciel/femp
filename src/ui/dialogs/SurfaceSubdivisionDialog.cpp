@@ -9,8 +9,9 @@
 // std includes
 #include <cmath>
 
-SurfaceSubdivisionDialog::SurfaceSubdivisionDialog(unsigned short scale, QWidget* parent)
-	: QDialog(parent), m_ui(std::make_unique<Ui::SurfaceSubdivisionDialog>()) {
+SurfaceSubdivisionDialog::SurfaceSubdivisionDialog(unsigned short scale,
+                                                   QWidget *parent)
+    : QDialog(parent), m_ui(std::make_unique<Ui::SurfaceSubdivisionDialog>()) {
   m_ui->setupUi(this);
 
   // set the current scale
@@ -18,8 +19,10 @@ SurfaceSubdivisionDialog::SurfaceSubdivisionDialog(unsigned short scale, QWidget
   this->updateSlider(scale);
 
   // connect
-  connect(m_ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSlider(int)));
-  connect(m_ui->horizontalSlider, SIGNAL(sliderMoved(int)), this, SLOT(updateSpinBox(int)));
+  connect(m_ui->spinBox, SIGNAL(valueChanged(int)), this,
+          SLOT(updateSlider(int)));
+  connect(m_ui->horizontalSlider, SIGNAL(sliderMoved(int)), this,
+          SLOT(updateSpinBox(int)));
 }
 
 SurfaceSubdivisionDialog::~SurfaceSubdivisionDialog() = default;

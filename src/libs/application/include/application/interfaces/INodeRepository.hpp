@@ -10,7 +10,7 @@ namespace gui {
 namespace application {
 
 class INodeRepository {
-  public:
+public:
   INodeRepository();
 
   virtual ~INodeRepository() = default;
@@ -23,7 +23,7 @@ class INodeRepository {
 
 using INodeRepositoryPtr = std::shared_ptr<INodeRepository>;
 
-}  // namespace application
-}  // namespace gui
+} // namespace application
+} // namespace gui
 
-#endif	// FEMP_APPLICATION_INODEREPOSITORY_HPP
+#endif // FEMP_APPLICATION_INODEREPOSITORY_HPP

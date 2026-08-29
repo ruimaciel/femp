@@ -10,18 +10,18 @@
  *to an analysis result
  **/
 class DisplacementsPolicy : virtual public DisplacementsRepresentationPolicy {
-  protected:
-  fem::AnalysisResult* m_result;
+protected:
+  fem::AnalysisResult *m_result;
   float m_scale;
 
-  public:
+public:
   /**
    * returns the coordinate of a given point by providing the node's reference
    **/
-  fem::Point3D operator[](size_t& node_reference) override;
+  fem::Point3D operator[](size_t &node_reference) override;
 
-  void setAnalysisResult(fem::AnalysisResult& result);
+  void setAnalysisResult(fem::AnalysisResult &result);
   void setDisplacementsScale(float scale);
 };
 
-#endif	// DISPLACEMENTSPOLICY_HPP
+#endif // DISPLACEMENTSPOLICY_HPP

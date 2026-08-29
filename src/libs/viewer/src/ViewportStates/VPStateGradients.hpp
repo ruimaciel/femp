@@ -17,24 +17,25 @@ class BaseViewport;
  * (stresses, strains...)
  */
 class VPStateGradients : public ViewportState {
-  protected:
+protected:
   GradientFieldRepresentationPolicy m_gradient_representation;
-  DisplacementsPolicy m_displacements;	// the displacements view renders displacements
+  DisplacementsPolicy
+      m_displacements; // the displacements view renders displacements
   SGC::SceneComponentFactory m_factory;
 
-  public:
+public:
   VPStateGradients();
   ~VPStateGradients();
 
-  void initialize(BaseViewport* mv);
-  void populateScenegraph(BaseViewport* mv);
+  void initialize(BaseViewport *mv);
+  void populateScenegraph(BaseViewport *mv);
 
   /**
    * Configures the viewport to render the scene according to new_result
    */
-  void setAnalysisResult(fem::AnalysisResult& new_result);
+  void setAnalysisResult(fem::AnalysisResult &new_result);
 
-  void setResultsRanges(fem::ResultsRanges<double>& ranges);
+  void setResultsRanges(fem::ResultsRanges<double> &ranges);
 
   void setDisplacementsScale(float new_scale);
 
@@ -43,9 +44,9 @@ class VPStateGradients : public ViewportState {
    */
   void setSelection(Selection);
 
-  void keyPressEvent(BaseViewport* mv, QKeyEvent* event);
+  void keyPressEvent(BaseViewport *mv, QKeyEvent *event);
 
-  public:
+public:
   // set which gradient field to render
   void renderStrains11();
   void renderStrains22();

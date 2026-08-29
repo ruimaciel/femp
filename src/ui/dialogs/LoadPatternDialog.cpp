@@ -2,7 +2,8 @@
 
 #include "ui_LoadPatternDialog.h"
 
-LoadPatternDialog::LoadPatternDialog(QWidget* parent) : QDialog(parent), m_ui(std::unique_ptr<Ui::LoadPatternDialog>()) {
+LoadPatternDialog::LoadPatternDialog(QWidget *parent)
+    : QDialog(parent), m_ui(std::unique_ptr<Ui::LoadPatternDialog>()) {
   m_ui->setupUi(this);
 }
 

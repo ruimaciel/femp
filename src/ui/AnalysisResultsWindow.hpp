@@ -21,12 +21,12 @@
 class AnalysisResultsWindow : public QMdiSubWindow, public BaseWindow {
   Q_OBJECT
 
-  protected:
-  AnalysisResultsWidget* m_analysisResultsWidget;
-  fem::Project const* m_project;
+protected:
+  AnalysisResultsWidget *m_analysisResultsWidget;
+  fem::Project const *m_project;
 
-  public:
-  AnalysisResultsWindow(fem::Project& project, QWidget* parent = nullptr);
+public:
+  AnalysisResultsWindow(fem::Project &project, QWidget *parent = nullptr);
 };
 
 #endif

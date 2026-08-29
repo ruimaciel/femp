@@ -15,10 +15,15 @@
 // stl includes
 #include <map>
 
-PostprocessingWindow::PostprocessingWindow(fem::Project& project, fem::AnalysisResult& result, ViewportColors& colors, QWidget* parent)
-	: MdiWindow(parent), WindowWithResults(), WindowWithPostprocessing(), WindowWithScaling(), BaseWindow("Gradient") {
+PostprocessingWindow::PostprocessingWindow(fem::Project &project,
+                                           fem::AnalysisResult &result,
+                                           ViewportColors &colors,
+                                           QWidget *parent)
+    : MdiWindow(parent), WindowWithResults(), WindowWithPostprocessing(),
+      WindowWithScaling(), BaseWindow("Gradient") {
   this->setGradientValuesRange(result);
-  this->viewport = new PostprocessingViewport(project, result, m_resultsRanges, parent);
+  this->viewport =
+      new PostprocessingViewport(project, result, m_resultsRanges, parent);
 
   this->setCentralWidget(viewport);
 
@@ -36,7 +41,7 @@ void PostprocessingWindow::setDisplacementsScale(double scale) {
   this->viewport->refresh();
 }
 
-void PostprocessingWindow::setAnalysisResult(fem::AnalysisResult& result) {
+void PostprocessingWindow::setAnalysisResult(fem::AnalysisResult &result) {
   this->m_result = &result;
   this->setGradientValuesRange(result);
   this->viewport->setAnalysisResult(result);
@@ -47,12 +52,15 @@ void PostprocessingWindow::connectSignalsToSlots() {
   WindowWithScaling::connectSignalsToSlots(this);
   WindowWithPostprocessing::connectSignalsToSlots(this);
 
-  connect(m_postprocessingComboBox, SIGNAL(activated(int)), this, SLOT(setPostprocessingState(int)));
-  connect(m_actionMenuVisibility, SIGNAL(toggled(bool)), this, SLOT(toggleMenuBarVisibility(bool)));
-  connect(m_actionSetTensionRanges, SIGNAL(triggered()), this, SLOT(setResultsRanges()));
+  connect(m_postprocessingComboBox, SIGNAL(activated(int)), this,
+          SLOT(setPostprocessingState(int)));
+  connect(m_actionMenuVisibility, SIGNAL(toggled(bool)), this,
+          SLOT(toggleMenuBarVisibility(bool)));
+  connect(m_actionSetTensionRanges, SIGNAL(triggered()), this,
+          SLOT(setResultsRanges()));
 }
 
-void PostprocessingWindow::createToolBars(fem::Project& project) {
+void PostprocessingWindow::createToolBars(fem::Project &project) {
   WindowWithScaling::createToolbar(this, project);
   WindowWithResults::createToolbar(this, project);
   WindowWithPostprocessing::createToolbar(this, project);
@@ -62,12 +70,14 @@ void PostprocessingWindow::createToolBars(fem::Project& project) {
   m_toolBarToggleMenuBarVisibility->addAction(m_actionMenuVisibility);
 }
 
-void PostprocessingWindow::setGradientValuesRange(const fem::AnalysisResult& result) {
+void PostprocessingWindow::setGradientValuesRange(
+    const fem::AnalysisResult &result) {
   this->m_resultsRanges = result.ranges;
 }
 
 void PostprocessingWindow::toggleMenuBarVisibility(bool visibility) {
-  qWarning("void PostprocessingWindow::toggleMenuBarVisibility(bool visibility) ");
+  qWarning(
+      "void PostprocessingWindow::toggleMenuBarVisibility(bool visibility) ");
   this->menuBar()->setVisible(visibility);
 }
 
@@ -76,81 +86,82 @@ void PostprocessingWindow::setResultsRanges() {
   dialog.setValueRanges(this->m_resultsRanges);
 
   switch (dialog.exec()) {
-	case QDialog::Accepted:
-	  dialog.getValueRanges(this->m_resultsRanges);
-	  break;
+  case QDialog::Accepted:
+    dialog.getValueRanges(this->m_resultsRanges);
+    break;
 
-	default:
-	  break;
+  default:
+    break;
   };
 }
 
 void PostprocessingWindow::setPostprocessingState(int state) {
-  PostprocessingViewport* current_vp = nullptr;
-  current_vp = static_cast<PostprocessingViewport*>(this->viewport);
+  PostprocessingViewport *current_vp = nullptr;
+  current_vp = static_cast<PostprocessingViewport *>(this->viewport);
   if (current_vp == nullptr) {
-	return;
+    return;
   }
 
   switch (state) {
-	case A_DISPLACEMENT:
-	  current_vp->showDisplacements();
-	  break;
+  case A_DISPLACEMENT:
+    current_vp->showDisplacements();
+    break;
 
-	case A_STRAIN_11:
-	  current_vp->showStrain11();
-	  break;
+  case A_STRAIN_11:
+    current_vp->showStrain11();
+    break;
 
-	case A_STRAIN_22:
-	  current_vp->showStrain22();
-	  break;
+  case A_STRAIN_22:
+    current_vp->showStrain22();
+    break;
 
-	case A_STRAIN_33:
-	  current_vp->showStrain33();
-	  break;
+  case A_STRAIN_33:
+    current_vp->showStrain33();
+    break;
 
-	case A_STRAIN_12:
-	  current_vp->showStrain12();
-	  break;
+  case A_STRAIN_12:
+    current_vp->showStrain12();
+    break;
 
-	case A_STRAIN_23:
-	  current_vp->showStrain23();
-	  break;
+  case A_STRAIN_23:
+    current_vp->showStrain23();
+    break;
 
-	case A_STRAIN_13:
-	  current_vp->showStrain13();
-	  break;
+  case A_STRAIN_13:
+    current_vp->showStrain13();
+    break;
 
-	case A_FEMP_VIEWER_11:
-	  current_vp->showStress11();
-	  break;
+  case A_FEMP_VIEWER_11:
+    current_vp->showStress11();
+    break;
 
-	case A_FEMP_VIEWER_22:
-	  current_vp->showStress22();
-	  break;
+  case A_FEMP_VIEWER_22:
+    current_vp->showStress22();
+    break;
 
-	case A_FEMP_VIEWER_33:
-	  current_vp->showStress33();
-	  break;
+  case A_FEMP_VIEWER_33:
+    current_vp->showStress33();
+    break;
 
-	case A_FEMP_VIEWER_12:
-	  current_vp->showStress12();
-	  break;
+  case A_FEMP_VIEWER_12:
+    current_vp->showStress12();
+    break;
 
-	case A_FEMP_VIEWER_23:
-	  current_vp->showStress23();
-	  break;
+  case A_FEMP_VIEWER_23:
+    current_vp->showStress23();
+    break;
 
-	case A_FEMP_VIEWER_13:
-	  current_vp->showStress13();
-	  break;
+  case A_FEMP_VIEWER_13:
+    current_vp->showStress13();
+    break;
 
-	case A_VON_MISES:
-	  current_vp->showVonMises();
-	  break;
+  case A_VON_MISES:
+    current_vp->showVonMises();
+    break;
 
-	default:
-	  qWarning(" PostprocessingWindow::setPostprocessingState(%d), unused state", state);
-	  break;
+  default:
+    qWarning(" PostprocessingWindow::setPostprocessingState(%d), unused state",
+             state);
+    break;
   }
 }

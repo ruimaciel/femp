@@ -9,7 +9,7 @@ namespace gui {
 namespace application {
 
 class ILoadPatternRepository {
-  public:
+public:
   ILoadPatternRepository();
   virtual ~ILoadPatternRepository() = default;
 
@@ -22,7 +22,7 @@ class ILoadPatternRepository {
 
 using ILoadPatternRepositoryPtr = std::shared_ptr<ILoadPatternRepository>;
 
-}  // namespace application
-}  // namespace gui
+} // namespace application
+} // namespace gui
 
-#endif	// FEMP_APPLICATION_ILOADPATTERNREPOSITORY_HPP
+#endif // FEMP_APPLICATION_ILOADPATTERNREPOSITORY_HPP

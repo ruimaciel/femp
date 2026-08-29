@@ -23,17 +23,19 @@
 class TensorFieldViewport : public BaseViewport {
   Q_OBJECT
 
-  public:
-  TensorFieldViewport(fem::Project& project, fem::AnalysisResult& result, fem::ResultsRanges<double>& ranges, QWidget* parent = nullptr);
+public:
+  TensorFieldViewport(fem::Project &project, fem::AnalysisResult &result,
+                      fem::ResultsRanges<double> &ranges,
+                      QWidget *parent = nullptr);
   ~TensorFieldViewport();
 
   /**
    * Sets this viewport to represent a given analysis result
    * @param	result	an analysis result
    */
-  void setAnalysisResult(fem::AnalysisResult& result);
+  void setAnalysisResult(fem::AnalysisResult &result);
 
-  void setResultsRanges(fem::ResultsRanges<double>& ranges);
+  void setResultsRanges(fem::ResultsRanges<double> &ranges);
 
   /**
    * Set the viewport state
@@ -43,8 +45,8 @@ class TensorFieldViewport : public BaseViewport {
   void showNegativePrincipalStressesVisibility(bool state);
   void showPositivePrincipalStressesVisibility(bool state);
 
-  protected:
-  fem::AnalysisResult* m_analysis_result;
+protected:
+  fem::AnalysisResult *m_analysis_result;
   VPStateTensorFields m_vp_state_tensor_fields;
 };
 

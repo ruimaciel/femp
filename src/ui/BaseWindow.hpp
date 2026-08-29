@@ -12,19 +12,19 @@
  * bit unwielding to rewrite.
  **/
 class BaseWindow {
-  public:
+public:
   /**
    * @param label	window label
    * @param parent	this widget's parent widget
    */
-  explicit BaseWindow(QString const& label);
+  explicit BaseWindow(QString const &label);
 
   /**
    * Returns this window's label
    */
   QString label() const;
 
-  protected:
+protected:
   QString m_windowLabel;
 };
 

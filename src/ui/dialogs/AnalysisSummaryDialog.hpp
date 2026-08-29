@@ -20,11 +20,12 @@ class AnalysisSummaryDialog;
 class AnalysisSummaryDialog : public QDialog {
   Q_OBJECT
 
-  public:
-  AnalysisSummaryDialog(fem::AnalysisResult const& results, QWidget* parent = nullptr);
+public:
+  AnalysisSummaryDialog(fem::AnalysisResult const &results,
+                        QWidget *parent = nullptr);
   ~AnalysisSummaryDialog();
 
-  private:
+private:
   std::unique_ptr<Ui::AnalysisSummaryDialog> m_ui;
 };
 

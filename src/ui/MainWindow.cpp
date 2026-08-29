@@ -65,12 +65,14 @@
 #include <string>
 #include <thread>
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(std::make_unique<Ui::MainWindow>()) {
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent), ui(std::make_unique<Ui::MainWindow>()) {
   ui->setupUi(this);
 
   // set the MDI area widget as the window's central widget
   m_mdiArea = new QMdiArea();
-  setCentralWidget(m_mdiArea);	// this main window has a Multiple Document Interface
+  setCentralWidget(
+      m_mdiArea); // this main window has a Multiple Document Interface
   m_windowMapper = new QSignalMapper(this);
 
   // create actions and connect signals to slots
@@ -79,7 +81,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(std::make_uniq
 
   // set the user interface
   setUserInterfaceAsClosed();
-  m_load_pattern_repository = std::make_shared<gui::persistence::LoadPatternRepository>(m_document.getProject().getDomainModel());
+  m_load_pattern_repository =
+      std::make_shared<gui::persistence::LoadPatternRepository>(
+          m_document.getProject().getDomainModel());
 }
 
 MainWindow::~MainWindow() = default;
@@ -101,13 +105,13 @@ void MainWindow::newProject() {
   // the steps
   NewProjectWizard np(m_document, this);
   switch (np.exec()) {
-	case QDialog::Accepted:
-	  setUserInterfaceAsOpened();
-	  break;
+  case QDialog::Accepted:
+    setUserInterfaceAsOpened();
+    break;
 
-	default:
-	  m_document.clear();
-	  break;
+  default:
+    m_document.clear();
+    break;
   }
 }
 
@@ -117,25 +121,27 @@ void MainWindow::importProjectFromJsonFile(QString file_name) {
 
   // TODO react to failed file open
 
-  fem::Model& model = m_document.getProject().getModel();
+  fem::Model &model = m_document.getProject().getModel();
   model.clear();
   auto parser = fem::ModelImporterFactory::makeFemJsonParser();
   parser->parse(file, model);
 
   switch (parser->error.code) {
-	case Parser::Error::ERR_OK:
-	  // setup the user interface
-	  m_document.setProjectType(Document::TYPE_SOLID3D);  // nasty hack due to poor design
-	  setUserInterfaceAsOpened();
-	  break;
+  case Parser::Error::ERR_OK:
+    // setup the user interface
+    m_document.setProjectType(
+        Document::TYPE_SOLID3D); // nasty hack due to poor design
+    setUserInterfaceAsOpened();
+    break;
 
-	default:
-	  qCritical() << __FILE__ << ":" << __LINE__;
-	  qCritical() << QString("Error: %1").arg(QString::fromStdString(parser->error.message));
+  default:
+    qCritical() << __FILE__ << ":" << __LINE__;
+    qCritical() << QString("Error: %1")
+                       .arg(QString::fromStdString(parser->error.message));
 
-	  QMessageBox::critical(this, tr("Error"), parser->error.message.c_str());
-	  m_document.clear();
-	  break;
+    QMessageBox::critical(this, tr("Error"), parser->error.message.c_str());
+    m_document.clear();
+    break;
   }
 
   m_document.setFileName(file_name);
@@ -157,8 +163,8 @@ void MainWindow::openProject() {
   dialog.setFileMode(QFileDialog::ExistingFile);
   dialog.setNameFilter(tr("FEM project (*.fem.json)"));
   if (dialog.exec() == QDialog::Rejected) {
-	// user cancelled, no file was loaded
-	return;
+    // user cancelled, no file was loaded
+    return;
   }
 
   file_dialog_directory = dialog.directory();
@@ -180,8 +186,9 @@ void MainWindow::reopenProject() {
   qInfo() << "MainWindow::reopenProject()";
 
   if (m_document.isFileNameNotSet()) {
-	QMessageBox::critical(this, tr("Error"), tr("This document hasn't been saved to a file"));
-	return;
+    QMessageBox::critical(this, tr("Error"),
+                          tr("This document hasn't been saved to a file"));
+    return;
   }
 
   // clear the document
@@ -192,8 +199,9 @@ void MainWindow::reopenProject() {
   importProjectFromJsonFile(QString::fromStdString(file_name));
 }
 
-static void saveDocument(Document& doc, std::string file_name) {
-  gui::application::SaveDocumentCommand command(doc.getProject().getModel(), file_name);
+static void saveDocument(Document &doc, std::string file_name) {
+  gui::application::SaveDocumentCommand command(doc.getProject().getModel(),
+                                                file_name);
   command.execute();
 
   doc.setDirty(false);
@@ -203,43 +211,44 @@ void MainWindow::saveProject() {
   qInfo() << "MainWindow::saveProject()";
 
   if (m_document.isFileNameNotSet()) {
-	QFileDialog dialog(this);
-	QDir file_dialog_directory = Options::getInstance().getProjectOpenDirectory();
-	dialog.setDirectory(file_dialog_directory);
+    QFileDialog dialog(this);
+    QDir file_dialog_directory =
+        Options::getInstance().getProjectOpenDirectory();
+    dialog.setDirectory(file_dialog_directory);
 
-	// setup the file dialog
-	dialog.setFileMode(QFileDialog::AnyFile);
-	dialog.setNameFilter(tr("FEM project (*.fem.json)"));
-	dialog.setDefaultSuffix("fem.json");
-	if (dialog.exec() == QDialog::Rejected) {
-	  // user cancelled
-	  return;
-	}
+    // setup the file dialog
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter(tr("FEM project (*.fem.json)"));
+    dialog.setDefaultSuffix("fem.json");
+    if (dialog.exec() == QDialog::Rejected) {
+      // user cancelled
+      return;
+    }
 
-	QStringList sl;
-	sl = dialog.selectedFiles();
-	QString file_name = sl.at(0);
+    QStringList sl;
+    sl = dialog.selectedFiles();
+    QString file_name = sl.at(0);
 
-	// check if file already exists
-	QFile file;
-	file.setFileName(file_name);
+    // check if file already exists
+    QFile file;
+    file.setFileName(file_name);
 
-	if (file.exists()) {
-	  QMessageBox msgBox;
-	  msgBox.setText(tr("File already exists"));
-	  msgBox.setInformativeText(tr("Do you want to overwrite it?"));
-	  msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-	  msgBox.setDefaultButton(QMessageBox::No);
-	  if (msgBox.exec() == QMessageBox::No) {
-		return;
-	  }
-	}
+    if (file.exists()) {
+      QMessageBox msgBox;
+      msgBox.setText(tr("File already exists"));
+      msgBox.setInformativeText(tr("Do you want to overwrite it?"));
+      msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+      msgBox.setDefaultButton(QMessageBox::No);
+      if (msgBox.exec() == QMessageBox::No) {
+        return;
+      }
+    }
 
-	// set a new file name for this file
-	m_document.setFileName(file_name);
+    // set a new file name for this file
+    m_document.setFileName(file_name);
 
-	this->setWindowTitle("Femp - " + file_name);
-	ui->actionReopen->setEnabled(true);
+    this->setWindowTitle("Femp - " + file_name);
+    ui->actionReopen->setEnabled(true);
   }
 
   saveDocument(m_document, m_document.getFileName().toStdString());
@@ -258,8 +267,8 @@ void MainWindow::saveProjectAs() {
   dialog.setNameFilter(tr("FEM project (*.fem.json)"));
   dialog.setDefaultSuffix("fem.json");
   if (dialog.exec() == QDialog::Rejected) {
-	// user cancelled
-	return;
+    // user cancelled
+    return;
   }
 
   QStringList sl;
@@ -271,14 +280,14 @@ void MainWindow::saveProjectAs() {
   QFile file;
   file.setFileName(file_name);
   if (file.exists()) {
-	QMessageBox msgBox;
-	msgBox.setText(tr("File already exists"));
-	msgBox.setInformativeText(tr("Do you want to overwrite it?"));
-	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-	msgBox.setDefaultButton(QMessageBox::No);
-	if (msgBox.exec() == QMessageBox::No) {
-	  return;
-	}
+    QMessageBox msgBox;
+    msgBox.setText(tr("File already exists"));
+    msgBox.setInformativeText(tr("Do you want to overwrite it?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+    if (msgBox.exec() == QMessageBox::No) {
+      return;
+    }
   }
 
   this->setWindowTitle("Femp - " + file_name);
@@ -292,29 +301,30 @@ void MainWindow::closeProject() {
   qInfo() << "MainWindow::closeProject()";
 
   if (m_document.isDirty()) {
-	// ask the user if he wants to save the changes
-	QMessageBox msgBox;
-	msgBox.setText("The document has been modified.");
-	msgBox.setInformativeText("Do you want to save your changes?");
-	msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-	msgBox.setDefaultButton(QMessageBox::Save);
-	switch (msgBox.exec()) {
-	  case QMessageBox::Save:
-		this->saveProject();
-		break;
+    // ask the user if he wants to save the changes
+    QMessageBox msgBox;
+    msgBox.setText("The document has been modified.");
+    msgBox.setInformativeText("Do you want to save your changes?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard |
+                              QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Save);
+    switch (msgBox.exec()) {
+    case QMessageBox::Save:
+      this->saveProject();
+      break;
 
-	  case QMessageBox::Discard:
-		// move on
-		break;
+    case QMessageBox::Discard:
+      // move on
+      break;
 
-	  case QMessageBox::Cancel:
-		return;	 // exit and do nothing
-		break;
+    case QMessageBox::Cancel:
+      return; // exit and do nothing
+      break;
 
-	  default:
-		// this part should never be reached
-		break;
-	}
+    default:
+      // this part should never be reached
+      break;
+    }
   }
 
   // tweak the UI
@@ -329,29 +339,30 @@ void MainWindow::quit() {
   qInfo() << "MainWindow::quit()";
 
   if (m_document.isDirty()) {
-	// ask the user if he wants to save the changes
-	QMessageBox msgBox;
-	msgBox.setText("The document has been modified.");
-	msgBox.setInformativeText("Do you want to save your changes?");
-	msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-	msgBox.setDefaultButton(QMessageBox::Save);
-	switch (msgBox.exec()) {
-	  case QMessageBox::Save:
-		this->saveProject();
-		break;
+    // ask the user if he wants to save the changes
+    QMessageBox msgBox;
+    msgBox.setText("The document has been modified.");
+    msgBox.setInformativeText("Do you want to save your changes?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard |
+                              QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Save);
+    switch (msgBox.exec()) {
+    case QMessageBox::Save:
+      this->saveProject();
+      break;
 
-	  case QMessageBox::Discard:
-		// move on
-		break;
+    case QMessageBox::Discard:
+      // move on
+      break;
 
-	  case QMessageBox::Cancel:
-		return;	 // exit and do nothing
-		break;
+    case QMessageBox::Cancel:
+      return; // exit and do nothing
+      break;
 
-	  default:
-		// this part should never be reached
-		break;
-	}
+    default:
+      // this part should never be reached
+      break;
+    }
   }
 
   // proceed to quit
@@ -362,40 +373,62 @@ void MainWindow::createActions() {
   // connect the actions
   connect(ui->actionNew, &QAction::triggered, this, &MainWindow::newProject);
   connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::openProject);
-  connect(ui->actionReopen, &QAction::triggered, this, &MainWindow::reopenProject);
+  connect(ui->actionReopen, &QAction::triggered, this,
+          &MainWindow::reopenProject);
   connect(ui->actionSave, &QAction::triggered, this, &MainWindow::saveProject);
-  connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::saveProjectAs);
-  connect(ui->actionClose, &QAction::triggered, this, &MainWindow::closeProject);
+  connect(ui->actionSaveAs, &QAction::triggered, this,
+          &MainWindow::saveProjectAs);
+  connect(ui->actionClose, &QAction::triggered, this,
+          &MainWindow::closeProject);
   connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::quit);
-  connect(ui->actionNodeRestraints, &QAction::triggered, this, &MainWindow::setNodeRestraints);
-  connect(ui->actionNodeActions, &QAction::triggered, this, &MainWindow::setNodeActions);
-  connect(ui->actionDomainLoads, &QAction::triggered, this, &MainWindow::setDomainLoads);
-  connect(ui->actionMoveNodes, &QAction::triggered, this, &MainWindow::moveSelectedNodes);
+  connect(ui->actionNodeRestraints, &QAction::triggered, this,
+          &MainWindow::setNodeRestraints);
+  connect(ui->actionNodeActions, &QAction::triggered, this,
+          &MainWindow::setNodeActions);
+  connect(ui->actionDomainLoads, &QAction::triggered, this,
+          &MainWindow::setDomainLoads);
+  connect(ui->actionMoveNodes, &QAction::triggered, this,
+          &MainWindow::moveSelectedNodes);
 
   connect(ui->actionRun, &QAction::triggered, this, &MainWindow::runAnalysis);
-  connect(ui->actionDump_FEM_equation, &QAction::triggered, this, &MainWindow::dumpFemEquation);
-  connect(ui->actionAnalysisSummary, &QAction::triggered, this, &MainWindow::showAnalysisSummary);
+  connect(ui->actionDump_FEM_equation, &QAction::triggered, this,
+          &MainWindow::dumpFemEquation);
+  connect(ui->actionAnalysisSummary, &QAction::triggered, this,
+          &MainWindow::showAnalysisSummary);
 
-  connect(ui->actionEditMaterials, &QAction::triggered, this, &MainWindow::editMaterials);
+  connect(ui->actionEditMaterials, &QAction::triggered, this,
+          &MainWindow::editMaterials);
 
-  connect(ui->actionWindowTile, &QAction::triggered, this, &MainWindow::setTiledWindows);
-  connect(ui->actionWindowCascade, &QAction::triggered, this, &MainWindow::setCascadeWindows);
+  connect(ui->actionWindowTile, &QAction::triggered, this,
+          &MainWindow::setTiledWindows);
+  connect(ui->actionWindowCascade, &QAction::triggered, this,
+          &MainWindow::setCascadeWindows);
 
   // MDI window creation
-  connect(ui->actionNewModelWindow, &QAction::triggered, this, &MainWindow::createNewModelWindow);
-  connect(ui->actionNewPostprocessingWindow, &QAction::triggered, this, &MainWindow::createNewPostprocessingWindow);
-  connect(ui->actionNewTensorFieldWindow, &QAction::triggered, this, &MainWindow::createNewTensorFieldWindow);
-  connect(ui->actionNewAnalysisResultsWindow, &QAction::triggered, this, &MainWindow::createNewAnalysisResultsWindow);
-  connect(ui->actionNewFemEquationWindow, &QAction::triggered, this, &MainWindow::createNewFemEquationWindow);
+  connect(ui->actionNewModelWindow, &QAction::triggered, this,
+          &MainWindow::createNewModelWindow);
+  connect(ui->actionNewPostprocessingWindow, &QAction::triggered, this,
+          &MainWindow::createNewPostprocessingWindow);
+  connect(ui->actionNewTensorFieldWindow, &QAction::triggered, this,
+          &MainWindow::createNewTensorFieldWindow);
+  connect(ui->actionNewAnalysisResultsWindow, &QAction::triggered, this,
+          &MainWindow::createNewAnalysisResultsWindow);
+  connect(ui->actionNewFemEquationWindow, &QAction::triggered, this,
+          &MainWindow::createNewFemEquationWindow);
 
-  connect(ui->actionViewSelection, &QAction::triggered, this, &MainWindow::showSelection);
+  connect(ui->actionViewSelection, &QAction::triggered, this,
+          &MainWindow::showSelection);
   connect(ui->actionViewAll, &QAction::triggered, this, &MainWindow::showAll);
 
-  connect(ui->actionQuadrature_rules, &QAction::triggered, this, &MainWindow::editQuadratureRules);
-  connect(ui->actionSelection, &QAction::triggered, this, &MainWindow::editSelection);
-  connect(ui->actionResults_from_selection, &QAction::triggered, this, &MainWindow::dumpResultsFromSelection);
+  connect(ui->actionQuadrature_rules, &QAction::triggered, this,
+          &MainWindow::editQuadratureRules);
+  connect(ui->actionSelection, &QAction::triggered, this,
+          &MainWindow::editSelection);
+  connect(ui->actionResults_from_selection, &QAction::triggered, this,
+          &MainWindow::dumpResultsFromSelection);
 
-  connect(ui->menuWindowOpened, &QMenu::aboutToShow, this, &MainWindow::updateWindowMenu);
+  connect(ui->menuWindowOpened, &QMenu::aboutToShow, this,
+          &MainWindow::updateWindowMenu);
 }
 
 void MainWindow::createDockWidgets() {
@@ -403,9 +436,12 @@ void MainWindow::createDockWidgets() {
   m_commandLineDockWidget = new CommandLineDockWidget(this);
 
   // set the MainWindow connections
-  connect(this, &MainWindow::informationMessageSent, m_commandLineDockWidget, &CommandLineDockWidget::getMessage);
-  connect(this, &MainWindow::warningMessageSent, m_commandLineDockWidget, &CommandLineDockWidget::getWarning);
-  connect(this, &MainWindow::errorMessageSent, m_commandLineDockWidget, &CommandLineDockWidget::getError);
+  connect(this, &MainWindow::informationMessageSent, m_commandLineDockWidget,
+          &CommandLineDockWidget::getMessage);
+  connect(this, &MainWindow::warningMessageSent, m_commandLineDockWidget,
+          &CommandLineDockWidget::getWarning);
+  connect(this, &MainWindow::errorMessageSent, m_commandLineDockWidget,
+          &CommandLineDockWidget::getError);
 
   // add selection dock widget
   this->addDockWidget(Qt::RightDockWidgetArea, m_commandLineDockWidget);
@@ -418,10 +454,12 @@ void MainWindow::setNodeRestraints() {
 
   NodeRestrainsDialog nd;
   if (nd.exec() != QDialog::Accepted) {
-	return;
+    return;
   }
 
-  SetNodeRestraintsVisitor visitor(m_selectionManager.getSelection().getNodeReferences(), nd.getRestrictions());
+  SetNodeRestraintsVisitor visitor(
+      m_selectionManager.getSelection().getNodeReferences(),
+      nd.getRestrictions());
 
   // set the restraints in the model
   m_document.getProject().accept(visitor);
@@ -434,19 +472,20 @@ void MainWindow::setNodeActions() {
 
   NodeActionsDialog na(load_patterns_model, this);
   if (na.exec() != QDialog::Accepted) {
-	return;
+    return;
   }
 
   Selection const selection = m_selectionManager.getSelection();
 
   // shortcut just to reduce code clutter
-  fem::Model& femp_model = m_document.getProject().getModel();
+  fem::Model &femp_model = m_document.getProject().getModel();
   auto load_pattern_index = na.getLoadPattern();
-  fem::LoadPattern& load_pattern = femp_model.load_pattern_list[load_pattern_index];
+  fem::LoadPattern &load_pattern =
+      femp_model.load_pattern_list[load_pattern_index];
 
   // assign nodal loads
-  for (fem::node_ref_t const& node : selection.getNodeReferences()) {
-	load_pattern.addNodalLoad(node, na.getForce());
+  for (fem::node_ref_t const &node : selection.getNodeReferences()) {
+    load_pattern.addNodalLoad(node, na.getForce());
   }
 }
 
@@ -459,12 +498,14 @@ void MainWindow::setDomainLoads() {
 
   // call the dialog box
   if (dialog.exec() != QDialog::Accepted) {
-	return;
+    return;
   }
 
-  fem::Model& femp_model = m_document.getProject().getModel();
+  fem::Model &femp_model = m_document.getProject().getModel();
   auto load_pattern_index = dialog.getLoadPattern();
-  SetDomainLoadsVisitor visitor(m_selectionManager.getSelection().getElementReferences(), femp_model.load_pattern_list[load_pattern_index], dialog.getForce());
+  SetDomainLoadsVisitor visitor(
+      m_selectionManager.getSelection().getElementReferences(),
+      femp_model.load_pattern_list[load_pattern_index], dialog.getForce());
 
   m_document.getProject().accept(visitor);
 
@@ -476,7 +517,7 @@ void MainWindow::moveSelectedNodes() {
 
   MoveNodesDialog nd(this);
   if (nd.exec() != QDialog::Accepted) {
-	return;
+    return;
   }
 
   // get list of node restraints from active window
@@ -491,7 +532,7 @@ void MainWindow::moveSelectedNodes() {
 void MainWindow::editMaterials() {
   qInfo() << "MainWindow::editMaterials()";
 
-  fem::Model& femp_model = m_document.getProject().getModel();
+  fem::Model &femp_model = m_document.getProject().getModel();
   MaterialsEditorDialog dialog(femp_model, this);
   dialog.exec();
 }
@@ -506,7 +547,8 @@ void MainWindow::editQuadratureRules() {
 void MainWindow::editSelection() {
   qInfo() << "MainWindow::editSelection()";
 
-  SelectionDialog dialog(m_document.getProject().getDomainModel(), m_selectionManager, this);
+  SelectionDialog dialog(m_document.getProject().getDomainModel(),
+                         m_selectionManager, this);
   dialog.exec();
 
   // signal that a selection changed
@@ -517,30 +559,32 @@ void MainWindow::editSelection() {
 void MainWindow::runAnalysis() {
   qInfo() << "MainWindow::runAnalysis()";
 
-  fem::Model& femp_model = this->m_document.getProject().getModel();
+  fem::Model &femp_model = this->m_document.getProject().getModel();
 
   // check if ther is a load pattern
   if (femp_model.getLoadPatternList().empty()) {
-	QMessageBox::critical(this, "No load patterns", "This model doesn't have any load patterns to run");
-	return;
+    QMessageBox::critical(this, "No load patterns",
+                          "This model doesn't have any load patterns to run");
+    return;
   }
 
-  fem::Solver<double>* solver = nullptr;
+  fem::Solver<double> *solver = nullptr;
 
   // run the AnalysisDialog to get the solver
   AnalysisDialog analysis_dialog(m_load_pattern_repository, this);
   switch (analysis_dialog.exec()) {
-	case QDialog::Accepted:
-	  solver = analysis_dialog.solver();
-	  if (analysis_dialog.loadPattern() == -1) {
-		QMessageBox::critical(this, "No load patterns", "This model doesn't have any load patterns to run");
-		return;
-	  }
-	  break;
+  case QDialog::Accepted:
+    solver = analysis_dialog.solver();
+    if (analysis_dialog.loadPattern() == -1) {
+      QMessageBox::critical(this, "No load patterns",
+                            "This model doesn't have any load patterns to run");
+      return;
+    }
+    break;
 
-	default:
-	  return;
-	  break;
+  default:
+    return;
+    break;
   }
 
   // runs the analysis
@@ -548,36 +592,46 @@ void MainWindow::runAnalysis() {
   AnalysisProgressDialog dialog(this);
 
   // connect the dialog with the progress indicator
-  connect(&progress, &DefaultProgressIndicator::beginSection, &dialog, &AnalysisProgressDialog::beginSection);
-  connect(&progress, &DefaultProgressIndicator::endSection, &dialog, &AnalysisProgressDialog::endSection);
-  connect(&progress, &DefaultProgressIndicator::setProgress, &dialog, &AnalysisProgressDialog::setProgress);
-  connect(&progress, &DefaultProgressIndicator::setMessage, &dialog, &AnalysisProgressDialog::setMessage);
-  connect(&progress, &DefaultProgressIndicator::setError, &dialog, &AnalysisProgressDialog::setError);
-  connect(&progress, &DefaultProgressIndicator::finish, &dialog, &AnalysisProgressDialog::finish);
+  connect(&progress, &DefaultProgressIndicator::beginSection, &dialog,
+          &AnalysisProgressDialog::beginSection);
+  connect(&progress, &DefaultProgressIndicator::endSection, &dialog,
+          &AnalysisProgressDialog::endSection);
+  connect(&progress, &DefaultProgressIndicator::setProgress, &dialog,
+          &AnalysisProgressDialog::setProgress);
+  connect(&progress, &DefaultProgressIndicator::setMessage, &dialog,
+          &AnalysisProgressDialog::setMessage);
+  connect(&progress, &DefaultProgressIndicator::setError, &dialog,
+          &AnalysisProgressDialog::setError);
+  connect(&progress, &DefaultProgressIndicator::finish, &dialog,
+          &AnalysisProgressDialog::finish);
 
   // TODO finish this
   fem::AnalysisResult analysis_result;
-  fem::LoadPattern lp = femp_model.load_pattern_list[analysis_dialog.loadPattern()];
+  fem::LoadPattern lp =
+      femp_model.load_pattern_list[analysis_dialog.loadPattern()];
   m_analysis.set(femp_model, lp, analysis_result, progress, solver);
 
-  auto analysis = [&]() { m_analysis.run(femp_model, lp, analysis_result, progress); };
+  auto analysis = [&]() {
+    m_analysis.run(femp_model, lp, analysis_result, progress);
+  };
 
   std::thread t(analysis);
 
   switch (dialog.exec()) {
-	case QDialog::Accepted:
-	  // TODO implement a way to abort the analysis thread if the abort button
-	  // is pressed
-	  break;
+  case QDialog::Accepted:
+    // TODO implement a way to abort the analysis thread if the abort button
+    // is pressed
+    break;
 
-	default:
-	  break;
+  default:
+    break;
   }
   t.join();
 
   if (!m_analysis.succeeded()) {
-	QMessageBox::critical(this, "No analysis", "There isn't a equation to dump");
-	return;
+    QMessageBox::critical(this, "No analysis",
+                          "There isn't a equation to dump");
+    return;
   }
 
   m_document.getProject().pushAnalysisResult(analysis_result);
@@ -596,11 +650,12 @@ void MainWindow::onAnalysisFinished() {
 void MainWindow::dumpFemEquation() {
   qInfo() << "MainWindow::dumpEquation()";
 
-  auto& femp_result = m_document.getProject().getAnalysisResults();
+  auto &femp_result = m_document.getProject().getAnalysisResults();
 
   if (femp_result.empty()) {
-	QMessageBox::information(this, "No analysis", "There isn't a equation to dump");
-	return;
+    QMessageBox::information(this, "No analysis",
+                             "There isn't a equation to dump");
+    return;
   }
 
   QFileDialog dialog(this);
@@ -610,14 +665,15 @@ void MainWindow::dumpFemEquation() {
   dialog.setNameFilter(tr("Octave file (*.oct)"));
   dialog.setDefaultSuffix("oct");
   if (dialog.exec() == QDialog::Rejected) {
-	// user cancelled
-	return;
+    // user cancelled
+    return;
   }
 
   QStringList sl = dialog.selectedFiles();
   QString file_name = sl.at(0);
 
-  gui::application::DumpFemEquationCommand command(femp_result.back(), file_name);
+  gui::application::DumpFemEquationCommand command(femp_result.back(),
+                                                   file_name);
   command.execute();
 }
 
@@ -625,7 +681,8 @@ void MainWindow::showAnalysisSummary() {
   qInfo() << "MainWindow::showAnalysisSummary()";
 
   // crude hack
-  AnalysisSummaryDialog dialog(m_document.getProject().getAnalysisResults().back(), this);
+  AnalysisSummaryDialog dialog(
+      m_document.getProject().getAnalysisResults().back(), this);
   dialog.exec();
 }
 
@@ -636,51 +693,53 @@ void MainWindow::dumpResultsFromSelection() {
 
   // opens the file
   {
-	QFileDialog dialog(this);
-	dialog.setDirectory(Options::getInstance().getDumpResultsDirectory());
-	QStringList sl;
+    QFileDialog dialog(this);
+    dialog.setDirectory(Options::getInstance().getDumpResultsDirectory());
+    QStringList sl;
 
-	// setup the file dialog
-	dialog.setFileMode(QFileDialog::AnyFile);
-	dialog.setAcceptMode(QFileDialog::AcceptSave);
-	dialog.setNameFilter(tr("text file (*.txt)"));
-	dialog.setDefaultSuffix("txt");
-	if (dialog.exec() == QDialog::Rejected) {
-	  // user cancelled
-	  return;
-	}
+    // setup the file dialog
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    dialog.setNameFilter(tr("text file (*.txt)"));
+    dialog.setDefaultSuffix("txt");
+    if (dialog.exec() == QDialog::Rejected) {
+      // user cancelled
+      return;
+    }
 
-	// get the last directory used to dump results
-	Options::getInstance().setDumpResultsDirectory(dialog.directory());
+    // get the last directory used to dump results
+    Options::getInstance().setDumpResultsDirectory(dialog.directory());
 
-	sl = dialog.selectedFiles();
-	QString file_name = sl.at(0);
+    sl = dialog.selectedFiles();
+    QString file_name = sl.at(0);
 
-	// check if file already exists
-	file.setFileName(file_name);
-	if (file.exists()) {
-	  QMessageBox msgBox;
-	  msgBox.setText(tr("File already exists"));
-	  msgBox.setInformativeText(tr("Do you want to overwrite it?"));
-	  msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-	  msgBox.setDefaultButton(QMessageBox::No);
-	  if (msgBox.exec() == QMessageBox::No) {
-		return;
-	  }
-	}
+    // check if file already exists
+    file.setFileName(file_name);
+    if (file.exists()) {
+      QMessageBox msgBox;
+      msgBox.setText(tr("File already exists"));
+      msgBox.setInformativeText(tr("Do you want to overwrite it?"));
+      msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+      msgBox.setDefaultButton(QMessageBox::No);
+      if (msgBox.exec() == QMessageBox::No) {
+        return;
+      }
+    }
   }
 
   // prepare the file for dumping
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-	QMessageBox::critical(this, tr("femp"), tr("Failed to open file"));
-	return;
+    QMessageBox::critical(this, tr("femp"), tr("Failed to open file"));
+    return;
   }
 
   QTextStream out(&file);
   // dump the text to a text file
-  fem::AnalysisResult& femp_result = this->m_document.getProject().getAnalysisResults().back();	 // nasty hack
+  fem::AnalysisResult &femp_result =
+      this->m_document.getProject().getAnalysisResults().back(); // nasty hack
 
-  OutputResultsInNodesCSVVisitor visitor(m_selectionManager.getSelection().getNodeReferences(), &femp_result, out);
+  OutputResultsInNodesCSVVisitor visitor(
+      m_selectionManager.getSelection().getNodeReferences(), &femp_result, out);
 
   m_document.getProject().accept(visitor);
 
@@ -689,16 +748,16 @@ void MainWindow::dumpResultsFromSelection() {
 
 void MainWindow::showSelection() {
   qInfo() << "MainWindow::showSelection()";
-  QMdiSubWindow* mdi_window = m_mdiArea->currentSubWindow();
+  QMdiSubWindow *mdi_window = m_mdiArea->currentSubWindow();
   if (mdi_window == nullptr) {
-	qCritical() << "MainWindow::showSelection(): mdi_window is null";
-	return;
+    qCritical() << "MainWindow::showSelection(): mdi_window is null";
+    return;
   }
 
-  MdiWindow* window = static_cast<MdiWindow*>(mdi_window->widget());
+  MdiWindow *window = static_cast<MdiWindow *>(mdi_window->widget());
   if (window != nullptr) {
-	qCritical() << "MainWindow::showSelection(): indow is null";
-	return;
+    qCritical() << "MainWindow::showSelection(): indow is null";
+    return;
   }
 
   Selection selection = m_selectionManager.getSelection();
@@ -708,16 +767,16 @@ void MainWindow::showSelection() {
 void MainWindow::showAll() {
   qInfo() << "MainWindow::showAll()";
 
-  QMdiSubWindow* mdi_window = m_mdiArea->currentSubWindow();
+  QMdiSubWindow *mdi_window = m_mdiArea->currentSubWindow();
   if (mdi_window == nullptr) {
-	qCritical() << "MainWindow::showAll(): mdi_window is null";
-	return;
+    qCritical() << "MainWindow::showAll(): mdi_window is null";
+    return;
   }
 
-  MdiWindow* window = static_cast<MdiWindow*>(mdi_window->widget());
+  MdiWindow *window = static_cast<MdiWindow *>(mdi_window->widget());
   if (window == nullptr) {
-	qCritical() << "MainWindow::showAll(): window is null";
-	return;
+    qCritical() << "MainWindow::showAll(): window is null";
+    return;
   }
 
   window->showAll();
@@ -735,51 +794,51 @@ void MainWindow::getError(QString message) {
   emit informationMessageSent(message);
 }
 
-void MainWindow::setTiledWindows() {
-  m_mdiArea->tileSubWindows();
-}
+void MainWindow::setTiledWindows() { m_mdiArea->tileSubWindows(); }
 
-void MainWindow::setCascadeWindows() {
-  m_mdiArea->cascadeSubWindows();
-}
+void MainWindow::setCascadeWindows() { m_mdiArea->cascadeSubWindows(); }
 
-void MainWindow::createNewViewportWindow() {
-  this->createNewModelWindow();
-}
+void MainWindow::createNewViewportWindow() { this->createNewModelWindow(); }
 
 void MainWindow::createNewModelWindow() {
   qInfo() << "MainWindow::createNewModelWindow()";
 
-  ModelWindow* window = new ModelWindow(m_document.getProject(), getViewportColors(), this);
+  ModelWindow *window =
+      new ModelWindow(m_document.getProject(), getViewportColors(), this);
 
   // create the model's MDI window
-  QMdiSubWindow* mdi_window = new QMdiSubWindow(m_mdiArea);
+  QMdiSubWindow *mdi_window = new QMdiSubWindow(m_mdiArea);
 
   mdi_window->setWidget(window);
   mdi_window->setAttribute(Qt::WA_DeleteOnClose);
   mdi_window->setWindowTitle(tr("Model"));
   mdi_window->showMaximized();
 
-  connect(window, &ModelWindow::selectionChanged, &m_selectionManager, &SelectionManager::setSelection);
-  connect(window, &ModelWindow::selectionCleared, &m_selectionManager, &SelectionManager::clearSelection);
+  connect(window, &ModelWindow::selectionChanged, &m_selectionManager,
+          &SelectionManager::setSelection);
+  connect(window, &ModelWindow::selectionCleared, &m_selectionManager,
+          &SelectionManager::clearSelection);
 
-  connect(&m_selectionManager, &SelectionManager::selectionChanged, window, &ModelWindow::setSelection);
-  connect(&m_selectionManager, &SelectionManager::selectionCleared, window, &ModelWindow::clearSelection);
+  connect(&m_selectionManager, &SelectionManager::selectionChanged, window,
+          &ModelWindow::setSelection);
+  connect(&m_selectionManager, &SelectionManager::selectionCleared, window,
+          &ModelWindow::clearSelection);
 }
 
 void MainWindow::createNewPostprocessingWindow() {
   qInfo() << "MainWindow::createNewPostprocessingWindow()";
-  auto& femp_result = m_document.getProject().getAnalysisResults();
+  auto &femp_result = m_document.getProject().getAnalysisResults();
   if (femp_result.empty()) {
-	qCritical() << "MainWindow::createNewPostprocessingWindow(): tried to set "
-				   "a postprocessing window although no results are available";
-	return;
+    qCritical() << "MainWindow::createNewPostprocessingWindow(): tried to set "
+                   "a postprocessing window although no results are available";
+    return;
   }
 
-  PostprocessingWindow* window = new PostprocessingWindow(m_document.getProject(), femp_result.back(), getViewportColors(), this);
+  PostprocessingWindow *window = new PostprocessingWindow(
+      m_document.getProject(), femp_result.back(), getViewportColors(), this);
 
   // create the model's MDI window
-  QMdiSubWindow* mdi_window = new QMdiSubWindow(m_mdiArea);
+  QMdiSubWindow *mdi_window = new QMdiSubWindow(m_mdiArea);
   mdi_window->setWidget(window);
   mdi_window->setAttribute(Qt::WA_DeleteOnClose);
   mdi_window->setWindowTitle(tr("Postprocessing"));
@@ -789,15 +848,18 @@ void MainWindow::createNewPostprocessingWindow() {
 void MainWindow::createNewTensorFieldWindow() {
   qInfo() << "MainWindow::createNewTensorFieldWindow()";
   if (m_document.getProject().getAnalysisResults().empty()) {
-	qCritical() << "MainWindow::createNewTensorFieldWindow(): tried to set a "
-				   "postprocessing window although no results are available";
-	return;
+    qCritical() << "MainWindow::createNewTensorFieldWindow(): tried to set a "
+                   "postprocessing window although no results are available";
+    return;
   }
 
-  TensorFieldWindow* window = new TensorFieldWindow(m_document.getProject(), m_document.getProject().getAnalysisResults().back(), getViewportColors(), this);
+  TensorFieldWindow *window =
+      new TensorFieldWindow(m_document.getProject(),
+                            m_document.getProject().getAnalysisResults().back(),
+                            getViewportColors(), this);
 
   // create the model's MDI window
-  QMdiSubWindow* mdi_window = new QMdiSubWindow(m_mdiArea);
+  QMdiSubWindow *mdi_window = new QMdiSubWindow(m_mdiArea);
 
   mdi_window->setWidget(window);
   mdi_window->setAttribute(Qt::WA_DeleteOnClose);
@@ -808,25 +870,27 @@ void MainWindow::createNewTensorFieldWindow() {
 void MainWindow::createNewAnalysisResultsWindow() {
   qInfo() << "MainWindow::createNewAnalysisResultsWindow()";
   if (m_document.getProject().getAnalysisResults().empty()) {
-	qCritical() << __FILE__ << ":" << __LINE__;
-	qCritical() << "MainWindow::createNewAnalysisResultWindow(): tried to set "
-				   "a results window although there is no result available";
-	return;
+    qCritical() << __FILE__ << ":" << __LINE__;
+    qCritical() << "MainWindow::createNewAnalysisResultWindow(): tried to set "
+                   "a results window although there is no result available";
+    return;
   }
 
-  AnalysisResultsWindow* mdi_window = new AnalysisResultsWindow(m_document.getProject(), m_mdiArea);
+  AnalysisResultsWindow *mdi_window =
+      new AnalysisResultsWindow(m_document.getProject(), m_mdiArea);
   mdi_window->showMaximized();
 }
 
 void MainWindow::createNewFemEquationWindow() {
   qInfo() << "MainWindow::createNewFemEquationWindow()";
   if (m_document.getProject().getAnalysisResults().empty()) {
-	qCritical() << "MainWindow::createNewFemEquationWindow(): tried to set a "
-				   "results window although there is no result available";
-	return;
+    qCritical() << "MainWindow::createNewFemEquationWindow(): tried to set a "
+                   "results window although there is no result available";
+    return;
   }
 
-  MatrixWindow* mdi_window = new MatrixWindow(m_document.getProject(), m_mdiArea);
+  MatrixWindow *mdi_window =
+      new MatrixWindow(m_document.getProject(), m_mdiArea);
   mdi_window->showMaximized();
 }
 
@@ -837,30 +901,32 @@ void MainWindow::updateWindowMenu() {
   ui->menuWindowOpened->clear();
 
   // fills the menu
-  QList<QMdiSubWindow*> subWindowList = m_mdiArea->subWindowList();
+  QList<QMdiSubWindow *> subWindowList = m_mdiArea->subWindowList();
   for (int n = 0; n < subWindowList.size(); n++) {
-	// get current MDI window label
-	BaseWindow* base = dynamic_cast<BaseWindow*>(subWindowList[n]->widget());
-	{
-	  // TODO fix problem with menu windows
-	  qCritical() << "MainWindow::updateWindowMenu(): nullptr result";
-	  continue;
-	}
+    // get current MDI window label
+    BaseWindow *base = dynamic_cast<BaseWindow *>(subWindowList[n]->widget());
+    {
+      // TODO fix problem with menu windows
+      qCritical() << "MainWindow::updateWindowMenu(): nullptr result";
+      continue;
+    }
 
-	// set the action name
-	QAction* action = new QAction(base->label(), this);
-	action->setData(n);
-	ui->menuWindowOpened->addAction(action);
+    // set the action name
+    QAction *action = new QAction(base->label(), this);
+    action->setData(n);
+    ui->menuWindowOpened->addAction(action);
 
-	// map
-	m_windowMapper->setMapping(action, n);
-	connect(action, &QAction::triggered, m_windowMapper, QOverload<>::of(&QSignalMapper::map));
-	connect(m_windowMapper, &QSignalMapper::mappedInt, this, &MainWindow::activateSubWindowByIndex);
+    // map
+    m_windowMapper->setMapping(action, n);
+    connect(action, &QAction::triggered, m_windowMapper,
+            QOverload<>::of(&QSignalMapper::map));
+    connect(m_windowMapper, &QSignalMapper::mappedInt, this,
+            &MainWindow::activateSubWindowByIndex);
   }
 }
 
 void MainWindow::activateSubWindowByIndex(int index) {
-  QList<QMdiSubWindow*> subWindowList = m_mdiArea->subWindowList();
+  QList<QMdiSubWindow *> subWindowList = m_mdiArea->subWindowList();
   this->m_mdiArea->setActiveSubWindow(subWindowList[index]);
 }
 
@@ -887,13 +953,14 @@ void MainWindow::setUserInterfaceAsOpened() {
   this->createNewViewportWindow();
 
   // set the docks
-  this->addDockWidget(static_cast<Qt::DockWidgetArea>(9), m_commandLineDockWidget);
+  this->addDockWidget(static_cast<Qt::DockWidgetArea>(9),
+                      m_commandLineDockWidget);
 
   // set the window name
   if (m_document.isFileNameNotSet())
-	this->setWindowTitle("Femp - [unnamed.fem.json]");
+    this->setWindowTitle("Femp - [unnamed.fem.json]");
   else
-	this->setWindowTitle("Femp - " + m_document.getFileName());
+    this->setWindowTitle("Femp - " + m_document.getFileName());
 }
 
 void MainWindow::setUserInterfaceAsClosed() {
@@ -945,6 +1012,4 @@ void MainWindow::setUserInterfacePostAnalysis() {
   ui->actionAnalysisSummary->setEnabled(true);
 }
 
-ViewportColors& MainWindow::getViewportColors() {
-  return m_colors;
-}
+ViewportColors &MainWindow::getViewportColors() { return m_colors; }

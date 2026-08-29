@@ -5,13 +5,14 @@
 // Qt includes
 #include <QVBoxLayout>
 
-ResultsRangeDialog::ResultsRangeDialog(QWidget* parent) : QDialog(parent) {
+ResultsRangeDialog::ResultsRangeDialog(QWidget *parent) : QDialog(parent) {
   m_ui->setupUi(this);
 }
 
 ResultsRangeDialog::~ResultsRangeDialog() = default;
 
-void ResultsRangeDialog::setValueRanges(const fem::ResultsRanges<double>& ranges) {
+void ResultsRangeDialog::setValueRanges(
+    const fem::ResultsRanges<double> &ranges) {
   // Strains
   m_ui->lineEditStrain11Min->setText(QString::number(ranges.min_strain11));
   m_ui->lineEditStrain11Max->setText(QString::number(ranges.max_strain11));
@@ -44,7 +45,8 @@ void ResultsRangeDialog::setValueRanges(const fem::ResultsRanges<double>& ranges
   m_ui->lineEditVonMisesMax->setText(QString::number(ranges.max_von_mises));
 }
 
-bool ResultsRangeDialog::getValueRanges(fem::ResultsRanges<double>& ranges) const {
+bool ResultsRangeDialog::getValueRanges(
+    fem::ResultsRanges<double> &ranges) const {
   // Strains
   ranges.min_strain11 = m_ui->lineEditStrain11Min->text().toDouble();
   ranges.max_strain11 = m_ui->lineEditStrain11Max->text().toDouble();

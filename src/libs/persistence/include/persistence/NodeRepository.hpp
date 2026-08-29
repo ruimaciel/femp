@@ -15,21 +15,21 @@ namespace gui {
 namespace persistence {
 
 class NodeRepository : public application::INodeRepository {
-  public:
+public:
   NodeRepository(std::shared_ptr<domain::Model> model);
 
   // INodeRepository interface
-  public:
+public:
   std::vector<size_t> getNodeReferenceList() const override;
   std::map<size_t, fem::Node> getNodeMap() const override;
   fem::Node getNodeById(size_t node_id) const override;
   size_t getNodeSize() const override;
 
-  private:
+private:
   std::shared_ptr<domain::Model> m_domain_model;
 };
 
-}  // namespace persistence
-}  // namespace gui
+} // namespace persistence
+} // namespace gui
 
-#endif	// FEMP_PERSISTENCE_NODEREPOSITORY_HPP
+#endif // FEMP_PERSISTENCE_NODEREPOSITORY_HPP

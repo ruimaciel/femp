@@ -28,55 +28,59 @@ class QToolbar;
 /**
  * MDI window designed to represent a tensor field of a given analysis result
  */
-class TensorFieldWindow : public MdiWindow, public WindowWithResults, public BaseWindow {
+class TensorFieldWindow : public MdiWindow,
+                          public WindowWithResults,
+                          public BaseWindow {
   Q_OBJECT
 
-  protected:
-  TensorFieldViewport* m_viewportTensorField;
+protected:
+  TensorFieldViewport *m_viewportTensorField;
 
-  QToolBar* m_toolBarToggleMenuBarVisibility;
+  QToolBar *m_toolBarToggleMenuBarVisibility;
 
-  QAction* m_actionVisibleNegativePrincipalStresses;
-  QAction* m_actionVisiblePositivePrincipalStresses;
+  QAction *m_actionVisibleNegativePrincipalStresses;
+  QAction *m_actionVisiblePositivePrincipalStresses;
 
-  QToolBar* m_tensorFieldVisualization;
-  QComboBox* m_comboBoxAnalysis;
+  QToolBar *m_tensorFieldVisualization;
+  QComboBox *m_comboBoxAnalysis;
 
-  fem::AnalysisResult* m_result;  // pointer to the current analysis result,
-								  // which will point to a reference
+  fem::AnalysisResult *m_result; // pointer to the current analysis result,
+                                 // which will point to a reference
 
   // gradient values
-  fem::ResultsRanges<double> m_resultsRanges;  // used to set values for representation
+  fem::ResultsRanges<double>
+      m_resultsRanges; // used to set values for representation
 
-  public:
-  TensorFieldWindow(fem::Project& project, fem::AnalysisResult& result, ViewportColors& colors, QWidget* parent = nullptr);
+public:
+  TensorFieldWindow(fem::Project &project, fem::AnalysisResult &result,
+                    ViewportColors &colors, QWidget *parent = nullptr);
 
-  public Q_SLOTS:
+public Q_SLOTS:
   void setDisplacementsScale(double scale);
 
   void toggleMenuBarVisibility(bool);
   void setNegativePrincipalStressesVisibility(const bool state);
   void setPositivePrincipalStressesVisibility(const bool state);
 
-  void setAnalysisResult(fem::AnalysisResult& result);
+  void setAnalysisResult(fem::AnalysisResult &result);
 
   /**
    * Calls ResultsRangeDialog and sets m_results_ranges accordingly
    */
   void setResultsRanges();
 
-  Q_SIGNALS:
+Q_SIGNALS:
   /**
    * Emits a signal to dump the results from a given set of project objets
    */
-  void dumpResultsFromSelection(fem::AnalysisResult* result);
+  void dumpResultsFromSelection(fem::AnalysisResult *result);
 
-  protected:
+protected:
   void connectSignalsToSlots() override;
 
-  void createToolBars(fem::Project&);
+  void createToolBars(fem::Project &);
 
-  void setGradientValuesRange(const fem::AnalysisResult& result);
+  void setGradientValuesRange(const fem::AnalysisResult &result);
 };
 
 #endif

@@ -23,19 +23,19 @@ class AnalysisResultsWidget;
 class AnalysisResultsWidget : public QWidget {
   Q_OBJECT
 
-  protected:
+protected:
   // proxy model to provide a way to filter stuff from the results
   QSortFilterProxyModel m_proxy_model;
 
-  public:
-  AnalysisResultsWidget(fem::Project& project, QWidget* parent = nullptr);
+public:
+  AnalysisResultsWidget(fem::Project &project, QWidget *parent = nullptr);
 
-  private Q_SLOTS:
+private Q_SLOTS:
   // Calls the TableFilterDialog and sets the table according to the user input
   void setFilterOptions();
 
-  private:
-  Ui::AnalysisResultsWidget* m_ui;
+private:
+  Ui::AnalysisResultsWidget *m_ui;
 };
 
 #endif

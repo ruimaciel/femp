@@ -16,21 +16,24 @@ namespace StressFieldRepresentation {
  *used to represent tensor fields
  **/
 class StressFieldRepresentation {
-  protected:
+protected:
   std::vector<StressTensor> m_tensor;
 
-  public:
+public:
   /**
    * Renders this stress field, representing a given element
    **/
-  void render(float const& diameter, float const& max, float const& min, bool const& render_positive, bool const& render_negative,
-			  ViewportColors const& colors) const;
+  void render(float const &diameter, float const &max, float const &min,
+              bool const &render_positive, bool const &render_negative,
+              ViewportColors const &colors) const;
 
   /**
    * Pushes a new tensor to this representation
    **/
-  void push(fem::Point3D const& pos, std::array<fem::Point3D, 3> const& directions, std::array<float, 3> const& stresses);
+  void push(fem::Point3D const &pos,
+            std::array<fem::Point3D, 3> const &directions,
+            std::array<float, 3> const &stresses);
 };
-}  // namespace StressFieldRepresentation
+} // namespace StressFieldRepresentation
 
 #endif

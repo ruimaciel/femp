@@ -9,14 +9,15 @@ namespace SGC  // namespace for all scene graph components
 {
 
 /**
-Base class for a  all scene graph components that represent a 15-node prism
-**/
+ * Base class for a  all scene graph components that represent a 15-node prism
+ **/
 class Prism15 : public Element {
   public:
-  /*
-	  @param	reference_element	the reference to this element's fem::Element
-	 object
-	  */
+  /**
+   * @param	reference_element	the reference to this element's fem::Element object
+   * @param	representation		the representation policy for this element
+   * @param	displacements		  the displacements policy for this element
+   */
   Prism15(fem::element_ref_t const&, fem::Element& reference_element, ElementRepresentationPolicy* representation,
 		  DisplacementsRepresentationPolicy* displacements);
 

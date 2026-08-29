@@ -13,13 +13,13 @@
  * fem::Project object
  */
 class SelectionDialog : public QDialog {
-	Q_OBJECT
+  Q_OBJECT
 
-	protected:
-	SelectionWidget* m_selection_widget;
+  protected:
+  SelectionWidget* m_selection_widget;
 
-	public:
-	SelectionDialog(std::shared_ptr<domain::Model> model, SelectionManager& selection_manager, QWidget* parent = nullptr);
+  public:
+  SelectionDialog(std::shared_ptr<domain::Model> model, SelectionManager& selection_manager, QWidget* parent = nullptr);
 };
 
 #endif

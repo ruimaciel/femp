@@ -20,24 +20,24 @@
  * aspect ratio common to all viewport states.
  */
 struct ViewportData {
-	ViewportData();
+  ViewportData();
 
-	Camera camera;	// transition to a camera class
+  Camera camera;  // transition to a camera class
 
-	float node_radius;
-	float zoom;	 // drawing zoom, used to zoom
-	int width, height;
-	float aspect_ratio;	 // window aspect ratio
-	float node_scale;	 // the scale used by the nodes, reset when a window resizes
+  float node_radius;
+  float zoom;  // drawing zoom, used to zoom
+  int width, height;
+  float aspect_ratio;  // window aspect ratio
+  float node_scale;	   // the scale used by the nodes, reset when a window resizes
 
-	GLdouble modelview[16];	  // opengl modelview matrix, needed for picking to
-							  // handle mouse clicks
-	GLdouble projection[16];  // opengl modelview matrix, needed for picking to
-							  // handle mouse clicks
+  GLdouble modelview[16];	// opengl modelview matrix, needed for picking to
+							// handle mouse clicks
+  GLdouble projection[16];	// opengl modelview matrix, needed for picking to
+							// handle mouse clicks
 
-	QPoint lastPos;
+  QPoint lastPos;
 
-	std::list<size_t> selected_node_list;
+  std::list<size_t> selected_node_list;
 };
 
 #endif

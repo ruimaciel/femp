@@ -16,16 +16,16 @@ class LoadPatternDialog;
  * Prompts the user to specify a name for a load pattern
  */
 class LoadPatternDialog : public QDialog {
-	Q_OBJECT
+  Q_OBJECT
 
-	public:
-	LoadPatternDialog(QWidget* parent = nullptr);
-	~LoadPatternDialog();
+  public:
+  LoadPatternDialog(QWidget* parent = nullptr);
+  ~LoadPatternDialog();
 
-	std::string getLabel() const;
+  std::string getLabel() const;
 
-	private:
-	std::unique_ptr<Ui::LoadPatternDialog> m_ui;
+  private:
+  std::unique_ptr<Ui::LoadPatternDialog> m_ui;
 };
 
 #endif

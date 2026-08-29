@@ -17,19 +17,19 @@
  * it
  */
 class ModelViewport : public BaseViewport {
-	Q_OBJECT
+  Q_OBJECT
 
-	public:
-	ModelViewport(fem::Project& project, QWidget* parent = nullptr);
-	~ModelViewport();
+  public:
+  ModelViewport(fem::Project& project, QWidget* parent = nullptr);
+  ~ModelViewport();
 
-	/**
-	 * Set the viewport state
-	 */
-	void showModel();
+  /**
+   * Set the viewport state
+   */
+  void showModel();
 
-	protected:
-	VPStateModel m_vp_state_model;
+  protected:
+  VPStateModel m_vp_state_model;
 };
 
 #endif

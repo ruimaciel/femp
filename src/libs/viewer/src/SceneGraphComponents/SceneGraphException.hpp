@@ -11,10 +11,10 @@
  *scene graph routines
  **/
 class SceneGraphException : public std::runtime_error {
-	public:
-	explicit SceneGraphException(const std::string& message) : std::runtime_error(std::string("scene graph: " + message)) {
-		std::cerr << this->what() << std::endl;
-	}
+  public:
+  explicit SceneGraphException(const std::string& message) : std::runtime_error(std::string("scene graph: " + message)) {
+	std::cerr << this->what() << std::endl;
+  }
 };
 
 #endif

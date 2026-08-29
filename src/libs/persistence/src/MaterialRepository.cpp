@@ -6,11 +6,11 @@ namespace persistence {
 MaterialRepository::MaterialRepository(std::shared_ptr<domain::Model> model) : m_domain_model(model) {}
 
 std::vector<fem::Material> MaterialRepository::getMaterialList() const {
-	return m_domain_model->getMaterialList();
+  return m_domain_model->getMaterialList();
 }
 
 void MaterialRepository::pushMaterial(fem::Material new_material) {
-	m_domain_model->pushMaterial(new_material);
+  m_domain_model->pushMaterial(new_material);
 }
 
 }  // namespace persistence

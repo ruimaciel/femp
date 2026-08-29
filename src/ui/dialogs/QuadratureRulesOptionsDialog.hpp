@@ -14,21 +14,21 @@ class QuadratureRulesOptionsDialog;
 }
 
 class QuadratureRulesOptionsDialog : public QDialog {
-	Q_OBJECT
+  Q_OBJECT
 
-	protected:
-	fem::Analysis<double>* analysis;
+  protected:
+  fem::Analysis<double>* analysis;
 
-	public:
-	QuadratureRulesOptionsDialog(fem::Analysis<double>& analysis, QWidget* parent = nullptr);
-	~QuadratureRulesOptionsDialog();
+  public:
+  QuadratureRulesOptionsDialog(fem::Analysis<double>& analysis, QWidget* parent = nullptr);
+  ~QuadratureRulesOptionsDialog();
 
-	protected slots:
-	void setSpinBoxValues();
-	void setQuadratureRule();
+  protected slots:
+  void setSpinBoxValues();
+  void setQuadratureRule();
 
-	private:
-	std::unique_ptr<Ui::QuadratureRulesOptionsDialog> m_ui;
+  private:
+  std::unique_ptr<Ui::QuadratureRulesOptionsDialog> m_ui;
 };
 
 #endif

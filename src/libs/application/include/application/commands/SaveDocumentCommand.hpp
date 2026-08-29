@@ -11,14 +11,14 @@ namespace gui {
 namespace application {
 
 class SaveDocumentCommand {
-	public:
-	SaveDocumentCommand(fem::Model &model, std::string file_name);
+  public:
+  SaveDocumentCommand(fem::Model &model, std::string file_name);
 
-	void execute();
+  void execute();
 
-	private:
-	fem::Model &model;
-	std::string file_name;
+  private:
+  fem::Model &model;
+  std::string file_name;
 };
 
 }  // namespace application

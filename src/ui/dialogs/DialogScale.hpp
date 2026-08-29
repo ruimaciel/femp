@@ -15,20 +15,20 @@ class DialogScale;
  * Dialog used by GLDisplacementsWidget to input a new displacements scale
  */
 class DialogScale : public QDialog {
-	Q_OBJECT
+  Q_OBJECT
 
-	public:
-	DialogScale(float scale, QWidget* parent = nullptr);
-	~DialogScale();
+  public:
+  DialogScale(float scale, QWidget* parent = nullptr);
+  ~DialogScale();
 
-	double getScale();
+  double getScale();
 
-	protected slots:
-	void updateSpinBox(int);
-	void updateSlider(double);
+  protected slots:
+  void updateSpinBox(int);
+  void updateSlider(double);
 
-	private:
-	std::unique_ptr<Ui::DialogScale> m_ui;
+  private:
+  std::unique_ptr<Ui::DialogScale> m_ui;
 };
 
 #endif

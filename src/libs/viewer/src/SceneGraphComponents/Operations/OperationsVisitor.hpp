@@ -15,12 +15,12 @@ Base class for a Visitor pattern which is used to operate on selected scene
 objects
 */
 class OperationsVisitor {
-	public:
-	virtual ~OperationsVisitor();
+  public:
+  virtual ~OperationsVisitor();
 
-	virtual void visit(SceneGraphComponent& element) = 0;
-	virtual void visit(SGC::Node& element) = 0;
-	virtual void visit(SGC::Element& element) = 0;
+  virtual void visit(SceneGraphComponent& element) = 0;
+  virtual void visit(SGC::Node& element) = 0;
+  virtual void visit(SGC::Element& element) = 0;
 };
 }  // namespace Operation
 

@@ -39,7 +39,7 @@ jobs:
             export CCACHE_DIR=~/.ccache
             ccache -z
             cd build
-            make -j2
+            make -j4
       - save_cache:
           name: Cache build artifacts
           key: v1-repo-{{ arch }}-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}

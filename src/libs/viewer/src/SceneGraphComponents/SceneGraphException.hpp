@@ -6,8 +6,7 @@
 #include <string>
 
 /**
- * class SceneGraphException
- * This class is intended to be the base calss for all exceptions thrown by
+ * This class is intended to be the base class for all exceptions thrown by
  *scene graph routines
  **/
 class SceneGraphException : public std::runtime_error {

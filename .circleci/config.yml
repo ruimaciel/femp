@@ -38,7 +38,10 @@ jobs:
           command: |
             export CCACHE_DIR=~/.ccache
             ccache -z
-            cmake --build ./build -j 4
+            cmake --build ./build -j 4 > build-output.log 2> compiler-warnings.log
+      - store_artifacts:
+          path: compiler-warnings.log
+          destination: compilation-diagnostics
       - save_cache:
           name: Cache build artifacts
           key: v1-repo-{{ arch }}-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}

@@ -17,7 +17,7 @@ target_sources(gui_options
         src/ViewportColors.cpp
     )
 
-target_compile_features(gui_options PUBLIC cxx_std_14)
+target_compile_features(gui_options PUBLIC cxx_std_26)
 
 set_target_properties(gui_options PROPERTIES
     CXX_EXTENSIONS OFF

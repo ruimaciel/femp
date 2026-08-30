@@ -163,7 +163,7 @@ target_include_directories(viewer
     ${CMAKE_SOURCE_DIR}/src #TODO required to include ./ProjectVisitor/ProjectVisitor.hpp and ./Project.hpp to sidestep dependency
     )
 
-target_compile_features(viewer PUBLIC cxx_std_14)
+target_compile_features(viewer PUBLIC cxx_std_26)
 
 set_target_properties(viewer
     PROPERTIES

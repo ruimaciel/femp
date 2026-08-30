@@ -18,7 +18,7 @@ target_sources(${PROJECT_NAME}
         src/ModelImpl.hpp
     )
 
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_26)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_EXTENSIONS OFF

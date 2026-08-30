@@ -20,22 +20,36 @@ jobs:
       - run:
           name: Install app dependencies
           command: |
-            sudo apt-get install -y qtbase5-dev libqt5opengl5-dev libsuitesparse-dev libboost-dev libeigen3-dev flex bison re2c libboost-program-options-dev libgtest-dev
+            sudo apt-get install -y qtbase5-dev libqt5opengl5-dev libsuitesparse-dev libboost-dev libeigen3-dev flex bison re2c libboost-program-options-dev libgtest-dev ccache
+
+      - restore_cache:
+          keys:
+            - v1-ccache-{{ .Branch }}-{{ .Revision }}
+            - v1-ccache-{{ .Branch }}-
+            - v1-ccache-
       - run:
           name: Prepare build directory
           command: |
             mkdir build
             cd build
-            cmake ..
+            cmake -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache ..
       - run:
           name: Build
           command: |
+            export CCACHE_DIR=~/.ccache
+            ccache -z
             cd build
             make -j2
       - save_cache:
+          name: Cache build artifacts
           key: v1-repo-{{ arch }}-{{ .Branch }}-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - build
+      - save_cache:
+          name: Cache ccache artifacts
+          key: v1-ccache-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ~/.ccache
 
   test:
     machine:

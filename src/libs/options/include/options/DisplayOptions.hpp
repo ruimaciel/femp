@@ -2,9 +2,9 @@
 #define FEMP_DISPLAYOPTIONS_HPP
 
 /**
-Helper class belonging to glwidget (a has-a relationship) that states what model
-properties should be rendered
-**/
+ * Helper class belonging to glwidget (a has-a relationship) that states what
+ * model properties should be rendered
+ **/
 struct DisplayOptions {
   // boolean
   unsigned int nodes : 1;

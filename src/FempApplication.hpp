@@ -11,7 +11,7 @@ public:
   FempApplication(int &argc, char **argv);
 
   /**
-   * initializes the applicaiton before running the event loop
+   * initializes the application before running the event loop
    */
   void initialize();
 

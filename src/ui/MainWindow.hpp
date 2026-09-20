@@ -6,6 +6,7 @@
 #include "ui/dock_widgets/CommandLineDockWidget.hpp"
 
 // gui includes
+#include <AppState.hpp>
 #include <options/Options.hpp>
 
 #include "Document.hpp"
@@ -54,6 +55,13 @@ signals:
   void errorMessageSent(QString);
 
 public slots:
+  /**
+   * handles the application state change event
+   * @brief onAppStateChanged
+   * @param state
+   */
+  void onAppStateChanged(AppState state);
+
   /**
    * @brief setSelection
    */

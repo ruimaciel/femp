@@ -43,6 +43,7 @@
 #include <libfemp/solvers/CGSolver.hpp>
 #include <libfemp/solvers/CholeskySolver.hpp>
 #include <persistence/LoadPatternRepository.hpp>
+#include <AppState.hpp>
 
 // Qt includes
 #include <QAction>
@@ -87,6 +88,26 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow() = default;
+
+void MainWindow::onAppStateChanged(AppState state)
+{
+  switch(state)
+  {
+    case AppStateStart:
+      qInfo() << "Application state changed to: Starting";
+      this->show();
+      break;
+    case AppStateActive:
+      qInfo() << "Application state changed to: Active";
+      break;
+    case AppStateInactive:
+      qInfo() << "Application state changed to: Inactive";
+      break;
+    default:
+      qWarning() << "Application state changed to: Unknown";
+      break;
+  }
+}
 
 void MainWindow::setSelection(Selection) {}
 

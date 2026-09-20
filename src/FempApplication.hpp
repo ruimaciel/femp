@@ -4,9 +4,12 @@
 // Qt includes
 #include <QApplication>
 
-class QMainWindow;
+class MainWindow;
+class AppStateManager;
 
 class FempApplication : public QApplication {
+  Q_OBJECT
+
 public:
   FempApplication(int &argc, char **argv);
 
@@ -16,7 +19,8 @@ public:
   void initialize();
 
 private:
-  QMainWindow *m_main_window;
+  AppStateManager *m_app_state_manager;
+  MainWindow *m_main_window;
 };
 
 #define fempApp dynamic_cast<FempApplication *>(QApplication::instance())

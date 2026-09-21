@@ -91,8 +91,7 @@ MainWindow::~MainWindow() = default;
 
 void MainWindow::onAppStateChanged(AppState state)
 {
-  switch(state.lifeCycleState)
-  {
+  switch (state.lifeCycleState) {
     case ApplicationLifeCycleState::AppStateStart:
       qInfo() << "Application state changed to: Starting";
       this->show();
@@ -107,6 +106,23 @@ void MainWindow::onAppStateChanged(AppState state)
       qWarning() << "Application state changed to: Unknown";
       break;
   }
+
+  if (state.documentState == m_renderedDocumentState) {
+    return;
+  }
+
+  m_renderedDocumentState = state.documentState;
+  switch (state.documentState) {
+  case DocumentState::DocumentStateOpen:
+    setUserInterfaceAsOpened();
+    break;
+  case DocumentState::DocumentStateClosed:
+    setUserInterfaceAsClosed();
+    break;
+  default:
+    qWarning() << "Document state is unknown";
+    break;
+  }
 }
 
 void MainWindow::setSelection(Selection) {}
@@ -116,22 +132,21 @@ void MainWindow::clearSelection() {}
 void MainWindow::newProject() {
   qInfo() << "MainWindow::newProject()";
 
-  // tweak the UI
-  setUserInterfaceAsClosed();
-
   // free everything
   m_document.clear();
+  emit documentClosed();
 
   // The NewProjectWizard dialog will fill up a given document object through
   // the steps
   NewProjectWizard np(m_document, this);
   switch (np.exec()) {
   case QDialog::Accepted:
-    setUserInterfaceAsOpened();
+    emit documentOpened();
     break;
 
   default:
     m_document.clear();
+    emit documentClosed();
     break;
   }
 }
@@ -149,10 +164,10 @@ void MainWindow::importProjectFromJsonFile(QString file_name) {
 
   switch (parser->error.code) {
   case Parser::Error::ERR_OK:
-    // setup the user interface
     m_document.setProjectType(
         Document::TYPE_SOLID3D); // nasty hack due to poor design
-    setUserInterfaceAsOpened();
+    m_document.setFileName(file_name);
+    emit documentOpened();
     break;
 
   default:
@@ -162,10 +177,9 @@ void MainWindow::importProjectFromJsonFile(QString file_name) {
 
     QMessageBox::critical(this, tr("Error"), parser->error.message.c_str());
     m_document.clear();
+    emit documentClosed();
     break;
   }
-
-  m_document.setFileName(file_name);
 
   OutputElementStatisticsVisitor visit;
   m_document.getProject().accept(visit);
@@ -192,9 +206,9 @@ void MainWindow::openProject() {
   Options::getInstance().setProjectOpenDirectory(file_dialog_directory);
 
   // clear the document
-  this->setUserInterfaceAsClosed();
   this->m_document.clear();
   this->m_selectionManager.clearSelection();
+  emit documentClosed();
 
   // prepare the file
   QStringList sl = dialog.selectedFiles();
@@ -213,8 +227,8 @@ void MainWindow::reopenProject() {
   }
 
   // clear the document
-  setUserInterfaceAsClosed();
   this->m_selectionManager.clearSelection();
+  emit documentClosed();
 
   std::string file_name(m_document.getFileName().toUtf8());
   importProjectFromJsonFile(QString::fromStdString(file_name));
@@ -348,12 +362,10 @@ void MainWindow::closeProject() {
     }
   }
 
-  // tweak the UI
-  setUserInterfaceAsClosed();
-
   // free everything
   m_document.clear();
   this->m_selectionManager.clearSelection();
+  emit documentClosed();
 }
 
 void MainWindow::quit() {

@@ -15,12 +15,14 @@ class AppStateManager : public QObject {
   Q_OBJECT
 
 public:
-  AppStateManager(QObject *parent);
+  explicit AppStateManager(QObject *parent = nullptr);
+
+  AppState state() const;
 
   /**
    * @brief Sets the start state of the application
    */
-  void Start();
+  void start();
 
 signals:
   /**
@@ -30,7 +32,13 @@ signals:
   void appStateChanged(AppState state);
 
 public slots:
+  void changeDocumentState(DocumentState state);
   void changeApplicationState(Qt::ApplicationState state);
+
+private:
+  void updateState(AppState state);
+
+  AppState m_state;
 };
 
 #endif

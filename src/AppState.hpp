@@ -22,6 +22,11 @@ struct AppState {
   ApplicationLifeCycleState lifeCycleState;
   DocumentState documentState;
 
+  bool operator==(const AppState &other) const {
+    return lifeCycleState == other.lifeCycleState &&
+           documentState == other.documentState;
+  }
+
   static AppState createStartState() {
     return AppState{ApplicationLifeCycleState::AppStateStart,
                     DocumentState::DocumentStateClosed};

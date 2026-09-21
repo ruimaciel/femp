@@ -4,7 +4,7 @@
 
 AppStateManager::AppStateManager(QObject *parent) {}
 
-void AppStateManager::setStartState()
+void AppStateManager::Start()
 {
     emit appStateChanged(AppState::createStartState());
 }

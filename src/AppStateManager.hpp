@@ -17,7 +17,10 @@ class AppStateManager : public QObject {
 public:
   AppStateManager(QObject *parent);
 
-  void setStartState();
+  /**
+   * @brief Sets the start state of the application
+   */
+  void Start();
 
 signals:
   /**

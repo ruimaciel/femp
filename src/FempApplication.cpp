@@ -23,5 +23,5 @@ void FempApplication::initialize() {
   connect(m_app_state_manager, &AppStateManager::appStateChanged,
           m_main_window, &MainWindow::onAppStateChanged);
 
-  m_app_state_manager->setStartState();
+  m_app_state_manager->Start();
 }

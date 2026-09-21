@@ -91,16 +91,16 @@ MainWindow::~MainWindow() = default;
 
 void MainWindow::onAppStateChanged(AppState state)
 {
-  switch(state)
+  switch(state.lifeCycleState)
   {
-    case AppStateStart:
+    case ApplicationLifeCycleState::AppStateStart:
       qInfo() << "Application state changed to: Starting";
       this->show();
       break;
-    case AppStateActive:
+    case ApplicationLifeCycleState::AppStateActive:
       qInfo() << "Application state changed to: Active";
       break;
-    case AppStateInactive:
+    case ApplicationLifeCycleState::AppStateInactive:
       qInfo() << "Application state changed to: Inactive";
       break;
     default:

@@ -6,7 +6,7 @@ AppStateManager::AppStateManager(QObject *parent) {}
 
 void AppStateManager::setStartState()
 {
-    emit appStateChanged(AppStateStart);
+    emit appStateChanged(AppState::createStartState());
 }
 
 void AppStateManager::changeApplicationState(Qt::ApplicationState state)

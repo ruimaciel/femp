@@ -1,0 +1,310 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://femp.example/schemas/pimpl-handoff.schema.json",
+  "title": "PIMPL Migration Handoff",
+  "description": "Structured findings from C++ and Qt header PIMPL eligibility analysis.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "scope",
+    "executive_summary",
+    "candidates",
+    "existing_pimpl_patterns",
+    "recommended_migration_order",
+    "deferred_or_excluded_headers",
+    "validation_notes",
+    "migration"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["request", "workspace", "paths", "targets"],
+      "properties": {
+        "request": { "type": "string" },
+        "workspace": { "type": "string" },
+        "paths": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "targets": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "executive_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "headers_analyzed",
+        "strong_candidates",
+        "possible_candidates",
+        "weak_candidates",
+        "recommended_first_candidate"
+      ],
+      "properties": {
+        "headers_analyzed": { "type": "integer", "minimum": 0 },
+        "strong_candidates": { "type": "integer", "minimum": 0 },
+        "possible_candidates": { "type": "integer", "minimum": 0 },
+        "weak_candidates": { "type": "integer", "minimum": 0 },
+        "recommended_first_candidate": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/candidate" }
+    },
+    "existing_pimpl_patterns": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "recommended_migration_order": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "deferred_or_excluded_headers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["header", "class", "reason"],
+        "properties": {
+          "header": { "type": "string" },
+          "class": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "validation_notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "migration": {
+      "$ref": "#/$defs/migration"
+    }
+  },
+  "$defs": {
+    "migration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "candidate",
+        "updated_at",
+        "changed_files",
+        "changes",
+        "problems",
+        "validation",
+        "skill_tuning"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "not_started",
+            "in_progress",
+            "completed",
+            "blocked",
+            "failed"
+          ]
+        },
+        "candidate": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["header", "class", "implementation"],
+          "properties": {
+            "header": { "type": "string" },
+            "class": { "type": "string" },
+            "implementation": { "type": ["string", "null"] }
+          }
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "changed_files": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "changes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "problems": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/problem" }
+        },
+        "validation": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/validation" }
+        },
+        "skill_tuning": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["observations", "recommended_changes"],
+          "properties": {
+            "observations": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "recommended_changes": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "problem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "severity",
+        "category",
+        "message",
+        "file",
+        "symbol",
+        "resolution",
+        "status"
+      ],
+      "properties": {
+        "id": { "type": "string" },
+        "severity": {
+          "enum": ["info", "warning", "error", "blocker"]
+        },
+        "category": {
+          "enum": [
+            "api",
+            "qt",
+            "ownership",
+            "compile",
+            "validation",
+            "generated_code",
+            "other"
+          ]
+        },
+        "message": { "type": "string" },
+        "file": { "type": ["string", "null"] },
+        "symbol": { "type": ["string", "null"] },
+        "resolution": { "type": ["string", "null"] },
+        "status": {
+          "enum": ["open", "resolved", "accepted"]
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command", "status", "details"],
+      "properties": {
+        "command": { "type": "string" },
+        "status": {
+          "enum": ["passed", "failed", "blocked", "not_run"]
+        },
+        "details": { "type": "string" }
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rank",
+        "header",
+        "class",
+        "rating",
+        "implementation",
+        "evidence",
+        "suggested_pimpl_boundary",
+        "risks",
+        "open_questions",
+        "relevant_call_sites",
+        "focused_validation",
+        "status"
+      ],
+      "properties": {
+        "rank": { "type": "integer", "minimum": 1 },
+        "header": { "type": "string" },
+        "class": { "type": "string" },
+        "rating": {
+          "enum": ["strong", "possible", "weak"]
+        },
+        "implementation": {
+          "type": ["string", "null"]
+        },
+        "evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "implementation_only_includes",
+            "private_members",
+            "inline_methods",
+            "include_fan_out",
+            "qt_features"
+          ],
+          "properties": {
+            "implementation_only_includes": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "private_members": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "inline_methods": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "include_fan_out": {
+              "type": ["integer", "null"],
+              "minimum": 0
+            },
+            "qt_features": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "suggested_pimpl_boundary": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "risks": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "open_questions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "relevant_call_sites": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "focused_validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["command", "purpose"],
+          "properties": {
+            "command": { "type": "string" },
+            "purpose": { "type": "string" }
+          }
+        },
+        "status": {
+          "enum": ["ready", "needs review", "deferred"]
+        }
+      }
+    }
+  }
+}

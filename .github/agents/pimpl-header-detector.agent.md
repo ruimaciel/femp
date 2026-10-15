@@ -17,6 +17,6 @@ The skill is read-only for source code. The only permitted write is the requeste
 ## Handoff
 
 - Write the detector results to the user-provided JSON path, or `pimpl-handoff.json` at the workspace root.
-- Validate the report against `.github/skills/pimpl-header-detector/references/pimpl-handoff.schema.json`.
+- Write the report and return its exact path to the orchestrating PIMPL workflow. The workflow invokes the bundled validator before migration.
 - For a new report, initialize `migration.state` to `not_started` and leave migration history, problems, validation, and skill-tuning arrays empty. When updating an existing report, preserve its migration history.
 - The downstream `pimpl-migrator` agent consumes this handoff, selects an eligible candidate, and updates the same JSON file.

@@ -1,9 +1,24 @@
 #include "MdiWindow.hpp"
 
+// gui includes
+#include <viewer/BaseViewport.hpp>
+
 // Qt includes
 #include <QDebug>
+#include <QMenuBar>
+#include <QToolBar>
 
-MdiWindow::MdiWindow(QWidget *parent) : QMainWindow(parent) {
+struct MdiWindow::Private {
+  QAction *actionViewportXY = nullptr;
+  QAction *actionViewportYZ = nullptr;
+  QAction *actionViewportXZ = nullptr;
+  QAction *actionViewportIso = nullptr;
+  QAction *actionVisibleNodes = nullptr;
+  QAction *actionVisibleRestrictions = nullptr;
+};
+
+MdiWindow::MdiWindow(QWidget *parent)
+    : QMainWindow(parent), d(std::make_unique<Private>()) {
   setupUi(this);
 
   this->viewport = nullptr;
@@ -19,33 +34,35 @@ MdiWindow::MdiWindow(QWidget *parent) : QMainWindow(parent) {
   this->createVisibilityToolbar();
 }
 
+MdiWindow::~MdiWindow() = default;
+
 void MdiWindow::createViewportToolbar() {
   // create actions
-  m_actionViewportXY = new QAction("XY", this);
-  m_actionViewportYZ = new QAction("YZ", this);
-  m_actionViewportXZ = new QAction("XZ", this);
-  m_actionViewportIso = new QAction("iso", this);
+  d->actionViewportXY = new QAction("XY", this);
+  d->actionViewportYZ = new QAction("YZ", this);
+  d->actionViewportXZ = new QAction("XZ", this);
+  d->actionViewportIso = new QAction("iso", this);
 
   // create and populate the toolbar
   m_viewportToolBar = addToolBar(tr("Viewport"));
-  m_viewportToolBar->addAction(m_actionViewportXY);
-  m_viewportToolBar->addAction(m_actionViewportYZ);
-  m_viewportToolBar->addAction(m_actionViewportXZ);
-  m_viewportToolBar->addAction(m_actionViewportIso);
+  m_viewportToolBar->addAction(d->actionViewportXY);
+  m_viewportToolBar->addAction(d->actionViewportYZ);
+  m_viewportToolBar->addAction(d->actionViewportXZ);
+  m_viewportToolBar->addAction(d->actionViewportIso);
 }
 
 void MdiWindow::createVisibilityToolbar() {
-  m_actionVisibleNodes = new QAction("Nodes", this);
-  m_actionVisibleNodes->setCheckable(true);
-  m_actionVisibleNodes->setChecked(true);
+  d->actionVisibleNodes = new QAction("Nodes", this);
+  d->actionVisibleNodes->setCheckable(true);
+  d->actionVisibleNodes->setChecked(true);
 
-  m_actionVisibleRestrictions = new QAction("Restrictions", this);
-  m_actionVisibleRestrictions->setCheckable(true);
-  m_actionVisibleRestrictions->setChecked(true);
+  d->actionVisibleRestrictions = new QAction("Restrictions", this);
+  d->actionVisibleRestrictions->setCheckable(true);
+  d->actionVisibleRestrictions->setChecked(true);
 
   m_visibilityToolBar = addToolBar(tr("Visibility"));
-  m_visibilityToolBar->addAction(m_actionVisibleNodes);
-  m_visibilityToolBar->addAction(m_actionVisibleRestrictions);
+  m_visibilityToolBar->addAction(d->actionVisibleNodes);
+  m_visibilityToolBar->addAction(d->actionVisibleRestrictions);
 }
 
 void MdiWindow::setViewportXY() {
@@ -84,16 +101,16 @@ void MdiWindow::setNodeRestrictionsVisibility(const bool state) {
 
 void MdiWindow::connectSignalsToSlots() {
   // signals and slots
-  connect(m_actionViewportXY, &QAction::triggered, this,
+  connect(d->actionViewportXY, &QAction::triggered, this,
           &MdiWindow::setViewportXY);
-  connect(m_actionViewportXZ, &QAction::triggered, this,
+  connect(d->actionViewportXZ, &QAction::triggered, this,
           &MdiWindow::setViewportXZ);
-  connect(m_actionViewportYZ, &QAction::triggered, this,
+  connect(d->actionViewportYZ, &QAction::triggered, this,
           &MdiWindow::setViewportYZ);
 
-  connect(m_actionVisibleNodes, &QAction::toggled, this,
+  connect(d->actionVisibleNodes, &QAction::toggled, this,
           &MdiWindow::setNodeVisibility);
-  connect(m_actionVisibleRestrictions, &QAction::toggled, this,
+  connect(d->actionVisibleRestrictions, &QAction::toggled, this,
           &MdiWindow::setNodeRestrictionsVisibility);
 
   connect(viewport, &BaseViewport::selectionChanged, this,
@@ -131,7 +148,7 @@ void MdiWindow::showAll() {
   this->viewport->showAll();
 }
 
-void MdiWindow::updateNodeRestriction(size_t const id,
+void MdiWindow::updateNodeRestriction(std::size_t const id,
                                       fem::NodeRestrictions const &nr) {
   qInfo() << "MdiWindow::updateNodeRestriction(size_t const id, "
              "fem::NodeRestrictions const &nr)";

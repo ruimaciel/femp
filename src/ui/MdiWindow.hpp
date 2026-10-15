@@ -5,19 +5,23 @@
 #include "ui/ui_MdiWindow.h"
 
 // gui includes
-#include <options/Options.hpp>
 #include <selection/Selection.hpp>
-#include <viewer/ViewportData.hpp>
-
-// viewer includes
-#include <viewer/BaseViewport.hpp>
 
 // Qt includes
-#include <QAction>
 #include <QMainWindow>
-#include <QMenuBar>
-#include <QToolBar>
 #include <QWidget>
+
+#include <cstddef>
+#include <memory>
+
+class QAction;
+class BaseViewport;
+class QToolBar;
+class ViewportColors;
+
+namespace fem {
+class NodeRestrictions;
+}
 
 /**
  * Base class for all the MDI windows that render the model
@@ -27,6 +31,7 @@ class MdiWindow : public QMainWindow, protected Ui::MdiWindow {
 
 public:
   MdiWindow(QWidget *parent = nullptr);
+  ~MdiWindow() override;
 
   /**
    * Sets the toolbar which provides buttons to set camera angles
@@ -74,7 +79,7 @@ public:
    */
   void showAll();
 
-  void updateNodeRestriction(size_t const, fem::NodeRestrictions const &);
+  void updateNodeRestriction(std::size_t const, fem::NodeRestrictions const &);
 
   BaseViewport *viewport;
 
@@ -86,13 +91,9 @@ protected:
   QAction *m_actionMenuVisibility; // toolbar menu button that toggles the menu
                                    // bar visibility
 
-  QAction *m_actionViewportXY;  // places the camera displaying the XY plane
-  QAction *m_actionViewportYZ;  // places the camera displaying the XY plane
-  QAction *m_actionViewportXZ;  // places the camera displaying the XZ plane
-  QAction *m_actionViewportIso; // places the camera on an isometric view angle
-
-  QAction *m_actionVisibleNodes;
-  QAction *m_actionVisibleRestrictions;
+private:
+  struct Private;
+  std::unique_ptr<Private> d;
 };
 
 #endif

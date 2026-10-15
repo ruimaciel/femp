@@ -1,12 +1,23 @@
 #include "MatrixWidget.hpp"
 
+#include <Project.hpp>
+#include <libfemp/AnalysisResult.hpp>
 #include <libfemp/Model.hpp>
 #include <libfemp/Node.hpp>
+#include <ui/models/MatrixModel.hpp>
+
+#include "ui_MatrixWidget.h"
+
+struct MatrixWidget::Private {
+  Ui::MatrixWidget ui;
+};
 
 MatrixWidget::MatrixWidget(fem::Project &project, QWidget *parent)
-    : QWidget(parent) {
-  setupUi(this);
+    : QWidget(parent), m_private(std::make_unique<Private>()) {
+  m_private->ui.setupUi(this);
 
   MatrixModel *m_model = new MatrixModel(project, parent);
-  this->tableView->setModel(m_model);
+  m_private->ui.tableView->setModel(m_model);
 }
+
+MatrixWidget::~MatrixWidget() = default;

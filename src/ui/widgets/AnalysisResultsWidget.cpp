@@ -2,32 +2,39 @@
 
 #include <libfemp/Model.hpp>
 #include <libfemp/Node.hpp>
+#include <ui/models/AnalysisResultsModel.hpp>
 #include <ui/dialogs/TableFilterDialog.hpp>
 
 #include "ui_AnalysisResultsWidget.h"
 
+struct AnalysisResultsWidget::Private {
+  Ui::AnalysisResultsWidget ui;
+};
+
 AnalysisResultsWidget::AnalysisResultsWidget(fem::Project &project,
                                              QWidget *parent)
-    : QWidget(parent), m_ui(new Ui::AnalysisResultsWidget()) {
-  m_ui->setupUi(this);
+    : QWidget(parent), m_private(std::make_unique<Private>()) {
+  m_private->ui.setupUi(this);
 
   // set the table model for the model/view stuff
   AnalysisResultsModel *m_model = new AnalysisResultsModel(project, parent);
   m_proxy_model.setSourceModel(m_model);
 
-  m_ui->tableView->setModel(&m_proxy_model);
+  m_private->ui.tableView->setModel(&m_proxy_model);
 
   // signals and slots
-  connect(m_ui->pushButtonFilters, SIGNAL(clicked()), this,
+  connect(m_private->ui.pushButtonFilters, SIGNAL(clicked()), this,
           SLOT(setFilterOptions()));
 }
+
+AnalysisResultsWidget::~AnalysisResultsWidget() = default;
 
 void AnalysisResultsWidget::setFilterOptions() {
   TableFilterDialog dialog(this);
 
   // set the dialog options
 #define MEMBER_HELPER(NN, XX)                                                  \
-  dialog.set##XX##Visible(!m_ui->tableView->isColumnHidden(NN));
+  dialog.set##XX##Visible(!m_private->ui.tableView->isColumnHidden(NN));
   MEMBER_HELPER(0, ElementReference);
   MEMBER_HELPER(1, ElementType);
   MEMBER_HELPER(2, NodeGlobalReference);
@@ -57,7 +64,7 @@ void AnalysisResultsWidget::setFilterOptions() {
   case QDialog::Accepted:
     // set the new options
 #define MEMBER_HELPER(NN, XX)                                                  \
-  m_ui->tableView->setColumnHidden(NN, !dialog.get##XX##Visible());
+  m_private->ui.tableView->setColumnHidden(NN, !dialog.get##XX##Visible());
     MEMBER_HELPER(0, ElementReference);
     MEMBER_HELPER(1, ElementType);
     MEMBER_HELPER(2, NodeGlobalReference);

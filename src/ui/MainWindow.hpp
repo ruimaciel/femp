@@ -1,36 +1,18 @@
 #ifndef FEMP_UI_MAINWINDOW_HPP
 #define FEMP_UI_MAINWINDOW_HPP
 
-// ui includes
-#include "ui/ModelWindow.hpp"
-#include "ui/dock_widgets/CommandLineDockWidget.hpp"
-
-// gui includes
 #include <AppState.hpp>
-#include <options/Options.hpp>
+#include <selection/Selection.hpp>
 
-#include "Document.hpp"
-#include "SelectionManager.hpp"
-
-// application includes
-#include <application/interfaces/ILoadPatternRepository.hpp>
-
-// viewer includes
-#include <viewer/ModelViewport.hpp>
-
-// libfemp includes
-#include <libfemp/AnalysisResult.hpp>
-#include <libfemp/LinearAnalysis.hpp>
-
-// Qt includes
-#include <QComboBox>
-#include <QDir>
 #include <QMainWindow>
-#include <QMdiArea>
-#include <QSignalMapper>
+#include <QString>
 
-// std includes
 #include <memory>
+
+class CommandLineDockWidget;
+class Document;
+class SelectionManager;
+class ViewportColors;
 
 namespace Ui {
 class MainWindow;
@@ -158,6 +140,9 @@ public slots:
   void activateSubWindowByIndex(int);
 
 private:
+  struct Private;
+  std::unique_ptr<Private> d;
+
   void createActions();
   void createToolBars();
   void createDockWidgets();
@@ -173,23 +158,6 @@ protected:
 
 protected:
   std::unique_ptr<Ui::MainWindow> ui;
-
-  fem::LinearAnalysis<double> m_analysis;
-
-  CommandLineDockWidget *m_commandLineDockWidget;
-
-  QMdiArea *m_mdiArea;
-
-  Document m_document;                 // the FEM document
-  SelectionManager m_selectionManager; // object which handles object selection
-
-  ViewportColors m_colors; // the elements' viewport colors
-
-  DocumentState m_renderedDocumentState = DocumentState::DocumentStateUnknown;
-
-  QSignalMapper *m_windowMapper; // used to map menu clicks to window activation
-
-  gui::application::ILoadPatternRepositoryPtr m_load_pattern_repository;
 };
 
 #endif

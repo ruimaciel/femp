@@ -6,6 +6,7 @@
 #include "ui/dock_widgets/CommandLineDockWidget.hpp"
 
 // gui includes
+#include <AppState.hpp>
 #include <options/Options.hpp>
 
 #include "Document.hpp"
@@ -49,11 +50,21 @@ signals:
   void selectionChanged(Selection);
   void selectionCleared();
 
+  void documentOpened();
+  void documentClosed();
+
   void informationMessageSent(QString);
   void warningMessageSent(QString);
   void errorMessageSent(QString);
 
 public slots:
+  /**
+   * handles the application state change event
+   * @brief onAppStateChanged
+   * @param state
+   */
+  void onAppStateChanged(AppState state);
+
   /**
    * @brief setSelection
    */
@@ -173,6 +184,8 @@ protected:
   SelectionManager m_selectionManager; // object which handles object selection
 
   ViewportColors m_colors; // the elements' viewport colors
+
+  DocumentState m_renderedDocumentState = DocumentState::DocumentStateUnknown;
 
   QSignalMapper *m_windowMapper; // used to map menu clicks to window activation
 

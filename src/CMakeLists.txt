@@ -18,6 +18,7 @@ add_executable(${PROJECT_NAME})
 
 target_sources(${PROJECT_NAME} 
     PRIVATE
+        AppStateManager.hpp
         DefaultProgressIndicator.hpp
         Document.hpp
         FempApplication.hpp
@@ -69,6 +70,7 @@ target_sources(${PROJECT_NAME}
         ui/wizards/NewProjectWizard.hpp
         ui/wizards/NewProjectWizardPage2.hpp
         ui/wizards/NewProjectWizardPage3.hpp
+        AppStateManager.cpp
         DefaultProgressIndicator.cpp
         Document.cpp
         FempApplication.cpp

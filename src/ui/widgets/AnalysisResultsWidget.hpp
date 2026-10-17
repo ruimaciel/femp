@@ -1,17 +1,15 @@
 #ifndef FEMP_UI_ANALYSIS_RESULTS_WIDGET_HPP
 #define FEMP_UI_ANALYSIS_RESULTS_WIDGET_HPP
 
-#include <ui/models/AnalysisResultsModel.hpp>
-
-// include gui
-#include <Project.hpp>
-
-// include libfemp
-#include <libfemp/AnalysisResult.hpp>
-
 // include Qt
 #include <QSortFilterProxyModel>
 #include <QWidget>
+
+#include <memory>
+
+namespace fem {
+class Project;
+}
 
 namespace Ui {
 class AnalysisResultsWidget;
@@ -29,13 +27,15 @@ protected:
 
 public:
   AnalysisResultsWidget(fem::Project &project, QWidget *parent = nullptr);
+  ~AnalysisResultsWidget() override;
 
 private Q_SLOTS:
   // Calls the TableFilterDialog and sets the table according to the user input
   void setFilterOptions();
 
 private:
-  Ui::AnalysisResultsWidget *m_ui;
+  struct Private;
+  std::unique_ptr<Private> m_private;
 };
 
 #endif

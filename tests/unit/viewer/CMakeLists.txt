@@ -24,4 +24,4 @@ target_link_libraries(TestViewer
         libfemp
 )
 
-add_test(NAME TestViewer COMMAND TestViewer)
+add_test(NAME TestViewer COMMAND ${CMAKE_COMMAND} -E env QT_QPA_PLATFORM=offscreen ./TestViewer)

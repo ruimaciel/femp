@@ -71,7 +71,7 @@ struct MainWindow::Private {
   fem::LinearAnalysis<double> analysis;
   CommandLineDockWidget *commandLineDockWidget = nullptr;
   QMdiArea *mdiArea = nullptr;
-  Document document;
+  femp::Document document;
   SelectionManager selectionManager;
   ViewportColors colors;
   DocumentState renderedDocumentState = DocumentState::DocumentStateUnknown;
@@ -177,7 +177,7 @@ void MainWindow::importProjectFromJsonFile(QString file_name) {
   switch (parser->error.code) {
   case Parser::Error::ERR_OK:
     d->document.setProjectType(
-        Document::TYPE_SOLID3D); // nasty hack due to poor design
+        femp::Document::TYPE_SOLID3D); // nasty hack due to poor design
     d->document.setFileName(file_name);
     emit documentOpened();
     break;
@@ -246,7 +246,7 @@ void MainWindow::reopenProject() {
   importProjectFromJsonFile(QString::fromStdString(file_name));
 }
 
-static void saveDocument(Document &doc, std::string file_name) {
+static void saveDocument(femp::Document &doc, std::string file_name) {
   gui::application::SaveDocumentCommand command(doc.getProject().getModel(),
                                                 file_name);
   command.execute();

@@ -4,6 +4,8 @@
 #include <libfemp/Model.hpp>
 #include <libfemp/io/export/JsonExporter.hpp>
 
+using namespace femp;
+
 Document::Document() {
   m_dirty = false;
   m_documentType = TYPE_SOLID3D; // nasty hack due to poor design

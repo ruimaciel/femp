@@ -10,9 +10,12 @@
 #include <memory>
 
 class CommandLineDockWidget;
-class Document;
 class SelectionManager;
 class ViewportColors;
+
+namespace femp {
+class Document;
+}
 
 namespace Ui {
 class MainWindow;

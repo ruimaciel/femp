@@ -13,11 +13,11 @@ class NewProjectWizard : public QWizard {
   Q_OBJECT
 
 public:
-  NewProjectWizard(Document &doc, QWidget *parent = nullptr);
+  NewProjectWizard(femp::Document &doc, QWidget *parent = nullptr);
 
 private:
 Q_SIGNALS:
-  void newProject(Document::Type type);
+  void newProject(femp::Document::Type type);
 
 public Q_SLOTS:
   void accept();

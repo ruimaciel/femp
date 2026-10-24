@@ -6,6 +6,7 @@
 // Qt includes
 #include <QString>
 
+namespace femp {
 class Document {
 public:
   enum Type { TYPE_NONE, TYPE_SOLID3D };
@@ -51,4 +52,5 @@ protected:
   QString m_filename;      // path for the project's directory
 };
 
+} // namespace femp
 #endif

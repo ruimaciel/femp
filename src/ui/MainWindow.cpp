@@ -72,7 +72,7 @@ struct MainWindow::Private {
   CommandLineDockWidget *commandLineDockWidget = nullptr;
   QMdiArea *mdiArea = nullptr;
   femp::Document document;
-  SelectionManager selectionManager;
+  femp::SelectionManager selectionManager;
   ViewportColors colors;
   femp::DocumentState renderedDocumentState =
       femp::DocumentState::DocumentStateUnknown;
@@ -862,13 +862,13 @@ void MainWindow::createNewModelWindow() {
   mdi_window->showMaximized();
 
   connect(window, &ModelWindow::selectionChanged, &d->selectionManager,
-          &SelectionManager::setSelection);
+          &femp::SelectionManager::setSelection);
   connect(window, &ModelWindow::selectionCleared, &d->selectionManager,
-          &SelectionManager::clearSelection);
+          &femp::SelectionManager::clearSelection);
 
-  connect(&d->selectionManager, &SelectionManager::selectionChanged, window,
+  connect(&d->selectionManager, &femp::SelectionManager::selectionChanged, window,
           &ModelWindow::setSelection);
-  connect(&d->selectionManager, &SelectionManager::selectionCleared, window,
+  connect(&d->selectionManager, &femp::SelectionManager::selectionCleared, window,
           &ModelWindow::clearSelection);
 }
 

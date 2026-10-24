@@ -10,6 +10,8 @@ class AppStateManager;
 
 class MainWindow;
 
+namespace femp {
+
 class FempApplication : public QApplication {
   Q_OBJECT
 
@@ -26,6 +28,8 @@ private:
   MainWindow *m_main_window;
 };
 
-#define fempApp dynamic_cast<FempApplication *>(QApplication::instance())
+} // namespace femp
+
+#define fempApp dynamic_cast<femp::FempApplication *>(QApplication::instance())
 
 #endif // FEMPAPPLICATION_HPP

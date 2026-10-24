@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
   qRegisterMetaType<size_t>("size_t");
   qRegisterMetaType<std::string>("std::string");
 
-  FempApplication app(argc, argv);
+  femp::FempApplication app(argc, argv);
   app.initialize();
 
   return app.exec();

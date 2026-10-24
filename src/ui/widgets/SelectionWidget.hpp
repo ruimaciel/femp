@@ -8,6 +8,7 @@
 #include <application/interfaces/INodeRepository.hpp>
 #include <libfemp/Group.hpp>
 #include <map>
+#include <selection/Selection.hpp>
 
 #include "ui_SelectionWidget.h"
 
@@ -19,7 +20,7 @@ class SelectionWidget : public QWidget, Ui::SelectionWidget {
 
 public:
   SelectionWidget(std::shared_ptr<domain::Model> domain_model,
-                  SelectionManager &, QWidget *parent = nullptr);
+                  femp::SelectionManager &, QWidget *parent = nullptr);
 
 signals:
   void selectionChanged(const Selection &);
@@ -34,7 +35,7 @@ protected:
   initializes the widget by filling all the revevant values
   @param selection_manager
   **/
-  void initializeWidget(SelectionManager &selection_manager);
+  void initializeWidget(femp::SelectionManager &selection_manager);
 
   /**
   Initializes the fem::Group list according to the group definitions stored in a

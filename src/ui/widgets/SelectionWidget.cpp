@@ -9,7 +9,7 @@
 #include <selection/Selection.hpp>
 
 SelectionWidget::SelectionWidget(std::shared_ptr<domain::Model> domain_model,
-                                 SelectionManager &selection_manager,
+                                 femp::SelectionManager &selection_manager,
                                  QWidget *parent)
     : QWidget(parent) {
   this->setupUi(this);
@@ -33,7 +33,7 @@ SelectionWidget::SelectionWidget(std::shared_ptr<domain::Model> domain_model,
           &SelectionWidget::setSelection);
 }
 
-void SelectionWidget::initializeWidget(SelectionManager &selection_manager) {
+void SelectionWidget::initializeWidget(femp::SelectionManager &selection_manager) {
   m_element_item = new QTreeWidgetItem(this->objectTreeWidget);
   m_element_item->setText(0, tr("Elements"));
 

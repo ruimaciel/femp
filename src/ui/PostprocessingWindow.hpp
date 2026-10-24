@@ -7,7 +7,6 @@
 #include "../Project.hpp"
 #include "BaseWindow.hpp"
 #include "MdiWindow.hpp"
-#include "SelectionManager.hpp"
 #include "WindowWithPostprocessing.hpp"
 #include "WindowWithResults.hpp"
 #include "WindowWithScaling.hpp"
@@ -18,6 +17,12 @@
 
 // Qt includes
 #include <QWidget>
+
+#include <SelectionManager.hpp>
+
+namespace femp {
+class SelectionManager;
+}
 
 class QComboBox;
 class QToolBar;

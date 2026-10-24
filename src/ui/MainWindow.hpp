@@ -9,8 +9,9 @@
 #include <memory>
 
 class CommandLineDockWidget;
-class SelectionManager;
 class ViewportColors;
+
+#include <SelectionManager.hpp>
 
 namespace femp {
 class AppState;

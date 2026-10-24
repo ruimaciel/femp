@@ -18,7 +18,7 @@ protected:
   std::map<int, std::vector<fem::Element>::size_type> m_lineMap;
 
 public:
-  MatrixModel(fem::Project &project, QObject *parent = nullptr);
+  MatrixModel(femp::Project &project, QObject *parent = nullptr);
 
   QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 

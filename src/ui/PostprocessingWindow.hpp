@@ -61,7 +61,7 @@ protected:
       m_resultsRanges; // used to set values for representation
 
 public:
-  PostprocessingWindow(fem::Project &project, fem::AnalysisResult &result,
+  PostprocessingWindow(femp::Project &project, fem::AnalysisResult &result,
                        ViewportColors &colors, QWidget *parent = nullptr);
 
 public Q_SLOTS:
@@ -87,7 +87,7 @@ Q_SIGNALS:
 protected:
   void connectSignalsToSlots() override;
 
-  void createToolBars(fem::Project &);
+  void createToolBars(femp::Project &);
 
   void setGradientValuesRange(const fem::AnalysisResult &result);
 };

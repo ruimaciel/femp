@@ -11,7 +11,7 @@ struct AnalysisResultsWidget::Private {
   Ui::AnalysisResultsWidget ui;
 };
 
-AnalysisResultsWidget::AnalysisResultsWidget(fem::Project &project,
+AnalysisResultsWidget::AnalysisResultsWidget(femp::Project &project,
                                              QWidget *parent)
     : QWidget(parent), m_private(std::make_unique<Private>()) {
   m_private->ui.setupUi(this);

@@ -7,7 +7,7 @@
 
 #include <memory>
 
-namespace fem {
+namespace femp {
 class Project;
 }
 
@@ -26,7 +26,7 @@ protected:
   QSortFilterProxyModel m_proxy_model;
 
 public:
-  AnalysisResultsWidget(fem::Project &project, QWidget *parent = nullptr);
+  AnalysisResultsWidget(femp::Project &project, QWidget *parent = nullptr);
   ~AnalysisResultsWidget() override;
 
 private Q_SLOTS:

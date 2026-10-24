@@ -32,7 +32,7 @@ bool Document::isFileNameNotSet() const { return m_filename.isEmpty(); }
 
 void Document::setProjectType(Document::Type type) { m_documentType = type; }
 
-fem::Project &Document::getProject() { return this->m_project; }
+femp::Project &Document::getProject() { return this->m_project; }
 
 void Document::setDirty(bool unsaved) { m_dirty = unsaved; }
 

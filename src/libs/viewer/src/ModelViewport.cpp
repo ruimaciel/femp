@@ -3,7 +3,7 @@
 
 #include "SceneGraph.hpp"
 
-ModelViewport::ModelViewport(fem::Project &project, QWidget *parent)
+ModelViewport::ModelViewport(femp::Project &project, QWidget *parent)
     : BaseViewport(project, parent) {
   // initialize the dangling pointers
   this->state = nullptr;

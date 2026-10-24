@@ -23,7 +23,7 @@ class ModelWindow : public MdiWindow,
   Q_OBJECT
 
 public:
-  ModelWindow(fem::Project &project, ViewportColors &colors,
+  ModelWindow(femp::Project &project, ViewportColors &colors,
               QWidget *parent = nullptr);
 
 protected:

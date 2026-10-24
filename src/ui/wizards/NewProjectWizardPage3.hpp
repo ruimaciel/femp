@@ -17,7 +17,7 @@ private:
   bool m_successfulImport;
 
 public:
-  NewProjectWizardPage3(fem::Project &project);
+  NewProjectWizardPage3(femp::Project &project);
 
   bool validatePage();
   bool isComplete() const;
@@ -32,7 +32,7 @@ private slots:
   void addNewMaterial(void);
 
 private:
-  fem::Project &m_project;
+  femp::Project &m_project;
 };
 
 #endif

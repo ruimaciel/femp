@@ -23,10 +23,10 @@ class AnalysisResultsWindow : public QMdiSubWindow, public BaseWindow {
 
 protected:
   AnalysisResultsWidget *m_analysisResultsWidget;
-  fem::Project const *m_project;
+  femp::Project const *m_project;
 
 public:
-  AnalysisResultsWindow(fem::Project &project, QWidget *parent = nullptr);
+  AnalysisResultsWindow(femp::Project &project, QWidget *parent = nullptr);
 };
 
 #endif

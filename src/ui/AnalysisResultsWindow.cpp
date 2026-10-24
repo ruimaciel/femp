@@ -1,6 +1,6 @@
 #include "AnalysisResultsWindow.hpp"
 
-AnalysisResultsWindow::AnalysisResultsWindow(fem::Project &project,
+AnalysisResultsWindow::AnalysisResultsWindow(femp::Project &project,
                                              QWidget *parent)
     : QMdiSubWindow(parent), BaseWindow("Analysis results") {
   m_project = &project;

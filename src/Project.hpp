@@ -21,7 +21,7 @@
  * - a FEM model
  * - a series of analysis results
  **/
-namespace fem {
+namespace femp {
 
 class Project {
 public:
@@ -69,6 +69,6 @@ protected:
       m_analysisResults; // a list with all analysis
 };
 
-} // namespace fem
+} // namespace femp
 
 #endif

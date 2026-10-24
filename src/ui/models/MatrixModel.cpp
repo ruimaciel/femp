@@ -3,7 +3,7 @@
 #include <iterator>
 #include <libfemp/ElementResults/ElementResults.hpp>
 
-MatrixModel::MatrixModel(fem::Project &project, QObject *parent)
+MatrixModel::MatrixModel(femp::Project &project, QObject *parent)
     : QAbstractTableModel(parent) {
   this->m_result = project.getAnalysisResults().begin();
 }

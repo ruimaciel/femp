@@ -14,13 +14,13 @@
 class AnalysisResultsModel : public QAbstractTableModel {
   Q_OBJECT
 protected:
-  fem::Project &m_project;
+  femp::Project &m_project;
   std::vector<fem::AnalysisResult>::iterator m_result;
   int m_rows;
   std::map<int, std::vector<fem::Element>::size_type> m_lineMap;
 
 public:
-  AnalysisResultsModel(fem::Project &project, QObject *parent = nullptr);
+  AnalysisResultsModel(femp::Project &project, QObject *parent = nullptr);
 
   QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 

@@ -6,7 +6,7 @@
 #include <persistence/ElementRepository.hpp>
 #include <persistence/NodeRepository.hpp>
 
-AnalysisResultsModel::AnalysisResultsModel(fem::Project &project,
+AnalysisResultsModel::AnalysisResultsModel(femp::Project &project,
                                            QObject *parent)
     : QAbstractTableModel(parent), m_project(project) {
   this->m_result = m_project.getAnalysisResults().begin();

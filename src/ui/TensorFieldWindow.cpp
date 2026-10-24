@@ -16,7 +16,7 @@
 // stl includes
 #include <map>
 
-TensorFieldWindow::TensorFieldWindow(fem::Project &project,
+TensorFieldWindow::TensorFieldWindow(femp::Project &project,
                                      fem::AnalysisResult &result,
                                      ViewportColors &colors, QWidget *parent)
     : MdiWindow(parent), WindowWithResults(), BaseWindow("Tensor field") {
@@ -59,7 +59,7 @@ void TensorFieldWindow::connectSignalsToSlots() {
           SLOT(setPositivePrincipalStressesVisibility(bool)));
 }
 
-void TensorFieldWindow::createToolBars(fem::Project &project) {
+void TensorFieldWindow::createToolBars(femp::Project &project) {
   WindowWithResults::createToolbar(this, project);
 
   // create

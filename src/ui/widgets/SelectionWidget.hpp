@@ -38,7 +38,7 @@ protected:
 
   /**
   Initializes the fem::Group list according to the group definitions stored in a
-  given fem::Project object
+  given femp::Project object
   **/
   void initializeSelectionGroups(std::shared_ptr<domain::Model> femp_model);
 

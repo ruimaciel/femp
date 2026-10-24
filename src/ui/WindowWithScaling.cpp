@@ -7,7 +7,7 @@
 // std includes
 #include <assert.h>
 
-void WindowWithScaling::createToolbar(QMainWindow *parent, fem::Project &) {
+void WindowWithScaling::createToolbar(QMainWindow *parent, femp::Project &) {
   m_doubleSpinBoxScaling = new QDoubleSpinBox(parent);
   m_doubleSpinBoxScaling->setMinimum(0);
   m_doubleSpinBoxScaling->setMaximum(9e99);

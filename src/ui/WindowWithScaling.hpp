@@ -19,7 +19,7 @@
  */
 class WindowWithScaling : public WindowWith {
 public:
-  void createToolbar(QMainWindow *parent, fem::Project &results);
+  void createToolbar(QMainWindow *parent, femp::Project &results);
 
   /**
    * Adds menu entries to the window's menu bar

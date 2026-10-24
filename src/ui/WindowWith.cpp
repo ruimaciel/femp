@@ -10,6 +10,6 @@ WindowWith::~WindowWith() {}
 
 void WindowWith::createMenuBar(QMainWindow *, QMenuBar *) {}
 
-void WindowWith::createToolbar(QMainWindow *, fem::Project &) {}
+void WindowWith::createToolbar(QMainWindow *, femp::Project &) {}
 
 void WindowWith::connectSignalsToSlots(QMainWindow *) {}

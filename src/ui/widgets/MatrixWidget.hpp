@@ -5,7 +5,7 @@
 
 #include <memory>
 
-namespace fem {
+namespace femp {
 class Project;
 }
 
@@ -16,7 +16,7 @@ class MatrixWidget : public QWidget {
   Q_OBJECT
 
 public:
-  MatrixWidget(fem::Project &project, QWidget *parent = nullptr);
+  MatrixWidget(femp::Project &project, QWidget *parent = nullptr);
   ~MatrixWidget() override;
 
 private:

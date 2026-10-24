@@ -22,7 +22,7 @@ protected:
   QComboBox *m_comboBoxResults;
 
 public:
-  void createToolbar(QMainWindow *parent, fem::Project &results);
+  void createToolbar(QMainWindow *parent, femp::Project &results);
 };
 
 #endif

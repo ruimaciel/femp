@@ -15,7 +15,7 @@
 // stl includes
 #include <map>
 
-PostprocessingWindow::PostprocessingWindow(fem::Project &project,
+PostprocessingWindow::PostprocessingWindow(femp::Project &project,
                                            fem::AnalysisResult &result,
                                            ViewportColors &colors,
                                            QWidget *parent)
@@ -60,7 +60,7 @@ void PostprocessingWindow::connectSignalsToSlots() {
           SLOT(setResultsRanges()));
 }
 
-void PostprocessingWindow::createToolBars(fem::Project &project) {
+void PostprocessingWindow::createToolBars(femp::Project &project) {
   WindowWithScaling::createToolbar(this, project);
   WindowWithResults::createToolbar(this, project);
   WindowWithPostprocessing::createToolbar(this, project);

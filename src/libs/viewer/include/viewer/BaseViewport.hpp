@@ -31,7 +31,7 @@ class BaseViewport : public QOpenGLWidget {
   Q_OBJECT
 
 public:
-  BaseViewport(fem::Project &project, QWidget *parent);
+  BaseViewport(femp::Project &project, QWidget *parent);
   virtual ~BaseViewport();
 
   void setColors(ViewportColors &new_colors);
@@ -111,7 +111,7 @@ public:
   void clearSelection();        // clears the selection list representation
   void showSelection(const Selection);
   void showAll();
-  fem::Project &getProject();
+  femp::Project &getProject();
   std::shared_ptr<domain::Model> getDomainModel();
 
   ViewportColors getColors() const;
@@ -138,7 +138,7 @@ public:
   ViewportState *state; // pointer to object used for the State pattern
 
 private:
-  fem::Project &m_project;
+  femp::Project &m_project;
   ViewportColors m_colors; // color definitions
   std::shared_ptr<gui::application::INodeRepository> m_node_repository;
 };

@@ -3,7 +3,7 @@
 #include "SceneGraph.hpp"
 
 PostprocessingViewport::PostprocessingViewport(
-    fem::Project &project, fem::AnalysisResult &result,
+    femp::Project &project, fem::AnalysisResult &result,
     fem::ResultsRanges<double> &ranges, QWidget *parent)
     : BaseViewport(project, parent) {
   this->m_analysis_result = nullptr;

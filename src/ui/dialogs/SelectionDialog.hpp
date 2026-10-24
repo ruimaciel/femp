@@ -10,7 +10,7 @@
 
 /**
  * Dialog box which uses the selection widget to select objects from a given
- * fem::Project object
+ * femp::Project object
  */
 class SelectionDialog : public QDialog {
   Q_OBJECT

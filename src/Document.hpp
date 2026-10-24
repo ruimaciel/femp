@@ -34,7 +34,7 @@ public:
   /**
    * Returns a reference to the Project object
    */
-  fem::Project &getProject();
+  femp::Project &getProject();
 
   /**
    * @brief setDirty sets the document as containing changes that haven't
@@ -46,9 +46,9 @@ public:
 
 protected:
   bool m_dirty; // true if this document suffered changes that are saveable
-  Type m_documentType;    // specifies the model type
-  fem::Project m_project; // the FEM project
-  QString m_filename;     // path for the project's directory
+  Type m_documentType;     // specifies the model type
+  femp::Project m_project; // the FEM project
+  QString m_filename;      // path for the project's directory
 };
 
 #endif

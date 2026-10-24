@@ -9,7 +9,7 @@
 
 #include "Document.hpp" // for the loading test
 
-NewProjectWizardPage3::NewProjectWizardPage3(fem::Project &project)
+NewProjectWizardPage3::NewProjectWizardPage3(femp::Project &project)
     : m_project(project) {
   setupUi(this);
 

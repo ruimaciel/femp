@@ -40,7 +40,7 @@ protected:
   QComboBox *m_postprocessingComboBox;
 
 public:
-  void createToolbar(QMainWindow *parent, fem::Project &results);
+  void createToolbar(QMainWindow *parent, femp::Project &results);
 };
 
 #endif

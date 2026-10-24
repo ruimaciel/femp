@@ -24,7 +24,7 @@ class TensorFieldViewport : public BaseViewport {
   Q_OBJECT
 
 public:
-  TensorFieldViewport(fem::Project &project, fem::AnalysisResult &result,
+  TensorFieldViewport(femp::Project &project, fem::AnalysisResult &result,
                       fem::ResultsRanges<double> &ranges,
                       QWidget *parent = nullptr);
   ~TensorFieldViewport();

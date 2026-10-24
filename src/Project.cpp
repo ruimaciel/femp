@@ -1,6 +1,6 @@
 #include "Project.hpp"
 
-namespace fem {
+namespace femp {
 
 Project::Project() : m_domainModel(std::make_shared<domain::Model>(m_model)) {}
 

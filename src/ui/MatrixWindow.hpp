@@ -20,10 +20,10 @@ class MatrixWindow : public QMdiSubWindow, public BaseWindow {
 
 protected:
   MatrixWidget *m_matrixWidget;
-  fem::Project const *m_project;
+  femp::Project const *m_project;
 
 public:
-  MatrixWindow(fem::Project &project, QWidget *parent = nullptr);
+  MatrixWindow(femp::Project &project, QWidget *parent = nullptr);
 };
 
 #endif

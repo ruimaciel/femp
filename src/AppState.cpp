@@ -1,11 +1,9 @@
-#include "AppState.h"
+#include "AppState.hpp"
 
-AppState::AppState()
-{
+namespace femp {
 
-}
+AppState::AppState() {}
 
-AppState::~AppState()
-{
+AppState::~AppState() {}
 
-}
+} // namespace femp

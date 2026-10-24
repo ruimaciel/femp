@@ -21,7 +21,6 @@
 #include "ui/PostprocessingWindow.hpp"
 #include "ui/TensorFieldWindow.hpp"
 #include "ui/dialogs/AnalysisDialog.hpp"
-#include "ui/dock_widgets/CommandLineDockWidget.hpp"
 #include "ui/dialogs/AnalysisProgressDialog.hpp"
 #include "ui/dialogs/AnalysisSummaryDialog.hpp"
 #include "ui/dialogs/DomainLoadsDialog.hpp"
@@ -31,10 +30,12 @@
 #include "ui/dialogs/NodeRestrainsDialog.hpp"
 #include "ui/dialogs/QuadratureRulesOptionsDialog.hpp"
 #include "ui/dialogs/SelectionDialog.hpp"
+#include "ui/dock_widgets/CommandLineDockWidget.hpp"
 #include "ui/models/LoadPatternsModel.hpp"
 #include "ui/wizards/NewProjectWizard.hpp"
 
 // libfemp includes
+#include <AppState.hpp>
 #include <libfemp/Analysis.hpp>
 #include <libfemp/AnalysisResult.hpp>
 #include <libfemp/LinearAnalysis.hpp>
@@ -44,7 +45,6 @@
 #include <libfemp/solvers/CGSolver.hpp>
 #include <libfemp/solvers/CholeskySolver.hpp>
 #include <persistence/LoadPatternRepository.hpp>
-#include <AppState.hpp>
 
 // Qt includes
 #include <QAction>
@@ -74,7 +74,8 @@ struct MainWindow::Private {
   femp::Document document;
   SelectionManager selectionManager;
   ViewportColors colors;
-  DocumentState renderedDocumentState = DocumentState::DocumentStateUnknown;
+  femp::DocumentState renderedDocumentState =
+      femp::DocumentState::DocumentStateUnknown;
   QSignalMapper *windowMapper = nullptr;
   gui::application::ILoadPatternRepositoryPtr loadPatternRepository;
 };
@@ -102,21 +103,21 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() = default;
 
-void MainWindow::onAppStateChanged(AppState state) {
+void MainWindow::onAppStateChanged(femp::AppState state) {
   switch (state.lifeCycleState) {
-    case ApplicationLifeCycleState::AppStateStart:
-      qInfo() << "Application state changed to: Starting";
-      this->show();
-      break;
-    case ApplicationLifeCycleState::AppStateActive:
-      qInfo() << "Application state changed to: Active";
-      break;
-    case ApplicationLifeCycleState::AppStateInactive:
-      qInfo() << "Application state changed to: Inactive";
-      break;
-    default:
-      qWarning() << "Application state changed to: Unknown";
-      break;
+  case femp::ApplicationLifeCycleState::AppStateStart:
+    qInfo() << "Application state changed to: Starting";
+    this->show();
+    break;
+  case femp::ApplicationLifeCycleState::AppStateActive:
+    qInfo() << "Application state changed to: Active";
+    break;
+  case femp::ApplicationLifeCycleState::AppStateInactive:
+    qInfo() << "Application state changed to: Inactive";
+    break;
+  default:
+    qWarning() << "Application state changed to: Unknown";
+    break;
   }
 
   if (state.documentState == d->renderedDocumentState) {
@@ -125,10 +126,10 @@ void MainWindow::onAppStateChanged(AppState state) {
 
   d->renderedDocumentState = state.documentState;
   switch (state.documentState) {
-  case DocumentState::DocumentStateOpen:
+  case femp::DocumentState::DocumentStateOpen:
     setUserInterfaceAsOpened();
     break;
-  case DocumentState::DocumentStateClosed:
+  case femp::DocumentState::DocumentStateClosed:
     setUserInterfaceAsClosed();
     break;
   default:
@@ -784,7 +785,8 @@ void MainWindow::dumpResultsFromSelection() {
       d->document.getProject().getAnalysisResults().back(); // nasty hack
 
   OutputResultsInNodesCSVVisitor visitor(
-      d->selectionManager.getSelection().getNodeReferences(), &femp_result, out);
+      d->selectionManager.getSelection().getNodeReferences(), &femp_result,
+      out);
 
   d->document.getProject().accept(visitor);
 
@@ -898,10 +900,10 @@ void MainWindow::createNewTensorFieldWindow() {
     return;
   }
 
-  TensorFieldWindow *window =
-      new TensorFieldWindow(d->document.getProject(),
-                            d->document.getProject().getAnalysisResults().back(),
-                            getViewportColors(), this);
+  TensorFieldWindow *window = new TensorFieldWindow(
+      d->document.getProject(),
+      d->document.getProject().getAnalysisResults().back(), getViewportColors(),
+      this);
 
   // create the model's MDI window
   QMdiSubWindow *mdi_window = new QMdiSubWindow(d->mdiArea);

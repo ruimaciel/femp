@@ -6,6 +6,8 @@
 // Qt includes
 #include <QObject>
 
+namespace femp {
+
 /**
  * @brief The AppStateManager class is responsible for managing the state of the
  * application. It handles the saving and loading of application settings, user
@@ -40,5 +42,7 @@ private:
 
   AppState m_state;
 };
+
+} // namespace femp
 
 #endif

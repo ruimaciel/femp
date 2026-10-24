@@ -1,7 +1,6 @@
 #ifndef FEMP_UI_MAINWINDOW_HPP
 #define FEMP_UI_MAINWINDOW_HPP
 
-#include <AppState.hpp>
 #include <selection/Selection.hpp>
 
 #include <QMainWindow>
@@ -14,8 +13,9 @@ class SelectionManager;
 class ViewportColors;
 
 namespace femp {
+class AppState;
 class Document;
-}
+} // namespace femp
 
 namespace Ui {
 class MainWindow;
@@ -48,7 +48,7 @@ public slots:
    * @brief onAppStateChanged
    * @param state
    */
-  void onAppStateChanged(AppState state);
+  void onAppStateChanged(femp::AppState state);
 
   /**
    * @brief setSelection

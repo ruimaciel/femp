@@ -1,8 +1,6 @@
 #include "FempApplication.hpp"
 
-#include "AppState.hpp"
 #include "AppStateManager.hpp"
-#include "ui/MainWindow.hpp"
 
 // ui includes
 #include <ui/MainWindow.hpp>
@@ -17,25 +15,25 @@ FempApplication::FempApplication(int &argc, char **argv)
 }
 
 void FempApplication::initialize() {
-  m_app_state_manager = new AppStateManager(this);
+  m_app_state_manager = new femp::AppStateManager(this);
 
-    m_main_window = new MainWindow();
+  m_main_window = new MainWindow();
 
-    connect(this, &QApplication::applicationStateChanged,
-      m_app_state_manager, &AppStateManager::changeApplicationState);
+  connect(this, &QApplication::applicationStateChanged,
+          m_app_state_manager, &femp::AppStateManager::changeApplicationState);
 
-    connect(m_main_window, &MainWindow::documentOpened,
-      m_app_state_manager, [this]() {
-        m_app_state_manager->changeDocumentState(
-      DocumentState::DocumentStateOpen);
-      });
-    connect(m_main_window, &MainWindow::documentClosed,
-      m_app_state_manager, [this]() {
-        m_app_state_manager->changeDocumentState(
-      DocumentState::DocumentStateClosed);
-      });
+  connect(m_main_window, &MainWindow::documentOpened, m_app_state_manager,
+          [this]() {
+            m_app_state_manager->changeDocumentState(
+                femp::DocumentState::DocumentStateOpen);
+          });
+  connect(m_main_window, &MainWindow::documentClosed, m_app_state_manager,
+          [this]() {
+            m_app_state_manager->changeDocumentState(
+                femp::DocumentState::DocumentStateClosed);
+          });
 
-  connect(m_app_state_manager, &AppStateManager::appStateChanged,
+  connect(m_app_state_manager, &femp::AppStateManager::appStateChanged,
           m_main_window, &MainWindow::onAppStateChanged);
 
   m_app_state_manager->start();

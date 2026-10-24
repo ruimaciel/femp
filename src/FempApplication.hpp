@@ -4,8 +4,11 @@
 // Qt includes
 #include <QApplication>
 
-class MainWindow;
+namespace femp {
 class AppStateManager;
+}
+
+class MainWindow;
 
 class FempApplication : public QApplication {
   Q_OBJECT
@@ -19,7 +22,7 @@ public:
   void initialize();
 
 private:
-  AppStateManager *m_app_state_manager;
+  femp::AppStateManager *m_app_state_manager;
   MainWindow *m_main_window;
 };
 

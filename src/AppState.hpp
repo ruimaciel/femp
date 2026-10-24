@@ -1,6 +1,10 @@
 #ifndef FEMP_APPSTATE_H
 #define FEMP_APPSTATE_H
 
+#include <QMetaType>
+
+namespace femp {
+
 enum class ApplicationLifeCycleState {
   AppStateUnknown = 0,
   AppStateStart,
@@ -32,5 +36,9 @@ struct AppState {
                     DocumentState::DocumentStateClosed};
   }
 };
+
+} // namespace femp
+
+Q_DECLARE_METATYPE(femp::AppState)
 
 #endif

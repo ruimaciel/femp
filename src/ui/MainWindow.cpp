@@ -634,21 +634,21 @@ void MainWindow::runAnalysis() {
   }
 
   // runs the analysis
-  DefaultProgressIndicator progress;
+  femp::DefaultProgressIndicator progress;
   AnalysisProgressDialog dialog(this);
 
   // connect the dialog with the progress indicator
-  connect(&progress, &DefaultProgressIndicator::beginSection, &dialog,
+  connect(&progress, &femp::DefaultProgressIndicator::beginSection, &dialog,
           &AnalysisProgressDialog::beginSection);
-  connect(&progress, &DefaultProgressIndicator::endSection, &dialog,
+  connect(&progress, &femp::DefaultProgressIndicator::endSection, &dialog,
           &AnalysisProgressDialog::endSection);
-  connect(&progress, &DefaultProgressIndicator::setProgress, &dialog,
+  connect(&progress, &femp::DefaultProgressIndicator::setProgress, &dialog,
           &AnalysisProgressDialog::setProgress);
-  connect(&progress, &DefaultProgressIndicator::setMessage, &dialog,
+  connect(&progress, &femp::DefaultProgressIndicator::setMessage, &dialog,
           &AnalysisProgressDialog::setMessage);
-  connect(&progress, &DefaultProgressIndicator::setError, &dialog,
+  connect(&progress, &femp::DefaultProgressIndicator::setError, &dialog,
           &AnalysisProgressDialog::setError);
-  connect(&progress, &DefaultProgressIndicator::finish, &dialog,
+  connect(&progress, &femp::DefaultProgressIndicator::finish, &dialog,
           &AnalysisProgressDialog::finish);
 
   // TODO finish this

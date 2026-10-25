@@ -30,6 +30,8 @@ class QToolBar;
 /**
  * MDI window designed to represent the model
  */
+namespace femp::ui {
+
 class PostprocessingWindow : public femp::ui::MdiWindow,
                              public WindowWithResults,
                              public WindowWithPostprocessing,
@@ -67,7 +69,7 @@ protected:
 
 public:
   PostprocessingWindow(femp::Project &project, fem::AnalysisResult &result,
-                       ViewportColors &colors, QWidget *parent = nullptr);
+                       ::ViewportColors &colors, ::QWidget *parent = nullptr);
 
 public Q_SLOTS:
   void setDisplacementsScale(double scale);
@@ -96,5 +98,7 @@ protected:
 
   void setGradientValuesRange(const fem::AnalysisResult &result);
 };
+
+} // namespace femp::ui
 
 #endif

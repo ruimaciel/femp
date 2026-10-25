@@ -883,7 +883,7 @@ void MainWindow::createNewPostprocessingWindow() {
     return;
   }
 
-  PostprocessingWindow *window = new PostprocessingWindow(
+  femp::ui::PostprocessingWindow *window = new femp::ui::PostprocessingWindow(
       d->document.getProject(), femp_result.back(), getViewportColors(), this);
 
   // create the model's MDI window

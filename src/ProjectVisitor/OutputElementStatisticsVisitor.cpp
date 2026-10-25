@@ -12,6 +12,8 @@
 #include <libfemp/Element.hpp>
 #include <libfemp/Node.hpp>
 
+namespace femp {
+
 OutputElementStatisticsVisitor::OutputElementStatisticsVisitor() {}
 
 void OutputElementStatisticsVisitor::visit(fem::Model &model,
@@ -71,3 +73,5 @@ void OutputElementStatisticsVisitor::visit(fem::Model &model,
   qInfo() << "external diameter: " << de;
   qInfo() << "internal diameter: " << di;
 }
+
+} // namespace femp

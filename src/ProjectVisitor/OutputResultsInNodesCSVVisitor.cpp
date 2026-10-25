@@ -6,6 +6,8 @@
 #include <libfemp/Element.hpp>
 #include <libfemp/Node.hpp>
 
+namespace femp {
+
 OutputResultsInNodesCSVVisitor::OutputResultsInNodesCSVVisitor(
     std::set<fem::node_ref_t> selected_nodes, fem::AnalysisResult *result,
     QTextStream &os)
@@ -86,3 +88,5 @@ void OutputResultsInNodesCSVVisitor::visit(fem::Model &model,
 
   m_out->flush();
 }
+
+} // namespace femp

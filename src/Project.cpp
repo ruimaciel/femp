@@ -25,7 +25,7 @@ std::vector<fem::AnalysisResult> &Project::getAnalysisResults() {
   return this->m_analysisResults;
 }
 
-void Project::accept(ProjectVisitor &visitor) {
+void Project::accept(femp::ProjectVisitor &visitor) {
   visitor.visit(m_model, m_analysisResults);
 }
 

@@ -1,5 +1,7 @@
 #include "SetNodeRestraintsVisitor.hpp"
 
+namespace femp {
+
 SetNodeRestraintsVisitor::SetNodeRestraintsVisitor(
     std::set<fem::node_ref_t> selected_nodes,
     fem::NodeRestrictions const &restrictions)
@@ -17,3 +19,5 @@ void SetNodeRestraintsVisitor::visit(fem::Model &model,
     }
   }
 }
+
+} // namespace femp

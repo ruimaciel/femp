@@ -8,6 +8,8 @@
 // stl includes
 #include <vector>
 
+namespace femp {
+
 /**
  * Visitor class that is used to implement a Visitor design pattern for the
  * Project class
@@ -18,5 +20,7 @@ public:
   virtual void visit(fem::Model &model,
                      std::vector<fem::AnalysisResult> &result) = 0;
 };
+
+} // namespace femp
 
 #endif

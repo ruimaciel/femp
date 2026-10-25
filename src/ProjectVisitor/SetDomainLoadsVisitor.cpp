@@ -3,6 +3,8 @@
 // libfemp includes
 #include <libfemp/Node.hpp>
 
+namespace femp {
+
 SetDomainLoadsVisitor::SetDomainLoadsVisitor(
     std::set<fem::element_ref_t> selected_elements,
     fem::LoadPattern &load_pattern, fem::Point3D const &force)
@@ -15,3 +17,5 @@ void SetDomainLoadsVisitor::visit(fem::Model &,
     m_load_pattern.addDomainLoad(eref, m_force);
   }
 }
+
+} // namespace femp

@@ -7,6 +7,8 @@
 #include <libfemp/AnalysisResult.hpp>
 #include <libfemp/Model.hpp>
 
+namespace femp {
+
 /**
  * Outputs the results which were calculated in a set of nodes
  */
@@ -19,5 +21,7 @@ public:
 
 protected:
 };
+
+} // namespace femp
 
 #endif

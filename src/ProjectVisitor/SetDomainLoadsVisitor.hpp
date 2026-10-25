@@ -14,6 +14,8 @@
 #include <set>
 #include <vector>
 
+namespace femp {
+
 /**
  * Sets the domain loads in a selection of elements
  */
@@ -30,5 +32,7 @@ protected:
   fem::LoadPattern &m_load_pattern;
   fem::Point3D const &m_force;
 };
+
+} // namespace femp
 
 #endif

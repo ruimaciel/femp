@@ -13,6 +13,8 @@
 #include <set>
 #include <vector>
 
+namespace femp {
+
 /**
  * Performs a translation on a specific set of nodes
  */
@@ -28,5 +30,7 @@ protected:
   fem::Point3D m_translation;
   std::set<fem::node_ref_t> m_selected_nodes;
 };
+
+} // namespace femp
 
 #endif

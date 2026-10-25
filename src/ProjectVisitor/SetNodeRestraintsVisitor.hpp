@@ -13,6 +13,8 @@
 #include <set>
 #include <vector>
 
+namespace femp {
+
 /**
  * Sets node restraints in a specific set of nodes
  */
@@ -28,5 +30,7 @@ protected:
   std::set<fem::node_ref_t> m_selected_nodes;
   fem::NodeRestrictions m_restrictions;
 };
+
+} // namespace femp
 
 #endif

@@ -14,6 +14,8 @@
 #include <set>
 #include <vector>
 
+namespace femp {
+
 /**
  * Outputs the results which were calculated in a set of nodes in CSV format
  */
@@ -30,5 +32,7 @@ protected:
   QTextStream *m_out;
   std::set<fem::node_ref_t> m_selected_nodes;
 };
+
+} // namespace femp
 
 #endif

@@ -196,7 +196,7 @@ void MainWindow::importProjectFromJsonFile(QString file_name) {
     break;
   }
 
-  OutputElementStatisticsVisitor visit;
+  femp::OutputElementStatisticsVisitor visit;
   d->document.getProject().accept(visit);
 }
 
@@ -505,7 +505,7 @@ void MainWindow::setNodeRestraints() {
     return;
   }
 
-  SetNodeRestraintsVisitor visitor(
+  femp::SetNodeRestraintsVisitor visitor(
       d->selectionManager.getSelection().getNodeReferences(),
       nd.getRestrictions());
 
@@ -551,7 +551,7 @@ void MainWindow::setDomainLoads() {
 
   fem::Model &femp_model = d->document.getProject().getModel();
   auto load_pattern_index = dialog.getLoadPattern();
-  SetDomainLoadsVisitor visitor(
+  femp::SetDomainLoadsVisitor visitor(
       d->selectionManager.getSelection().getElementReferences(),
       femp_model.load_pattern_list[load_pattern_index], dialog.getForce());
 
@@ -570,7 +570,7 @@ void MainWindow::moveSelectedNodes() {
 
   // get list of node restraints from active window
   ::Selection selection = d->selectionManager.getSelection();
-  MoveNodesVisitor visitor(selection.getNodeReferences(), nd.getTranslation());
+  femp::MoveNodesVisitor visitor(selection.getNodeReferences(), nd.getTranslation());
 
   d->document.getProject().accept(visitor);
 
@@ -786,7 +786,7 @@ void MainWindow::dumpResultsFromSelection() {
   fem::AnalysisResult &femp_result =
       d->document.getProject().getAnalysisResults().back(); // nasty hack
 
-  OutputResultsInNodesCSVVisitor visitor(
+  femp::OutputResultsInNodesCSVVisitor visitor(
       d->selectionManager.getSelection().getNodeReferences(), &femp_result,
       out);
 

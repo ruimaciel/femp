@@ -60,7 +60,7 @@ public:
   /**
    * Implements a Visitor design pattern
    */
-  void accept(ProjectVisitor &visitor);
+  void accept(femp::ProjectVisitor &visitor);
 
 protected:
   fem::Model m_model; // the FEM model

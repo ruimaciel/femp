@@ -3,6 +3,7 @@
 
 // std includes
 #include <array>
+#include <memory>
 
 // Qt includes
 #include <QOpenGLWidget>
@@ -132,7 +133,7 @@ protected:
   void normalizeAngle(int *angle);
 
 protected:
-  Input *m_input; // state pattern that handles user input
+  std::unique_ptr<Input> m_input;
 
 public:
   ViewportData viewport_data;

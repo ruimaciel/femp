@@ -18,14 +18,14 @@ BaseViewport::BaseViewport(femp::Project &project, QWidget *parent)
   m_node_repository = std::make_shared<femp::persistence::NodeRepository>(
       m_project.getDomainModel());
 
-  m_input = new Input; // to avoid circular dependencies
+  m_input = std::make_unique<Input>();
 
   this->state = nullptr;
 
   this->setFocusPolicy(Qt::StrongFocus);
 }
 
-BaseViewport::~BaseViewport() { delete m_input; }
+BaseViewport::~BaseViewport() = default;
 
 void BaseViewport::setColors(ViewportColors &new_colors) {
   m_colors = new_colors;

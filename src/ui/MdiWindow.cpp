@@ -8,6 +8,8 @@
 #include <QMenuBar>
 #include <QToolBar>
 
+namespace femp::ui {
+
 struct MdiWindow::Private {
   QAction *actionViewportXY = nullptr;
   QAction *actionViewportYZ = nullptr;
@@ -124,11 +126,11 @@ void MdiWindow::normalizeAngle(int *angle) {
     *angle -= 360 * 16;
 }
 
-void MdiWindow::setColors(ViewportColors &colors) {
+void MdiWindow::setColors(::ViewportColors &colors) {
   viewport->setColors(colors);
 }
 
-void MdiWindow::setSelection(Selection selection) {
+void MdiWindow::setSelection(::Selection selection) {
   qInfo() << "void MdiWindow::setSelection(Selection)";
 
   this->viewport->setSelection(selection);
@@ -138,7 +140,7 @@ void MdiWindow::clearSelection() {
   qInfo() << "void MdiWindow::setSelection(Selection): hasn't been implemented";
 }
 
-void MdiWindow::showSelection(const Selection selection) {
+void MdiWindow::showSelection(const ::Selection selection) {
   qInfo() << "MdiWindow::viewSelection(const Selection selection)";
   this->viewport->showSelection(selection);
 }
@@ -149,7 +151,9 @@ void MdiWindow::showAll() {
 }
 
 void MdiWindow::updateNodeRestriction(std::size_t const id,
-                                      fem::NodeRestrictions const &nr) {
+                                      ::fem::NodeRestrictions const &nr) {
   qInfo() << "MdiWindow::updateNodeRestriction(size_t const id, "
-             "fem::NodeRestrictions const &nr)";
+             "::fem::NodeRestrictions const &nr)";
 }
+
+} // namespace femp::ui

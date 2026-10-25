@@ -19,7 +19,7 @@ PostprocessingWindow::PostprocessingWindow(femp::Project &project,
                                            fem::AnalysisResult &result,
                                            ViewportColors &colors,
                                            QWidget *parent)
-    : MdiWindow(parent), WindowWithResults(), WindowWithPostprocessing(),
+    : femp::ui::MdiWindow(parent), WindowWithResults(), WindowWithPostprocessing(),
       WindowWithScaling(), BaseWindow("Gradient") {
   this->setGradientValuesRange(result);
   this->viewport =
@@ -48,7 +48,7 @@ void PostprocessingWindow::setAnalysisResult(fem::AnalysisResult &result) {
 }
 
 void PostprocessingWindow::connectSignalsToSlots() {
-  MdiWindow::connectSignalsToSlots();
+  femp::ui::MdiWindow::connectSignalsToSlots();
   WindowWithScaling::connectSignalsToSlots(this);
   WindowWithPostprocessing::connectSignalsToSlots(this);
 

@@ -30,7 +30,7 @@ class QToolBar;
 /**
  * MDI window designed to represent the model
  */
-class PostprocessingWindow : public MdiWindow,
+class PostprocessingWindow : public femp::ui::MdiWindow,
                              public WindowWithResults,
                              public WindowWithPostprocessing,
                              public WindowWithScaling,

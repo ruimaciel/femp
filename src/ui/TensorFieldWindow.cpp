@@ -19,7 +19,7 @@
 TensorFieldWindow::TensorFieldWindow(femp::Project &project,
                                      fem::AnalysisResult &result,
                                      ViewportColors &colors, QWidget *parent)
-    : MdiWindow(parent), WindowWithResults(), BaseWindow("Tensor field") {
+    : femp::ui::MdiWindow(parent), WindowWithResults(), BaseWindow("Tensor field") {
   this->setGradientValuesRange(result);
 
   m_viewportTensorField =
@@ -48,7 +48,7 @@ void TensorFieldWindow::setAnalysisResult(fem::AnalysisResult &result) {
 }
 
 void TensorFieldWindow::connectSignalsToSlots() {
-  MdiWindow::connectSignalsToSlots();
+  femp::ui::MdiWindow::connectSignalsToSlots();
   WindowWithResults::connectSignalsToSlots(this);
 
   connect(m_actionMenuVisibility, SIGNAL(toggled(bool)), this,

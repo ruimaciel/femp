@@ -4,7 +4,7 @@
 
 ModelWindow::ModelWindow(femp::Project &project, ViewportColors &colors,
                          QWidget *parent)
-    : MdiWindow(parent), BaseWindow("Model") {
+    : femp::ui::MdiWindow(parent), BaseWindow("Model") {
   viewport = new ModelViewport(project, this);
   this->setCentralWidget(viewport);
 
@@ -16,6 +16,6 @@ ModelWindow::ModelWindow(femp::Project &project, ViewportColors &colors,
 }
 
 void ModelWindow::connectSignalsToSlots() {
-  MdiWindow::connectSignalsToSlots();
+  femp::ui::MdiWindow::connectSignalsToSlots();
   WindowWithWireframe::connectSignalsToSlots(this);
 }

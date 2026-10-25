@@ -17,7 +17,7 @@
 /**
  * MDI window designed to represent the model
  */
-class ModelWindow : public MdiWindow,
+class ModelWindow : public femp::ui::MdiWindow,
                     public WindowWithWireframe,
                     public BaseWindow {
   Q_OBJECT

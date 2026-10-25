@@ -20,7 +20,7 @@ PostprocessingWindow::PostprocessingWindow(femp::Project &project,
                                            ViewportColors &colors,
                                            QWidget *parent)
     : femp::ui::MdiWindow(parent), WindowWithResults(), WindowWithPostprocessing(),
-      WindowWithScaling(), BaseWindow("Gradient") {
+      WindowWithScaling(), femp::ui::BaseWindow("Gradient") {
   this->setGradientValuesRange(result);
   this->viewport =
       new PostprocessingViewport(project, result, m_resultsRanges, parent);

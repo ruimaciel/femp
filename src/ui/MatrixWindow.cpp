@@ -4,7 +4,7 @@
 #include <QWidget>
 
 MatrixWindow::MatrixWindow(femp::Project &project, QWidget *parent)
-    : QMdiSubWindow(parent), BaseWindow("Stiffness matrix") {
+    : QMdiSubWindow(parent), femp::ui::BaseWindow("Stiffness matrix") {
   m_project = &project;
   m_matrixWidget = new MatrixWidget(project, parent);
 

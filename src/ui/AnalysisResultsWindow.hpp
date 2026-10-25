@@ -18,7 +18,8 @@
 /**
  * MDI window designed to represent a model's results
  */
-class AnalysisResultsWindow : public QMdiSubWindow, public BaseWindow {
+class AnalysisResultsWindow : public QMdiSubWindow,
+                              public femp::ui::BaseWindow {
   Q_OBJECT
 
 protected:

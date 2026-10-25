@@ -35,7 +35,7 @@ class QToolbar;
  */
 class TensorFieldWindow : public femp::ui::MdiWindow,
                           public WindowWithResults,
-                          public BaseWindow {
+                          public femp::ui::BaseWindow {
   Q_OBJECT
 
 protected:

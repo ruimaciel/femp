@@ -953,7 +953,8 @@ void MainWindow::updateWindowMenu() {
   QList<QMdiSubWindow *> subWindowList = d->mdiArea->subWindowList();
   for (int n = 0; n < subWindowList.size(); n++) {
     // get current MDI window label
-    BaseWindow *base = dynamic_cast<BaseWindow *>(subWindowList[n]->widget());
+    femp::ui::BaseWindow *base =
+        dynamic_cast<femp::ui::BaseWindow *>(subWindowList[n]->widget());
     {
       // TODO fix problem with menu windows
       qCritical() << "MainWindow::updateWindowMenu(): nullptr result";

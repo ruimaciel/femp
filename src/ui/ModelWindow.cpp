@@ -4,7 +4,7 @@
 
 ModelWindow::ModelWindow(femp::Project &project, ViewportColors &colors,
                          QWidget *parent)
-    : femp::ui::MdiWindow(parent), BaseWindow("Model") {
+    : femp::ui::MdiWindow(parent), femp::ui::BaseWindow("Model") {
   viewport = new ModelViewport(project, this);
   this->setCentralWidget(viewport);
 

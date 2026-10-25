@@ -19,7 +19,7 @@
  */
 class ModelWindow : public femp::ui::MdiWindow,
                     public WindowWithWireframe,
-                    public BaseWindow {
+                    public femp::ui::BaseWindow {
   Q_OBJECT
 
 public:

@@ -34,7 +34,7 @@ class PostprocessingWindow : public femp::ui::MdiWindow,
                              public WindowWithResults,
                              public WindowWithPostprocessing,
                              public WindowWithScaling,
-                             public BaseWindow {
+                             public femp::ui::BaseWindow {
   Q_OBJECT
 
 protected:

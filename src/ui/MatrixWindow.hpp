@@ -15,7 +15,7 @@ class QWidget;
 /**
  * MDI window designed to represent the stiffness matrix of an analysis
  */
-class MatrixWindow : public QMdiSubWindow, public BaseWindow {
+class MatrixWindow : public QMdiSubWindow, public femp::ui::BaseWindow {
   Q_OBJECT
 
 protected:

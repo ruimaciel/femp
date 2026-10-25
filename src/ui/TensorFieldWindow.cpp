@@ -19,7 +19,8 @@
 TensorFieldWindow::TensorFieldWindow(femp::Project &project,
                                      fem::AnalysisResult &result,
                                      ViewportColors &colors, QWidget *parent)
-    : femp::ui::MdiWindow(parent), WindowWithResults(), BaseWindow("Tensor field") {
+    : femp::ui::MdiWindow(parent), WindowWithResults(),
+      femp::ui::BaseWindow("Tensor field") {
   this->setGradientValuesRange(result);
 
   m_viewportTensorField =

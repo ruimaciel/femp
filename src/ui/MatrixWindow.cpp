@@ -3,10 +3,10 @@
 // Qt includes
 #include <QWidget>
 
-MatrixWindow::MatrixWindow(femp::Project &project, QWidget *parent)
-    : QMdiSubWindow(parent), femp::ui::BaseWindow("Stiffness matrix") {
+femp::ui::MatrixWindow::MatrixWindow(femp::Project &project, ::QWidget *parent)
+    : ::QMdiSubWindow(parent), femp::ui::BaseWindow("Stiffness matrix") {
   m_project = &project;
-  m_matrixWidget = new MatrixWidget(project, parent);
+  m_matrixWidget = new ::MatrixWidget(project, parent);
 
   this->setAttribute(Qt::WA_DeleteOnClose);
   this->setWindowTitle(tr("Stiffness matrix"));

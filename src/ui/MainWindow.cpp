@@ -938,8 +938,8 @@ void MainWindow::createNewFemEquationWindow() {
     return;
   }
 
-  MatrixWindow *mdi_window =
-      new MatrixWindow(d->document.getProject(), d->mdiArea);
+  femp::ui::MatrixWindow *mdi_window = new femp::ui::MatrixWindow(
+      d->document.getProject(), d->mdiArea);
   mdi_window->showMaximized();
 }
 

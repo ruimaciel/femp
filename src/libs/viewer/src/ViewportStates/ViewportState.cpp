@@ -18,10 +18,10 @@ void ViewportState::setDisplacementsScale(float new_scale) {
 }
 
 void ViewportState::setLayerVisibility(femp::ViewportLayer layer,
-                                       bool visible) {
+                                       bool isVisible) {
   this->scenegraph
       .rendering_groups[femp::viewer::detail::toSceneGraphGroup(layer)]
-      .setVisible(visible);
+      .setVisible(isVisible);
 }
 
 void ViewportState::paintGL(BaseViewport *viewport) {

@@ -109,6 +109,6 @@ void VPStateModel::keyPressEvent(BaseViewport *viewport, QKeyEvent *event) {
   }
 }
 
-void VPStateModel::setTrianglesVisible(bool const state) {
-  m_element_representation_factory.setTriangleWireframeRendering(state);
+void VPStateModel::setTrianglesVisible(bool const isVisible) {
+  m_element_representation_factory.setTriangleWireframeRendering(isVisible);
 }

@@ -42,8 +42,10 @@ public:
 
   /**
    * Sets the visibility of a semantic viewport layer.
+   * @param layer viewport layer
+   * @param isVisible whether the layer is visible or not
    */
-  void setLayerVisibility(femp::ViewportLayer layer, bool visible);
+  void setLayerVisibility(femp::ViewportLayer layer, bool isVisible);
 
   /**
    * Routine which will paint each OpenGL scene

@@ -141,6 +141,6 @@ void VPStateDisplacements::keyPressEvent(BaseViewport *viewport,
   }
 }
 
-void VPStateDisplacements::setTrianglesVisible(bool const state) {
-  m_element_representation_factory.setTriangleWireframeRendering(state);
+void VPStateDisplacements::setTrianglesVisible(bool const isVisible) {
+  m_element_representation_factory.setTriangleWireframeRendering(isVisible);
 }

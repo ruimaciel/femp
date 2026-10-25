@@ -14,7 +14,7 @@
 
 BaseViewport::BaseViewport(femp::Project &project, QWidget *parent)
     : QOpenGLWidget(parent), m_project(project) {
-  m_node_repository = std::make_shared<gui::persistence::NodeRepository>(
+  m_node_repository = std::make_shared<femp::persistence::NodeRepository>(
       m_project.getDomainModel());
 
   m_input = new Input; // to avoid circular dependencies

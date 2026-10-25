@@ -15,9 +15,9 @@ AnalysisResultsModel::AnalysisResultsModel(femp::Project &project,
 
   m_rows = 0;
 
-  element_repository = std::make_shared<gui::persistence::ElementRepository>(
+  element_repository = std::make_shared<femp::persistence::ElementRepository>(
       m_project.getDomainModel());
-  m_node_repository = std::make_shared<gui::persistence::NodeRepository>(
+  m_node_repository = std::make_shared<femp::persistence::NodeRepository>(
       m_project.getDomainModel());
 
   std::vector<fem::Element> element_list = element_repository->getElementList();

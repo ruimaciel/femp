@@ -11,8 +11,7 @@
 // stl includes
 #include <memory>
 
-namespace gui {
-namespace persistence {
+namespace femp::persistence {
 
 class NodeRepository : public femp::application::INodeRepository {
 public:
@@ -29,7 +28,6 @@ private:
   std::shared_ptr<femp::domain::Model> m_domain_model;
 };
 
-} // namespace persistence
-} // namespace gui
+} // namespace femp::persistence
 
 #endif // FEMP_PERSISTENCE_NODEREPOSITORY_HPP

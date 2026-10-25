@@ -99,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent)
   // set the user interface
   setUserInterfaceAsClosed();
   d->loadPatternRepository =
-      std::make_shared<gui::persistence::LoadPatternRepository>(
+      std::make_shared<femp::persistence::LoadPatternRepository>(
           d->document.getProject().getDomainModel());
 }
 

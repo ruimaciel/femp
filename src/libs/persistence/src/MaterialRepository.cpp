@@ -1,7 +1,6 @@
 #include <persistence/MaterialRepository.hpp>
 
-namespace gui {
-namespace persistence {
+namespace femp::persistence {
 
 MaterialRepository::MaterialRepository(std::shared_ptr<femp::domain::Model> model)
     : m_domain_model(model) {}
@@ -14,5 +13,4 @@ void MaterialRepository::pushMaterial(fem::Material new_material) {
   m_domain_model->pushMaterial(new_material);
 }
 
-} // namespace persistence
-} // namespace gui
+} // namespace femp::persistence

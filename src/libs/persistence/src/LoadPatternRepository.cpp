@@ -1,7 +1,6 @@
 #include <persistence/LoadPatternRepository.hpp>
 
-namespace gui {
-namespace persistence {
+namespace femp::persistence {
 
 LoadPatternRepository::LoadPatternRepository(
     std::shared_ptr<femp::domain::Model> model)
@@ -21,5 +20,4 @@ LoadPatternRepository::getLoadPatternByIndex(size_t index) const {
   return m_domain_model->getLoadPatternList()[index];
 }
 
-} // namespace persistence
-} // namespace gui
+} // namespace femp::persistence

@@ -17,9 +17,9 @@ SelectionWidget::SelectionWidget(std::shared_ptr<femp::domain::Model> domain_mod
   this->setupUi(this);
 
   m_element_repository =
-      std::make_shared<gui::persistence::ElementRepository>(domain_model);
+      std::make_shared<femp::persistence::ElementRepository>(domain_model);
   m_node_repository =
-      std::make_shared<gui::persistence::NodeRepository>(domain_model);
+      std::make_shared<femp::persistence::NodeRepository>(domain_model);
 
   m_element_item = nullptr;
   m_node_item = nullptr;

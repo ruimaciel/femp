@@ -142,7 +142,7 @@ void NewProjectWizardPage3::getFileFromDialog(void) {
 
 void NewProjectWizardPage3::addNewMaterial(void) {
   femp::application::IMaterialRepositoryPtr material_repository =
-      std::make_shared<gui::persistence::MaterialRepository>(
+      std::make_shared<femp::persistence::MaterialRepository>(
           m_project.getDomainModel());
 
   NewMaterialDialog dialog(material_repository, this);

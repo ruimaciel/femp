@@ -1,13 +1,12 @@
 #include <persistence/NodeRepository.hpp>
 
-namespace gui {
-namespace persistence {
+namespace femp::persistence {
 
 NodeRepository::NodeRepository(std::shared_ptr<femp::domain::Model> model)
     : m_domain_model(model) {}
 
 std::vector<size_t>
-gui::persistence::NodeRepository::getNodeReferenceList() const {
+NodeRepository::getNodeReferenceList() const {
   return m_domain_model->getNodeReferenceList();
 }
 
@@ -23,5 +22,4 @@ size_t NodeRepository::getNodeSize() const {
   return getNodeReferenceList().size();
 }
 
-} // namespace persistence
-} // namespace gui
+} // namespace femp::persistence

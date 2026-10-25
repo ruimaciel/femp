@@ -1,7 +1,6 @@
 #include <persistence/ElementRepository.hpp>
 
-namespace gui {
-namespace persistence {
+namespace femp::persistence {
 
 ElementRepository::ElementRepository(std::shared_ptr<femp::domain::Model> model)
     : m_domain_model(model) {}
@@ -22,5 +21,4 @@ size_t ElementRepository::getElementSize() const {
   return m_domain_model->getElementSize();
 }
 
-} // namespace persistence
-} // namespace gui
+} // namespace femp::persistence

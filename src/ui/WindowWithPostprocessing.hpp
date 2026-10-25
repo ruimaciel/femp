@@ -16,7 +16,7 @@ class QComboBox;
  * Provides a window with the ability to select which AnalysisResults<> object
  * to use
  */
-class WindowWithPostprocessing : public WindowWith {
+class WindowWithPostprocessing : public femp::ui::WindowWith {
 protected:
   enum PostprocessingType {
     P_DISPLACEMENT,

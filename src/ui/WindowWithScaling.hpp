@@ -17,7 +17,7 @@
 /**
  * Provides a window with a toolbar which sets a scale
  */
-class WindowWithScaling : public WindowWith {
+class WindowWithScaling : public femp::ui::WindowWith {
 public:
   void createToolbar(QMainWindow *parent, femp::Project &results);
 

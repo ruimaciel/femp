@@ -6,10 +6,10 @@
 #include <QMainWindow>
 #include <QMenuBar>
 
-WindowWith::~WindowWith() {}
+femp::ui::WindowWith::~WindowWith() {}
 
-void WindowWith::createMenuBar(QMainWindow *, QMenuBar *) {}
+void femp::ui::WindowWith::createMenuBar(::QMainWindow *, ::QMenuBar *) {}
 
-void WindowWith::createToolbar(QMainWindow *, femp::Project &) {}
+void femp::ui::WindowWith::createToolbar(::QMainWindow *, femp::Project &) {}
 
-void WindowWith::connectSignalsToSlots(QMainWindow *) {}
+void femp::ui::WindowWith::connectSignalsToSlots(::QMainWindow *) {}

@@ -7,8 +7,7 @@
 // Qt includes
 #include <QString>
 
-namespace gui {
-namespace application {
+namespace femp::application {
 
 class DumpFemEquationCommand {
 public:
@@ -21,7 +20,6 @@ private:
   fem::AnalysisResult &result;
 };
 
-} // namespace application
-} // namespace gui
+} // namespace femp::application
 
 #endif

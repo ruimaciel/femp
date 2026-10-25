@@ -5,8 +5,7 @@
 #include <memory>
 #include <vector>
 
-namespace gui {
-namespace application {
+namespace femp::application {
 
 class ILoadPatternRepository {
 public:
@@ -22,7 +21,6 @@ public:
 
 using ILoadPatternRepositoryPtr = std::shared_ptr<ILoadPatternRepository>;
 
-} // namespace application
-} // namespace gui
+} // namespace femp::application
 
 #endif // FEMP_APPLICATION_ILOADPATTERNREPOSITORY_HPP

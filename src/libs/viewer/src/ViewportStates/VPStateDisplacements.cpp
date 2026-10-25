@@ -42,7 +42,7 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport) {
 
   scenegraph.clear();
 
-  std::shared_ptr<gui::application::INodeRepository> m_node_repository =
+  std::shared_ptr<femp::application::INodeRepository> m_node_repository =
       std::make_shared<gui::persistence::NodeRepository>(
           viewport->getDomainModel());
 
@@ -67,7 +67,7 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport) {
   }
 
   // add the elements to the scenegraph
-  std::shared_ptr<gui::application::IElementRepository> m_element_repository =
+  std::shared_ptr<femp::application::IElementRepository> m_element_repository =
       std::make_shared<gui::persistence::ElementRepository>(
           viewport->getProject().getDomainModel());
   std::vector<fem::Element> element_list =

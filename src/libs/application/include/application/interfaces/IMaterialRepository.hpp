@@ -5,8 +5,7 @@
 #include <memory>
 #include <vector>
 
-namespace gui {
-namespace application {
+namespace femp::application {
 
 class IMaterialRepository {
 public:
@@ -21,7 +20,6 @@ public:
 
 using IMaterialRepositoryPtr = std::shared_ptr<IMaterialRepository>;
 
-} // namespace application
-} // namespace gui
+} // namespace femp::application
 
 #endif // FEMP_APPLICATION_IMATERIALREPOSITORY_HPP

@@ -140,7 +140,7 @@ public:
 private:
   femp::Project &m_project;
   ViewportColors m_colors; // color definitions
-  std::shared_ptr<gui::application::INodeRepository> m_node_repository;
+  std::shared_ptr<femp::application::INodeRepository> m_node_repository;
 };
 
 #endif

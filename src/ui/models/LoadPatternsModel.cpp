@@ -6,7 +6,7 @@
 namespace femp::ui {
 
 LoadPatternsModel::LoadPatternsModel(
-    gui::application::ILoadPatternRepositoryPtr load_pattern_repository,
+    femp::application::ILoadPatternRepositoryPtr load_pattern_repository,
     QObject *parent)
     : QAbstractListModel(parent),
       m_load_pattern_repository(load_pattern_repository) {}

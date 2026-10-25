@@ -1,9 +1,7 @@
 #include <application/interfaces/IMaterialRepository.hpp>
 
-namespace gui {
-namespace application {
+namespace femp::application {
 
 IMaterialRepository::IMaterialRepository() {}
 
-} // namespace application
-} // namespace gui
+} // namespace femp::application

@@ -32,8 +32,8 @@ public:
 
 protected:
   QString generateElementTypeName(const fem::Element::Type type) const;
-  gui::application::IElementRepositoryPtr element_repository;
-  gui::application::INodeRepositoryPtr m_node_repository;
+  femp::application::IElementRepositoryPtr element_repository;
+  femp::application::INodeRepositoryPtr m_node_repository;
 };
 
 } // namespace femp::ui

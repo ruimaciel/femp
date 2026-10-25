@@ -18,7 +18,7 @@ class LoadPatternsModel : public QAbstractListModel {
 
 public:
   LoadPatternsModel(
-      gui::application::ILoadPatternRepositoryPtr load_pattern_repository,
+      femp::application::ILoadPatternRepositoryPtr load_pattern_repository,
       QObject *parent = nullptr);
 
   QVariant data(const QModelIndex &index,
@@ -28,7 +28,7 @@ public:
 
 protected:
   std::vector<fem::LoadPattern> m_loadPatterns;
-  gui::application::ILoadPatternRepositoryPtr m_load_pattern_repository;
+  femp::application::ILoadPatternRepositoryPtr m_load_pattern_repository;
 };
 
 } // namespace femp::ui

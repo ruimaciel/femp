@@ -1,9 +1,7 @@
 #include <application/interfaces/ILoadPatternRepository.hpp>
 
-namespace gui {
-namespace application {
+namespace femp::application {
 
 ILoadPatternRepository::ILoadPatternRepository() {}
 
-} // namespace application
-} // namespace gui
+} // namespace femp::application

@@ -14,7 +14,7 @@
 namespace gui {
 namespace persistence {
 
-class NodeRepository : public application::INodeRepository {
+class NodeRepository : public femp::application::INodeRepository {
 public:
   NodeRepository(std::shared_ptr<domain::Model> model);
 

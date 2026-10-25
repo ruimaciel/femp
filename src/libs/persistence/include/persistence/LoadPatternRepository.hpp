@@ -14,7 +14,7 @@
 namespace gui {
 namespace persistence {
 
-class LoadPatternRepository : public application::ILoadPatternRepository {
+class LoadPatternRepository : public femp::application::ILoadPatternRepository {
 public:
   LoadPatternRepository(std::shared_ptr<domain::Model> model);
 

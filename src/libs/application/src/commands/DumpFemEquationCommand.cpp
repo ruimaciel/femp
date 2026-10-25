@@ -4,11 +4,11 @@
 #include <QDebug>
 #include <QFile>
 
-gui::application::DumpFemEquationCommand::DumpFemEquationCommand(
+femp::application::DumpFemEquationCommand::DumpFemEquationCommand(
     fem::AnalysisResult &result, QString file_name)
     : result(result), file_name(file_name) {}
 
-void gui::application::DumpFemEquationCommand::execute() {
+void femp::application::DumpFemEquationCommand::execute() {
   qInfo() << "MainWindow::dumpEquation()";
 
   // check if file already exists

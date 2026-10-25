@@ -6,8 +6,7 @@
 #include <memory>
 #include <vector>
 
-namespace gui {
-namespace application {
+namespace femp::application {
 
 class INodeRepository {
 public:
@@ -23,7 +22,6 @@ public:
 
 using INodeRepositoryPtr = std::shared_ptr<INodeRepository>;
 
-} // namespace application
-} // namespace gui
+} // namespace femp::application
 
 #endif // FEMP_APPLICATION_INODEREPOSITORY_HPP

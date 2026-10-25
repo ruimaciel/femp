@@ -1,9 +1,7 @@
 #include <application/interfaces/INodeRepository.hpp>
 
-namespace gui {
-namespace application {
+namespace femp::application {
 
 INodeRepository::INodeRepository() {}
 
-} // namespace application
-} // namespace gui
+} // namespace femp::application

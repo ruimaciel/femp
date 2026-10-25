@@ -4,8 +4,7 @@
 #include <libfemp/Element.hpp>
 #include <memory>
 
-namespace gui {
-namespace application {
+namespace femp::application {
 
 class IElementRepository {
 public:
@@ -24,7 +23,6 @@ public:
 
 using IElementRepositoryPtr = std::shared_ptr<IElementRepository>;
 
-} // namespace application
-} // namespace gui
+} // namespace femp::application
 
 #endif // FEMP_APPLICATION_IELEMENTREPOSITORY_HPP

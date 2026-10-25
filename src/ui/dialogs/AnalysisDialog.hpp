@@ -27,7 +27,7 @@ class AnalysisDialog : public QDialog {
 
 public:
   AnalysisDialog(
-      gui::application::ILoadPatternRepositoryPtr load_pattern_repository,
+      femp::application::ILoadPatternRepositoryPtr load_pattern_repository,
       QWidget *parent = nullptr);
   ~AnalysisDialog();
 
@@ -48,7 +48,7 @@ protected:
    * Fills the combo box with the load pattern list from the model
    */
   void loadLoadPatternList(
-      gui::application::ILoadPatternRepositoryPtr load_pattern_repository);
+      femp::application::ILoadPatternRepositoryPtr load_pattern_repository);
 
 private:
   std::unique_ptr<Ui::AnalysisDialog> m_ui;

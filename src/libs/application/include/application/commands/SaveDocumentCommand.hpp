@@ -7,8 +7,7 @@
 // stl includes
 #include <string>
 
-namespace gui {
-namespace application {
+namespace femp::application {
 
 class SaveDocumentCommand {
 public:
@@ -21,7 +20,6 @@ private:
   std::string file_name;
 };
 
-} // namespace application
-} // namespace gui
+} // namespace femp::application
 
 #endif

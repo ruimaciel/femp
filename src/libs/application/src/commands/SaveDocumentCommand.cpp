@@ -6,11 +6,11 @@
 // stl includes
 #include <fstream>
 
-gui::application::SaveDocumentCommand::SaveDocumentCommand(
+femp::application::SaveDocumentCommand::SaveDocumentCommand(
     fem::Model &model, std::string file_name)
     : model(model), file_name(file_name) {}
 
-void gui::application::SaveDocumentCommand::execute() {
+void femp::application::SaveDocumentCommand::execute() {
   // check if if the given file_name exists
   std::ofstream out;
   out.open(file_name, std::ios::out | std::ios::trunc);

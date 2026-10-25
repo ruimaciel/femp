@@ -1,11 +1,9 @@
 #include <application/interfaces/IElementRepository.hpp>
 
-namespace gui {
-namespace application {
+namespace femp::application {
 
 IElementRepository::IElementRepository() {}
 
 IElementRepository::~IElementRepository() {}
 
-} // namespace application
-} // namespace gui
+} // namespace femp::application

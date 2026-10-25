@@ -9,7 +9,7 @@
 namespace femp::ui {
 
 NewMaterialDialog::NewMaterialDialog(
-    gui::application::IMaterialRepositoryPtr material_repository,
+    femp::application::IMaterialRepositoryPtr material_repository,
     QWidget *parent)
     : QDialog(parent), m_material_repository(material_repository),
       m_ui(std::make_unique<Ui::NewMaterialDialog>()) {

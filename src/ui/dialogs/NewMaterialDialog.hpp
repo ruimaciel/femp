@@ -21,7 +21,7 @@ class NewMaterialDialog : public QDialog {
 
 public:
   explicit NewMaterialDialog(
-      gui::application::IMaterialRepositoryPtr material_repository,
+      femp::application::IMaterialRepositoryPtr material_repository,
       QWidget *parent = nullptr);
   ~NewMaterialDialog();
 
@@ -36,7 +36,7 @@ private slots:
                          // to the forms
 
 private:
-  gui::application::IMaterialRepositoryPtr m_material_repository;
+  femp::application::IMaterialRepositoryPtr m_material_repository;
   std::unique_ptr<Ui::NewMaterialDialog> m_ui;
 };
 

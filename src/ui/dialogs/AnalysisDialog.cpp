@@ -13,7 +13,7 @@
 namespace femp::ui {
 
 AnalysisDialog::AnalysisDialog(
-    gui::application::ILoadPatternRepositoryPtr load_pattern_repository,
+    femp::application::ILoadPatternRepositoryPtr load_pattern_repository,
     QWidget *parent)
     : QDialog(parent), m_ui(std::make_unique<Ui::AnalysisDialog>()) {
   m_ui->setupUi(this);
@@ -73,7 +73,7 @@ int AnalysisDialog::loadPattern() const {
 }
 
 void AnalysisDialog::loadLoadPatternList(
-    gui::application::ILoadPatternRepositoryPtr load_pattern_repository) {
+    femp::application::ILoadPatternRepositoryPtr load_pattern_repository) {
   for (auto load_pattern : load_pattern_repository->getLoadPatternList()) {
     QString temp = QString(load_pattern.getLabel().c_str());
 

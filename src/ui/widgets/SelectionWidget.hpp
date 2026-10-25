@@ -55,8 +55,8 @@ protected:
       m_node_map; // list of all element references
 
   std::vector<fem::Group> m_selection_groups;
-  gui::application::IElementRepositoryPtr m_element_repository;
-  gui::application::INodeRepositoryPtr m_node_repository;
+  femp::application::IElementRepositoryPtr m_element_repository;
+  femp::application::INodeRepositoryPtr m_node_repository;
 };
 
 } // namespace femp::ui

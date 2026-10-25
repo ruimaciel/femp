@@ -79,7 +79,7 @@ struct MainWindow::Private {
   femp::DocumentState renderedDocumentState =
       femp::DocumentState::DocumentStateUnknown;
   QSignalMapper *windowMapper = nullptr;
-  gui::application::ILoadPatternRepositoryPtr loadPatternRepository;
+  femp::application::ILoadPatternRepositoryPtr loadPatternRepository;
 };
 
 MainWindow::MainWindow(QWidget *parent)
@@ -250,7 +250,7 @@ void MainWindow::reopenProject() {
 }
 
 static void saveDocument(femp::Document &doc, std::string file_name) {
-  gui::application::SaveDocumentCommand command(doc.getProject().getModel(),
+  femp::application::SaveDocumentCommand command(doc.getProject().getModel(),
                                                 file_name);
   command.execute();
 
@@ -720,7 +720,7 @@ void MainWindow::dumpFemEquation() {
   QStringList sl = dialog.selectedFiles();
   QString file_name = sl.at(0);
 
-  gui::application::DumpFemEquationCommand command(femp_result.back(),
+  femp::application::DumpFemEquationCommand command(femp_result.back(),
                                                    file_name);
   command.execute();
 }

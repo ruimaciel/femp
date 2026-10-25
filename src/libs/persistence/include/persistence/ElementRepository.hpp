@@ -14,7 +14,7 @@
 namespace gui {
 namespace persistence {
 
-class ElementRepository : public application::IElementRepository {
+class ElementRepository : public femp::application::IElementRepository {
 public:
   ElementRepository(std::shared_ptr<domain::Model> model);
 

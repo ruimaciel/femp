@@ -4,6 +4,7 @@
 #include <QMouseEvent>
 #include <libfemp/AnalysisResult.hpp>
 #include <selection/Selection.hpp>
+#include <viewer/ViewportLayer.hpp>
 
 #include "../SceneGraph.hpp"
 
@@ -25,12 +26,12 @@ public:
    * Initializes everything needed in a ViewportState once the focus is placed
    * on it
    */
-  virtual void initialize(BaseViewport *viewport) = 0;
+  virtual void initialize(BaseViewport &viewport) = 0;
 
   /**
    * Adds to the scenegraph all the objects being rendered
    */
-  virtual void populateScenegraph(BaseViewport *viewport) = 0;
+  virtual void populateScenegraph(BaseViewport &viewport) = 0;
 
   /**
    * Configures the viewport to render the scene according to new_result
@@ -40,20 +41,19 @@ public:
   virtual void setDisplacementsScale(float new_scale);
 
   /**
-   * Sets the visibility of a SceneGraph render group
-   * @param	group	scene graph render group code, as defined in class
-   * SceneGraph
-   * @param	state	true if visible, false if invisible
+   * Sets the visibility of a semantic viewport layer.
+   * @param layer viewport layer
+   * @param isVisible whether the layer is visible or not
    */
-  void setRenderGroupVisibility(SceneGraph::Groups group, bool state);
+  void setLayerVisibility(femp::ViewportLayer layer, bool isVisible);
 
   /**
    * Routine which will paint each OpenGL scene
    */
-  void paintGL(BaseViewport *viewport);
-  virtual void mousePressEvent(BaseViewport *viewport, QMouseEvent *event);
-  virtual void mouseMoveEvent(BaseViewport *viewport, QMouseEvent *event);
-  virtual void keyPressEvent(BaseViewport *viewport, QKeyEvent *event);
+  void paintGL(BaseViewport &viewport);
+  virtual void mousePressEvent(BaseViewport &viewport, QMouseEvent *event);
+  virtual void mouseMoveEvent(BaseViewport &viewport, QMouseEvent *event);
+  virtual void keyPressEvent(BaseViewport &viewport, QKeyEvent *event);
 
   /**
    * Visitor pattern for the scenegraph

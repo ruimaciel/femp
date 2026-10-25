@@ -7,6 +7,7 @@
 #include <viewer/BaseViewport.hpp>
 
 #include "../SceneGraphComponents/SGCPickRay.hpp" // debugging purposes only
+#include "ViewportLayerMapping.hpp"
 
 ViewportState::~ViewportState() { this->scenegraph.clear(); }
 
@@ -16,22 +17,22 @@ void ViewportState::setDisplacementsScale(float new_scale) {
   this->scale = new_scale;
 }
 
-void ViewportState::setRenderGroupVisibility(SceneGraph::Groups group,
-                                             bool state) {
-  this->scenegraph.rendering_groups[group].setVisible(state);
+void ViewportState::setLayerVisibility(femp::ViewportLayer layer,
+                                       bool isVisible) {
+  this->scenegraph
+      .rendering_groups[femp::viewer::detail::toSceneGraphGroup(layer)]
+      .setVisible(isVisible);
 }
 
-void ViewportState::paintGL(BaseViewport *viewport) {
-  assert(viewport != nullptr);
+void ViewportState::paintGL(BaseViewport &viewport) {
+  viewport.viewport_data.camera.reposition();
 
-  viewport->viewport_data.camera.reposition();
-
-  this->scenegraph.paint(viewport->viewport_data, viewport->getColors());
+  this->scenegraph.paint(viewport.viewport_data, viewport.getColors());
 }
 
-void ViewportState::mousePressEvent(BaseViewport *viewport,
+void ViewportState::mousePressEvent(BaseViewport &viewport,
                                     QMouseEvent *event) {
-  viewport->viewport_data.lastPos = event->pos();
+  viewport.viewport_data.lastPos = event->pos();
   // process left clicks
   if (event->buttons() & Qt::LeftButton) {
     fem::Point3D near, far;
@@ -40,41 +41,39 @@ void ViewportState::mousePressEvent(BaseViewport *viewport,
     GLint vport[4];
 
     // Ensure GL context is current when reading matrices for picking
-    viewport->makeCurrent();
+    viewport.makeCurrent();
 
-    glGetDoublev(GL_MODELVIEW_MATRIX, viewport->viewport_data.modelview);
-    glGetDoublev(GL_PROJECTION_MATRIX, viewport->viewport_data.projection);
+    glGetDoublev(GL_MODELVIEW_MATRIX, viewport.viewport_data.modelview);
+    glGetDoublev(GL_PROJECTION_MATRIX, viewport.viewport_data.projection);
     glGetIntegerv(GL_VIEWPORT, vport);
     gluUnProject(pos.x(), vport[3] - pos.y(), 0,
-                 viewport->viewport_data.modelview,
-                 viewport->viewport_data.projection, vport, &near.data[0],
+                 viewport.viewport_data.modelview,
+                 viewport.viewport_data.projection, vport, &near.data[0],
                  &near.data[1], &near.data[2]);
     gluUnProject(pos.x(), vport[3] - pos.y(), 1,
-                 viewport->viewport_data.modelview,
-                 viewport->viewport_data.projection, vport, &far.data[0],
+                 viewport.viewport_data.modelview,
+                 viewport.viewport_data.projection, vport, &far.data[0],
                  &far.data[1], &far.data[2]);
   }
 }
 
-void ViewportState::mouseMoveEvent(BaseViewport *viewport, QMouseEvent *event) {
-  assert(viewport != nullptr);
-
-  int dx = event->x() - viewport->viewport_data.lastPos.x();
-  int dy = event->y() - viewport->viewport_data.lastPos.y();
+void ViewportState::mouseMoveEvent(BaseViewport &viewport, QMouseEvent *event) {
+  int dx = event->x() - viewport.viewport_data.lastPos.x();
+  int dy = event->y() - viewport.viewport_data.lastPos.y();
 
   if (event->buttons() & Qt::LeftButton) {
     // TODO set action for left click button
   } else if (event->buttons() & Qt::RightButton) {
-    fem::Point3D rotation = viewport->viewport_data.camera.getRotation();
-    rotation.data[0] += dy / pow(2, viewport->viewport_data.zoom);
-    rotation.data[1] += dx / pow(2, viewport->viewport_data.zoom);
-    viewport->viewport_data.camera.setRotation(rotation);
+    fem::Point3D rotation = viewport.viewport_data.camera.getRotation();
+    rotation.data[0] += dy / pow(2, viewport.viewport_data.zoom);
+    rotation.data[1] += dx / pow(2, viewport.viewport_data.zoom);
+    viewport.viewport_data.camera.setRotation(rotation);
   }
 
-  viewport->viewport_data.lastPos = event->pos();
+  viewport.viewport_data.lastPos = event->pos();
 }
 
-void ViewportState::keyPressEvent(BaseViewport *, QKeyEvent *event) {
+void ViewportState::keyPressEvent(BaseViewport &, QKeyEvent *event) {
   event->ignore();
 }
 

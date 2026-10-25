@@ -24,21 +24,18 @@ VPStateTensorFields::VPStateTensorFields() : ViewportState() {
 
 VPStateTensorFields::~VPStateTensorFields() {}
 
-void VPStateTensorFields::initialize(BaseViewport *mv) {
+void VPStateTensorFields::initialize(BaseViewport &viewport) {
   // build the displaced_nodes from the analysis
-  assert(mv != nullptr);
 
-  this->m_stress_field_representation.setModel(mv->getProject().getModel());
-  this->m_displacements.setModel(mv->getProject().getModel());
+  this->m_stress_field_representation.setModel(viewport.getProject().getModel());
+  this->m_displacements.setModel(viewport.getProject().getModel());
 }
 
-void VPStateTensorFields::populateScenegraph(BaseViewport *viewport) {
-  assert(viewport != nullptr);
-
+void VPStateTensorFields::populateScenegraph(BaseViewport &viewport) {
   scenegraph.clear();
 
   // add the nodes to the scenegraph
-  fem::Model &femp_model = viewport->getProject().getModel();
+  fem::Model &femp_model = viewport.getProject().getModel();
   for (auto node : femp_model.getNodeMap()) {
     auto component = std::shared_ptr<SceneGraphComponent>(
         new SGC::Node(node.first, node.second, &this->m_displacements));
@@ -76,7 +73,7 @@ void VPStateTensorFields::setAnalysisResult(fem::AnalysisResult &new_result) {
 
 void VPStateTensorFields::setResultsRanges(fem::ResultsRanges<double> &) {}
 
-void VPStateTensorFields::keyPressEvent(BaseViewport *, QKeyEvent *) {}
+void VPStateTensorFields::keyPressEvent(BaseViewport &, QKeyEvent *) {}
 
 void VPStateTensorFields::showNegativePrincipalStressesVisibility(bool state) {
   m_stress_field_representation.showNegativePrincipalStressesVisibility(state);

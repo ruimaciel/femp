@@ -24,8 +24,8 @@ public:
   VPStateDisplacements();
   ~VPStateDisplacements();
 
-  void initialize(BaseViewport *viewport) override;
-  void populateScenegraph(BaseViewport *viewport) override;
+  void initialize(BaseViewport &viewport) override;
+  void populateScenegraph(BaseViewport &viewport) override;
 
   /**
    * Configures the viewport to render the scene according to new_result
@@ -39,13 +39,14 @@ public:
    */
   void setSelection(Selection) override;
 
-  void keyPressEvent(BaseViewport *viewport, QKeyEvent *event) override;
+  void keyPressEvent(BaseViewport &viewport, QKeyEvent *event) override;
 
   /**
    * Sets the relevant policies to render the OpenGL triangles with a wireframe
    * This isn't implemented in ViewportStates which won't render Opaque objects
+   * @param isVisible whether the triangles are visible
    */
-  void setTrianglesVisible(bool const state) override;
+  void setTrianglesVisible(bool const isVisible) override;
 };
 
 #endif

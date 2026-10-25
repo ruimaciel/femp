@@ -3,6 +3,7 @@
 
 // std includes
 #include <array>
+#include <memory>
 
 // Qt includes
 #include <QOpenGLWidget>
@@ -16,12 +17,13 @@
 #include <options/Options.hpp>
 #include <options/ViewportColors.hpp>
 #include <selection/Selection.hpp>
+#include <viewer/ViewportData.hpp>
+#include <viewer/ViewportLayer.hpp>
 
 #include "Project.hpp"
-#include "SceneGraph.hpp"
 
 class ViewportState;
-class Input;
+class InputStateMachine;
 
 /**
  * Base class for all Qt widgets that provide an opengl viewports to render the
@@ -83,7 +85,7 @@ public Q_SLOTS:
    * Sets the visibility state of any scenegraph group of the current viewport
    * state
    */
-  void setRenderGroupVisibility(SceneGraph::Groups group, bool state);
+  void setLayerVisibility(femp::ViewportLayer layer, bool visible);
 
   /**
    * Renders only the current selection of elements
@@ -131,7 +133,7 @@ protected:
   void normalizeAngle(int *angle);
 
 protected:
-  Input *m_input; // state pattern that handles user input
+  std::unique_ptr<InputStateMachine> m_input;
 
 public:
   ViewportData viewport_data;

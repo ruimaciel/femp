@@ -5,11 +5,12 @@
 #include <viewer/BaseViewport.hpp>
 
 #include "../ViewportStates/ViewportState.hpp"
-#include "Input.hpp"
+#include "InputStateMachine.hpp"
 
 namespace InputStates {
 
-void Start::press(BaseViewport *viewport, QMouseEvent *event, Input *input) {
+void Start::press(BaseViewport &viewport, QMouseEvent *event,
+                  InputStateMachine *input) {
   switch (event->buttons()) {
   case Qt::LeftButton:
     this->leftClick(viewport, event, input);
@@ -25,22 +26,22 @@ void Start::press(BaseViewport *viewport, QMouseEvent *event, Input *input) {
   }
 }
 
-void Start::leftClick(BaseViewport *viewport, QMouseEvent *event,
-                      Input *input) {
+void Start::leftClick(BaseViewport &viewport, QMouseEvent *event,
+                      InputStateMachine *input) {
   fem::Point3D near;
   near.x((float)event->x());
   near.y((float)event->y());
-  viewport->state->setSelectionStart(near);
+  viewport.state->setSelectionStart(near);
 
   // register place where mouse is clicked
-  viewport->viewport_data.lastPos = event->pos();
+  viewport.viewport_data.lastPos = event->pos();
 
-  input->changeState(&input->m_is_left_click);
+  input->changeToLeftClick();
 }
 
-void Start::rightClick(BaseViewport *viewport, QMouseEvent *event,
-                       Input *input) {
-  viewport->viewport_data.lastPos = event->pos(); // for the rotate
-  input->changeState(&input->m_is_right_click);
+void Start::rightClick(BaseViewport &viewport, QMouseEvent *event,
+                       InputStateMachine *input) {
+  viewport.viewport_data.lastPos = event->pos(); // for the rotate
+  input->changeToRightClick();
 }
 } // namespace InputStates

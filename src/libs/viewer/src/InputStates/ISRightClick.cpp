@@ -4,12 +4,12 @@
 #include <QMouseEvent>
 #include <viewer/BaseViewport.hpp>
 
-#include "Input.hpp"
+#include "InputStateMachine.hpp"
 
 namespace InputStates {
 
-void RightClick::press(BaseViewport * /*viewport*/, QMouseEvent *event,
-                       Input * /*input*/) {
+void RightClick::press(BaseViewport & /*viewport*/, QMouseEvent *event,
+                       InputStateMachine * /*input*/) {
   switch (event->buttons()) {
   default:
     qCritical() << "other";
@@ -17,19 +17,19 @@ void RightClick::press(BaseViewport * /*viewport*/, QMouseEvent *event,
   }
 }
 
-void RightClick::release(BaseViewport *viewport, QMouseEvent *event,
-                         Input *input) {
+void RightClick::release(BaseViewport &viewport, QMouseEvent *event,
+                         InputStateMachine *input) {
   // TODO check if left button was released
   this->rightRelease(viewport, event, input);
 }
 
-void RightClick::rightRelease(BaseViewport *viewport, QMouseEvent * /*event*/,
-                              Input *input) {
-  input->changeState(&input->m_is_start);
+void RightClick::rightRelease(BaseViewport & /*viewport*/, QMouseEvent * /*event*/,
+                              InputStateMachine *input) {
+  input->changeToStart();
 }
 
-void RightClick::move(BaseViewport *viewport, QMouseEvent * /*event*/,
-                      Input *input) {
-  input->changeState(&input->m_is_right_drag);
+void RightClick::move(BaseViewport & /*viewport*/, QMouseEvent * /*event*/,
+                      InputStateMachine *input) {
+  input->changeToRightDrag();
 }
 } // namespace InputStates

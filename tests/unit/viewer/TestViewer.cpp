@@ -1,6 +1,21 @@
 #include <QtTest/QtTest>
+#include <type_traits>
+#include <viewer/BaseViewport.hpp>
 #include <viewer/Camera.hpp>
 #include <viewer/ViewportData.hpp>
+#include <viewer/ViewportLayer.hpp>
+
+#include "InputStates/InputState.hpp"
+#include "InputStates/InputStateMachine.hpp"
+#include "Project.hpp"
+#include "ViewportStates/ViewportLayerMapping.hpp"
+
+namespace {
+static_assert(!std::is_copy_constructible_v<InputStateMachine>);
+static_assert(!std::is_copy_assignable_v<InputStateMachine>);
+static_assert(!std::is_move_constructible_v<InputStateMachine>);
+static_assert(!std::is_move_assignable_v<InputStateMachine>);
+} // namespace
 
 class TestViewer : public QObject {
   Q_OBJECT
@@ -12,6 +27,14 @@ private slots:
   void viewportData_defaultZoom_isZero();
   void viewportData_defaultNodeRadius_isOne();
   void viewportData_defaultAspectRatio_isOne();
+  void viewportLayerMapping_nodes_mapsToSceneGraphGroup();
+  void viewportLayerMapping_surfaces_mapsToSceneGraphGroup();
+  void viewportLayerMapping_wireframe_mapsToSceneGraphGroup();
+  void viewportLayerMapping_ghostSurfaces_mapsToSceneGraphGroup();
+  void viewportLayerMapping_nodeRestrictions_mapsToSceneGraphGroup();
+  void inputStateMachine_press_acceptsEvent();
+  void inputStateMachine_release_acceptsEvent();
+  void inputStateMachine_move_acceptsEvent();
 };
 
 void TestViewer::camera_setCenter_updatesCenterX() {
@@ -78,6 +101,109 @@ void TestViewer::viewportData_defaultAspectRatio_isOne() {
 
   // Assert
   QCOMPARE(aspect_ratio, 1.0f);
+}
+
+void TestViewer::viewportLayerMapping_nodes_mapsToSceneGraphGroup() {
+  // Arrange
+  const auto layer = femp::ViewportLayer::Nodes;
+
+  // Act
+  const auto group = femp::viewer::detail::toSceneGraphGroup(layer);
+
+  // Assert
+  QCOMPARE(group, SceneGraph::RG_NODES);
+}
+
+void TestViewer::viewportLayerMapping_surfaces_mapsToSceneGraphGroup() {
+  // Arrange
+  const auto layer = femp::ViewportLayer::Surfaces;
+
+  // Act
+  const auto group = femp::viewer::detail::toSceneGraphGroup(layer);
+
+  // Assert
+  QCOMPARE(group, SceneGraph::RG_SURFACES);
+}
+
+void TestViewer::viewportLayerMapping_wireframe_mapsToSceneGraphGroup() {
+  // Arrange
+  const auto layer = femp::ViewportLayer::Wireframe;
+
+  // Act
+  const auto group = femp::viewer::detail::toSceneGraphGroup(layer);
+
+  // Assert
+  QCOMPARE(group, SceneGraph::RG_WIREFRAME);
+}
+
+void TestViewer::viewportLayerMapping_ghostSurfaces_mapsToSceneGraphGroup() {
+  // Arrange
+  const auto layer = femp::ViewportLayer::GhostSurfaces;
+
+  // Act
+  const auto group = femp::viewer::detail::toSceneGraphGroup(layer);
+
+  // Assert
+  QCOMPARE(group, SceneGraph::RG_GHOST_SURFACES);
+}
+
+void TestViewer::viewportLayerMapping_nodeRestrictions_mapsToSceneGraphGroup() {
+  // Arrange
+  const auto layer = femp::ViewportLayer::NodeRestrictions;
+
+  // Act
+  const auto group = femp::viewer::detail::toSceneGraphGroup(layer);
+
+  // Assert
+  QCOMPARE(group, SceneGraph::RG_NODE_RESTRICTIONS);
+}
+
+void TestViewer::inputStateMachine_press_acceptsEvent() {
+  // Arrange
+  femp::Project project;
+  BaseViewport viewport(project, nullptr);
+  InputStateMachine input;
+  QMouseEvent event(QEvent::MouseButtonPress, QPointF(1, 2),
+                    Qt::NoButton, Qt::NoButton, Qt::NoModifier);
+  event.ignore();
+
+  // Act
+  input.press(viewport, &event);
+
+  // Assert
+  QVERIFY(event.isAccepted());
+}
+
+void TestViewer::inputStateMachine_release_acceptsEvent() {
+  // Arrange
+  femp::Project project;
+  BaseViewport viewport(project, nullptr);
+  InputStateMachine input;
+  QMouseEvent event(QEvent::MouseButtonRelease, QPointF(1, 2),
+                    Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+  event.ignore();
+
+  // Act
+  input.release(viewport, &event);
+
+  // Assert
+  QVERIFY(event.isAccepted());
+}
+
+void TestViewer::inputStateMachine_move_acceptsEvent() {
+  // Arrange
+  femp::Project project;
+  BaseViewport viewport(project, nullptr);
+  InputStateMachine input;
+  QMouseEvent event(QEvent::MouseMove, QPointF(1, 2), Qt::NoButton,
+                    Qt::NoButton, Qt::NoModifier);
+  event.ignore();
+
+  // Act
+  input.move(viewport, &event);
+
+  // Assert
+  QVERIFY(event.isAccepted());
 }
 
 QTEST_MAIN(TestViewer)

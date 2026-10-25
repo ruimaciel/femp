@@ -12,8 +12,9 @@ target_sources(viewer
             include/viewer/PostprocessingViewport.hpp
             include/viewer/TensorFieldViewport.hpp
             include/viewer/ViewportData.hpp
+            include/viewer/ViewportLayer.hpp
     PRIVATE
-        src/InputStates/Input.hpp
+        src/InputStates/InputStateMachine.hpp
         src/InputStates/InputState.hpp
         src/InputStates/ISLeftClick.hpp
         src/InputStates/ISLeftDrag.hpp
@@ -76,13 +77,14 @@ target_sources(viewer
         src/SceneGraphComponents/SGCNodeRestrictions.hpp
         src/SceneGraphComponents/SGCPickRay.hpp
         src/ViewportStates/ViewportState.hpp
+        src/ViewportStates/ViewportLayerMapping.hpp
         src/ViewportStates/VPStateDisplacements.hpp
         src/ViewportStates/VPStateGradients.hpp
         src/ViewportStates/VPStateModel.hpp
         src/ViewportStates/VPStateTensorFields.hpp
         src/BaseViewport.cpp
         src/Camera.cpp
-        src/InputStates/Input.cpp
+        src/InputStates/InputStateMachine.cpp
         src/InputStates/InputState.cpp
         src/InputStates/ISLeftClick.cpp
         src/InputStates/ISLeftDrag.cpp

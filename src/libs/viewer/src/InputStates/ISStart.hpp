@@ -10,11 +10,12 @@ namespace InputStates {
  */
 class Start : public InputState {
 public:
-  void press(BaseViewport *viewport, QMouseEvent *event, Input *input) override;
-  void leftClick(BaseViewport *viewport, QMouseEvent *event,
-                 Input *input) override;
-  void rightClick(BaseViewport *viewport, QMouseEvent *event,
-                  Input *input) override;
+  void press(BaseViewport &viewport, QMouseEvent *event,
+             InputStateMachine *input) override;
+  void leftClick(BaseViewport &viewport, QMouseEvent *event,
+                 InputStateMachine *input) override;
+  void rightClick(BaseViewport &viewport, QMouseEvent *event,
+                  InputStateMachine *input) override;
 };
 } // namespace InputStates
 

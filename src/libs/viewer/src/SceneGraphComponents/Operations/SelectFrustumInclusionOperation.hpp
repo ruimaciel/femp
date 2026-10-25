@@ -3,12 +3,17 @@
 
 #include <array>
 #include <libfemp/Point3D.hpp>
+#include <memory>
 #include <selection/Selection.hpp>
 
 #include "../SGCElement.hpp"
 #include "../SGCNode.hpp"
 #include "../SceneGraphComponent.hpp"
 #include "OperationsVisitor.hpp"
+
+namespace femp::domain {
+class Model;
+}
 
 namespace Operation {
 

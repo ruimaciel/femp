@@ -10,14 +10,16 @@ namespace InputStates {
  */
 class RightDrag : public InputState {
 public:
-  void press(BaseViewport *viewport, QMouseEvent *event, Input *input) override;
-  void release(BaseViewport *viewport, QMouseEvent *event,
-               Input *input) override;
+  void press(BaseViewport &viewport, QMouseEvent *event,
+             InputStateMachine *input) override;
+  void release(BaseViewport &viewport, QMouseEvent *event,
+               InputStateMachine *input) override;
 
-  void rightRelease(BaseViewport *viewport, QMouseEvent *event,
-                    Input *input) override;
+  void rightRelease(BaseViewport &viewport, QMouseEvent *event,
+                    InputStateMachine *input) override;
 
-  void move(BaseViewport *viewport, QMouseEvent *event, Input *input) override;
+  void move(BaseViewport &viewport, QMouseEvent *event,
+            InputStateMachine *input) override;
 };
 } // namespace InputStates
 

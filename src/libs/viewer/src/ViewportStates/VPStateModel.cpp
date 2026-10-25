@@ -25,19 +25,15 @@ VPStateModel::VPStateModel() : ViewportState() {
 
 VPStateModel::~VPStateModel() {}
 
-void VPStateModel::initialize(BaseViewport *viewport) {
-  assert(viewport != nullptr);
-
-  this->m_no_displacements.setModel(viewport->getProject().getModel());
+void VPStateModel::initialize(BaseViewport &viewport) {
+  this->m_no_displacements.setModel(viewport.getProject().getModel());
 }
 
-void VPStateModel::populateScenegraph(BaseViewport *viewport) {
-  assert(viewport != nullptr);
-
+void VPStateModel::populateScenegraph(BaseViewport &viewport) {
   scenegraph.clear();
 
   // add the nodes to the scenegraph
-  fem::Model &femp_model = viewport->getProject().getModel();
+  fem::Model &femp_model = viewport.getProject().getModel();
   auto map = femp_model.getNodeMap();
   for (auto node : map) {
     auto component = std::shared_ptr<SceneGraphComponent>(
@@ -68,8 +64,7 @@ void VPStateModel::populateScenegraph(BaseViewport *viewport) {
   }
 
   // set the visibility of the rendering groups
-  this->scenegraph.rendering_groups[SceneGraph::RG_WIREFRAME].setVisible(
-      false); // hide wireframe surfaces
+  this->setLayerVisibility(femp::ViewportLayer::Wireframe, false);
 
   // generate the scene graph
   this->scenegraph.generateSceneGraph();
@@ -79,13 +74,13 @@ void VPStateModel::setSelection(Selection) {
   qInfo() << "VPStateModel::setSelection(Selection)";
 }
 
-void VPStateModel::keyPressEvent(BaseViewport *viewport, QKeyEvent *event) {
-  qInfo() << "VPStateModel::keyPressEvent(BaseViewport*, QKeyEvent*)";
+void VPStateModel::keyPressEvent(BaseViewport &viewport, QKeyEvent *event) {
+  qInfo() << "VPStateModel::keyPressEvent(BaseViewport&, QKeyEvent*)";
 
   switch (event->key()) {
   case Qt::Key_W:
     m_element_representation_factory.toggleTriangleWireframeRendering();
-    viewport->update();
+    viewport.update();
     break;
 
   case Qt::Key_D: // change the displacements scale
@@ -96,7 +91,7 @@ void VPStateModel::keyPressEvent(BaseViewport *viewport, QKeyEvent *event) {
       m_element_representation_factory.setSurfaceSubdivisionLevel(ds.scale());
 
       // update the scene
-      viewport->update();
+      viewport.update();
       break;
 
     default:
@@ -110,6 +105,6 @@ void VPStateModel::keyPressEvent(BaseViewport *viewport, QKeyEvent *event) {
   }
 }
 
-void VPStateModel::setTrianglesVisible(bool const state) {
-  m_element_representation_factory.setTriangleWireframeRendering(state);
+void VPStateModel::setTrianglesVisible(bool const isVisible) {
+  m_element_representation_factory.setTriangleWireframeRendering(isVisible);
 }

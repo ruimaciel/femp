@@ -8,7 +8,6 @@
 #include <viewer/ViewportData.hpp>
 
 #include "Operations/OperationsVisitor.hpp"
-#include "Project.hpp"
 #include "boundaries/BoundaryStrategy.hpp" // a definition of a bounding volume through the use of a strategy pattern
 #include "boundaries/SphericalBoundary.hpp"
 

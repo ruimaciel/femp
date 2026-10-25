@@ -26,8 +26,8 @@ public:
   VPStateTensorFields();
   ~VPStateTensorFields();
 
-  void initialize(BaseViewport *mv);
-  void populateScenegraph(BaseViewport *mv);
+  void initialize(BaseViewport &viewport) override;
+  void populateScenegraph(BaseViewport &viewport) override;
 
   /**
    * Configures the viewport to render the scene according to new_result
@@ -35,7 +35,7 @@ public:
   void setAnalysisResult(fem::AnalysisResult &new_result);
   void setResultsRanges(fem::ResultsRanges<double> &ranges);
 
-  void keyPressEvent(BaseViewport *mv, QKeyEvent *event);
+  void keyPressEvent(BaseViewport &viewport, QKeyEvent *event) override;
 
   void showNegativePrincipalStressesVisibility(bool state);
   void showPositivePrincipalStressesVisibility(bool state);

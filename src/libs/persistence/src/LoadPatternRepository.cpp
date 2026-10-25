@@ -4,7 +4,7 @@ namespace gui {
 namespace persistence {
 
 LoadPatternRepository::LoadPatternRepository(
-    std::shared_ptr<domain::Model> model)
+    std::shared_ptr<femp::domain::Model> model)
     : m_domain_model(model) {}
 
 std::vector<fem::LoadPattern>

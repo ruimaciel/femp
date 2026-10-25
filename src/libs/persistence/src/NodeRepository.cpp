@@ -3,7 +3,7 @@
 namespace gui {
 namespace persistence {
 
-NodeRepository::NodeRepository(std::shared_ptr<domain::Model> model)
+NodeRepository::NodeRepository(std::shared_ptr<femp::domain::Model> model)
     : m_domain_model(model) {}
 
 std::vector<size_t>

@@ -21,7 +21,7 @@ class SelectionWidget : public QWidget, Ui::SelectionWidget {
   Q_OBJECT
 
 public:
-  SelectionWidget(std::shared_ptr<domain::Model> domain_model,
+  SelectionWidget(std::shared_ptr<femp::domain::Model> domain_model,
                   femp::SelectionManager &, QWidget *parent = nullptr);
 
 signals:
@@ -43,7 +43,8 @@ protected:
   Initializes the fem::Group list according to the group definitions stored in a
   given femp::Project object
   **/
-  void initializeSelectionGroups(std::shared_ptr<domain::Model> femp_model);
+  void
+  initializeSelectionGroups(std::shared_ptr<femp::domain::Model> femp_model);
 
 protected:
   QTreeWidgetItem *m_element_item;

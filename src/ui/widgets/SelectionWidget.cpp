@@ -10,7 +10,7 @@
 
 namespace femp::ui {
 
-SelectionWidget::SelectionWidget(std::shared_ptr<domain::Model> domain_model,
+SelectionWidget::SelectionWidget(std::shared_ptr<femp::domain::Model> domain_model,
                                  femp::SelectionManager &selection_manager,
                                  QWidget *parent)
     : QWidget(parent) {
@@ -105,7 +105,7 @@ void SelectionWidget::setSelection(Selection const &selection) {
 void SelectionWidget::clearSelection() {}
 
 void SelectionWidget::initializeSelectionGroups(
-    std::shared_ptr<domain::Model> femp_model) {
+    std::shared_ptr<femp::domain::Model> femp_model) {
   for (auto node_group : femp_model->getNodeGroupList()) {
     fem::Group group;
     group.setLabel(node_group.getLabel());

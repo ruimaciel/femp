@@ -501,7 +501,7 @@ void BaseViewport::showAll() {
 
 femp::Project &BaseViewport::getProject() { return m_project; }
 
-std::shared_ptr<domain::Model> BaseViewport::getDomainModel() {
+std::shared_ptr<femp::domain::Model> BaseViewport::getDomainModel() {
   return m_project.getDomainModel();
 }
 

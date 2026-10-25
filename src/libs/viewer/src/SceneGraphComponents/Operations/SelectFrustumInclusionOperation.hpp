@@ -42,7 +42,7 @@ public:
   void visit(SGC::Node &element);
   void visit(SGC::Element &element);
 
-  void selectInclusiveElements(std::shared_ptr<domain::Model> model);
+  void selectInclusiveElements(std::shared_ptr<femp::domain::Model> model);
 
 protected:
   void calculateNormalVectors(std::array<fem::Point3D, 4> const &near,

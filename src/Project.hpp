@@ -48,7 +48,7 @@ public:
    * Getter for the domain model contained in this project
    * @return a reference to the Project's domain model
    */
-  std::shared_ptr<domain::Model> getDomainModel();
+  std::shared_ptr<femp::domain::Model> getDomainModel();
 
   /**
    * Getter for the analysis results contained in this project
@@ -64,7 +64,7 @@ public:
 
 protected:
   fem::Model m_model; // the FEM model
-  std::shared_ptr<domain::Model> m_domainModel;
+  std::shared_ptr<femp::domain::Model> m_domainModel;
   std::vector<fem::AnalysisResult>
       m_analysisResults; // a list with all analysis
 };

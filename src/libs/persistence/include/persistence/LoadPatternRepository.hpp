@@ -16,7 +16,7 @@ namespace persistence {
 
 class LoadPatternRepository : public femp::application::ILoadPatternRepository {
 public:
-  LoadPatternRepository(std::shared_ptr<domain::Model> model);
+  LoadPatternRepository(std::shared_ptr<femp::domain::Model> model);
 
   // ILoadPatternRepository interface
 public:
@@ -27,7 +27,7 @@ public:
   fem::LoadPattern getLoadPatternByIndex(size_t index) const;
 
 private:
-  std::shared_ptr<domain::Model> m_domain_model;
+  std::shared_ptr<femp::domain::Model> m_domain_model;
 };
 
 } // namespace persistence

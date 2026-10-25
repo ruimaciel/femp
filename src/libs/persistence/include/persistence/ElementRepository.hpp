@@ -16,7 +16,7 @@ namespace persistence {
 
 class ElementRepository : public femp::application::IElementRepository {
 public:
-  ElementRepository(std::shared_ptr<domain::Model> model);
+  ElementRepository(std::shared_ptr<femp::domain::Model> model);
 
   std::vector<fem::Element> getElementList() const override;
   fem::Element getElementById(size_t element_id) const override;
@@ -24,7 +24,7 @@ public:
   size_t getElementSize() const override;
 
 private:
-  std::shared_ptr<domain::Model> m_domain_model;
+  std::shared_ptr<femp::domain::Model> m_domain_model;
 };
 
 } // namespace persistence

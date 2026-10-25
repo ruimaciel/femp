@@ -2,55 +2,56 @@
 
 #include "ModelImpl.hpp"
 
-domain::Model::Model(fem::Model &model) : m_impl(new ModelImpl(model)) {}
+femp::domain::Model::Model(fem::Model &model)
+    : m_impl(new femp::domain::ModelImpl(model)) {}
 
-domain::Model::~Model() {}
+femp::domain::Model::~Model() {}
 
-std::vector<fem::Element> domain::Model::getElementList() const {
+std::vector<fem::Element> femp::domain::Model::getElementList() const {
   return m_impl->getElementList();
 }
 
-fem::Element domain::Model::getElementByReference(size_t element_ref) const {
+fem::Element femp::domain::Model::getElementByReference(size_t element_ref) const {
   return m_impl->getElementByReference(element_ref);
 }
 
-size_t domain::Model::getElementSize() const {
+size_t femp::domain::Model::getElementSize() const {
   return m_impl->getElementList().size();
 }
 
-std::vector<size_t> domain::Model::getNodeReferenceList() const {
+std::vector<size_t> femp::domain::Model::getNodeReferenceList() const {
   return m_impl->getNodeReferenceList();
 }
 
-std::map<size_t, fem::Node> domain::Model::getNodeMap() const {
+std::map<size_t, fem::Node> femp::domain::Model::getNodeMap() const {
   return m_impl->getNodeMap();
 }
 
-fem::Node domain::Model::getNodeByReference(size_t node_reference) const {
+fem::Node femp::domain::Model::getNodeByReference(size_t node_reference) const {
   return m_impl->getNodeByReference(node_reference);
 }
 
-std::vector<fem::NodeGroup> domain::Model::getNodeGroupList() const {
+std::vector<fem::NodeGroup> femp::domain::Model::getNodeGroupList() const {
   return m_impl->getNodeGroupList();
 }
 
-std::vector<fem::ElementGroup> domain::Model::getElementGroupList() const {
+std::vector<fem::ElementGroup> femp::domain::Model::getElementGroupList() const {
   return m_impl->getElementGroupList();
 }
 
-std::vector<fem::LoadPattern> domain::Model::getLoadPatternList() const {
+std::vector<fem::LoadPattern> femp::domain::Model::getLoadPatternList() const {
   return m_impl->getLoadPatternList();
 }
 
-std::vector<fem::Material> domain::Model::getMaterialList() const {
+std::vector<fem::Material> femp::domain::Model::getMaterialList() const {
   return m_impl->getMaterialList();
 }
 
-void domain::Model::pushMaterial(fem::Material new_material) {
+void femp::domain::Model::pushMaterial(fem::Material new_material) {
   m_impl->pushMaterial(new_material);
 }
 
 std::map<unsigned int, fem::NodeRestrictions>
-domain::Model::getNodeRestrictions() const {
+femp::domain::Model::getNodeRestrictions() const {
   return m_impl->getNodeRestrictions();
 }

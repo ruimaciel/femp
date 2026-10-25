@@ -21,7 +21,7 @@ protected:
   SelectionWidget *m_selection_widget;
 
 public:
-  SelectionDialog(std::shared_ptr<domain::Model> model,
+  SelectionDialog(std::shared_ptr<femp::domain::Model> model,
                   femp::SelectionManager &selection_manager,
                   QWidget *parent = nullptr);
 };

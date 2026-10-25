@@ -2,7 +2,7 @@
 
 namespace femp {
 
-Project::Project() : m_domainModel(std::make_shared<domain::Model>(m_model)) {}
+Project::Project() : m_domainModel(std::make_shared<femp::domain::Model>(m_model)) {}
 
 Project::~Project() {}
 
@@ -17,7 +17,7 @@ void Project::pushAnalysisResult(fem::AnalysisResult &new_result) {
 
 fem::Model &Project::getModel() { return this->m_model; }
 
-std::shared_ptr<domain::Model> Project::getDomainModel() {
+std::shared_ptr<femp::domain::Model> Project::getDomainModel() {
   return this->m_domainModel;
 }
 

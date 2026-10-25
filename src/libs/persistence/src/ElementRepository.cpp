@@ -3,7 +3,7 @@
 namespace gui {
 namespace persistence {
 
-ElementRepository::ElementRepository(std::shared_ptr<domain::Model> model)
+ElementRepository::ElementRepository(std::shared_ptr<femp::domain::Model> model)
     : m_domain_model(model) {}
 
 std::vector<fem::Element> ElementRepository::getElementList() const {

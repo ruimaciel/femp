@@ -16,7 +16,7 @@ private slots:
 void TestDomain::emptyModel_hasZeroElementCount() {
   // Arrange
   fem::Model underlying;
-  domain::Model model(underlying);
+  femp::domain::Model model(underlying);
 
   // Act
   auto element_count = model.getElementSize();
@@ -28,7 +28,7 @@ void TestDomain::emptyModel_hasZeroElementCount() {
 void TestDomain::emptyModel_hasZeroNodeReferences() {
   // Arrange
   fem::Model underlying;
-  domain::Model model(underlying);
+  femp::domain::Model model(underlying);
 
   // Act
   auto node_references = model.getNodeReferenceList();
@@ -41,7 +41,7 @@ void TestDomain::nodeAccess_returnsStoredCoordinates() {
   // Arrange
   fem::Model underlying;
   underlying.setNode(17, fem::Point3D(1.5, -2.0, 3.25));
-  domain::Model model(underlying);
+  femp::domain::Model model(underlying);
 
   // Act
   auto node = model.getNodeByReference(17);
@@ -54,7 +54,7 @@ void TestDomain::nodeMap_tracksSingleNode() {
   // Arrange
   fem::Model underlying;
   underlying.setNode(17, fem::Point3D(1.5, -2.0, 3.25));
-  domain::Model model(underlying);
+  femp::domain::Model model(underlying);
 
   // Act
   auto node_map = model.getNodeMap();
@@ -66,7 +66,7 @@ void TestDomain::nodeMap_tracksSingleNode() {
 void TestDomain::materialList_includesPushedMaterial() {
   // Arrange
   fem::Model underlying;
-  domain::Model model(underlying);
+  femp::domain::Model model(underlying);
   fem::Material concrete("Concrete", 30.0e9, 0.15);
 
   // Act
@@ -88,7 +88,7 @@ void TestDomain::elementAccess_returnsStoredType() {
   element.type = fem::Element::FE_TETRAHEDRON4;
   element.nodes = {0, 1, 2, 3};
   underlying.pushElement(element);
-  domain::Model model(underlying);
+  femp::domain::Model model(underlying);
 
   // Act
   auto loaded = model.getElementByReference(0);

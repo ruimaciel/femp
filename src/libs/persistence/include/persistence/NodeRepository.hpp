@@ -16,7 +16,7 @@ namespace persistence {
 
 class NodeRepository : public femp::application::INodeRepository {
 public:
-  NodeRepository(std::shared_ptr<domain::Model> model);
+  NodeRepository(std::shared_ptr<femp::domain::Model> model);
 
   // INodeRepository interface
 public:
@@ -26,7 +26,7 @@ public:
   size_t getNodeSize() const override;
 
 private:
-  std::shared_ptr<domain::Model> m_domain_model;
+  std::shared_ptr<femp::domain::Model> m_domain_model;
 };
 
 } // namespace persistence

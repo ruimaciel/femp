@@ -4,6 +4,7 @@
 #include <libfemp/Model.hpp>
 #include <libfemp/NodeRestrictions.hpp>
 
+namespace femp::domain {
 class ModelImpl {
 public:
   ModelImpl(fem::Model &model);
@@ -29,5 +30,6 @@ public:
 private:
   fem::Model &m_model;
 };
+} // namespace femp::domain
 
 #endif // FEMP_DOMAIN_MODELIMPL_HPP

@@ -112,7 +112,7 @@ public:
   void showSelection(const Selection);
   void showAll();
   femp::Project &getProject();
-  std::shared_ptr<domain::Model> getDomainModel();
+  std::shared_ptr<femp::domain::Model> getDomainModel();
 
   ViewportColors getColors() const;
 

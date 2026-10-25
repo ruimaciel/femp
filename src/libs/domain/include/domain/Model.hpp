@@ -15,9 +15,9 @@
 #include <memory>
 #include <vector>
 
+namespace femp::domain {
 class ModelImpl;
 
-namespace domain {
 class Model {
 public:
   Model(fem::Model &model);
@@ -46,5 +46,5 @@ private:
   std::unique_ptr<ModelImpl> m_impl;
 };
 
-} // namespace domain
+} // namespace femp::domain
 #endif // FEMP_DOMAIN_MODEL_HPP

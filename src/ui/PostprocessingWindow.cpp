@@ -18,7 +18,8 @@
 femp::ui::PostprocessingWindow::PostprocessingWindow(
     femp::Project &project, fem::AnalysisResult &result,
     ::ViewportColors &colors, ::QWidget *parent)
-    : femp::ui::MdiWindow(parent), WindowWithResults(), WindowWithPostprocessing(),
+    : femp::ui::MdiWindow(parent), WindowWithResults(),
+      femp::ui::WindowWithPostprocessing(),
       WindowWithScaling(), femp::ui::BaseWindow("Gradient") {
   this->setGradientValuesRange(result);
   this->viewport =
@@ -50,7 +51,7 @@ void femp::ui::PostprocessingWindow::setAnalysisResult(
 void femp::ui::PostprocessingWindow::connectSignalsToSlots() {
   femp::ui::MdiWindow::connectSignalsToSlots();
   WindowWithScaling::connectSignalsToSlots(this);
-  WindowWithPostprocessing::connectSignalsToSlots(this);
+  femp::ui::WindowWithPostprocessing::connectSignalsToSlots(this);
 
   connect(m_postprocessingComboBox, SIGNAL(activated(int)), this,
           SLOT(setPostprocessingState(int)));
@@ -63,7 +64,7 @@ void femp::ui::PostprocessingWindow::connectSignalsToSlots() {
 void femp::ui::PostprocessingWindow::createToolBars(femp::Project &project) {
   WindowWithScaling::createToolbar(this, project);
   WindowWithResults::createToolbar(this, project);
-  WindowWithPostprocessing::createToolbar(this, project);
+  femp::ui::WindowWithPostprocessing::createToolbar(this, project);
 
   // create
   m_toolBarToggleMenuBarVisibility = addToolBar(tr("Menu bar visibility"));

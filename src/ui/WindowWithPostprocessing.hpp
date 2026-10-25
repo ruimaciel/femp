@@ -16,6 +16,8 @@ class QComboBox;
  * Provides a window with the ability to select which AnalysisResults<> object
  * to use
  */
+namespace femp::ui {
+
 class WindowWithPostprocessing : public femp::ui::WindowWith {
 protected:
   enum PostprocessingType {
@@ -40,7 +42,9 @@ protected:
   QComboBox *m_postprocessingComboBox;
 
 public:
-  void createToolbar(QMainWindow *parent, femp::Project &results);
+  void createToolbar(::QMainWindow *parent, femp::Project &results);
 };
+
+} // namespace femp::ui
 
 #endif

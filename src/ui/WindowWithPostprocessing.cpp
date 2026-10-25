@@ -7,8 +7,8 @@
 #include <QString>
 #include <QToolBar>
 
-void WindowWithPostprocessing::createToolbar(QMainWindow *parent,
-                                             femp::Project &) {
+void femp::ui::WindowWithPostprocessing::createToolbar(::QMainWindow *parent,
+                                                       femp::Project &) {
   m_postprocessingComboBox = new QComboBox(parent);
   QString text;
 

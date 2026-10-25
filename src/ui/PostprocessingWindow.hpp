@@ -34,7 +34,7 @@ namespace femp::ui {
 
 class PostprocessingWindow : public femp::ui::MdiWindow,
                              public WindowWithResults,
-                             public WindowWithPostprocessing,
+                             public femp::ui::WindowWithPostprocessing,
                              public WindowWithScaling,
                              public femp::ui::BaseWindow {
   Q_OBJECT

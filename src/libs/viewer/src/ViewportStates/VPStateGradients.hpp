@@ -27,8 +27,8 @@ public:
   VPStateGradients();
   ~VPStateGradients();
 
-  void initialize(BaseViewport *mv);
-  void populateScenegraph(BaseViewport *mv);
+  void initialize(BaseViewport &viewport) override;
+  void populateScenegraph(BaseViewport &viewport) override;
 
   /**
    * Configures the viewport to render the scene according to new_result
@@ -44,7 +44,7 @@ public:
    */
   void setSelection(Selection);
 
-  void keyPressEvent(BaseViewport *mv, QKeyEvent *event);
+  void keyPressEvent(BaseViewport &viewport, QKeyEvent *event) override;
 
 public:
   // set which gradient field to render

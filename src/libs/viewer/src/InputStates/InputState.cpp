@@ -8,9 +8,9 @@
 
 InputState::~InputState() {}
 
-void InputState::press(BaseViewport *viewport, QMouseEvent *event,
+void InputState::press(BaseViewport &viewport, QMouseEvent *event,
                        Input *input) {
-  qCritical() << "InputState::press(BaseViewport *viewport, QMouseEvent "
+  qCritical() << "InputState::press(BaseViewport &viewport, QMouseEvent "
                  "*event, Input *input)";
 
   switch (event->buttons()) {
@@ -28,33 +28,33 @@ void InputState::press(BaseViewport *viewport, QMouseEvent *event,
   }
 }
 
-void InputState::release(BaseViewport * /*viewport*/, QMouseEvent * /*event*/,
+void InputState::release(BaseViewport & /*viewport*/, QMouseEvent * /*event*/,
                          Input * /*input*/) {
-  qCritical() << "InputState::release(BaseViewport *viewport, QMouseEvent "
+  qCritical() << "InputState::release(BaseViewport &viewport, QMouseEvent "
                  "*event, Input *input)";
 }
 
-void InputState::leftClick(BaseViewport * /*viewport*/, QMouseEvent * /*event*/,
+void InputState::leftClick(BaseViewport & /*viewport*/, QMouseEvent * /*event*/,
                            Input * /*input*/) {
   qCritical() << "InputState::leftClick(Input *input) defaulted";
 }
 
-void InputState::leftRelease(BaseViewport * /*viewport*/,
+void InputState::leftRelease(BaseViewport & /*viewport*/,
                              QMouseEvent * /*event*/, Input * /*input*/) {
   qCritical() << "InputState::leftRelease(Input *input) defaulted";
 }
 
-void InputState::rightClick(BaseViewport * /*viewport*/,
+void InputState::rightClick(BaseViewport & /*viewport*/,
                             QMouseEvent * /*event*/, Input * /*input*/) {
   qCritical() << "InputState::rightClick(Input *input) defaulted";
 }
 
-void InputState::rightRelease(BaseViewport * /*viewport*/,
+void InputState::rightRelease(BaseViewport & /*viewport*/,
                               QMouseEvent * /*event*/, Input * /*input*/) {
   qCritical() << "InputState::rightRelease(Input *input) defaulted";
 }
 
-void InputState::move(BaseViewport * /*viewport*/, QMouseEvent * /*event*/,
+void InputState::move(BaseViewport & /*viewport*/, QMouseEvent * /*event*/,
                       Input * /*input*/) {
   qCritical() << "InputState::move(Input *input) defaulted";
 }

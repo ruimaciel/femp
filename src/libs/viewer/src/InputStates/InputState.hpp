@@ -16,23 +16,23 @@ public:
   /**
    * Depending on the state, checks which mouse button has been pressed
    */
-  virtual void press(BaseViewport *viewport, QMouseEvent *event, Input *input);
+  virtual void press(BaseViewport &viewport, QMouseEvent *event, Input *input);
 
   /**
    * Depending on the state, checks which mouse button has been released
    */
-  virtual void release(BaseViewport *viewport, QMouseEvent *event,
+  virtual void release(BaseViewport &viewport, QMouseEvent *event,
                        Input *input);
 
-  virtual void leftClick(BaseViewport *viewport, QMouseEvent *event,
+  virtual void leftClick(BaseViewport &viewport, QMouseEvent *event,
                          Input *input);
-  virtual void leftRelease(BaseViewport *viewport, QMouseEvent *event,
+  virtual void leftRelease(BaseViewport &viewport, QMouseEvent *event,
                            Input *input);
-  virtual void rightClick(BaseViewport *viewport, QMouseEvent *event,
+  virtual void rightClick(BaseViewport &viewport, QMouseEvent *event,
                           Input *input);
-  virtual void rightRelease(BaseViewport *viewport, QMouseEvent *event,
+  virtual void rightRelease(BaseViewport &viewport, QMouseEvent *event,
                             Input *input);
-  virtual void move(BaseViewport *viewport, QMouseEvent *event, Input *input);
+  virtual void move(BaseViewport &viewport, QMouseEvent *event, Input *input);
 
 protected:
   void changeState(Input &input, InputState *new_state);

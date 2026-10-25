@@ -10,14 +10,14 @@ namespace InputStates {
  */
 class LeftClick : public InputState {
 public:
-  void press(BaseViewport *viewport, QMouseEvent *event, Input *input) override;
-  void release(BaseViewport *viewport, QMouseEvent *event,
+  void press(BaseViewport &viewport, QMouseEvent *event, Input *input) override;
+  void release(BaseViewport &viewport, QMouseEvent *event,
                Input *input) override;
 
-  void leftRelease(BaseViewport *viewport, QMouseEvent *event,
+  void leftRelease(BaseViewport &viewport, QMouseEvent *event,
                    Input *input) override;
 
-  void move(BaseViewport *viewport, QMouseEvent *event, Input *input) override;
+  void move(BaseViewport &viewport, QMouseEvent *event, Input *input) override;
 };
 } // namespace InputStates
 

@@ -256,26 +256,26 @@ void BaseViewport::paintGL() {
   if (this->state) {
     // Keep the scene rendering path normal; only the view transform and
     // model-space node sizing are intentionally handled here.
-    this->state->paintGL(this);
+    this->state->paintGL(*this);
   } else {
     qWarning() << "BaseViewport::paintGL: state is null";
   }
 }
 
 void BaseViewport::mousePressEvent(QMouseEvent *event) {
-  m_input->press(this, event);
+  m_input->press(*this, event);
 
   update();
 }
 
 void BaseViewport::mouseReleaseEvent(QMouseEvent *event) {
-  m_input->release(this, event);
+  m_input->release(*this, event);
   update();
 }
 
 void BaseViewport::mouseMoveEvent(QMouseEvent *event) {
   // state->mouseMoveEvent(this, event);
-  m_input->move(this, event);
+  m_input->move(*this, event);
 
   // Throttle updates to reduce excessive repaints that can cause flicker.
   static QPoint lastUpdatePos = QPoint(-10000, -10000);
@@ -328,13 +328,13 @@ void BaseViewport::wheelEvent(QWheelEvent *event) {
 
 void BaseViewport::keyPressEvent(QKeyEvent *event) {
   if (this->state)
-    state->keyPressEvent(this, event);
+    state->keyPressEvent(*this, event);
 }
 
 void BaseViewport::setState(ViewportState *new_state) {
   this->state = new_state;
-  this->state->initialize(this);
-  this->state->populateScenegraph(this);
+  this->state->initialize(*this);
+  this->state->populateScenegraph(*this);
 
   auto nodes = Options::getInstance().getDisplayOptions().nodes;
   auto node_restrictions =

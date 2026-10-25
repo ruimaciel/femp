@@ -30,10 +30,10 @@ protected:
 public:
   Input();
 
-  void press(BaseViewport *, QMouseEvent *event);
-  void release(BaseViewport *, QMouseEvent *event);
+  void press(BaseViewport &, QMouseEvent *event);
+  void release(BaseViewport &, QMouseEvent *event);
 
-  void move(BaseViewport *, QMouseEvent *event);
+  void move(BaseViewport &, QMouseEvent *event);
 
   friend class InputState;
   void changeState(InputState *new_state);

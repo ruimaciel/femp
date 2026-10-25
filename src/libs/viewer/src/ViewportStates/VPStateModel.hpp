@@ -26,15 +26,15 @@ public:
   VPStateModel();
   ~VPStateModel();
 
-  void initialize(BaseViewport *viewport) override;
-  void populateScenegraph(BaseViewport *viewport) override;
+  void initialize(BaseViewport &viewport) override;
+  void populateScenegraph(BaseViewport &viewport) override;
 
   /**
    * Tweaks the way the viewport is rendered according to the current selection
    */
   void setSelection(Selection) override;
 
-  void keyPressEvent(BaseViewport *viewport, QKeyEvent *event) override;
+  void keyPressEvent(BaseViewport &viewport, QKeyEvent *event) override;
 
   /**
    * Sets the relevant policies to render the OpenGL triangles with a wireframe

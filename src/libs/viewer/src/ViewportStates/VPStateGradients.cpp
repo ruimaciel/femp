@@ -26,24 +26,21 @@ VPStateGradients::VPStateGradients() : ViewportState() {
 
 VPStateGradients::~VPStateGradients() {}
 
-void VPStateGradients::initialize(BaseViewport *viewport) {
+void VPStateGradients::initialize(BaseViewport &viewport) {
   // build the displaced_nodes from the analysis
-  assert(viewport != nullptr);
 
   this->setDisplacementsScale(1.0);
 
-  fem::Model &femp_model = viewport->getProject().getModel();
+  fem::Model &femp_model = viewport.getProject().getModel();
   this->m_gradient_representation.setModel(femp_model);
   this->m_displacements.setModel(femp_model);
 }
 
-void VPStateGradients::populateScenegraph(BaseViewport *viewport) {
-  assert(viewport != nullptr);
-
+void VPStateGradients::populateScenegraph(BaseViewport &viewport) {
   scenegraph.clear();
 
   // add the nodes to the scenegraph
-  fem::Model &femp_model = viewport->getProject().getModel();
+  fem::Model &femp_model = viewport.getProject().getModel();
 
   for (auto node : femp_model.getNodeMap()) {
     auto component = std::shared_ptr<SceneGraphComponent>(
@@ -91,17 +88,17 @@ void VPStateGradients::setDisplacementsScale(float new_scale) {
 
 void VPStateGradients::setSelection(Selection) {}
 
-void VPStateGradients::keyPressEvent(BaseViewport *viewport, QKeyEvent *event) {
+void VPStateGradients::keyPressEvent(BaseViewport &viewport, QKeyEvent *event) {
   switch (event->key()) {
   case Qt::Key_S: // change the displacements scale
   {
-    femp::ui::DialogScale ds(1.0f, viewport);
+    femp::ui::DialogScale ds(1.0f, &viewport);
     switch (ds.exec()) {
     case QDialog::Accepted:
       this->setDisplacementsScale(ds.getScale());
 
       // update the scene
-      viewport->update();
+      viewport.update();
       break;
 
     default:
@@ -117,7 +114,7 @@ void VPStateGradients::keyPressEvent(BaseViewport *viewport, QKeyEvent *event) {
       m_gradient_representation.setSurfaceSubdivisionLevel(ds.scale());
 
       // update the scene
-      viewport->update();
+      viewport.update();
       break;
 
     default:

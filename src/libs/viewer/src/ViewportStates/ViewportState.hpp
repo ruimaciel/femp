@@ -26,12 +26,12 @@ public:
    * Initializes everything needed in a ViewportState once the focus is placed
    * on it
    */
-  virtual void initialize(BaseViewport *viewport) = 0;
+  virtual void initialize(BaseViewport &viewport) = 0;
 
   /**
    * Adds to the scenegraph all the objects being rendered
    */
-  virtual void populateScenegraph(BaseViewport *viewport) = 0;
+  virtual void populateScenegraph(BaseViewport &viewport) = 0;
 
   /**
    * Configures the viewport to render the scene according to new_result
@@ -50,10 +50,10 @@ public:
   /**
    * Routine which will paint each OpenGL scene
    */
-  void paintGL(BaseViewport *viewport);
-  virtual void mousePressEvent(BaseViewport *viewport, QMouseEvent *event);
-  virtual void mouseMoveEvent(BaseViewport *viewport, QMouseEvent *event);
-  virtual void keyPressEvent(BaseViewport *viewport, QKeyEvent *event);
+  void paintGL(BaseViewport &viewport);
+  virtual void mousePressEvent(BaseViewport &viewport, QMouseEvent *event);
+  virtual void mouseMoveEvent(BaseViewport &viewport, QMouseEvent *event);
+  virtual void keyPressEvent(BaseViewport &viewport, QKeyEvent *event);
 
   /**
    * Visitor pattern for the scenegraph

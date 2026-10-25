@@ -29,22 +29,19 @@ VPStateDisplacements::VPStateDisplacements() : ViewportState() {
 
 VPStateDisplacements::~VPStateDisplacements() {}
 
-void VPStateDisplacements::initialize(BaseViewport *viewport) {
+void VPStateDisplacements::initialize(BaseViewport &viewport) {
   // build the displaced_nodes from the analysis
-  assert(viewport != nullptr);
 
   this->setDisplacementsScale(1.0); // TODO tweak this value
-  this->m_displacements.setModel(viewport->getProject().getModel());
+  this->m_displacements.setModel(viewport.getProject().getModel());
 }
 
-void VPStateDisplacements::populateScenegraph(BaseViewport *viewport) {
-  assert(viewport != nullptr);
-
+void VPStateDisplacements::populateScenegraph(BaseViewport &viewport) {
   scenegraph.clear();
 
   std::shared_ptr<femp::application::INodeRepository> m_node_repository =
       std::make_shared<femp::persistence::NodeRepository>(
-          viewport->getDomainModel());
+          viewport.getDomainModel());
 
   // add the nodes to the scenegraph
   for (std::pair<std::size_t, fem::Node> node :
@@ -56,7 +53,7 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport) {
       this->scenegraph.addPrimitiveComponent(SceneGraph::RG_NODES, component);
   }
 
-  fem::Model &femp_model = viewport->getProject().getModel();
+  fem::Model &femp_model = viewport.getProject().getModel();
   for (std::pair<const fem::node_restriction_ref_t, fem::NodeRestrictions>
            node_restrictions_pair : femp_model.getNodeRestrictions()) {
     this->scenegraph.addPrimitiveComponent(
@@ -69,7 +66,7 @@ void VPStateDisplacements::populateScenegraph(BaseViewport *viewport) {
   // add the elements to the scenegraph
   std::shared_ptr<femp::application::IElementRepository> m_element_repository =
       std::make_shared<femp::persistence::ElementRepository>(
-          viewport->getProject().getDomainModel());
+          viewport.getProject().getDomainModel());
   std::vector<fem::Element> element_list =
       m_element_repository->getElementList();
   for (std::vector<fem::Element>::size_type n = 0;
@@ -95,18 +92,18 @@ void VPStateDisplacements::setDisplacementsScale(float new_scale) {
 
 void VPStateDisplacements::setSelection(Selection) {}
 
-void VPStateDisplacements::keyPressEvent(BaseViewport *viewport,
+void VPStateDisplacements::keyPressEvent(BaseViewport &viewport,
                                          QKeyEvent *event) {
   switch (event->key()) {
   case Qt::Key_S: // change the displacements scale
   {
-    femp::ui::DialogScale ds(1.0f, viewport);
+    femp::ui::DialogScale ds(1.0f, &viewport);
     switch (ds.exec()) {
     case QDialog::Accepted:
       this->setDisplacementsScale(ds.getScale());
 
       // update the scene
-      viewport->update();
+      viewport.update();
       break;
 
     default:
@@ -122,7 +119,7 @@ void VPStateDisplacements::keyPressEvent(BaseViewport *viewport,
       m_element_representation_factory.setSurfaceSubdivisionLevel(ds.scale());
 
       // update the scene
-      viewport->update();
+      viewport.update();
       break;
 
     default:
@@ -132,7 +129,7 @@ void VPStateDisplacements::keyPressEvent(BaseViewport *viewport,
 
   case Qt::Key_W:
     m_element_representation_factory.toggleTriangleWireframeRendering();
-    viewport->update();
+    viewport.update();
     break;
 
   default:

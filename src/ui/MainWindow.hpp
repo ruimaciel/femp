@@ -22,6 +22,8 @@ namespace Ui {
 class MainWindow;
 }
 
+namespace femp::ui {
+
 /**
  * The application's main window
  **/
@@ -33,7 +35,7 @@ public:
   ~MainWindow();
 
 signals:
-  void selectionChanged(Selection);
+  void selectionChanged(::Selection);
   void selectionCleared();
 
   void documentOpened();
@@ -54,8 +56,8 @@ public slots:
   /**
    * @brief setSelection
    */
-  void setSelection(Selection); // sets the selection
-  void clearSelection();        // clears the selection
+  void setSelection(::Selection); // sets the selection
+  void clearSelection();          // clears the selection
 
   /**
    * Starts off a brand new FEM project
@@ -158,10 +160,12 @@ private:
   void setUserInterfacePostAnalysis();
 
 protected:
-  ViewportColors &getViewportColors();
+  ::ViewportColors &getViewportColors();
 
 protected:
   std::unique_ptr<Ui::MainWindow> ui;
 };
+
+} // namespace femp::ui
 
 #endif

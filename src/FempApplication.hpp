@@ -6,9 +6,10 @@
 
 namespace femp {
 class AppStateManager;
-}
-
+namespace ui {
 class MainWindow;
+}
+} // namespace femp
 
 namespace femp {
 
@@ -25,7 +26,7 @@ public:
 
 private:
   femp::AppStateManager *m_app_state_manager;
-  MainWindow *m_main_window;
+  femp::ui::MainWindow *m_main_window;
 };
 
 } // namespace femp

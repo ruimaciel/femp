@@ -67,13 +67,15 @@
 #include <string>
 #include <thread>
 
+namespace femp::ui {
+
 struct MainWindow::Private {
   fem::LinearAnalysis<double> analysis;
   CommandLineDockWidget *commandLineDockWidget = nullptr;
   QMdiArea *mdiArea = nullptr;
   femp::Document document;
   femp::SelectionManager selectionManager;
-  ViewportColors colors;
+  ::ViewportColors colors;
   femp::DocumentState renderedDocumentState =
       femp::DocumentState::DocumentStateUnknown;
   QSignalMapper *windowMapper = nullptr;
@@ -138,7 +140,7 @@ void MainWindow::onAppStateChanged(femp::AppState state) {
   }
 }
 
-void MainWindow::setSelection(Selection) {}
+void MainWindow::setSelection(::Selection) {}
 
 void MainWindow::clearSelection() {}
 
@@ -521,7 +523,7 @@ void MainWindow::setNodeActions() {
     return;
   }
 
-  Selection const selection = d->selectionManager.getSelection();
+  ::Selection const selection = d->selectionManager.getSelection();
 
   // shortcut just to reduce code clutter
   fem::Model &femp_model = d->document.getProject().getModel();
@@ -567,7 +569,7 @@ void MainWindow::moveSelectedNodes() {
   }
 
   // get list of node restraints from active window
-  Selection selection = d->selectionManager.getSelection();
+  ::Selection selection = d->selectionManager.getSelection();
   MoveNodesVisitor visitor(selection.getNodeReferences(), nd.getTranslation());
 
   d->document.getProject().accept(visitor);
@@ -598,7 +600,7 @@ void MainWindow::editSelection() {
   dialog.exec();
 
   // signal that a selection changed
-  Selection selection = d->selectionManager.getSelection();
+  ::Selection selection = d->selectionManager.getSelection();
   emit selectionChanged(selection);
 }
 
@@ -807,7 +809,7 @@ void MainWindow::showSelection() {
     return;
   }
 
-  Selection selection = d->selectionManager.getSelection();
+  ::Selection selection = d->selectionManager.getSelection();
   window->showSelection(selection);
 }
 
@@ -1059,4 +1061,6 @@ void MainWindow::setUserInterfacePostAnalysis() {
   ui->actionAnalysisSummary->setEnabled(true);
 }
 
-ViewportColors &MainWindow::getViewportColors() { return d->colors; }
+::ViewportColors &MainWindow::getViewportColors() { return d->colors; }
+
+} // namespace femp::ui

@@ -6,8 +6,7 @@
 
 #include "Selection.hpp"
 
-namespace gui {
-namespace services {
+namespace femp::services {
 
 class ISelectionService {
 public:
@@ -19,7 +18,6 @@ public:
   virtual std::set<std::size_t> getSelectedNodeReferences() const = 0;
 };
 
-} // namespace services
-} // namespace gui
+} // namespace femp::services
 
 #endif // FEMP_SERVICES_ISELECTIONSERVICE_HPP

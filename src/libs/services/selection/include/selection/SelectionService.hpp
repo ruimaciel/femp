@@ -4,8 +4,7 @@
 #include <cstddef>
 #include <selection/ISelectionService.hpp>
 
-namespace gui {
-namespace services {
+namespace femp::services {
 
 /**
  * @brief The SelectionService class provides interfaces to get the references
@@ -20,7 +19,6 @@ public:
   std::set<std::size_t> getSelectedNodeReferences() const override;
 };
 
-} // namespace services
-} // namespace gui
+} // namespace femp::services
 
 #endif // FEMP_SERVICES_SELECTIONSERVICE_HPP

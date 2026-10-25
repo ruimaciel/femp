@@ -1,7 +1,6 @@
 #include <selection/SelectionService.hpp>
 
-namespace gui {
-namespace services {
+namespace femp::services {
 
 SelectionService::SelectionService() {}
 
@@ -15,5 +14,4 @@ std::set<std::size_t> SelectionService::getSelectedNodeReferences() const {
   return {};
 }
 
-} // namespace services
-} // namespace gui
+} // namespace femp::services

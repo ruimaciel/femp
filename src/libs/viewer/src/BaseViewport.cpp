@@ -5,7 +5,7 @@
 #include <persistence/NodeRepository.hpp>
 #include <viewer/BaseViewport.hpp>
 
-#include "InputStates/Input.hpp" // for the state pattern that handles user input
+#include "InputStates/InputStateMachine.hpp"
 #include "SceneGraph.hpp"
 #include "SceneGraphComponents/Operations/SelectFrustumInclusionOperation.hpp"
 #include "SceneGraphComponents/Operations/SelectRayIntersectionOperation.hpp"
@@ -18,7 +18,7 @@ BaseViewport::BaseViewport(femp::Project &project, QWidget *parent)
   m_node_repository = std::make_shared<femp::persistence::NodeRepository>(
       m_project.getDomainModel());
 
-  m_input = std::make_unique<Input>();
+  m_input = std::make_unique<InputStateMachine>();
 
   this->state = nullptr;
 

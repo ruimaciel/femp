@@ -23,7 +23,7 @@
 #include "Project.hpp"
 
 class ViewportState;
-class Input;
+class InputStateMachine;
 
 /**
  * Base class for all Qt widgets that provide an opengl viewports to render the
@@ -133,7 +133,7 @@ protected:
   void normalizeAngle(int *angle);
 
 protected:
-  std::unique_ptr<Input> m_input;
+  std::unique_ptr<InputStateMachine> m_input;
 
 public:
   ViewportData viewport_data;

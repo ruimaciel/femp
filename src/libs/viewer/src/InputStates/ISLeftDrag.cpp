@@ -8,12 +8,12 @@
 #include <viewer/BaseViewport.hpp>
 
 #include "../ViewportStates/ViewportState.hpp"
-#include "Input.hpp"
+#include "InputStateMachine.hpp"
 
 namespace InputStates {
 
 void LeftDrag::press(BaseViewport & /*viewport*/, QMouseEvent *event,
-                     Input * /*input*/) {
+                     InputStateMachine * /*input*/) {
   switch (event->buttons()) {
   default:
     qCritical() << "other";
@@ -22,14 +22,14 @@ void LeftDrag::press(BaseViewport & /*viewport*/, QMouseEvent *event,
 }
 
 void LeftDrag::release(BaseViewport &viewport, QMouseEvent *event,
-                       Input *input) {
+                       InputStateMachine *input) {
   this->leftRelease(viewport, event, input);
 }
 
 void LeftDrag::leftRelease(BaseViewport &viewport, QMouseEvent *event,
-                           Input *input) {
+                           InputStateMachine *input) {
   viewport.state->setSelectionOff();
-  input->changeState(&input->m_is_start);
+  input->changeToStart();
   {
     std::array<fem::Point3D, 4> near; // near plane vertices
     std::array<fem::Point3D, 4> far;  // far plane vertices
@@ -83,7 +83,7 @@ void LeftDrag::leftRelease(BaseViewport &viewport, QMouseEvent *event,
 }
 
 void LeftDrag::move(BaseViewport &viewport, QMouseEvent *event,
-                    Input * /*input*/) {
+                    InputStateMachine * /*input*/) {
   fem::Point3D near(event->x(), event->y());
 
   viewport.state->setSelectionEnd(near);

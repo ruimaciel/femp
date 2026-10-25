@@ -7,12 +7,12 @@
 #include <QMouseEvent>
 #include <viewer/BaseViewport.hpp>
 
-#include "Input.hpp"
+#include "InputStateMachine.hpp"
 
 namespace InputStates {
 
 void LeftClick::press(BaseViewport & /*viewport*/, QMouseEvent *event,
-                      Input * /*input*/) {
+                      InputStateMachine * /*input*/) {
   switch (event->buttons()) {
   default:
     qCritical() << "other";
@@ -21,14 +21,14 @@ void LeftClick::press(BaseViewport & /*viewport*/, QMouseEvent *event,
 }
 
 void LeftClick::release(BaseViewport &viewport, QMouseEvent *event,
-                        Input *input) {
+                        InputStateMachine *input) {
   // TODO check if left button was released
   this->leftRelease(viewport, event, input);
 }
 
 void LeftClick::leftRelease(BaseViewport &viewport, QMouseEvent *event,
-                            Input *input) {
-  input->changeState(&input->m_is_start);
+                            InputStateMachine *input) {
+  input->changeToStart();
 
   {
     fem::Point3D near, far;
@@ -57,7 +57,7 @@ void LeftClick::leftRelease(BaseViewport &viewport, QMouseEvent *event,
 }
 
 void LeftClick::move(BaseViewport & /*viewport*/, QMouseEvent * /*event*/,
-                     Input *input) {
-  input->changeState(&input->m_is_left_drag);
+                     InputStateMachine *input) {
+  input->changeToLeftDrag();
 }
 } // namespace InputStates

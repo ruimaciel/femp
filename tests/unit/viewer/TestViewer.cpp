@@ -1,9 +1,21 @@
 #include <QtTest/QtTest>
+#include <type_traits>
+#include <viewer/BaseViewport.hpp>
 #include <viewer/Camera.hpp>
 #include <viewer/ViewportData.hpp>
 #include <viewer/ViewportLayer.hpp>
 
+#include "InputStates/InputState.hpp"
+#include "InputStates/InputStateMachine.hpp"
+#include "Project.hpp"
 #include "ViewportStates/ViewportLayerMapping.hpp"
+
+namespace {
+static_assert(!std::is_copy_constructible_v<InputStateMachine>);
+static_assert(!std::is_copy_assignable_v<InputStateMachine>);
+static_assert(!std::is_move_constructible_v<InputStateMachine>);
+static_assert(!std::is_move_assignable_v<InputStateMachine>);
+} // namespace
 
 class TestViewer : public QObject {
   Q_OBJECT
@@ -20,6 +32,9 @@ private slots:
   void viewportLayerMapping_wireframe_mapsToSceneGraphGroup();
   void viewportLayerMapping_ghostSurfaces_mapsToSceneGraphGroup();
   void viewportLayerMapping_nodeRestrictions_mapsToSceneGraphGroup();
+  void inputStateMachine_press_acceptsEvent();
+  void inputStateMachine_release_acceptsEvent();
+  void inputStateMachine_move_acceptsEvent();
 };
 
 void TestViewer::camera_setCenter_updatesCenterX() {
@@ -141,6 +156,54 @@ void TestViewer::viewportLayerMapping_nodeRestrictions_mapsToSceneGraphGroup() {
 
   // Assert
   QCOMPARE(group, SceneGraph::RG_NODE_RESTRICTIONS);
+}
+
+void TestViewer::inputStateMachine_press_acceptsEvent() {
+  // Arrange
+  femp::Project project;
+  BaseViewport viewport(project, nullptr);
+  InputStateMachine input;
+  QMouseEvent event(QEvent::MouseButtonPress, QPointF(1, 2),
+                    Qt::NoButton, Qt::NoButton, Qt::NoModifier);
+  event.ignore();
+
+  // Act
+  input.press(viewport, &event);
+
+  // Assert
+  QVERIFY(event.isAccepted());
+}
+
+void TestViewer::inputStateMachine_release_acceptsEvent() {
+  // Arrange
+  femp::Project project;
+  BaseViewport viewport(project, nullptr);
+  InputStateMachine input;
+  QMouseEvent event(QEvent::MouseButtonRelease, QPointF(1, 2),
+                    Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+  event.ignore();
+
+  // Act
+  input.release(viewport, &event);
+
+  // Assert
+  QVERIFY(event.isAccepted());
+}
+
+void TestViewer::inputStateMachine_move_acceptsEvent() {
+  // Arrange
+  femp::Project project;
+  BaseViewport viewport(project, nullptr);
+  InputStateMachine input;
+  QMouseEvent event(QEvent::MouseMove, QPointF(1, 2), Qt::NoButton,
+                    Qt::NoButton, Qt::NoModifier);
+  event.ignore();
+
+  // Act
+  input.move(viewport, &event);
+
+  // Assert
+  QVERIFY(event.isAccepted());
 }
 
 QTEST_MAIN(TestViewer)

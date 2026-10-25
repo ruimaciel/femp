@@ -1,13 +1,13 @@
 #ifndef FEMP_VIEWER_INPUTSTATE_HPP
 #define FEMP_VIEWER_INPUTSTATE_HPP
 
-class Input;
+class InputStateMachine;
 class QMouseEvent;
 class BaseViewport;
 
 /**
  * Implements the interface for each state in the state pattern defined by the
- * Input class
+ * InputStateMachine class
  */
 class InputState {
 public:
@@ -16,26 +16,25 @@ public:
   /**
    * Depending on the state, checks which mouse button has been pressed
    */
-  virtual void press(BaseViewport &viewport, QMouseEvent *event, Input *input);
+  virtual void press(BaseViewport &viewport, QMouseEvent *event,
+                     InputStateMachine *input);
 
   /**
    * Depending on the state, checks which mouse button has been released
    */
   virtual void release(BaseViewport &viewport, QMouseEvent *event,
-                       Input *input);
+                       InputStateMachine *input);
 
   virtual void leftClick(BaseViewport &viewport, QMouseEvent *event,
-                         Input *input);
+                         InputStateMachine *input);
   virtual void leftRelease(BaseViewport &viewport, QMouseEvent *event,
-                           Input *input);
+                           InputStateMachine *input);
   virtual void rightClick(BaseViewport &viewport, QMouseEvent *event,
-                          Input *input);
+                          InputStateMachine *input);
   virtual void rightRelease(BaseViewport &viewport, QMouseEvent *event,
-                            Input *input);
-  virtual void move(BaseViewport &viewport, QMouseEvent *event, Input *input);
-
-protected:
-  void changeState(Input &input, InputState *new_state);
+                            InputStateMachine *input);
+  virtual void move(BaseViewport &viewport, QMouseEvent *event,
+                    InputStateMachine *input);
 };
 
 #endif

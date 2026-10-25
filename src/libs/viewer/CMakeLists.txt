@@ -14,7 +14,7 @@ target_sources(viewer
             include/viewer/ViewportData.hpp
             include/viewer/ViewportLayer.hpp
     PRIVATE
-        src/InputStates/Input.hpp
+        src/InputStates/InputStateMachine.hpp
         src/InputStates/InputState.hpp
         src/InputStates/ISLeftClick.hpp
         src/InputStates/ISLeftDrag.hpp
@@ -84,7 +84,7 @@ target_sources(viewer
         src/ViewportStates/VPStateTensorFields.hpp
         src/BaseViewport.cpp
         src/Camera.cpp
-        src/InputStates/Input.cpp
+        src/InputStates/InputStateMachine.cpp
         src/InputStates/InputState.cpp
         src/InputStates/ISLeftClick.cpp
         src/InputStates/ISLeftDrag.cpp

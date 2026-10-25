@@ -7,19 +7,23 @@
 class QMainWindow;
 class QMenuBar;
 
-namespace fem {
+namespace femp {
 class Project;
 }
 
 /**
  * Base class that defines the interface for all WindowWith classes
  */
+namespace femp::ui {
+
 class WindowWith {
 public:
   virtual ~WindowWith();
-  virtual void createMenuBar(QMainWindow *, QMenuBar *);
-  virtual void createToolbar(QMainWindow *, fem::Project &);
-  virtual void connectSignalsToSlots(QMainWindow *);
+  virtual void createMenuBar(::QMainWindow *, ::QMenuBar *);
+  virtual void createToolbar(::QMainWindow *, femp::Project &);
+  virtual void connectSignalsToSlots(::QMainWindow *);
 };
+
+} // namespace femp::ui
 
 #endif

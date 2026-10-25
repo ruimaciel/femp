@@ -3,6 +3,8 @@
 #include "LoadPatternDialog.hpp"
 #include "ui_DomainLoadsDialog.h"
 
+namespace femp::ui {
+
 DomainLoadsDialog::DomainLoadsDialog(LoadPatternsModel &model, QWidget *parent)
     : QDialog(parent), m_ui(std::make_unique<Ui::DomainLoadsDialog>()) {
   m_ui->setupUi(this);
@@ -24,3 +26,5 @@ fem::Point3D DomainLoadsDialog::getForce() {
   p.data[2] = m_ui->doubleSpinBoxFz->value();
   return p;
 }
+
+} // namespace femp::ui

@@ -13,6 +13,8 @@ namespace Ui {
 class QuadratureRulesOptionsDialog;
 }
 
+namespace femp::ui {
+
 class QuadratureRulesOptionsDialog : public QDialog {
   Q_OBJECT
 
@@ -31,5 +33,7 @@ protected slots:
 private:
   std::unique_ptr<Ui::QuadratureRulesOptionsDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

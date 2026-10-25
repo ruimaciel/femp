@@ -13,6 +13,8 @@ class ResultsRangeDialog;
 /**
  * Dialog intended to be used to specify ranges of a given parameter
  */
+namespace femp::ui {
+
 class ResultsRangeDialog : public QDialog {
   Q_OBJECT
 
@@ -27,5 +29,7 @@ public:
 private:
   std::unique_ptr<Ui::ResultsRangeDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

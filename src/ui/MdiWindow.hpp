@@ -23,10 +23,12 @@ namespace fem {
 class NodeRestrictions;
 }
 
+namespace femp::ui {
+
 /**
  * Base class for all the MDI windows that render the model
  */
-class MdiWindow : public QMainWindow, protected Ui::MdiWindow {
+class MdiWindow : public QMainWindow, protected ::Ui::MdiWindow {
   Q_OBJECT
 
 public:
@@ -42,10 +44,10 @@ public:
   /**
    * Sets the colors which are used by the viewports
    */
-  void setColors(ViewportColors &colors);
+  void setColors(::ViewportColors &colors);
 
 signals:
-  void selectionChanged(Selection);
+  void selectionChanged(::Selection);
   void selectionCleared();
 
 public slots:
@@ -60,8 +62,8 @@ public slots:
   void setNodeVisibility(const bool);
   void setNodeRestrictionsVisibility(const bool);
 
-  void setSelection(Selection); // sets the selection
-  void clearSelection();        // clears the selection
+  void setSelection(::Selection); // sets the selection
+  void clearSelection();          // clears the selection
 
 protected:
   virtual void connectSignalsToSlots();
@@ -72,28 +74,31 @@ public:
   /**
    * Sets the viewport so that only the selected items are shown
    */
-  void showSelection(const Selection);
+  void showSelection(const ::Selection);
 
   /**
    * Sets the viewport so that all scenegraph components are shown
    */
   void showAll();
 
-  void updateNodeRestriction(std::size_t const, fem::NodeRestrictions const &);
+  void updateNodeRestriction(std::size_t const,
+                             ::fem::NodeRestrictions const &);
 
-  BaseViewport *viewport;
+  ::BaseViewport *viewport;
 
 protected:
-  QToolBar *m_viewportToolBar;   // toolbar to set camera angles
-  QToolBar *m_visibilityToolBar; // toolbar to set which rendering group (i.e.,
-                                 // nodes, surfaces, etc...) is visible
+  ::QToolBar *m_viewportToolBar;   // toolbar to set camera angles
+  ::QToolBar *m_visibilityToolBar; // toolbar to set which rendering group
+                                   // (i.e., nodes, surfaces, etc...) is visible
 
-  QAction *m_actionMenuVisibility; // toolbar menu button that toggles the menu
-                                   // bar visibility
+  ::QAction *m_actionMenuVisibility; // toolbar menu button that toggles the
+                                     // menu bar visibility
 
 private:
   struct Private;
   std::unique_ptr<Private> d;
 };
+
+} // namespace femp::ui
 
 #endif

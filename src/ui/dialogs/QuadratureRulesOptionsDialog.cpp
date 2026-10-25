@@ -2,6 +2,8 @@
 
 #include "ui_QuadratureRulesOptionsDialog.h"
 
+namespace femp::ui {
+
 QuadratureRulesOptionsDialog::QuadratureRulesOptionsDialog(
     fem::Analysis<double> &analysis, QWidget *parent)
     : QDialog(parent),
@@ -84,3 +86,5 @@ void QuadratureRulesOptionsDialog::setQuadratureRule() {
   analysis->quad9.domain_degree = m_ui->spinBox_Su_quad9->value();
   // TODO finish this
 }
+
+} // namespace femp::ui

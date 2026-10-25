@@ -4,6 +4,8 @@
 #include <libfemp/Model.hpp>
 #include <libfemp/io/export/JsonExporter.hpp>
 
+using namespace femp;
+
 Document::Document() {
   m_dirty = false;
   m_documentType = TYPE_SOLID3D; // nasty hack due to poor design
@@ -32,7 +34,7 @@ bool Document::isFileNameNotSet() const { return m_filename.isEmpty(); }
 
 void Document::setProjectType(Document::Type type) { m_documentType = type; }
 
-fem::Project &Document::getProject() { return this->m_project; }
+femp::Project &Document::getProject() { return this->m_project; }
 
 void Document::setDirty(bool unsaved) { m_dirty = unsaved; }
 

@@ -16,6 +16,8 @@ namespace Ui {
 class DomainLoadsDialog;
 }
 
+namespace femp::ui {
+
 class DomainLoadsDialog : public QDialog {
   Q_OBJECT
 
@@ -33,5 +35,7 @@ private:
 
   std::unique_ptr<Ui::DomainLoadsDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

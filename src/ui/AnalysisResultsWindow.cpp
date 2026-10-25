@@ -1,8 +1,10 @@
 #include "AnalysisResultsWindow.hpp"
 
-AnalysisResultsWindow::AnalysisResultsWindow(fem::Project &project,
+namespace femp::ui {
+
+AnalysisResultsWindow::AnalysisResultsWindow(femp::Project &project,
                                              QWidget *parent)
-    : QMdiSubWindow(parent), BaseWindow("Analysis results") {
+    : QMdiSubWindow(parent), femp::ui::BaseWindow("Analysis results") {
   m_project = &project;
   m_analysisResultsWidget = new AnalysisResultsWidget(project, parent);
 
@@ -10,3 +12,5 @@ AnalysisResultsWindow::AnalysisResultsWindow(fem::Project &project,
   this->setWindowTitle(tr("Analysis results"));
   this->setWidget(m_analysisResultsWidget);
 }
+
+} // namespace femp::ui

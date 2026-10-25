@@ -2,20 +2,20 @@
 
 #include "viewer/ModelViewport.hpp"
 
-ModelWindow::ModelWindow(fem::Project &project, ViewportColors &colors,
+ModelWindow::ModelWindow(femp::Project &project, ViewportColors &colors,
                          QWidget *parent)
-    : MdiWindow(parent), BaseWindow("Model") {
+    : femp::ui::MdiWindow(parent), femp::ui::BaseWindow("Model") {
   viewport = new ModelViewport(project, this);
   this->setCentralWidget(viewport);
 
   viewport->setColors(colors);
 
-  WindowWithWireframe::createToolbar(this);
+  femp::ui::WindowWithWireframe::createToolbar(this);
 
   connectSignalsToSlots();
 }
 
 void ModelWindow::connectSignalsToSlots() {
-  MdiWindow::connectSignalsToSlots();
-  WindowWithWireframe::connectSignalsToSlots(this);
+  femp::ui::MdiWindow::connectSignalsToSlots();
+  femp::ui::WindowWithWireframe::connectSignalsToSlots(this);
 }

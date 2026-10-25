@@ -13,6 +13,8 @@ namespace Ui {
 class MaterialsEditorDialog;
 }
 
+namespace femp::ui {
+
 class MaterialsEditorDialog : public QDialog {
   Q_OBJECT
 
@@ -36,5 +38,7 @@ private slots:
 private:
   std::unique_ptr<Ui::MaterialsEditorDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

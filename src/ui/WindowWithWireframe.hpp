@@ -14,7 +14,9 @@
  * Provides a window with the UI needed to select between rendering wireframe,
  * surfaces or both
  */
-class WindowWithWireframe : public WindowWith {
+namespace femp::ui {
+
+class WindowWithWireframe : public femp::ui::WindowWith {
 public:
   enum RenderingType {
     R_WIREFRAMES = 1, // values defined so that bit masking works
@@ -29,5 +31,7 @@ protected:
   QComboBox *m_comboBoxElementRendering;
   QToolBar *m_toolBarToggleElementRendering;
 };
+
+} // namespace femp::ui
 
 #endif

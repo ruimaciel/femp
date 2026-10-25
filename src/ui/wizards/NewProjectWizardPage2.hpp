@@ -5,6 +5,8 @@
 
 #include "ui/ui_NewProjectWizardPage2.h"
 
+namespace femp::ui {
+
 class NewProjectWizardPage2 : public QWizardPage,
                               public Ui::NewProjectWizardPage2 {
   Q_OBJECT
@@ -14,5 +16,7 @@ public:
 
   bool validatePage();
 };
+
+} // namespace femp::ui
 
 #endif

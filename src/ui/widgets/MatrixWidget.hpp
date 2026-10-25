@@ -5,23 +5,27 @@
 
 #include <memory>
 
-namespace fem {
+namespace femp {
 class Project;
 }
 
 /**
 Widget used in MDI windows to display the stiffness matrix of a given analysis
 **/
+namespace femp::ui {
+
 class MatrixWidget : public QWidget {
   Q_OBJECT
 
 public:
-  MatrixWidget(fem::Project &project, QWidget *parent = nullptr);
+  MatrixWidget(femp::Project &project, QWidget *parent = nullptr);
   ~MatrixWidget() override;
 
 private:
   struct Private;
   std::unique_ptr<Private> m_private;
 };
+
+} // namespace femp::ui
 
 #endif

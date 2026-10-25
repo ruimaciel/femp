@@ -16,6 +16,8 @@ class MoveNodesDialog;
 /**
  * Dialog used by GLDisplacementsWidget to input a new displacements scale
  */
+namespace femp::ui {
+
 class MoveNodesDialog : public QDialog {
   Q_OBJECT
 
@@ -28,5 +30,7 @@ public:
 private:
   std::unique_ptr<Ui::MoveNodesDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

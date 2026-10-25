@@ -1,5 +1,7 @@
 #include "DefaultProgressIndicator.hpp"
 
+namespace femp {
+
 DefaultProgressIndicator::DefaultProgressIndicator() {}
 
 void DefaultProgressIndicator::markSectionStart(std::string section_name) {
@@ -36,3 +38,5 @@ void DefaultProgressIndicator::error(std::string error_message) {
 }
 
 void DefaultProgressIndicator::markFinish() { emit finish(); }
+
+} // namespace femp

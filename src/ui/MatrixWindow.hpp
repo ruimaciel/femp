@@ -15,15 +15,19 @@ class QWidget;
 /**
  * MDI window designed to represent the stiffness matrix of an analysis
  */
-class MatrixWindow : public QMdiSubWindow, public BaseWindow {
+namespace femp::ui {
+
+class MatrixWindow : public ::QMdiSubWindow, public femp::ui::BaseWindow {
   Q_OBJECT
 
 protected:
-  MatrixWidget *m_matrixWidget;
-  fem::Project const *m_project;
+  femp::ui::MatrixWidget *m_matrixWidget;
+  femp::Project const *m_project;
 
 public:
-  MatrixWindow(fem::Project &project, QWidget *parent = nullptr);
+  MatrixWindow(femp::Project &project, ::QWidget *parent = nullptr);
 };
+
+} // namespace femp::ui
 
 #endif

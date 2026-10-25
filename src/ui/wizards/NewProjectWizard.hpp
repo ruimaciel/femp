@@ -9,18 +9,22 @@
 #include "ui/wizards/NewProjectWizardPage2.hpp"
 #include "ui/wizards/NewProjectWizardPage3.hpp"
 
+namespace femp::ui {
+
 class NewProjectWizard : public QWizard {
   Q_OBJECT
 
 public:
-  NewProjectWizard(Document &doc, QWidget *parent = nullptr);
+  NewProjectWizard(femp::Document &doc, QWidget *parent = nullptr);
 
 private:
 Q_SIGNALS:
-  void newProject(Document::Type type);
+  void newProject(femp::Document::Type type);
 
 public Q_SLOTS:
   void accept();
 };
+
+} // namespace femp::ui
 
 #endif

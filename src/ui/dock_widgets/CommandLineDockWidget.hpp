@@ -5,6 +5,8 @@
 
 #include "ui/ui_CommandLineDockWidget.h"
 
+namespace femp::ui {
+
 class CommandLineDockWidget : public QDockWidget {
   Q_OBJECT
 
@@ -35,5 +37,7 @@ public Q_SLOTS:
 Q_SIGNALS:
   void executeCommand(QString command);
 };
+
+} // namespace femp::ui
 
 #endif

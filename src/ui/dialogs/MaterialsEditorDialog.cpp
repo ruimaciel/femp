@@ -5,6 +5,8 @@
 // std includes
 #include <vector>
 
+namespace femp::ui {
+
 MaterialsEditorDialog::MaterialsEditorDialog(fem::Model &model, QWidget *parent)
     : QDialog(parent), model(model),
       m_ui(std::make_unique<Ui::MaterialsEditorDialog>()) {
@@ -39,3 +41,5 @@ void MaterialsEditorDialog::resetSelectionUI() {
     m_ui->pushButtonDelete->setEnabled(true);
   }
 }
+
+} // namespace femp::ui

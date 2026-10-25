@@ -5,6 +5,8 @@
 // Qt includes
 #include <QVBoxLayout>
 
+namespace femp::ui {
+
 ResultsRangeDialog::ResultsRangeDialog(QWidget *parent) : QDialog(parent) {
   m_ui->setupUi(this);
 }
@@ -81,3 +83,5 @@ bool ResultsRangeDialog::getValueRanges(
   // TODO test this
   return true;
 }
+
+} // namespace femp::ui

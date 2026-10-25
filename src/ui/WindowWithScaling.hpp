@@ -17,9 +17,11 @@
 /**
  * Provides a window with a toolbar which sets a scale
  */
-class WindowWithScaling : public WindowWith {
+namespace femp::ui {
+
+class WindowWithScaling : public femp::ui::WindowWith {
 public:
-  void createToolbar(QMainWindow *parent, fem::Project &results);
+  void createToolbar(QMainWindow *parent, femp::Project &results);
 
   /**
    * Adds menu entries to the window's menu bar
@@ -42,5 +44,7 @@ protected:
 
   QMenu *m_menuScaling;
 };
+
+} // namespace femp::ui
 
 #endif

@@ -7,7 +7,7 @@
 
 #include <memory>
 
-namespace fem {
+namespace femp {
 class Project;
 }
 
@@ -18,6 +18,8 @@ class AnalysisResultsWidget;
 /**
  * Widget used in MDI windows to display the results of a given analysis
  */
+namespace femp::ui {
+
 class AnalysisResultsWidget : public QWidget {
   Q_OBJECT
 
@@ -26,7 +28,7 @@ protected:
   QSortFilterProxyModel m_proxy_model;
 
 public:
-  AnalysisResultsWidget(fem::Project &project, QWidget *parent = nullptr);
+  AnalysisResultsWidget(femp::Project &project, QWidget *parent = nullptr);
   ~AnalysisResultsWidget() override;
 
 private Q_SLOTS:
@@ -37,5 +39,7 @@ private:
   struct Private;
   std::unique_ptr<Private> m_private;
 };
+
+} // namespace femp::ui
 
 #endif

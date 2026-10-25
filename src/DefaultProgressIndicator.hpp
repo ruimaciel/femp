@@ -10,8 +10,10 @@
 // stl includes
 #include <string>
 
+namespace femp {
+
 class DefaultProgressIndicator : public QObject,
-                                 public ProgressIndicatorStrategy {
+                                 public ::ProgressIndicatorStrategy {
   Q_OBJECT
 
 public:
@@ -85,5 +87,7 @@ signals:
    */
   void finish();
 };
+
+} // namespace femp
 
 #endif

@@ -13,6 +13,8 @@ namespace Ui {
 class NodeRestrainDialog;
 }
 
+namespace femp::ui {
+
 class NodeRestrainsDialog : public QDialog {
   Q_OBJECT
 
@@ -30,5 +32,7 @@ public:
 private:
   std::unique_ptr<Ui::NodeRestrainDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

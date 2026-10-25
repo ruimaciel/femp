@@ -11,6 +11,8 @@ Q_DECLARE_METATYPE(
 /**
  * Model class to be used in a model-view-controller pattern with Qt's widgets.
  */
+namespace femp::ui {
+
 class LoadPatternsModel : public QAbstractListModel {
   Q_OBJECT
 
@@ -28,5 +30,7 @@ protected:
   std::vector<fem::LoadPattern> m_loadPatterns;
   gui::application::ILoadPatternRepositoryPtr m_load_pattern_repository;
 };
+
+} // namespace femp::ui
 
 #endif

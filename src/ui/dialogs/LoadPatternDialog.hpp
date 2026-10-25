@@ -15,6 +15,8 @@ class LoadPatternDialog;
 /**
  * Prompts the user to specify a name for a load pattern
  */
+namespace femp::ui {
+
 class LoadPatternDialog : public QDialog {
   Q_OBJECT
 
@@ -27,5 +29,7 @@ public:
 private:
   std::unique_ptr<Ui::LoadPatternDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

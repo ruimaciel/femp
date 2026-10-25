@@ -9,6 +9,8 @@
 // std includes
 #include <cmath>
 
+namespace femp::ui {
+
 DialogScale::DialogScale(float scale, QWidget *parent)
     : QDialog(parent), m_ui(std::make_unique<Ui::DialogScale>()) {
   m_ui->setupUi(this);
@@ -35,3 +37,5 @@ void DialogScale::updateSlider(double value) {
 void DialogScale::updateSpinBox(int value) {
   m_ui->doubleSpinBox->setValue(std::pow(10, value));
 }
+
+} // namespace femp::ui

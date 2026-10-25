@@ -90,7 +90,7 @@ void VPStateModel::keyPressEvent(BaseViewport *viewport, QKeyEvent *event) {
 
   case Qt::Key_D: // change the displacements scale
   {
-    SurfaceSubdivisionDialog ds(2);
+    femp::ui::SurfaceSubdivisionDialog ds(2);
     switch (ds.exec()) {
     case QDialog::Accepted:
       m_element_representation_factory.setSurfaceSubdivisionLevel(ds.scale());

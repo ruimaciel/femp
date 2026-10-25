@@ -3,7 +3,7 @@
 
 #include "SceneGraph.hpp"
 
-TensorFieldViewport::TensorFieldViewport(fem::Project &project,
+TensorFieldViewport::TensorFieldViewport(femp::Project &project,
                                          fem::AnalysisResult &result,
                                          fem::ResultsRanges<double> &ranges,
                                          QWidget *parent)

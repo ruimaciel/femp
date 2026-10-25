@@ -8,18 +8,21 @@
 #include <application/interfaces/INodeRepository.hpp>
 #include <libfemp/Group.hpp>
 #include <map>
+#include <selection/Selection.hpp>
 
 #include "ui_SelectionWidget.h"
 
 /**
 Widget developed to select model objects
 **/
+namespace femp::ui {
+
 class SelectionWidget : public QWidget, Ui::SelectionWidget {
   Q_OBJECT
 
 public:
   SelectionWidget(std::shared_ptr<domain::Model> domain_model,
-                  SelectionManager &, QWidget *parent = nullptr);
+                  femp::SelectionManager &, QWidget *parent = nullptr);
 
 signals:
   void selectionChanged(const Selection &);
@@ -34,11 +37,11 @@ protected:
   initializes the widget by filling all the revevant values
   @param selection_manager
   **/
-  void initializeWidget(SelectionManager &selection_manager);
+  void initializeWidget(femp::SelectionManager &selection_manager);
 
   /**
   Initializes the fem::Group list according to the group definitions stored in a
-  given fem::Project object
+  given femp::Project object
   **/
   void initializeSelectionGroups(std::shared_ptr<domain::Model> femp_model);
 
@@ -55,5 +58,7 @@ protected:
   gui::application::IElementRepositoryPtr m_element_repository;
   gui::application::INodeRepositoryPtr m_node_repository;
 };
+
+} // namespace femp::ui
 
 #endif

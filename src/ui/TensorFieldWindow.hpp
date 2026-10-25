@@ -7,7 +7,6 @@
 
 #include "BaseWindow.hpp"
 #include "MdiWindow.hpp"
-#include "SelectionManager.hpp"
 #include "WindowWithResults.hpp"
 #include "WindowWithScaling.hpp"
 
@@ -21,6 +20,12 @@
 // Qt includes
 #include <QWidget>
 
+#include <SelectionManager.hpp>
+
+namespace femp {
+class SelectionManager;
+}
+
 class QAction;
 class QComboBox;
 class QToolbar;
@@ -28,9 +33,11 @@ class QToolbar;
 /**
  * MDI window designed to represent a tensor field of a given analysis result
  */
-class TensorFieldWindow : public MdiWindow,
+namespace femp::ui {
+
+class TensorFieldWindow : public femp::ui::MdiWindow,
                           public WindowWithResults,
-                          public BaseWindow {
+                          public femp::ui::BaseWindow {
   Q_OBJECT
 
 protected:
@@ -52,8 +59,8 @@ protected:
       m_resultsRanges; // used to set values for representation
 
 public:
-  TensorFieldWindow(fem::Project &project, fem::AnalysisResult &result,
-                    ViewportColors &colors, QWidget *parent = nullptr);
+  TensorFieldWindow(femp::Project &project, fem::AnalysisResult &result,
+                    ::ViewportColors &colors, ::QWidget *parent = nullptr);
 
 public Q_SLOTS:
   void setDisplacementsScale(double scale);
@@ -78,9 +85,11 @@ Q_SIGNALS:
 protected:
   void connectSignalsToSlots() override;
 
-  void createToolBars(fem::Project &);
+  void createToolBars(femp::Project &);
 
   void setGradientValuesRange(const fem::AnalysisResult &result);
 };
+
+} // namespace femp::ui
 
 #endif

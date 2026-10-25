@@ -16,6 +16,8 @@ class TableFilterDialog;
  * and filter the results After running the dialog, the status of each widget is
  * checked to tweak the visibility of each column in the table
  */
+namespace femp::ui {
+
 class TableFilterDialog : public QDialog {
   Q_OBJECT
 
@@ -74,5 +76,7 @@ private Q_SLOTS:
 private:
   std::unique_ptr<Ui::TableFilterDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

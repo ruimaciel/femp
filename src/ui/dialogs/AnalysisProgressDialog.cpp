@@ -2,6 +2,8 @@
 
 #include "ui_AnalysisProgressDialog.h"
 
+namespace femp::ui {
+
 AnalysisProgressDialog::AnalysisProgressDialog(QWidget *parent)
     : QDialog(parent), m_ui(std::make_unique<Ui::AnalysisProgressDialog>()) {
   m_ui->setupUi(this);
@@ -59,3 +61,5 @@ void AnalysisProgressDialog::finish() {
 
   m_ui->buttonBox->setStandardButtons(QDialogButtonBox::Ok);
 }
+
+} // namespace femp::ui

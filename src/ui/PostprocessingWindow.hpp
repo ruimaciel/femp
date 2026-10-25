@@ -7,7 +7,6 @@
 #include "../Project.hpp"
 #include "BaseWindow.hpp"
 #include "MdiWindow.hpp"
-#include "SelectionManager.hpp"
 #include "WindowWithPostprocessing.hpp"
 #include "WindowWithResults.hpp"
 #include "WindowWithScaling.hpp"
@@ -19,17 +18,25 @@
 // Qt includes
 #include <QWidget>
 
+#include <SelectionManager.hpp>
+
+namespace femp {
+class SelectionManager;
+}
+
 class QComboBox;
 class QToolBar;
 
 /**
  * MDI window designed to represent the model
  */
-class PostprocessingWindow : public MdiWindow,
+namespace femp::ui {
+
+class PostprocessingWindow : public femp::ui::MdiWindow,
                              public WindowWithResults,
-                             public WindowWithPostprocessing,
+                             public femp::ui::WindowWithPostprocessing,
                              public WindowWithScaling,
-                             public BaseWindow {
+                             public femp::ui::BaseWindow {
   Q_OBJECT
 
 protected:
@@ -61,8 +68,8 @@ protected:
       m_resultsRanges; // used to set values for representation
 
 public:
-  PostprocessingWindow(fem::Project &project, fem::AnalysisResult &result,
-                       ViewportColors &colors, QWidget *parent = nullptr);
+  PostprocessingWindow(femp::Project &project, fem::AnalysisResult &result,
+                       ::ViewportColors &colors, ::QWidget *parent = nullptr);
 
 public Q_SLOTS:
   void setDisplacementsScale(double scale);
@@ -87,9 +94,11 @@ Q_SIGNALS:
 protected:
   void connectSignalsToSlots() override;
 
-  void createToolBars(fem::Project &);
+  void createToolBars(femp::Project &);
 
   void setGradientValuesRange(const fem::AnalysisResult &result);
 };
+
+} // namespace femp::ui
 
 #endif

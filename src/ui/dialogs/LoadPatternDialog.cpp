@@ -2,6 +2,8 @@
 
 #include "ui_LoadPatternDialog.h"
 
+namespace femp::ui {
+
 LoadPatternDialog::LoadPatternDialog(QWidget *parent)
     : QDialog(parent), m_ui(std::unique_ptr<Ui::LoadPatternDialog>()) {
   m_ui->setupUi(this);
@@ -15,3 +17,5 @@ std::string LoadPatternDialog::getLabel() const {
 
   return text;
 }
+
+} // namespace femp::ui

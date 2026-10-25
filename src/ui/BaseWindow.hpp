@@ -11,6 +11,8 @@
  * MdiWindow but adding non-opengl MDI windows made it a
  * bit unwielding to rewrite.
  **/
+namespace femp::ui {
+
 class BaseWindow {
 public:
   /**
@@ -27,5 +29,7 @@ public:
 protected:
   QString m_windowLabel;
 };
+
+} // namespace femp::ui
 
 #endif

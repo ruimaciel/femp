@@ -12,7 +12,7 @@
 #include "SceneGraphComponents/Operations/ToggleSelectionOperation.hpp"
 #include "ViewportStates/ViewportState.hpp" // for the vieport's state pattern base class
 
-BaseViewport::BaseViewport(fem::Project &project, QWidget *parent)
+BaseViewport::BaseViewport(femp::Project &project, QWidget *parent)
     : QOpenGLWidget(parent), m_project(project) {
   m_node_repository = std::make_shared<gui::persistence::NodeRepository>(
       m_project.getDomainModel());
@@ -499,7 +499,7 @@ void BaseViewport::showAll() {
   this->state->runSceneGraphOperation(op);
 }
 
-fem::Project &BaseViewport::getProject() { return m_project; }
+femp::Project &BaseViewport::getProject() { return m_project; }
 
 std::shared_ptr<domain::Model> BaseViewport::getDomainModel() {
   return m_project.getDomainModel();

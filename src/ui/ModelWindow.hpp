@@ -17,13 +17,13 @@
 /**
  * MDI window designed to represent the model
  */
-class ModelWindow : public MdiWindow,
-                    public WindowWithWireframe,
-                    public BaseWindow {
+class ModelWindow : public femp::ui::MdiWindow,
+                    public femp::ui::WindowWithWireframe,
+                    public femp::ui::BaseWindow {
   Q_OBJECT
 
 public:
-  ModelWindow(fem::Project &project, ViewportColors &colors,
+  ModelWindow(femp::Project &project, ViewportColors &colors,
               QWidget *parent = nullptr);
 
 protected:

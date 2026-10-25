@@ -2,6 +2,8 @@
 
 #include "ui_AnalysisSummaryDialog.h"
 
+namespace femp::ui {
+
 AnalysisSummaryDialog::AnalysisSummaryDialog(fem::AnalysisResult const &results,
                                              QWidget *parent)
     : QDialog(parent), m_ui(std::make_unique<Ui::AnalysisSummaryDialog>()) {
@@ -14,3 +16,5 @@ AnalysisSummaryDialog::AnalysisSummaryDialog(fem::AnalysisResult const &results,
 }
 
 AnalysisSummaryDialog::~AnalysisSummaryDialog() = default;
+
+} // namespace femp::ui

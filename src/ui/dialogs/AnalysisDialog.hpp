@@ -20,6 +20,8 @@ namespace Ui {
 class AnalysisDialog;
 }
 
+namespace femp::ui {
+
 class AnalysisDialog : public QDialog {
   Q_OBJECT
 
@@ -51,5 +53,7 @@ protected:
 private:
   std::unique_ptr<Ui::AnalysisDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

@@ -18,15 +18,20 @@
 /**
  * MDI window designed to represent a model's results
  */
-class AnalysisResultsWindow : public QMdiSubWindow, public BaseWindow {
+namespace femp::ui {
+
+class AnalysisResultsWindow : public QMdiSubWindow,
+                              public femp::ui::BaseWindow {
   Q_OBJECT
 
 protected:
   AnalysisResultsWidget *m_analysisResultsWidget;
-  fem::Project const *m_project;
+  femp::Project const *m_project;
 
 public:
-  AnalysisResultsWindow(fem::Project &project, QWidget *parent = nullptr);
+  AnalysisResultsWindow(femp::Project &project, QWidget *parent = nullptr);
 };
+
+} // namespace femp::ui
 
 #endif

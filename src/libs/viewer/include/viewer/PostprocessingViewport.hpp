@@ -25,7 +25,7 @@ class PostprocessingViewport : public BaseViewport {
   Q_OBJECT
 
 public:
-  PostprocessingViewport(fem::Project &project, fem::AnalysisResult &result,
+  PostprocessingViewport(femp::Project &project, fem::AnalysisResult &result,
                          fem::ResultsRanges<double> &ranges,
                          QWidget *parent = nullptr);
   ~PostprocessingViewport();

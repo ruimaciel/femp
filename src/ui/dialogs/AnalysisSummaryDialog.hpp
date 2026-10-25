@@ -17,6 +17,8 @@ class AnalysisSummaryDialog;
  * Dialog box intended to display a set of values derived from the results of a
  * given analysis
  */
+namespace femp::ui {
+
 class AnalysisSummaryDialog : public QDialog {
   Q_OBJECT
 
@@ -28,5 +30,7 @@ public:
 private:
   std::unique_ptr<Ui::AnalysisSummaryDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

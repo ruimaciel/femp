@@ -11,6 +11,8 @@
  * Provides a Qt MVC model to use with QTableView widgets to represent the
  * stiffness matrix
  */
+namespace femp::ui {
+
 class MatrixModel : public QAbstractTableModel {
   Q_OBJECT
 protected:
@@ -18,7 +20,7 @@ protected:
   std::map<int, std::vector<fem::Element>::size_type> m_lineMap;
 
 public:
-  MatrixModel(fem::Project &project, QObject *parent = nullptr);
+  MatrixModel(femp::Project &project, QObject *parent = nullptr);
 
   QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
@@ -26,5 +28,7 @@ public:
   int columnCount(const QModelIndex &parent = QModelIndex()) const;
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 };
+
+} // namespace femp::ui
 
 #endif

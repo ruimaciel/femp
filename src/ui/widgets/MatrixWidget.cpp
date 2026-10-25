@@ -8,11 +8,13 @@
 
 #include "ui_MatrixWidget.h"
 
+namespace femp::ui {
+
 struct MatrixWidget::Private {
   Ui::MatrixWidget ui;
 };
 
-MatrixWidget::MatrixWidget(fem::Project &project, QWidget *parent)
+MatrixWidget::MatrixWidget(femp::Project &project, QWidget *parent)
     : QWidget(parent), m_private(std::make_unique<Private>()) {
   m_private->ui.setupUi(this);
 
@@ -21,3 +23,5 @@ MatrixWidget::MatrixWidget(fem::Project &project, QWidget *parent)
 }
 
 MatrixWidget::~MatrixWidget() = default;
+
+} // namespace femp::ui

@@ -10,6 +10,8 @@
 #include "assert.h"
 #include "ui_AnalysisDialog.h"
 
+namespace femp::ui {
+
 AnalysisDialog::AnalysisDialog(
     gui::application::ILoadPatternRepositoryPtr load_pattern_repository,
     QWidget *parent)
@@ -78,3 +80,5 @@ void AnalysisDialog::loadLoadPatternList(
     m_ui->comboBoxLoadPattern->addItem(temp);
   }
 }
+
+} // namespace femp::ui

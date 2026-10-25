@@ -21,7 +21,6 @@
 #include "ui/PostprocessingWindow.hpp"
 #include "ui/TensorFieldWindow.hpp"
 #include "ui/dialogs/AnalysisDialog.hpp"
-#include "ui/dock_widgets/CommandLineDockWidget.hpp"
 #include "ui/dialogs/AnalysisProgressDialog.hpp"
 #include "ui/dialogs/AnalysisSummaryDialog.hpp"
 #include "ui/dialogs/DomainLoadsDialog.hpp"
@@ -31,10 +30,12 @@
 #include "ui/dialogs/NodeRestrainsDialog.hpp"
 #include "ui/dialogs/QuadratureRulesOptionsDialog.hpp"
 #include "ui/dialogs/SelectionDialog.hpp"
+#include "ui/dock_widgets/CommandLineDockWidget.hpp"
 #include "ui/models/LoadPatternsModel.hpp"
 #include "ui/wizards/NewProjectWizard.hpp"
 
 // libfemp includes
+#include <AppState.hpp>
 #include <libfemp/Analysis.hpp>
 #include <libfemp/AnalysisResult.hpp>
 #include <libfemp/LinearAnalysis.hpp>
@@ -44,7 +45,6 @@
 #include <libfemp/solvers/CGSolver.hpp>
 #include <libfemp/solvers/CholeskySolver.hpp>
 #include <persistence/LoadPatternRepository.hpp>
-#include <AppState.hpp>
 
 // Qt includes
 #include <QAction>
@@ -67,14 +67,17 @@
 #include <string>
 #include <thread>
 
+namespace femp::ui {
+
 struct MainWindow::Private {
   fem::LinearAnalysis<double> analysis;
   CommandLineDockWidget *commandLineDockWidget = nullptr;
   QMdiArea *mdiArea = nullptr;
-  Document document;
-  SelectionManager selectionManager;
-  ViewportColors colors;
-  DocumentState renderedDocumentState = DocumentState::DocumentStateUnknown;
+  femp::Document document;
+  femp::SelectionManager selectionManager;
+  ::ViewportColors colors;
+  femp::DocumentState renderedDocumentState =
+      femp::DocumentState::DocumentStateUnknown;
   QSignalMapper *windowMapper = nullptr;
   gui::application::ILoadPatternRepositoryPtr loadPatternRepository;
 };
@@ -102,21 +105,21 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() = default;
 
-void MainWindow::onAppStateChanged(AppState state) {
+void MainWindow::onAppStateChanged(femp::AppState state) {
   switch (state.lifeCycleState) {
-    case ApplicationLifeCycleState::AppStateStart:
-      qInfo() << "Application state changed to: Starting";
-      this->show();
-      break;
-    case ApplicationLifeCycleState::AppStateActive:
-      qInfo() << "Application state changed to: Active";
-      break;
-    case ApplicationLifeCycleState::AppStateInactive:
-      qInfo() << "Application state changed to: Inactive";
-      break;
-    default:
-      qWarning() << "Application state changed to: Unknown";
-      break;
+  case femp::ApplicationLifeCycleState::AppStateStart:
+    qInfo() << "Application state changed to: Starting";
+    this->show();
+    break;
+  case femp::ApplicationLifeCycleState::AppStateActive:
+    qInfo() << "Application state changed to: Active";
+    break;
+  case femp::ApplicationLifeCycleState::AppStateInactive:
+    qInfo() << "Application state changed to: Inactive";
+    break;
+  default:
+    qWarning() << "Application state changed to: Unknown";
+    break;
   }
 
   if (state.documentState == d->renderedDocumentState) {
@@ -125,10 +128,10 @@ void MainWindow::onAppStateChanged(AppState state) {
 
   d->renderedDocumentState = state.documentState;
   switch (state.documentState) {
-  case DocumentState::DocumentStateOpen:
+  case femp::DocumentState::DocumentStateOpen:
     setUserInterfaceAsOpened();
     break;
-  case DocumentState::DocumentStateClosed:
+  case femp::DocumentState::DocumentStateClosed:
     setUserInterfaceAsClosed();
     break;
   default:
@@ -137,7 +140,7 @@ void MainWindow::onAppStateChanged(AppState state) {
   }
 }
 
-void MainWindow::setSelection(Selection) {}
+void MainWindow::setSelection(::Selection) {}
 
 void MainWindow::clearSelection() {}
 
@@ -177,7 +180,7 @@ void MainWindow::importProjectFromJsonFile(QString file_name) {
   switch (parser->error.code) {
   case Parser::Error::ERR_OK:
     d->document.setProjectType(
-        Document::TYPE_SOLID3D); // nasty hack due to poor design
+        femp::Document::TYPE_SOLID3D); // nasty hack due to poor design
     d->document.setFileName(file_name);
     emit documentOpened();
     break;
@@ -246,7 +249,7 @@ void MainWindow::reopenProject() {
   importProjectFromJsonFile(QString::fromStdString(file_name));
 }
 
-static void saveDocument(Document &doc, std::string file_name) {
+static void saveDocument(femp::Document &doc, std::string file_name) {
   gui::application::SaveDocumentCommand command(doc.getProject().getModel(),
                                                 file_name);
   command.execute();
@@ -520,7 +523,7 @@ void MainWindow::setNodeActions() {
     return;
   }
 
-  Selection const selection = d->selectionManager.getSelection();
+  ::Selection const selection = d->selectionManager.getSelection();
 
   // shortcut just to reduce code clutter
   fem::Model &femp_model = d->document.getProject().getModel();
@@ -566,7 +569,7 @@ void MainWindow::moveSelectedNodes() {
   }
 
   // get list of node restraints from active window
-  Selection selection = d->selectionManager.getSelection();
+  ::Selection selection = d->selectionManager.getSelection();
   MoveNodesVisitor visitor(selection.getNodeReferences(), nd.getTranslation());
 
   d->document.getProject().accept(visitor);
@@ -597,7 +600,7 @@ void MainWindow::editSelection() {
   dialog.exec();
 
   // signal that a selection changed
-  Selection selection = d->selectionManager.getSelection();
+  ::Selection selection = d->selectionManager.getSelection();
   emit selectionChanged(selection);
 }
 
@@ -633,21 +636,21 @@ void MainWindow::runAnalysis() {
   }
 
   // runs the analysis
-  DefaultProgressIndicator progress;
+  femp::DefaultProgressIndicator progress;
   AnalysisProgressDialog dialog(this);
 
   // connect the dialog with the progress indicator
-  connect(&progress, &DefaultProgressIndicator::beginSection, &dialog,
+  connect(&progress, &femp::DefaultProgressIndicator::beginSection, &dialog,
           &AnalysisProgressDialog::beginSection);
-  connect(&progress, &DefaultProgressIndicator::endSection, &dialog,
+  connect(&progress, &femp::DefaultProgressIndicator::endSection, &dialog,
           &AnalysisProgressDialog::endSection);
-  connect(&progress, &DefaultProgressIndicator::setProgress, &dialog,
+  connect(&progress, &femp::DefaultProgressIndicator::setProgress, &dialog,
           &AnalysisProgressDialog::setProgress);
-  connect(&progress, &DefaultProgressIndicator::setMessage, &dialog,
+  connect(&progress, &femp::DefaultProgressIndicator::setMessage, &dialog,
           &AnalysisProgressDialog::setMessage);
-  connect(&progress, &DefaultProgressIndicator::setError, &dialog,
+  connect(&progress, &femp::DefaultProgressIndicator::setError, &dialog,
           &AnalysisProgressDialog::setError);
-  connect(&progress, &DefaultProgressIndicator::finish, &dialog,
+  connect(&progress, &femp::DefaultProgressIndicator::finish, &dialog,
           &AnalysisProgressDialog::finish);
 
   // TODO finish this
@@ -784,7 +787,8 @@ void MainWindow::dumpResultsFromSelection() {
       d->document.getProject().getAnalysisResults().back(); // nasty hack
 
   OutputResultsInNodesCSVVisitor visitor(
-      d->selectionManager.getSelection().getNodeReferences(), &femp_result, out);
+      d->selectionManager.getSelection().getNodeReferences(), &femp_result,
+      out);
 
   d->document.getProject().accept(visitor);
 
@@ -805,7 +809,7 @@ void MainWindow::showSelection() {
     return;
   }
 
-  Selection selection = d->selectionManager.getSelection();
+  ::Selection selection = d->selectionManager.getSelection();
   window->showSelection(selection);
 }
 
@@ -860,13 +864,13 @@ void MainWindow::createNewModelWindow() {
   mdi_window->showMaximized();
 
   connect(window, &ModelWindow::selectionChanged, &d->selectionManager,
-          &SelectionManager::setSelection);
+          &femp::SelectionManager::setSelection);
   connect(window, &ModelWindow::selectionCleared, &d->selectionManager,
-          &SelectionManager::clearSelection);
+          &femp::SelectionManager::clearSelection);
 
-  connect(&d->selectionManager, &SelectionManager::selectionChanged, window,
+  connect(&d->selectionManager, &femp::SelectionManager::selectionChanged, window,
           &ModelWindow::setSelection);
-  connect(&d->selectionManager, &SelectionManager::selectionCleared, window,
+  connect(&d->selectionManager, &femp::SelectionManager::selectionCleared, window,
           &ModelWindow::clearSelection);
 }
 
@@ -879,7 +883,7 @@ void MainWindow::createNewPostprocessingWindow() {
     return;
   }
 
-  PostprocessingWindow *window = new PostprocessingWindow(
+  femp::ui::PostprocessingWindow *window = new femp::ui::PostprocessingWindow(
       d->document.getProject(), femp_result.back(), getViewportColors(), this);
 
   // create the model's MDI window
@@ -898,10 +902,10 @@ void MainWindow::createNewTensorFieldWindow() {
     return;
   }
 
-  TensorFieldWindow *window =
-      new TensorFieldWindow(d->document.getProject(),
-                            d->document.getProject().getAnalysisResults().back(),
-                            getViewportColors(), this);
+  femp::ui::TensorFieldWindow *window = new femp::ui::TensorFieldWindow(
+      d->document.getProject(),
+      d->document.getProject().getAnalysisResults().back(), getViewportColors(),
+      this);
 
   // create the model's MDI window
   QMdiSubWindow *mdi_window = new QMdiSubWindow(d->mdiArea);
@@ -934,8 +938,8 @@ void MainWindow::createNewFemEquationWindow() {
     return;
   }
 
-  MatrixWindow *mdi_window =
-      new MatrixWindow(d->document.getProject(), d->mdiArea);
+  femp::ui::MatrixWindow *mdi_window = new femp::ui::MatrixWindow(
+      d->document.getProject(), d->mdiArea);
   mdi_window->showMaximized();
 }
 
@@ -949,7 +953,8 @@ void MainWindow::updateWindowMenu() {
   QList<QMdiSubWindow *> subWindowList = d->mdiArea->subWindowList();
   for (int n = 0; n < subWindowList.size(); n++) {
     // get current MDI window label
-    BaseWindow *base = dynamic_cast<BaseWindow *>(subWindowList[n]->widget());
+    femp::ui::BaseWindow *base =
+        dynamic_cast<femp::ui::BaseWindow *>(subWindowList[n]->widget());
     {
       // TODO fix problem with menu windows
       qCritical() << "MainWindow::updateWindowMenu(): nullptr result";
@@ -1057,4 +1062,6 @@ void MainWindow::setUserInterfacePostAnalysis() {
   ui->actionAnalysisSummary->setEnabled(true);
 }
 
-ViewportColors &MainWindow::getViewportColors() { return d->colors; }
+::ViewportColors &MainWindow::getViewportColors() { return d->colors; }
+
+} // namespace femp::ui

@@ -1,5 +1,7 @@
 #include "CommandLineDockWidget.hpp"
 
+namespace femp::ui {
+
 CommandLineDockWidget::CommandLineDockWidget(QWidget *parent)
     : QDockWidget("default inherited", parent) {
   ui.setupUi(this);
@@ -37,3 +39,5 @@ void CommandLineDockWidget::commandEntered(void) {
   Q_EMIT executeCommand(ui.commandLineInput->text());
   ui.commandLineInput->clear();
 }
+
+} // namespace femp::ui

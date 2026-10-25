@@ -20,7 +20,7 @@ class ModelViewport : public BaseViewport {
   Q_OBJECT
 
 public:
-  ModelViewport(fem::Project &project, QWidget *parent = nullptr);
+  ModelViewport(femp::Project &project, QWidget *parent = nullptr);
   ~ModelViewport();
 
   /**

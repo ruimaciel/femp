@@ -1,17 +1,21 @@
 #include "SelectionManager.hpp"
 
+namespace femp {
+
 SelectionManager::~SelectionManager() {}
 
-void SelectionManager::setSelection(Selection const &selection) {
+void SelectionManager::setSelection(::Selection const &selection) {
   m_selection = selection;
 
   emit selectionChanged(selection);
 }
 
 void SelectionManager::clearSelection() {
-  this->m_selection = Selection();
+  this->m_selection = ::Selection();
 
   emit selectionCleared();
 }
 
-Selection const &SelectionManager::getSelection() const { return m_selection; }
+::Selection const &SelectionManager::getSelection() const { return m_selection; }
+
+} // namespace femp

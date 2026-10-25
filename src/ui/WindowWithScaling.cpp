@@ -7,7 +7,9 @@
 // std includes
 #include <assert.h>
 
-void WindowWithScaling::createToolbar(QMainWindow *parent, fem::Project &) {
+namespace femp::ui {
+
+void WindowWithScaling::createToolbar(QMainWindow *parent, femp::Project &) {
   m_doubleSpinBoxScaling = new QDoubleSpinBox(parent);
   m_doubleSpinBoxScaling->setMinimum(0);
   m_doubleSpinBoxScaling->setMaximum(9e99);
@@ -29,3 +31,5 @@ void WindowWithScaling::connectSignalsToSlots(QMainWindow *parent) {
   QObject::connect(m_doubleSpinBoxScaling, SIGNAL(valueChanged(double)), parent,
                    SLOT(setDisplacementsScale(double)));
 }
+
+} // namespace femp::ui

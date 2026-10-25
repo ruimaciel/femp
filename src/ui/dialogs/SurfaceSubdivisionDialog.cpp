@@ -9,6 +9,8 @@
 // std includes
 #include <cmath>
 
+namespace femp::ui {
+
 SurfaceSubdivisionDialog::SurfaceSubdivisionDialog(unsigned short scale,
                                                    QWidget *parent)
     : QDialog(parent), m_ui(std::make_unique<Ui::SurfaceSubdivisionDialog>()) {
@@ -38,3 +40,5 @@ void SurfaceSubdivisionDialog::updateSlider(int value) {
 void SurfaceSubdivisionDialog::updateSpinBox(int value) {
   m_ui->spinBox->setValue(value);
 }
+
+} // namespace femp::ui

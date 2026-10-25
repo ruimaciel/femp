@@ -4,8 +4,14 @@
 // Qt includes
 #include <QApplication>
 
-class MainWindow;
+namespace femp {
 class AppStateManager;
+namespace ui {
+class MainWindow;
+}
+} // namespace femp
+
+namespace femp {
 
 class FempApplication : public QApplication {
   Q_OBJECT
@@ -19,10 +25,12 @@ public:
   void initialize();
 
 private:
-  AppStateManager *m_app_state_manager;
-  MainWindow *m_main_window;
+  femp::AppStateManager *m_app_state_manager;
+  femp::ui::MainWindow *m_main_window;
 };
 
-#define fempApp dynamic_cast<FempApplication *>(QApplication::instance())
+} // namespace femp
+
+#define fempApp dynamic_cast<femp::FempApplication *>(QApplication::instance())
 
 #endif // FEMPAPPLICATION_HPP

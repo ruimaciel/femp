@@ -15,12 +15,12 @@
 // stl includes
 #include <map>
 
-PostprocessingWindow::PostprocessingWindow(fem::Project &project,
-                                           fem::AnalysisResult &result,
-                                           ViewportColors &colors,
-                                           QWidget *parent)
-    : MdiWindow(parent), WindowWithResults(), WindowWithPostprocessing(),
-      WindowWithScaling(), BaseWindow("Gradient") {
+femp::ui::PostprocessingWindow::PostprocessingWindow(
+    femp::Project &project, fem::AnalysisResult &result,
+    ::ViewportColors &colors, ::QWidget *parent)
+    : femp::ui::MdiWindow(parent), WindowWithResults(),
+      femp::ui::WindowWithPostprocessing(),
+      WindowWithScaling(), femp::ui::BaseWindow("Gradient") {
   this->setGradientValuesRange(result);
   this->viewport =
       new PostprocessingViewport(project, result, m_resultsRanges, parent);
@@ -36,21 +36,22 @@ PostprocessingWindow::PostprocessingWindow(fem::Project &project,
   connectSignalsToSlots();
 }
 
-void PostprocessingWindow::setDisplacementsScale(double scale) {
+void femp::ui::PostprocessingWindow::setDisplacementsScale(double scale) {
   this->viewport->setDisplacementsScale((float)scale);
   this->viewport->refresh();
 }
 
-void PostprocessingWindow::setAnalysisResult(fem::AnalysisResult &result) {
+void femp::ui::PostprocessingWindow::setAnalysisResult(
+    fem::AnalysisResult &result) {
   this->m_result = &result;
   this->setGradientValuesRange(result);
   this->viewport->setAnalysisResult(result);
 }
 
-void PostprocessingWindow::connectSignalsToSlots() {
-  MdiWindow::connectSignalsToSlots();
+void femp::ui::PostprocessingWindow::connectSignalsToSlots() {
+  femp::ui::MdiWindow::connectSignalsToSlots();
   WindowWithScaling::connectSignalsToSlots(this);
-  WindowWithPostprocessing::connectSignalsToSlots(this);
+  femp::ui::WindowWithPostprocessing::connectSignalsToSlots(this);
 
   connect(m_postprocessingComboBox, SIGNAL(activated(int)), this,
           SLOT(setPostprocessingState(int)));
@@ -60,28 +61,29 @@ void PostprocessingWindow::connectSignalsToSlots() {
           SLOT(setResultsRanges()));
 }
 
-void PostprocessingWindow::createToolBars(fem::Project &project) {
+void femp::ui::PostprocessingWindow::createToolBars(femp::Project &project) {
   WindowWithScaling::createToolbar(this, project);
   WindowWithResults::createToolbar(this, project);
-  WindowWithPostprocessing::createToolbar(this, project);
+  femp::ui::WindowWithPostprocessing::createToolbar(this, project);
 
   // create
   m_toolBarToggleMenuBarVisibility = addToolBar(tr("Menu bar visibility"));
   m_toolBarToggleMenuBarVisibility->addAction(m_actionMenuVisibility);
 }
 
-void PostprocessingWindow::setGradientValuesRange(
+void femp::ui::PostprocessingWindow::setGradientValuesRange(
     const fem::AnalysisResult &result) {
   this->m_resultsRanges = result.ranges;
 }
 
-void PostprocessingWindow::toggleMenuBarVisibility(bool visibility) {
+void femp::ui::PostprocessingWindow::toggleMenuBarVisibility(
+    bool visibility) {
   qWarning(
       "void PostprocessingWindow::toggleMenuBarVisibility(bool visibility) ");
   this->menuBar()->setVisible(visibility);
 }
 
-void PostprocessingWindow::setResultsRanges() {
+void femp::ui::PostprocessingWindow::setResultsRanges() {
   ResultsRangeDialog dialog(this);
   dialog.setValueRanges(this->m_resultsRanges);
 
@@ -95,7 +97,7 @@ void PostprocessingWindow::setResultsRanges() {
   };
 }
 
-void PostprocessingWindow::setPostprocessingState(int state) {
+void femp::ui::PostprocessingWindow::setPostprocessingState(int state) {
   PostprocessingViewport *current_vp = nullptr;
   current_vp = static_cast<PostprocessingViewport *>(this->viewport);
   if (current_vp == nullptr) {

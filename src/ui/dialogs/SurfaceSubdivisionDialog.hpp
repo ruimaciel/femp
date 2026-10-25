@@ -14,6 +14,8 @@ class SurfaceSubdivisionDialog;
 /**
  * Dialog used by GLDisplacementsWidget to input a new displacements scale
  */
+namespace femp::ui {
+
 class SurfaceSubdivisionDialog : public QDialog {
   Q_OBJECT
 
@@ -30,5 +32,7 @@ protected slots:
 private:
   std::unique_ptr<Ui::SurfaceSubdivisionDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

@@ -10,8 +10,10 @@
 
 /**
  * Dialog box which uses the selection widget to select objects from a given
- * fem::Project object
+ * femp::Project object
  */
+namespace femp::ui {
+
 class SelectionDialog : public QDialog {
   Q_OBJECT
 
@@ -20,8 +22,10 @@ protected:
 
 public:
   SelectionDialog(std::shared_ptr<domain::Model> model,
-                  SelectionManager &selection_manager,
+                  femp::SelectionManager &selection_manager,
                   QWidget *parent = nullptr);
 };
+
+} // namespace femp::ui
 
 #endif

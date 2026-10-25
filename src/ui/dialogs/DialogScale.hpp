@@ -14,6 +14,8 @@ class DialogScale;
 /**
  * Dialog used by GLDisplacementsWidget to input a new displacements scale
  */
+namespace femp::ui {
+
 class DialogScale : public QDialog {
   Q_OBJECT
 
@@ -30,5 +32,7 @@ protected slots:
 private:
   std::unique_ptr<Ui::DialogScale> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

@@ -6,6 +6,8 @@
 
 #include "ui/ui_NewMaterialDialog.h"
 
+namespace femp::ui {
+
 NewMaterialDialog::NewMaterialDialog(
     gui::application::IMaterialRepositoryPtr material_repository,
     QWidget *parent)
@@ -58,3 +60,5 @@ void NewMaterialDialog::addNewMaterial() {
 
   accept();
 }
+
+} // namespace femp::ui

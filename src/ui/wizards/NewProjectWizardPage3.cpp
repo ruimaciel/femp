@@ -9,6 +9,8 @@
 
 #include "Document.hpp" // for the loading test
 
+namespace femp::ui {
+
 NewProjectWizardPage3::NewProjectWizardPage3(femp::Project &project)
     : m_project(project) {
   setupUi(this);
@@ -157,3 +159,5 @@ void NewProjectWizardPage3::addNewMaterial(void) {
     break;
   }
 }
+
+} // namespace femp::ui

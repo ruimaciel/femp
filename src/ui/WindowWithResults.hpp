@@ -15,6 +15,8 @@ class QComboBox;
  * Provides a window with the ability to select which AnalysisResults<> object
  * to use
  */
+namespace femp::ui {
+
 class WindowWithResults : public femp::ui::WindowWith {
 protected:
   QToolBar *m_toolBarResults; // toolbar to provide a user to select which
@@ -24,5 +26,7 @@ protected:
 public:
   void createToolbar(QMainWindow *parent, femp::Project &results);
 };
+
+} // namespace femp::ui
 
 #endif

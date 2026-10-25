@@ -2,6 +2,8 @@
 
 #include "ui_TableFilterDialog.h"
 
+namespace femp::ui {
+
 TableFilterDialog::TableFilterDialog(QWidget *parent)
     : QDialog(parent), m_ui(std::make_unique<Ui::TableFilterDialog>()) {
   m_ui->setupUi(this);
@@ -229,3 +231,5 @@ void TableFilterDialog::toggleStressesCheckbox(bool) {
     m_ui->checkBoxStresses->setCheckState(Qt::PartiallyChecked);
   }
 }
+
+} // namespace femp::ui

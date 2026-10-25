@@ -1,5 +1,7 @@
 #include "NewProjectWizardPage2.hpp"
 
+namespace femp::ui {
+
 NewProjectWizardPage2::NewProjectWizardPage2() {
   setupUi(this);
 
@@ -14,3 +16,5 @@ bool NewProjectWizardPage2::validatePage() {
 
   return result;
 }
+
+} // namespace femp::ui

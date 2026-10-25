@@ -18,6 +18,8 @@ class AnalysisResultsWidget;
 /**
  * Widget used in MDI windows to display the results of a given analysis
  */
+namespace femp::ui {
+
 class AnalysisResultsWidget : public QWidget {
   Q_OBJECT
 
@@ -37,5 +39,7 @@ private:
   struct Private;
   std::unique_ptr<Private> m_private;
 };
+
+} // namespace femp::ui
 
 #endif

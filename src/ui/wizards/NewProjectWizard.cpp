@@ -3,6 +3,8 @@
 #include <QDir>
 #include <QMessageBox>
 
+namespace femp::ui {
+
 NewProjectWizard::NewProjectWizard(femp::Document &doc, QWidget *parent)
     : QWizard(parent) {
   // clear the model, start with a clean slate
@@ -21,3 +23,5 @@ void NewProjectWizard::accept() {
 
   QDialog::accept();
 }
+
+} // namespace femp::ui

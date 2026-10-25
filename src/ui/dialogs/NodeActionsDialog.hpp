@@ -17,6 +17,8 @@ namespace Ui {
 class NodeActionsDialog;
 }
 
+namespace femp::ui {
+
 class NodeActionsDialog : public QDialog {
   Q_OBJECT
 
@@ -36,5 +38,7 @@ public:
 private:
   std::unique_ptr<Ui::NodeActionsDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

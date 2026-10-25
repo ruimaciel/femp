@@ -14,6 +14,8 @@ namespace Ui {
 class NewMaterialDialog;
 }
 
+namespace femp::ui {
+
 class NewMaterialDialog : public QDialog {
   Q_OBJECT
 
@@ -37,5 +39,7 @@ private:
   gui::application::IMaterialRepositoryPtr m_material_repository;
   std::unique_ptr<Ui::NewMaterialDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

@@ -4,6 +4,8 @@
 #include <QObject> // for tr()
 #include <QString>
 
+namespace femp::ui {
+
 void WindowWithWireframe::createToolbar(QMainWindow *parent) {
   m_comboBoxElementRendering = new QComboBox(parent);
 
@@ -16,3 +18,5 @@ void WindowWithWireframe::createToolbar(QMainWindow *parent) {
       parent->addToolBar(QObject::tr("Element rendering"));
   m_toolBarToggleElementRendering->addWidget(m_comboBoxElementRendering);
 }
+
+} // namespace femp::ui

@@ -15,6 +15,8 @@
 /**
 Widget developed to select model objects
 **/
+namespace femp::ui {
+
 class SelectionWidget : public QWidget, Ui::SelectionWidget {
   Q_OBJECT
 
@@ -56,5 +58,7 @@ protected:
   gui::application::IElementRepositoryPtr m_element_repository;
   gui::application::INodeRepositoryPtr m_node_repository;
 };
+
+} // namespace femp::ui
 
 #endif

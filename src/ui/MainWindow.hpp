@@ -8,7 +8,6 @@
 
 #include <memory>
 
-class CommandLineDockWidget;
 class ViewportColors;
 
 #include <SelectionManager.hpp>

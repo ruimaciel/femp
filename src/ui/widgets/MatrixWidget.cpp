@@ -8,6 +8,8 @@
 
 #include "ui_MatrixWidget.h"
 
+namespace femp::ui {
+
 struct MatrixWidget::Private {
   Ui::MatrixWidget ui;
 };
@@ -21,3 +23,5 @@ MatrixWidget::MatrixWidget(femp::Project &project, QWidget *parent)
 }
 
 MatrixWidget::~MatrixWidget() = default;
+
+} // namespace femp::ui

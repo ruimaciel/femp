@@ -9,6 +9,8 @@
 #include "ui/wizards/NewProjectWizardPage2.hpp"
 #include "ui/wizards/NewProjectWizardPage3.hpp"
 
+namespace femp::ui {
+
 class NewProjectWizard : public QWizard {
   Q_OBJECT
 
@@ -22,5 +24,7 @@ Q_SIGNALS:
 public Q_SLOTS:
   void accept();
 };
+
+} // namespace femp::ui
 
 #endif

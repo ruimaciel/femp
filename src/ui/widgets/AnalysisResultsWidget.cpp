@@ -7,6 +7,8 @@
 
 #include "ui_AnalysisResultsWidget.h"
 
+namespace femp::ui {
+
 struct AnalysisResultsWidget::Private {
   Ui::AnalysisResultsWidget ui;
 };
@@ -95,3 +97,5 @@ void AnalysisResultsWidget::setFilterOptions() {
     break;
   }
 }
+
+} // namespace femp::ui

@@ -2,6 +2,8 @@
 
 #include <QVBoxLayout>
 
+namespace femp::ui {
+
 SelectionDialog::SelectionDialog(std::shared_ptr<domain::Model> model,
                                  femp::SelectionManager &selection_manager,
                                  QWidget *parent)
@@ -16,3 +18,5 @@ SelectionDialog::SelectionDialog(std::shared_ptr<domain::Model> model,
 
   this->show();
 }
+
+} // namespace femp::ui

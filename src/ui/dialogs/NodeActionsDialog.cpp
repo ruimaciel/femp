@@ -6,6 +6,8 @@
 // Qt includes
 #include <QAbstractItemView>
 
+namespace femp::ui {
+
 NodeActionsDialog::NodeActionsDialog(LoadPatternsModel &model, QWidget *parent)
     : QDialog(parent), m_ui(std::unique_ptr<Ui::NodeActionsDialog>()) {
   m_ui->setupUi(this);
@@ -39,3 +41,5 @@ fem::Point3D NodeActionsDialog::getDisplacement() {
 void NodeActionsDialog::loadPatternCreated(size_t, fem::LoadPattern const &) {
   m_ui->comboBoxLoadPattern->view()->reset();
 }
+
+} // namespace femp::ui

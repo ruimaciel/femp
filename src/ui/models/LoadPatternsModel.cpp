@@ -3,6 +3,8 @@
 #include <QString>
 #include <string>
 
+namespace femp::ui {
+
 LoadPatternsModel::LoadPatternsModel(
     gui::application::ILoadPatternRepositoryPtr load_pattern_repository,
     QObject *parent)
@@ -39,3 +41,5 @@ int LoadPatternsModel::rowCount(const QModelIndex &parent) const {
 
   return m_load_pattern_repository->getLoadPatternSize();
 }
+
+} // namespace femp::ui

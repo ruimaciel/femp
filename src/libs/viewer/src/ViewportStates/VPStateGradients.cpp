@@ -95,7 +95,7 @@ void VPStateGradients::keyPressEvent(BaseViewport *viewport, QKeyEvent *event) {
   switch (event->key()) {
   case Qt::Key_S: // change the displacements scale
   {
-    DialogScale ds(1.0f, viewport);
+    femp::ui::DialogScale ds(1.0f, viewport);
     switch (ds.exec()) {
     case QDialog::Accepted:
       this->setDisplacementsScale(ds.getScale());
@@ -111,7 +111,7 @@ void VPStateGradients::keyPressEvent(BaseViewport *viewport, QKeyEvent *event) {
 
   case Qt::Key_D: // change the displacements scale
   {
-    SurfaceSubdivisionDialog ds(2);
+    femp::ui::SurfaceSubdivisionDialog ds(2);
     switch (ds.exec()) {
     case QDialog::Accepted:
       m_gradient_representation.setSurfaceSubdivisionLevel(ds.scale());

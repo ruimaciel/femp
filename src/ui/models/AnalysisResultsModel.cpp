@@ -6,6 +6,8 @@
 #include <persistence/ElementRepository.hpp>
 #include <persistence/NodeRepository.hpp>
 
+namespace femp::ui {
+
 AnalysisResultsModel::AnalysisResultsModel(femp::Project &project,
                                            QObject *parent)
     : QAbstractTableModel(parent), m_project(project) {
@@ -236,3 +238,5 @@ QString AnalysisResultsModel::generateElementTypeName(
     return QString("Unknown");
   }
 }
+
+} // namespace femp::ui

@@ -10,12 +10,12 @@ ModelWindow::ModelWindow(femp::Project &project, ViewportColors &colors,
 
   viewport->setColors(colors);
 
-  WindowWithWireframe::createToolbar(this);
+  femp::ui::WindowWithWireframe::createToolbar(this);
 
   connectSignalsToSlots();
 }
 
 void ModelWindow::connectSignalsToSlots() {
   femp::ui::MdiWindow::connectSignalsToSlots();
-  WindowWithWireframe::connectSignalsToSlots(this);
+  femp::ui::WindowWithWireframe::connectSignalsToSlots(this);
 }

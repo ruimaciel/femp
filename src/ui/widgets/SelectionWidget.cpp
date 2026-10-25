@@ -8,6 +8,8 @@
 #include <persistence/NodeRepository.hpp>
 #include <selection/Selection.hpp>
 
+namespace femp::ui {
+
 SelectionWidget::SelectionWidget(std::shared_ptr<domain::Model> domain_model,
                                  femp::SelectionManager &selection_manager,
                                  QWidget *parent)
@@ -128,3 +130,5 @@ void SelectionWidget::initializeSelectionGroups(
     m_selection_groups.push_back(group);
   }
 }
+
+} // namespace femp::ui

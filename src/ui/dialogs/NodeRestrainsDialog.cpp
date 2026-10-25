@@ -2,6 +2,8 @@
 
 #include "ui/ui_NodeRestrainDialog.h"
 
+namespace femp::ui {
+
 NodeRestrainsDialog::NodeRestrainsDialog(QWidget *parent)
     : QDialog(parent), m_ui(std::make_unique<Ui::NodeRestrainDialog>()) {
   m_ui->setupUi(this);
@@ -33,3 +35,5 @@ fem::NodeRestrictions NodeRestrainsDialog::getRestrictions() const {
 
   return restrictions;
 }
+
+} // namespace femp::ui

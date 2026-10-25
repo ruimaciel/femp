@@ -21,7 +21,7 @@ class MatrixWindow : public ::QMdiSubWindow, public femp::ui::BaseWindow {
   Q_OBJECT
 
 protected:
-  ::MatrixWidget *m_matrixWidget;
+  femp::ui::MatrixWidget *m_matrixWidget;
   femp::Project const *m_project;
 
 public:

@@ -11,6 +11,8 @@
 /**
  * Provides a Qt MVC model to use with QTableView widgets
  */
+namespace femp::ui {
+
 class AnalysisResultsModel : public QAbstractTableModel {
   Q_OBJECT
 protected:
@@ -33,5 +35,7 @@ protected:
   gui::application::IElementRepositoryPtr element_repository;
   gui::application::INodeRepositoryPtr m_node_repository;
 };
+
+} // namespace femp::ui
 
 #endif

@@ -7,6 +7,8 @@
 #include <QString>
 #include <QToolBar>
 
+namespace femp::ui {
+
 void WindowWithResults::createToolbar(QMainWindow *parent,
                                       femp::Project &project) {
   m_comboBoxResults = new QComboBox(parent);
@@ -20,3 +22,5 @@ void WindowWithResults::createToolbar(QMainWindow *parent,
   m_toolBarResults = parent->addToolBar(QObject::tr("Results"));
   m_toolBarResults->addWidget(m_comboBoxResults);
 }
+
+} // namespace femp::ui

@@ -14,6 +14,8 @@ namespace Ui {
 class AnalysisProgressDialog;
 }
 
+namespace femp::ui {
+
 class AnalysisProgressDialog : public QDialog {
   Q_OBJECT
 
@@ -54,5 +56,7 @@ public slots:
 private:
   std::unique_ptr<Ui::AnalysisProgressDialog> m_ui;
 };
+
+} // namespace femp::ui
 
 #endif

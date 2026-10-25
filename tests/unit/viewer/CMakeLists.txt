@@ -14,6 +14,10 @@ target_sources(TestViewer
 target_include_directories(TestViewer
     PRIVATE
         ${CMAKE_SOURCE_DIR}/src/libs/viewer/include
+        ${CMAKE_SOURCE_DIR}/src/libs/viewer/src
+        ${CMAKE_SOURCE_DIR}/src
+        ${CMAKE_SOURCE_DIR}/src/libs/options/include
+        ${CMAKE_SOURCE_DIR}/src/libs/services/selection/include
 )
 
 target_link_libraries(TestViewer

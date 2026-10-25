@@ -4,6 +4,7 @@
 #include <QMouseEvent>
 #include <libfemp/AnalysisResult.hpp>
 #include <selection/Selection.hpp>
+#include <viewer/ViewportLayer.hpp>
 
 #include "../SceneGraph.hpp"
 
@@ -40,12 +41,9 @@ public:
   virtual void setDisplacementsScale(float new_scale);
 
   /**
-   * Sets the visibility of a SceneGraph render group
-   * @param	group	scene graph render group code, as defined in class
-   * SceneGraph
-   * @param	state	true if visible, false if invisible
+   * Sets the visibility of a semantic viewport layer.
    */
-  void setRenderGroupVisibility(SceneGraph::Groups group, bool state);
+  void setLayerVisibility(femp::ViewportLayer layer, bool visible);
 
   /**
    * Routine which will paint each OpenGL scene

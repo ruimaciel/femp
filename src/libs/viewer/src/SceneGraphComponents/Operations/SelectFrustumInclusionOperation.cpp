@@ -1,6 +1,6 @@
 #include "SelectFrustumInclusionOperation.hpp"
 
-#include <Project.hpp>
+#include <domain/Model.hpp>
 
 namespace Operation {
 

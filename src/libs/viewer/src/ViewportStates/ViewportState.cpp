@@ -7,6 +7,7 @@
 #include <viewer/BaseViewport.hpp>
 
 #include "../SceneGraphComponents/SGCPickRay.hpp" // debugging purposes only
+#include "ViewportLayerMapping.hpp"
 
 ViewportState::~ViewportState() { this->scenegraph.clear(); }
 
@@ -16,9 +17,11 @@ void ViewportState::setDisplacementsScale(float new_scale) {
   this->scale = new_scale;
 }
 
-void ViewportState::setRenderGroupVisibility(SceneGraph::Groups group,
-                                             bool state) {
-  this->scenegraph.rendering_groups[group].setVisible(state);
+void ViewportState::setLayerVisibility(femp::ViewportLayer layer,
+                                       bool visible) {
+  this->scenegraph
+      .rendering_groups[femp::viewer::detail::toSceneGraphGroup(layer)]
+      .setVisible(visible);
 }
 
 void ViewportState::paintGL(BaseViewport *viewport) {

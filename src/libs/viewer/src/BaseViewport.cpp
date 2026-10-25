@@ -6,6 +6,7 @@
 #include <viewer/BaseViewport.hpp>
 
 #include "InputStates/Input.hpp" // for the state pattern that handles user input
+#include "SceneGraph.hpp"
 #include "SceneGraphComponents/Operations/SelectFrustumInclusionOperation.hpp"
 #include "SceneGraphComponents/Operations/SelectRayIntersectionOperation.hpp"
 #include "SceneGraphComponents/Operations/ToggleRenderOperation.hpp"
@@ -340,22 +341,22 @@ void BaseViewport::setState(ViewportState *new_state) {
       Options::getInstance().getDisplayOptions().node_restrictions;
 
   // toggle the visibility states
-  this->state->setRenderGroupVisibility(SceneGraph::RG_NODES, nodes);
-  this->state->setRenderGroupVisibility(SceneGraph::RG_NODE_RESTRICTIONS,
-                                        node_restrictions);
+  this->state->setLayerVisibility(femp::ViewportLayer::Nodes, nodes);
+  this->state->setLayerVisibility(femp::ViewportLayer::NodeRestrictions,
+                                  node_restrictions);
 }
 
 void BaseViewport::refresh(void) { this->update(); }
 
 void BaseViewport::setNodeVisibility(bool const state) {
-  this->state->setRenderGroupVisibility(SceneGraph::RG_NODES, state);
+  this->state->setLayerVisibility(femp::ViewportLayer::Nodes, state);
 
   Options::getInstance().getDisplayOptions().nodes = state;
 }
 
 void BaseViewport::setNodeRestrictionsVisibility(bool const state) {
-  this->state->setRenderGroupVisibility(SceneGraph::RG_NODE_RESTRICTIONS,
-                                        state);
+  this->state->setLayerVisibility(femp::ViewportLayer::NodeRestrictions,
+                                  state);
 
   Options::getInstance().getDisplayOptions().node_restrictions = state;
 }
@@ -366,8 +367,8 @@ void BaseViewport::setSurfaceVisibility(bool const state) {
     return;
   }
 
-  this->state->setRenderGroupVisibility(SceneGraph::RG_SURFACES, state);
-  this->state->setRenderGroupVisibility(SceneGraph::RG_WIREFRAME, !state);
+  this->state->setLayerVisibility(femp::ViewportLayer::Surfaces, state);
+  this->state->setLayerVisibility(femp::ViewportLayer::Wireframe, !state);
 
   Options::getInstance().getDisplayOptions().surfaces = state;
 }
@@ -465,9 +466,9 @@ void BaseViewport::setDisplacementsScale(float scale) {
   this->state->setDisplacementsScale(scale);
 }
 
-void BaseViewport::setRenderGroupVisibility(SceneGraph::Groups group,
-                                            bool state) {
-  this->state->setRenderGroupVisibility(group, state);
+void BaseViewport::setLayerVisibility(femp::ViewportLayer layer,
+                                      bool visible) {
+  this->state->setLayerVisibility(layer, visible);
 }
 
 void BaseViewport::normalizeAngle(int *angle) {

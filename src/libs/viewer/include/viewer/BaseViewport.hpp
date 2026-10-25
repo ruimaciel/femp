@@ -16,9 +16,10 @@
 #include <options/Options.hpp>
 #include <options/ViewportColors.hpp>
 #include <selection/Selection.hpp>
+#include <viewer/ViewportData.hpp>
+#include <viewer/ViewportLayer.hpp>
 
 #include "Project.hpp"
-#include "SceneGraph.hpp"
 
 class ViewportState;
 class Input;
@@ -83,7 +84,7 @@ public Q_SLOTS:
    * Sets the visibility state of any scenegraph group of the current viewport
    * state
    */
-  void setRenderGroupVisibility(SceneGraph::Groups group, bool state);
+  void setLayerVisibility(femp::ViewportLayer layer, bool visible);
 
   /**
    * Renders only the current selection of elements

@@ -1,6 +1,9 @@
 #include <QtTest/QtTest>
 #include <viewer/Camera.hpp>
 #include <viewer/ViewportData.hpp>
+#include <viewer/ViewportLayer.hpp>
+
+#include "ViewportStates/ViewportLayerMapping.hpp"
 
 class TestViewer : public QObject {
   Q_OBJECT
@@ -12,6 +15,11 @@ private slots:
   void viewportData_defaultZoom_isZero();
   void viewportData_defaultNodeRadius_isOne();
   void viewportData_defaultAspectRatio_isOne();
+  void viewportLayerMapping_nodes_mapsToSceneGraphGroup();
+  void viewportLayerMapping_surfaces_mapsToSceneGraphGroup();
+  void viewportLayerMapping_wireframe_mapsToSceneGraphGroup();
+  void viewportLayerMapping_ghostSurfaces_mapsToSceneGraphGroup();
+  void viewportLayerMapping_nodeRestrictions_mapsToSceneGraphGroup();
 };
 
 void TestViewer::camera_setCenter_updatesCenterX() {
@@ -78,6 +86,61 @@ void TestViewer::viewportData_defaultAspectRatio_isOne() {
 
   // Assert
   QCOMPARE(aspect_ratio, 1.0f);
+}
+
+void TestViewer::viewportLayerMapping_nodes_mapsToSceneGraphGroup() {
+  // Arrange
+  const auto layer = femp::ViewportLayer::Nodes;
+
+  // Act
+  const auto group = femp::viewer::detail::toSceneGraphGroup(layer);
+
+  // Assert
+  QCOMPARE(group, SceneGraph::RG_NODES);
+}
+
+void TestViewer::viewportLayerMapping_surfaces_mapsToSceneGraphGroup() {
+  // Arrange
+  const auto layer = femp::ViewportLayer::Surfaces;
+
+  // Act
+  const auto group = femp::viewer::detail::toSceneGraphGroup(layer);
+
+  // Assert
+  QCOMPARE(group, SceneGraph::RG_SURFACES);
+}
+
+void TestViewer::viewportLayerMapping_wireframe_mapsToSceneGraphGroup() {
+  // Arrange
+  const auto layer = femp::ViewportLayer::Wireframe;
+
+  // Act
+  const auto group = femp::viewer::detail::toSceneGraphGroup(layer);
+
+  // Assert
+  QCOMPARE(group, SceneGraph::RG_WIREFRAME);
+}
+
+void TestViewer::viewportLayerMapping_ghostSurfaces_mapsToSceneGraphGroup() {
+  // Arrange
+  const auto layer = femp::ViewportLayer::GhostSurfaces;
+
+  // Act
+  const auto group = femp::viewer::detail::toSceneGraphGroup(layer);
+
+  // Assert
+  QCOMPARE(group, SceneGraph::RG_GHOST_SURFACES);
+}
+
+void TestViewer::viewportLayerMapping_nodeRestrictions_mapsToSceneGraphGroup() {
+  // Arrange
+  const auto layer = femp::ViewportLayer::NodeRestrictions;
+
+  // Act
+  const auto group = femp::viewer::detail::toSceneGraphGroup(layer);
+
+  // Assert
+  QCOMPARE(group, SceneGraph::RG_NODE_RESTRICTIONS);
 }
 
 QTEST_MAIN(TestViewer)

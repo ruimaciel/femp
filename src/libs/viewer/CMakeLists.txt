@@ -12,6 +12,7 @@ target_sources(viewer
             include/viewer/PostprocessingViewport.hpp
             include/viewer/TensorFieldViewport.hpp
             include/viewer/ViewportData.hpp
+            include/viewer/ViewportLayer.hpp
     PRIVATE
         src/InputStates/Input.hpp
         src/InputStates/InputState.hpp
@@ -76,6 +77,7 @@ target_sources(viewer
         src/SceneGraphComponents/SGCNodeRestrictions.hpp
         src/SceneGraphComponents/SGCPickRay.hpp
         src/ViewportStates/ViewportState.hpp
+        src/ViewportStates/ViewportLayerMapping.hpp
         src/ViewportStates/VPStateDisplacements.hpp
         src/ViewportStates/VPStateGradients.hpp
         src/ViewportStates/VPStateModel.hpp

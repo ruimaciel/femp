@@ -33,6 +33,8 @@ class QToolbar;
 /**
  * MDI window designed to represent a tensor field of a given analysis result
  */
+namespace femp::ui {
+
 class TensorFieldWindow : public femp::ui::MdiWindow,
                           public WindowWithResults,
                           public femp::ui::BaseWindow {
@@ -58,7 +60,7 @@ protected:
 
 public:
   TensorFieldWindow(femp::Project &project, fem::AnalysisResult &result,
-                    ViewportColors &colors, QWidget *parent = nullptr);
+                    ::ViewportColors &colors, ::QWidget *parent = nullptr);
 
 public Q_SLOTS:
   void setDisplacementsScale(double scale);
@@ -87,5 +89,7 @@ protected:
 
   void setGradientValuesRange(const fem::AnalysisResult &result);
 };
+
+} // namespace femp::ui
 
 #endif

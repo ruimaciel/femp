@@ -16,9 +16,9 @@
 // stl includes
 #include <map>
 
-TensorFieldWindow::TensorFieldWindow(femp::Project &project,
-                                     fem::AnalysisResult &result,
-                                     ViewportColors &colors, QWidget *parent)
+femp::ui::TensorFieldWindow::TensorFieldWindow(
+    femp::Project &project, fem::AnalysisResult &result,
+    ::ViewportColors &colors, ::QWidget *parent)
     : femp::ui::MdiWindow(parent), WindowWithResults(),
       femp::ui::BaseWindow("Tensor field") {
   this->setGradientValuesRange(result);
@@ -37,18 +37,19 @@ TensorFieldWindow::TensorFieldWindow(femp::Project &project,
   connectSignalsToSlots();
 }
 
-void TensorFieldWindow::setDisplacementsScale(double scale) {
+void femp::ui::TensorFieldWindow::setDisplacementsScale(double scale) {
   this->viewport->setDisplacementsScale((float)scale);
   this->viewport->refresh();
 }
 
-void TensorFieldWindow::setAnalysisResult(fem::AnalysisResult &result) {
+void femp::ui::TensorFieldWindow::setAnalysisResult(
+    fem::AnalysisResult &result) {
   this->m_result = &result;
   this->setGradientValuesRange(result);
   this->viewport->setAnalysisResult(result);
 }
 
-void TensorFieldWindow::connectSignalsToSlots() {
+void femp::ui::TensorFieldWindow::connectSignalsToSlots() {
   femp::ui::MdiWindow::connectSignalsToSlots();
   WindowWithResults::connectSignalsToSlots(this);
 
@@ -60,7 +61,7 @@ void TensorFieldWindow::connectSignalsToSlots() {
           SLOT(setPositivePrincipalStressesVisibility(bool)));
 }
 
-void TensorFieldWindow::createToolBars(femp::Project &project) {
+void femp::ui::TensorFieldWindow::createToolBars(femp::Project &project) {
   WindowWithResults::createToolbar(this, project);
 
   // create
@@ -79,17 +80,17 @@ void TensorFieldWindow::createToolBars(femp::Project &project) {
       m_actionVisiblePositivePrincipalStresses);
 }
 
-void TensorFieldWindow::setGradientValuesRange(
+void femp::ui::TensorFieldWindow::setGradientValuesRange(
     const fem::AnalysisResult &result) {
   this->m_resultsRanges = result.ranges;
 }
 
-void TensorFieldWindow::toggleMenuBarVisibility(bool visibility) {
+void femp::ui::TensorFieldWindow::toggleMenuBarVisibility(bool visibility) {
   qWarning("void TensorFieldWindow::toggleMenuBarVisibility(bool visibility) ");
   this->menuBar()->setVisible(visibility);
 }
 
-void TensorFieldWindow::setNegativePrincipalStressesVisibility(
+void femp::ui::TensorFieldWindow::setNegativePrincipalStressesVisibility(
     const bool state) {
   qCritical() << "TensorFieldWindow::setNegativePrincipalStressesVisibility("
                  "const bool state)";
@@ -98,7 +99,7 @@ void TensorFieldWindow::setNegativePrincipalStressesVisibility(
   this->viewport->refresh();
 }
 
-void TensorFieldWindow::setPositivePrincipalStressesVisibility(
+void femp::ui::TensorFieldWindow::setPositivePrincipalStressesVisibility(
     const bool state) {
   qCritical() << "TensorFieldWindow::setPositivePrincipalStressesVisibility("
                  "const bool state)";
@@ -107,7 +108,7 @@ void TensorFieldWindow::setPositivePrincipalStressesVisibility(
   this->viewport->refresh();
 }
 
-void TensorFieldWindow::setResultsRanges() {
+void femp::ui::TensorFieldWindow::setResultsRanges() {
   ResultsRangeDialog dialog(this);
   dialog.setValueRanges(this->m_resultsRanges);
 

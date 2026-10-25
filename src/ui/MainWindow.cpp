@@ -902,7 +902,7 @@ void MainWindow::createNewTensorFieldWindow() {
     return;
   }
 
-  TensorFieldWindow *window = new TensorFieldWindow(
+  femp::ui::TensorFieldWindow *window = new femp::ui::TensorFieldWindow(
       d->document.getProject(),
       d->document.getProject().getAnalysisResults().back(), getViewportColors(),
       this);
